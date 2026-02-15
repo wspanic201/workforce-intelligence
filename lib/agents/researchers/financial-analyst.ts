@@ -112,7 +112,7 @@ OUTPUT FORMAT (JSON):
 
 CRITICAL REQUIREMENTS:
 - Use realistic cost estimates for community college context
-- Base tuition on Iowa community college typical rates
+- Base tuition on typical community college rates for the region
 - Consider both credit and noncredit pricing models
 - Include conservative and optimistic enrollment scenarios
 - Identify relevant grant opportunities (NSF, DOL, etc.)

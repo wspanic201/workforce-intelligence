@@ -84,7 +84,7 @@ CRITICAL REQUIREMENTS:
 - Research real programs (search college websites, program catalogs)
 - Cite specific institutions and programs
 - Be honest about what information is publicly available
-- Focus on Iowa/Midwest competitors first, then national
+- Focus on regional competitors first, then national
 - No hallucinations - only factual information
 
 Respond with valid JSON wrapped in \`\`\`json code blocks.`;

@@ -38,8 +38,8 @@ export async function runMarketAnalysis(
     const [liveJobsData, onetCode] = await Promise.all([
       withCache(
         'serpapi_jobs',
-        { occupation: project.program_name, location: 'Iowa' },
-        () => searchGoogleJobs(project.program_name, 'Iowa'),
+        { occupation: project.program_name, location: 'the specified region' },
+        () => searchGoogleJobs(project.program_name, 'the specified region'),
         168 // Cache for 7 days
       ),
       withCache(
@@ -80,7 +80,7 @@ AUDIENCE: ${project.target_audience || 'Not specified'}
 REAL DATA FROM GOOGLE JOBS (SerpAPI - ${new Date().toLocaleDateString()}):
 ═══════════════════════════════════════════════════════════
 
-Current Job Openings in Iowa: ${liveJobsData.count}
+Current Job Openings in Region: ${liveJobsData.count}
 
 Salary Ranges (from actual job postings):
 - Entry-Level: ${liveJobsData.salaries.ranges.entry}
@@ -216,7 +216,7 @@ function formatMarketAnalysis(
 
 ### Job Demand
 
-**Current Openings in Iowa:** ${data.live_jobs.count}  
+**Current Regional Openings:** ${data.live_jobs.count}  
 *Source: Google Jobs via SerpAPI*
 
 ### Salary Ranges

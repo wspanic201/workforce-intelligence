@@ -62,7 +62,7 @@ PROGRAM DETAILS:
 - Program Type: ${project.program_type || 'Not specified'}
 - Target Audience: ${project.target_audience || 'Not specified'}
 - Institution: ${project.client_name}
-- Geographic Area: ${(project as any).geographic_area || 'Iowa'}
+- Geographic Area: ${(project as any).geographic_area || 'the specified region'}
 ${project.constraints ? `- Constraints: ${project.constraints}` : ''}
 ${(project as any).delivery_format ? `- Delivery Format: ${(project as any).delivery_format}` : ''}
 ${(project as any).estimated_tuition ? `- Estimated Tuition: ${(project as any).estimated_tuition}` : ''}

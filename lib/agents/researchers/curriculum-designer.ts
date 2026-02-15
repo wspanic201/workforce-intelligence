@@ -92,7 +92,7 @@ OUTPUT FORMAT (JSON):
 CRITICAL REQUIREMENTS:
 - Base design on industry standards and job requirements
 - Align with Higher Learning Commission standards (if applicable)
-- Consider Iowa community college typical structures
+- Consider typical community college structures
 - Courses should build on each other logically
 - Include both technical and employability skills
 - Be realistic about resource requirements

@@ -100,12 +100,12 @@ export default function SubmitPage() {
 
   const loadSampleData = () => {
     setFormData({
-      client_name: 'Eastern Iowa Community Colleges',
+      client_name: '',
       client_email: 'testing@eicc.edu',
       program_name: 'Cybersecurity Certificate',
       program_description: 'A non-credit certificate program preparing learners for entry-level cybersecurity analyst positions, aligned with CompTIA Security+ certification.',
       target_occupation: 'Information Security Analysts (SOC 15-1212)',
-      geographic_area: 'Eastern Iowa (Cedar Rapids, Iowa City, Quad Cities)',
+      geographic_area: '',
       program_type: 'certificate',
       target_audience: 'Credit students and incumbent workers seeking career advancement',
       target_learner_profile: 'career_changers',
@@ -218,7 +218,7 @@ export default function SubmitPage() {
                   required
                   value={formData.geographic_area}
                   onChange={(e) => setFormData({ ...formData, geographic_area: e.target.value })}
-                  placeholder="e.g., Eastern Iowa, Cedar Rapids metro area"
+                  placeholder="e.g., Greater Phoenix metro area, Southeast Michigan"
                 />
               </div>
             </div>

@@ -55,7 +55,7 @@ export default function HomePage() {
               </Link>
             </div>
             <p className="mt-8 text-sm text-slate-400 animate-fade-up animation-delay-300">
-              Trusted by community colleges across Iowa
+              Trusted by community colleges nationwide
             </p>
           </div>
         </div>
@@ -281,7 +281,7 @@ export default function HomePage() {
                   <p className="text-xs text-navy-300 uppercase tracking-wider mb-1">
                     Region
                   </p>
-                  <p className="text-white font-medium">Eastern Iowa</p>
+                  <p className="text-white font-medium">Midwest Region</p>
                 </div>
                 <div>
                   <p className="text-xs text-navy-300 uppercase tracking-wider mb-1">

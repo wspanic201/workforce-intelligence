@@ -31,7 +31,7 @@ export interface ProcessedJobData {
 
 export async function searchGoogleJobs(
   occupation: string,
-  location: string = 'Iowa'
+  location: string = 'United States'
 ): Promise<ProcessedJobData> {
   const params = new URLSearchParams({
     engine: 'google_jobs',

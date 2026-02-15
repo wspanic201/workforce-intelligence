@@ -75,17 +75,17 @@ PROGRAM DETAILS:
 - Program Type: ${project.program_type || 'Not specified'}
 - Target Audience: ${project.target_audience || 'Not specified'}
 - Institution: ${project.client_name}
-- Geographic Area: ${(project as any).geographic_area || 'Iowa'}
+- Geographic Area: ${(project as any).geographic_area || 'the specified region'}
 ${project.constraints ? `- Constraints: ${project.constraints}` : ''}
 ${(project as any).funding_sources ? `- Funding Sources: ${(project as any).funding_sources}` : ''}
 ${(project as any).stackable_credential ? `- Stackable Intent: Yes` : ''}
 
 ANALYSIS REQUIRED:
-1. State approval requirements (Iowa Board of Education / state agency)
+1. State approval requirements (relevant state board of education)
 2. Perkins V alignment — eligible CIP codes, funding potential
 3. WIOA alignment — Eligible Training Provider List (ETPL) eligibility
 4. Industry certification mapping — direct alignment with recognized credentials
-5. Accreditor expectations (HLC for Iowa community colleges)
+5. Accreditor expectations (relevant regional accreditor)
 6. Advisory committee requirements
 7. Articulation potential with 4-year institutions
 8. Complete compliance timeline from decision to launch
