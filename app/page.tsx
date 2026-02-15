@@ -238,17 +238,25 @@ export default function HomePage() {
 
           <div className="bg-white/10 rounded-lg p-8 mb-6">
             <p className="text-sm text-slate-300 mb-4">
-              Report preview: Executive Summary, Market Demand Analysis,
-              Financial Projections, GO/NO-GO Recommendation
+              15-page report including Executive Summary, Market Demand Analysis,
+              Competitive Landscape, Curriculum Design, Financial Projections &amp; Marketing Strategy
             </p>
-            <p className="text-slate-400 text-xs italic">Sample report coming soon</p>
+            <p className="text-2xl font-bold text-green-400 mb-2">Recommendation: GO ✓</p>
+            <p className="text-slate-400 text-sm">340% projected 5-year ROI | 33% job growth | $112K median salary</p>
           </div>
 
-          <Link href="/submit">
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-              Start Your Own Validation
-            </Button>
-          </Link>
+          <div className="flex gap-4 justify-center flex-wrap">
+            <Link href="/sample-report.pdf" download>
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                📄 Download Sample Report (PDF)
+              </Button>
+            </Link>
+            <Link href="/submit">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
+                Start Your Own Validation →
+              </Button>
+            </Link>
+          </div>
         </div>
       </section>
 
