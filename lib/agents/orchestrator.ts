@@ -2,10 +2,14 @@ import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { ValidationProject, ResearchComponent } from '@/lib/types/database';
 import { runMarketAnalysis } from './researchers/market-analyst';
 import { runCompetitiveAnalysis } from './researchers/competitor-analyst';
-import { runCurriculumDesign } from './researchers/curriculum-designer';
+import { runLearnerDemand } from './researchers/learner-demand';
 import { runFinancialAnalysis } from './researchers/financial-analyst';
-import { runMarketingStrategy } from './researchers/marketing-strategist';
+import { runInstitutionalFit } from './researchers/institutional-fit';
+import { runRegulatoryCompliance } from './researchers/regulatory-analyst';
+import { runEmployerDemand } from './researchers/employer-analyst';
 import { runTigerTeam } from './tiger-team';
+import { calculateProgramScore, buildDimensionScore, DIMENSION_WEIGHTS } from '@/lib/scoring/program-scorer';
+import { generateReport } from '@/lib/reports/report-generator';
 
 // Timeout wrapper for research agents
 function withTimeout<T>(promise: Promise<T>, timeoutMs: number, taskName: string): Promise<T> {
@@ -17,11 +21,64 @@ function withTimeout<T>(promise: Promise<T>, timeoutMs: number, taskName: string
   ]);
 }
 
+// 7-stage agent configuration
+const AGENT_CONFIG = [
+  {
+    type: 'labor_market' as const,
+    dimension: 'Labor Market Demand',
+    persona: 'market-analyst',
+    runner: runMarketAnalysis,
+    label: 'Labor Market Analysis',
+  },
+  {
+    type: 'competitive_landscape' as const,
+    dimension: 'Competitive Landscape',
+    persona: 'research-director',
+    runner: runCompetitiveAnalysis,
+    label: 'Competitive Landscape',
+  },
+  {
+    type: 'learner_demand' as const,
+    dimension: 'Target Learner Demand',
+    persona: 'learner-demand-analyst',
+    runner: runLearnerDemand,
+    label: 'Learner Demand Assessment',
+  },
+  {
+    type: 'financial_viability' as const,
+    dimension: 'Financial Viability',
+    persona: 'cfo',
+    runner: runFinancialAnalysis,
+    label: 'Financial Viability',
+  },
+  {
+    type: 'institutional_fit' as const,
+    dimension: 'Institutional Fit & Capacity',
+    persona: 'institutional-fit-analyst',
+    runner: runInstitutionalFit,
+    label: 'Institutional Fit',
+  },
+  {
+    type: 'regulatory_compliance' as const,
+    dimension: 'Regulatory & Compliance',
+    persona: 'regulatory-compliance-analyst',
+    runner: runRegulatoryCompliance,
+    label: 'Regulatory & Compliance',
+  },
+  {
+    type: 'employer_demand' as const,
+    dimension: 'Employer Demand & Partnerships',
+    persona: 'employer-demand-analyst',
+    runner: runEmployerDemand,
+    label: 'Employer Demand',
+  },
+];
+
 export async function orchestrateValidation(projectId: string): Promise<void> {
   const supabase = getSupabaseServerClient();
 
   try {
-    console.log(`[Orchestrator] Starting validation for project ${projectId}`);
+    console.log(`[Orchestrator] Starting 7-stage validation for project ${projectId}`);
 
     // 1. Load project details
     const { data: project, error: projectError } = await supabase
@@ -40,24 +97,16 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       .update({ status: 'researching', updated_at: new Date().toISOString() })
       .eq('id', projectId);
 
-    // 3. Create research component records
-    const componentTypes = [
-      { type: 'market_analysis', persona: 'market-analyst' },
-      { type: 'competitive_landscape', persona: 'research-director' },
-      { type: 'curriculum_design', persona: 'curriculum-director' },
-      { type: 'financial_projections', persona: 'cfo' },
-      { type: 'marketing_strategy', persona: 'cmo' },
-    ];
-
+    // 3. Create research component records for all 7 stages
     const componentIds: Record<string, string> = {};
 
-    for (const comp of componentTypes) {
+    for (const agent of AGENT_CONFIG) {
       const { data, error } = await supabase
         .from('research_components')
         .insert({
           project_id: projectId,
-          component_type: comp.type,
-          agent_persona: comp.persona,
+          component_type: agent.type,
+          agent_persona: agent.persona,
           status: 'pending',
           content: {},
         })
@@ -65,44 +114,30 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
         .single();
 
       if (error || !data) {
-        throw new Error(`Failed to create component: ${comp.type}`);
+        throw new Error(`Failed to create component: ${agent.type}`);
       }
 
-      componentIds[comp.type] = data.id;
+      componentIds[agent.type] = data.id;
     }
 
-    console.log(`[Orchestrator] Created ${Object.keys(componentIds).length} research components`);
+    console.log(`[Orchestrator] Created ${Object.keys(componentIds).length} research components (7-stage framework)`);
 
-    // 4. Run research agents in parallel
-    console.log(`[Orchestrator] Spawning research agents...`);
+    // 4. Run all 7 research agents in parallel
+    console.log(`[Orchestrator] Spawning 7 research agents...`);
 
-    const researchTasks = [
+    const researchTasks = AGENT_CONFIG.map(agent =>
       withTimeout(
-        runResearchComponent(projectId, componentIds['market_analysis'], project, runMarketAnalysis),
-        300000, // 5 minutes
-        'Market Analysis'
-      ),
-      withTimeout(
-        runResearchComponent(projectId, componentIds['competitive_landscape'], project, runCompetitiveAnalysis),
-        300000,
-        'Competitive Analysis'
-      ),
-      withTimeout(
-        runResearchComponent(projectId, componentIds['curriculum_design'], project, runCurriculumDesign),
-        300000,
-        'Curriculum Design'
-      ),
-      withTimeout(
-        runResearchComponent(projectId, componentIds['financial_projections'], project, runFinancialAnalysis),
-        300000,
-        'Financial Analysis'
-      ),
-      withTimeout(
-        runResearchComponent(projectId, componentIds['marketing_strategy'], project, runMarketingStrategy),
-        300000,
-        'Marketing Strategy'
-      ),
-    ];
+        runResearchComponent(
+          projectId,
+          componentIds[agent.type],
+          project,
+          agent.runner,
+          agent.dimension
+        ),
+        300000, // 5 minutes per agent
+        agent.label
+      )
+    );
 
     const results = await Promise.allSettled(researchTasks);
 
@@ -112,7 +147,7 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       console.error(`[Orchestrator] ${failures.length} research agents failed`);
       failures.forEach((f, i) => {
         if (f.status === 'rejected') {
-          console.error(`  - Agent ${i + 1}: ${f.reason}`);
+          console.error(`  - ${AGENT_CONFIG[i].label}: ${f.reason}`);
         }
       });
     }
@@ -131,47 +166,88 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       throw new Error(`Failed to load research components: ${componentsError.message}`);
     }
 
-    if (!completedComponents || completedComponents.length < 3) {
-      throw new Error(`Insufficient research completed (${completedComponents?.length || 0}/5). Cannot proceed with tiger team.`);
+    if (!completedComponents || completedComponents.length < 4) {
+      throw new Error(`Insufficient research completed (${completedComponents?.length || 0}/7). Cannot proceed.`);
     }
 
-    // 6. Run tiger team synthesis
-    console.log(`[Orchestrator] Running tiger team synthesis...`);
+    // 6. Calculate program scores
+    console.log(`[Orchestrator] Calculating program scores...`);
 
-    const { synthesis, markdown: tigerTeamMarkdown } = await runTigerTeam(
-      projectId,
-      project as ValidationProject,
-      completedComponents as ResearchComponent[]
-    );
+    const dimensionScores = completedComponents
+      .filter(c => c.dimension_score != null)
+      .map(c => {
+        const agentConfig = AGENT_CONFIG.find(a => a.type === c.component_type);
+        if (!agentConfig) return null;
+        return buildDimensionScore(
+          agentConfig.dimension,
+          c.dimension_score!,
+          c.score_rationale || 'Score derived from agent analysis'
+        );
+      })
+      .filter(Boolean) as any[];
 
-    // Save tiger team synthesis as a component
-    await supabase.from('research_components').insert({
-      project_id: projectId,
-      component_type: 'tiger_team_synthesis',
-      agent_persona: 'multi-persona',
-      status: 'completed',
-      content: synthesis,
-      markdown_output: tigerTeamMarkdown,
+    // Fill in defaults for missing dimensions
+    for (const agent of AGENT_CONFIG) {
+      if (!dimensionScores.find(d => d.dimension === agent.dimension)) {
+        dimensionScores.push(buildDimensionScore(agent.dimension, 5, 'Default score — agent did not complete'));
+      }
+    }
+
+    const programScore = calculateProgramScore(dimensionScores);
+
+    console.log(`[Orchestrator] Composite Score: ${programScore.compositeScore}/10 — ${programScore.recommendation}`);
+
+    // 7. Run tiger team synthesis (optional, for backward compat)
+    let tigerTeamMarkdown = '';
+    try {
+      console.log(`[Orchestrator] Running tiger team synthesis...`);
+      const { synthesis, markdown } = await runTigerTeam(
+        projectId,
+        project as ValidationProject,
+        completedComponents as ResearchComponent[]
+      );
+      tigerTeamMarkdown = markdown;
+
+      await supabase.from('research_components').insert({
+        project_id: projectId,
+        component_type: 'tiger_team_synthesis',
+        agent_persona: 'multi-persona',
+        status: 'completed',
+        content: synthesis,
+        markdown_output: tigerTeamMarkdown,
+      });
+    } catch (e) {
+      console.warn('[Orchestrator] Tiger team synthesis failed, continuing with report generation:', e);
+    }
+
+    // 8. Generate professional report
+    console.log(`[Orchestrator] Generating professional report...`);
+
+    const fullReport = generateReport({
+      project: project as ValidationProject,
+      components: completedComponents as ResearchComponent[],
+      programScore,
+      tigerTeamMarkdown,
     });
 
-    // 7. Generate final report
-    console.log(`[Orchestrator] Generating final report...`);
-
-    const fullReport = await compileReport(
-      project as ValidationProject,
-      completedComponents as ResearchComponent[],
-      tigerTeamMarkdown
-    );
-
-    // Save report
+    // 9. Save report with scores
     await supabase.from('validation_reports').insert({
       project_id: projectId,
-      executive_summary: synthesis.executive_summary,
+      executive_summary: `Recommendation: ${programScore.recommendation} (${programScore.compositeScore}/10)`,
       full_report_markdown: fullReport,
+      composite_score: programScore.compositeScore,
+      recommendation: programScore.recommendation,
+      scorecard: {
+        dimensions: programScore.dimensions,
+        compositeScore: programScore.compositeScore,
+        recommendation: programScore.recommendation,
+        overrideApplied: programScore.overrideApplied,
+        overrideReason: programScore.overrideReason,
+      },
       version: 1,
     });
 
-    // 8. Update project status
+    // 10. Update project status
     await supabase
       .from('validation_projects')
       .update({
@@ -180,11 +256,11 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       })
       .eq('id', projectId);
 
-    console.log(`[Orchestrator] Validation complete for project ${projectId}`);
+    console.log(`[Orchestrator] 7-stage validation complete for project ${projectId}`);
+    console.log(`[Orchestrator] Final: ${programScore.recommendation} (${programScore.compositeScore}/10)`);
   } catch (error) {
     console.error(`[Orchestrator] Fatal error:`, error);
 
-    // Update project status to error
     await supabase
       .from('validation_projects')
       .update({
@@ -201,7 +277,8 @@ async function runResearchComponent(
   projectId: string,
   componentId: string,
   project: any,
-  researchFunction: (projectId: string, project: any) => Promise<{ data: any; markdown: string }>
+  researchFunction: (projectId: string, project: any) => Promise<{ data: any; markdown: string }>,
+  dimensionName: string
 ): Promise<void> {
   const supabase = getSupabaseServerClient();
 
@@ -215,6 +292,10 @@ async function runResearchComponent(
     // Run research
     const { data, markdown } = await researchFunction(projectId, project);
 
+    // Extract score from agent output if available
+    const score = data?.score ?? null;
+    const rationale = data?.scoreRationale ?? null;
+
     // Update component with results
     await supabase
       .from('research_components')
@@ -222,13 +303,15 @@ async function runResearchComponent(
         status: 'completed',
         content: data,
         markdown_output: markdown,
+        dimension_score: score,
+        score_rationale: rationale,
         completed_at: new Date().toISOString(),
       })
       .eq('id', componentId);
 
-    console.log(`[Orchestrator] Research component ${componentId} completed`);
+    console.log(`[Orchestrator] ${dimensionName} completed${score ? ` — Score: ${score}/10` : ''}`);
   } catch (error) {
-    console.error(`[Orchestrator] Research component ${componentId} failed:`, error);
+    console.error(`[Orchestrator] ${dimensionName} failed:`, error);
 
     await supabase
       .from('research_components')
@@ -241,83 +324,4 @@ async function runResearchComponent(
 
     throw error;
   }
-}
-
-async function compileReport(
-  project: ValidationProject,
-  components: ResearchComponent[],
-  tigerTeamMarkdown: string
-): Promise<string> {
-  const reportDate = new Date().toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
-  // Sort components in logical order
-  const componentOrder = [
-    'market_analysis',
-    'competitive_landscape',
-    'curriculum_design',
-    'financial_projections',
-    'marketing_strategy',
-  ];
-
-  const sortedComponents = componentOrder
-    .map(type => components.find(c => c.component_type === type))
-    .filter(Boolean) as ResearchComponent[];
-
-  const report = `# Workforce Program Validation Report
-
-**Program:** ${project.program_name}  
-**Client:** ${project.client_name}  
-**Report Date:** ${reportDate}  
-**Prepared by:** Murphy Workforce Intelligence
-
----
-
-${tigerTeamMarkdown}
-
----
-
-${sortedComponents.map(comp => comp.markdown_output).join('\n\n---\n\n')}
-
----
-
-## Appendix: Methodology
-
-This validation report was produced using Murphy Workforce Intelligence's proprietary AI-powered research methodology, which combines:
-
-1. **Multi-Perspective Analysis:** Research conducted by specialized AI agents embodying different professional perspectives (market analyst, curriculum designer, financial analyst, etc.)
-
-2. **Real Data Sources:** All findings are based on publicly available labor market data, competitor research, and industry standards. No hallucinated data.
-
-3. **Tiger Team Synthesis:** Executive-level debate process where multiple personas challenge assumptions and assess viability from different angles.
-
-4. **15 Years of Expertise:** Research prompts and frameworks developed by Matt Murphy, incorporating 15 years of workforce program development experience.
-
-**Data Sources Referenced:**
-- U.S. Bureau of Labor Statistics (BLS)
-- O*NET OnLine
-- State labor market information systems
-- College and university program catalogs
-- Industry certification bodies
-- Job market aggregators
-
-**Limitations:**
-- This report provides strategic guidance based on available data and analysis. It should be supplemented with local market research and institutional considerations.
-- Financial projections are estimates based on typical program economics and should be validated with institutional budgeting processes.
-- Implementation success depends on execution quality, market conditions, and institutional capacity.
-
----
-
-**Contact:**
-Matt Murphy  
-Murphy Workforce Intelligence  
-matt@murphyworkforce.com
-
-© ${new Date().getFullYear()} Murphy Workforce Intelligence. All rights reserved.
-`;
-
-  return report;
 }
