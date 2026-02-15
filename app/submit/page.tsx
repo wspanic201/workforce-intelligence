@@ -67,8 +67,10 @@ export default function SubmitPage() {
     <div className="container mx-auto py-8 px-4 max-w-3xl">
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-2">Program Validation Request</h1>
-        <p className="text-muted-foreground">
-          Submit a workforce program idea for comprehensive validation and analysis.
+        <p className="text-muted-foreground mb-8">
+          Share your program details and we&apos;ll deliver a comprehensive validation
+          in 48 hours — market demand, financial projections, competitive analysis,
+          and strategic recommendations.
         </p>
       </div>
 
@@ -76,8 +78,8 @@ export default function SubmitPage() {
         <CardHeader>
           <CardTitle>Program Details</CardTitle>
           <CardDescription>
-            Provide information about the program you want validated. Our AI-powered system will
-            conduct market research, competitive analysis, curriculum design, financial projections,
+            Provide information about the program you want validated. Our comprehensive validation
+            framework covers market research, competitive analysis, curriculum design, financial projections,
             and marketing strategy.
           </CardDescription>
         </CardHeader>
@@ -162,7 +164,7 @@ export default function SubmitPage() {
                 {isSubmitting ? 'Submitting...' : 'Submit Validation Request'}
               </Button>
               <Button type="button" variant="outline" onClick={loadSampleData}>
-                Load Sample
+                Load Sample (Cybersecurity Certificate)
               </Button>
             </div>
           </form>
@@ -172,13 +174,13 @@ export default function SubmitPage() {
       <div className="mt-8 p-6 bg-muted rounded-lg">
         <h2 className="font-semibold mb-2">What happens next?</h2>
         <ol className="list-decimal list-inside space-y-2 text-sm text-muted-foreground">
-          <li>Our AI agents will research the labor market demand and competitive landscape</li>
+          <li>Our analysis engine will research the labor market demand and competitive landscape</li>
           <li>A curriculum framework will be designed based on industry standards</li>
           <li>Financial projections and ROI analysis will be generated</li>
           <li>A comprehensive marketing strategy will be developed</li>
           <li>
-            A tiger team of AI personas will debate the program's viability and provide a GO/NO-GO
-            recommendation
+            Our 6-lens evaluation will assess the program&apos;s viability from every critical business
+            perspective and provide a GO/NO-GO recommendation
           </li>
           <li>A professional 30-40 page report will be compiled for your review</li>
         </ol>

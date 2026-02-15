@@ -16,7 +16,7 @@ const componentLabels: Record<string, string> = {
   curriculum_design: 'Curriculum Design',
   financial_projections: 'Financial Projections',
   marketing_strategy: 'Marketing Strategy',
-  tiger_team_synthesis: 'Tiger Team Synthesis',
+  tiger_team_synthesis: 'Executive Synthesis',
 };
 
 const statusIcons = {

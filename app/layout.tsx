@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Workforce Intelligence - AI-Powered Program Validation",
-  description: "Professional workforce program validation for community colleges using AI-powered research and multi-perspective analysis",
+  title: "Workforce Intelligence - Program Validation for Community Colleges",
+  description: "Comprehensive workforce program validation for community colleges — market analysis, financial projections, and strategic recommendations in 48 hours",
 };
 
 export default function RootLayout({
@@ -37,8 +37,11 @@ export default function RootLayout({
               <Link href="/dashboard" className="text-sm font-medium hover:underline">
                 Dashboard
               </Link>
+              <Link href="/methodology" className="text-sm font-medium hover:underline">
+                Methodology
+              </Link>
               <Link href="/submit" className="text-sm font-medium hover:underline">
-                Submit Request
+                Start Validation
               </Link>
             </div>
           </div>
