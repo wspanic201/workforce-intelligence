@@ -1,66 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-body",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-heading",
   subsets: ["latin"],
+  display: "swap",
+  weight: ["500", "600", "700", "800"],
 });
-
-const siteUrl = "https://workforce-intelligence-wine.vercel.app";
 
 export const metadata: Metadata = {
-  title: {
-    default: "Workforce Intelligence — Workforce Program Validation for Community Colleges",
-    template: "%s | Workforce Intelligence",
-  },
+  title: "Workforce Intelligence — Program Validation for Community Colleges",
   description:
-    "Data-driven workforce program validation for community colleges. Get community college program analysis, financial projections, and noncredit to credit pathway recommendations in 48 hours.",
-  keywords: [
-    "workforce program validation",
-    "community college program analysis",
-    "noncredit to credit pathway",
-    "workforce development ROI",
-    "program viability analysis",
-    "new program feasibility",
-    "workforce training validation",
-  ],
-  metadataBase: new URL(siteUrl),
-  alternates: {
-    canonical: "/",
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    url: siteUrl,
-    siteName: "Workforce Intelligence",
-    title: "Workforce Intelligence — Workforce Program Validation for Community Colleges",
-    description:
-      "Data-driven workforce program validation for community colleges. Market analysis, financial projections, and strategic recommendations in 48 hours.",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Workforce Intelligence — Workforce Program Validation for Community Colleges",
-    description:
-      "Data-driven workforce program validation for community colleges. Market analysis, financial projections, and strategic recommendations in 48 hours.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-    },
-  },
+    "Comprehensive workforce program validation — market analysis, financial projections, and strategic recommendations in 48 hours.",
 };
 
 export default function RootLayout({
@@ -71,27 +31,77 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.variable} ${jakarta.variable} font-body antialiased text-slate-900`}
       >
-        <nav className="border-b">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <Link href="/" className="text-xl font-bold">
-              Workforce Intelligence
-            </Link>
-            <div className="flex gap-6">
-              <Link href="/dashboard" className="text-sm font-medium hover:underline">
-                Dashboard
+        {/* Navigation */}
+        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200/80">
+          <nav className="mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="flex h-16 items-center justify-between">
+              <Link
+                href="/"
+                className="font-heading text-lg font-bold tracking-tight text-navy-800 hover:text-navy-900 transition-colors"
+              >
+                Workforce Intelligence
               </Link>
-              <Link href="/methodology" className="text-sm font-medium hover:underline">
-                Methodology
-              </Link>
-              <Link href="/submit" className="text-sm font-medium hover:underline">
-                Start Validation
-              </Link>
+              <div className="hidden md:flex items-center gap-8">
+                <Link
+                  href="/methodology"
+                  className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
+                >
+                  Methodology
+                </Link>
+                <Link
+                  href="#pricing"
+                  className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
+                >
+                  Pricing
+                </Link>
+                <Link href="/submit">
+                  <Button
+                    size="sm"
+                    className="bg-navy-800 hover:bg-navy-900 text-white shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-px"
+                  >
+                    Start Validation
+                  </Button>
+                </Link>
+              </div>
+            </div>
+          </nav>
+        </header>
+
+        <main>{children}</main>
+
+        {/* Footer */}
+        <footer className="border-t border-slate-200 bg-slate-50">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8 py-12">
+            <div className="flex flex-col md:flex-row justify-between items-start gap-8">
+              <div>
+                <p className="font-heading font-bold text-slate-900">
+                  Workforce Intelligence
+                </p>
+                <p className="text-sm text-slate-500 mt-1">
+                  Enterprise program validation for community colleges
+                </p>
+              </div>
+              <div className="flex gap-8 text-sm text-slate-500">
+                <Link href="/methodology" className="hover:text-slate-900 transition-colors">
+                  Methodology
+                </Link>
+                <Link href="#pricing" className="hover:text-slate-900 transition-colors">
+                  Pricing
+                </Link>
+                <Link href="/submit" className="hover:text-slate-900 transition-colors">
+                  Start Validation
+                </Link>
+              </div>
+            </div>
+            <div className="mt-8 pt-8 border-t border-slate-200">
+              <p className="text-xs text-slate-400">
+                © {new Date().getFullYear()} Workforce Intelligence. Built by Confluence Labs.
+              </p>
             </div>
           </div>
-        </nav>
-        {children}
+        </footer>
       </body>
     </html>
   );
