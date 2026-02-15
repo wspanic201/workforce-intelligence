@@ -387,9 +387,9 @@ Before deploying:
 
 ## Support
 
-**Contact**: Matt Murphy  
-**Email**: matt@murphyworkforce.com
+**Contact**: Workforce Intelligence  
+**Email**: hello@workforceintel.com
 
 ---
 
-© 2025 Murphy Workforce Intelligence
+© 2026 Workforce Intelligence

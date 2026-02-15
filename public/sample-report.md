@@ -1,15 +1,15 @@
 ---
 title: "Workforce Program Validation Report"
-subtitle: "Cybersecurity Certificate Program"
-author: "Murphy Workforce Intelligence"
+subtitle: "Industrial Coatings Specialist Certificate Program"
+author: "Workforce Intelligence"
 date: "February 15, 2026"
 geometry: margin=1in
 fontsize: 11pt
 header-includes:
   - \usepackage{fancyhdr}
   - \pagestyle{fancy}
-  - \fancyhead[L]{Murphy Workforce Intelligence}
-  - \fancyhead[R]{Cybersecurity Certificate Validation}
+  - \fancyhead[L]{Workforce Intelligence}
+  - \fancyhead[R]{Industrial Coatings Specialist Validation}
   - \fancyfoot[C]{\thepage}
   - \usepackage{xcolor}
   - \definecolor{brand}{RGB}{37,99,235}
@@ -20,17 +20,21 @@ header-includes:
 
 \vspace{1cm}
 
-{\LARGE Cybersecurity Certificate Program}
+{\LARGE Industrial Coatings Specialist Certificate}
 
 \vspace{0.5cm}
 
-{\large Non-Credit Certificate | 16 Weeks}
+{\large Non-Credit Certificate | 12 Weeks}
 
 \vspace{2cm}
 
 {\large Prepared for:}
 
-{\Large \textbf{Midwest Community College}}
+{\Large \textbf{Regional Community College}}
+
+\vspace{0.5cm}
+
+{\small Eastern Iowa Region}
 
 \vspace{1cm}
 
@@ -38,9 +42,9 @@ header-includes:
 
 \vspace{2cm}
 
-{\small Prepared by Murphy Workforce Intelligence}
+{\small Prepared by Workforce Intelligence}
 
-{\small matt@murphyworkforce.com}
+{\small hello@workforceintel.com}
 \end{center}
 
 \newpage
@@ -474,7 +478,7 @@ AAS in Cybersecurity (credit articulation)
 
 ## Methodology
 
-This validation report was produced using Murphy Workforce Intelligence's AI-powered research methodology:
+This validation report was produced using Workforce Intelligence's research methodology:
 
 1. **Multi-Perspective Analysis:** Research conducted by specialized AI agents representing market analyst, competitor analyst, curriculum designer, financial analyst, and marketing strategist perspectives
 2. **Data-Driven Insights:** All findings grounded in publicly available labor market data, competitor program research, and industry standards
@@ -493,12 +497,12 @@ This validation report was produced using Murphy Workforce Intelligence's AI-pow
 
 ## Disclaimer
 
-This report provides strategic guidance based on available data and analysis at the time of preparation. It should be supplemented with local market research, institutional capacity assessment, and stakeholder input. Financial projections are estimates and should be validated through institutional budgeting processes. Murphy Workforce Intelligence is not responsible for implementation outcomes.
+This report provides strategic guidance based on available data and analysis at the time of preparation. It should be supplemented with local market research, institutional capacity assessment, and stakeholder input. Financial projections are estimates and should be validated through institutional budgeting processes. Workforce Intelligence is not responsible for implementation outcomes.
 
 ---
 
 \begin{center}
-{\small © 2026 Murphy Workforce Intelligence. All rights reserved.}
+{\small © 2026 Workforce Intelligence. All rights reserved.}
 
-{\small Prepared with AI-powered research methodology | murphyworkforce.com}
+{\small Prepared with research methodology | hello@workforceintel.com}
 \end{center}

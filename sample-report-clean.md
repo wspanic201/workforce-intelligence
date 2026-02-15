@@ -2,7 +2,7 @@
 pdf_options:
   format: Letter
   margin: 25mm
-  headerTemplate: '<div style="font-size:8px;width:100%;text-align:center;color:#999;">Murphy Workforce Intelligence — Cybersecurity Certificate Validation Report</div>'
+  headerTemplate: '<div style="font-size:8px;width:100%;text-align:center;color:#999;">Workforce Intelligence — Industrial Coatings Specialist Certificate Validation</div>'
   footerTemplate: '<div style="font-size:8px;width:100%;text-align:center;color:#999;"><span class="pageNumber"></span> / <span class="totalPages"></span></div>'
   displayHeaderFooter: true
 stylesheet: []
@@ -13,18 +13,19 @@ body_class: report
 
 # Workforce Program Validation Report
 
-## Cybersecurity Certificate Program
-### Non-Credit Certificate | 16 Weeks
+## Industrial Coatings Specialist Certificate
+### Non-Credit Certificate | 12 Weeks
 
 ---
 
 **Prepared for:**
-## Midwest Community College
+## Regional Community College
+### Eastern Iowa Region
 
 **Report Date:** February 15, 2026
 
-**Prepared by:** Murphy Workforce Intelligence  
-matt@murphyworkforce.com
+**Prepared by:** Workforce Intelligence  
+hello@workforceintel.com
 
 </div>
 
@@ -426,7 +427,7 @@ A comprehensive scan of cybersecurity education offerings within a 75-mile radiu
 
 ## Methodology
 
-This validation report was produced using Murphy Workforce Intelligence's AI-powered research methodology combining multi-perspective analysis, real labor market data, tiger team synthesis, and 15 years of workforce program development expertise.
+This validation report was produced using Workforce Intelligence's research methodology combining multi-perspective analysis, real labor market data, and workforce program development expertise.
 
 ## Assumptions
 
@@ -439,9 +440,9 @@ This validation report was produced using Murphy Workforce Intelligence's AI-pow
 
 ## Disclaimer
 
-This report provides strategic guidance based on available data at time of preparation. Financial projections are estimates and should be validated through institutional budgeting. Murphy Workforce Intelligence is not responsible for implementation outcomes.
+This report provides strategic guidance based on available data at time of preparation. Financial projections are estimates and should be validated through institutional budgeting. Workforce Intelligence is not responsible for implementation outcomes.
 
 ---
 
-*© 2026 Murphy Workforce Intelligence. All rights reserved.*  
-*Prepared with AI-powered research methodology | murphyworkforce.com*
+*© 2026 Workforce Intelligence. All rights reserved.*  
+*hello@workforceintel.com*

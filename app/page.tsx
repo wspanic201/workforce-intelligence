@@ -233,16 +233,16 @@ export default function HomePage() {
         <div className="container mx-auto px-4 max-w-4xl text-center">
           <h2 className="text-3xl font-bold mb-4">See What You Get</h2>
           <p className="text-xl text-slate-300 mb-8">
-            Here&apos;s a sample validation report for a Cybersecurity Certificate program
+            Here&apos;s a sample validation report for an Industrial Coatings Specialist Certificate program
           </p>
 
           <div className="bg-white/10 rounded-lg p-8 mb-6">
             <p className="text-sm text-slate-300 mb-4">
-              15-page report including Executive Summary, Market Demand Analysis,
+              14-page report including Executive Summary, Market Demand Analysis,
               Competitive Landscape, Curriculum Design, Financial Projections &amp; Marketing Strategy
             </p>
-            <p className="text-2xl font-bold text-green-400 mb-2">Recommendation: GO ✓</p>
-            <p className="text-slate-400 text-sm">340% projected 5-year ROI | 33% job growth | $112K median salary</p>
+            <p className="text-2xl font-bold text-green-400 mb-2">Recommendation: CONDITIONAL GO ✓</p>
+            <p className="text-slate-400 text-sm">Eastern Iowa region | 18% job growth | $52K median salary | Low competition</p>
           </div>
 
           <div className="flex gap-4 justify-center flex-wrap">
@@ -430,7 +430,7 @@ export default function HomePage() {
                 Is my institution&apos;s data secure?
               </summary>
               <p className="mt-3 text-muted-foreground">
-                Yes. All data is encrypted in transit and at rest. We use Supabase (SOC 2 Type II certified) for data storage.
+                Yes. All data is encrypted in transit and at rest using SOC 2 Type II certified infrastructure.
                 Your program details are never shared with third parties. Reports are delivered via secure link.
               </p>
             </details>

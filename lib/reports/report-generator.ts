@@ -83,7 +83,7 @@ export function generateReport(input: ReportInput): string {
 **Institution:** ${project.client_name}
 **Program Type:** ${project.program_type || 'Not specified'}
 **Report Date:** ${reportDate}
-**Prepared by:** Murphy Workforce Intelligence
+**Prepared by:** Workforce Intelligence
 
 ---
 
@@ -168,7 +168,7 @@ ${programScore.recommendation === 'Strong Go' ? `
 
 ## Methodology & Data Sources
 
-This validation report was produced using Murphy Workforce Intelligence's 7-stage Program Validator framework, which combines:
+This validation report was produced using Workforce Intelligence's 7-stage Program Validator framework, which combines:
 
 1. **Multi-Agent Analysis:** Seven specialized AI research agents each conducting focused analysis
 2. **Weighted Scoring:** Evidence-based scoring across 7 dimensions with predetermined weights
@@ -219,11 +219,10 @@ ${programScore.dimensions.map(d => `**${d.dimension}** (${(d.weight * 100).toFix
 ---
 
 **Contact:**
-Matt Murphy
-Murphy Workforce Intelligence
-matt@murphyworkforce.com
+Workforce Intelligence
+hello@workforceintel.com
 
-© ${new Date().getFullYear()} Murphy Workforce Intelligence. All rights reserved.
+© ${new Date().getFullYear()} Workforce Intelligence. All rights reserved.
 `;
 
   return report;
