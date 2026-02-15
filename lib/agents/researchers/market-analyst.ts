@@ -1,29 +1,26 @@
 import { loadPersona } from '@/lib/confluence-labs/loader';
-import { callClaude, extractJSON } from '@/lib/ai/anthropic';
+import { callClaude } from '@/lib/ai/anthropic';
 import { ValidationProject } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
+import { searchGoogleJobs } from '@/lib/apis/serpapi';
+import { searchONET, getONETCompetencies } from '@/lib/apis/onet';
+import { withCache } from '@/lib/apis/cache';
 
 export interface MarketAnalysisData {
-  job_demand: {
-    current_openings?: number;
-    demand_level: string;
-    data_source: string;
-    regional_concentration: string;
+  live_jobs: {
+    count: number;
+    salaries: any;
+    topEmployers: any[];
+    requiredSkills: any[];
+    certifications: any[];
   };
-  salary_ranges: {
-    entry: string;
-    mid: string;
-    senior: string;
-    data_source: string;
-  };
-  growth_projections: {
-    five_year: string;
-    outlook: string;
-    data_source: string;
-  };
-  key_employers: string[];
-  in_demand_skills: string[];
-  certifications: string[];
+  onet_data: {
+    code: string;
+    title: string;
+    description: string;
+    skills: any[];
+    knowledge: any[];
+  } | null;
   recommendations: string[];
 }
 
@@ -35,91 +32,163 @@ export async function runMarketAnalysis(
   const supabase = getSupabaseServerClient();
 
   try {
-    // Load persona
+    console.log(`[Market Analyst] Starting for "${project.program_name}"`);
+
+    // 1. Fetch REAL data from APIs (with caching)
+    const [liveJobsData, onetCode] = await Promise.all([
+      withCache(
+        'serpapi_jobs',
+        { occupation: project.program_name, location: 'Iowa' },
+        () => searchGoogleJobs(project.program_name, 'Iowa'),
+        168 // Cache for 7 days
+      ),
+      withCache(
+        'onet_search',
+        { keyword: project.program_name },
+        () => searchONET(project.program_name),
+        720 // Cache for 30 days (O*NET changes slowly)
+      ),
+    ]);
+
+    // 2. Get O*NET competencies if code was found
+    let onetData = null;
+    if (onetCode) {
+      onetData = await withCache(
+        'onet_competencies',
+        { code: onetCode },
+        () => getONETCompetencies(onetCode),
+        720
+      );
+    }
+
+    console.log(`[Market Analyst] Data fetched - Jobs: ${liveJobsData.count}, O*NET: ${onetCode || 'not found'}`);
+
+    // 3. Load persona
     const persona = await loadPersona('market-analyst');
 
-    // Build prompt
-    const prompt = `${persona.fullContext}
+    // 4. Build prompt with REAL data
+    const prompt = `${persona.name}
 
-TASK: Conduct comprehensive labor market analysis for a workforce program.
+TASK: Analyze this REAL labor market data and provide strategic insights.
 
-PROGRAM DETAILS:
-- Program Name: ${project.program_name}
-- Program Type: ${project.program_type || 'Not specified'}
-- Target Audience: ${project.target_audience || 'Not specified'}
-- Client: ${project.client_name}
-${project.constraints ? `- Constraints: ${project.constraints}` : ''}
+PROGRAM: ${project.program_name}
+CLIENT: ${project.client_name}
+TYPE: ${project.program_type || 'Not specified'}
+AUDIENCE: ${project.target_audience || 'Not specified'}
 
-RESEARCH REQUIRED:
-1. Current job demand (search for real labor market data - BLS, O*NET, state labor departments)
-2. Salary ranges (entry-level, mid-career, senior)
-3. 5-year growth projections
-4. Key employers hiring for these roles (in Iowa and nationally)
-5. Most in-demand skills and competencies
-6. Industry-recognized certifications
+═══════════════════════════════════════════════════════════
+REAL DATA FROM GOOGLE JOBS (SerpAPI - ${new Date().toLocaleDateString()}):
+═══════════════════════════════════════════════════════════
 
-OUTPUT FORMAT (JSON):
-{
-  "job_demand": {
-    "current_openings": <number or null if unavailable>,
-    "demand_level": "high|medium|low",
-    "data_source": "URL or source name",
-    "regional_concentration": "Where jobs are concentrated"
-  },
-  "salary_ranges": {
-    "entry": "$XX,XXX - $XX,XXX",
-    "mid": "$XX,XXX - $XX,XXX",
-    "senior": "$XX,XXX - $XX,XXX",
-    "data_source": "URL or source name"
-  },
-  "growth_projections": {
-    "five_year": "XX% growth",
-    "outlook": "Bright|Good|Fair|Limited",
-    "data_source": "URL or source name"
-  },
-  "key_employers": ["Company 1", "Company 2", ...],
-  "in_demand_skills": ["Skill 1", "Skill 2", ...],
-  "certifications": ["Cert 1", "Cert 2", ...],
-  "recommendations": ["Key insight 1", "Key insight 2", ...]
-}
+Current Job Openings in Iowa: ${liveJobsData.count}
 
-CRITICAL REQUIREMENTS:
-- Use REAL data sources (BLS.gov, O*NET Online, state labor market info)
-- Cite specific URLs or sources
-- Be honest about data limitations
-- If you can't find specific data, say so
-- No hallucinations - only factual information
+Salary Ranges (from actual job postings):
+- Entry-Level: ${liveJobsData.salaries.ranges.entry}
+- Mid-Career: ${liveJobsData.salaries.ranges.mid}
+- Senior: ${liveJobsData.salaries.ranges.senior}
+- Overall Range: $${liveJobsData.salaries.min.toLocaleString()} - $${liveJobsData.salaries.max.toLocaleString()}
+- Median: $${liveJobsData.salaries.median.toLocaleString()}
 
-Respond with valid JSON wrapped in \`\`\`json code blocks.`;
+Top Employers (by number of openings):
+${liveJobsData.topEmployers.map((e, i) => `${i + 1}. ${e.name} (${e.openings} openings)`).join('\n')}
 
-    // Call Claude
+Most Requested Skills (% of job postings):
+${liveJobsData.requiredSkills.map(s => `- ${s.skill}: ${s.frequency}%`).join('\n')}
+
+Certifications Mentioned:
+${liveJobsData.certifications.map(c => `- ${c.cert}: ${c.frequency}%`).join('\n')}
+
+${onetData ? `
+═══════════════════════════════════════════════════════════
+REAL DATA FROM O*NET (Occupational Standards):
+═══════════════════════════════════════════════════════════
+
+O*NET Code: ${onetData.code}
+Occupation Title: ${onetData.title}
+Description: ${onetData.description}
+
+Core Skills (Level 4-5):
+${onetData.skills.filter(s => s.scale_value >= 4).map(s => `- ${s.element_name} (Level ${s.scale_value}/5)`).join('\n')}
+
+Knowledge Areas (Level 4-5):
+${onetData.knowledge.filter(k => k.scale_value >= 4).map(k => `- ${k.element_name} (Level ${k.scale_value}/5)`).join('\n')}
+
+Technology Requirements:
+${onetData.technology.slice(0, 10).map(t => `- ${t.example}${t.hot_technology ? ' (HOT)' : ''}`).join('\n')}
+
+Education Typical: ${onetData.education}
+` : '(O*NET occupation code not found - analysis will rely on job posting data)'}
+
+═══════════════════════════════════════════════════════════
+YOUR ANALYSIS TASK:
+═══════════════════════════════════════════════════════════
+
+Analyze this REAL data and provide:
+
+1. **Market Demand Assessment** - Is demand strong, moderate, or weak? Evidence?
+2. **Salary Competitiveness** - Are these salaries attractive to students? Comparison to similar roles?
+3. **Employer Landscape** - Who's hiring? Any concentration risks?
+4. **Skills Alignment** - Do the most-requested skills match O*NET? Any gaps?
+5. **Career Viability** - Is this a sustainable career path for graduates?
+6. **Recommendations** - 3-5 strategic recommendations based on this data
+
+CRITICAL:
+- You are analyzing REAL data, not making predictions
+- Cite specific numbers: "347 current openings" not "strong demand"
+- Identify data gaps honestly
+- Cross-reference job postings with O*NET standards
+- Be specific about what employers want
+
+Provide 3-5 strategic recommendations for the client.`;
+
+    // 5. Call Claude for analysis
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 4000,
+      maxTokens: 3000,
     });
 
-    // Extract JSON
-    const data = extractJSON(content) as MarketAnalysisData;
+    // 6. Parse recommendations
+    const recommendationsMatch = content.match(/(?:recommendations?|strategic insights?)[\s\S]*?(\d+\.[\s\S]*?)(?=\n\n|$)/i);
+    const recommendations = recommendationsMatch
+      ? recommendationsMatch[1]
+          .split(/\n\d+\./)
+          .slice(1)
+          .map(r => r.trim())
+      : [];
 
-    // Generate markdown section
-    const markdown = formatMarketAnalysis(data, project);
+    const data: MarketAnalysisData = {
+      live_jobs: liveJobsData,
+      onet_data: onetData ? {
+        code: onetData.code,
+        title: onetData.title,
+        description: onetData.description,
+        skills: onetData.skills.filter(s => s.scale_value >= 4),
+        knowledge: onetData.knowledge.filter(k => k.scale_value >= 4),
+      } : null,
+      recommendations,
+    };
 
-    // Log session
+    // 7. Generate markdown
+    const markdown = formatMarketAnalysis(data, project, content);
+
+    // 8. Log session
     const duration = Date.now() - startTime;
     await supabase.from('agent_sessions').insert({
       project_id: projectId,
       agent_type: 'market-analyst',
       persona: 'market-analyst',
-      prompt: prompt.substring(0, 5000), // Truncate for storage
+      prompt: prompt.substring(0, 5000),
       response: content.substring(0, 10000),
       tokens_used: tokensUsed,
       duration_ms: duration,
       status: 'success',
     });
 
+    console.log(`[Market Analyst] Completed in ${duration}ms`);
+
     return { data, markdown };
   } catch (error) {
     const duration = Date.now() - startTime;
-    console.error('Market analysis error:', error);
+    console.error('[Market Analyst] Error:', error);
 
     await supabase.from('agent_sessions').insert({
       project_id: projectId,
@@ -134,57 +203,77 @@ Respond with valid JSON wrapped in \`\`\`json code blocks.`;
   }
 }
 
-function formatMarketAnalysis(data: MarketAnalysisData, project: ValidationProject): string {
+function formatMarketAnalysis(
+  data: MarketAnalysisData,
+  project: ValidationProject,
+  aiAnalysis: string
+): string {
   return `# Market Analysis: ${project.program_name}
 
-## Executive Summary
+## Current Market Conditions
 
-This market analysis evaluates the labor market demand, salary prospects, and growth outlook for ${project.program_name}.
+**Analysis Date:** ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
 
-## Job Demand
+### Job Demand
 
-**Current Market Conditions:** ${data.job_demand.demand_level} demand
+**Current Openings in Iowa:** ${data.live_jobs.count}  
+*Source: Google Jobs via SerpAPI*
 
-${data.job_demand.current_openings ? `- Estimated Current Openings: ${data.job_demand.current_openings}` : ''}
-- Regional Concentration: ${data.job_demand.regional_concentration}
-- Data Source: ${data.job_demand.data_source}
-
-## Salary Ranges
+### Salary Ranges
 
 | Level | Salary Range |
 |-------|-------------|
-| Entry-Level | ${data.salary_ranges.entry} |
-| Mid-Career | ${data.salary_ranges.mid} |
-| Senior | ${data.salary_ranges.senior} |
+| Entry-Level | ${data.live_jobs.salaries.ranges.entry} |
+| Mid-Career | ${data.live_jobs.salaries.ranges.mid} |
+| Senior | ${data.live_jobs.salaries.ranges.senior} |
+| **Median** | **$${data.live_jobs.salaries.median.toLocaleString()}** |
 
-*Source: ${data.salary_ranges.data_source}*
+*Source: Analysis of ${data.live_jobs.count} current job postings (Google Jobs, ${new Date().toLocaleDateString()})*
 
-## Growth Projections
+### Top Employers Hiring
 
-**5-Year Outlook:** ${data.growth_projections.outlook}
+${data.live_jobs.topEmployers.map((e, i) => `${i + 1}. **${e.name}** - ${e.openings} openings`).join('\n')}
 
-- Projected Growth: ${data.growth_projections.five_year}
-- Source: ${data.growth_projections.data_source}
+### Most Requested Skills
 
-## Key Employers
+${data.live_jobs.requiredSkills.map(s => `- **${s.skill}**: Mentioned in ${s.frequency}% of job postings`).join('\n')}
 
-The following organizations are actively hiring for these roles:
+### Industry Certifications
 
-${data.key_employers.map(emp => `- ${emp}`).join('\n')}
+${data.live_jobs.certifications.map(c => `- **${c.cert}**: Required/preferred in ${c.frequency}% of postings`).join('\n')}
 
-## In-Demand Skills
+${data.onet_data ? `
+## Occupational Standards (O*NET)
 
-${data.in_demand_skills.map(skill => `- ${skill}`).join('\n')}
+**O*NET Code:** ${data.onet_data.code}  
+**Title:** ${data.onet_data.title}
 
-## Industry Certifications
+**Description:** ${data.onet_data.description}
 
-${data.certifications.map(cert => `- ${cert}`).join('\n')}
+### Core Competencies (Level 4-5)
+
+**Skills:**
+${data.onet_data.skills.map(s => `- ${s.element_name} (Level ${s.scale_value}/5)`).join('\n')}
+
+**Knowledge Areas:**
+${data.onet_data.knowledge.map(k => `- ${k.element_name} (Level ${k.scale_value}/5)`).join('\n')}
+
+*Source: O*NET OnLine (${data.onet_data.code})*
+` : ''}
+
+## Strategic Analysis
+
+${aiAnalysis}
 
 ## Recommendations
 
-${data.recommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n')}
+${data.recommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n\n')}
 
 ---
-*This analysis was conducted using publicly available labor market data and industry research.*
+
+**Data Sources:**
+- Google Jobs (via SerpAPI) - Live job postings as of ${new Date().toLocaleDateString()}
+${data.onet_data ? `- O*NET OnLine - Occupational standards (${data.onet_data.code})` : ''}
+- AI Analysis: Claude Sonnet 4.5 (Anthropic)
 `;
 }

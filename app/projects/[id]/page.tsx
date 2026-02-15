@@ -37,7 +37,7 @@ export default function ProjectDetailPage() {
 
   useEffect(() => {
     fetchProjectData();
-    const interval = setInterval(fetchProjectData, 5000); // Poll every 5 seconds
+    const interval = setInterval(fetchProjectData, 3000); // Poll every 3 seconds
     return () => clearInterval(interval);
   }, [projectId]);
 

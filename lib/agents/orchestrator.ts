@@ -7,6 +7,16 @@ import { runFinancialAnalysis } from './researchers/financial-analyst';
 import { runMarketingStrategy } from './researchers/marketing-strategist';
 import { runTigerTeam } from './tiger-team';
 
+// Timeout wrapper for research agents
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number, taskName: string): Promise<T> {
+  return Promise.race([
+    promise,
+    new Promise<T>((_, reject) =>
+      setTimeout(() => reject(new Error(`${taskName} timed out after ${timeoutMs}ms`)), timeoutMs)
+    ),
+  ]);
+}
+
 export async function orchestrateValidation(projectId: string): Promise<void> {
   const supabase = getSupabaseServerClient();
 
@@ -67,11 +77,31 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
     console.log(`[Orchestrator] Spawning research agents...`);
 
     const researchTasks = [
-      runResearchComponent(projectId, componentIds['market_analysis'], project, runMarketAnalysis),
-      runResearchComponent(projectId, componentIds['competitive_landscape'], project, runCompetitiveAnalysis),
-      runResearchComponent(projectId, componentIds['curriculum_design'], project, runCurriculumDesign),
-      runResearchComponent(projectId, componentIds['financial_projections'], project, runFinancialAnalysis),
-      runResearchComponent(projectId, componentIds['marketing_strategy'], project, runMarketingStrategy),
+      withTimeout(
+        runResearchComponent(projectId, componentIds['market_analysis'], project, runMarketAnalysis),
+        300000, // 5 minutes
+        'Market Analysis'
+      ),
+      withTimeout(
+        runResearchComponent(projectId, componentIds['competitive_landscape'], project, runCompetitiveAnalysis),
+        300000,
+        'Competitive Analysis'
+      ),
+      withTimeout(
+        runResearchComponent(projectId, componentIds['curriculum_design'], project, runCurriculumDesign),
+        300000,
+        'Curriculum Design'
+      ),
+      withTimeout(
+        runResearchComponent(projectId, componentIds['financial_projections'], project, runFinancialAnalysis),
+        300000,
+        'Financial Analysis'
+      ),
+      withTimeout(
+        runResearchComponent(projectId, componentIds['marketing_strategy'], project, runMarketingStrategy),
+        300000,
+        'Marketing Strategy'
+      ),
     ];
 
     const results = await Promise.allSettled(researchTasks);

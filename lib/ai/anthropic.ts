@@ -56,22 +56,47 @@ export async function callClaude(
 }
 
 export function extractJSON(content: string): any {
-  // Try to extract JSON from markdown code blocks
-  const jsonBlockMatch = content.match(/```json\s*\n([\s\S]*?)\n```/);
-  if (jsonBlockMatch) {
-    return JSON.parse(jsonBlockMatch[1]);
-  }
-
-  // Try to find JSON object in the content
-  const jsonMatch = content.match(/\{[\s\S]*\}/);
-  if (jsonMatch) {
-    return JSON.parse(jsonMatch[0]);
-  }
-
-  // If no JSON found, try to parse the entire content
   try {
+    // Method 1: Try extracting from code fence
+    const fenceMatch = content.match(/```(?:json)?\s*\n?([\s\S]*?)\n?```/);
+    if (fenceMatch) {
+      const jsonStr = fenceMatch[1].trim();
+      return JSON.parse(jsonStr);
+    }
+
+    // Method 2: Try finding JSON object/array
+    const objectMatch = content.match(/(\{[\s\S]*\}|\[[\s\S]*\])/);
+    if (objectMatch) {
+      return JSON.parse(objectMatch[1]);
+    }
+
+    // Method 3: Try parsing entire content
     return JSON.parse(content);
-  } catch {
-    throw new Error('No valid JSON found in response');
+  } catch (error) {
+    console.error('[JSON Extraction] Failed to parse AI response');
+    console.error('[JSON Extraction] Content was:', content.substring(0, 500));
+    
+    if (error instanceof SyntaxError) {
+      throw new Error(`Invalid JSON in AI response: ${error.message}`);
+    }
+    
+    throw new Error(`Failed to extract JSON from AI response: ${error}`);
   }
+}
+
+// Add validation helper
+export function validateJSON<T>(data: any, schema: Record<string, string>): T {
+  const errors: string[] = [];
+  
+  Object.keys(schema).forEach(key => {
+    if (!(key in data)) {
+      errors.push(`Missing required field: ${key}`);
+    }
+  });
+  
+  if (errors.length > 0) {
+    throw new Error(`JSON validation failed: ${errors.join(', ')}`);
+  }
+  
+  return data as T;
 }

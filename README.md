@@ -8,10 +8,13 @@ This system delivers professional 30-40 page workforce program validation report
 
 ## Key Features
 
+- **Real Data Integration**: Integrates with SerpAPI (Google Jobs), O*NET, and BLS for accurate labor market data
+- **Intelligent Caching**: Database-backed API response caching to reduce costs and improve performance
 - **AI Research Agents**: 5 specialized agents conduct market analysis, competitive landscape research, curriculum design, financial projections, and marketing strategy
 - **Confluence Labs Integration**: Multi-persona tiger team debates program viability from executive perspectives
 - **Professional Reports**: Comprehensive markdown reports with executive summary, detailed analysis, and implementation roadmap
-- **Real-Time Tracking**: Dashboard to monitor research progress and view completed reports
+- **Real-Time Tracking**: Dashboard polls every 3 seconds to monitor research progress and view completed reports
+- **Timeout Protection**: All research agents have 5-minute timeouts to prevent hangs
 
 ## Tech Stack
 
@@ -56,6 +59,11 @@ SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
 # Anthropic
 ANTHROPIC_API_KEY=your_anthropic_api_key
 
+# API Keys for Real Data
+SERPAPI_KEY=your_serpapi_key_here
+ONET_API_PASSWORD=your_onet_password_here
+BLS_API_KEY=your_bls_api_key_here
+
 # Confluence Labs
 CONFLUENCE_LABS_PATH=/Users/matt/projects/Confluence Labs
 ```
@@ -63,11 +71,12 @@ CONFLUENCE_LABS_PATH=/Users/matt/projects/Confluence Labs
 ### 4. Database Setup
 
 1. Create a new Supabase project
-2. Run the schema migration:
+2. Run the migrations in order:
+   - `supabase/schema.sql` (base schema)
+   - `supabase/migrations/001_add_api_cache.sql` (caching layer)
+   - `supabase/migrations/002_disable_rls_for_testing.sql` (disable RLS for MVP)
 
-```bash
-# Copy the SQL from supabase/schema.sql and run it in Supabase SQL Editor
-```
+See [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md) for detailed instructions.
 
 Or connect via CLI:
 
@@ -222,6 +231,71 @@ Returns: ValidationReport
 ### `agent_sessions`
 - Logging for all AI agent calls
 - Tracks prompts, responses, tokens, timing
+
+### `api_cache`
+- Intelligent caching for external API responses
+- Reduces API costs and improves performance
+- Stores SerpAPI, O*NET, and BLS responses with TTL
+
+## API Integration & Caching
+
+### Real Data Sources
+
+The system integrates with three real data APIs:
+
+1. **SerpAPI (Google Jobs)**
+   - Current job openings by occupation and location
+   - Salary ranges from actual postings
+   - Top hiring employers
+   - Required skills and certifications
+   - Cache TTL: 7 days
+
+2. **O*NET OnLine**
+   - Occupational codes and descriptions
+   - Skills and knowledge requirements (1-5 scale)
+   - Technology/tool requirements
+   - Education levels
+   - Cache TTL: 30 days
+
+3. **BLS (Optional for MVP)**
+   - Long-term employment projections
+   - Cache TTL: 90 days
+
+### Caching Layer
+
+All API responses are cached in the database to:
+- Reduce API costs (especially SerpAPI at $50/1000 calls)
+- Improve response time for duplicate queries
+- Allow multiple colleges to query the same occupation without re-fetching
+
+**Cache Implementation:**
+```typescript
+import { withCache } from '@/lib/apis/cache';
+
+const jobData = await withCache(
+  'serpapi_jobs',
+  { occupation: 'Cybersecurity', location: 'Iowa' },
+  () => searchGoogleJobs('Cybersecurity', 'Iowa'),
+  168 // 7 days in hours
+);
+```
+
+**Monitor Cache Performance:**
+```sql
+-- View cache statistics
+SELECT 
+  api_name, 
+  COUNT(*) as total_entries,
+  SUM(hit_count) as total_hits,
+  AVG(hit_count) as avg_reuse
+FROM api_cache 
+GROUP BY api_name;
+```
+
+**Clear Cache (if needed):**
+```sql
+DELETE FROM api_cache WHERE api_name = 'serpapi_jobs';
+```
 
 ## Confluence Labs Integration
 
