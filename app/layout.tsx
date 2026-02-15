@@ -13,9 +13,54 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = "https://workforce-intelligence-wine.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Workforce Intelligence - Program Validation for Community Colleges",
-  description: "Comprehensive workforce program validation for community colleges — market analysis, financial projections, and strategic recommendations in 48 hours",
+  title: {
+    default: "Workforce Intelligence — Workforce Program Validation for Community Colleges",
+    template: "%s | Workforce Intelligence",
+  },
+  description:
+    "Data-driven workforce program validation for community colleges. Get community college program analysis, financial projections, and noncredit to credit pathway recommendations in 48 hours.",
+  keywords: [
+    "workforce program validation",
+    "community college program analysis",
+    "noncredit to credit pathway",
+    "workforce development ROI",
+    "program viability analysis",
+    "new program feasibility",
+    "workforce training validation",
+  ],
+  metadataBase: new URL(siteUrl),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteUrl,
+    siteName: "Workforce Intelligence",
+    title: "Workforce Intelligence — Workforce Program Validation for Community Colleges",
+    description:
+      "Data-driven workforce program validation for community colleges. Market analysis, financial projections, and strategic recommendations in 48 hours.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Workforce Intelligence — Workforce Program Validation for Community Colleges",
+    description:
+      "Data-driven workforce program validation for community colleges. Market analysis, financial projections, and strategic recommendations in 48 hours.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({

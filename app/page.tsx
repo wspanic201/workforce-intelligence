@@ -2,10 +2,51 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Check, TrendingUp, DollarSign, Users, BookOpen, Target, Megaphone, Shield } from 'lucide-react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: "Workforce Program Validation for Community Colleges | Workforce Intelligence",
+  description:
+    "Validate any workforce program in 48 hours. Comprehensive community college program analysis including market demand, program viability analysis, financial projections, and noncredit to credit pathway recommendations.",
+  alternates: {
+    canonical: "/",
+  },
+};
+
+const organizationJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Workforce Intelligence",
+  url: "https://workforce-intelligence-wine.vercel.app",
+  description:
+    "Data-driven workforce program validation for community colleges — market analysis, financial projections, and strategic recommendations.",
+};
+
+const serviceJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name: "Workforce Program Validation",
+  provider: {
+    "@type": "Organization",
+    name: "Workforce Intelligence",
+  },
+  description:
+    "Comprehensive workforce program validation using a 6-lens framework. Includes market demand analysis, financial viability, competitive landscape, curriculum design, workforce alignment, and marketing strategy.",
+  serviceType: "Workforce Program Analysis",
+  areaServed: "US",
+};
 
 export default function HomePage() {
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceJsonLd) }}
+      />
       {/* Hero */}
       <div className="container mx-auto py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
