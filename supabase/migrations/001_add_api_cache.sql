@@ -10,9 +10,8 @@ create table if not exists api_cache (
   hit_count int default 0
 );
 
--- Index for fast lookups
-create index idx_api_cache_lookup on api_cache(api_name, cache_key)
-  where expires_at > now();
+-- Index for fast lookups (removed partial index - now() is not immutable)
+create index idx_api_cache_lookup on api_cache(api_name, cache_key);
 
 -- Unique constraint to prevent duplicates
 create unique index idx_api_cache_unique on api_cache(api_name, cache_key);
