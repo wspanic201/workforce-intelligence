@@ -81,28 +81,24 @@ ${(project as any).funding_sources ? `- Funding Sources: ${(project as any).fund
 ${(project as any).stackable_credential ? `- Stackable Intent: Yes` : ''}
 
 ANALYSIS REQUIRED:
-1. State approval requirements (relevant state board of education)
+1. State approval requirements
 2. Perkins V alignment — eligible CIP codes, funding potential
-3. WIOA alignment — Eligible Training Provider List (ETPL) eligibility
-4. Industry certification mapping — direct alignment with recognized credentials
-5. Accreditor expectations (relevant regional accreditor)
-6. Advisory committee requirements
-7. Articulation potential with 4-year institutions
-8. Complete compliance timeline from decision to launch
+3. WIOA alignment — ETPL eligibility
+4. Industry certification mapping (top 2-3 certifications)
+5. Accreditor expectations
+6. Key compliance milestones (top 3-5)
 
-SCORING CRITERIA:
-- Strong (8-10): Aligns with WIOA/Perkins, certification pathway clear, minimal regulatory hurdles
-- Moderate (5-7): Some funding alignment, standard regulatory process
-- Weak (1-4): No funding alignment, complex regulatory approval needed
+SCORING: 8-10 = strong alignment, minimal hurdles; 5-7 = moderate; 1-4 = weak alignment, complex approval
 
-OUTPUT FORMAT (JSON):
+IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Keep all string values concise (1-2 sentences max). Do NOT include a markdownReport field.
+
 {
   "score": <1-10>,
-  "scoreRationale": "Detailed explanation",
+  "scoreRationale": "Brief explanation",
   "stateApproval": {
     "required": true,
     "agency": "Agency name",
-    "process": "Description",
+    "process": "Brief description",
     "estimatedTimeline": "X months",
     "requirements": ["Req 1"]
   },
@@ -116,10 +112,10 @@ OUTPUT FORMAT (JSON):
     "aligned": true,
     "etplEligible": true,
     "targetPopulations": ["Pop 1"],
-    "fundingPotential": "Description"
+    "fundingPotential": "Brief description"
   },
   "industryCertifications": [
-    { "certification": "Name", "body": "Org", "alignment": "direct|partial|none", "requirements": "Reqs" }
+    { "certification": "Name", "body": "Org", "alignment": "direct", "requirements": "Brief reqs" }
   ],
   "accreditor": {
     "body": "HLC",
@@ -134,17 +130,14 @@ OUTPUT FORMAT (JSON):
   },
   "articulationPotential": {
     "receivingInstitutions": ["Institution 1"],
-    "creditTransferLikelihood": "high|moderate|low",
+    "creditTransferLikelihood": "high",
     "pathways": ["Pathway 1"]
   },
   "complianceTimeline": [
     { "milestone": "Milestone 1", "estimatedDate": "Month Year", "dependency": "Dependency" }
   ],
-  "dataSources": ["Source 1"],
-  "markdownReport": "Full markdown section"
-}
-
-Respond with valid JSON in \`\`\`json code blocks.`;
+  "dataSources": ["Source 1"]
+}`;
 
     const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 4000 });
     const data = extractJSON(content) as RegulatoryComplianceData;
@@ -153,7 +146,7 @@ Respond with valid JSON in \`\`\`json code blocks.`;
       data.markdownReport = formatRegulatory(data, project);
     }
 
-    const markdown = data.markdownReport;
+    const markdown = data.markdownReport || formatRegulatory(data, project);
     const duration = Date.now() - startTime;
 
     await supabase.from('agent_sessions').insert({

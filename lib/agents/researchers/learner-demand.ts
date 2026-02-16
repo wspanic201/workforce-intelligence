@@ -117,13 +117,12 @@ OUTPUT FORMAT (JSON):
   "peerBenchmarks": [
     { "institution": "Name", "program": "Program", "enrollment": "X per cohort" }
   ],
-  "dataSources": ["Source 1"],
-  "markdownReport": "Full markdown section for the report"
+  "dataSources": ["Source 1"]
 }
 
-Be conservative in estimates. Cite evidence. Respond with valid JSON in \`\`\`json code blocks.`;
+IMPORTANT: Return ONLY valid JSON. No markdown outside JSON. Keep string values concise. Do NOT include a markdownReport field. Be conservative in estimates.`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 4000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 8000 });
     const data = extractJSON(content) as LearnerDemandData;
 
     // Generate markdown if not provided by AI

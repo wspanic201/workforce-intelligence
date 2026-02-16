@@ -69,44 +69,42 @@ ${project.constraints ? `- Constraints: ${project.constraints}` : ''}
 ${(project as any).employer_interest ? `- Known Employer Interest: ${(project as any).employer_interest}` : ''}
 
 ANALYSIS REQUIRED:
-1. Direct employer demand signals (job postings, growth announcements, industry reports)
-2. Employer concentration analysis — is demand distributed or concentrated in few employers?
-3. Employer willingness to invest (tuition reimbursement, contract training, equipment, internships)
-4. Contract training potential and estimated revenue
-5. Partnership ecosystem (workforce boards, industry associations, economic development)
-6. Employer feedback on program design (skills, format, schedule, credential preferences)
+1. Employer demand signals (top 3-5)
+2. Top employers in the region for this field (3-5)
+3. Employer investment willingness assessment
+4. Contract training potential
+5. Key partnership opportunities
+6. Skills employers want most
 
-SCORING CRITERIA:
-- Strong (8-10): 3+ employers expressed interest, distributed demand, strong partnership potential, contract training likely
-- Moderate (5-7): General interest inferred from data, some partnership potential
-- Weak (1-4): No direct engagement, concentrated demand, weak partnership ecosystem
+SCORING: 8-10 = strong multi-employer demand; 5-7 = moderate; 1-4 = weak/concentrated
 
-OUTPUT FORMAT (JSON):
+IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Keep all string values concise (1-2 sentences max). Do NOT include a markdownReport field.
+
 {
   "score": <1-10>,
-  "scoreRationale": "Detailed explanation",
+  "scoreRationale": "Brief explanation",
   "demandSignals": [
-    { "signal": "Description", "source": "Source", "strength": "strong|moderate|weak" }
+    { "signal": "Description", "source": "Source", "strength": "strong" }
   ],
   "employerConcentration": {
     "topEmployers": [
       { "name": "Company", "estimatedDemand": "X positions/year", "sector": "Industry" }
     ],
-    "concentrationRisk": "low|moderate|high",
-    "analysis": "Description"
+    "concentrationRisk": "low",
+    "analysis": "Brief description"
   },
   "investmentWillingness": {
-    "tuitionReimbursement": "Assessment",
-    "contractTrainingPotential": "Assessment",
-    "equipmentDonation": "Assessment",
-    "guestInstructors": "Assessment",
-    "internshipPlacements": "Assessment"
+    "tuitionReimbursement": "Brief assessment",
+    "contractTrainingPotential": "Brief assessment",
+    "equipmentDonation": "Brief assessment",
+    "guestInstructors": "Brief assessment",
+    "internshipPlacements": "Brief assessment"
   },
   "contractTraining": {
-    "potential": "high|moderate|low",
-    "estimatedRevenue": "$X,XXX annually",
+    "potential": "high",
+    "estimatedRevenue": "estimated annually",
     "targetCompanies": ["Company 1"],
-    "approach": "Strategy"
+    "approach": "Brief strategy"
   },
   "partnershipEcosystem": {
     "workforceDevelopmentBoards": ["Board 1"],
@@ -118,13 +116,10 @@ OUTPUT FORMAT (JSON):
     "skillsEmployersWant": ["Skill 1"],
     "preferredFormat": "Format",
     "preferredSchedule": "Schedule",
-    "credentialValue": "Assessment"
+    "credentialValue": "Brief assessment"
   },
-  "dataSources": ["Source 1"],
-  "markdownReport": "Full markdown section"
-}
-
-Respond with valid JSON in \`\`\`json code blocks.`;
+  "dataSources": ["Source 1"]
+}`;
 
     const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 4000 });
     const data = extractJSON(content) as EmployerDemandData;
@@ -133,7 +128,7 @@ Respond with valid JSON in \`\`\`json code blocks.`;
       data.markdownReport = formatEmployerDemand(data, project);
     }
 
-    const markdown = data.markdownReport;
+    const markdown = data.markdownReport || formatEmployerDemand(data, project);
     const duration = Date.now() - startTime;
 
     await supabase.from('agent_sessions').insert({

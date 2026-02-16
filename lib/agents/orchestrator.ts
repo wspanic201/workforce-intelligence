@@ -166,7 +166,16 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       throw new Error(`Failed to load research components: ${componentsError.message}`);
     }
 
+    console.log(`[Orchestrator] Found ${completedComponents?.length || 0} completed components in DB`);
+
+    // If DB query returned 0 but agents succeeded, try fetching all components
     if (!completedComponents || completedComponents.length < 4) {
+      const { data: allComponents, error: allError } = await supabase
+        .from('research_components')
+        .select('id, component_type, status')
+        .eq('project_id', projectId);
+      console.log(`[Orchestrator] All components:`, JSON.stringify(allComponents?.map(c => ({ type: c.component_type, status: c.status }))));
+      if (allError) console.error(`[Orchestrator] Error fetching all components:`, allError);
       throw new Error(`Insufficient research completed (${completedComponents?.length || 0}/7). Cannot proceed.`);
     }
 
@@ -174,14 +183,19 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
     console.log(`[Orchestrator] Calculating program scores...`);
 
     const dimensionScores = completedComponents
-      .filter(c => c.dimension_score != null)
+      .filter(c => {
+        const score = c.dimension_score ?? (c.content as any)?._score ?? (c.content as any)?.score;
+        return score != null;
+      })
       .map(c => {
         const agentConfig = AGENT_CONFIG.find(a => a.type === c.component_type);
         if (!agentConfig) return null;
+        const score = c.dimension_score ?? (c.content as any)?._score ?? (c.content as any)?.score;
+        const rationale = c.score_rationale ?? (c.content as any)?._scoreRationale ?? (c.content as any)?.scoreRationale ?? 'Score derived from agent analysis';
         return buildDimensionScore(
           agentConfig.dimension,
-          c.dimension_score!,
-          c.score_rationale || 'Score derived from agent analysis'
+          score,
+          rationale
         );
       })
       .filter(Boolean) as any[];
@@ -296,18 +310,23 @@ async function runResearchComponent(
     const score = data?.score ?? null;
     const rationale = data?.scoreRationale ?? null;
 
-    // Update component with results
-    await supabase
+    // Update component — store score in content JSON since dimension_score column may not exist
+    const { error: updateError } = await supabase
       .from('research_components')
       .update({
         status: 'completed',
-        content: data,
-        markdown_output: markdown,
-        dimension_score: score,
-        score_rationale: rationale,
-        completed_at: new Date().toISOString(),
+        content: { ...data, _score: score, _scoreRationale: rationale },
       })
       .eq('id', componentId);
+
+    if (updateError) {
+      console.error(`[Orchestrator] Failed to update component ${componentId}:`, updateError);
+      // Last resort — just update status
+      await supabase
+        .from('research_components')
+        .update({ status: 'completed' })
+        .eq('id', componentId);
+    }
 
     console.log(`[Orchestrator] ${dimensionName} completed${score ? ` — Score: ${score}/10` : ''}`);
   } catch (error) {

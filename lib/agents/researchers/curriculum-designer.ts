@@ -100,7 +100,7 @@ CRITICAL REQUIREMENTS:
 Respond with valid JSON wrapped in \`\`\`json code blocks.`;
 
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 4000,
+      maxTokens: 8000,
     });
 
     const data = extractJSON(content) as CurriculumDesignData;

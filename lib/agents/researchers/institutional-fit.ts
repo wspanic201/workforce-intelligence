@@ -134,13 +134,12 @@ OUTPUT FORMAT (JSON):
     "constraints": ["Constraint 1"],
     "readinessLevel": "high|moderate|low"
   },
-  "dataSources": ["Source 1"],
-  "markdownReport": "Full markdown section"
+  "dataSources": ["Source 1"]
 }
 
-Respond with valid JSON in \`\`\`json code blocks.`;
+IMPORTANT: Return ONLY valid JSON. No markdown outside JSON. Keep string values concise. Do NOT include a markdownReport field.`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 4000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 8000 });
     const data = extractJSON(content) as InstitutionalFitData;
 
     if (!data.markdownReport) {

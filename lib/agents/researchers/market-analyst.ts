@@ -34,20 +34,20 @@ export async function runMarketAnalysis(
   try {
     console.log(`[Market Analyst] Starting for "${project.program_name}"`);
 
-    // 1. Fetch REAL data from APIs (with caching)
+    // 1. Fetch REAL data from APIs (with caching, fault-tolerant)
     const [liveJobsData, onetCode] = await Promise.all([
       withCache(
         'serpapi_jobs',
-        { occupation: project.program_name, location: 'the specified region' },
-        () => searchGoogleJobs(project.program_name, 'the specified region'),
+        { occupation: project.program_name, location: (project as any).geographic_area || 'United States' },
+        () => searchGoogleJobs(project.program_name, (project as any).geographic_area || 'United States'),
         168 // Cache for 7 days
-      ),
+      ).catch((err) => { console.warn('[Market Analyst] SerpAPI failed, continuing without live jobs:', err.message); return null; }),
       withCache(
         'onet_search',
         { keyword: project.program_name },
         () => searchONET(project.program_name),
         720 // Cache for 30 days (O*NET changes slowly)
-      ),
+      ).catch((err) => { console.warn('[Market Analyst] O*NET failed, continuing without O*NET data:', err.message); return null; }),
     ]);
 
     // 2. Get O*NET competencies if code was found
@@ -143,7 +143,7 @@ Provide 3-5 strategic recommendations for the client.`;
 
     // 5. Call Claude for analysis
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 3000,
+      maxTokens: 8000,
     });
 
     // 6. Parse recommendations

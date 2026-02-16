@@ -1,4 +1,3 @@
-import { loadPersona } from '@/lib/confluence-labs/loader';
 import { callClaude, extractJSON } from '@/lib/ai/anthropic';
 import { ValidationProject } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
@@ -31,66 +30,40 @@ export async function runCompetitiveAnalysis(
   const supabase = getSupabaseServerClient();
 
   try {
-    const persona = await loadPersona('research-director');
+    const prompt = `You are a competitive landscape analyst for workforce education programs.
 
-    const prompt = `${persona.fullContext}
+Analyze the competitive landscape for this program and return ONLY valid JSON.
 
-TASK: Conduct competitive landscape analysis for a workforce program.
+PROGRAM: ${project.program_name}
+TYPE: ${project.program_type || 'Not specified'}
+AUDIENCE: ${project.target_audience || 'Not specified'}
+CLIENT: ${project.client_name}
+${project.constraints ? `CONSTRAINTS: ${project.constraints}` : ''}
 
-PROGRAM DETAILS:
-- Program Name: ${project.program_name}
-- Program Type: ${project.program_type || 'Not specified'}
-- Target Audience: ${project.target_audience || 'Not specified'}
-- Client: ${project.client_name}
-${project.constraints ? `- Constraints: ${project.constraints}` : ''}
+Identify 3-5 competing programs, market gaps, and differentiation opportunities.
 
-RESEARCH REQUIRED:
-1. Identify 5-8 competing programs (community colleges, universities, bootcamps)
-2. For each competitor, document:
-   - Institution name
-   - Program name
-   - Format (online, in-person, hybrid)
-   - Duration
-   - Cost
-   - Enrollment numbers (if available)
-   - Unique features
-3. Identify market gaps (what's NOT being offered)
-4. Find differentiation opportunities
-5. Assess competitive advantages we could have
-6. Identify threats and challenges
+IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Keep values concise.
 
-OUTPUT FORMAT (JSON):
 {
   "competitors": [
     {
       "institution": "College Name",
       "program_name": "Program Name",
-      "format": "online|in-person|hybrid",
-      "duration": "X months/weeks",
-      "cost": "$X,XXX",
-      "enrollment": "X students" or null,
-      "unique_features": ["Feature 1", "Feature 2"],
-      "website": "URL" or null
+      "format": "online or in-person or hybrid",
+      "duration": "X months",
+      "cost": "estimated cost",
+      "unique_features": ["Feature 1"]
     }
   ],
-  "market_gaps": ["Gap 1", "Gap 2"],
-  "differentiation_opportunities": ["Opp 1", "Opp 2"],
-  "competitive_advantages": ["Advantage 1", "Advantage 2"],
-  "threats": ["Threat 1", "Threat 2"],
-  "recommendations": ["Recommendation 1", "Recommendation 2"]
-}
-
-CRITICAL REQUIREMENTS:
-- Research real programs (search college websites, program catalogs)
-- Cite specific institutions and programs
-- Be honest about what information is publicly available
-- Focus on regional competitors first, then national
-- No hallucinations - only factual information
-
-Respond with valid JSON wrapped in \`\`\`json code blocks.`;
+  "market_gaps": ["Gap 1"],
+  "differentiation_opportunities": ["Opp 1"],
+  "competitive_advantages": ["Advantage 1"],
+  "threats": ["Threat 1"],
+  "recommendations": ["Recommendation 1"]
+}`;
 
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 4000,
+      maxTokens: 8000,
     });
 
     const data = extractJSON(content) as CompetitiveAnalysisData;

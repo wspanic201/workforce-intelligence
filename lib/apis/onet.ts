@@ -43,7 +43,8 @@ export async function searchONET(keyword: string): Promise<string | null> {
   );
 
   if (!response.ok) {
-    throw new Error(`O*NET search error: ${response.statusText}`);
+    console.warn(`[O*NET] API returned ${response.status} ${response.statusText} — skipping O*NET data`);
+    return null;
   }
 
   const data = await response.json();
@@ -61,11 +62,25 @@ export async function getONETCompetencies(onetCode: string): Promise<ONETCompete
     fetch(`https://services.onetcenter.org/ws/online/occupations/${onetCode}/summary/technology_skills`, { headers, signal: AbortSignal.timeout(30000) }),
   ]);
 
+  // Check if any response failed (e.g. expired API key)
+  if (!occupationRes.ok) {
+    console.warn(`[O*NET] Competencies API returned ${occupationRes.status} — skipping O*NET data`);
+    return {
+      code: onetCode,
+      title: 'Unknown',
+      description: 'O*NET data unavailable',
+      skills: [],
+      knowledge: [],
+      technology: [],
+      education: 'Not specified',
+    };
+  }
+
   const [occupation, skillsData, knowledgeData, technologyData] = await Promise.all([
     occupationRes.json(),
-    skillsRes.json(),
-    knowledgeRes.json(),
-    technologyRes.json(),
+    skillsRes.ok ? skillsRes.json() : { skill: [] },
+    knowledgeRes.ok ? knowledgeRes.json() : { knowledge: [] },
+    technologyRes.ok ? technologyRes.json() : { technology: [] },
   ]);
 
   return {
