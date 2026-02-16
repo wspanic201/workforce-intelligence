@@ -139,10 +139,18 @@ CRITICAL REQUIREMENTS:
 - Only recommend GO if you genuinely believe it will succeed
 - Remember: colleges have limited resources - a bad program hurts students AND the institution
 
+FACTUAL INTEGRITY RULES (MANDATORY):
+- ONLY cite facts, statistics, and events that appear in the research data above
+- Do NOT invent competitor histories (e.g. "Program X was discontinued in YYYY") unless explicitly stated in the source data
+- Do NOT write in present tense about actions that haven't happened (e.g. "the grant has been submitted"). Use future/conditional tense for recommendations ("should submit", "would need to")
+- If you reference a specific number (enrollment, salary, cost), it MUST come from the source data. If the data is missing, say "data not available" rather than estimating
+- Do NOT fabricate quotes, survey results, or employer statements
+- Clearly distinguish between SOURCE DATA FINDINGS and YOUR ANALYSIS/RECOMMENDATIONS
+
 Respond with the complete markdown document above.`;
 
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 6000,
+      maxTokens: 16000,
       temperature: 1.0,
     });
 

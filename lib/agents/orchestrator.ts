@@ -8,6 +8,7 @@ import { runInstitutionalFit } from './researchers/institutional-fit';
 import { runRegulatoryCompliance } from './researchers/regulatory-analyst';
 import { runEmployerDemand } from './researchers/employer-analyst';
 import { runTigerTeam } from './tiger-team';
+import { runQAReview } from './qa-reviewer';
 import { calculateProgramScore, buildDimensionScore, DIMENSION_WEIGHTS } from '@/lib/scoring/program-scorer';
 import { generateReport } from '@/lib/reports/report-generator';
 
@@ -234,7 +235,38 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       console.warn('[Orchestrator] Tiger team synthesis failed, continuing with report generation:', e);
     }
 
-    // 8. Generate professional report
+    // 8. QA Review — fact-check tiger team output against source data
+    if (tigerTeamMarkdown) {
+      try {
+        console.log(`[Orchestrator] Running QA review / fact-check...`);
+        const qaResult = await runQAReview(
+          tigerTeamMarkdown,
+          completedComponents as ResearchComponent[],
+          { program_name: project.program_name!, client_name: project.client_name! }
+        );
+
+        if (qaResult.issueCount.critical > 0 || qaResult.issueCount.warning > 0) {
+          console.log(`[Orchestrator] QA found ${qaResult.issueCount.critical} critical, ${qaResult.issueCount.warning} warning issues — using cleaned report`);
+          tigerTeamMarkdown = qaResult.cleanedMarkdown;
+
+          // Log QA results
+          await supabase.from('research_components').insert({
+            project_id: projectId,
+            component_type: 'qa_review',
+            agent_persona: 'qa-reviewer',
+            status: 'completed',
+            content: { issues: qaResult.issues, issueCount: qaResult.issueCount },
+            markdown_output: `QA Review: ${qaResult.issueCount.critical} critical, ${qaResult.issueCount.warning} warnings fixed`,
+          });
+        } else {
+          console.log(`[Orchestrator] QA review passed — no issues found`);
+        }
+      } catch (e) {
+        console.warn('[Orchestrator] QA review failed, using unreviewed tiger team output:', e);
+      }
+    }
+
+    // 9. Generate professional report
     console.log(`[Orchestrator] Generating professional report...`);
 
     const fullReport = generateReport({
