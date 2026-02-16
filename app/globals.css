@@ -229,10 +229,31 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
   }
   .card-glass-dark {
-    background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    background: linear-gradient(rgba(22,45,84,0.2) 0%, rgba(10,22,40,0.8) 100%);
+    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: inset 0px -1px 0px 0px rgba(0,0,0,0.25), 0px 10px 40px 0px rgba(22,45,84,0.3);
+  }
+
+  /* Brand gradient */
+  .bg-brand-gradient {
+    background: linear-gradient(180deg, #faf3dc 0%, #b8922e 30%, #162d54 60%, #0a1628 100%);
+  }
+
+  /* Conic gradient decorations */
+  .bg-conic-left {
+    background: conic-gradient(from 90deg at 16.8% 81.7%, #162d54 0deg, #000 90deg, #162d54 157deg, #5a86c4 272deg, #faf3dc 360deg);
+  }
+  .bg-conic-right {
+    background: conic-gradient(from 90deg at 21.9% 18.3%, #faf3dc 0deg, #5a86c4 90deg, #162d54 157deg, #000 272deg, #162d54 360deg);
+  }
+
+  /* Medium weight headings */
+  .heading-display {
+    font-family: var(--font-heading);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: #1F2023;
   }
 
   /* Button hover lift — enhanced */

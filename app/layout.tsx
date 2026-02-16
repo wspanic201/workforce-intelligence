@@ -34,32 +34,49 @@ export default function RootLayout({
         className={`${inter.variable} ${jakarta.variable} font-body antialiased text-slate-900`}
       >
         {/* Navigation */}
-        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-slate-200/80">
-          <nav className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="flex h-16 items-center justify-between">
+        <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200/80">
+          <nav className="mx-auto max-w-[1200px] px-6">
+            <div className="flex h-[72px] items-center justify-between">
               <Link
                 href="/"
-                className="font-heading text-lg font-bold tracking-tight text-navy-800 hover:text-navy-900 transition-colors"
+                className="font-heading text-lg font-medium tracking-tight text-[#1F2023] hover:text-black transition-colors"
               >
                 Workforce Intelligence
               </Link>
               <div className="hidden md:flex items-center gap-8">
                 <Link
                   href="/methodology"
-                  className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
+                  className="text-sm font-medium text-[#4C4C4C] hover:text-[#1F2023] transition-colors"
                 >
                   Methodology
                 </Link>
                 <Link
                   href="#pricing"
-                  className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
+                  className="text-sm font-medium text-[#4C4C4C] hover:text-[#1F2023] transition-colors"
                 >
                   Pricing
                 </Link>
+                <Link
+                  href="#sample-report"
+                  className="text-sm font-medium text-[#4C4C4C] hover:text-[#1F2023] transition-colors"
+                >
+                  Sample Report
+                </Link>
+              </div>
+              <div className="hidden md:flex items-center gap-3">
+                <a href="mailto:hello@workforceintel.com">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="rounded-full border-[#E0E0E0] text-[#1F2023] hover:bg-gray-50 font-medium px-5"
+                  >
+                    Contact Us
+                  </Button>
+                </a>
                 <Link href="/submit">
                   <Button
                     size="sm"
-                    className="bg-navy-800 hover:bg-navy-900 text-white shadow-sm hover:shadow-md transition-all duration-200 hover:-translate-y-px"
+                    className="rounded-full bg-[#1F2023] hover:bg-black text-white font-medium px-5"
                   >
                     Start Validation
                   </Button>
