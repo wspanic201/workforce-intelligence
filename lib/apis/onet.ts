@@ -151,13 +151,31 @@ export async function getONETCompetencies(onetCode: string): Promise<ONETCompete
     };
   }
 
+  // v2 API returns data in `element` arrays with `name` and `description` fields
+  const mapElements = (data: any, fallbackKey: string) => {
+    const elements = data?.element || data?.[fallbackKey] || [];
+    return elements.map((e: any) => ({
+      element_name: e.name || e.element_name || '',
+      scale_value: e.score?.value ?? e.scale_value ?? 0,
+      description: e.description || '',
+    }));
+  };
+
+  const mapTech = (data: any) => {
+    const elements = data?.element || data?.technology || [];
+    return elements.map((e: any) => ({
+      example: e.name || e.example || '',
+      hot_technology: e.hot_technology ?? false,
+    }));
+  };
+
   return {
     code: onetCode,
     title: occupation.title,
     description: occupation.description,
-    skills: results.skills?.skill || [],
-    knowledge: results.knowledge?.knowledge || [],
-    technology: results.technology?.technology || [],
-    education: occupation.education?.description || 'Not specified',
+    skills: mapElements(results.skills, 'skill'),
+    knowledge: mapElements(results.knowledge, 'knowledge'),
+    technology: mapTech(results.technology),
+    education: occupation.education?.description || occupation.education || 'Not specified',
   };
 }
