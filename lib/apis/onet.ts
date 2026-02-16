@@ -31,6 +31,19 @@ export interface ONETCompetencies {
   education: string;
 }
 
+// O*NET Web Services v2 base URL
+const ONET_BASE_URL = 'https://api-v2.onetcenter.org';
+
+// Common headers for O*NET v2 API
+function getONETHeaders(): Record<string, string> {
+  const apiKey = process.env.ONET_API_KEY || process.env.ONET_API_PASSWORD || '';
+  return {
+    'X-API-Key': apiKey,
+    'User-Agent': 'nodejs-OnetWebService/2.10 (bot)',
+    'Accept': 'application/json',
+  };
+}
+
 // Delay helper
 function delay(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -49,16 +62,16 @@ async function fetchWithRetry(
 
     // Rate limited (429) or temporary server error — retry with backoff
     if ((response.status === 429 || response.status === 503) && attempt < maxRetries) {
-      const backoffMs = Math.pow(2, attempt) * 1000; // 1s, 2s, 4s
+      const backoffMs = Math.pow(2, attempt) * 1000;
       console.warn(`[O*NET] Rate limited (${response.status}), retrying in ${backoffMs}ms (attempt ${attempt + 1}/${maxRetries})`);
       await delay(backoffMs);
       continue;
     }
 
-    // 401 could also be transient rate limiting on O*NET — retry once
-    if (response.status === 401 && attempt < maxRetries) {
-      const backoffMs = Math.pow(2, attempt) * 1500; // 1.5s, 3s, 6s
-      console.warn(`[O*NET] Got 401 (possible rate limit), retrying in ${backoffMs}ms (attempt ${attempt + 1}/${maxRetries})`);
+    // 401/403 could be transient — retry once
+    if ((response.status === 401 || response.status === 403) && attempt < maxRetries) {
+      const backoffMs = Math.pow(2, attempt) * 1500;
+      console.warn(`[O*NET] Got ${response.status} (possible rate limit), retrying in ${backoffMs}ms (attempt ${attempt + 1}/${maxRetries})`);
       await delay(backoffMs);
       continue;
     }
@@ -67,17 +80,16 @@ async function fetchWithRetry(
     return response;
   }
 
-  // Should not reach here, but just in case
   throw new Error(`[O*NET] Max retries exceeded for ${url}`);
 }
 
 export async function searchONET(keyword: string): Promise<string | null> {
-  const auth = Buffer.from((process.env.ONET_API_USERNAME || '') + ':' + process.env.ONET_API_PASSWORD).toString('base64');
+  const headers = getONETHeaders();
 
   const response = await fetchWithRetry(
-    `https://services.onetcenter.org/ws/online/search?keyword=${encodeURIComponent(keyword)}`,
+    `${ONET_BASE_URL}/online/search?keyword=${encodeURIComponent(keyword)}&end=5`,
     {
-      headers: { Authorization: `Basic ${auth}` },
+      headers,
       signal: AbortSignal.timeout(30000),
     }
   );
@@ -92,25 +104,27 @@ export async function searchONET(keyword: string): Promise<string | null> {
 }
 
 export async function getONETCompetencies(onetCode: string): Promise<ONETCompetencies> {
-  const auth = Buffer.from((process.env.ONET_API_USERNAME || '') + ':' + process.env.ONET_API_PASSWORD).toString('base64');
-  const headers = { Authorization: `Basic ${auth}` };
-  const baseUrl = `https://services.onetcenter.org/ws/online/occupations/${onetCode}`;
+  const headers = getONETHeaders();
+  const basePath = `online/occupations/${onetCode}`;
 
   // Serialize requests with delays to avoid rate limiting
   const endpoints = [
-    { url: baseUrl, key: 'occupation' },
-    { url: `${baseUrl}/summary/skills`, key: 'skills' },
-    { url: `${baseUrl}/summary/knowledge`, key: 'knowledge' },
-    { url: `${baseUrl}/summary/technology_skills`, key: 'technology' },
+    { path: basePath, key: 'occupation' },
+    { path: `${basePath}/summary/skills`, key: 'skills' },
+    { path: `${basePath}/summary/knowledge`, key: 'knowledge' },
+    { path: `${basePath}/summary/technology_skills`, key: 'technology' },
   ];
 
   const results: Record<string, any> = {};
 
   for (const endpoint of endpoints) {
-    const response = await fetchWithRetry(endpoint.url, {
-      headers,
-      signal: AbortSignal.timeout(30000),
-    });
+    const response = await fetchWithRetry(
+      `${ONET_BASE_URL}/${endpoint.path}`,
+      {
+        headers,
+        signal: AbortSignal.timeout(30000),
+      }
+    );
 
     if (!response.ok) {
       console.warn(`[O*NET] ${endpoint.key} API returned ${response.status} — using empty data`);
