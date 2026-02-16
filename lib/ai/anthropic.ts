@@ -1,8 +1,15 @@
 import Anthropic from '@anthropic-ai/sdk';
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+// Lazy initialization so env vars are available in CLI scripts (dotenv loads at runtime)
+let _anthropic: Anthropic | null = null;
+function getAnthropicClient(): Anthropic {
+  if (!_anthropic) {
+    _anthropic = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+    });
+  }
+  return _anthropic;
+}
 
 export interface AICallOptions {
   model?: string;
@@ -23,7 +30,7 @@ export async function callClaude(
   const startTime = Date.now();
 
   try {
-    const response = await anthropic.messages.create({
+    const response = await getAnthropicClient().messages.create({
       model,
       max_tokens: maxTokens,
       temperature,
