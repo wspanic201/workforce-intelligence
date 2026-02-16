@@ -264,40 +264,25 @@
     background-clip: text;
   }
 
-  /* Animated gradient shimmer text */
-  .text-shimmer {
-    background: linear-gradient(
-      90deg,
-      var(--navy-800) 0%,
-      var(--gold-500) 30%,
-      var(--navy-600) 50%,
-      var(--gold-400) 70%,
-      var(--navy-800) 100%
-    );
-    background-size: 300% 100%;
+  /* Gradient stats text */
+  .text-gradient-stats {
+    background: linear-gradient(139deg, #5a86c4 0%, #162d54 35%, #b8922e 65%, #d4ad3c 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: shimmer 6s ease-in-out infinite;
   }
 
-  /* Subtle grid background */
-  .bg-grid {
-    background-image:
-      linear-gradient(to right, var(--navy-100) 1px, transparent 1px),
-      linear-gradient(to bottom, var(--navy-100) 1px, transparent 1px);
-    background-size: 4rem 4rem;
+  /* Marquee */
+  .marquee-wrapper {
+    overflow: hidden;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
   }
-
-  /* Dot pattern background */
-  .bg-dots {
-    background-image: radial-gradient(circle, var(--navy-200) 1px, transparent 1px);
-    background-size: 24px 24px;
-  }
-
-  .bg-dots-light {
-    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-    background-size: 24px 24px;
+  .marquee-track {
+    display: flex;
+    gap: 3rem;
+    animation: marquee 30s linear infinite;
+    width: max-content;
   }
 
   /* Section divider — angled */
@@ -399,55 +384,21 @@
   to { opacity: 1; }
 }
 
-/* Shimmer for gradient text */
-@keyframes shimmer {
-  0% { background-position: 100% 50%; }
-  50% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
-}
-
-/* Floating orb animation */
-@keyframes orbFloat {
-  0% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(15px, -20px) scale(1.05); }
-  66% { transform: translate(-10px, 10px) scale(0.95); }
-  100% { transform: translate(0, 0) scale(1); }
-}
-
-/* Slow spin for decorative elements */
-@keyframes slowSpin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Pulse glow */
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.15; transform: scale(1); }
-  50% { opacity: 0.25; transform: scale(1.08); }
-}
-
-/* Grid scroll (parallax-like for grid bg) */
-@keyframes gridScroll {
-  from { transform: translateY(0); }
-  to { transform: translateY(4rem); }
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 
-  .animate-fade-up,
-  .text-shimmer {
+  .animate-fade-up {
     animation: none !important;
     opacity: 1;
     transform: none;
-    background-position: 0% 50%;
   }
 
-  @keyframes orbFloat {
-    0%, 100% { transform: none; }
-  }
-
-  @keyframes pulseGlow {
-    0%, 100% { opacity: 0.15; transform: none; }
+  .marquee-track {
+    animation: none !important;
   }
 }
