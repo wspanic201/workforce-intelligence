@@ -4,6 +4,8 @@ import { ValidationProject } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 
 export interface FinancialProjectionsData {
+  score: number;
+  scoreRationale: string;
   startup_costs: {
     curriculum_development: number;
     equipment_labs: number;
@@ -71,8 +73,15 @@ FINANCIAL ANALYSIS REQUIRED:
 6. Potential funding sources (grants, partnerships)
 7. Financial risks
 
+SCORING: Rate financial viability 1-10.
+8-10 = Strong ROI, breaks even within 2 years, low risk
+5-7 = Moderate viability, breaks even within 3 years, manageable risk
+1-4 = Weak ROI, high startup costs relative to revenue, significant risk
+
 OUTPUT FORMAT (JSON):
 {
+  "score": 6,
+  "scoreRationale": "Brief explanation of financial viability score",
   "startup_costs": {
     "curriculum_development": 0,
     "equipment_labs": 0,

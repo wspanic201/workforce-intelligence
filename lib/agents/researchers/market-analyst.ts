@@ -30,6 +30,8 @@ function cleanLocationForSerpAPI(location: string): string {
 }
 
 export interface MarketAnalysisData {
+  score?: number;
+  scoreRationale?: string;
   live_jobs: {
     count: number;
     salaries: any;
@@ -233,6 +235,16 @@ Analyze this REAL data and provide:
 5. **Career Viability** - Is this a sustainable career path for graduates?
 6. **Recommendations** - 3-5 strategic recommendations based on this data
 
+SCORING: Rate labor market demand 1-10.
+8-10 = Strong demand (high job count, growing field, competitive salaries)
+5-7 = Moderate demand (adequate openings, stable field)
+1-4 = Weak demand (few openings, declining field, low wages)
+
+Start your response with exactly this format on the first line:
+SCORE: X/10 | RATIONALE: Brief one-sentence explanation
+
+Then provide your full analysis:
+
 CRITICAL:
 - You are analyzing REAL data, not making predictions
 - Cite specific numbers: "347 current openings" not "strong demand"
@@ -256,7 +268,14 @@ Provide 3-5 strategic recommendations for the client.`;
           .map(r => r.trim())
       : [];
 
+    // Extract score from first line
+    const scoreMatch = content.match(/SCORE:\s*(\d+(?:\.\d+)?)\s*\/\s*10\s*\|\s*RATIONALE:\s*(.+)/i);
+    const score = scoreMatch ? parseFloat(scoreMatch[1]) : null;
+    const scoreRationale = scoreMatch ? scoreMatch[2].trim() : null;
+
     const data: MarketAnalysisData = {
+      score: score ?? undefined,
+      scoreRationale: scoreRationale ?? undefined,
       live_jobs: liveJobsData || { count: 0, salaries: {}, topEmployers: [], requiredSkills: [], certifications: [] },
       onet_data: onetData ? {
         code: onetData.code,

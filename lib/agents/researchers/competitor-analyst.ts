@@ -14,6 +14,8 @@ export interface CompetitorProgram {
 }
 
 export interface CompetitiveAnalysisData {
+  score: number;
+  scoreRationale: string;
   competitors: CompetitorProgram[];
   market_gaps: string[];
   differentiation_opportunities: string[];
@@ -42,9 +44,16 @@ ${project.constraints ? `CONSTRAINTS: ${project.constraints}` : ''}
 
 Identify 3-5 competing programs, market gaps, and differentiation opportunities.
 
+SCORING: Rate the competitive landscape 1-10 for program viability.
+8-10 = Few/weak competitors, strong differentiation potential
+5-7 = Moderate competition, some differentiation possible
+1-4 = Saturated market, difficult to differentiate
+
 IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Keep values concise.
 
 {
+  "score": 7,
+  "scoreRationale": "Brief explanation of competitive landscape score",
   "competitors": [
     {
       "institution": "College Name",
