@@ -23,11 +23,24 @@ export async function callClaude(
   prompt: string,
   options: AICallOptions = {}
 ): Promise<{ content: string; tokensUsed: number }> {
+  // TEST MODE: Use cheaper model and lower tokens for testing workflow
+  const isTestMode = process.env.TEST_MODE === 'true';
+  const defaultModel = isTestMode 
+    ? (process.env.TEST_MODEL || 'claude-haiku-4')
+    : 'claude-sonnet-4-5';
+  const defaultMaxTokens = isTestMode
+    ? parseInt(process.env.TEST_MAX_TOKENS || '4000')
+    : 8000;
+  
   const {
-    model = 'claude-sonnet-4-5',
-    maxTokens = 8000,
+    model = defaultModel,
+    maxTokens = defaultMaxTokens,
     temperature = 1.0,
   } = options;
+  
+  if (isTestMode) {
+    console.log(`[TEST MODE] Using ${model} with ${maxTokens} max tokens (cheap testing)`);
+  }
 
   const startTime = Date.now();
 
