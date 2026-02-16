@@ -27,7 +27,7 @@ export async function callClaude(
   const isTestMode = process.env.TEST_MODE === 'true';
   const defaultModel = isTestMode 
     ? (process.env.TEST_MODEL || 'claude-3-5-haiku-20241022')  // Claude 3.5 Haiku
-    : 'claude-sonnet-4-5';  // Claude Sonnet 4.5
+    : 'claude-opus-4-6';  // Claude Opus 4.6 (faster generation, better quality)
   const defaultMaxTokens = isTestMode
     ? parseInt(process.env.TEST_MAX_TOKENS || '4000')
     : 8000;

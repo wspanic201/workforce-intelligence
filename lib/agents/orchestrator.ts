@@ -135,7 +135,7 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
           agent.runner,
           agent.dimension
         ),
-        600000, // 10 minutes per agent (for 16k token depth)
+        1200000, // 20 minutes per agent (API calls + 16k token generation)
         agent.label
       )
     );
@@ -244,7 +244,7 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
           project as ValidationProject,
           completedComponents as ResearchComponent[]
         ),
-        600000, // 10 minutes for tiger team (20k token synthesis)
+        1200000, // 20 minutes for tiger team (API overhead + 20k tokens)
         'Tiger Team Synthesis'
       );
       tigerTeamMarkdown = markdown;
