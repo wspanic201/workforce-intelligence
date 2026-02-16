@@ -20,17 +20,25 @@ function useInView(
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    // Fallback: force visible after 1.5s if IO never fires
+    const fallback = setTimeout(() => setInView(true), 1500);
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
+          clearTimeout(fallback);
           setInView(true);
-          observer.unobserve(el); // animate once
+          observer.unobserve(el);
         }
       },
       options,
     );
     observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      clearTimeout(fallback);
+      observer.disconnect();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
