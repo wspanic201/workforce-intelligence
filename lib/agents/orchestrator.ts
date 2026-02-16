@@ -316,6 +316,7 @@ async function runResearchComponent(
       .update({
         status: 'completed',
         content: { ...data, _score: score, _scoreRationale: rationale },
+        markdown_output: markdown,
       })
       .eq('id', componentId);
 

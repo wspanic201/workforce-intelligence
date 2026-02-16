@@ -5,6 +5,29 @@ import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { searchGoogleJobs } from '@/lib/apis/serpapi';
 import { searchONET, getONETCompetencies } from '@/lib/apis/onet';
 import { withCache } from '@/lib/apis/cache';
+import { fetchBLSData, fetchONETOnline, searchJobsBrave } from '@/lib/apis/web-fallbacks';
+
+/**
+ * Clean a geographic area string for SerpAPI location parameter.
+ * SerpAPI needs simple "City, State" format.
+ * Example: "Cedar Rapids and Iowa City, Iowa (Linn and Johnson Counties)" → "Cedar Rapids, Iowa"
+ */
+function cleanLocationForSerpAPI(location: string): string {
+  if (!location) return 'United States';
+  // Strip parenthetical content
+  let clean = location.replace(/\([^)]*\)/g, '').trim();
+  // Extract state (look for ", State" pattern)
+  const stateMatch = clean.match(/,\s*([A-Za-z\s]+)$/);
+  const state = stateMatch?.[1]?.trim() || '';
+  // Take the first city if "and" is present
+  const beforeState = stateMatch ? clean.substring(0, stateMatch.index) : clean;
+  const firstCity = beforeState.split(/\s+and\s+/i)[0].trim();
+  // Reassemble
+  if (state && !firstCity.includes(state)) {
+    return `${firstCity}, ${state}`;
+  }
+  return firstCity || location;
+}
 
 export interface MarketAnalysisData {
   live_jobs: {
@@ -35,11 +58,15 @@ export async function runMarketAnalysis(
     console.log(`[Market Analyst] Starting for "${project.program_name}"`);
 
     // 1. Fetch REAL data from APIs (with caching, fault-tolerant)
-    const [liveJobsData, onetCode] = await Promise.all([
+    const rawLocation = (project as any).geographic_area || 'United States';
+    const serpApiLocation = cleanLocationForSerpAPI(rawLocation);
+    const socCode = (project as any).soc_codes || '';
+
+    const [liveJobsDataResult, onetCode] = await Promise.all([
       withCache(
         'serpapi_jobs',
-        { occupation: project.program_name, location: (project as any).geographic_area || 'United States' },
-        () => searchGoogleJobs(project.program_name, (project as any).geographic_area || 'United States'),
+        { occupation: project.program_name, location: serpApiLocation },
+        () => searchGoogleJobs(project.program_name, serpApiLocation),
         168 // Cache for 7 days
       ).catch((err) => { console.warn('[Market Analyst] SerpAPI failed, continuing without live jobs:', err.message); return null; }),
       withCache(
@@ -50,6 +77,24 @@ export async function runMarketAnalysis(
       ).catch((err) => { console.warn('[Market Analyst] O*NET failed, continuing without O*NET data:', err.message); return null; }),
     ]);
 
+    // Fallback: If SerpAPI failed, try Brave Search for job data
+    let liveJobsData = liveJobsDataResult;
+    if (!liveJobsData) {
+      console.log('[Market Analyst] Trying Brave Search fallback for job data...');
+      const braveResult = await searchJobsBrave(project.program_name, serpApiLocation).catch(() => null);
+      if (braveResult?.estimated_job_count) {
+        console.log(`[Market Analyst] Brave Search found ~${braveResult.estimated_job_count} jobs`);
+        // Create a minimal ProcessedJobData-compatible structure
+        liveJobsData = {
+          count: braveResult.estimated_job_count,
+          salaries: { min: 0, max: 0, median: 0, ranges: { entry: 'Not available', mid: 'Not available', senior: 'Not available' } },
+          topEmployers: [],
+          requiredSkills: [],
+          certifications: [],
+        } as any;
+      }
+    }
+
     // 2. Get O*NET competencies if code was found
     let onetData = null;
     if (onetCode) {
@@ -58,10 +103,34 @@ export async function runMarketAnalysis(
         { code: onetCode },
         () => getONETCompetencies(onetCode),
         720
-      );
+      ).catch(async (err) => {
+        console.warn('[Market Analyst] O*NET API failed for competencies, trying web fallback:', err.message);
+        const fallback = await fetchONETOnline(onetCode).catch(() => null);
+        if (fallback) {
+          return {
+            code: onetCode,
+            title: fallback.title,
+            description: fallback.description,
+            skills: fallback.skills.map(s => ({ element_name: s, scale_value: 4 })),
+            knowledge: fallback.knowledge.map(k => ({ element_name: k, scale_value: 4 })),
+            technology: [],
+            education: 'Not specified (from web fallback)',
+          };
+        }
+        return null;
+      });
     }
 
-    console.log(`[Market Analyst] Data fetched - Jobs: ${liveJobsData?.count ?? 0}, O*NET: ${onetCode || 'not found'}`);
+    // 3. Always try BLS for salary/employment data (free, no auth)
+    let blsData = null;
+    if (socCode) {
+      blsData = await fetchBLSData(socCode).catch(() => null);
+      if (blsData) {
+        console.log(`[Market Analyst] BLS data: employment=${blsData.employment_total}, median=$${blsData.median_wage}`);
+      }
+    }
+
+    console.log(`[Market Analyst] Data fetched - Jobs: ${liveJobsData?.count ?? 0}, O*NET: ${onetCode || 'not found'}, BLS: ${blsData ? 'yes' : 'no'}`);
 
     // Gracefully handle missing API data — use placeholder structure
     if (!liveJobsData) {
@@ -115,6 +184,21 @@ REGION: ${(project as any).geographic_area || 'Not specified'}
 SOC CODE: ${(project as any).soc_codes || 'Not specified'}
 ${jobsSection}
 
+${blsData ? `
+═══════════════════════════════════════════════════════════
+REAL DATA FROM BLS (Bureau of Labor Statistics):
+═══════════════════════════════════════════════════════════
+
+National Employment: ${blsData.employment_total?.toLocaleString() || 'Not available'}
+Median Annual Wage: $${blsData.median_wage?.toLocaleString() || 'Not available'}
+Mean Annual Wage: $${blsData.mean_wage?.toLocaleString() || 'Not available'}
+Wage Percentiles:
+  10th: $${blsData.wage_percentiles.p10?.toLocaleString() || 'N/A'}
+  25th: $${blsData.wage_percentiles.p25?.toLocaleString() || 'N/A'}
+  75th: $${blsData.wage_percentiles.p75?.toLocaleString() || 'N/A'}
+  90th: $${blsData.wage_percentiles.p90?.toLocaleString() || 'N/A'}
+Source: ${blsData.source_url}
+` : ''}
 ${onetData ? `
 ═══════════════════════════════════════════════════════════
 REAL DATA FROM O*NET (Occupational Standards):

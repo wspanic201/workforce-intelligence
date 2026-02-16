@@ -1,5 +1,6 @@
 import { ValidationProject, ResearchComponent } from '@/lib/types/database';
 import { ProgramScore } from '@/lib/scoring/program-scorer';
+import { formatComponentContent } from './format-component';
 
 interface ReportInput {
   project: ValidationProject;
@@ -60,7 +61,8 @@ export function generateReport(input: ReportInput): string {
     .map(s => {
       const comp = getComponent(s.type);
       if (!comp) return '';
-      return `---\n\n${comp.markdown_output || JSON.stringify(comp.content, null, 2)}`;
+      const sectionContent = comp.markdown_output || formatComponentContent(s.type, comp.content);
+      return `---\n\n${sectionContent}`;
     })
     .filter(Boolean)
     .join('\n\n');

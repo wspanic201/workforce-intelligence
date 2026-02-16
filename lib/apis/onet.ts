@@ -72,7 +72,7 @@ async function fetchWithRetry(
 }
 
 export async function searchONET(keyword: string): Promise<string | null> {
-  const auth = Buffer.from(':' + process.env.ONET_API_PASSWORD).toString('base64');
+  const auth = Buffer.from((process.env.ONET_API_USERNAME || '') + ':' + process.env.ONET_API_PASSWORD).toString('base64');
 
   const response = await fetchWithRetry(
     `https://services.onetcenter.org/ws/online/search?keyword=${encodeURIComponent(keyword)}`,
@@ -92,7 +92,7 @@ export async function searchONET(keyword: string): Promise<string | null> {
 }
 
 export async function getONETCompetencies(onetCode: string): Promise<ONETCompetencies> {
-  const auth = Buffer.from(':' + process.env.ONET_API_PASSWORD).toString('base64');
+  const auth = Buffer.from((process.env.ONET_API_USERNAME || '') + ':' + process.env.ONET_API_PASSWORD).toString('base64');
   const headers = { Authorization: `Basic ${auth}` };
   const baseUrl = `https://services.onetcenter.org/ws/online/occupations/${onetCode}`;
 
