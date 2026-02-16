@@ -63,45 +63,57 @@ export async function runMarketAnalysis(
 
     console.log(`[Market Analyst] Data fetched - Jobs: ${liveJobsData?.count ?? 0}, O*NET: ${onetCode || 'not found'}`);
 
-    // Ensure liveJobsData is not null for downstream usage
+    // Gracefully handle missing API data — use placeholder structure
     if (!liveJobsData) {
-      throw new Error('Failed to fetch live jobs data');
+      console.warn('[Market Analyst] No live jobs data available — using AI analysis only');
     }
+    const jobsAvailable = !!liveJobsData;
 
     // 3. Load persona
     const persona = await loadPersona('market-analyst');
 
-    // 4. Build prompt with REAL data
+    // 4. Build prompt with REAL data (gracefully handle missing APIs)
+    const jobsSection = jobsAvailable ? `
+═══════════════════════════════════════════════════════════
+REAL DATA FROM GOOGLE JOBS (SerpAPI - ${new Date().toLocaleDateString()}):
+═══════════════════════════════════════════════════════════
+
+Current Job Openings in Region: ${liveJobsData!.count}
+
+Salary Ranges (from actual job postings):
+- Entry-Level: ${liveJobsData!.salaries.ranges.entry}
+- Mid-Career: ${liveJobsData!.salaries.ranges.mid}
+- Senior: ${liveJobsData!.salaries.ranges.senior}
+- Overall Range: $${liveJobsData!.salaries.min.toLocaleString()} - $${liveJobsData!.salaries.max.toLocaleString()}
+- Median: $${liveJobsData!.salaries.median.toLocaleString()}
+
+Top Employers (by number of openings):
+${liveJobsData!.topEmployers.map((e: any, i: number) => `${i + 1}. ${e.name} (${e.openings} openings)`).join('\n')}
+
+Most Requested Skills (% of job postings):
+${liveJobsData!.requiredSkills.map((s: any) => `- ${s.skill}: ${s.frequency}%`).join('\n')}
+
+Certifications Mentioned:
+${liveJobsData!.certifications.map((c: any) => `- ${c.cert}: ${c.frequency}%`).join('\n')}` : `
+═══════════════════════════════════════════════════════════
+NOTE: Live job posting data was unavailable (API issue).
+Use your expert knowledge of BLS data, industry trends, and
+the occupation (SOC ${project.soc_codes || '29-2052'}) to provide
+a comprehensive labor market analysis for ${project.geographic_area || 'the target region'}.
+═══════════════════════════════════════════════════════════`;
+
     const prompt = `${persona.name}
 
-TASK: Analyze this REAL labor market data and provide strategic insights.
+TASK: Analyze labor market data and provide strategic insights.
 
 PROGRAM: ${project.program_name}
 CLIENT: ${project.client_name}
 TYPE: ${project.program_type || 'Not specified'}
 AUDIENCE: ${project.target_audience || 'Not specified'}
-
-═══════════════════════════════════════════════════════════
-REAL DATA FROM GOOGLE JOBS (SerpAPI - ${new Date().toLocaleDateString()}):
-═══════════════════════════════════════════════════════════
-
-Current Job Openings in Region: ${liveJobsData.count}
-
-Salary Ranges (from actual job postings):
-- Entry-Level: ${liveJobsData.salaries.ranges.entry}
-- Mid-Career: ${liveJobsData.salaries.ranges.mid}
-- Senior: ${liveJobsData.salaries.ranges.senior}
-- Overall Range: $${liveJobsData.salaries.min.toLocaleString()} - $${liveJobsData.salaries.max.toLocaleString()}
-- Median: $${liveJobsData.salaries.median.toLocaleString()}
-
-Top Employers (by number of openings):
-${liveJobsData.topEmployers.map((e, i) => `${i + 1}. ${e.name} (${e.openings} openings)`).join('\n')}
-
-Most Requested Skills (% of job postings):
-${liveJobsData.requiredSkills.map(s => `- ${s.skill}: ${s.frequency}%`).join('\n')}
-
-Certifications Mentioned:
-${liveJobsData.certifications.map(c => `- ${c.cert}: ${c.frequency}%`).join('\n')}
+OCCUPATION: ${(project as any).target_occupation || 'Not specified'}
+REGION: ${(project as any).geographic_area || 'Not specified'}
+SOC CODE: ${(project as any).soc_codes || 'Not specified'}
+${jobsSection}
 
 ${onetData ? `
 ═══════════════════════════════════════════════════════════
@@ -161,7 +173,7 @@ Provide 3-5 strategic recommendations for the client.`;
       : [];
 
     const data: MarketAnalysisData = {
-      live_jobs: liveJobsData,
+      live_jobs: liveJobsData || { count: 0, salaries: {}, topEmployers: [], requiredSkills: [], certifications: [] },
       onet_data: onetData ? {
         code: onetData.code,
         title: onetData.title,
