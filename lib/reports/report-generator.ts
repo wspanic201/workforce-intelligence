@@ -57,15 +57,26 @@ export function generateReport(input: ReportInput): string {
     { type: 'employer_demand', title: 'Section 7: Employer Demand & Partnerships' },
   ];
 
-  const sections = sectionOrder
-    .map(s => {
-      const comp = getComponent(s.type);
-      if (!comp) return '';
-      const sectionContent = comp.markdown_output || formatComponentContent(s.type, comp.content);
-      return `---\n\n${sectionContent}`;
-    })
-    .filter(Boolean)
-    .join('\n\n');
+  // Prefer tiger team synthesis (rich prose) over individual component markdown
+  let sections: string;
+  if (tigerTeamMarkdown) {
+    // Tiger team produces comprehensive analysis — use it as primary content
+    // Strip any leading title/header since we add our own structure
+    sections = tigerTeamMarkdown
+      .replace(/^#\s+.*\n/, '')
+      .trim();
+  } else {
+    // Fallback: stitch together individual component outputs
+    sections = sectionOrder
+      .map(s => {
+        const comp = getComponent(s.type);
+        if (!comp) return '';
+        const sectionContent = comp.markdown_output || formatComponentContent(s.type, comp.content);
+        return `---\n\n${sectionContent}`;
+      })
+      .filter(Boolean)
+      .join('\n\n');
+  }
 
   // Build risk register from all component data
   const risks: string[] = [];
