@@ -458,6 +458,90 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== SAMPLE REPORT ===== */}
+      <section id="sample-report" className="bg-white py-16 md:py-[120px]">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up" className="text-center mb-12">
+            <h2 className="heading-display text-[clamp(1.75rem,3vw,2.25rem)]">
+              See a real validation report
+            </h2>
+            <p className="mt-4 text-[#4C4C4C] text-lg max-w-2xl mx-auto">
+              Industrial Coatings Specialist Certificate — validated for a Midwest community college in February 2026.
+            </p>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll variant="fade-up" delay={100}>
+            <div className="max-w-4xl mx-auto rounded-2xl bg-[#FAFAFA] shadow-[0_2px_40px_-12px_rgba(0,0,0,0.12)] overflow-hidden">
+              {/* Preview header */}
+              <div className="p-6 md:p-8 border-b border-gray-200">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-medium uppercase tracking-widest text-[#4C4C4C] mb-1">Program Validation Report</p>
+                    <p className="heading-display text-xl">Industrial Coatings Specialist Certificate</p>
+                  </div>
+                  <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 border border-emerald-200 px-4 py-1.5 w-fit">
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+                    </span>
+                    <span className="text-sm font-medium text-emerald-700">Conditional GO</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Stats grid */}
+              <div className="grid sm:grid-cols-3 gap-6 p-6 md:p-8 border-b border-gray-200">
+                {[
+                  { label: 'Market Demand', value: '8.2/10' },
+                  { label: 'Financial Viability', value: '6.0/10' },
+                  { label: 'Competitive Position', value: '6.0/10' },
+                ].map(({ label, value }) => (
+                  <div key={label}>
+                    <p className="text-xs text-[#4C4C4C] uppercase tracking-wider mb-1">{label}</p>
+                    <p className="text-[#1F2023] font-medium text-2xl font-heading">{value}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Key insights preview */}
+              <div className="p-6 md:p-8 space-y-4">
+                <div>
+                  <h3 className="font-heading font-medium text-sm uppercase tracking-wider text-[#4C4C4C] mb-2">KEY FINDINGS</h3>
+                  <ul className="space-y-2 text-sm text-[#4C4C4C]">
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-600 mt-0.5">✓</span>
+                      <span>Strong employer demand with 18% projected job growth through 2032</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-600 mt-0.5">✓</span>
+                      <span>Median salary of $52,000 aligns with institutional placement goals</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-amber-600 mt-0.5">!</span>
+                      <span>Limited competition in region but requires employer partnerships</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div className="pt-4 border-t border-gray-200">
+                  <a
+                    href="/sample-report.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-[#1F2023] hover:underline underline-offset-4 font-medium"
+                  >
+                    View Full Report (PDF)
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </AnimateOnScroll>
+        </div>
+      </section>
+
       {/* ===== FINAL CTA ===== */}
       <section className="bg-white py-16 md:py-20">
         <div className="max-w-[1200px] mx-auto px-6">
