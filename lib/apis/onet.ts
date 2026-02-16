@@ -31,10 +31,50 @@ export interface ONETCompetencies {
   education: string;
 }
 
+// Delay helper
+function delay(ms: number): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// Fetch with exponential backoff retry for rate limiting
+async function fetchWithRetry(
+  url: string,
+  options: RequestInit,
+  maxRetries = 3
+): Promise<Response> {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const response = await fetch(url, options);
+
+    if (response.ok) return response;
+
+    // Rate limited (429) or temporary server error — retry with backoff
+    if ((response.status === 429 || response.status === 503) && attempt < maxRetries) {
+      const backoffMs = Math.pow(2, attempt) * 1000; // 1s, 2s, 4s
+      console.warn(`[O*NET] Rate limited (${response.status}), retrying in ${backoffMs}ms (attempt ${attempt + 1}/${maxRetries})`);
+      await delay(backoffMs);
+      continue;
+    }
+
+    // 401 could also be transient rate limiting on O*NET — retry once
+    if (response.status === 401 && attempt < maxRetries) {
+      const backoffMs = Math.pow(2, attempt) * 1500; // 1.5s, 3s, 6s
+      console.warn(`[O*NET] Got 401 (possible rate limit), retrying in ${backoffMs}ms (attempt ${attempt + 1}/${maxRetries})`);
+      await delay(backoffMs);
+      continue;
+    }
+
+    // Non-retryable error
+    return response;
+  }
+
+  // Should not reach here, but just in case
+  throw new Error(`[O*NET] Max retries exceeded for ${url}`);
+}
+
 export async function searchONET(keyword: string): Promise<string | null> {
   const auth = Buffer.from(':' + process.env.ONET_API_PASSWORD).toString('base64');
 
-  const response = await fetch(
+  const response = await fetchWithRetry(
     `https://services.onetcenter.org/ws/online/search?keyword=${encodeURIComponent(keyword)}`,
     {
       headers: { Authorization: `Basic ${auth}` },
@@ -43,7 +83,7 @@ export async function searchONET(keyword: string): Promise<string | null> {
   );
 
   if (!response.ok) {
-    console.warn(`[O*NET] API returned ${response.status} ${response.statusText} — skipping O*NET data`);
+    console.warn(`[O*NET] Search API returned ${response.status} ${response.statusText} after retries — continuing without O*NET`);
     return null;
   }
 
@@ -54,21 +94,42 @@ export async function searchONET(keyword: string): Promise<string | null> {
 export async function getONETCompetencies(onetCode: string): Promise<ONETCompetencies> {
   const auth = Buffer.from(':' + process.env.ONET_API_PASSWORD).toString('base64');
   const headers = { Authorization: `Basic ${auth}` };
+  const baseUrl = `https://services.onetcenter.org/ws/online/occupations/${onetCode}`;
 
-  const [occupationRes, skillsRes, knowledgeRes, technologyRes] = await Promise.all([
-    fetch(`https://services.onetcenter.org/ws/online/occupations/${onetCode}`, { headers, signal: AbortSignal.timeout(30000) }),
-    fetch(`https://services.onetcenter.org/ws/online/occupations/${onetCode}/summary/skills`, { headers, signal: AbortSignal.timeout(30000) }),
-    fetch(`https://services.onetcenter.org/ws/online/occupations/${onetCode}/summary/knowledge`, { headers, signal: AbortSignal.timeout(30000) }),
-    fetch(`https://services.onetcenter.org/ws/online/occupations/${onetCode}/summary/technology_skills`, { headers, signal: AbortSignal.timeout(30000) }),
-  ]);
+  // Serialize requests with delays to avoid rate limiting
+  const endpoints = [
+    { url: baseUrl, key: 'occupation' },
+    { url: `${baseUrl}/summary/skills`, key: 'skills' },
+    { url: `${baseUrl}/summary/knowledge`, key: 'knowledge' },
+    { url: `${baseUrl}/summary/technology_skills`, key: 'technology' },
+  ];
 
-  // Check if any response failed (e.g. expired API key)
-  if (!occupationRes.ok) {
-    console.warn(`[O*NET] Competencies API returned ${occupationRes.status} — skipping O*NET data`);
+  const results: Record<string, any> = {};
+
+  for (const endpoint of endpoints) {
+    const response = await fetchWithRetry(endpoint.url, {
+      headers,
+      signal: AbortSignal.timeout(30000),
+    });
+
+    if (!response.ok) {
+      console.warn(`[O*NET] ${endpoint.key} API returned ${response.status} — using empty data`);
+      results[endpoint.key] = null;
+    } else {
+      results[endpoint.key] = await response.json();
+    }
+
+    // Small delay between sequential requests to avoid rate limiting
+    await delay(500);
+  }
+
+  const occupation = results.occupation;
+  if (!occupation) {
+    console.warn(`[O*NET] Could not fetch occupation data for ${onetCode} — returning minimal data`);
     return {
       code: onetCode,
       title: 'Unknown',
-      description: 'O*NET data unavailable',
+      description: 'O*NET data unavailable due to API issues',
       skills: [],
       knowledge: [],
       technology: [],
@@ -76,20 +137,13 @@ export async function getONETCompetencies(onetCode: string): Promise<ONETCompete
     };
   }
 
-  const [occupation, skillsData, knowledgeData, technologyData] = await Promise.all([
-    occupationRes.json(),
-    skillsRes.ok ? skillsRes.json() : { skill: [] },
-    knowledgeRes.ok ? knowledgeRes.json() : { knowledge: [] },
-    technologyRes.ok ? technologyRes.json() : { technology: [] },
-  ]);
-
   return {
     code: onetCode,
     title: occupation.title,
     description: occupation.description,
-    skills: skillsData.skill || [],
-    knowledge: knowledgeData.knowledge || [],
-    technology: technologyData.technology || [],
+    skills: results.skills?.skill || [],
+    knowledge: results.knowledge?.knowledge || [],
+    technology: results.technology?.technology || [],
     education: occupation.education?.description || 'Not specified',
   };
 }
