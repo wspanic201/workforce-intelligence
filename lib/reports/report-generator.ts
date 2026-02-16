@@ -213,6 +213,42 @@ This validation report was produced using Workforce Intelligence's 7-stage Progr
 
 ---
 
+## Data Quality & Limitations
+
+This section documents any data gaps, API failures, or limitations encountered during the research process.
+
+${components.map(c => {
+  const content = c.content as any;
+  const hasDataIssues = 
+    content?.data_gaps || 
+    content?.api_failures || 
+    (c.markdown_output && (
+      c.markdown_output.includes('data unavailable') ||
+      c.markdown_output.includes('API failed') ||
+      c.markdown_output.includes('data not available')
+    ));
+  
+  if (hasDataIssues) {
+    return `### ${c.component_type.replace(/_/g, ' ').toUpperCase()}
+- Data quality issues detected (see section for details)
+- Analysis based on available data with noted limitations`;
+  }
+  return '';
+}).filter(Boolean).join('\n\n') || '**No significant data quality issues detected.** All research components completed successfully with full data access.'}
+
+**Key Data Sources Status:**
+- Bureau of Labor Statistics (BLS): ${components.some(c => c.markdown_output?.includes('BLS')) ? '✅ Accessed' : '⚠️ Limited/Unavailable'}
+- O*NET OnLine: ${components.some(c => c.markdown_output?.includes('O*NET')) ? '✅ Accessed' : '⚠️ Limited/Unavailable'}
+- Google Jobs (SerpAPI): ${components.some(c => c.markdown_output?.includes('SerpAPI') || c.markdown_output?.includes('job postings')) ? '✅ Accessed' : '⚠️ Limited/Unavailable'}
+- Census Bureau: ${components.some(c => c.markdown_output?.includes('Census')) ? '✅ Accessed' : 'ℹ️ Not Required'}
+
+**Analysis Adjustments:**
+${components.filter(c => (c.content as any)?.score && (c.content as any).score < 5).length > 0 
+  ? `- ${components.filter(c => (c.content as any)?.score && (c.content as any).score < 5).length} dimension(s) scored below threshold due to data limitations or market concerns`
+  : '- No major adjustments required due to data quality'}
+
+---
+
 ## Appendix
 
 ### A. Scoring Detail

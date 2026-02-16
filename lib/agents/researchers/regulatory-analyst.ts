@@ -139,7 +139,7 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Kee
   "dataSources": ["Source 1"]
 }`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 4000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 12000 });
     const data = extractJSON(content) as RegulatoryComplianceData;
 
     if (!data.markdownReport) {

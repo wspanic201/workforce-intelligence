@@ -122,7 +122,7 @@ OUTPUT FORMAT (JSON):
 
 IMPORTANT: Return ONLY valid JSON. No markdown outside JSON. Keep string values concise. Do NOT include a markdownReport field. Be conservative in estimates.`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 8000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 16000 });
     const data = extractJSON(content) as LearnerDemandData;
 
     // Generate markdown if not provided by AI

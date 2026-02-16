@@ -237,40 +237,180 @@ Education Typical: ${onetData.education}
 ` : '(O*NET occupation code not found - analysis will rely on job posting data)'}
 
 ═══════════════════════════════════════════════════════════
-YOUR ANALYSIS TASK:
+YOUR ANALYSIS TASK (THIS IS A $7,500 CONSULTING ENGAGEMENT):
 ═══════════════════════════════════════════════════════════
 
-Analyze this REAL data and provide:
+Provide a COMPREHENSIVE labor market analysis of 3,000-4,000 words with the following structure:
 
-1. **Market Demand Assessment** - Is demand strong, moderate, or weak? Evidence?
-2. **Salary Competitiveness** - Are these salaries attractive to students? Comparison to similar roles?
-3. **Employer Landscape** - Who's hiring? Any concentration risks?
-4. **Skills Alignment** - Do the most-requested skills match O*NET? Any gaps?
-5. **Career Viability** - Is this a sustainable career path for graduates?
-6. **Recommendations** - 3-5 strategic recommendations based on this data
+## 1. LABOR MARKET ANALYSIS (1,000+ words)
 
-SCORING: Rate labor market demand 1-10.
-8-10 = Strong demand (high job count, growing field, competitive salaries)
-5-7 = Moderate demand (adequate openings, stable field)
-1-4 = Weak demand (few openings, declining field, low wages)
+### Current Job Openings
+- Total count in region with breakdown by employer type (hospital, retail, specialty)
+- Geographic distribution (which cities/counties have most openings)
+- Job posting trends (increasing, stable, declining over last 6-12 months)
+- Seasonal patterns if applicable
 
-Start your response with exactly this format on the first line:
-SCORE: X/10 | RATIONALE: Brief one-sentence explanation
+### Wage Analysis
+- Entry-level range with specific employer examples ("CVS: $15-17/hr, Hospital systems: $17-21/hr")
+- Mid-career progression (3-5 years experience)
+- Senior/specialized roles (lead tech, specialty pharmacy)
+- Comparison to similar occupations (e.g., medical assistant, dental assistant)
+- Regional wage differences (metro vs rural, state comparisons)
+- Percentile distribution (10th, 25th, median, 75th, 90th from BLS if available)
+- 5-year wage trend analysis
 
-Then provide your full analysis:
+### Supply/Demand Modeling
+- Annual job openings in region (calculate from turnover rate + growth)
+- Current program completers supplying the market (list competing programs with annual graduates)
+- Supply-demand ratio: Are we oversupplying or undersupplying?
+- Evidence: "40 annual openings, 3 programs producing 35 graduates = potential saturation"
+
+### Automation/Displacement Risk
+- Specific technologies impacting the role (e.g., automated dispensing systems, telepharmacy)
+- Tasks most at risk of automation
+- Tasks that remain human-dependent
+- Net employment impact (offsetting factors like aging population, increased medication use)
+
+### Career Pathway Analysis
+- Entry requirements (education, certification, experience)
+- Typical progression: Entry → Senior → Specialist → Management
+- Timeline for advancement
+- Lateral move opportunities (other healthcare roles, pharmacy school)
+- Long-term viability (is this a 5-year job or a 20-year career?)
+
+## 2. EMPLOYER LANDSCAPE DEEP DIVE (800+ words)
+
+### Top 10 Employers by Hiring Volume
+For each employer, provide:
+- Name and type (hospital system, retail chain, specialty)
+- Estimated annual hires (based on job posting frequency)
+- Starting wage range
+- Typical requirements (PTCB, state license, experience)
+- Work environment (shift patterns, full-time vs part-time)
+
+### Hiring Practices
+- Application process (online portals, referrals, on-site applications)
+- Typical interview process
+- Common requirements beyond certification (customer service, bilingual, computer skills)
+- Deal-breakers (background check issues, gaps in employment)
+
+### Retention Data
+- Average tenure in role (if available)
+- Turnover rates by employer type
+- Common reasons for leaving (better pay elsewhere, burnout, career change)
+- Promotion opportunities
+
+### Workplace Conditions
+- Shift patterns (day/evening/night, weekends, holidays)
+- Physical demands (standing, lifting, repetitive tasks)
+- Work environment quality (modern facilities, adequate staffing)
+- Job satisfaction indicators
+
+## 3. SKILLS & COMPETENCIES BREAKDOWN (600+ words)
+
+### Most-Requested Skills with Frequency Data
+Analyze 50-100+ job postings and rank skills by frequency:
+- Top 20 technical skills (e.g., "inventory management: 87%", "prescription processing: 95%")
+- Top 15 soft skills (e.g., "customer service: 78%", "attention to detail: 92%")
+- Technology requirements (specific software: "QS/1: 34%", "PrimeRx: 21%")
+
+### O*NET Alignment Analysis
+- Which O*NET skills match market demand? (list with evidence)
+- Which market-demanded skills are missing from O*NET? (emerging competencies)
+- Skill gaps that programs should address
+
+### Certification Requirements
+- PTCB Certification: Required vs. preferred (% of postings)
+- State pharmacy technician license: Required in all cases
+- Specialized certifications (sterile compounding, chemotherapy, etc.)
+- Certification pass rates and exam difficulty
+
+### Technology Requirements
+- Pharmacy management software (specific brands mentioned in postings)
+- Insurance/billing systems
+- Automated dispensing systems
+- Electronic health records
+
+## 4. FIVE-YEAR MARKET FORECAST (500+ words)
+
+### BLS Employment Projections
+- National occupation growth rate (cite specific BLS projection)
+- Regional factors that may increase or decrease that rate
+- Absolute number of projected annual openings
+
+### Industry Trends Affecting Demand
+- Aging population demographics (quantify: "65+ population in region growing X% annually")
+- Healthcare utilization trends (prescription volume increasing/decreasing)
+- Retail pharmacy consolidation (CVS/Walgreens store closures vs openings)
+- Hospital pharmacy expansion (24-hour pharmacies, telepharmacy, specialty services)
+- Regulatory changes (scope of practice expansions, reimbursement changes)
+
+### Risk Factors That Could Reduce Demand
+- Automation accelerating faster than predicted
+- Economic downturn reducing healthcare utilization
+- Policy changes (Medicare reimbursement cuts affecting pharmacy economics)
+- Competition from alternative models (mail-order pharmacy, vending machines)
+
+### Offsetting Factors Supporting Demand
+- Aging population and chronic disease growth
+- Pharmacy services expanding (vaccinations, point-of-care testing, medication therapy management)
+- Shortage of pharmacists leading to greater reliance on techs
+- Healthcare access expansion
+
+## 5. COMPETITIVE PROGRAM SUPPLY ANALYSIS (400+ words)
+
+### List All Competing Programs Within 100-Mile Radius
+For each program:
+- Institution name and location
+- Program length and format (full-time, part-time, hybrid, online)
+- Annual enrollment capacity
+- Estimated completers per year (if public data available, otherwise estimate)
+- Tuition cost
+- ASHP/ACPE accreditation status
+- Notable strengths (clinical partnerships, job placement rate)
+
+### Market Saturation Calculation
+- Total annual program completers in region: X
+- Total annual job openings in region: Y
+- Saturation ratio: X/Y
+- Analysis: Undersupplied (ratio <0.8), balanced (0.8-1.2), oversupplied (>1.2)
+
+### Program Discontinuations (Last 5 Years)
+- Any programs shut down? When and why? (cite specific sources if available)
+- Market lessons: What does this tell us about demand?
+
+## SCORING & RECOMMENDATIONS
+
+### Score: X/10
+**Rationale:** [One sentence explaining the score based on comprehensive analysis above]
+
+### Strategic Recommendations (5-7 recommendations)
+1. [Specific, actionable recommendation with justification]
+2. [...]
+
+═══════════════════════════════════════════════════════════
+OUTPUT FORMAT REQUIREMENTS:
+═══════════════════════════════════════════════════════════
+
+- Start with: SCORE: X/10 | RATIONALE: [one sentence]
+- Then provide your full analysis following the structure above
+- Use markdown headers (##, ###) for structure
+- Include detailed tables where specified
+- Cite specific numbers: "347 current openings" not "strong demand"
+- Identify data gaps honestly: "BLS data unavailable for this occupation code"
+- Cross-reference sources: "Job posting data shows X, O*NET standards indicate Y"
+- **Target length:** 3,000-4,000 words (this is consulting-grade work)
 
 CRITICAL:
-- You are analyzing REAL data, not making predictions
-- Cite specific numbers: "347 current openings" not "strong demand"
-- Identify data gaps honestly
-- Cross-reference job postings with O*NET standards
-- Be specific about what employers want
-
-Provide 3-5 strategic recommendations for the client.`;
+- You are analyzing REAL data from APIs, not making predictions
+- Every claim must be backed by data provided above or explicitly labeled as estimate/inference
+- If data is missing or APIs failed, state it clearly: "Live job data unavailable due to API failure"
+- Be specific about employers, wages, and requirements
+- Provide actionable insights, not generic observations`;
 
     // 5. Call Claude for analysis
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 8000,
+      maxTokens: 16000,
     });
 
     // 6. Parse recommendations

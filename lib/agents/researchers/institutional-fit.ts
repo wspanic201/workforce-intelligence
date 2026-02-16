@@ -139,7 +139,7 @@ OUTPUT FORMAT (JSON):
 
 IMPORTANT: Return ONLY valid JSON. No markdown outside JSON. Keep string values concise. Do NOT include a markdownReport field.`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 8000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 12000 });
     const data = extractJSON(content) as InstitutionalFitData;
 
     if (!data.markdownReport) {

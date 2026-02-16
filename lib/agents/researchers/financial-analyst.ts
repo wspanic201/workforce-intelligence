@@ -64,14 +64,263 @@ PROGRAM DETAILS:
 - Client: ${project.client_name}
 ${project.constraints ? `- Constraints: ${project.constraints}` : ''}
 
-FINANCIAL ANALYSIS REQUIRED:
-1. Startup costs (curriculum, equipment, marketing, training, accreditation)
-2. Annual operating costs (faculty, facilities, maintenance, overhead)
-3. Revenue projections (years 1-3, with enrollment assumptions)
-4. Break-even analysis
-5. 3-year ROI projection
-6. Potential funding sources (grants, partnerships)
-7. Financial risks
+═══════════════════════════════════════════════════════════
+FINANCIAL ANALYSIS REQUIRED (THIS IS A $7,500 CFO-LEVEL ENGAGEMENT):
+═══════════════════════════════════════════════════════════
+
+Provide a COMPREHENSIVE financial analysis of 2,500-3,500 words with detailed modeling.
+
+## 1. DETAILED STARTUP COSTS (Line-Item Breakdown)
+
+### Curriculum Development ($X,XXX)
+- Course design and development (hours × rate)
+- Learning management system setup
+- Instructional materials creation (textbooks, handouts, online resources)
+- Curriculum review and approval process
+- Advisory committee formation costs
+
+### Equipment & Lab Setup ($X,XXX)
+- Specific equipment list with costs (e.g., pharmacy software licenses, counting trays, pill dispensers)
+- Lab furniture and fixtures
+- Safety equipment and supplies
+- Technology (computers, printers, barcode scanners)
+- Initial inventory of practice materials
+
+### Marketing & Launch Campaign ($X,XXX)
+- Website development/updates
+- Digital advertising (Google Ads, Facebook, 6-month budget)
+- Print materials (brochures, posters, program one-pagers)
+- Open house events and information sessions
+- Public relations and media outreach
+
+### Faculty & Staff Training ($X,XXX)
+- Instructor onboarding and professional development
+- Clinical site coordinator training
+- Staff time for program setup (hours × loaded rate)
+
+### Accreditation & Regulatory Fees ($X,XXX)
+- State board of pharmacy application and approval
+- Professional association memberships
+- Accreditation application fees (if pursuing ASHP/ACPE)
+- Legal review and compliance costs
+
+### Other Startup Costs ($X,XXX)
+- Contingency (10-15% of total)
+- Miscellaneous supplies and setup
+
+**TOTAL STARTUP INVESTMENT:** $XXX,XXX
+
+## 2. ANNUAL OPERATING COSTS (3-Year Projection)
+
+### Faculty & Instructional Costs
+**Year 1:** $XX,XXX
+- Lead instructor (1.0 FTE @ $XX,XXX loaded)
+- Adjunct instructors (X credit hours @ $XXX/credit hour)
+- Clinical coordinator (0.25 FTE @ $XX,XXX loaded)
+- Professional development ($X,XXX annually)
+
+**Year 2:** $XX,XXX (adjustments for second cohort, wage increases)
+**Year 3:** $XX,XXX
+
+### Marketing & Recruitment
+**Year 1:** $XX,XXX (launch campaign)
+**Year 2:** $XX,XXX (ongoing marketing)
+**Year 3:** $XX,XXX (reduced as word-of-mouth builds)
+- Digital advertising budget
+- Event participation (career fairs, health expo)
+- Content marketing and social media
+- Email marketing and CRM tools
+
+### Equipment Maintenance & Supplies
+**Year 1-3:** $X,XXX annually
+- Software license renewals
+- Equipment repairs and replacement
+- Practice materials and consumables
+- Technology refresh
+
+### Administrative Overhead
+**Year 1-3:** $XX,XXX annually
+- Advising and student services (0.15 FTE)
+- Registration and records management
+- Facilities cost allocation
+- General institutional overhead
+
+**TOTAL OPERATING COSTS:**
+- Year 1: $XXX,XXX
+- Year 2: $XXX,XXX
+- Year 3: $XXX,XXX
+
+## 3. REVENUE PROJECTIONS (3-Year Model with Scenarios)
+
+### BASE CASE SCENARIO (Conservative)
+
+**Year 1:**
+- Enrollment: XX students (X cohorts)
+- Tuition per student: $X,XXX
+- Tuition revenue: $XX,XXX
+- Grant funding: $XX,XXX (Perkins V, WIOA)
+- Total revenue: $XX,XXX
+
+**Year 2:**
+- Enrollment: XX students (enrollment growth based on demand)
+- Tuition revenue: $XX,XXX
+- Grant funding: $XX,XXX
+- Total revenue: $XX,XXX
+
+**Year 3:**
+- Enrollment: XX students (steady state)
+- Tuition revenue: $XX,XXX
+- Grant funding: $XX,XXX
+- Total revenue: $XX,XXX
+
+### OPTIMISTIC SCENARIO (+20% Enrollment)
+[Repeat structure with higher enrollment assumptions]
+
+### PESSIMISTIC SCENARIO (-20% Enrollment)
+[Repeat structure with lower enrollment assumptions]
+
+## 4. BREAK-EVEN ANALYSIS
+
+### Break-Even Enrollment per Cohort
+- Fixed costs per cohort: $XX,XXX
+- Variable cost per student: $X,XXX
+- Tuition revenue per student: $X,XXX
+- **Break-even enrollment:** XX students per cohort
+
+### Break-Even Timeline
+**Base case:** 
+- Cumulative cash flow by month (show when positive)
+- Break-even month: Month XX (late Year 2)
+
+**Sensitivity analysis:**
+- If Year 1 enrollment is 12 vs 15: Break-even extends to Month XX
+- If startup costs increase 20%: Break-even extends to Month XX
+- If clinical sites charge fees: Break-even extends to Month XX
+
+### Monthly Cash Flow Model (36 months)
+[Provide table showing cumulative position: Month 1: -$XX,XXX, Month 12: -$XX,XXX, etc.]
+
+## 5. ROI ANALYSIS & FINANCIAL METRICS
+
+### 3-Year Net Present Value
+- Total investment (startup + 3-year operating): $XXX,XXX
+- Total revenue (3 years): $XXX,XXX
+- Net profit/loss after 3 years: $XX,XXX or ($XX,XXX)
+- ROI: XX% over 3 years
+
+### 5-Year Projection (if program continues)
+- Year 4-5 enrollment assumptions
+- Reduced marketing costs, stable operations
+- 5-year cumulative net: $XXX,XXX
+- 5-year ROI: XX%
+
+### Assumptions & Sensitivities
+List all key assumptions:
+1. Enrollment ramp: Year 1 (XX), Year 2 (XX), Year 3 (XX)
+2. Tuition held constant at $X,XXX (no increases)
+3. Clinical sites provide placements at no cost
+4. Grant funding secured: $XX,XXX annually
+5. Instructor recruited at $XX,XXX loaded
+6. [Additional assumptions]
+
+**What-if scenarios:**
+- What if enrollment misses by 20%? → ROI drops to XX%
+- What if we can't secure grants? → Break-even extends XX months
+- What if clinical sites charge $X,XXX per student? → Annual cost increases $XX,XXX
+
+## 6. GRANT FUNDING & EXTERNAL REVENUE
+
+### Specific Grant Opportunities
+**Perkins V (Career and Technical Education):**
+- Eligibility: Yes (workforce credential program)
+- Estimated funding: $XX,XXX - $XX,XXX annually
+- Application timeline: Due annually in [month]
+- Success probability: Medium-High (based on institutional Perkins history)
+
+**WIOA (Workforce Innovation and Opportunity Act):**
+- Eligibility: Yes (eligible training provider list)
+- Per-student funding: $X,XXX - $X,XXX (covers tuition + fees)
+- Estimated students qualifying: XX-XX per year
+
+**State Workforce Development Grants:**
+[List specific state opportunities]
+
+**Employer Partnership Funding:**
+- Tuition reimbursement from healthcare employers (e.g., UnityPoint, Mercy)
+- Contract training revenue (customized cohorts for single employer)
+- Equipment donations (pharmacy software, practice supplies)
+
+### Grant Strategy & Impact on ROI
+- If $XX,XXX in grants secured: ROI improves from XX% to XX%
+- Grant funding should cover XX% of startup costs
+- Critical to apply for Perkins V in first year
+
+## 7. STUDENT FINANCIAL ANALYSIS
+
+### Total Cost of Attendance (Student Perspective)
+- Tuition: $X,XXX
+- Fees: $XXX
+- Books & supplies: $XXX
+- Clinical supplies (scrubs, name tag, supplies): $XXX
+- **Total:** $X,XXX
+
+### Financial Aid Availability
+- Pell Grant eligible? Yes/No
+- State grant programs: [List with amounts]
+- Institutional scholarships: $XXX - $X,XXX available
+- Employer tuition reimbursement: Common in healthcare
+
+### Student ROI Calculation
+- Total investment: $X,XXX (tuition + fees + books + opportunity cost)
+- Starting wage: $XX,XXX annually ($XX/hour × 2,080 hours)
+- Payback period: X.X years (assuming full-time employment)
+- 10-year earnings boost: $XXX,XXX (vs. no credential)
+- **Student ROI:** XXX% over 10 years
+
+### Affordability Comparison
+- Our program: $X,XXX
+- Competitor A (DMACC): $X,XXX
+- Competitor B (Hawkeye): $X,XXX
+- Online programs: $X,XXX - $X,XXX
+- **Our positioning:** [More/Less/Comparable] expensive, justified by [differentiators]
+
+## 8. FINANCIAL RISKS & MITIGATION
+
+### Risk 1: Enrollment Shortfall
+**Impact:** If Year 1 enrolls 10 vs. 15 students, revenue drops $XX,XXX and cumulative loss reaches ($XXX,XXX)
+**Mitigation:**
+- Pre-launch employer partnerships guaranteeing X enrollments
+- $XX,XXX contingency marketing budget for mid-year push
+- Part-time cohort option to capture working adults if full-time undersells
+
+### Risk 2: Clinical Site Costs
+**Impact:** If sites charge $X,XXX per student, annual costs increase $XX,XXX and break-even extends XX months
+**Mitigation:**
+- Secure signed MOUs with zero-cost guarantee before launch
+- Develop 10+ site relationships (redundancy if 2-3 drop out)
+- Negotiate multi-year commitments
+
+### Risk 3: Grant Funding Rejection
+**Impact:** Loss of $XX,XXX revenue, ROI drops from XX% to XX%
+**Mitigation:**
+- Apply for multiple grants (Perkins, WIOA, state workforce)
+- Employer partnerships to offset (contract training revenue)
+- Modest tuition increase ($X,XXX → $X,XXX) if grants unavailable
+
+### Risk 4: Instructor Recruitment/Retention Failure
+**Impact:** Cannot launch or must suspend program if instructor leaves
+**Mitigation:**
+- Early recruitment (6+ months before launch)
+- Competitive compensation ($XX,XXX at top of range)
+- Adjunct pool backup (3 part-time instructors can cover if lead departs)
+- Retention bonuses ($X,XXX after Year 2, $X,XXX after Year 3)
+
+### Risk 5: Market Saturation / Competition
+**Impact:** Enrollment stagnates at XX students vs. projected XX, revenue shortfall
+**Mitigation:**
+- Clear differentiation (evening options, Spanish-language, employer partnerships)
+- Geographic exclusivity within XX-mile radius
+- Pre-enrollment pipeline (high school CTE partnerships)
 
 SCORING: Rate financial viability 1-10.
 8-10 = Strong ROI, breaks even within 2 years, low risk
@@ -130,7 +379,7 @@ CRITICAL REQUIREMENTS:
 Respond with valid JSON wrapped in \`\`\`json code blocks.`;
 
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 8000,
+      maxTokens: 16000,
     });
 
     const data = extractJSON(content) as FinancialProjectionsData;

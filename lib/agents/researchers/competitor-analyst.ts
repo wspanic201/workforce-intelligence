@@ -72,7 +72,7 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Kee
 }`;
 
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 8000,
+      maxTokens: 12000,
     });
 
     const data = extractJSON(content) as CompetitiveAnalysisData;

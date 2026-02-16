@@ -80,6 +80,33 @@ Statements in one section that conflict with another section or with source data
 - References to "our AI agents" or "automated analysis"
 - Language suggesting actions were taken on behalf of the client
 
+### 6. ESTIMATION PASSED AS FACT (warning)
+Statements presenting estimates or inferences as confirmed data:
+- "40 annual hires" when source says "estimated 40 hires"
+- "Program will enroll 25 students" when it's actually a projection
+- "Competitors graduate 50 students per year" when that's calculated/inferred
+Rule: Always qualify estimates with "estimated", "projected", "approximately", or "based on..."
+
+### 7. DATA QUALITY NOT FLAGGED (warning)
+Report fails to mention when key data is missing or APIs failed:
+- Source says "SerpAPI failed, no job data available" but report presents job analysis
+- O*NET returned wrong occupation code but report treats it as accurate
+- BLS data unavailable but report discusses employment trends
+Rule: If source agents flagged data issues, report MUST acknowledge limitations
+
+### 8. UNSOURCED QUOTES (critical)
+Direct or paraphrased quotes from employers, students, or survey respondents that don't appear in source data:
+- "As one hospital HR director told us..." (no interviews were conducted)
+- "Students prefer evening options, according to our survey" (no survey in source data)
+- Employer testimonials or feedback not from actual research
+
+### 9. OVERLY SPECIFIC PROJECTIONS (warning)
+Projections that are more precise than justified by data:
+- "Break-even in Month 27" when financial model shows "22-26 months"
+- "Exactly 37 annual job openings" when data suggests "35-40 range"
+- "ROI of 53.7%" when calculation is approximate
+Rule: Match precision level to data quality
+
 ## SOURCE AGENT DATA (ground truth)
 
 ${sourceData}
