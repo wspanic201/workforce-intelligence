@@ -157,65 +157,79 @@ Respond with valid JSON wrapped in \`\`\`json code blocks.`;
   }
 }
 
+function $(val: any): string {
+  if (val == null) return 'N/A';
+  if (typeof val === 'number') return val.toLocaleString();
+  return String(val);
+}
+function $$(arr: any[]): any[] { return Array.isArray(arr) ? arr : []; }
+
 function formatFinancialAnalysis(data: FinancialProjectionsData, project: ValidationProject): string {
+  if (!data) return `# Financial Analysis: ${project.program_name}\n\nFinancial data unavailable.`;
+  const sc = data.startup_costs || {} as any;
+  const oc = data.annual_operating_costs || {} as any;
+  const rp = data.revenue_projections || {} as any;
+  const be = data.break_even_analysis || {} as any;
+  const roi = data.roi_analysis || {} as any;
+
   return `# Financial Analysis: ${project.program_name}
 
 ## Startup Costs
 
 | Category | Amount |
 |----------|--------|
-| Curriculum Development | $${data.startup_costs.curriculum_development.toLocaleString()} |
-| Equipment & Labs | $${data.startup_costs.equipment_labs.toLocaleString()} |
-| Marketing & Launch | $${data.startup_costs.marketing_launch.toLocaleString()} |
-| Faculty Training | $${data.startup_costs.faculty_training.toLocaleString()} |
-| Accreditation Fees | $${data.startup_costs.accreditation_fees.toLocaleString()} |
-| Other | $${data.startup_costs.other.toLocaleString()} |
-| **TOTAL** | **$${data.startup_costs.total.toLocaleString()}** |
+| Curriculum Development | $${$(sc.curriculum_development)} |
+| Equipment & Labs | $${$(sc.equipment_labs)} |
+| Marketing & Launch | $${$(sc.marketing_launch)} |
+| Faculty Training | $${$(sc.faculty_training)} |
+| Accreditation Fees | $${$(sc.accreditation_fees)} |
+| Other | $${$(sc.other)} |
+| **TOTAL** | **$${$(sc.total)}** |
 
 ## Annual Operating Costs
 
 | Category | Amount |
 |----------|--------|
-| Faculty Salaries | $${data.annual_operating_costs.faculty_salaries.toLocaleString()} |
-| Adjunct Instructors | $${data.annual_operating_costs.adjunct_instructors.toLocaleString()} |
-| Equipment Maintenance | $${data.annual_operating_costs.equipment_maintenance.toLocaleString()} |
-| Software Licenses | $${data.annual_operating_costs.software_licenses.toLocaleString()} |
-| Marketing | $${data.annual_operating_costs.marketing.toLocaleString()} |
-| Administrative Overhead | $${data.annual_operating_costs.administrative_overhead.toLocaleString()} |
-| **TOTAL** | **$${data.annual_operating_costs.total.toLocaleString()}** |
+| Faculty Salaries | $${$(oc.faculty_salaries)} |
+| Adjunct Instructors | $${$(oc.adjunct_instructors)} |
+| Equipment Maintenance | $${$(oc.equipment_maintenance)} |
+| Software Licenses | $${$(oc.software_licenses)} |
+| Marketing | $${$(oc.marketing)} |
+| Administrative Overhead | $${$(oc.administrative_overhead)} |
+| **TOTAL** | **$${$(oc.total)}** |
 
 ## Revenue Projections
 
 | Year | Enrollment | Tuition/Student | Total Revenue |
 |------|-----------|----------------|---------------|
-| Year 1 | ${data.revenue_projections.year1.enrollment} | $${data.revenue_projections.year1.tuition_per_student.toLocaleString()} | $${data.revenue_projections.year1.total_revenue.toLocaleString()} |
-| Year 2 | ${data.revenue_projections.year2.enrollment} | $${data.revenue_projections.year2.tuition_per_student.toLocaleString()} | $${data.revenue_projections.year2.total_revenue.toLocaleString()} |
-| Year 3 | ${data.revenue_projections.year3.enrollment} | $${data.revenue_projections.year3.tuition_per_student.toLocaleString()} | $${data.revenue_projections.year3.total_revenue.toLocaleString()} |
+| Year 1 | ${$(rp.year1?.enrollment)} | $${$(rp.year1?.tuition_per_student)} | $${$(rp.year1?.total_revenue)} |
+| Year 2 | ${$(rp.year2?.enrollment)} | $${$(rp.year2?.tuition_per_student)} | $${$(rp.year2?.total_revenue)} |
+| Year 3 | ${$(rp.year3?.enrollment)} | $${$(rp.year3?.tuition_per_student)} | $${$(rp.year3?.total_revenue)} |
 
 ## Break-Even Analysis
 
-- **Break-Even Enrollment:** ${data.break_even_analysis.break_even_enrollment} students
-- **Break-Even Timeline:** ${data.break_even_analysis.break_even_timeline}
+- **Break-Even Enrollment:** ${$(be.break_even_enrollment)} students
+- **Break-Even Timeline:** ${$(be.break_even_timeline)}
 
 ## ROI Analysis
 
-- **3-Year Net:** $${data.roi_analysis.three_year_net.toLocaleString()}
-- **ROI:** ${data.roi_analysis.roi_percentage}
+- **3-Year Net:** $${$(roi.three_year_net)}
+- **ROI:** ${$(roi.roi_percentage)}
 
 **Key Assumptions:**
-${data.roi_analysis.assumptions.map(a => `- ${a}`).join('\n')}
+${$$(roi.assumptions).map((a: string) => `- ${a}`).join('\n')}
 
 ## Potential Funding Sources
 
-${data.funding_sources.map(source => `- ${source}`).join('\n')}
+${$$(data.funding_sources).map((source: string) => `- ${source}`).join('\n')}
 
 ## Financial Risks
 
-${data.risks.map(risk => `- ${risk}`).join('\n')}
+${$$(data.risks).map((risk: string) => `- ${risk}`).join('\n')}
 
 ## Financial Recommendations
 
-${data.recommendations.map((rec, i) => `${i + 1}. ${rec}`).join('\n')}
+${$$(data.recommendations).map((rec: string, i: number) => `${i + 1}. ${rec}`).join('\n')}
 
 ---
 *These projections are estimates based on typical community college program economics.*
