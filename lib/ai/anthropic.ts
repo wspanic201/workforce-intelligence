@@ -32,11 +32,17 @@ export async function callClaude(
     ? parseInt(process.env.TEST_MAX_TOKENS || '4000')
     : 8000;
   
-  const {
+  let {
     model = defaultModel,
     maxTokens = defaultMaxTokens,
     temperature = 1.0,
   } = options;
+  
+  // Cap maxTokens for Haiku in TEST_MODE (max 8192)
+  if (isTestMode && model.includes('haiku') && maxTokens > 8192) {
+    console.log(`[TEST MODE] Capping maxTokens from ${maxTokens} to 8192 (Haiku limit)`);
+    maxTokens = 8192;
+  }
   
   if (isTestMode) {
     console.log(`[TEST MODE] Using ${model} with ${maxTokens} max tokens (cheap testing)`);
