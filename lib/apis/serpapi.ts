@@ -1,6 +1,5 @@
 export interface GoogleJobsResult {
-  jobs_count: number;
-  jobs: Array<{
+  jobs_results: Array<{
     title: string;
     company_name: string;
     location: string;
@@ -8,6 +7,7 @@ export interface GoogleJobsResult {
     detected_extensions?: {
       salary?: string;
       posted_at?: string;
+      schedule_type?: string;
     };
   }>;
 }
@@ -54,7 +54,7 @@ export async function searchGoogleJobs(
 }
 
 function processJobData(data: GoogleJobsResult): ProcessedJobData {
-  const jobs = data.jobs || [];
+  const jobs = data.jobs_results || [];
 
   // Extract salaries
   const salaries = jobs
@@ -152,7 +152,7 @@ function processJobData(data: GoogleJobsResult): ProcessedJobData {
     }));
 
   return {
-    count: data.jobs_count,
+    count: jobs.length,
     salaries: salaryData,
     topEmployers,
     requiredSkills,
