@@ -61,7 +61,12 @@ export async function runMarketAnalysis(
       );
     }
 
-    console.log(`[Market Analyst] Data fetched - Jobs: ${liveJobsData.count}, O*NET: ${onetCode || 'not found'}`);
+    console.log(`[Market Analyst] Data fetched - Jobs: ${liveJobsData?.count ?? 0}, O*NET: ${onetCode || 'not found'}`);
+
+    // Ensure liveJobsData is not null for downstream usage
+    if (!liveJobsData) {
+      throw new Error('Failed to fetch live jobs data');
+    }
 
     // 3. Load persona
     const persona = await loadPersona('market-analyst');
