@@ -30,8 +30,8 @@ pkill -f "next dev" 2>/dev/null || true
 sleep 2
 
 # Start dev server with test environment
-echo "Starting dev server on port 3001..."
-PORT=3001 npm run dev > /tmp/wf-test-server.log 2>&1 &
+echo "Starting dev server on port 3001 (TEST_MODE=true, Haiku + 4k tokens)..."
+TEST_MODE=true PORT=3001 npm run dev > /tmp/wf-test-server.log 2>&1 &
 SERVER_PID=$!
 sleep 8
 
