@@ -135,22 +135,39 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
           agent.runner,
           agent.dimension
         ),
-        300000, // 5 minutes per agent
+        600000, // 10 minutes per agent (for 16k token depth)
         agent.label
       )
     );
 
     const results = await Promise.allSettled(researchTasks);
 
-    // Check for failures
+    // Check for failures and update database status
     const failures = results.filter(r => r.status === 'rejected');
     if (failures.length > 0) {
       console.error(`[Orchestrator] ${failures.length} research agents failed`);
-      failures.forEach((f, i) => {
-        if (f.status === 'rejected') {
-          console.error(`  - ${AGENT_CONFIG[i].label}: ${f.reason}`);
+      
+      // Mark failed agents as error in database (timeout doesn't trigger catch block)
+      for (let i = 0; i < results.length; i++) {
+        if (results[i].status === 'rejected') {
+          const agent = AGENT_CONFIG[i];
+          const reason = (results[i] as PromiseRejectedResult).reason;
+          
+          console.error(`  - ${agent.label}: ${reason}`);
+          
+          await supabase
+            .from('research_components')
+            .update({
+              status: 'error',
+              error_message: reason instanceof Error ? reason.message : String(reason),
+              completed_at: new Date().toISOString(),
+            })
+            .eq('project_id', projectId)
+            .eq('component_type', agent.type);
+          
+          console.log(`[Orchestrator] Marked ${agent.label} as error in database`);
         }
-      });
+      }
     }
 
     const successCount = results.filter(r => r.status === 'fulfilled').length;
@@ -169,15 +186,20 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
 
     console.log(`[Orchestrator] Found ${completedComponents?.length || 0} completed components in DB`);
 
-    // If DB query returned 0 but agents succeeded, try fetching all components
-    if (!completedComponents || completedComponents.length < 4) {
-      const { data: allComponents, error: allError } = await supabase
+    // Validate minimum completion threshold
+    if (!completedComponents || completedComponents.length === 0) {
+      const { data: allComponents } = await supabase
         .from('research_components')
         .select('id, component_type, status')
         .eq('project_id', projectId);
       console.log(`[Orchestrator] All components:`, JSON.stringify(allComponents?.map(c => ({ type: c.component_type, status: c.status }))));
-      if (allError) console.error(`[Orchestrator] Error fetching all components:`, allError);
-      throw new Error(`Insufficient research completed (${completedComponents?.length || 0}/7). Cannot proceed.`);
+      throw new Error(`No research completed (0/7). Cannot proceed.`);
+    }
+
+    // Warn if partial completion but proceed
+    if (completedComponents.length < 7) {
+      console.warn(`[Orchestrator] ⚠️  Only ${completedComponents.length}/7 agents completed - proceeding with partial data`);
+      console.warn(`[Orchestrator] Report quality may be reduced due to missing dimensions`);
     }
 
     // 6. Calculate program scores
@@ -216,10 +238,14 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
     let tigerTeamMarkdown = '';
     try {
       console.log(`[Orchestrator] Running tiger team synthesis...`);
-      const { synthesis, markdown } = await runTigerTeam(
-        projectId,
-        project as ValidationProject,
-        completedComponents as ResearchComponent[]
+      const { synthesis, markdown } = await withTimeout(
+        runTigerTeam(
+          projectId,
+          project as ValidationProject,
+          completedComponents as ResearchComponent[]
+        ),
+        600000, // 10 minutes for tiger team (20k token synthesis)
+        'Tiger Team Synthesis'
       );
       tigerTeamMarkdown = markdown;
 
