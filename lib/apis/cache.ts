@@ -7,6 +7,12 @@ export async function withCache<T>(
   fetcher: () => Promise<T>,
   ttlHours: number = 168 // 7 days
 ): Promise<T> {
+  // TEST_MODE: Bypass cache to always fetch fresh data during testing
+  if (process.env.TEST_MODE === 'true') {
+    console.log(`[Cache BYPASS] TEST_MODE enabled - fetching fresh ${apiName}`);
+    return fetcher();
+  }
+  
   const supabase = getSupabaseServerClient();
 
   // Generate cache key from query params
