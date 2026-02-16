@@ -132,15 +132,15 @@ export default function HomePage() {
       </section>
 
       {/* ===== TABBED FEATURES ===== */}
-      <section className="bg-white py-16 md:py-16 md:py-[120px]">
+      <section className="bg-white py-16 md:py-[120px]">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-            <div>
+            <div className="min-w-0">
               <AnimateOnScroll variant="fade-up">
                 <h2 className="heading-display text-[clamp(1.75rem,3vw,2.25rem)]">
                   Turn data into action — at every stage
                 </h2>
-                <p className="mt-4 text-[#4C4C4C] text-base md:text-lg max-w-lg">
+                <p className="mt-4 text-[#4C4C4C] text-base md:text-lg">
                   From initial market assessment to launch-ready marketing plan, every section of your report is designed to move you forward.
                 </p>
                 <div className="mt-8 hidden lg:block">
@@ -153,7 +153,7 @@ export default function HomePage() {
               </AnimateOnScroll>
             </div>
 
-            <div>
+            <div className="min-w-0">
               {/* Tab buttons — horizontal scroll on mobile */}
               <div className="flex flex-row lg:flex-col gap-2 lg:gap-1 mb-6 lg:mb-8 overflow-x-auto pb-2 lg:pb-0 -mx-2 px-2 scrollbar-hide">
                 {tabs.map((tab, i) => (
@@ -459,11 +459,11 @@ export default function HomePage() {
       </section>
 
       {/* ===== FINAL CTA ===== */}
-      <section className="bg-white py-16 md:py-[120px]">
+      <section className="bg-white py-16 md:py-20">
         <div className="max-w-[1200px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
             <div className="mx-auto max-w-3xl text-center">
-              <h2 className="heading-display text-[clamp(2rem,4vw,3rem)]">
+              <h2 className="heading-display text-[clamp(1.75rem,3.5vw,2.75rem)]">
                 Workforce Intelligence is for teams that plan. Make your move.
               </h2>
               <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
