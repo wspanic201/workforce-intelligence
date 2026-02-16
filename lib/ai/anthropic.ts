@@ -6,6 +6,8 @@ function getAnthropicClient(): Anthropic {
   if (!_anthropic) {
     _anthropic = new Anthropic({
       apiKey: process.env.ANTHROPIC_API_KEY,
+      timeout: 10 * 60 * 1000, // 10 minutes (for 16k token depth agents)
+      maxRetries: 2,
     });
   }
   return _anthropic;
