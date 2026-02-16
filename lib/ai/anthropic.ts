@@ -26,8 +26,8 @@ export async function callClaude(
   // TEST MODE: Use cheaper model and lower tokens for testing workflow
   const isTestMode = process.env.TEST_MODE === 'true';
   const defaultModel = isTestMode 
-    ? (process.env.TEST_MODEL || 'claude-haiku-4')
-    : 'claude-sonnet-4-5';
+    ? (process.env.TEST_MODEL || 'claude-3-5-haiku-20241022')  // Claude 3.5 Haiku
+    : 'claude-3-5-sonnet-20241022';  // Claude 3.5 Sonnet
   const defaultMaxTokens = isTestMode
     ? parseInt(process.env.TEST_MAX_TOKENS || '4000')
     : 8000;
