@@ -68,15 +68,22 @@ export async function runMarketAnalysis(
       withCache(
         'serpapi_jobs',
         { occupation: project.program_name, location: serpApiLocation },
-        () => searchGoogleJobs(project.program_name, serpApiLocation),
+        () => searchGoogleJobs(
+          // Search for occupation title, not program name (e.g. "Pharmacy Technician" not "Pharmacy Technician Certificate")
+          (project as any).target_occupation || project.program_name.replace(/\s*(certificate|diploma|degree|program|associate|bachelor)/gi, '').trim(),
+          serpApiLocation
+        ),
         168 // Cache for 7 days
       ).catch((err) => { console.warn('[Market Analyst] SerpAPI failed, continuing without live jobs:', err.message); return null; }),
-      withCache(
-        'onet_search',
-        { keyword: project.program_name },
-        () => searchONET(project.program_name),
-        720 // Cache for 30 days (O*NET changes slowly)
-      ).catch((err) => { console.warn('[Market Analyst] O*NET failed, continuing without O*NET data:', err.message); return null; }),
+      // Use SOC code directly if provided, otherwise search by program name
+      socCode
+        ? Promise.resolve(socCode)
+        : withCache(
+            'onet_search',
+            { keyword: project.program_name },
+            () => searchONET(project.program_name),
+            720 // Cache for 30 days (O*NET changes slowly)
+          ).catch((err) => { console.warn('[Market Analyst] O*NET failed, continuing without O*NET data:', err.message); return null; }),
     ]);
 
     // Fallback: If SerpAPI failed, try Brave Search for job data
@@ -124,12 +131,19 @@ export async function runMarketAnalysis(
     }
 
     // 3. Always try BLS for salary/employment data (free, no auth)
+    // Try project SOC code first, then resolved O*NET code
     let blsData = null;
-    if (socCode) {
-      blsData = await fetchBLSData(socCode).catch(() => null);
-      if (blsData) {
-        console.log(`[Market Analyst] BLS data: employment=${blsData.employment_total}, median=$${blsData.median_wage}`);
+    const codesToTry = [socCode, onetCode].filter(Boolean).map(c => c!.split('.')[0]); // Strip O*NET suffix like .00
+    for (const code of [...new Set(codesToTry)]) {
+      blsData = await fetchBLSData(code).catch(() => null);
+      if (blsData && (blsData.median_wage || blsData.employment_total)) {
+        console.log(`[Market Analyst] BLS data (${code}): employment=${blsData.employment_total}, median=$${blsData.median_wage}`);
+        break;
       }
+    }
+    if (!blsData || (!blsData.median_wage && !blsData.employment_total)) {
+      console.warn('[Market Analyst] BLS scraping returned no usable data — BLS may be blocking requests');
+      blsData = null;
     }
 
     console.log(`[Market Analyst] Data fetched - Jobs: ${liveJobsData?.count ?? 0}, O*NET: ${onetCode || 'not found'}, BLS: ${blsData ? 'yes' : 'no'}`);
