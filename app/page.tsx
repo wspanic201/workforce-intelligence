@@ -132,18 +132,18 @@ export default function HomePage() {
       </section>
 
       {/* ===== TABBED FEATURES ===== */}
-      <section className="bg-white py-[120px]">
+      <section className="bg-white py-16 md:py-16 md:py-[120px]">
         <div className="max-w-[1200px] mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
             <div>
               <AnimateOnScroll variant="fade-up">
                 <h2 className="heading-display text-[clamp(1.75rem,3vw,2.25rem)]">
                   Turn data into action — at every stage
                 </h2>
-                <p className="mt-4 text-[#4C4C4C] text-lg max-w-lg">
+                <p className="mt-4 text-[#4C4C4C] text-base md:text-lg max-w-lg">
                   From initial market assessment to launch-ready marketing plan, every section of your report is designed to move you forward.
                 </p>
-                <div className="mt-8">
+                <div className="mt-8 hidden lg:block">
                   <Link href="#sample-report">
                     <Button variant="outline" className="rounded-full px-6 h-11 font-medium border-[#E0E0E0] text-[#1F2023] hover:bg-gray-50">
                       See Sample Report
@@ -154,21 +154,19 @@ export default function HomePage() {
             </div>
 
             <div>
-              {/* Tab buttons */}
-              <div className="flex flex-col gap-1 mb-8">
+              {/* Tab buttons — horizontal scroll on mobile */}
+              <div className="flex flex-row lg:flex-col gap-2 lg:gap-1 mb-6 lg:mb-8 overflow-x-auto pb-2 lg:pb-0 -mx-2 px-2 scrollbar-hide">
                 {tabs.map((tab, i) => (
                   <button
                     key={tab.label}
                     onClick={() => setActiveTab(i)}
-                    className={`text-left px-5 py-3 rounded-xl transition-all duration-200 ${
+                    className={`text-left px-4 lg:px-5 py-2.5 lg:py-3 rounded-full lg:rounded-xl transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
                       activeTab === i
-                        ? 'bg-[#FAFAFA] shadow-sm'
-                        : 'hover:bg-gray-50'
+                        ? 'bg-[#1F2023] text-white lg:bg-[#FAFAFA] lg:text-[#1F2023] shadow-sm'
+                        : 'bg-[#FAFAFA] text-[#4C4C4C] lg:bg-transparent hover:bg-gray-50'
                     }`}
                   >
-                    <span className={`font-heading font-medium text-sm ${
-                      activeTab === i ? 'text-[#1F2023]' : 'text-[#4C4C4C]'
-                    }`}>
+                    <span className="font-heading font-medium text-sm">
                       {tab.label}
                     </span>
                   </button>
@@ -176,8 +174,8 @@ export default function HomePage() {
               </div>
 
               {/* Active tab content */}
-              <div className="rounded-2xl bg-[#FAFAFA] p-8 shadow-sm">
-                <h3 className="heading-display text-xl mb-3">{tabs[activeTab].title}</h3>
+              <div className="rounded-2xl bg-[#FAFAFA] p-6 md:p-8 shadow-sm">
+                <h3 className="heading-display text-lg md:text-xl mb-3">{tabs[activeTab].title}</h3>
                 <p className="text-[#4C4C4C] text-sm leading-relaxed mb-6">{tabs[activeTab].desc}</p>
                 <div className="space-y-2">
                   {tabs[activeTab].features.map((f) => (
@@ -187,6 +185,14 @@ export default function HomePage() {
                     </div>
                   ))}
                 </div>
+              </div>
+
+              <div className="mt-6 lg:hidden">
+                <Link href="#sample-report">
+                  <Button variant="outline" className="rounded-full px-6 h-11 font-medium border-[#E0E0E0] text-[#1F2023] hover:bg-gray-50 w-full">
+                    See Sample Report
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
@@ -229,7 +235,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== WHY INSTITUTIONS CHOOSE US ===== */}
-      <section className="bg-white py-[120px]">
+      <section className="bg-white py-16 md:py-[120px]">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
             <div>
@@ -306,14 +312,14 @@ export default function HomePage() {
 
           {/* Stats */}
           <AnimateOnScroll variant="fade-up" delay={200}>
-            <div className="flex justify-center gap-16 flex-wrap">
+            <div className="flex justify-center gap-8 md:gap-16 flex-wrap">
               {[
                 { value: 48, suffix: 'hr', label: 'Average delivery time' },
                 { value: 6, suffix: '', label: 'Expert perspectives per report' },
                 { value: 14, suffix: '+', label: 'Pages of comprehensive analysis' },
               ].map(({ value, suffix, label }) => (
                 <div key={label} className="text-center">
-                  <div className="font-heading font-medium text-white text-6xl tracking-tight">
+                  <div className="font-heading font-medium text-white text-4xl md:text-6xl tracking-tight">
                     <CountUp end={value} suffix={suffix} duration={2200} />
                   </div>
                   <p className="text-white/50 text-sm mt-2">{label}</p>
@@ -325,7 +331,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== SUPPORT FOR EVERY STEP ===== */}
-      <section className="bg-white py-[120px]">
+      <section className="bg-white py-16 md:py-[120px]">
         <div className="max-w-[1200px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-16">
             <h2 className="heading-display text-[clamp(1.75rem,3vw,2.25rem)]">
@@ -352,7 +358,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== PRICING ===== */}
-      <section id="pricing" className="bg-white py-[120px]">
+      <section id="pricing" className="bg-white py-16 md:py-[120px]">
         <div className="max-w-[1200px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-16">
             <h2 className="heading-display text-[clamp(1.75rem,3vw,2.25rem)]">
@@ -453,7 +459,7 @@ export default function HomePage() {
       </section>
 
       {/* ===== FINAL CTA ===== */}
-      <section className="bg-white py-[120px]">
+      <section className="bg-white py-16 md:py-[120px]">
         <div className="max-w-[1200px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
             <div className="mx-auto max-w-3xl text-center">

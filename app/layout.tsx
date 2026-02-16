@@ -82,6 +82,17 @@ export default function RootLayout({
                   </Button>
                 </Link>
               </div>
+              {/* Mobile CTA */}
+              <div className="md:hidden">
+                <Link href="/submit">
+                  <Button
+                    size="sm"
+                    className="rounded-full bg-[#1F2023] hover:bg-black text-white font-medium px-4 h-9 text-xs"
+                  >
+                    Start Validation
+                  </Button>
+                </Link>
+              </div>
             </div>
           </nav>
         </header>
