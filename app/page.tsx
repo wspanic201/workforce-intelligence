@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Check, Shield, ArrowRight, Zap, Database, TrendingUp } from 'lucide-react';
+import { Check, Shield, ArrowRight, Database, TrendingUp } from 'lucide-react';
 import {
   AnimateOnScroll,
   StaggerChildren,
@@ -401,15 +401,6 @@ export default function HomePage() {
           {/* Under $5K note */}
           <AnimateOnScroll variant="fade" delay={400}>
             <div className="mt-12 text-center space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.06]">
-                <Zap className="h-4 w-4 text-amber-400" />
-                <span className="text-sm text-white/60">
-                  All founding tier prices are under Dean-level purchase authority.{' '}
-                  <span className="text-white/80 font-medium">
-                    No Board approval needed.
-                  </span>
-                </span>
-              </div>
               <div className="flex items-center justify-center gap-2 text-sm text-white/40">
                 <Shield className="h-4 w-4" />
                 <span>
