@@ -1,25 +1,20 @@
-import Link from "next/link";
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Community College Program Development: A Data-Driven Approach",
   description:
-    "How to use market data to identify what programs to build, validate demand before you invest, and avoid the most common misses in community college program development.",
+    "How community colleges can use market intelligence to build programs that meet regional employer demand — before investing in curriculum, hiring, and accreditation.",
   alternates: {
-    canonical: "https://withwavelength.com/blog/community-college-program-development",
+    canonical:
+      "https://withwavelength.com/blog/community-college-program-development",
   },
   openGraph: {
     title: "Community College Program Development: A Data-Driven Approach",
     description:
-      "How to use market data to identify what programs to build, validate demand before you invest, and avoid costly misses.",
+      "Use market intelligence to build programs that meet regional employer demand before investing in development.",
     url: "https://withwavelength.com/blog/community-college-program-development",
     type: "article",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Community College Program Development: A Data-Driven Approach",
-    description:
-      "A framework for data-driven community college program development — what to build, how to validate, and how to avoid costly misses.",
   },
 };
 
@@ -28,520 +23,559 @@ const articleJsonLd = {
   "@type": "Article",
   headline: "Community College Program Development: A Data-Driven Approach",
   description:
-    "A framework for data-driven community college program development: market scanning, demand validation, and competitive analysis.",
+    "How to use market intelligence for community college program development decisions.",
   url: "https://withwavelength.com/blog/community-college-program-development",
-  datePublished: "2026-02-01",
-  dateModified: "2026-02-01",
-  author: {
-    "@type": "Organization",
-    name: "Wavelength",
-    url: "https://withwavelength.com",
-  },
+  author: { "@type": "Organization", name: "Wavelength" },
   publisher: {
     "@type": "Organization",
     name: "Wavelength",
     url: "https://withwavelength.com",
   },
+  datePublished: "2026-01-28",
+  dateModified: "2026-01-28",
 };
-
-const tocItems = [
-  { id: "the-problem", label: "The Problem with How Programs Get Built" },
-  { id: "what-data-driven-means", label: "What Data-Driven Actually Means" },
-  { id: "demand-signals", label: "Finding Real Demand Signals" },
-  { id: "competitive-analysis", label: "Competitive Analysis" },
-  { id: "financial-viability", label: "Financial Viability Before Launch" },
-  { id: "validation", label: "Validation Before You Build" },
-  { id: "common-mistakes", label: "Common Mistakes" },
-];
-
-function WaveDivider() {
-  return (
-    <div className="w-full overflow-hidden py-4" aria-hidden="true">
-      <svg viewBox="0 0 1200 60" className="w-full h-8 opacity-[0.10]" preserveAspectRatio="none">
-        <defs>
-          <linearGradient id="blog-wave-2" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#0ea5e9" />
-            <stop offset="50%" stopColor="#8b5cf6" />
-            <stop offset="100%" stopColor="#14b8a6" />
-          </linearGradient>
-        </defs>
-        <path
-          d="M0,30 C150,5 300,55 450,30 C600,5 750,55 900,30 C1050,5 1150,55 1200,30"
-          fill="none"
-          stroke="url(#blog-wave-2)"
-          strokeWidth="2"
-        />
-      </svg>
-    </div>
-  );
-}
 
 export default function ProgramDevelopmentPage() {
   return (
-    <main>
+    <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
 
-      {/* Hero */}
-      <section className="py-16 px-6 border-b border-white/[0.06]">
-        <div className="max-w-3xl mx-auto">
-          <div className="flex items-center gap-3 mb-4">
-            <span className="inline-block bg-teal-400/10 text-teal-400 border border-teal-400/20 px-3 py-1 rounded-full text-xs font-semibold">
+      <article className="max-w-4xl mx-auto px-4 py-12">
+        {/* Cosmic accent bar */}
+        <div className="h-1 w-full rounded-full bg-gradient-to-r from-blue-500 via-teal-500 to-violet-500 mb-10" />
+
+        {/* Header */}
+        <header className="mb-10">
+          <div className="flex flex-wrap items-center gap-3 mb-4">
+            <span className="text-xs font-mono text-blue-400 border border-blue-400/30 px-3 py-1 rounded-full">
               Program Development
             </span>
-            <span className="text-white/30 text-sm">7 min read</span>
+            <span className="text-white/30 text-sm">January 28, 2026</span>
+            <span className="text-white/20 text-sm">·</span>
+            <span className="text-white/30 text-sm">9 min read</span>
           </div>
           <h1
-            className="text-gradient-cosmic font-bold leading-tight mb-5"
+            className="font-bold leading-tight mb-5 text-white"
             style={{
-              fontFamily: "var(--font-heading)",
-              fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+              fontFamily: "var(--font-space-grotesk)",
+              fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)",
             }}
           >
-            Community College Program Development: A Data-Driven Approach
+            Community College Program Development:{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">
+              A Data-Driven Approach
+            </span>
           </h1>
-          <p className="text-white/70 text-lg leading-relaxed mb-4">
-            Building a new program at a community college is a multi-year, multi-hundred-thousand-dollar
-            commitment. Curriculum development, instructor hiring, equipment purchasing, accreditation
-            work — it all happens before a single student enrolls. And yet, at many institutions, the
-            decision to build comes down to a hunch, a board member&apos;s suggestion, or an employer
-            who made a compelling pitch at a lunch meeting.
+          <p className="text-white/60 text-xl leading-relaxed">
+            The gap between what community colleges offer and what regional employers
+            actually need is wider than most administrators realize — and it's costing
+            institutions enrollment, credibility, and funding. Here's how to close it.
           </p>
-          <p className="text-white/70 leading-relaxed">
-            This guide lays out a data-driven approach to program development — one that replaces
-            intuition with evidence at every major decision point.
-          </p>
-        </div>
-      </section>
+        </header>
 
-      <div className="max-w-5xl mx-auto px-6 py-12 flex gap-12">
-        {/* TOC Sidebar */}
-        <aside className="hidden lg:block w-60 flex-shrink-0">
-          <div className="sticky top-24 card-cosmic rounded-xl p-5">
-            <h2
-              className="text-xs font-bold text-teal-400 uppercase tracking-widest mb-4"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              In This Guide
-            </h2>
-            <nav className="space-y-2">
-              {tocItems.map((item) => (
-                <a
-                  key={item.id}
-                  href={`#${item.id}`}
-                  className="block text-sm text-white/50 hover:text-white/80 transition-colors leading-snug"
-                >
-                  {item.label}
+        {/* TOC */}
+        <nav
+          className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-6 mb-12"
+          aria-label="Table of Contents"
+        >
+          <h2
+            className="text-xs font-mono text-blue-400 uppercase tracking-wider mb-4"
+            style={{ fontFamily: "var(--font-space-grotesk)" }}
+          >
+            Table of Contents
+          </h2>
+          <ol className="space-y-2 text-white/50 text-sm">
+            {[
+              ["#the-mismatch-problem", "1. The Mismatch Problem (and Why It Persists)"],
+              ["#traditional-process", "2. How Traditional Program Development Works — and Where It Breaks"],
+              ["#what-data-driven-looks-like", "3. What a Data-Driven Approach Actually Looks Like"],
+              ["#signals-to-track", "4. The Market Signals That Matter Most"],
+              ["#program-validation", "5. Validating a Program Idea Before You Build It"],
+              ["#building-the-case", "6. Building the Internal Case for a New Program"],
+              ["#tools", "7. Tools and Resources for Market Intelligence"],
+            ].map(([href, label]) => (
+              <li key={String(href)}>
+                <a href={String(href)} className="hover:text-blue-400 transition-colors">
+                  {label}
                 </a>
-              ))}
-            </nav>
+              </li>
+            ))}
+          </ol>
+        </nav>
+
+        {/* Section 1 */}
+        <section id="the-mismatch-problem" className="mb-12">
+          <h2
+            className="text-2xl font-bold mb-4 text-white"
+            style={{ fontFamily: "var(--font-space-grotesk)" }}
+          >
+            The Mismatch Problem (and Why It Persists)
+          </h2>
+          <p className="text-white/60 leading-relaxed mb-4">
+            Community colleges serve a dual mission: academic preparation and workforce
+            development. In practice, the workforce development side frequently lags
+            employer needs by three to five years — the time it takes to move a new program
+            from idea to enrolled students.
+          </p>
+          <p className="text-white/60 leading-relaxed mb-4">
+            This lag isn't a failure of effort. Most program development teams are working
+            hard. The problem is structural: the inputs they're relying on — periodic
+            employer surveys, anecdotal advisory board feedback, and lagging labor market
+            publications — are too slow and too imprecise for today's pace of change.
+          </p>
+          <p className="text-white/60 leading-relaxed mb-4">
+            The result is a predictable pattern: institutions invest heavily in programs
+            for jobs that have already been filled by competitors, while adjacent emerging
+            occupations go unserved. Students enroll in programs that lead to saturated
+            job markets. Employers hire from out-of-region because local pipelines don't
+            match their needs.
+          </p>
+          <div className="bg-white/[0.03] border-l-4 border-blue-500 p-5 rounded-r-xl mb-4">
+            <p className="text-white/90 font-medium">
+              Our analysis consistently shows that the most valuable program opportunities
+              at any given institution aren't where leadership expects them to be. The
+              real gaps are found in adjacent occupations and emerging specializations
+              that don't appear on traditional employer survey lists.
+            </p>
           </div>
-        </aside>
+        </section>
 
-        {/* Article */}
-        <article className="flex-1 min-w-0">
-          {/* The Problem */}
-          <section id="the-problem" className="mb-12">
-            <h2
-              className="text-2xl font-bold text-white mb-4"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              The Problem with How Programs Get Built
-            </h2>
-            <p className="text-white/70 leading-relaxed mb-4">
-              Program development at most community colleges follows a familiar pattern: someone
-              identifies a perceived need, champions the idea through shared governance, secures
-              approval, and then builds. By the time enrollment data comes in, the institution is
-              two or three years and significant dollars into something that may — or may not —
-              actually have an audience.
-            </p>
-            <p className="text-white/70 leading-relaxed mb-4">
-              The failure mode isn&apos;t usually the program itself. It&apos;s the assumption
-              that perceived need equals actual demand. These are very different things.
-            </p>
-            <div className="grid sm:grid-cols-2 gap-4 my-6">
-              {[
-                {
-                  label: "Perceived need",
-                  desc: '"Employers keep telling us they need more welders." "There\'s a nursing shortage." "The tech industry is growing fast."',
-                  color: "border-red-500/20 bg-red-500/5",
-                  textColor: "text-red-300",
-                },
-                {
-                  label: "Actual demand",
-                  desc: "How many students in your specific region will enroll, at what price point, in a program at your institution specifically.",
-                  color: "border-teal-500/20 bg-teal-500/5",
-                  textColor: "text-teal-300",
-                },
-              ].map((item) => (
-                <div key={item.label} className={`rounded-xl p-5 border ${item.color}`}>
-                  <p className={`font-bold text-sm mb-2 ${item.textColor}`}>{item.label}</p>
-                  <p className="text-white/60 text-sm leading-relaxed">{item.desc}</p>
+        {/* Section 2 */}
+        <section id="traditional-process" className="mb-12">
+          <h2
+            className="text-2xl font-bold mb-4 text-white"
+            style={{ fontFamily: "var(--font-space-grotesk)" }}
+          >
+            How Traditional Program Development Works — and Where It Breaks
+          </h2>
+          <p className="text-white/60 leading-relaxed mb-6">
+            The standard community college program development cycle looks something like this:
+          </p>
+          <div className="space-y-4 mb-8">
+            {[
+              {
+                step: "Idea generation",
+                desc: "A faculty member or administrator identifies a potential program based on a trend they've noticed or an employer who reached out.",
+                problem: "Highly dependent on individual networks. Systematically misses opportunities that no one in-house happens to know about.",
+              },
+              {
+                step: "Employer survey",
+                desc: "The institution surveys a list of regional employers to gauge interest in the proposed program.",
+                problem: "Survey response rates are typically 15–25%. Respondents are usually companies the institution already has relationships with — not the full employer landscape.",
+              },
+              {
+                step: "Advisory board review",
+                desc: "The proposed program goes to a workforce advisory board for review.",
+                problem: "Advisory boards typically meet 2–4 times per year. Members represent a narrow cross-section of employers, skewing toward large established companies.",
+              },
+              {
+                step: "Curriculum development and accreditation",
+                desc: "The institution hires faculty, develops curriculum, and seeks accreditation.",
+                problem: "This phase typically takes 18–36 months. The labor market that was identified at the start may look significantly different by completion.",
+              },
+              {
+                step: "First cohort enrolled",
+                desc: "Students begin the program.",
+                problem: "If the market analysis was off, the institution typically doesn't discover the problem until completion and placement data comes in — 2+ years later.",
+              },
+            ].map((item) => (
+              <div
+                key={item.step}
+                className="border border-white/[0.08] rounded-xl overflow-hidden"
+              >
+                <div className="bg-white/[0.03] px-5 py-3">
+                  <h3
+                    className="text-white font-semibold text-sm"
+                    style={{ fontFamily: "var(--font-space-grotesk)" }}
+                  >
+                    {item.step}
+                  </h3>
                 </div>
-              ))}
-            </div>
-            <p className="text-white/70 leading-relaxed">
-              Data-driven program development doesn&apos;t eliminate judgment — it informs it.
-              The goal is to replace unsupported intuition with evidence at the points where
-              the stakes are highest.
-            </p>
-          </section>
-
-          <WaveDivider />
-
-          {/* What Data-Driven Means */}
-          <section id="what-data-driven-means" className="mb-12">
-            <h2
-              className="text-2xl font-bold text-white mb-4"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              What &quot;Data-Driven&quot; Actually Means in Program Development
-            </h2>
-            <p className="text-white/70 leading-relaxed mb-4">
-              In practice, data-driven program development means answering these questions with
-              evidence before committing to build:
-            </p>
-            <div className="space-y-3 my-4">
-              {[
-                {
-                  q: "Is there real employer demand in our region for this occupation?",
-                  note: "Not nationally, not anecdotally — specifically in your labor market.",
-                },
-                {
-                  q: "Are there students in our catchment area who would enroll?",
-                  note: "At your price point, in your format, at your institution.",
-                },
-                {
-                  q: "What are our competitors already offering?",
-                  note: "Other community colleges, four-year institutions, private training providers, and employer-run programs.",
-                },
-                {
-                  q: "Does this program fit our institution's capacity and mission?",
-                  note: "Can you deliver it at quality? Do you have the instructors, equipment, and infrastructure?",
-                },
-                {
-                  q: "What does the financial picture look like?",
-                  note: "Minimum viable cohort size, cost per student, revenue at various enrollment levels.",
-                },
-              ].map((item) => (
-                <div key={item.q} className="card-cosmic rounded-xl p-5">
-                  <p className="font-semibold text-white text-sm mb-1">{item.q}</p>
-                  <p className="text-white/50 text-xs leading-relaxed">{item.note}</p>
+                <div className="px-5 py-4">
+                  <p className="text-white/60 text-sm mb-2">{item.desc}</p>
+                  <p className="text-amber-400/70 text-xs">
+                    <strong className="text-amber-400">Where it breaks:</strong> {item.problem}
+                  </p>
                 </div>
-              ))}
-            </div>
-            <p className="text-white/70 leading-relaxed">
-              Answering these questions rigorously requires pulling from multiple sources and
-              synthesizing them. That&apos;s what a proper market scan does — and it&apos;s the
-              difference between building programs that fill cohorts and building programs that
-              sit underenrolled for years.
-            </p>
-          </section>
+              </div>
+            ))}
+          </div>
+        </section>
 
-          <WaveDivider />
+        {/* Section 3 */}
+        <section id="what-data-driven-looks-like" className="mb-12">
+          <h2
+            className="text-2xl font-bold mb-4 text-white"
+            style={{ fontFamily: "var(--font-space-grotesk)" }}
+          >
+            What a Data-Driven Approach Actually Looks Like
+          </h2>
+          <p className="text-white/60 leading-relaxed mb-4">
+            A data-driven program development process doesn't replace judgment — it informs
+            it earlier and more precisely. The goal is to answer the following questions
+            with data before committing to curriculum development:
+          </p>
+          <div className="space-y-3 mb-6">
+            {[
+              "Is there demonstrable employer demand for this credential in our specific service area?",
+              "What are employers paying for this role? Is the wage trajectory moving up or plateauing?",
+              "How many open positions exist at any given time, and how long are they remaining open?",
+              "Who else is training for this credential regionally? Are they capturing the demand, or is there still a gap?",
+              "Is this a stable occupation or one whose requirements are shifting in ways that would affect curriculum quickly?",
+              "What credential format do employers actually value — a certificate, a two-year degree, an industry certification, or some combination?",
+            ].map((q, i) => (
+              <div key={i} className="flex gap-3 text-white/60 text-sm">
+                <span className="text-teal-400 shrink-0 mt-0.5">→</span>
+                {q}
+              </div>
+            ))}
+          </div>
+          <p className="text-white/60 leading-relaxed">
+            Answering these questions with traditional survey methods is slow and incomplete.
+            Answering them with real-time labor market signals — job posting data, wage
+            trajectory analysis, credential demand mapping — is both faster and more accurate.
+          </p>
+        </section>
 
-          {/* Demand Signals */}
-          <section id="demand-signals" className="mb-12">
-            <h2
-              className="text-2xl font-bold text-white mb-4"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              Finding Real Demand Signals
-            </h2>
-            <p className="text-white/70 leading-relaxed mb-4">
-              Demand for workforce programs shows up in several places. The most useful signals:
-            </p>
-            <div className="space-y-4">
-              {[
-                {
-                  signal: "Job posting volume and velocity",
-                  detail:
-                    "How many employers in your region are actively posting for this occupation, and how long do those postings stay open? High posting volume with long time-to-fill is a strong demand signal. Be specific: regional data matters far more than national averages.",
-                  icon: "📊",
-                },
-                {
-                  signal: "Employer partnership interest",
-                  detail:
-                    "Are employers asking your institution to build this, offering to co-fund development, or willing to commit to interviewing graduates? Expressed interest without commitment is worth noting but not betting on.",
-                  icon: "🤝",
-                },
-                {
-                  signal: "Wage trends for the occupation",
-                  detail:
-                    "Rising wages in a region signal employer competition for talent — which means real demand. Flat or declining wages may indicate the market is oversupplied or the occupation is being automated.",
-                  icon: "📈",
-                },
-                {
-                  signal: "Search and inquiry patterns",
-                  detail:
-                    "Are prospective students in your region searching for this type of training? Inquiry patterns from your own marketing channels, community searches, and referral sources can reveal latent demand.",
-                  icon: "🔍",
-                },
-                {
-                  signal: "Competitor enrollment data",
-                  detail:
-                    "What are similar programs at nearby institutions doing? Are they growing, stable, or declining? If programs in your region are filling cohorts and students are coming from your area, that&apos;s meaningful.",
-                  icon: "🏫",
-                },
-              ].map((item) => (
-                <div key={item.signal} className="card-cosmic rounded-xl p-5">
-                  <div className="flex items-start gap-4">
-                    <span className="text-2xl shrink-0">{item.icon}</span>
-                    <div>
-                      <h3
-                        className="font-bold text-white mb-2"
-                        style={{ fontFamily: "var(--font-heading)" }}
-                      >
-                        {item.signal}
-                      </h3>
-                      <p className="text-white/60 text-sm leading-relaxed">{item.detail}</p>
+        {/* Section 4 */}
+        <section id="signals-to-track" className="mb-12">
+          <h2
+            className="text-2xl font-bold mb-4 text-white"
+            style={{ fontFamily: "var(--font-space-grotesk)" }}
+          >
+            The Market Signals That Matter Most
+          </h2>
+          <p className="text-white/60 leading-relaxed mb-6">
+            Not all labor market data is equally useful for program development. Here's what
+            our research shows actually predicts program viability:
+          </p>
+          <div className="space-y-6">
+            {[
+              {
+                signal: "Job posting velocity and duration",
+                detail:
+                  "How many positions are being posted per month, and how long are they staying open? A high volume of long-duration postings is the clearest signal of a supply gap. Short-duration postings can mean either abundant supply or positions that are quickly filled from internal pipelines.",
+                weight: "Highest predictive value",
+                color: "from-teal-500 to-blue-500",
+              },
+              {
+                signal: "Wage trajectory over 24–36 months",
+                detail:
+                  "Wages moving upward consistently signal genuine scarcity. Flat or declining wages in an occupation may mean the market has stabilized or that automation is reducing demand. Don't just look at current wages — look at the trend.",
+                weight: "High predictive value",
+                color: "from-blue-500 to-violet-500",
+              },
+              {
+                signal: "Employer diversity",
+                detail:
+                  "Is demand concentrated in one or two large employers, or is it distributed across dozens of companies? Concentrated demand creates vulnerability — if the anchor employer changes its hiring strategy, the program loses its market. Distributed demand is more durable.",
+                weight: "High predictive value",
+                color: "from-violet-500 to-blue-500",
+              },
+              {
+                signal: "Credential requirements in job postings",
+                detail:
+                  "Are employers actually requiring the credential you're considering offering? Some occupations have a credential tradition that doesn't reflect actual hiring requirements. Others require industry certifications your institution may not be positioned to deliver.",
+                weight: "Medium predictive value",
+                color: "from-blue-500 to-teal-500",
+              },
+              {
+                signal: "Regional program gap analysis",
+                detail:
+                  "What's already being offered within commuting distance? If three colleges are already graduating students in a field, the additional marginal value of your program depends on whether supply still lags demand — not just whether demand exists.",
+                weight: "Medium predictive value",
+                color: "from-teal-500 to-violet-500",
+              },
+            ].map((item) => (
+              <div
+                key={item.signal}
+                className="border border-white/[0.08] rounded-xl p-6 bg-white/[0.02]"
+              >
+                <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+                  <h3
+                    className="text-white font-bold"
+                    style={{ fontFamily: "var(--font-space-grotesk)" }}
+                  >
+                    {item.signal}
+                  </h3>
+                  <span
+                    className={`text-xs font-mono bg-gradient-to-r ${item.color} bg-clip-text text-transparent border border-white/[0.08] px-3 py-1 rounded-full shrink-0`}
+                  >
+                    {item.weight}
+                  </span>
+                </div>
+                <p className="text-white/50 text-sm leading-relaxed">{item.detail}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Section 5 */}
+        <section id="program-validation" className="mb-12">
+          <h2
+            className="text-2xl font-bold mb-4 text-white"
+            style={{ fontFamily: "var(--font-space-grotesk)" }}
+          >
+            Validating a Program Idea Before You Build It
+          </h2>
+          <p className="text-white/60 leading-relaxed mb-6">
+            The most expensive mistake in program development isn't moving too slowly —
+            it's moving too fast on bad information. Here's a lightweight validation
+            framework to apply before committing to full development:
+          </p>
+          <div className="space-y-4">
+            {[
+              {
+                phase: "Phase 1: Signal confirmation (1–2 weeks)",
+                items: [
+                  "Pull 90-day job posting data for the target occupation in your service area",
+                  "Check wage trajectory over the past 24 months",
+                  "Inventory existing regional programs offering comparable credentials",
+                ],
+              },
+              {
+                phase: "Phase 2: Employer verification (2–4 weeks)",
+                items: [
+                  "Conduct 5–10 targeted employer interviews (not surveys — conversations)",
+                  "Focus on employers with multiple open positions, not anchor employers who may have unusual hiring dynamics",
+                  "Ask specifically about credential preferences, not just job titles",
+                ],
+              },
+              {
+                phase: "Phase 3: Competitive positioning (1–2 weeks)",
+                items: [
+                  "Identify what differentiation your program would offer over existing options",
+                  "Assess your institution's existing faculty capacity and infrastructure for this field",
+                  "Estimate time-to-first-cohort and compare to market timeline",
+                ],
+              },
+            ].map((phase) => (
+              <div
+                key={phase.phase}
+                className="border border-white/[0.08] rounded-xl overflow-hidden"
+              >
+                <div className="bg-gradient-to-r from-blue-500/10 to-teal-500/10 px-5 py-3 border-b border-white/[0.06]">
+                  <h3
+                    className="text-white font-semibold text-sm"
+                    style={{ fontFamily: "var(--font-space-grotesk)" }}
+                  >
+                    {phase.phase}
+                  </h3>
+                </div>
+                <div className="px-5 py-4 space-y-2">
+                  {phase.items.map((item) => (
+                    <div key={item} className="flex gap-2 text-white/50 text-sm">
+                      <span className="text-teal-400 shrink-0 mt-0.5">✓</span>
+                      {item}
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          </section>
+              </div>
+            ))}
+          </div>
+          <p className="text-white/50 text-sm mt-4">
+            This entire validation process should take 4–8 weeks. If you can't confirm
+            signal strength in that timeframe, the program isn't ready — or the opportunity
+            isn't there.
+          </p>
+        </section>
 
-          <WaveDivider />
+        {/* Section 6 */}
+        <section id="building-the-case" className="mb-12">
+          <h2
+            className="text-2xl font-bold mb-4 text-white"
+            style={{ fontFamily: "var(--font-space-grotesk)" }}
+          >
+            Building the Internal Case for a New Program
+          </h2>
+          <p className="text-white/60 leading-relaxed mb-4">
+            New program proposals typically need to clear academic affairs, a curriculum
+            committee, the board, and sometimes state approval. Each of those audiences
+            needs something slightly different from your business case.
+          </p>
+          <div className="space-y-4">
+            {[
+              {
+                audience: "Academic Affairs / Curriculum Committee",
+                needs: "Evidence that the program is academically sound and that there's a clear credential pathway. They want to see advisory board engagement and articulation opportunities.",
+              },
+              {
+                audience: "Board of Trustees",
+                needs: "Financial viability and reputational fit. They want enrollment projections, cost structure, and evidence that the program serves the college's mission.",
+              },
+              {
+                audience: "State Agency / Accreditor",
+                needs: "Compliance documentation. They want proof of employer demand, credential legitimacy, and that the program meets minimum size and resource standards.",
+              },
+              {
+                audience: "President / Cabinet",
+                needs: "Strategic fit and institutional risk. They want to know the downside scenarios as much as the upside projections.",
+              },
+            ].map((item) => (
+              <div
+                key={item.audience}
+                className="border border-white/[0.08] rounded-xl p-5 bg-white/[0.02] flex gap-4"
+              >
+                <div className="w-1 rounded-full bg-gradient-to-b from-blue-500 to-teal-500 shrink-0" />
+                <div>
+                  <h3
+                    className="text-white font-semibold mb-1"
+                    style={{ fontFamily: "var(--font-space-grotesk)" }}
+                  >
+                    {item.audience}
+                  </h3>
+                  <p className="text-white/50 text-sm">{item.needs}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p className="text-white/60 leading-relaxed mt-6">
+            Market intelligence data — job posting volumes, wage trajectories, regional
+            gap analysis — makes every one of these conversations easier. Instead of
+            "we believe there's demand," you can show documented evidence. That shift
+            changes the nature of the approval conversation.
+          </p>
+        </section>
 
-          {/* Competitive Analysis */}
-          <section id="competitive-analysis" className="mb-12">
-            <h2
-              className="text-2xl font-bold text-white mb-4"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              Competitive Analysis: Who Else Is in This Space?
-            </h2>
-            <p className="text-white/70 leading-relaxed mb-4">
-              A market with strong employer demand and no community college training programs is
-              an opportunity. A market with strong employer demand and four well-established
-              programs already serving it is a much more complicated conversation.
-            </p>
-            <p className="text-white/70 leading-relaxed mb-4">
-              Competitive analysis for program development should map:
-            </p>
-            <div className="grid sm:grid-cols-2 gap-3 my-4">
-              {[
-                { item: "Other community colleges within your commute shed", icon: "🏛️" },
-                { item: "Four-year institutions offering similar credentials", icon: "🎓" },
-                { item: "Private training providers and bootcamps", icon: "💼" },
-                { item: "Employer-run training programs and apprenticeships", icon: "🏭" },
-                { item: "Online providers targeting your geographic audience", icon: "💻" },
-                { item: "Union training programs in the same occupations", icon: "🔧" },
-              ].map((item) => (
-                <div
-                  key={item.item}
-                  className="card-cosmic rounded-xl p-4 flex items-start gap-3"
+        {/* Section 7 */}
+        <section id="tools" className="mb-12">
+          <h2
+            className="text-2xl font-bold mb-4 text-white"
+            style={{ fontFamily: "var(--font-space-grotesk)" }}
+          >
+            Tools and Resources for Market Intelligence
+          </h2>
+          <p className="text-white/60 leading-relaxed mb-6">
+            Several tools can support market-driven program development. Here's how
+            they fit into a comprehensive approach:
+          </p>
+          <div className="space-y-4">
+            <div className="border border-blue-500/20 rounded-xl p-5 bg-blue-500/[0.03]">
+              <h3
+                className="text-blue-400 font-bold mb-2"
+                style={{ fontFamily: "var(--font-space-grotesk)" }}
+              >
+                Market Scan by Wavelength ($1,500)
+              </h3>
+              <p className="text-white/60 text-sm mb-3">
+                Our{" "}
+                <Link
+                  href="/discover"
+                  className="text-blue-400 underline hover:no-underline"
                 >
-                  <span className="text-xl shrink-0">{item.icon}</span>
-                  <p className="text-white/70 text-sm leading-relaxed">{item.item}</p>
-                </div>
-              ))}
-            </div>
-            <p className="text-white/70 leading-relaxed mb-4">
-              The goal isn&apos;t to find markets with zero competition — it&apos;s to identify
-              where your institution has a genuine competitive advantage. That might be geography,
-              employer relationships, pricing, format (accelerated, evening, hybrid), or a
-              differentiated credential pathway.
-            </p>
-            <p className="text-white/70 leading-relaxed">
-              Our{" "}
+                  Market Scan
+                </Link>{" "}
+                is a 25+ page report covering scored program opportunities for your
+                specific service area — with employer demand signals, competitive gap
+                analysis, wage trajectory data, grant alignment, and hidden opportunities
+                your institution may not have considered. Delivered in 5–7 business days.
+              </p>
               <Link
                 href="/discover"
-                className="text-teal-400 underline hover:text-teal-300 transition-colors"
+                className="text-blue-400 text-sm font-semibold hover:underline"
               >
-                Market Scan
-              </Link>{" "}
-              includes a full competitive landscape analysis as part of the delivered report —
-              mapping what&apos;s available in your region and identifying white-space opportunities
-              your competitors aren&apos;t addressing.
-            </p>
-          </section>
-
-          <WaveDivider />
-
-          {/* Financial Viability */}
-          <section id="financial-viability" className="mb-12">
-            <h2
-              className="text-2xl font-bold text-white mb-4"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              Financial Viability: The Math Before You Build
-            </h2>
-            <p className="text-white/70 leading-relaxed mb-4">
-              Every new program has a minimum viable cohort — the enrollment level at which it
-              breaks even or contributes positively to institutional finances. Running this
-              calculation before you launch is non-negotiable.
-            </p>
-            <p className="text-white/70 leading-relaxed mb-4">
-              The inputs:
-            </p>
-            <div className="grid sm:grid-cols-2 gap-3 my-4">
-              {[
-                { item: "Per-student tuition revenue (or Pell funding if eligible)", icon: "💰" },
-                { item: "Per-cohort fixed costs: instructor, space, equipment depreciation", icon: "🏗️" },
-                { item: "Variable costs: materials, certifications, student support", icon: "📦" },
-                { item: "Overhead allocation for marketing, enrollment, advising", icon: "📣" },
-              ].map((item) => (
-                <div key={item.item} className="card-cosmic rounded-xl p-4 flex items-start gap-3">
-                  <span className="text-xl shrink-0">{item.icon}</span>
-                  <p className="text-white/70 text-sm leading-relaxed">{item.item}</p>
-                </div>
-              ))}
+                Learn about Market Scan →
+              </Link>
             </div>
-            <p className="text-white/70 leading-relaxed mb-4">
-              With these inputs, you can model the revenue and cost at various enrollment levels
-              and determine your break-even threshold. If that threshold requires more students
-              than your market analysis suggests you can realistically attract, you have a problem
-              to solve before you build — not after.
-            </p>
-            <p className="text-white/70 leading-relaxed">
-              Workforce Pell changes this math significantly for qualifying programs.
-              A program priced at $3,000 that becomes Pell-eligible can shift from a challenging
-              enrollment challenge to a strong financial performer — because cost is no longer the
-              barrier it was for prospective students.
-            </p>
-          </section>
-
-          <WaveDivider />
-
-          {/* Validation */}
-          <section id="validation" className="mb-12">
-            <h2
-              className="text-2xl font-bold text-white mb-4"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              Validation Before You Build
-            </h2>
-            <p className="text-white/70 leading-relaxed mb-4">
-              Market analysis tells you what the opportunity looks like on paper. Validation
-              tells you whether your institution can actually capture it. These are two different
-              questions.
-            </p>
-            <p className="text-white/70 leading-relaxed mb-4">
-              Before committing to full program development, run some form of validation:
-            </p>
-            <div className="space-y-3">
-              {[
-                {
-                  type: "Employer letters of support or pre-commitment",
-                  detail:
-                    "Not just verbal interest — written commitments to interview graduates, offer co-op placements, or contribute to program development. This is the strongest signal you can get.",
-                },
-                {
-                  type: "Prospective student interest surveys",
-                  detail:
-                    "Ask people in your market if they&apos;d enroll, at what price, in what format. Willingness to pay is very different from expressed interest — push for it.",
-                },
-                {
-                  type: "Pilot cohort or micro-credential test",
-                  detail:
-                    "Can you run a smaller version of the program as a non-credit offering to test demand and refine the curriculum before full-scale investment?",
-                },
-                {
-                  type: "Third-party market validation",
-                  detail:
-                    "An independent market scan from Wavelength or another source gives you an outside perspective that&apos;s not filtered by institutional enthusiasm. Sometimes the most valuable thing is having someone tell you what the data actually shows.",
-                },
-              ].map((item) => (
-                <div key={item.type} className="card-cosmic rounded-xl p-5">
-                  <h3
-                    className="font-semibold text-white mb-2"
-                    style={{ fontFamily: "var(--font-heading)" }}
-                  >
-                    {item.type}
-                  </h3>
-                  <p className="text-white/60 text-sm leading-relaxed">{item.detail}</p>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          <WaveDivider />
-
-          {/* Common Mistakes */}
-          <section id="common-mistakes" className="mb-8">
-            <h2
-              className="text-2xl font-bold text-white mb-4"
-              style={{ fontFamily: "var(--font-heading)" }}
-            >
-              Common Mistakes in Community College Program Development
-            </h2>
-            <div className="space-y-4">
-              {[
-                {
-                  mistake: "Confusing national trends with regional demand",
-                  detail:
-                    "A growing national occupation doesn&apos;t mean there&apos;s unmet demand in your specific labor market. Always localize your analysis to your realistic service area.",
-                },
-                {
-                  mistake: "Over-relying on single-employer interest",
-                  detail:
-                    "One employer asking for a program is a data point, not a market. If that employer&apos;s needs change — or the company shrinks — your program loses its anchor. Build programs for labor market conditions, not single employer requests.",
-                },
-                {
-                  mistake: "Underestimating time to enrollment momentum",
-                  detail:
-                    "New programs typically take 2–3 cohorts before word-of-mouth and outcomes data build enrollment naturally. Financial models need to account for the ramp period, not just steady-state enrollment.",
-                },
-                {
-                  mistake: "Skipping competitive analysis",
-                  detail:
-                    "If a competitor is already serving this market well, the question isn&apos;t whether the market exists — it&apos;s whether you can take market share. That&apos;s a harder problem and requires a different strategy.",
-                },
-                {
-                  mistake: "Not planning for Pell eligibility from the start",
-                  detail:
-                    "New programs entering the 150–599 clock-hour range should be designed with Pell eligibility in mind from day one — meeting the credential, duration, and outcomes criteria from the start, not retrofitted later.",
-                },
-              ].map((item) => (
-                <div
-                  key={item.mistake}
-                  className="rounded-xl p-5 bg-red-500/5 border border-red-500/20"
+            <div className="border border-teal-500/20 rounded-xl p-5 bg-teal-500/[0.03]">
+              <h3
+                className="text-teal-400 font-bold mb-2"
+                style={{ fontFamily: "var(--font-space-grotesk)" }}
+              >
+                Program Validation by Wavelength
+              </h3>
+              <p className="text-white/60 text-sm mb-3">
+                Before committing to a full Market Scan, our{" "}
+                <Link
+                  href="/validate"
+                  className="text-teal-400 underline hover:no-underline"
                 >
-                  <p className="text-red-300 font-semibold mb-2">❌ {item.mistake}</p>
-                  <p className="text-white/60 text-sm leading-relaxed">{item.detail}</p>
-                </div>
-              ))}
+                  Program Validation
+                </Link>{" "}
+                tool lets you quickly check the signal strength for a specific program
+                idea. Useful for early-stage exploration when you have a hypothesis but
+                need to know whether it's worth deeper investigation.
+              </p>
+              <Link
+                href="/validate"
+                className="text-teal-400 text-sm font-semibold hover:underline"
+              >
+                Learn about Program Validation →
+              </Link>
             </div>
-          </section>
-        </article>
-      </div>
-
-      {/* CTA */}
-      <section className="relative py-16 px-6 text-center border-t border-white/[0.06]">
-        <div className="max-w-2xl mx-auto">
-          <h2
-            className="text-2xl font-bold text-white mb-3"
-            style={{ fontFamily: "var(--font-heading)" }}
-          >
-            Build programs the market will fill
-          </h2>
-          <p className="text-white/50 mb-6 leading-relaxed">
-            Our Market Scan delivers 25+ pages of scored opportunities, employer demand signals,
-            competitive gaps, and financial modeling for your specific region and program area.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/discover" className="btn-cosmic btn-cosmic-primary px-6 py-3">
-              Market Scan — $1,500
-            </Link>
-            <Link href="/validate" className="btn-cosmic btn-cosmic-ghost px-6 py-3">
-              Validate a Program
-            </Link>
           </div>
-          <p className="mt-4 text-white/30 text-sm">
-            Also:{" "}
-            <Link
-              href="/blog/workforce-pell-grant-eligibility"
-              className="text-teal-400/70 hover:text-teal-400 transition-colors underline"
+        </section>
+
+        {/* Related Posts */}
+        <section className="mb-12 border-t border-white/[0.06] pt-10">
+          <h2
+            className="text-xl font-bold mb-6 text-white"
+            style={{ fontFamily: "var(--font-space-grotesk)" }}
+          >
+            Continue Reading
+          </h2>
+          <Link
+            href="/blog/workforce-pell-grant-eligibility"
+            className="block border border-white/[0.08] rounded-xl p-5 hover:border-white/20 transition-all group"
+          >
+            <p className="text-xs text-violet-400 font-mono mb-2">Policy & Compliance</p>
+            <h3
+              className="font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-violet-400 group-hover:to-teal-400 transition-all"
+              style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
-              Workforce Pell Grant Eligibility Guide →
-            </Link>
-          </p>
+              Workforce Pell Grant Eligibility: What Community Colleges Need to Know in 2026
+            </h3>
+          </Link>
+        </section>
+
+        {/* CTA */}
+        <div
+          className="rounded-2xl p-8 text-center relative overflow-hidden"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(20,184,166,0.10) 50%, rgba(124,58,237,0.10) 100%)",
+            border: "1px solid rgba(59,130,246,0.3)",
+          }}
+        >
+          <div
+            className="absolute inset-0 opacity-30 pointer-events-none"
+            style={{
+              background:
+                "radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.4) 0%, transparent 70%)",
+            }}
+          />
+          <div className="relative">
+            <h2
+              className="text-2xl font-bold mb-3 text-white"
+              style={{ fontFamily: "var(--font-space-grotesk)" }}
+            >
+              See What Your Region Actually Needs
+            </h2>
+            <p className="text-white/60 mb-6 max-w-xl mx-auto">
+              Stop building programs based on surveys and hunches. Get a 25-page market
+              intelligence report for your specific service area — scored opportunities,
+              competitive gaps, and employer demand signals.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/discover"
+                className="bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-500 hover:to-teal-500 text-white px-6 py-3 rounded-xl font-semibold transition-all"
+              >
+                Order a Market Scan — $1,500
+              </Link>
+              <Link
+                href="/validate"
+                className="border border-white/20 text-white hover:border-white/40 px-6 py-3 rounded-xl font-semibold transition-colors"
+              >
+                Validate a Program Idea First
+              </Link>
+            </div>
+          </div>
         </div>
-      </section>
-    </main>
+      </article>
+    </div>
   );
 }
