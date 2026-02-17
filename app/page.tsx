@@ -12,7 +12,7 @@ import { Aurora } from '@/components/cosmic/Aurora';
 import { Waveform } from '@/components/cosmic/Waveform';
 import { ParticleConstellation } from '@/components/cosmic/ParticleConstellation';
 import { Equalizer, EqualizerWide } from '@/components/cosmic/Equalizer';
-import { Satellite } from '@/components/cosmic/Satellite';
+// import { Satellite } from '@/components/cosmic/Satellite';
 
 const US_STATES = [
   'Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut',
@@ -1078,8 +1078,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== SATELLITE DISH — fixed to bottom-left, pointing toward the stars ===== */}
-      <Satellite className="hidden lg:block" />
     </div>
   );
 }
