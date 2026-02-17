@@ -14,65 +14,65 @@ const stages: Stage[] = [
   {
     number: 1,
     name: 'Discover',
-    short: 'Find hidden opportunities',
+    short: 'Scan your labor market across 74+ live data sources to surface the workforce programs your region actually needs — including hidden opportunities no one else finds.',
     detail:
-      '29 AI agents scan 76 data sources simultaneously — BLS, Census, job boards, employer filings, grant databases — to surface the programs your region actually needs.',
+      'Regional intelligence, employer demand signals, competitive landscape mapping, opportunity scoring, Blue Ocean scanning, and a fully cited 25-page Discovery Brief.',
     status: 'built',
   },
   {
     number: 2,
     name: 'Validate',
-    short: 'Know before you invest',
+    short: 'Deep-dive market validation with financial projections, employer demand verification, and a clear GO or NO-GO recommendation before you invest.',
     detail:
-      'Deep market validation with financial projections, regulatory analysis, employer demand verification, and a clear GO/NO-GO recommendation.',
+      'Seven specialist agents analyze market size, competitive positioning, regulatory requirements, financial viability, learner demand, employer alignment, and institutional fit.',
     status: 'built',
   },
   {
     number: 3,
     name: 'Curriculum Design',
-    short: 'Architecture that aligns',
+    short: 'Competency mapping, course architecture, and learning outcomes built from real occupation data — not generic templates.',
     detail:
-      'AI-driven curriculum architecture mapping skills to occupations, identifying credential pathways, and benchmarking against competing programs.',
+      'Maps skills to occupations using live job posting data, industry certifications, and employer requirements. Produces program structure, credit hours, and prerequisite chains.',
     status: 'coming',
   },
   {
     number: 4,
     name: 'Pathway Dev',
-    short: 'Connect the dots',
+    short: 'Stackable credentials and noncredit-to-credit pathways that give students a clear route from entry to advancement.',
     detail:
-      'Stackable credentials, articulation agreements, and career lattice mapping that creates clear student pathways from entry to advancement.',
+      'Articulation mapping, career lattice design, prior learning assessment frameworks, and credential stacking that connects certificates to degrees.',
     status: 'coming',
   },
   {
     number: 5,
     name: 'Content Creation',
-    short: 'Course materials that work',
+    short: 'Syllabi, learning outcomes, assessments, and instructor guides mapped directly to industry competencies.',
     detail:
-      'Generate syllabi, learning outcomes, assessment rubrics, and OER-aligned course materials mapped directly to industry competencies.',
+      'Generates course materials aligned to the curriculum architecture — assessment rubrics, OER-aligned content, lab exercises, and capstone project frameworks.',
     status: 'coming',
   },
   {
     number: 6,
     name: 'Marketing',
-    short: 'Reach the right students',
+    short: 'Recruitment strategy, employer partnership templates, and enrollment campaign blueprints tailored to your region.',
     detail:
-      'Targeted recruitment strategy with demographic analysis, messaging frameworks, digital campaign blueprints, and employer partnership templates.',
+      'Demographic targeting, messaging frameworks, digital campaign blueprints, employer co-marketing templates, and ROI-driven enrollment projections.',
     status: 'coming',
   },
   {
     number: 7,
     name: 'Launch',
-    short: 'Go live with confidence',
+    short: 'A complete launch playbook — enrollment targets, faculty hiring, facility requirements, and a week-by-week implementation timeline.',
     detail:
-      'Complete launch playbook — enrollment targets, faculty hiring timeline, facility requirements, technology stack, and week-by-week implementation plan.',
+      'Operational readiness checklist, technology stack recommendations, adjunct recruitment plan, advisory board formation guide, and go-live countdown.',
     status: 'coming',
   },
   {
     number: 8,
     name: 'Quality Control',
-    short: 'Measure what matters',
+    short: 'Outcomes tracking, employer satisfaction, and continuous improvement loops tied back to the original market data.',
     detail:
-      'Outcome tracking framework, employer satisfaction surveys, continuous improvement loops, and accreditation alignment reporting.',
+      'KPI dashboards, completion and placement rate tracking, employer feedback surveys, re-validation triggers, and accreditation alignment reporting.',
     status: 'coming',
   },
 ];

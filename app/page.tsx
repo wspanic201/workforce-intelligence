@@ -78,19 +78,19 @@ export default function HomePage() {
       <section className="relative py-20 md:py-32" id="how-it-works">
         <div className="max-w-[1400px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-4">
-            <span className="overline">The Full Lifecycle</span>
+            <span className="overline">The Platform</span>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-6">
             <h2
               className="font-heading font-bold text-white mx-auto max-w-3xl"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              Every stage delivers standalone value.
+              The full lifecycle — from program discovery through launch.
             </h2>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
             <p className="text-white/50 text-lg max-w-2xl mx-auto">
-              From discovery to launch — one platform, the full lifecycle.
+              Every stage delivers standalone value.
             </p>
           </AnimateOnScroll>
 
