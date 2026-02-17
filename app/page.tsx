@@ -370,7 +370,7 @@ function HeroCarousel() {
   const slide = HERO_SLIDES[current];
 
   return (
-    <section className="relative min-h-[90vh] lg:h-[90vh] lg:min-h-[700px] lg:max-h-[900px] flex items-center justify-center pt-28 pb-16 overflow-hidden">
+    <section className="relative min-h-[90vh] lg:h-[90vh] lg:min-h-[700px] lg:max-h-[900px] flex items-center justify-center pt-36 lg:pt-40 pb-16 overflow-hidden">
       <Stars count={250} />
       <Aurora />
       <Waveform className="opacity-60" />
@@ -434,29 +434,130 @@ function HeroCarousel() {
             )}
           </div>
 
-          {/* Right: Form or floating card */}
+          {/* Right: Form or visual card */}
           <div
-            className={`w-full lg:w-auto lg:min-w-[420px] lg:min-h-[350px] flex items-center transition-all duration-500 ease-out ${
+            className={`w-full lg:w-auto lg:min-w-[420px] lg:max-w-[480px] lg:min-h-[350px] flex items-center transition-all duration-500 ease-out ${
               isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
             }`}
           >
             {slide.showForm ? (
               <PellForm onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} />
-            ) : (
-              <div className="card-cosmic rounded-2xl p-8 text-center">
-                <div className={`w-16 h-16 rounded-full ${BADGE_COLORS[slide.badgeColor].split(' ')[0]} flex items-center justify-center mx-auto mb-4`}>
-                  <div className="scale-[2.5]">{slide.icon}</div>
+            ) : slide.id === 'main' ? (
+              /* ── Overview: Stacked product preview cards ── */
+              <div className="space-y-3 w-full">
+                {[
+                  { icon: '🎯', label: 'Pell Readiness Check', tag: 'Free', color: 'purple', desc: 'Know if your programs qualify' },
+                  { icon: '📋', label: 'Compliance Gap Report', tag: '$295', color: 'blue', desc: '21+ regulatory categories scanned' },
+                  { icon: '📊', label: 'Market Scan', tag: '$1,500', color: 'teal', desc: '50+ sources, 25+ page report' },
+                ].map((item, idx) => (
+                  <div
+                    key={item.label}
+                    className="card-cosmic rounded-xl p-4 flex items-center gap-4 hover:border-white/20 transition-all cursor-default"
+                    style={{ animationDelay: `${idx * 150}ms` }}
+                  >
+                    <span className="text-2xl">{item.icon}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-heading font-semibold text-white text-sm">{item.label}</h4>
+                        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${BADGE_COLORS[item.color]}`}>
+                          {item.tag}
+                        </span>
+                      </div>
+                      <p className="text-white/50 text-xs mt-0.5">{item.desc}</p>
+                    </div>
+                    <ArrowRight className="h-4 w-4 text-white/30 flex-shrink-0" />
+                  </div>
+                ))}
+                <div className="pt-2 flex items-center gap-2 justify-center">
+                  <Equalizer bars={5} size="sm" muted />
+                  <span className="text-white/30 text-xs tracking-wider uppercase">Tuned to your market</span>
+                  <Equalizer bars={5} size="sm" muted />
                 </div>
-                <h3 className="font-heading font-bold text-white text-lg mb-2">
-                  {slide.id === 'main' && 'Tuned to your market.'}
-                  {slide.id === 'compliance' && 'Revenue hiding in plain sight.'}
-                  {slide.id === 'market-scan' && 'Data-backed GO / NO-GO.'}
-                </h3>
-                <p className="text-white/70 text-sm leading-relaxed">
-                  {slide.id === 'main' && 'Three products. One mission. Build programs your region actually needs.'}
-                  {slide.id === 'compliance' && 'The average college is missing 15-25 state-mandated programs. Each one is guaranteed demand.'}
-                  {slide.id === 'market-scan' && 'Six research phases. 50+ sources. A definitive recommendation — not a maybe.'}
-                </p>
+              </div>
+            ) : slide.id === 'compliance' ? (
+              /* ── Compliance: Mock gap findings table ── */
+              <div className="card-cosmic rounded-2xl p-6 w-full">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                    <FileSearch className="h-4 w-4 text-blue-400" />
+                  </div>
+                  <h4 className="font-heading font-semibold text-white text-sm">Sample Gap Findings</h4>
+                </div>
+                <div className="space-y-2">
+                  {[
+                    { program: 'CNA / Nurse Aide', status: 'Missing', revenue: '$420K', urgency: 'high' },
+                    { program: 'CDL Class A', status: 'Missing', revenue: '$890K', urgency: 'high' },
+                    { program: 'Pharmacy Technician', status: 'Partial', revenue: '$310K', urgency: 'med' },
+                    { program: 'HVAC Technician', status: 'Missing', revenue: '$560K', urgency: 'high' },
+                    { program: 'Cosmetology', status: 'Offered', revenue: '—', urgency: 'ok' },
+                  ].map((row) => (
+                    <div key={row.program} className="flex items-center gap-3 py-2 px-3 rounded-lg bg-white/[0.03] text-xs">
+                      <span className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                        row.urgency === 'high' ? 'bg-red-400' : row.urgency === 'med' ? 'bg-yellow-400' : 'bg-green-400'
+                      }`} />
+                      <span className="text-white/80 flex-1 font-medium">{row.program}</span>
+                      <span className={`font-medium ${
+                        row.status === 'Missing' ? 'text-red-400' : row.status === 'Partial' ? 'text-yellow-400' : 'text-green-400'
+                      }`}>{row.status}</span>
+                      <span className="text-white/50 w-14 text-right">{row.revenue}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+                  <span className="text-white/40 text-xs">Total uncaptured revenue</span>
+                  <span className="text-blue-400 font-heading font-bold text-sm">$2.18M</span>
+                </div>
+              </div>
+            ) : (
+              /* ── Market Scan: Mock research pipeline ── */
+              <div className="card-cosmic rounded-2xl p-6 w-full">
+                <div className="flex items-center gap-2 mb-5">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                    <BarChart3 className="h-4 w-4 text-emerald-400" />
+                  </div>
+                  <h4 className="font-heading font-semibold text-white text-sm">6-Phase Research Pipeline</h4>
+                </div>
+                <div className="space-y-3">
+                  {[
+                    { phase: 'Regional Intelligence', pct: 100 },
+                    { phase: 'Demand Signals', pct: 100 },
+                    { phase: 'Competitive Landscape', pct: 100 },
+                    { phase: 'Opportunity Scoring', pct: 85 },
+                    { phase: 'Blue Ocean Scanner', pct: 60 },
+                    { phase: 'Report Synthesis', pct: 20 },
+                  ].map((step, idx) => (
+                    <div key={step.phase} className="space-y-1">
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-white/70">{idx + 1}. {step.phase}</span>
+                        <span className={`font-medium ${step.pct === 100 ? 'text-emerald-400' : 'text-white/50'}`}>
+                          {step.pct === 100 ? '✓' : `${step.pct}%`}
+                        </span>
+                      </div>
+                      <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-1000"
+                          style={{
+                            width: `${step.pct}%`,
+                            background: step.pct === 100
+                              ? 'linear-gradient(90deg, #14b8a6, #10b981)'
+                              : 'linear-gradient(90deg, #3b82f6, #14b8a6)',
+                            animation: `barGrow 1.5s ease-out ${idx * 0.2}s both`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+                  <span className="text-white/40 text-xs">Estimated completion</span>
+                  <span className="text-emerald-400 font-heading font-bold text-sm flex items-center gap-1.5">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                    </span>
+                    Running...
+                  </span>
+                </div>
               </div>
             )}
           </div>
@@ -503,12 +604,15 @@ function HeroCarousel() {
         </div>
       </div>
 
-      <style jsx>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @keyframes heroProgress {
           from { width: 0%; }
           to { width: 100%; }
         }
-      `}</style>
+        @keyframes barGrow {
+          from { width: 0%; }
+        }
+      `}} />
     </section>
   );
 }
