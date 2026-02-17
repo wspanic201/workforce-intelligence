@@ -1,6 +1,6 @@
 /**
  * Focused Markdown → HTML converter for WorkforceOS reports.
- * Handles the exact structures our Discovery Briefs and Validation Reports produce.
+ * Handles the exact structures our Market Scans and Validation Reports produce.
  * No external dependencies.
  */
 

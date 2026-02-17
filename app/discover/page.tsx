@@ -3,17 +3,13 @@
 import Link from 'next/link';
 import {
   ArrowRight,
-  Search,
-  BarChart3,
   Building2,
   Target,
   Sparkles,
   FileText,
   CheckCircle2,
-  MapPin,
   Users,
   TrendingUp,
-  Shield,
 } from 'lucide-react';
 import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
 import { Stars } from '@/components/cosmic/Stars';
@@ -29,7 +25,7 @@ export default function DiscoverPage() {
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={800}>
-            <span className="overline">Stage 1</span>
+            <span className="overline">Market Intelligence</span>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
@@ -37,7 +33,7 @@ export default function DiscoverPage() {
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl mt-4"
               style={{ fontSize: 'clamp(2.5rem, 5vw + 0.5rem, 4.5rem)' }}
             >
-              Program Discovery Brief
+              Market Scan
             </h1>
           </AnimateOnScroll>
 
@@ -46,24 +42,31 @@ export default function DiscoverPage() {
               Find out exactly what programs your region needs — before you invest a dollar in development.
             </p>
             <p className="mt-3 text-base md:text-lg text-white/45 max-w-2xl mx-auto leading-relaxed">
-              A 25+ page brief with scored opportunities, competitive gaps, employer demand signals, grant alignment, and hidden opportunities your competitors will miss.
+              A 25+ page report with scored opportunities, competitive gaps, employer demand signals, grant alignment, and hidden opportunities your competitors will miss. All from 50+ verified sources.
             </p>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={350} duration={800}>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="#get-started">
-                <button className="btn-cosmic btn-cosmic-primary">
-                  Get a Free Discovery Brief
+              <a href="/#hero">
+                <button className="btn-cosmic btn-cosmic-ghost">
+                  Start Free — Pell Readiness Check
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
-              </Link>
-              <Link href="/report/demo">
-                <button className="btn-cosmic btn-cosmic-ghost">
-                  See a Real Example
+              </a>
+              <a href="mailto:hello@withwavelength.com?subject=Market%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AAny%20focus%20areas%3A%20">
+                <button className="btn-cosmic btn-cosmic-primary">
+                  Order a Market Scan — $1,500
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
-              </Link>
+              </a>
             </div>
+            <p className="mt-4 text-sm text-white/30">
+              Not sure yet?{' '}
+              <Link href="/report/demo" className="text-white/50 hover:text-white/70 underline underline-offset-4 transition-colors">
+                See a real example first
+              </Link>
+            </p>
           </AnimateOnScroll>
         </div>
       </section>
@@ -79,7 +82,7 @@ export default function DiscoverPage() {
               className="font-heading font-bold text-white"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              Six phases of research. One comprehensive brief.
+              Six phases of research. One comprehensive Market Scan.
             </h2>
           </AnimateOnScroll>
 
@@ -93,7 +96,7 @@ export default function DiscoverPage() {
               {
                 icon: TrendingUp,
                 title: 'Demand Signal Detection',
-                desc: 'BLS employment data, active job postings, employer expansion signals, and matching grant opportunities.',
+                desc: 'Employment data, active job postings, employer expansion signals, and matching grant opportunities — from 50+ verified sources.',
               },
               {
                 icon: Users,
@@ -108,12 +111,12 @@ export default function DiscoverPage() {
               {
                 icon: Sparkles,
                 title: 'Blue Ocean Scanner',
-                desc: 'The opportunities no standard analysis finds. Employer pain points, supply chain gaps, and emerging roles before they hit O*NET.',
+                desc: 'The opportunities no standard analysis finds. Employer pain points, supply chain gaps, and emerging roles before they hit any database.',
               },
               {
                 icon: FileText,
-                title: 'Discovery Brief',
-                desc: '25+ page report with scored programs, evidence trails, grant alignment, barriers, and specific next steps.',
+                title: 'The Market Scan Report',
+                desc: '25+ page report with scored programs, evidence trails, grant alignment, barriers, Workforce Pell readiness scores, and specific next steps.',
               },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="card-cosmic rounded-xl p-6">
@@ -162,13 +165,13 @@ export default function DiscoverPage() {
                     { name: 'Cybersecurity Fundamentals', score: 7.9, tag: 'Quick Win' },
                   ].map((p) => (
                     <div key={p.name} className="flex items-center justify-between py-2.5 px-4 rounded-lg bg-white/[0.02]">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 flex-wrap">
                         <span className="text-white/80 text-sm">{p.name}</span>
                         <span className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/[0.05] text-white/40">
                           {p.tag}
                         </span>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-shrink-0">
                         <div className="w-14 h-1.5 rounded-full bg-white/10 overflow-hidden">
                           <div
                             className="h-full rounded-full bg-gradient-to-r from-purple-500 to-blue-500"
@@ -199,13 +202,13 @@ export default function DiscoverPage() {
                     { name: 'Entertainment Venue Technical Operations', score: 7.35 },
                   ].map((p) => (
                     <div key={p.name} className="flex items-center justify-between py-2.5 px-4 rounded-lg bg-teal-500/[0.03] border border-teal-500/[0.08]">
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 flex-wrap">
                         <span className="text-white/80 text-sm">{p.name}</span>
                         <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cosmic-teal/20 text-teal-300 border border-teal-500/20">
                           Blue Ocean
                         </span>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-shrink-0">
                         <div className="w-14 h-1.5 rounded-full bg-white/10 overflow-hidden">
                           <div
                             className="h-full rounded-full bg-gradient-to-r from-teal-500 to-emerald-400"
@@ -223,7 +226,7 @@ export default function DiscoverPage() {
               <div className="p-6 md:p-8 border-t border-white/[0.06] flex justify-center">
                 <Link href="/report/demo">
                   <button className="btn-cosmic btn-cosmic-ghost text-sm">
-                    Read the Full Wake Tech Brief
+                    Read the Full Wake Tech Market Scan
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </button>
                 </Link>
@@ -249,11 +252,11 @@ export default function DiscoverPage() {
             {[
               {
                 title: 'Every claim is sourced',
-                desc: 'No made-up statistics. Every data point links back to BLS, employer announcements, job postings, or public records. Your VP of Instruction can verify anything.',
+                desc: 'No made-up statistics. Every data point links back to verified sources. Your VP of Instruction can verify anything.',
               },
               {
                 title: 'We find what standard tools miss',
-                desc: 'O*NET and Lightcast only know about occupations the government has already categorized. Our Blue Ocean Scanner finds demand from live signals — employer pain points, supply chain gaps, economic development announcements — before they show up in any database.',
+                desc: 'Standard LMI tools only know about occupations already categorized. Our Blue Ocean Scanner finds demand from live signals — employer pain points, supply chain gaps, economic development announcements — before they show up in any database.',
               },
               {
                 title: 'Scored and ranked, not just listed',
@@ -276,67 +279,114 @@ export default function DiscoverPage() {
         </div>
       </section>
 
-      {/* ===== WHAT IT COSTS ===== */}
+      {/* ===== FREE ENTRY POINT + PAID PRODUCT ===== */}
       <section className="relative py-20 md:py-28" id="get-started">
-        <div className="max-w-[700px] mx-auto px-6">
+        <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
             <span className="overline">Get Started</span>
             <h2
               className="font-heading font-bold text-white mt-4"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              Your first Discovery Brief is free.
+              Start free. Go deeper when you&apos;re ready.
             </h2>
-            <p className="text-white/50 mt-3">
-              We use publicly available data — no institutional access needed, no approvals required. We&apos;ll build a brief for your college and send it over. If it&apos;s useful, we talk next steps.
+            <p className="text-white/50 mt-3 max-w-xl mx-auto">
+              The Pell Readiness Check is free and gets you started in 60 seconds. When you&apos;re ready for full market intelligence, a Market Scan is the next step.
             </p>
           </AnimateOnScroll>
 
-          <AnimateOnScroll variant="scale" delay={100}>
-            <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 mb-6">
-                <Sparkles className="h-3.5 w-3.5 text-teal-400" />
-                <span className="text-teal-300 text-xs font-medium">Founding offer — limited spots</span>
-              </div>
-
-              <div className="mb-6">
-                <div className="flex items-baseline justify-center gap-1">
-                  <span className="font-heading font-bold text-4xl text-white">$0</span>
-                  <span className="text-white/30 text-sm">for your first brief</span>
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Free tier */}
+            <AnimateOnScroll variant="scale" delay={100}>
+              <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-teal-500/20 h-full flex flex-col">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 mb-5 mx-auto">
+                  <Sparkles className="h-3.5 w-3.5 text-teal-400" />
+                  <span className="text-teal-300 text-xs font-medium">Free — No Credit Card</span>
                 </div>
-                <p className="text-white/40 text-sm mt-2">
-                  Paid Discovery Briefs start at $1,500
+
+                <h3 className="font-heading font-bold text-white text-xl mb-2">Pell Readiness Check</h3>
+                <p className="text-white/40 text-sm mb-5">
+                  Find out if your programs qualify for Workforce Pell before July 1, 2026.
                 </p>
+
+                <div className="mb-5">
+                  <span className="font-heading font-bold text-4xl text-white">$0</span>
+                </div>
+
+                <ul className="text-left max-w-xs mx-auto space-y-3 mb-7 flex-1">
+                  {[
+                    'Program eligibility assessment',
+                    'Clock-hour compliance review',
+                    'Pell gap identification',
+                    'Delivered in ~48 hours',
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-3 text-sm text-white/60">
+                      <CheckCircle2 className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+
+                <a href="/">
+                  <button className="btn-cosmic btn-cosmic-ghost w-full sm:w-auto">
+                    Get Free Pell Check
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </button>
+                </a>
+                <p className="text-white/20 text-xs mt-3">No login required.</p>
               </div>
+            </AnimateOnScroll>
 
-              <ul className="text-left max-w-sm mx-auto space-y-3 mb-8">
-                {[
-                  'Full 25+ page Discovery Brief',
-                  'Conventional + Blue Ocean opportunities',
-                  '50+ sources cited & verified',
-                  'Scored & ranked program recommendations',
-                  'Grant alignment for each program',
-                  'Delivered in ~1 week',
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm text-white/60">
-                    <CheckCircle2 className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
+            {/* Paid tier */}
+            <AnimateOnScroll variant="scale" delay={200}>
+              <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-purple-500/20 h-full flex flex-col relative">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-purple-500 to-blue-500 px-4 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-purple-500/20">
+                    Founding Rate
+                  </span>
+                </div>
+                <div className="mt-3">
+                  <h3 className="font-heading font-bold text-white text-xl mb-2">Market Scan</h3>
+                  <p className="text-white/40 text-sm mb-5">
+                    Full market intelligence — 25+ pages, 50+ sources, programs scored and ranked.
+                  </p>
 
-              <a href="mailto:hello@withwavelength.com?subject=Discovery%20Brief%20Request&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AAny%20focus%20areas%3A%20">
-                <button className="btn-cosmic btn-cosmic-primary w-full sm:w-auto">
-                  Request Your Free Brief
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </button>
-              </a>
+                  <div className="mb-1">
+                    <span className="font-heading font-bold text-4xl text-white">$1,500</span>
+                    <span className="text-white/30 text-sm ml-2 line-through">$3,500</span>
+                  </div>
+                  <p className="text-white/30 text-xs mb-5">Founding rate — first 5 institutions</p>
 
-              <p className="text-white/20 text-xs mt-4">
-                No login. No credit card. We&apos;ll follow up within 48 hours.
-              </p>
-            </div>
-          </AnimateOnScroll>
+                  <ul className="text-left max-w-xs mx-auto space-y-3 mb-7 flex-1">
+                    {[
+                      'Full 25+ page Market Scan',
+                      'Conventional + Blue Ocean opportunities',
+                      '50+ sources cited & verified',
+                      'Scored & ranked program recommendations',
+                      'Workforce Pell readiness scoring',
+                      'Grant alignment for each program',
+                      'Delivered in ~1 week',
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-3 text-sm text-white/60">
+                        <CheckCircle2 className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <a href="mailto:hello@withwavelength.com?subject=Market%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AAny%20focus%20areas%3A%20">
+                    <button className="btn-cosmic btn-cosmic-primary w-full sm:w-auto">
+                      Order Market Scan
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </button>
+                  </a>
+                  <p className="text-white/20 text-xs mt-3">
+                    We&apos;ll follow up within 48 hours.
+                  </p>
+                </div>
+              </div>
+            </AnimateOnScroll>
+          </div>
         </div>
       </section>
 
@@ -348,10 +398,10 @@ export default function DiscoverPage() {
               className="font-heading font-bold text-white"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              After Discovery
+              After Your Market Scan
             </h2>
             <p className="text-white/40 mt-3">
-              Your brief identifies the opportunities. The next stages help you act on them.
+              Your Market Scan identifies the opportunities. The next stages help you act on them.
             </p>
           </AnimateOnScroll>
 
@@ -386,9 +436,9 @@ export default function DiscoverPage() {
           </StaggerChildren>
 
           <AnimateOnScroll variant="fade-up" delay={300} className="text-center mt-10">
-            <Link href="/#how-it-works">
+            <Link href="/validate">
               <button className="btn-cosmic btn-cosmic-ghost text-sm">
-                See the Full Lifecycle
+                Learn About Program Validation
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </Link>

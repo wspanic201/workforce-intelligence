@@ -22,7 +22,7 @@ function extractTOC(html: string): { id: string; title: string }[] {
 export function wrapInTemplate(htmlContent: string, options: PDFOptions): string {
   const toc = extractTOC(htmlContent);
   const reportTypeLabel = options.reportType === 'discovery'
-    ? 'Program Discovery Brief'
+    ? 'Program Market Scan'
     : 'Program Validation Report';
   const date = options.date || new Date().toLocaleDateString('en-US', {
     year: 'numeric', month: 'long', day: 'numeric'
@@ -96,7 +96,7 @@ function getStyles(options: PDFOptions): string {
   const client = options.preparedFor || '';
   const date = options.date || '';
   const reportTypeLabel = options.reportType === 'discovery'
-    ? 'Discovery Brief'
+    ? 'Market Scan'
     : 'Validation Report';
 
   return `

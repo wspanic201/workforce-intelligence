@@ -184,7 +184,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
           <div className="flex items-center gap-1.5 text-xs text-white/30 mb-6">
             <span>Wavelength</span>
             <ChevronRight className="w-3 h-3" />
-            <span>Program Discovery Brief</span>
+            <span>Program Market Scan</span>
             <ChevronRight className="w-3 h-3" />
             <span className="text-white/50">{token}</span>
           </div>

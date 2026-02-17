@@ -8,16 +8,16 @@ import { generatePDF } from './lib/pdf/generate-pdf';
 import { readFileSync } from 'fs';
 
 async function main() {
-  // Load the Kirkwood Discovery brief
+  // Load the Kirkwood Market Scan
   const markdown = readFileSync('/tmp/discovery-brief-kirkwood.md', 'utf8');
 
-  console.log('📄 Generating PDF from Kirkwood Discovery Brief...');
+  console.log('📄 Generating PDF from Kirkwood Market Scan...');
   console.log(`   Input: ${(markdown.length / 1024).toFixed(1)} KB of markdown`);
 
   const startTime = Date.now();
 
   const result = await generatePDF(markdown, {
-    title: 'Program Discovery Brief',
+    title: 'Program Market Scan',
     subtitle: 'Workforce Opportunity Analysis',
     preparedFor: 'Kirkwood Community College',
     date: new Date().toLocaleDateString('en-US', {

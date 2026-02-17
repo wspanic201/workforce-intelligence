@@ -1,15 +1,26 @@
 'use client';
 
 import Link from 'next/link';
-import { Check, Shield, ArrowRight, Database, TrendingUp, Clock, Zap } from 'lucide-react';
+import { useState } from 'react';
+import { Check, Shield, ArrowRight, Clock, Zap, ChevronDown, ChevronUp } from 'lucide-react';
 import {
   AnimateOnScroll,
   StaggerChildren,
 } from '@/components/motion';
 import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
-import { Pipeline } from '@/components/cosmic/Pipeline';
 import { Waveform } from '@/components/cosmic/Waveform';
+
+const US_STATES = [
+  'Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut',
+  'Delaware','Florida','Georgia','Hawaii','Idaho','Illinois','Indiana','Iowa',
+  'Kansas','Kentucky','Louisiana','Maine','Maryland','Massachusetts','Michigan',
+  'Minnesota','Mississippi','Missouri','Montana','Nebraska','Nevada','New Hampshire',
+  'New Jersey','New Mexico','New York','North Carolina','North Dakota','Ohio',
+  'Oklahoma','Oregon','Pennsylvania','Rhode Island','South Carolina','South Dakota',
+  'Tennessee','Texas','Utah','Vermont','Virginia','Washington','West Virginia',
+  'Wisconsin','Wyoming',
+];
 
 function WaveDivider() {
   return (
@@ -45,166 +56,570 @@ function WaveDivider() {
   );
 }
 
+function PellForm() {
+  const [formData, setFormData] = useState({ name: '', email: '', institution: '', state: '' });
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('submitting');
+    try {
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (res.ok) {
+        setStatus('success');
+      } else {
+        setStatus('error');
+      }
+    } catch {
+      setStatus('error');
+    }
+  };
+
+  if (status === 'success') {
+    return (
+      <div className="card-cosmic rounded-2xl p-8 text-center max-w-md mx-auto">
+        <div className="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center mx-auto mb-4">
+          <Check className="h-6 w-6 text-teal-400" />
+        </div>
+        <h3 className="font-heading font-bold text-white text-xl mb-2">Check your inbox</h3>
+        <p className="text-white/50 text-sm">
+          We&apos;ll be in touch within 48 hours with your Pell Readiness Check results.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="card-cosmic rounded-2xl p-6 md:p-8 max-w-md mx-auto w-full">
+      <div className="space-y-4">
+        <div>
+          <label className="block text-xs font-medium text-white/50 uppercase tracking-wider mb-1.5">
+            Your Name
+          </label>
+          <input
+            type="text"
+            required
+            placeholder="Dr. Jane Smith"
+            value={formData.name}
+            onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
+            className="w-full bg-white/[0.05] border border-white/[0.1] rounded-lg px-4 py-2.5 text-white placeholder-white/20 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-white/50 uppercase tracking-wider mb-1.5">
+            Work Email
+          </label>
+          <input
+            type="email"
+            required
+            placeholder="you@college.edu"
+            value={formData.email}
+            onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
+            className="w-full bg-white/[0.05] border border-white/[0.1] rounded-lg px-4 py-2.5 text-white placeholder-white/20 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-white/50 uppercase tracking-wider mb-1.5">
+            Institution
+          </label>
+          <input
+            type="text"
+            required
+            placeholder="Midwest Community College"
+            value={formData.institution}
+            onChange={e => setFormData(p => ({ ...p, institution: e.target.value }))}
+            className="w-full bg-white/[0.05] border border-white/[0.1] rounded-lg px-4 py-2.5 text-white placeholder-white/20 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
+          />
+        </div>
+        <div>
+          <label className="block text-xs font-medium text-white/50 uppercase tracking-wider mb-1.5">
+            State
+          </label>
+          <select
+            required
+            value={formData.state}
+            onChange={e => setFormData(p => ({ ...p, state: e.target.value }))}
+            className="w-full bg-white/[0.05] border border-white/[0.1] rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/50 transition-colors appearance-none"
+          >
+            <option value="" className="bg-[#050510]">Select your state…</option>
+            {US_STATES.map(s => (
+              <option key={s} value={s} className="bg-[#050510]">{s}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {status === 'error' && (
+        <p className="mt-3 text-xs text-red-400">Something went wrong — please try again or email us directly.</p>
+      )}
+
+      <button
+        type="submit"
+        disabled={status === 'submitting'}
+        className="btn-cosmic btn-cosmic-primary w-full mt-6 text-sm disabled:opacity-50"
+      >
+        {status === 'submitting' ? 'Sending…' : (
+          <>
+            Get My Free Pell Readiness Check
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </>
+        )}
+      </button>
+      <p className="text-white/20 text-xs text-center mt-3">
+        No credit card. No login. Results delivered by email.
+      </p>
+    </form>
+  );
+}
+
+const FAQ_ITEMS = [
+  {
+    q: 'What is the Workforce Pell Grant?',
+    a: 'Starting July 1, 2026, short-term programs between 150 and 599 clock hours become eligible for federal Pell Grant funding for the first time. This opens significant new enrollment and revenue opportunities for community colleges that have qualifying programs in place.',
+  },
+  {
+    q: 'What does the free Pell Readiness Check include?',
+    a: 'We assess your current program portfolio against the Workforce Pell eligibility criteria — clock hours, credential type, and labor market alignment requirements. You\'ll receive a clear breakdown of which programs likely qualify, which need adjustments, and where the biggest opportunities are.',
+  },
+  {
+    q: 'What is a Market Scan?',
+    a: 'A Market Scan is a 25+ page intelligence report that identifies the workforce programs your region actually needs. It includes regional market analysis, demand signal detection, competitive landscape mapping, Blue Ocean opportunity scoring, and Workforce Pell readiness assessment — all from 50+ verified sources.',
+  },
+  {
+    q: 'What is the Compliance Gap Report?',
+    a: 'The Compliance Gap Report shows every state-mandated or regionally critical program your institution isn\'t currently offering — along with estimated enrollment demand and revenue potential for each gap. It\'s a fast, affordable way to find programs you should already be running.',
+  },
+  {
+    q: 'How is this different from standard labor market reports?',
+    a: 'Standard LMI tools (O*NET, Lightcast) only surface occupations already cataloged by the government. Our analysis draws from 50+ live sources — employer job postings, economic development announcements, industry supply chain signals — to surface demand before it shows up in any database.',
+  },
+  {
+    q: 'How long does a Market Scan take?',
+    a: 'Approximately one week from the time we receive your intake form. Rush delivery is available for an additional fee. The Pell Readiness Check is faster — typically 2–3 business days.',
+  },
+];
+
+function FAQSection() {
+  const [open, setOpen] = useState<number | null>(null);
+  return (
+    <section className="relative py-20 md:py-28" id="faq">
+      <div className="max-w-[760px] mx-auto px-6">
+        <AnimateOnScroll variant="fade-up" className="text-center mb-4">
+          <span className="overline inline-flex items-center gap-3">
+            <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/50" />
+            FAQ
+            <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-teal-500/50" />
+          </span>
+        </AnimateOnScroll>
+        <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-12">
+          <h2
+            className="font-heading font-bold text-white"
+            style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
+          >
+            Common questions
+          </h2>
+        </AnimateOnScroll>
+
+        <div className="space-y-3">
+          {FAQ_ITEMS.map((item, i) => (
+            <AnimateOnScroll key={i} variant="fade-up" delay={i * 60}>
+              <div className="card-cosmic rounded-xl overflow-hidden">
+                <button
+                  onClick={() => setOpen(open === i ? null : i)}
+                  className="w-full flex items-center justify-between p-5 text-left gap-4"
+                >
+                  <span className="font-heading font-semibold text-white text-sm md:text-base">
+                    {item.q}
+                  </span>
+                  {open === i
+                    ? <ChevronUp className="h-4 w-4 text-white/40 flex-shrink-0" />
+                    : <ChevronDown className="h-4 w-4 text-white/40 flex-shrink-0" />
+                  }
+                </button>
+                {open === i && (
+                  <div className="px-5 pb-5">
+                    <p className="text-white/50 text-sm leading-relaxed">{item.a}</p>
+                  </div>
+                )}
+              </div>
+            </AnimateOnScroll>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 export default function HomePage() {
   return (
     <div className="overflow-x-hidden bg-[#050510]">
-      {/* ===== HERO ===== */}
+
+      {/* ===== HERO — PELL READINESS CHECK ===== */}
       <section className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16">
-        {/* Background layers */}
         <Stars count={250} />
         <Aurora />
         <Waveform className="opacity-60" />
 
-        {/* Content */}
-        <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
-          <AnimateOnScroll variant="fade-up" duration={800}>
-            <h1
-              className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"
-              style={{ fontSize: 'clamp(2.5rem, 5.5vw + 0.5rem, 4.5rem)' }}
-            >
-              Market intelligence for community college program development.
-            </h1>
-          </AnimateOnScroll>
+        <div className="relative z-10 max-w-[1200px] mx-auto px-6">
+          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
-          <AnimateOnScroll variant="fade-up" delay={150} duration={800}>
-            <p className="mt-6 text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
-              Know exactly what to build, backed by real labor market data, employer signals, and competitive analysis. Every program scored for Workforce Pell eligibility.
-            </p>
-          </AnimateOnScroll>
-
-          <AnimateOnScroll variant="fade-up" delay={300} duration={800}>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/discover">
-                <button className="btn-cosmic btn-cosmic-primary">
-                  Get Your Discovery Brief
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </button>
-              </Link>
-              <Link href="#report-preview">
-                <button className="btn-cosmic btn-cosmic-ghost">
-                  See Sample Report
-                </button>
-              </Link>
-            </div>
-          </AnimateOnScroll>
-
-          <AnimateOnScroll variant="fade-up" delay={450} duration={800}>
-            <div className="mt-16 flex flex-wrap justify-center gap-6 md:gap-10">
-              {[
-                { value: '50+', label: 'sources cited & verified', freq: '▁▃▅▇▅▃▁' },
-                { value: '25+', label: 'page brief', freq: '▂▅▇▅▂▄▇' },
-                { value: '100%', label: 'cited & sourced', freq: '▇▇▇▇▇▇▇' },
-                { value: 'Pell', label: 'readiness scored', freq: '▃▅▇▅▃▅▇' },
-              ].map(({ value, label, freq }) => (
-                <div key={label} className="text-center group">
-                  <div className="text-[10px] tracking-[0.3em] text-purple-500/40 font-mono mb-1 group-hover:text-purple-400/60 transition-colors">
-                    {freq}
-                  </div>
-                  <div className="font-heading font-bold text-2xl md:text-3xl text-gradient-cosmic">
-                    {value}
-                  </div>
-                  <p className="text-white/40 text-xs mt-1 uppercase tracking-wider">{label}</p>
+            {/* Left: Headline + subtitle */}
+            <div className="flex-1 text-center lg:text-left">
+              <AnimateOnScroll variant="fade-up" duration={800}>
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
+                  <Clock className="h-3.5 w-3.5 text-purple-400" />
+                  <span className="text-purple-300 text-xs font-medium uppercase tracking-wider">July 1, 2026 Deadline</span>
                 </div>
-              ))}
-            </div>
-          </AnimateOnScroll>
-        </div>
-      </section>
+              </AnimateOnScroll>
 
-      {/* ===== WORKFORCE PELL URGENCY BANNER ===== */}
-      <section className="relative py-12 md:py-16">
-        <div className="max-w-[1100px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up">
-            <div className="card-cosmic rounded-2xl p-8 md:p-10 border-purple-500/20 relative overflow-hidden">
-              {/* Subtle gradient accent */}
-              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
-              
-              <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-3">
-                    <Clock className="h-4 w-4 text-purple-400" />
-                    <span className="text-xs font-bold uppercase tracking-widest text-purple-400">
-                      July 1, 2026 Deadline
-                    </span>
-                  </div>
-                  <h3 className="font-heading font-bold text-white text-xl md:text-2xl leading-tight mb-3">
-                    Workforce Pell is here.{' '}
-                    <span className="text-gradient-cosmic">Is your program portfolio ready?</span>
-                  </h3>
-                  <p className="text-white/50 text-sm md:text-base leading-relaxed">
-                    Starting July 1, short-term programs (150–599 clock hours) become eligible for federal Pell Grant funding for the first time. Colleges that identify and validate Pell-eligible programs now will capture enrollment — and federal dollars — first. Every Discovery Brief includes a Workforce Pell readiness assessment for each recommended program.
-                  </p>
+              <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
+                <h1
+                  className="text-gradient-cosmic font-heading font-bold leading-[1.05]"
+                  style={{ fontSize: 'clamp(2.2rem, 5vw + 0.5rem, 4rem)' }}
+                >
+                  Is your institution Workforce Pell ready?
+                </h1>
+              </AnimateOnScroll>
+
+              <AnimateOnScroll variant="fade-up" delay={250} duration={800}>
+                <p className="mt-6 text-lg md:text-xl text-white/60 leading-relaxed max-w-xl">
+                  Starting July 1, 2026, short-term programs qualify for federal Pell Grants for the first time.
+                  Find out which of your programs are eligible — for free — before your competitors get there first.
+                </p>
+              </AnimateOnScroll>
+
+              <AnimateOnScroll variant="fade-up" delay={380} duration={800}>
+                <div className="mt-8 flex flex-wrap gap-5 lg:justify-start justify-center">
+                  {[
+                    { value: '50+', label: 'verified sources' },
+                    { value: 'Free', label: 'readiness check' },
+                    { value: '48h', label: 'turnaround' },
+                  ].map(({ value, label }) => (
+                    <div key={label} className="text-center">
+                      <div className="font-heading font-bold text-2xl text-gradient-cosmic">{value}</div>
+                      <p className="text-white/40 text-xs mt-0.5 uppercase tracking-wider">{label}</p>
+                    </div>
+                  ))}
                 </div>
-                <div className="flex-shrink-0">
-                  <Link href="#pricing">
-                    <button className="btn-cosmic btn-cosmic-primary text-sm whitespace-nowrap">
-                      <Zap className="mr-2 h-4 w-4" />
-                      Get Pell-Ready
-                    </button>
-                  </Link>
-                </div>
-              </div>
+              </AnimateOnScroll>
             </div>
-          </AnimateOnScroll>
+
+            {/* Right: Email capture form */}
+            <div className="w-full lg:w-auto lg:min-w-[420px]">
+              <AnimateOnScroll variant="fade-up" delay={200} duration={800}>
+                <PellForm />
+              </AnimateOnScroll>
+            </div>
+          </div>
         </div>
       </section>
 
       <WaveDivider />
 
-      {/* ===== PIPELINE SECTION ===== */}
-      <section className="relative py-20 md:py-32" id="how-it-works">
-        <div className="max-w-[1400px] mx-auto px-6">
+      {/* ===== THREE-PRODUCT FUNNEL ===== */}
+      <section className="relative py-20 md:py-32" id="products">
+        <div className="max-w-[1200px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-4">
             <span className="overline inline-flex items-center gap-3">
               <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/50" />
-              Our Services
+              Our Products
               <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-teal-500/50" />
             </span>
           </AnimateOnScroll>
-          <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-6">
+          <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-4">
             <h2
-              className="font-heading font-bold text-white mx-auto max-w-3xl"
+              className="font-heading font-bold text-white"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              The full lifecycle — from program discovery through launch.
+              Start free. Go deeper as you&apos;re ready.
             </h2>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
             <p className="text-white/50 text-lg max-w-2xl mx-auto">
-              Every stage delivers standalone value. Every signal amplified.
+              Each product delivers standalone value. Each one feeds the next.
             </p>
           </AnimateOnScroll>
 
-          <AnimateOnScroll variant="fade-up" delay={300}>
-            <Pipeline />
-          </AnimateOnScroll>
+          <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-0 max-w-5xl mx-auto">
+
+            {/* Card 1 — Pell Readiness Check */}
+            <AnimateOnScroll variant="fade-up" delay={100} className="w-full lg:flex-1">
+              <div className="card-cosmic rounded-2xl p-7 border-teal-500/20 h-full">
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 mb-4">
+                  <span className="text-teal-300 text-[10px] font-bold uppercase tracking-wider">Free</span>
+                </div>
+                <h3 className="font-heading font-bold text-white text-xl mb-2">Pell Readiness Check</h3>
+                <p className="text-white/40 text-sm leading-relaxed mb-6">
+                  Find out if your programs qualify before July 1 — before your competitors do.
+                </p>
+                <div className="mb-6">
+                  <span className="font-heading font-bold text-4xl text-gradient-cosmic">$0</span>
+                  <span className="text-white/30 text-sm ml-2">— email required</span>
+                </div>
+                <ul className="space-y-2.5 mb-7">
+                  {[
+                    'Program eligibility assessment',
+                    'Clock-hour compliance review',
+                    'Pell gap identification',
+                    'Delivered in ~48 hours',
+                  ].map(item => (
+                    <li key={item} className="flex items-start gap-2.5">
+                      <Check className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
+                      <span className="text-sm text-white/60">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a href="#hero">
+                  <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                    Get Started — It&apos;s Free
+                  </button>
+                </a>
+              </div>
+            </AnimateOnScroll>
+
+            {/* Arrow 1 */}
+            <div className="hidden lg:flex items-center justify-center px-2 flex-shrink-0">
+              <div className="flex flex-col items-center gap-1">
+                <ArrowRight className="h-6 w-6 text-purple-500/50" />
+              </div>
+            </div>
+            <div className="lg:hidden flex items-center justify-center py-1">
+              <svg viewBox="0 0 24 24" className="h-6 w-6 text-purple-500/50 rotate-90" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+
+            {/* Card 2 — Compliance Gap Report */}
+            <AnimateOnScroll variant="fade-up" delay={200} className="w-full lg:flex-1">
+              <div className="card-cosmic rounded-2xl p-7 h-full">
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 mb-4">
+                  <span className="text-blue-300 text-[10px] font-bold uppercase tracking-wider">$79</span>
+                </div>
+                <h3 className="font-heading font-bold text-white text-xl mb-2">Compliance Gap Report</h3>
+                <p className="text-white/40 text-sm leading-relaxed mb-6">
+                  See every mandated program you&apos;re not offering — and the revenue you&apos;re leaving on the table.
+                </p>
+                <div className="mb-6">
+                  <span className="font-heading font-bold text-4xl text-gradient-cosmic">$79</span>
+                </div>
+                <ul className="space-y-2.5 mb-7">
+                  {[
+                    'State-mandated program gap analysis',
+                    'Regional demand by program area',
+                    'Revenue opportunity sizing',
+                    'Prioritized action list',
+                  ].map(item => (
+                    <li key={item} className="flex items-start gap-2.5">
+                      <Check className="h-4 w-4 text-cosmic-teal flex-shrink-0 mt-0.5" strokeWidth={2} />
+                      <span className="text-sm text-white/60">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a href="mailto:hello@withwavelength.com?subject=Compliance%20Gap%20Report&body=College%20name%3A%20%0ACity%2C%20State%3A%20">
+                  <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                    Order Report
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </button>
+                </a>
+              </div>
+            </AnimateOnScroll>
+
+            {/* Arrow 2 */}
+            <div className="hidden lg:flex items-center justify-center px-2 flex-shrink-0">
+              <div className="flex flex-col items-center gap-1">
+                <ArrowRight className="h-6 w-6 text-purple-500/50" />
+              </div>
+            </div>
+            <div className="lg:hidden flex items-center justify-center py-1">
+              <svg viewBox="0 0 24 24" className="h-6 w-6 text-purple-500/50 rotate-90" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+
+            {/* Card 3 — Market Scan */}
+            <AnimateOnScroll variant="fade-up" delay={300} className="w-full lg:flex-1">
+              <div className="card-cosmic rounded-2xl p-7 border-purple-500/20 relative h-full">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-purple-500 to-blue-500 px-4 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-purple-500/20">
+                    Most Popular
+                  </span>
+                </div>
+                <div className="mt-3">
+                  <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-4">
+                    <span className="text-purple-300 text-[10px] font-bold uppercase tracking-wider">Founding Rate</span>
+                  </div>
+                  <h3 className="font-heading font-bold text-white text-xl mb-2">Market Scan</h3>
+                  <p className="text-white/40 text-sm leading-relaxed mb-6">
+                    Full market intelligence before you build — 25+ pages, 50+ sources, programs scored and ranked.
+                  </p>
+                  <div className="mb-1">
+                    <span className="font-heading font-bold text-4xl text-gradient-cosmic">$1,500</span>
+                    <span className="text-white/30 text-sm ml-2 line-through">$3,500</span>
+                  </div>
+                  <p className="text-xs text-white/30 mb-6">Founding rate — first 5 institutions</p>
+                  <ul className="space-y-2.5 mb-7">
+                    {[
+                      'Regional market intelligence',
+                      'Employer demand signals',
+                      'Competitive landscape + Blue Ocean',
+                      'Programs scored & ranked',
+                      'Workforce Pell readiness scoring',
+                      'Grant alignment',
+                    ].map(item => (
+                      <li key={item} className="flex items-start gap-2.5">
+                        <Check className="h-4 w-4 text-cosmic-teal flex-shrink-0 mt-0.5" strokeWidth={2} />
+                        <span className="text-sm text-white/60">{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <a href="mailto:hello@withwavelength.com?subject=Market%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AAny%20focus%20areas%3A%20">
+                    <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
+                      Order Market Scan
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </AnimateOnScroll>
+
+          </div>
         </div>
       </section>
 
       <WaveDivider />
 
-      {/* ===== REPORT PREVIEW / PROOF ===== */}
-      <section className="relative py-20 md:py-32" id="report-preview">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up" className="text-center mb-16">
+      {/* ===== HOW IT WORKS ===== */}
+      <section className="relative py-20 md:py-32" id="how-it-works">
+        <div className="max-w-[900px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up" className="text-center mb-4">
+            <span className="overline inline-flex items-center gap-3">
+              <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/50" />
+              How It Works
+              <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-teal-500/50" />
+            </span>
+          </AnimateOnScroll>
+          <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-16">
             <h2
-              className="font-heading font-bold text-white mx-auto max-w-3xl"
+              className="font-heading font-bold text-white"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              A real brief. A real region.
-              <br className="hidden sm:block" />
-              <span className="text-gradient-cosmic">Real findings.</span>
+              Simple. Fast. Actionable.
             </h2>
           </AnimateOnScroll>
 
-          <AnimateOnScroll variant="scale" delay={100}>
+          <StaggerChildren stagger={120} variant="fade-up" className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                step: '01',
+                title: 'Submit',
+                desc: 'Fill out the form above. Tell us your institution, state, and any program focus areas. Takes 60 seconds.',
+                icon: '📬',
+              },
+              {
+                step: '02',
+                title: 'We Analyze',
+                desc: 'Our system draws from 50+ verified sources — labor data, employer signals, competitive maps — to build your report.',
+                icon: '🔬',
+              },
+              {
+                step: '03',
+                title: 'You Decide',
+                desc: 'Receive a clear, sourced report with scored opportunities and specific next steps. No jargon. No hedging.',
+                icon: '✅',
+              },
+            ].map(({ step, title, desc, icon }) => (
+              <div key={step} className="text-center">
+                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center mx-auto mb-5 text-2xl">
+                  {icon}
+                </div>
+                <div className="font-mono text-xs text-white/25 tracking-widest mb-2">{step}</div>
+                <h3 className="font-heading font-bold text-white text-xl mb-3">{title}</h3>
+                <p className="text-white/45 text-sm leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </StaggerChildren>
+        </div>
+      </section>
+
+      <WaveDivider />
+
+      {/* ===== WHAT'S IN A MARKET SCAN ===== */}
+      <section className="relative py-20 md:py-32" id="market-scan">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up" className="text-center mb-4">
+            <span className="overline inline-flex items-center gap-3">
+              <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/50" />
+              What&apos;s in a Market Scan
+              <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-teal-500/50" />
+            </span>
+          </AnimateOnScroll>
+          <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-4">
+            <h2
+              className="font-heading font-bold text-white"
+              style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
+            >
+              Six phases of research. One comprehensive report.
+            </h2>
+          </AnimateOnScroll>
+          <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
+            <p className="text-white/50 text-lg max-w-2xl mx-auto">
+              Every data point sourced and cited. Every opportunity scored across five dimensions.
+            </p>
+          </AnimateOnScroll>
+
+          <StaggerChildren stagger={80} variant="fade-up" className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              {
+                num: '01',
+                title: 'Regional Intelligence',
+                desc: 'Your institution profiled. Top employers mapped. Economic trends identified. Existing programs cataloged.',
+              },
+              {
+                num: '02',
+                title: 'Demand Signal Detection',
+                desc: 'Employment data, active job postings, employer expansion signals, and matching grant opportunities — from 50+ verified sources.',
+              },
+              {
+                num: '03',
+                title: 'Competitive Landscape',
+                desc: 'Every provider in your region mapped. Their programs cataloged. White space and competitive gaps identified.',
+              },
+              {
+                num: '04',
+                title: 'Opportunity Scoring',
+                desc: 'Each opportunity scored across 5 dimensions: demand, competition, revenue, wages, and launch speed.',
+              },
+              {
+                num: '05',
+                title: 'Blue Ocean Scanner',
+                desc: 'The opportunities no standard analysis finds — emerging roles, employer pain points, and supply chain gaps before they hit any database.',
+              },
+              {
+                num: '06',
+                title: 'The Market Scan Report',
+                desc: '25+ pages with scored programs, evidence trails, grant alignment, barriers, Workforce Pell readiness scores, and specific next steps.',
+              },
+            ].map(({ num, title, desc }) => (
+              <div key={num} className="card-cosmic rounded-xl p-6">
+                <div className="font-mono text-xs text-white/25 tracking-widest mb-3">{num}</div>
+                <h3 className="font-heading font-semibold text-white mb-2">{title}</h3>
+                <p className="text-white/40 text-sm leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </StaggerChildren>
+
+          {/* Report preview card */}
+          <AnimateOnScroll variant="scale" delay={200} className="mt-16">
             <div className="max-w-4xl mx-auto card-cosmic rounded-2xl overflow-hidden">
-              {/* Header */}
               <div className="p-6 md:p-8 border-b border-white/[0.06]">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div>
                     <p className="text-xs font-medium uppercase tracking-widest text-white/40 mb-1">
-                      Discovery Brief
+                      Market Scan
                     </p>
                     <p className="font-heading font-semibold text-white text-xl">
                       Wake Technical Community College
@@ -214,92 +629,48 @@ export default function HomePage() {
                     </p>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-white/30">
-                    <Database className="h-4 w-4" />
-                    <span>50+ cited sources</span>
-                    <span className="mx-1">·</span>
-                    <TrendingUp className="h-4 w-4" />
-                    <span>~25 pages</span>
+                    <span>50+ cited sources · ~25 pages</span>
                   </div>
                 </div>
               </div>
 
-              {/* Top Programs */}
               <div className="p-6 md:p-8 border-b border-white/[0.06]">
                 <h3 className="text-xs font-medium uppercase tracking-widest text-white/40 mb-4">
-                  Top Opportunities — Scored & Ranked
+                  Top Opportunities — Scored &amp; Ranked
                 </h3>
                 <div className="space-y-3">
                   {[
-                    {
-                      name: 'Biologics Manufacturing Quality Systems',
-                      score: 9.05,
-                      badge: 'Blue Ocean',
-                    },
-                    {
-                      name: 'Healthcare Management Certificate',
-                      score: 8.7,
-                      badge: null,
-                    },
-                    {
-                      name: 'Educational Facilities Operations Specialist',
-                      score: 8.55,
-                      badge: 'Blue Ocean',
-                    },
-                    {
-                      name: 'Construction Management Certificate',
-                      score: 8.5,
-                      badge: null,
-                    },
+                    { name: 'Biologics Manufacturing Quality Systems', score: 9.05, badge: 'Blue Ocean' },
+                    { name: 'Healthcare Management Certificate', score: 8.7, badge: null },
+                    { name: 'Educational Facilities Operations Specialist', score: 8.55, badge: 'Blue Ocean' },
+                    { name: 'Construction Management Certificate', score: 8.5, badge: null },
                   ].map((program) => (
                     <div
                       key={program.name}
                       className="flex items-center justify-between py-3 px-4 rounded-lg bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
                     >
-                      <div className="flex items-center gap-3">
-                        <span className="text-white/80 text-sm font-medium">
-                          {program.name}
-                        </span>
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <span className="text-white/80 text-sm font-medium">{program.name}</span>
                         {program.badge && (
                           <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cosmic-teal/20 text-teal-300 border border-teal-500/20">
                             {program.badge}
                           </span>
                         )}
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 flex-shrink-0">
                         <div className="w-16 h-1.5 rounded-full bg-white/10 overflow-hidden">
                           <div
                             className="h-full rounded-full bg-gradient-to-r from-purple-500 to-blue-500"
-                            style={{
-                              width: `${(program.score / 10) * 100}%`,
-                            }}
+                            style={{ width: `${(program.score / 10) * 100}%` }}
                           />
                         </div>
-                        <span className="text-white/60 text-sm font-mono w-8 text-right">
-                          {program.score}
-                        </span>
+                        <span className="text-white/60 text-sm font-mono w-8 text-right">{program.score}</span>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              {/* Stats row */}
-              <div className="grid grid-cols-3 divide-x divide-white/[0.06]">
-                {[
-                  { value: '13', label: 'opportunities found' },
-                  { value: '20+', label: 'employers researched' },
-                  { value: '8', label: 'competitors mapped' },
-                ].map(({ value, label }) => (
-                  <div key={label} className="p-4 md:p-6 text-center">
-                    <div className="font-heading font-bold text-xl text-gradient-cosmic">
-                      {value}
-                    </div>
-                    <p className="text-white/30 text-xs mt-1">{label}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* CTA */}
               <div className="p-6 md:p-8 border-t border-white/[0.06] flex justify-center">
                 <Link href="/report/demo">
                   <button className="btn-cosmic btn-cosmic-ghost text-sm">
@@ -317,7 +688,7 @@ export default function HomePage() {
 
       {/* ===== PRICING ===== */}
       <section className="relative py-20 md:py-32" id="pricing">
-        <div className="max-w-[1200px] mx-auto px-6">
+        <div className="max-w-[1100px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-4">
             <span className="overline inline-flex items-center gap-3">
               <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/50" />
@@ -335,177 +706,128 @@ export default function HomePage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
             <p className="text-white/50 text-lg">
-              🚀 Founding rates — first 5 institutions only
+              🚀 Founding rates active — first 5 institutions only
             </p>
           </AnimateOnScroll>
 
-          <StaggerChildren stagger={150} variant="fade-up" className="grid lg:grid-cols-3 gap-8 mx-auto max-w-5xl items-start">
-            {/* Tier 1 — Discovery Brief */}
-            <div className="card-cosmic rounded-2xl p-8">
-              <h3 className="font-heading font-semibold text-white text-lg">
-                Discovery Brief
-              </h3>
-              <p className="text-white/40 text-sm mt-1">
-                Pick up the signal.
-              </p>
-              <div className="mt-5 mb-1">
-                <span className="font-heading font-bold text-4xl text-gradient-cosmic">
-                  $1,500
-                </span>
-                <span className="text-white/30 text-sm ml-2 line-through">
-                  $3,500
-                </span>
+          <StaggerChildren stagger={120} variant="fade-up" className="grid md:grid-cols-3 gap-6 md:gap-8 max-w-4xl mx-auto items-start">
+
+            {/* Tier 1 — Pell Readiness Check */}
+            <div className="card-cosmic rounded-2xl p-7 border-teal-500/20">
+              <h3 className="font-heading font-semibold text-white text-lg">Pell Readiness Check</h3>
+              <p className="text-white/40 text-sm mt-1">Find your Pell opportunity.</p>
+              <div className="mt-5 mb-6">
+                <span className="font-heading font-bold text-4xl text-gradient-cosmic">$0</span>
+                <span className="text-white/30 text-sm ml-2">— email required</span>
               </div>
-              <p className="text-xs text-white/30 mb-6">Founding rate</p>
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-2.5 mb-7">
                 {[
-                  'Regional market intelligence',
-                  'Demand signal analysis',
-                  'Competitive landscape',
-                  'Blue Ocean opportunities',
-                  'Workforce Pell readiness scoring',
-                  'Grant alignment',
-                  'Scored & ranked programs',
-                ].map((item) => (
-                  <li key={item} className="flex items-start gap-3">
+                  'Program eligibility assessment',
+                  'Clock-hour compliance review',
+                  'Pell gap identification',
+                  'Delivered in ~48 hours',
+                ].map(item => (
+                  <li key={item} className="flex items-start gap-2.5">
+                    <Check className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
+                    <span className="text-sm text-white/60">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <a href="#hero">
+                <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                  Get Started — Free
+                </button>
+              </a>
+            </div>
+
+            {/* Tier 2 — Compliance Gap Report */}
+            <div className="card-cosmic rounded-2xl p-7">
+              <h3 className="font-heading font-semibold text-white text-lg">Compliance Gap Report</h3>
+              <p className="text-white/40 text-sm mt-1">Find the revenue you&apos;re missing.</p>
+              <div className="mt-5 mb-6">
+                <span className="font-heading font-bold text-4xl text-gradient-cosmic">$79</span>
+              </div>
+              <ul className="space-y-2.5 mb-7">
+                {[
+                  'State-mandated program analysis',
+                  'Regional demand sizing',
+                  'Revenue opportunity estimate',
+                  'Prioritized action list',
+                ].map(item => (
+                  <li key={item} className="flex items-start gap-2.5">
                     <Check className="h-4 w-4 text-cosmic-teal flex-shrink-0 mt-0.5" strokeWidth={2} />
                     <span className="text-sm text-white/60">{item}</span>
                   </li>
                 ))}
               </ul>
-              <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
-                Get Started
-              </button>
+              <a href="mailto:hello@withwavelength.com?subject=Compliance%20Gap%20Report%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20">
+                <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                  Order Report
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </button>
+              </a>
             </div>
 
-            {/* Tier 2 — Discovery + Validation (POPULAR) */}
-            <div className="card-cosmic rounded-2xl p-8 relative border-purple-500/20 lg:-mt-4 lg:mb-[-1rem]">
+            {/* Tier 3 — Market Scan (featured) */}
+            <div className="card-cosmic rounded-2xl p-7 relative border-purple-500/20 md:-mt-4">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
                 <span className="inline-flex items-center rounded-full bg-gradient-to-r from-purple-500 to-blue-500 px-4 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-purple-500/20">
-                  Most Popular
+                  Founding Rate
                 </span>
               </div>
-              <div className="mt-2">
-                <h3 className="font-heading font-semibold text-white text-lg">
-                  Discovery + Validation
-                </h3>
-                <p className="text-white/40 text-sm mt-1">
-                  Lock the frequency.
-                </p>
+              <div className="mt-3">
+                <h3 className="font-heading font-semibold text-white text-lg">Market Scan</h3>
+                <p className="text-white/40 text-sm mt-1">Full intelligence before you build.</p>
                 <div className="mt-5 mb-1">
-                  <span className="font-heading font-bold text-4xl text-gradient-cosmic">
-                    $2,000
-                  </span>
-                  <span className="text-white/30 text-sm ml-2 line-through">
-                    $4,500
-                  </span>
+                  <span className="font-heading font-bold text-4xl text-gradient-cosmic">$1,500</span>
+                  <span className="text-white/30 text-sm ml-2 line-through">$3,500</span>
                 </div>
                 <p className="text-xs text-white/30 mb-6">Founding rate</p>
+                <ul className="space-y-2.5 mb-7">
+                  {[
+                    'Regional market intelligence',
+                    'Demand signal analysis',
+                    'Competitive landscape',
+                    'Blue Ocean opportunities',
+                    'Workforce Pell readiness scoring',
+                    'Grant alignment',
+                    'Scored & ranked programs',
+                  ].map(item => (
+                    <li key={item} className="flex items-start gap-2.5">
+                      <Check className="h-4 w-4 text-cosmic-teal flex-shrink-0 mt-0.5" strokeWidth={2} />
+                      <span className="text-sm text-white/60">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a href="mailto:hello@withwavelength.com?subject=Market%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AAny%20focus%20areas%3A%20">
+                  <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
+                    Order Market Scan
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </button>
+                </a>
               </div>
-              <ul className="space-y-3 mb-8">
-                {[
-                  'Everything in Discovery, plus:',
-                  'Deep market validation',
-                  'Financial projections',
-                  'Regulatory analysis',
-                  'Employer demand verification',
-                  'Implementation roadmap',
-                  'GO/NO-GO recommendation',
-                ].map((item, i) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <Check
-                      className={`h-4 w-4 flex-shrink-0 mt-0.5 ${
-                        i === 0 ? 'text-purple-400' : 'text-cosmic-teal'
-                      }`}
-                      strokeWidth={2}
-                    />
-                    <span
-                      className={`text-sm ${
-                        i === 0
-                          ? 'text-purple-300 font-medium'
-                          : 'text-white/60'
-                      }`}
-                    >
-                      {item}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
-                Get Started
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </button>
             </div>
 
-            {/* Tier 3 — Full Lifecycle (Coming Soon) */}
-            <div className="card-cosmic rounded-2xl p-8 relative opacity-80">
-              <div className="absolute -top-3 right-4">
-                <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white/50 border border-white/10">
-                  Coming Soon
-                </span>
-              </div>
-              <h3 className="font-heading font-semibold text-white text-lg">
-                Full Lifecycle
-              </h3>
-              <p className="text-white/40 text-sm mt-1">
-                Full spectrum.
-              </p>
-              <div className="mt-5 mb-6">
-                <span className="font-heading font-bold text-2xl text-white/30">
-                  Pricing TBD
-                </span>
-              </div>
-              <ul className="space-y-3 mb-8">
-                {[
-                  'Everything above, plus:',
-                  'Curriculum architecture',
-                  'Pathway mapping',
-                  'Marketing strategy',
-                  'Launch plan',
-                  'Quality framework',
-                ].map((item, i) => (
-                  <li key={item} className="flex items-start gap-3">
-                    <Check
-                      className={`h-4 w-4 flex-shrink-0 mt-0.5 ${
-                        i === 0 ? 'text-purple-400/50' : 'text-cosmic-teal/50'
-                      }`}
-                      strokeWidth={2}
-                    />
-                    <span
-                      className={`text-sm ${
-                        i === 0
-                          ? 'text-purple-300/50 font-medium'
-                          : 'text-white/40'
-                      }`}
-                    >
-                      {item}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <button className="btn-cosmic btn-cosmic-ghost w-full text-sm opacity-50 cursor-not-allowed" disabled>
-                Notify Me
-              </button>
-            </div>
           </StaggerChildren>
 
-          {/* Under $5K note */}
           <AnimateOnScroll variant="fade" delay={400}>
-            <div className="mt-12 text-center space-y-4">
+            <div className="mt-12 text-center">
               <div className="flex items-center justify-center gap-2 text-sm text-white/40">
                 <Shield className="h-4 w-4" />
-                <span>
-                  100% satisfaction guarantee — full refund if not actionable
-                </span>
+                <span>100% satisfaction guarantee — full refund if not actionable</span>
               </div>
             </div>
           </AnimateOnScroll>
         </div>
       </section>
 
+      <WaveDivider />
+
+      {/* ===== FAQ ===== */}
+      <FAQSection />
+
       {/* ===== FINAL CTA ===== */}
       <section className="relative py-24 md:py-40 overflow-hidden">
-        {/* Aurora + waveform background */}
         <Aurora />
         <Stars count={100} />
         <Waveform className="opacity-40" />
@@ -523,13 +845,19 @@ export default function HomePage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={200}>
-            <div className="mt-10">
-              <Link href="#pricing">
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+              <a href="#hero">
                 <button className="btn-cosmic btn-cosmic-primary text-base px-10 py-4">
-                  Get Your Discovery Brief
+                  <Zap className="mr-2 h-5 w-5" />
+                  Get Your Free Pell Readiness Check
+                </button>
+              </a>
+              <a href="mailto:hello@withwavelength.com?subject=Market%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20">
+                <button className="btn-cosmic btn-cosmic-ghost text-base px-8 py-4">
+                  Order a Market Scan
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </button>
-              </Link>
+              </a>
             </div>
             <p className="mt-6 text-sm text-white/30">
               Questions?{' '}

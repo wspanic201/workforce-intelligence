@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!data) return { title: 'Report Not Found' };
   const institution = data.structuredData?.regionalIntelligence?.institution?.name || 'Institution';
   return {
-    title: `${institution} — Program Discovery Brief | Wavelength`,
+    title: `${institution} — Program Market Scan | Wavelength`,
     description: `Program discovery analysis for ${institution}. ${data.brief?.programCount || 0} program opportunities identified.`,
     robots: { index: false, follow: false },
   };

@@ -19,9 +19,9 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Wavelength — Program Intelligence for Community Colleges",
+  title: "Wavelength — Workforce Pell Readiness & Market Intelligence for Community Colleges",
   description:
-    "Program intelligence for the full lifecycle. Discover, validate, and launch the programs your region actually needs.",
+    "Is your institution Workforce Pell ready? Get a free Pell Readiness Check, Compliance Gap Report, or full Market Scan — AI-powered program intelligence for community colleges.",
 };
 
 export default function RootLayout({

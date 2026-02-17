@@ -8,7 +8,7 @@
  * 
  * The report's job: (1) Impress the dean with thoroughness,
  * (2) Create urgency around July 1, 2026 Pell deadline,
- * (3) Natural lead-in to full Discovery Brief purchase.
+ * (3) Natural lead-in to full Market Scan purchase.
  */
 
 import { callClaude } from '@/lib/ai/anthropic';

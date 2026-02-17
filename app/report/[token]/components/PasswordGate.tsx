@@ -66,7 +66,7 @@ export function PasswordGate({ token, institutionName, onUnlock }: PasswordGateP
             Password Protected Report
           </h1>
           <p className="text-sm text-white/50 mb-8 leading-relaxed">
-            This Discovery Brief is password-protected. Enter your access password to view the report.
+            This Market Scan is password-protected. Enter your access password to view the report.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">

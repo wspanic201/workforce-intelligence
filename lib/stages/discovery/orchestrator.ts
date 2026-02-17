@@ -230,7 +230,7 @@ export async function runDiscovery(
 
   // ── Phase 6: Brief Writing ──
   try {
-    progress(6, 'Brief Writing', 'starting', 'Generating the Discovery Brief');
+    progress(6, 'Brief Writing', 'starting', 'Generating the Market Scan');
     const phaseStart = Date.now();
 
     brief = await writeDiscoveryBrief(

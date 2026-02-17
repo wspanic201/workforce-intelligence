@@ -1,8 +1,8 @@
 /**
- * Phase 5: Discovery Brief Writer
+ * Phase 5: Market Scan Writer
  * 
  * Takes all structured data from Phases 1-4 and produces the polished
- * Discovery Brief in the exact format Matt specified. No new research —
+ * Market Scan in the exact format Matt specified. No new research —
  * pure synthesis and formatting.
  * 
  * Output: 12-20 page consulting-grade brief ready for a Dean or VP.
@@ -36,7 +36,7 @@ export async function writeDiscoveryBrief(
   const opps = scoredOpportunities.scoredOpportunities;
   const grants = demandSignals.grantOpportunities || [];
 
-  console.log(`[Phase 5: Brief Writer] Generating Discovery Brief for ${institution.name}`);
+  console.log(`[Phase 5: Brief Writer] Generating Market Scan for ${institution.name}`);
 
   // ── Build grant alignment map (program → matching grants) ──
   const grantMap = buildGrantAlignmentMap(opps, grants, blueOceanResults?.hiddenOpportunities || []);
@@ -119,7 +119,7 @@ async function writeExecutiveSummary(
   const topOpp = opps[0];
 
   const { content } = await callClaude(
-    `Write a compelling executive summary (3-4 paragraphs) for a Program Discovery Brief.
+    `Write a compelling executive summary (3-4 paragraphs) for a Program Market Scan.
 
 CRITICAL BRANDING RULE: You are writing as "WorkforceOS". Use "WorkforceOS" when referring to the company that conducted this analysis. Do NOT use any other company name (e.g., Gray Associates, Hanover Research, EAB, etc.). Do NOT invent or substitute any third-party brand names.
 
@@ -298,7 +298,7 @@ function buildNextSteps(
   return `## RECOMMENDED NEXT STEPS
 
 **1. Review findings with your leadership team**  
-Share this Discovery Brief with your Dean, VP of Instruction, and program development leads. Focus discussion on the top 3 recommendations and how they align with institutional strategic priorities.
+Share this Market Scan with your Dean, VP of Instruction, and program development leads. Focus discussion on the top 3 recommendations and how they align with institutional strategic priorities.
 
 **2. Select 1-3 programs for deeper validation**  
 We recommend the following for immediate Program Validation:
@@ -574,7 +574,7 @@ ${sourceList}
 
 ### Methodology Notes
 
-This Program Discovery Brief was generated using WorkforceOS multi-phase analysis:
+This Program Market Scan was generated using WorkforceOS multi-phase analysis:
 
 1. **Regional Intelligence** — Institutional profiling, employer mapping, economic trend analysis
 2. **Demand Signal Detection** — Job posting analysis, BLS employment data, employer expansion signals, grant opportunities

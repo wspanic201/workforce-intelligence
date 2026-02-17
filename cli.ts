@@ -118,6 +118,7 @@ Examples:
   npx tsx cli.ts discover
   npx tsx cli.ts discover --college "Kirkwood" --city "Cedar Rapids" --state "Iowa"
   npx tsx cli.ts pell-audit --college "Wake Tech" --city "Raleigh" --state "North Carolina"
+  npx tsx cli.ts compliance-gap --college "Wake Tech" --state "North Carolina"
   npx tsx cli.ts validate --top 3
   npx tsx cli.ts pipeline --college "Kirkwood" --city "Cedar Rapids" --state "Iowa" --top 2
   npx tsx cli.ts report
@@ -823,6 +824,135 @@ async function runPellAudit(flags: CLIFlags) {
   success(`Pell Audit complete in ${formatDuration(duration)}`);
 }
 
+// ── Compliance Gap Command ──
+
+async function runComplianceGap(flags: CLIFlags) {
+  header('COMPLIANCE GAP REPORT');
+  log('Scans state regulatory codes for ALL mandated training programs,');
+  log('cross-references against the college\'s current offerings, and');
+  log('sizes the revenue opportunity for every compliance gap.');
+  console.log('');
+
+  const college = flags.college || await ask('Institution name');
+  const state = flags.state || await ask('State');
+  const city = flags.city || await ask('City (helps scope regional demand)');
+  const url = (flags as any).url || await ask('Institution website URL (or Enter to auto-find)');
+
+  if (!college || !state) {
+    fail('Institution name and state are required.');
+    return;
+  }
+
+  // Confirm
+  console.log('');
+  log('┌─────────────────────────────────────────────');
+  log(`│ Institution:  ${college}`);
+  log(`│ Location:     ${city ? `${city}, ` : ''}${state}`);
+  log(`│ Website:      ${url || '(auto-detect)'}`);
+  log(`│ Mode:         ${flags.test ? 'TEST' : 'PRODUCTION (~$2-5)'}`);
+  log('└─────────────────────────────────────────────');
+  console.log('');
+
+  const confirmed = await askConfirm('Run Compliance Gap Report?');
+  if (!confirmed) {
+    log('Cancelled.');
+    return;
+  }
+
+  if (flags.test) {
+    process.env.TEST_MODE = 'true';
+    log('🧪 TEST MODE — using Haiku model with lower token limits');
+  }
+
+  console.log('');
+  log('Starting Compliance Gap pipeline...');
+  console.log('');
+
+  const { runComplianceGap: runGap } = await import('./lib/stages/compliance-gap/orchestrator');
+
+  const startTime = Date.now();
+  const result = await runGap(
+    {
+      collegeName: college,
+      state,
+      city: city || undefined,
+      siteUrl: url || undefined,
+    },
+    (event) => {
+      const icon = event.status === 'complete' ? '✅' : event.status === 'error' ? '❌' : '⏳';
+      log(`${icon} Agent ${event.agent}/3: ${event.agentName} — ${event.message} [${event.elapsed}s]`);
+    }
+  );
+
+  const duration = Math.round((Date.now() - startTime) / 1000);
+
+  // Save results
+  console.log('');
+  header('RESULTS');
+
+  if (!result.report) {
+    fail('Compliance Gap Report failed. Check errors above.');
+    if (result.metadata.errors.length > 0) {
+      for (const err of result.metadata.errors) warn(`  - ${err}`);
+    }
+    return;
+  }
+
+  // Save report
+  const sanitized = sanitizeFilename(college);
+  const reportPath = join(flags.output, `Compliance-Gap-${sanitized}-${timestamp()}.md`);
+  writeFileSync(reportPath, result.report);
+  success(`Report saved: ${reportPath}`);
+
+  if (flags.json) {
+    const jsonPath = join(flags.output, `Compliance-Gap-${sanitized}-${timestamp()}.json`);
+    writeFileSync(jsonPath, JSON.stringify(result, null, 2));
+    success(`JSON data saved: ${jsonPath}`);
+  }
+
+  // Cache
+  const key = `compliance-gap-${cacheKey(college)}`;
+  saveCacheData(key, {
+    input: { college, state, city, url },
+    output: result,
+    timestamp: new Date().toISOString(),
+  });
+  success(`Cached: ~/.workforceos/${key}.json`);
+
+  // Summary
+  console.log('');
+  log('┌─────────────────────────────────────────────');
+  log(`│ Status:                ${result.metadata.errors.length === 0 ? 'SUCCESS' : 'PARTIAL'}`);
+  log(`│ Duration:              ${formatDuration(duration)}`);
+  log(`│ Mandated Programs:     ${result.stats.totalMandated}`);
+  log(`│ Already Offered:       ${result.stats.currentlyOffered}`);
+  log(`│ Compliance Gaps:       ${result.stats.gaps}`);
+  log(`│ High-Priority Gaps:    ${result.stats.highPriorityGaps}`);
+  log(`│ Est. Revenue Gap:      $${result.stats.estimatedAnnualRevenue.toLocaleString()}/yr`);
+  log(`│ Errors:                ${result.metadata.errors.length}`);
+  log('└─────────────────────────────────────────────');
+
+  if (result.metadata.errors.length > 0) {
+    console.log('');
+    warn('Errors during run:');
+    for (const err of result.metadata.errors) {
+      log(`  - ${err}`);
+    }
+  }
+
+  if (result.gaps.length > 0) {
+    console.log('');
+    log('TOP COMPLIANCE GAPS:');
+    result.gaps.slice(0, 5).forEach((gap, i) => {
+      const tier = gap.priorityTier === 'high' ? '🔴' : gap.priorityTier === 'medium' ? '🟡' : '🟢';
+      log(`  ${tier} ${i + 1}. ${gap.mandatedProgram.occupation} — $${Math.round(gap.estimatedAnnualRevenue / 1000)}K/yr`);
+    });
+  }
+
+  console.log('');
+  success(`Compliance Gap Report complete in ${formatDuration(duration)}`);
+}
+
 // ── Main ──
 
 async function main() {
@@ -865,6 +995,12 @@ async function main() {
       case 'pell':
       case 'audit':
         await runPellAudit(flags);
+        break;
+
+      case 'compliance-gap':
+      case 'compliance':
+      case 'gap':
+        await runComplianceGap(flags);
         break;
 
       default:

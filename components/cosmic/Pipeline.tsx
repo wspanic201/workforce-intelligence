@@ -18,7 +18,7 @@ const stages: Stage[] = [
     name: 'Discover',
     short: 'Scan your labor market across 50+ verified sources to surface the workforce programs your region actually needs — including hidden opportunities no one else finds.',
     detail:
-      'Regional intelligence, employer demand signals, competitive landscape mapping, opportunity scoring, Blue Ocean scanning, and a fully cited 25-page Discovery Brief.',
+      'Regional intelligence, employer demand signals, competitive landscape mapping, opportunity scoring, Blue Ocean scanning, and a fully cited 25-page Market Scan.',
     status: 'built',
     href: '/discover',
   },

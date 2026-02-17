@@ -7,7 +7,7 @@
  * eligibility potential.
  * 
  * This is the "hook" — the section that makes deans think
- * "I need a full Discovery Brief for these opportunities."
+ * "I need a full Market Scan for these opportunities."
  */
 
 import { callClaude, extractJSON } from '@/lib/ai/anthropic';

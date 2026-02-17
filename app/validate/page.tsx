@@ -70,7 +70,7 @@ export default function ValidatePage() {
               </a>
               <Link href="/discover">
                 <button className="btn-cosmic btn-cosmic-ghost">
-                  Start with Discovery First
+                  Start with a Market Scan First
                 </button>
               </Link>
             </div>
@@ -96,7 +96,7 @@ export default function ValidatePage() {
               Seven deliverables. One comprehensive answer.
             </h2>
             <p className="text-white/40 mt-3 max-w-xl mx-auto">
-              Validation goes far deeper than Discovery surface signals — every analysis is verified against primary data, comparable programs, and employer reality.
+              Validation goes far deeper than Market Scan surface signals — every analysis is verified against primary data, comparable programs, and employer reality.
             </p>
           </AnimateOnScroll>
 
@@ -314,16 +314,16 @@ export default function ValidatePage() {
               <div className="mb-6">
                 <div className="flex items-baseline justify-center gap-3">
                   <span className="font-heading font-bold text-4xl text-white">$2,000</span>
-                  <span className="text-white/30 text-sm line-through">$4,500</span>
+                  <span className="text-white/30 text-sm line-through">$5,500</span>
                 </div>
                 <p className="text-white/40 text-sm mt-2">
-                  Full Validation — includes Discovery Brief deliverables
+                  Full Validation — includes Market Scan deliverables
                 </p>
               </div>
 
               <ul className="text-left max-w-sm mx-auto space-y-3 mb-8">
                 {[
-                  'Everything in Discovery Brief',
+                  'Everything in Market Scan',
                   'Deep Market Validation',
                   'Full 5-Year Financial Projections',
                   'Employer Demand Verification',

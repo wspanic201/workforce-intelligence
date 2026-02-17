@@ -1,11 +1,11 @@
 /**
- * PDF generation for WorkforceOS Discovery Briefs and Validation Reports.
+ * PDF generation for WorkforceOS Market Scans and Validation Reports.
  * 
  * Pipeline: Markdown → HTML → Branded Template → Puppeteer → PDF
  * 
  * Usage:
  *   const result = await generatePDF(markdown, {
- *     title: 'Program Discovery Brief',
+ *     title: 'Program Market Scan',
  *     preparedFor: 'Kirkwood Community College',
  *     reportType: 'discovery',
  *     outputPath: '/tmp/report.pdf',
@@ -57,7 +57,7 @@ export async function generatePDF(
 
     // Build header/footer templates
     const reportTypeLabel = options.reportType === 'discovery'
-      ? 'Discovery Brief'
+      ? 'Market Scan'
       : 'Validation Report';
     const client = options.preparedFor || '';
     const date = options.date || '';
