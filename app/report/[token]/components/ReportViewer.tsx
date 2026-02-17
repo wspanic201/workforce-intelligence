@@ -182,7 +182,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
         <div className="relative z-10 max-w-5xl mx-auto">
           {/* Breadcrumb */}
           <div className="flex items-center gap-1.5 text-xs text-white/30 mb-6">
-            <span>WorkforceOS</span>
+            <span>[BRAND]</span>
             <ChevronRight className="w-3 h-3" />
             <span>Program Discovery Brief</span>
             <ChevronRight className="w-3 h-3" />
@@ -234,7 +234,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
           {/* Generated date */}
           {generatedDate && (
             <p className="text-xs text-white/25">
-              Generated {generatedDate} · Powered by WorkforceOS
+              Generated {generatedDate} · Powered by [BRAND]
             </p>
           )}
         </div>
@@ -481,7 +481,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
                 Want to validate these findings?
               </h3>
               <p className="text-white/60 text-sm max-w-lg mx-auto mb-6 leading-relaxed">
-                WorkforceOS Validation Phase interviews real employers in your region to confirm demand before you commit budget to a new program.
+                [BRAND] Validation Phase conducts deep employer outreach and market validation in your region to confirm demand before you commit budget to a new program.
               </p>
               <a
                 href="/#pricing"
@@ -519,9 +519,9 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
             </div>
 
             <div className="text-right">
-              <p className="text-sm font-bold text-white">WorkforceOS</p>
+              <p className="text-sm font-bold text-white">[BRAND]</p>
               <p className="text-xs text-white/30 mt-1">
-                AI-powered program intelligence for community colleges
+                Program intelligence for community colleges
               </p>
               <a
                 href="/"
@@ -534,7 +534,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
 
           <div className="mt-8 pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row justify-between items-center gap-3">
             <p className="text-xs text-white/20">
-              © {new Date().getFullYear()} WorkforceOS. Confidential — for {institutionName} use only.
+              © {new Date().getFullYear()} [BRAND]. Confidential — for {institutionName} use only.
             </p>
             <p className="text-xs text-white/20">
               Report token: <code className="font-mono text-white/30">{token}</code>

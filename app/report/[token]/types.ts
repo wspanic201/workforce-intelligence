@@ -1,5 +1,5 @@
 // ============================================================
-// WorkforceOS Report Types
+// [BRAND] Report Types
 // ============================================================
 
 export interface EvidencePoint {

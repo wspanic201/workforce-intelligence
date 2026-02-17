@@ -447,7 +447,7 @@ export default function HomePage() {
                     <p className="text-white/50 leading-relaxed mb-4">
                       15 years of building workforce programs at a community college.
                       I got tired of guessing what to build next. So I built the thing I
-                      wish I&apos;d had — an AI system that sees the full market picture in
+                      wish I&apos;d had — a system that sees the full market picture in
                       days, not months.
                     </p>
                     <p className="text-white/50 leading-relaxed">
