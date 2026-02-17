@@ -241,18 +241,18 @@ export default function HomePage() {
                       Discovery Brief
                     </p>
                     <p className="font-heading font-semibold text-white text-xl">
-                      Sample Institution
+                      Wake Technical Community College
                     </p>
                     <p className="text-white/40 text-sm mt-0.5">
-                      Midwest Regional Corridor
+                      Research Triangle — Raleigh, Durham, Chapel Hill, Cary
                     </p>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-white/30">
                     <Clock className="h-4 w-4" />
-                    <span>708 seconds</span>
+                    <span>676 seconds</span>
                     <span className="mx-1">·</span>
                     <Database className="h-4 w-4" />
-                    <span>76 searches</span>
+                    <span>74 searches</span>
                   </div>
                 </div>
               </div>
@@ -265,17 +265,22 @@ export default function HomePage() {
                 <div className="space-y-3">
                   {[
                     {
-                      name: 'Health Services Management',
-                      score: 9.1,
-                      badge: null,
-                    },
-                    {
-                      name: 'Sterile Processing Technology',
-                      score: 8.7,
+                      name: 'Biologics Manufacturing Quality Systems',
+                      score: 9.05,
                       badge: 'Blue Ocean',
                     },
                     {
-                      name: 'CDL / Commercial Driving',
+                      name: 'Healthcare Management Certificate',
+                      score: 8.7,
+                      badge: null,
+                    },
+                    {
+                      name: 'Educational Facilities Operations Specialist',
+                      score: 8.55,
+                      badge: 'Blue Ocean',
+                    },
+                    {
+                      name: 'Construction Management Certificate',
                       score: 8.5,
                       badge: null,
                     },
@@ -316,8 +321,8 @@ export default function HomePage() {
               <div className="grid grid-cols-3 divide-x divide-white/[0.06]">
                 {[
                   { value: '13', label: 'opportunities found' },
-                  { value: '76', label: 'data sources queried' },
-                  { value: '708s', label: 'total analysis time' },
+                  { value: '74', label: 'data sources queried' },
+                  { value: '676s', label: 'total analysis time' },
                 ].map(({ value, label }) => (
                   <div key={label} className="p-4 md:p-6 text-center">
                     <div className="font-heading font-bold text-xl text-gradient-cosmic">
