@@ -14,7 +14,7 @@ fi
 echo "Starting test validation with test credentials..."
 echo "API Key prefix: ${ANTHROPIC_API_KEY:0:10}..."
 
-npm run dev &
+TEST_MODE=true npm run dev &
 SERVER_PID=$!
 
 sleep 5
