@@ -571,10 +571,16 @@ export default function HomePage() {
                   ))}
                 </ul>
                 <a href="#hero">
-                  <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                  <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
                     Get Started — It&apos;s Free
                   </button>
                 </a>
+                <Link href="/pell" className="block mt-2">
+                  <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                    Learn More
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </button>
+                </Link>
               </div>
             </AnimateOnScroll>
 
@@ -623,11 +629,17 @@ export default function HomePage() {
                   ))}
                 </ul>
                 <a href="mailto:hello@withwavelength.com?subject=Compliance%20Gap%20Report&body=College%20name%3A%20%0ACity%2C%20State%3A%20">
-                  <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                  <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
                     Order Report
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </button>
                 </a>
+                <Link href="/compliance-gap" className="block mt-2">
+                  <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                    Learn More
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </button>
+                </Link>
               </div>
             </AnimateOnScroll>
 
@@ -691,6 +703,12 @@ export default function HomePage() {
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </button>
                   </a>
+                  <Link href="/discover" className="block mt-2">
+                    <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                      Learn More
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </button>
+                  </Link>
                 </div>
               </div>
             </AnimateOnScroll>
@@ -943,10 +961,15 @@ export default function HomePage() {
                 ))}
               </ul>
               <a href="#hero">
-                <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
                   Get Started — Free
                 </button>
               </a>
+              <Link href="/pell" className="block mt-2">
+                <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                  Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                </button>
+              </Link>
             </div>
 
             {/* Tier 2 — Compliance Gap Report */}
@@ -970,11 +993,16 @@ export default function HomePage() {
                 ))}
               </ul>
               <a href="mailto:hello@withwavelength.com?subject=Compliance%20Gap%20Report%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20">
-                <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
                   Order Report
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </a>
+              <Link href="/compliance-gap" className="block mt-2">
+                <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                  Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                </button>
+              </Link>
             </div>
 
             {/* Tier 3 — Market Scan (featured) */}
@@ -1014,6 +1042,11 @@ export default function HomePage() {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </button>
                 </a>
+                <Link href="/discover" className="block mt-2">
+                  <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
+                  </button>
+                </Link>
               </div>
             </div>
 
