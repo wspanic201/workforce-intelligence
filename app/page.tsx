@@ -58,7 +58,7 @@ export default function HomePage() {
           <AnimateOnScroll variant="fade-up" delay={450} duration={800}>
             <div className="mt-16 flex flex-wrap justify-center gap-8 md:gap-16">
               {[
-                { value: '74+', label: 'live data sources' },
+                { value: '50+', label: 'sources cited & verified' },
                 { value: '25+', label: 'page brief' },
                 { value: '100%', label: 'cited & sourced' },
               ].map(({ value, label }) => (
@@ -132,7 +132,7 @@ export default function HomePage() {
                   </div>
                   <div className="flex items-center gap-2 text-sm text-white/30">
                     <Database className="h-4 w-4" />
-                    <span>74 data sources</span>
+                    <span>50+ cited sources</span>
                     <span className="mx-1">·</span>
                     <TrendingUp className="h-4 w-4" />
                     <span>~25 pages</span>
