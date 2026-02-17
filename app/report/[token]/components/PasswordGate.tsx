@@ -112,7 +112,7 @@ export function PasswordGate({ token, institutionName, onUnlock }: PasswordGateP
           </form>
 
           <p className="mt-6 text-xs text-white/25">
-            Password provided by [BRAND] when your report was delivered.
+            Password provided by Wavelength when your report was delivered.
           </p>
         </div>
       </div>

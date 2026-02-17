@@ -10,6 +10,32 @@ import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
 import { Pipeline } from '@/components/cosmic/Pipeline';
 
+function WaveDivider() {
+  return (
+    <div className="w-full overflow-hidden py-4" aria-hidden="true">
+      <svg
+        viewBox="0 0 1200 40"
+        className="w-full h-8 opacity-[0.07]"
+        preserveAspectRatio="none"
+      >
+        <path
+          d="M0,20 C100,5 200,35 300,20 C400,5 500,35 600,20 C700,5 800,35 900,20 C1000,5 1100,35 1200,20"
+          fill="none"
+          stroke="url(#wave-gradient)"
+          strokeWidth="2"
+        />
+        <defs>
+          <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#a855f7" />
+            <stop offset="50%" stopColor="#6366f1" />
+            <stop offset="100%" stopColor="#2dd4bf" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  );
+}
+
 export default function HomePage() {
   return (
     <div className="overflow-x-hidden bg-[#050510]">
@@ -110,6 +136,8 @@ export default function HomePage() {
         </div>
       </section>
 
+      <WaveDivider />
+
       {/* ===== PIPELINE SECTION ===== */}
       <section className="relative py-20 md:py-32" id="how-it-works">
         <div className="max-w-[1400px] mx-auto px-6">
@@ -126,7 +154,7 @@ export default function HomePage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
             <p className="text-white/50 text-lg max-w-2xl mx-auto">
-              Every stage delivers standalone value.
+              Every stage delivers standalone value. Every signal amplified.
             </p>
           </AnimateOnScroll>
 
@@ -135,6 +163,8 @@ export default function HomePage() {
           </AnimateOnScroll>
         </div>
       </section>
+
+      <WaveDivider />
 
       {/* ===== REPORT PREVIEW / PROOF ===== */}
       <section className="relative py-20 md:py-32" id="report-preview">
@@ -266,6 +296,8 @@ export default function HomePage() {
         </div>
       </section>
 
+      <WaveDivider />
+
       {/* ===== PRICING ===== */}
       <section className="relative py-20 md:py-32" id="pricing">
         <div className="max-w-[1200px] mx-auto px-6">
@@ -293,7 +325,7 @@ export default function HomePage() {
                 Discovery Brief
               </h3>
               <p className="text-white/40 text-sm mt-1">
-                What should you build?
+                Pick up the signal.
               </p>
               <div className="mt-5 mb-1">
                 <span className="font-heading font-bold text-4xl text-gradient-cosmic">
@@ -337,7 +369,7 @@ export default function HomePage() {
                   Discovery + Validation
                 </h3>
                 <p className="text-white/40 text-sm mt-1">
-                  Should you build it?
+                  Lock the frequency.
                 </p>
                 <div className="mt-5 mb-1">
                   <span className="font-heading font-bold text-4xl text-gradient-cosmic">
@@ -395,7 +427,7 @@ export default function HomePage() {
                 Full Lifecycle
               </h3>
               <p className="text-white/40 text-sm mt-1">
-                Build it right.
+                Full spectrum.
               </p>
               <div className="mt-5 mb-6">
                 <span className="font-heading font-bold text-2xl text-white/30">
@@ -462,9 +494,9 @@ export default function HomePage() {
               className="font-heading font-bold text-white mx-auto max-w-3xl leading-tight"
               style={{ fontSize: 'clamp(1.75rem, 4vw + 0.5rem, 3rem)' }}
             >
-              Your next great program is hiding in plain sight.
+              Your next great program is hiding in the noise.
               <br className="hidden sm:block" />
-              <span className="text-gradient-cosmic">Let&apos;s find it.</span>
+              <span className="text-gradient-cosmic">We&apos;ll tune you in.</span>
             </h2>
           </AnimateOnScroll>
 
@@ -480,10 +512,10 @@ export default function HomePage() {
             <p className="mt-6 text-sm text-white/30">
               Questions?{' '}
               <a
-                href="mailto:hello@workforceintel.com"
+                href="mailto:hello@withwavelength.com"
                 className="text-white/50 hover:text-white/70 underline underline-offset-4 transition-colors"
               >
-                hello@workforceintel.com
+                hello@withwavelength.com
               </a>
             </p>
           </AnimateOnScroll>

@@ -18,7 +18,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "[BRAND] — Program Intelligence for Community Colleges",
+  title: "Wavelength — Program Intelligence for Community Colleges",
   description:
     "Program intelligence for the full lifecycle. Discover, validate, and launch the programs your region actually needs.",
 };
@@ -43,10 +43,10 @@ export default function RootLayout({
             <div className="flex flex-col md:flex-row justify-between items-start gap-8">
               <div>
                 <p className="font-heading font-bold text-white">
-                  [BRAND]
+                  Wavelength
                 </p>
                 <p className="text-sm text-white/40 mt-1">
-                  Program intelligence for community colleges
+                  Tuned to your market. Backed by data.
                 </p>
               </div>
               <div className="flex gap-8 text-sm text-white/40">
@@ -73,10 +73,10 @@ export default function RootLayout({
             <div className="mt-8 pt-8 border-t border-white/[0.06]">
               <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <p className="text-xs text-white/20">
-                  © {new Date().getFullYear()} [BRAND]. All rights reserved.
+                  © {new Date().getFullYear()} Wavelength. All rights reserved.
                 </p>
                 <div className="flex items-center gap-1">
-                  <span className="text-xs text-white/20">Built in Iowa 🌽</span>
+                  <span className="text-xs text-white/20">Built in Iowa 🌽 · Tuned to 📡</span>
                 </div>
               </div>
             </div>

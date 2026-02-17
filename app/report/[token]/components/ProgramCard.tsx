@@ -359,7 +359,7 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
                       <span>Get Employer Validation →</span>
                     </a>
                     <p className="text-xs text-white/30 mt-1">
-                      [BRAND] Validation Phase conducts deep employer outreach in your region
+                      Wavelength Validation Phase conducts deep employer outreach in your region
                     </p>
                   </div>
                 </div>

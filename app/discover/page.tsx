@@ -325,7 +325,7 @@ export default function DiscoverPage() {
                 ))}
               </ul>
 
-              <a href="mailto:hello@[BRAND].com?subject=Discovery%20Brief%20Request&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AAny%20focus%20areas%3A%20">
+              <a href="mailto:hello@withwavelength.com?subject=Discovery%20Brief%20Request&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AAny%20focus%20areas%3A%20">
                 <button className="btn-cosmic btn-cosmic-primary w-full sm:w-auto">
                   Request Your Free Brief
                   <ArrowRight className="ml-2 h-4 w-4" />

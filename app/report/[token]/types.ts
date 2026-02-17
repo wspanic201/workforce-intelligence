@@ -1,5 +1,5 @@
 // ============================================================
-// [BRAND] Report Types
+// Wavelength Report Types
 // ============================================================
 
 export interface EvidencePoint {

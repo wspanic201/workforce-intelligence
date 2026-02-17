@@ -28,7 +28,7 @@ export function NavBar() {
             href="/"
             className="font-heading text-lg font-bold tracking-tight text-white hover:text-white/80 transition-colors"
           >
-            <span className="text-gradient-cosmic">[BRAND]</span>
+            <span className="text-gradient-cosmic" title="~∿ tuned in ∿~">Wavelength</span>
           </Link>
 
           {/* Desktop nav */}
