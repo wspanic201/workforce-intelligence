@@ -10,6 +10,7 @@ import {
 import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
 import { Waveform } from '@/components/cosmic/Waveform';
+import { ParticleConstellation } from '@/components/cosmic/ParticleConstellation';
 
 const US_STATES = [
   'Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut',
@@ -371,6 +372,7 @@ function HeroCarousel() {
       <Stars count={250} />
       <Aurora />
       <Waveform className="opacity-60" />
+      <ParticleConstellation particleCount={70} connectionDistance={130} mouseRadius={180} speed={0.25} />
 
       <div className="relative z-10 max-w-[1200px] mx-auto px-6 w-full">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
