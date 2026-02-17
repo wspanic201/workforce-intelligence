@@ -218,10 +218,12 @@ export default function HomePage() {
 
               {/* CTA */}
               <div className="p-6 md:p-8 border-t border-white/[0.06] flex justify-center">
-                <button className="btn-cosmic btn-cosmic-ghost text-sm">
-                  Download Sample Brief
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </button>
+                <Link href="/report/demo">
+                  <button className="btn-cosmic btn-cosmic-ghost text-sm">
+                    View Full Sample Report
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </button>
+                </Link>
               </div>
             </div>
           </AnimateOnScroll>
