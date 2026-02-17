@@ -10,6 +10,7 @@
 
 import { callClaude } from '@/lib/ai/anthropic';
 import type { RegionalIntelligenceOutput } from './regional-intelligence';
+import type { CensusCountyData, RegionalDemographics } from '@/lib/apis/census';
 import type { DemandSignalOutput } from './demand-signals';
 import type { CompetitiveLandscapeOutput } from './competitive-landscape';
 import type { OpportunityScorerOutput, ScoredOpportunity } from './opportunity-scorer';
@@ -52,7 +53,7 @@ export async function writeDiscoveryBrief(
   sections.push(execSummary);
 
   // Regional Snapshot
-  sections.push(buildRegionalSnapshot(institution, topEmployers, economicTrends, demandSignals));
+  sections.push(buildRegionalSnapshot(institution, topEmployers, economicTrends, demandSignals, regionalIntel.censusDemographics));
 
   // Competitive Position
   sections.push(buildCompetitivePosition(institution, competitiveLandscape));
@@ -152,7 +153,8 @@ function buildRegionalSnapshot(
   institution: RegionalIntelligenceOutput['institution'],
   topEmployers: RegionalIntelligenceOutput['topEmployers'],
   trends: RegionalIntelligenceOutput['economicTrends'],
-  demandSignals: DemandSignalOutput
+  demandSignals: DemandSignalOutput,
+  censusData?: RegionalDemographics | null,
 ): string {
   const employerTable = topEmployers.slice(0, 10).map(e =>
     `| ${e.name} | ${e.industry} | ${e.estimatedLocalEmployment} |`
@@ -166,14 +168,69 @@ function buildRegionalSnapshot(
     `- **${g.name}** (${g.industry}): ${g.details}${g.deadline ? ` — Deadline: ${g.deadline}` : ''}`
   ).join('\n');
 
-  return `## REGIONAL SNAPSHOT
+  // Rich Census demographics if available
+  const censusBlock = censusData ? (() => {
+    const a = censusData!.aggregate;
+    const edu = a.educationalAttainment;
+    const age = a.ageDistribution;
+    const counties = censusData!.counties;
+    const countyNames = counties.map((c: { countyName: string }) => c.countyName).join(', ');
+    
+    let block = `### Service Area Overview
 
-### Service Area Overview
+**Region:** ${institution.serviceArea}, ${institution.state}  
+**Counties:** ${countyNames}  
+**Total Population:** ${a.totalPopulation.toLocaleString()}  
+**Median Household Income:** $${a.weightedMedianIncome.toLocaleString()}  
+**Median Age:** ${a.weightedMedianAge}  
+**Poverty Rate:** ${a.overallPovertyRate}%  
+**Employment Rate:** ${a.overallEmploymentRate}%  
+**Labor Force Participation:** ${a.overallLaborForceParticipation}%
+
+#### Educational Attainment (25+ population)
+
+| Level | % of Population |
+|-------|-----------------|
+| Less than high school | ${edu.lessThanHighSchool}% |
+| High school or GED | ${edu.highSchoolOrGed}% |
+| Some college, no degree | ${edu.someCollegeNoDegree}% |
+| Associate's degree | ${edu.associatesDegree}% |
+| Bachelor's degree | ${edu.bachelorsDegree}% |
+| Graduate/professional | ${edu.graduateOrProfessional}% |
+
+> **${(edu.lessThanHighSchool + edu.highSchoolOrGed + edu.someCollegeNoDegree + edu.associatesDegree).toFixed(1)}%** of the 25+ population does not hold a bachelor's degree — representing the core addressable market for community college programs.
+
+#### Age Distribution
+
+| Age Group | % of Population | Relevance |
+|-----------|-----------------|-----------|
+| Under 18 | ${age.under18}% | Future pipeline |
+| 18–24 | ${age.age18to24}% | Prime enrollment age |
+| 25–34 | ${age.age25to34}% | Adult learners & upskilling |
+| 35–54 | ${age.age35to54}% | Career changers & retraining |
+| 55+ | ${age.age55plus}% | — |
+
+**Estimated Addressable Market (ages 18–54, without bachelor's):** ~${a.potentialCCStudentPool.toLocaleString()} people`;
+
+    if (counties.length > 1) {
+      block += `\n\n#### County-Level Breakdown\n\n| County | Population | Median Income | Employment Rate |\n|--------|-----------|---------------|------------------|\n`;
+      for (const c of counties) {
+        block += `| ${c.countyName} | ${c.population.toLocaleString()} | $${c.medianHouseholdIncome.toLocaleString()} | ${c.employmentRate}% |\n`;
+      }
+    }
+
+    block += `\n\n*Source: ${censusData!.source}*`;
+    return block;
+  })() : `### Service Area Overview
 
 **Region:** ${institution.serviceArea}, ${institution.state}  
 **Population:** ${institution.demographics.population || 'Data unavailable'}  
 **Median Household Income:** ${institution.demographics.medianIncome || 'Data unavailable'}  
-**Educational Attainment:** ${institution.demographics.educationalAttainment || 'Data unavailable'}
+**Educational Attainment:** ${institution.demographics.educationalAttainment || 'Data unavailable'}`;
+
+  return `## REGIONAL SNAPSHOT
+
+${censusBlock}
 
 ### Top Regional Employers
 

@@ -10,6 +10,8 @@
 
 import { searchWeb, fetchPage, deepSearch, batchSearch } from '@/lib/apis/web-research';
 import { callClaude } from '@/lib/ai/anthropic';
+import { getRegionalDemographics, formatDemographicsForAgent } from '@/lib/apis/census';
+import type { RegionalDemographics } from '@/lib/apis/census';
 import type { ServiceRegion } from '../orchestrator';
 
 // ── Types ──
@@ -51,6 +53,8 @@ export interface RegionalIntelligenceOutput {
   economicTrends: EconomicTrend[];
   workforcePriorities: string[];       // from workforce board, state plans
   majorEconomicEvents: string[];       // plant openings, federal investments, etc.
+  censusDemographics: RegionalDemographics | null;  // real ACS data when available
+  censusSummary: string | null;         // formatted for agent context
   dataSources: Array<{ url: string; title: string; description: string }>;
   searchesExecuted: number;
 }
@@ -161,18 +165,45 @@ Return ONLY valid JSON:
     console.warn('[Phase 1] Failed to parse institution data, continuing with defaults');
   }
 
-  // ── Step 3: Regional demographics ──
-  console.log('[Phase 1] Step 3: Researching demographics...');
+  // ── Step 3: Regional demographics (Census ACS) ──
+  console.log('[Phase 1] Step 3: Fetching Census demographics...');
   
-  const demoSearch = await searchWeb(
-    `${serviceAreaCounties} ${collegeState} population demographics median income educational attainment`
-  );
-  searchCount++;
-
+  let censusDemographics: RegionalDemographics | null = null;
+  let censusSummary: string | null = null;
   let demographics = { population: null as string | null, medianIncome: null as string | null, educationalAttainment: null as string | null };
-  
-  const demoExtract = await callClaude(
-    `Extract demographic data for ${serviceAreaCounties}, ${collegeState} from these search results:
+
+  try {
+    censusDemographics = await getRegionalDemographics(allCities, collegeState);
+    if (censusDemographics) {
+      censusSummary = formatDemographicsForAgent(censusDemographics);
+      const a = censusDemographics.aggregate;
+      const edu = a.educationalAttainment;
+      demographics = {
+        population: a.totalPopulation.toLocaleString(),
+        medianIncome: `$${a.weightedMedianIncome.toLocaleString()}`,
+        educationalAttainment: `${edu.bachelorsDegree + edu.graduateOrProfessional}% bachelor's or higher, ${edu.someCollegeNoDegree + edu.associatesDegree}% some college/associate's, ${edu.highSchoolOrGed}% high school/GED`,
+      };
+      dataSources.push({
+        url: 'https://data.census.gov',
+        title: 'U.S. Census Bureau ACS 5-Year Estimates (2022)',
+        description: `Population, income, education, employment for ${censusDemographics.counties.map(c => c.countyName).join(', ')}`,
+      });
+      console.log(`[Phase 1] Census data: ${a.totalPopulation.toLocaleString()} pop, $${a.weightedMedianIncome.toLocaleString()} median income, ${a.potentialCCStudentPool.toLocaleString()} addressable market`);
+    }
+  } catch (err) {
+    console.warn('[Phase 1] Census API error, falling back to web search:', err);
+  }
+
+  // Fallback: web search demographics if Census failed
+  if (!censusDemographics) {
+    console.log('[Phase 1] Falling back to web search for demographics...');
+    const demoSearch = await searchWeb(
+      `${serviceAreaCounties} ${collegeState} population demographics median income educational attainment`
+    );
+    searchCount++;
+
+    const demoExtract = await callClaude(
+      `Extract demographic data for ${serviceAreaCounties}, ${collegeState} from these search results:
 
 ${demoSearch.results.map(r => `- ${r.title}: ${r.snippet}`).join('\n')}
 
@@ -184,12 +215,13 @@ Return ONLY valid JSON:
 }
 
 If data isn't clear, provide best available estimate with "approximately" qualifier.`,
-    { maxTokens: 500, temperature: 0.2 }
-  );
+      { maxTokens: 500, temperature: 0.2 }
+    );
 
-  try {
-    demographics = JSON.parse(demoExtract.content.match(/\{[\s\S]*\}/)?.[0] || '{}');
-  } catch {}
+    try {
+      demographics = JSON.parse(demoExtract.content.match(/\{[\s\S]*\}/)?.[0] || '{}');
+    } catch {}
+  }
 
   // ── Step 4: Top employers ──
   console.log('[Phase 1] Step 4: Identifying top employers...');
@@ -337,6 +369,8 @@ Return ONLY valid JSON:
     economicTrends: econData.economicTrends || [],
     workforcePriorities: econData.workforcePriorities || [],
     majorEconomicEvents: econData.majorEconomicEvents || [],
+    censusDemographics,
+    censusSummary,
     dataSources,
     searchesExecuted: searchCount,
   };
