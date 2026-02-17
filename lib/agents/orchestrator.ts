@@ -353,7 +353,7 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
           if (reportRow?.id) {
             await supabase.from('validation_reports')
               .update({ full_report_markdown: fullReport, version: 2 })
-              .eq('id', reportRow.id);
+              .eq('id', reportRow!.id);
           }
 
           // Log QA results
