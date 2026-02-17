@@ -15,9 +15,30 @@ import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
 import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
 
+const discoverProductJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: "Market Scan",
+  description:
+    "Full market intelligence before you build a new program — 25+ pages of scored opportunities, employer demand signals, competitive gaps, and grant alignment for community colleges.",
+  url: "https://withwavelength.com/discover",
+  brand: { "@type": "Brand", name: "Wavelength" },
+  offers: {
+    "@type": "Offer",
+    price: "1500",
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+    url: "https://withwavelength.com/discover",
+  },
+};
+
 export default function DiscoverPage() {
   return (
     <div className="overflow-x-hidden bg-[#050510]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(discoverProductJsonLd) }}
+      />
       {/* ===== HERO ===== */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16">
         <Stars count={200} />

@@ -21,7 +21,26 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: "Wavelength — Workforce Pell Readiness & Market Intelligence for Community Colleges",
   description:
-    "Is your institution Workforce Pell ready? Get a free Pell Readiness Check, Compliance Gap Report, or full Market Scan — AI-powered program intelligence for community colleges.",
+    "Is your institution Workforce Pell ready? Get a free Pell Readiness Check, Compliance Gap Report, or full Market Scan — data-driven program intelligence for community colleges.",
+  metadataBase: new URL("https://withwavelength.com"),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "Wavelength — Workforce Pell Readiness & Market Intelligence",
+    description:
+      "Data-driven program intelligence for community colleges. Free Pell Readiness Check, Compliance Gap Report, Market Scan.",
+    type: "website",
+    url: "https://withwavelength.com",
+    siteName: "Wavelength",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Wavelength — Workforce Pell Readiness & Market Intelligence",
+    description:
+      "Data-driven program intelligence for community colleges. Free Pell Readiness Check.",
+  },
 };
 
 export default function RootLayout({
@@ -34,6 +53,36 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased bg-[#050510] text-[#e2e8f0]`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Wavelength",
+              url: "https://withwavelength.com",
+              description: "Market intelligence for community college programs.",
+              contactPoint: {
+                "@type": "ContactPoint",
+                email: "hello@withwavelength.com",
+                contactType: "customer support",
+              },
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Wavelength",
+              url: "https://withwavelength.com",
+              description: "Market intelligence for community college programs.",
+            }),
+          }}
+        />
+
         <NavBar />
 
         <main>{children}</main>

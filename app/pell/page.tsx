@@ -202,9 +202,30 @@ const UPSELL_PRODUCTS = [
 
 // ── Page ──
 
+const pellProductJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: "Pell Readiness Check",
+  description:
+    "Free Pell Readiness Check for community colleges: full program catalog review against Workforce Pell eligibility criteria, gap identification, and prioritized next steps.",
+  url: "https://withwavelength.com/pell",
+  brand: { "@type": "Brand", name: "Wavelength" },
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+    url: "https://withwavelength.com/pell",
+  },
+};
+
 export default function PellPage() {
   return (
     <div className="overflow-x-hidden bg-[#050510]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(pellProductJsonLd) }}
+      />
 
       {/* ═══════════════ HERO ═══════════════ */}
       <section className="relative min-h-[92vh] flex items-center justify-center pt-24 pb-20">

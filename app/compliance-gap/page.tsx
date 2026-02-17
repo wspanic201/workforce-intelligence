@@ -167,9 +167,30 @@ const HOW_IT_WORKS = [
 
 // ── Page ──
 
+const complianceProductJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: "Compliance Gap Report",
+  description:
+    "Find every state-mandated training program your institution does not offer — sized by revenue potential and cited to the statute.",
+  url: "https://withwavelength.com/compliance-gap",
+  brand: { "@type": "Brand", name: "Wavelength" },
+  offers: {
+    "@type": "Offer",
+    price: "295",
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+    url: "https://withwavelength.com/compliance-gap",
+  },
+};
+
 export default function ComplianceGapPage() {
   return (
     <div className="overflow-x-hidden bg-[#050510]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(complianceProductJsonLd) }}
+      />
 
       {/* ═══════════════ HERO ═══════════════ */}
       <section className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16">
