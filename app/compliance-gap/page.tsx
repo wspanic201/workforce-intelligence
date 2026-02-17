@@ -191,7 +191,7 @@ export default function ComplianceGapPage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={150} duration={800}>
-            <p className="mt-6 text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-6 text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
               Your state requires dozens of licensed occupations to complete specific training programs. We find every one you don't offer — and size the revenue you're leaving on the table.
             </p>
           </AnimateOnScroll>
@@ -231,7 +231,7 @@ export default function ComplianceGapPage() {
               <h2 className="font-heading text-3xl md:text-4xl font-bold text-white">
                 What you receive
               </h2>
-              <p className="mt-4 text-white/50 max-w-xl mx-auto">
+              <p className="mt-4 text-white/70 max-w-xl mx-auto">
                 A complete Compliance Gap Report — specific to your institution and your state's regulatory landscape.
               </p>
             </div>
@@ -251,7 +251,7 @@ export default function ComplianceGapPage() {
                         {item.title}
                       </h3>
                     </div>
-                    <p className="text-sm text-white/50 leading-relaxed">
+                    <p className="text-sm text-white/70 leading-relaxed">
                       {item.description}
                     </p>
                   </div>
@@ -287,7 +287,7 @@ export default function ComplianceGapPage() {
                     <h3 className="font-heading font-semibold text-white text-lg mb-2">
                       {step.title}
                     </h3>
-                    <p className="text-white/50 leading-relaxed text-sm">
+                    <p className="text-white/70 leading-relaxed text-sm">
                       {step.description}
                     </p>
                   </div>
@@ -309,7 +309,7 @@ export default function ComplianceGapPage() {
               <h2 className="font-heading text-3xl md:text-4xl font-bold text-white">
                 Gaps we commonly find
               </h2>
-              <p className="mt-4 text-white/50 max-w-xl mx-auto">
+              <p className="mt-4 text-white/70 max-w-xl mx-auto">
                 These are programs required by state law across most states — yet routinely absent from community college catalogs.
               </p>
             </div>
@@ -322,11 +322,11 @@ export default function ComplianceGapPage() {
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b border-white/10">
-                      <th className="px-5 py-4 text-left text-white/40 font-normal overline text-xs">Program</th>
-                      <th className="px-5 py-4 text-left text-white/40 font-normal overline text-xs">Req. Hours</th>
-                      <th className="px-5 py-4 text-left text-white/40 font-normal overline text-xs hidden md:table-cell">Authority</th>
-                      <th className="px-5 py-4 text-left text-white/40 font-normal overline text-xs">Demand</th>
-                      <th className="px-5 py-4 text-right text-white/40 font-normal overline text-xs">Est. Revenue / Yr</th>
+                      <th className="px-5 py-4 text-left text-white/70 font-normal overline text-xs">Program</th>
+                      <th className="px-5 py-4 text-left text-white/70 font-normal overline text-xs">Req. Hours</th>
+                      <th className="px-5 py-4 text-left text-white/70 font-normal overline text-xs hidden md:table-cell">Authority</th>
+                      <th className="px-5 py-4 text-left text-white/70 font-normal overline text-xs">Demand</th>
+                      <th className="px-5 py-4 text-right text-white/70 font-normal overline text-xs">Est. Revenue / Yr</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -339,8 +339,8 @@ export default function ComplianceGapPage() {
                           <div className="font-medium text-white">{gap.program}</div>
                           <div className="text-white/35 text-xs mt-0.5 hidden sm:block">{gap.insight}</div>
                         </td>
-                        <td className="px-5 py-4 text-white/60 font-mono">{gap.hours}h</td>
-                        <td className="px-5 py-4 text-white/40 hidden md:table-cell">{gap.authority}</td>
+                        <td className="px-5 py-4 text-white/80 font-mono">{gap.hours}h</td>
+                        <td className="px-5 py-4 text-white/70 hidden md:table-cell">{gap.authority}</td>
                         <td className={`px-5 py-4 font-medium ${gap.demandColor}`}>{gap.demand}</td>
                         <td className="px-5 py-4 text-right font-heading font-semibold text-white">{gap.revenue}</td>
                       </tr>
@@ -349,7 +349,7 @@ export default function ComplianceGapPage() {
                 </table>
               </div>
               <div className="px-5 py-4 border-t border-white/10 flex justify-between items-center">
-                <span className="text-white/30 text-xs">
+                <span className="text-white/80 text-xs">
                   Sample data — actual findings vary by state and institution.
                 </span>
                 <span className="font-heading font-bold text-white/80">
@@ -380,9 +380,9 @@ export default function ComplianceGapPage() {
 
               <div className="flex items-end justify-center gap-2 mb-2">
                 <span className="text-6xl font-heading font-black text-white">$79</span>
-                <span className="text-white/40 mb-3 text-lg">one-time</span>
+                <span className="text-white/70 mb-3 text-lg">one-time</span>
               </div>
-              <p className="text-white/40 text-sm mb-8">
+              <p className="text-white/70 text-sm mb-8">
                 Full Compliance Gap Report · State-specific · No subscription
               </p>
 
@@ -422,11 +422,11 @@ export default function ComplianceGapPage() {
 
       {/* ═══════════════ FOOTER NOTE ═══════════════ */}
       <footer className="py-10 px-6 text-center border-t border-white/5">
-        <p className="text-white/20 text-sm">
+        <p className="text-white/70 text-sm">
           Wavelength Workforce Intelligence ·{' '}
           <a
             href="mailto:hello@withwavelength.com"
-            className="hover:text-white/40 transition-colors"
+            className="hover:text-white/70 transition-colors"
           >
             hello@withwavelength.com
           </a>

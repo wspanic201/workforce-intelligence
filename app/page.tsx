@@ -86,7 +86,7 @@ function PellForm() {
           <Check className="h-6 w-6 text-teal-400" />
         </div>
         <h3 className="font-heading font-bold text-white text-xl mb-2">Check your inbox</h3>
-        <p className="text-white/50 text-sm">
+        <p className="text-white/70 text-sm">
           We&apos;ll be in touch within 48 hours with your Pell Readiness Check results.
         </p>
       </div>
@@ -97,7 +97,7 @@ function PellForm() {
     <form onSubmit={handleSubmit} className="card-cosmic rounded-2xl p-6 md:p-8 max-w-md mx-auto w-full">
       <div className="space-y-4">
         <div>
-          <label className="block text-xs font-medium text-white/50 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-medium text-white/70 uppercase tracking-wider mb-1.5">
             Your Name
           </label>
           <input
@@ -106,11 +106,11 @@ function PellForm() {
             placeholder="Dr. Jane Smith"
             value={formData.name}
             onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
-            className="w-full bg-white/[0.05] border border-white/[0.1] rounded-lg px-4 py-2.5 text-white placeholder-white/20 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
+            className="w-full bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-white/50 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-medium text-white/70 uppercase tracking-wider mb-1.5">
             Work Email
           </label>
           <input
@@ -119,11 +119,11 @@ function PellForm() {
             placeholder="you@college.edu"
             value={formData.email}
             onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
-            className="w-full bg-white/[0.05] border border-white/[0.1] rounded-lg px-4 py-2.5 text-white placeholder-white/20 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
+            className="w-full bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-white/50 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-medium text-white/70 uppercase tracking-wider mb-1.5">
             Institution
           </label>
           <input
@@ -132,18 +132,18 @@ function PellForm() {
             placeholder="Midwest Community College"
             value={formData.institution}
             onChange={e => setFormData(p => ({ ...p, institution: e.target.value }))}
-            className="w-full bg-white/[0.05] border border-white/[0.1] rounded-lg px-4 py-2.5 text-white placeholder-white/20 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
+            className="w-full bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-white/50 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-medium text-white/70 uppercase tracking-wider mb-1.5">
             State
           </label>
           <select
             required
             value={formData.state}
             onChange={e => setFormData(p => ({ ...p, state: e.target.value }))}
-            className="w-full bg-white/[0.05] border border-white/[0.1] rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/50 transition-colors appearance-none"
+            className="w-full bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/50 transition-colors appearance-none"
           >
             <option value="" className="bg-[#050510]">Select your state…</option>
             {US_STATES.map(s => (
@@ -169,7 +169,7 @@ function PellForm() {
           </>
         )}
       </button>
-      <p className="text-white/20 text-xs text-center mt-3">
+      <p className="text-white/70 text-xs text-center mt-3">
         No credit card. No login. Results delivered by email.
       </p>
     </form>
@@ -236,13 +236,13 @@ function FAQSection() {
                     {item.q}
                   </span>
                   {open === i
-                    ? <ChevronUp className="h-4 w-4 text-white/40 flex-shrink-0" />
-                    : <ChevronDown className="h-4 w-4 text-white/40 flex-shrink-0" />
+                    ? <ChevronUp className="h-4 w-4 text-white/70 flex-shrink-0" />
+                    : <ChevronDown className="h-4 w-4 text-white/70 flex-shrink-0" />
                   }
                 </button>
                 {open === i && (
                   <div className="px-5 pb-5">
-                    <p className="text-white/50 text-sm leading-relaxed">{item.a}</p>
+                    <p className="text-white/70 text-sm leading-relaxed">{item.a}</p>
                   </div>
                 )}
               </div>
@@ -286,7 +286,7 @@ export default function HomePage() {
               </AnimateOnScroll>
 
               <AnimateOnScroll variant="fade-up" delay={250} duration={800}>
-                <p className="mt-6 text-lg md:text-xl text-white/60 leading-relaxed max-w-xl">
+                <p className="mt-6 text-lg md:text-xl text-white/80 leading-relaxed max-w-xl">
                   Starting July 1, 2026, short-term programs qualify for federal Pell Grants for the first time.
                   Find out which of your programs are eligible — for free — before your competitors get there first.
                 </p>
@@ -301,7 +301,7 @@ export default function HomePage() {
                   ].map(({ value, label }) => (
                     <div key={label} className="text-center">
                       <div className="font-heading font-bold text-2xl text-gradient-cosmic">{value}</div>
-                      <p className="text-white/40 text-xs mt-0.5 uppercase tracking-wider">{label}</p>
+                      <p className="text-white/70 text-xs mt-0.5 uppercase tracking-wider">{label}</p>
                     </div>
                   ))}
                 </div>
@@ -339,7 +339,7 @@ export default function HomePage() {
             </h2>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
-            <p className="text-white/50 text-lg max-w-2xl mx-auto">
+            <p className="text-white/70 text-lg max-w-2xl mx-auto">
               Each product delivers standalone value. Each one feeds the next.
             </p>
           </AnimateOnScroll>
@@ -353,12 +353,12 @@ export default function HomePage() {
                   <span className="text-teal-300 text-[10px] font-bold uppercase tracking-wider">Free</span>
                 </div>
                 <h3 className="font-heading font-bold text-white text-xl mb-2">Pell Readiness Check</h3>
-                <p className="text-white/40 text-sm leading-relaxed mb-6">
+                <p className="text-white/70 text-sm leading-relaxed mb-6">
                   Find out if your programs qualify before July 1 — before your competitors do.
                 </p>
                 <div className="mb-6">
                   <span className="font-heading font-bold text-4xl text-gradient-cosmic">$0</span>
-                  <span className="text-white/30 text-sm ml-2">— email required</span>
+                  <span className="text-white/80 text-sm ml-2">— email required</span>
                 </div>
                 <ul className="space-y-2.5 mb-7">
                   {[
@@ -369,7 +369,7 @@ export default function HomePage() {
                   ].map(item => (
                     <li key={item} className="flex items-start gap-2.5">
                       <Check className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
-                      <span className="text-sm text-white/60">{item}</span>
+                      <span className="text-sm text-white/80">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -400,7 +400,7 @@ export default function HomePage() {
                   <span className="text-blue-300 text-[10px] font-bold uppercase tracking-wider">$79</span>
                 </div>
                 <h3 className="font-heading font-bold text-white text-xl mb-2">Compliance Gap Report</h3>
-                <p className="text-white/40 text-sm leading-relaxed mb-6">
+                <p className="text-white/70 text-sm leading-relaxed mb-6">
                   See every mandated program you&apos;re not offering — and the revenue you&apos;re leaving on the table.
                 </p>
                 <div className="mb-6">
@@ -415,7 +415,7 @@ export default function HomePage() {
                   ].map(item => (
                     <li key={item} className="flex items-start gap-2.5">
                       <Check className="h-4 w-4 text-cosmic-teal flex-shrink-0 mt-0.5" strokeWidth={2} />
-                      <span className="text-sm text-white/60">{item}</span>
+                      <span className="text-sm text-white/80">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -453,14 +453,14 @@ export default function HomePage() {
                     <span className="text-purple-300 text-[10px] font-bold uppercase tracking-wider">Founding Rate</span>
                   </div>
                   <h3 className="font-heading font-bold text-white text-xl mb-2">Market Scan</h3>
-                  <p className="text-white/40 text-sm leading-relaxed mb-6">
+                  <p className="text-white/70 text-sm leading-relaxed mb-6">
                     Full market intelligence before you build — 25+ pages, 50+ sources, programs scored and ranked.
                   </p>
                   <div className="mb-1">
                     <span className="font-heading font-bold text-4xl text-gradient-cosmic">$1,500</span>
-                    <span className="text-white/30 text-sm ml-2 line-through">$3,500</span>
+                    <span className="text-white/80 text-sm ml-2 line-through">$3,500</span>
                   </div>
-                  <p className="text-xs text-white/30 mb-6">Founding rate — first 5 institutions</p>
+                  <p className="text-xs text-white/80 mb-6">Founding rate — first 5 institutions</p>
                   <ul className="space-y-2.5 mb-7">
                     {[
                       'Regional market intelligence',
@@ -472,7 +472,7 @@ export default function HomePage() {
                     ].map(item => (
                       <li key={item} className="flex items-start gap-2.5">
                         <Check className="h-4 w-4 text-cosmic-teal flex-shrink-0 mt-0.5" strokeWidth={2} />
-                        <span className="text-sm text-white/60">{item}</span>
+                        <span className="text-sm text-white/80">{item}</span>
                       </li>
                     ))}
                   </ul>
@@ -566,7 +566,7 @@ export default function HomePage() {
             </h2>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
-            <p className="text-white/50 text-lg max-w-2xl mx-auto">
+            <p className="text-white/70 text-lg max-w-2xl mx-auto">
               Every data point sourced and cited. Every opportunity scored across five dimensions.
             </p>
           </AnimateOnScroll>
@@ -607,7 +607,7 @@ export default function HomePage() {
               <div key={num} className="card-cosmic rounded-xl p-6">
                 <div className="font-mono text-xs text-white/25 tracking-widest mb-3">{num}</div>
                 <h3 className="font-heading font-semibold text-white mb-2">{title}</h3>
-                <p className="text-white/40 text-sm leading-relaxed">{desc}</p>
+                <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -618,24 +618,24 @@ export default function HomePage() {
               <div className="p-6 md:p-8 border-b border-white/[0.06]">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div>
-                    <p className="text-xs font-medium uppercase tracking-widest text-white/40 mb-1">
+                    <p className="text-xs font-medium uppercase tracking-widest text-white/70 mb-1">
                       Market Scan
                     </p>
                     <p className="font-heading font-semibold text-white text-xl">
                       Wake Technical Community College
                     </p>
-                    <p className="text-white/40 text-sm mt-0.5">
+                    <p className="text-white/70 text-sm mt-0.5">
                       Research Triangle — Raleigh, Durham, Chapel Hill, Cary
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-white/30">
+                  <div className="flex items-center gap-2 text-sm text-white/80">
                     <span>50+ cited sources · ~25 pages</span>
                   </div>
                 </div>
               </div>
 
               <div className="p-6 md:p-8 border-b border-white/[0.06]">
-                <h3 className="text-xs font-medium uppercase tracking-widest text-white/40 mb-4">
+                <h3 className="text-xs font-medium uppercase tracking-widest text-white/70 mb-4">
                   Top Opportunities — Scored &amp; Ranked
                 </h3>
                 <div className="space-y-3">
@@ -664,7 +664,7 @@ export default function HomePage() {
                             style={{ width: `${(program.score / 10) * 100}%` }}
                           />
                         </div>
-                        <span className="text-white/60 text-sm font-mono w-8 text-right">{program.score}</span>
+                        <span className="text-white/80 text-sm font-mono w-8 text-right">{program.score}</span>
                       </div>
                     </div>
                   ))}
@@ -705,7 +705,7 @@ export default function HomePage() {
             </h2>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
-            <p className="text-white/50 text-lg">
+            <p className="text-white/70 text-lg">
               🚀 Founding rates active — first 5 institutions only
             </p>
           </AnimateOnScroll>
@@ -715,10 +715,10 @@ export default function HomePage() {
             {/* Tier 1 — Pell Readiness Check */}
             <div className="card-cosmic rounded-2xl p-7 border-teal-500/20">
               <h3 className="font-heading font-semibold text-white text-lg">Pell Readiness Check</h3>
-              <p className="text-white/40 text-sm mt-1">Find your Pell opportunity.</p>
+              <p className="text-white/70 text-sm mt-1">Find your Pell opportunity.</p>
               <div className="mt-5 mb-6">
                 <span className="font-heading font-bold text-4xl text-gradient-cosmic">$0</span>
-                <span className="text-white/30 text-sm ml-2">— email required</span>
+                <span className="text-white/80 text-sm ml-2">— email required</span>
               </div>
               <ul className="space-y-2.5 mb-7">
                 {[
@@ -729,7 +729,7 @@ export default function HomePage() {
                 ].map(item => (
                   <li key={item} className="flex items-start gap-2.5">
                     <Check className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
-                    <span className="text-sm text-white/60">{item}</span>
+                    <span className="text-sm text-white/80">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -743,7 +743,7 @@ export default function HomePage() {
             {/* Tier 2 — Compliance Gap Report */}
             <div className="card-cosmic rounded-2xl p-7">
               <h3 className="font-heading font-semibold text-white text-lg">Compliance Gap Report</h3>
-              <p className="text-white/40 text-sm mt-1">Find the revenue you&apos;re missing.</p>
+              <p className="text-white/70 text-sm mt-1">Find the revenue you&apos;re missing.</p>
               <div className="mt-5 mb-6">
                 <span className="font-heading font-bold text-4xl text-gradient-cosmic">$79</span>
               </div>
@@ -756,7 +756,7 @@ export default function HomePage() {
                 ].map(item => (
                   <li key={item} className="flex items-start gap-2.5">
                     <Check className="h-4 w-4 text-cosmic-teal flex-shrink-0 mt-0.5" strokeWidth={2} />
-                    <span className="text-sm text-white/60">{item}</span>
+                    <span className="text-sm text-white/80">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -777,12 +777,12 @@ export default function HomePage() {
               </div>
               <div className="mt-3">
                 <h3 className="font-heading font-semibold text-white text-lg">Market Scan</h3>
-                <p className="text-white/40 text-sm mt-1">Full intelligence before you build.</p>
+                <p className="text-white/70 text-sm mt-1">Full intelligence before you build.</p>
                 <div className="mt-5 mb-1">
                   <span className="font-heading font-bold text-4xl text-gradient-cosmic">$1,500</span>
-                  <span className="text-white/30 text-sm ml-2 line-through">$3,500</span>
+                  <span className="text-white/80 text-sm ml-2 line-through">$3,500</span>
                 </div>
-                <p className="text-xs text-white/30 mb-6">Founding rate</p>
+                <p className="text-xs text-white/80 mb-6">Founding rate</p>
                 <ul className="space-y-2.5 mb-7">
                   {[
                     'Regional market intelligence',
@@ -795,7 +795,7 @@ export default function HomePage() {
                   ].map(item => (
                     <li key={item} className="flex items-start gap-2.5">
                       <Check className="h-4 w-4 text-cosmic-teal flex-shrink-0 mt-0.5" strokeWidth={2} />
-                      <span className="text-sm text-white/60">{item}</span>
+                      <span className="text-sm text-white/80">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -812,7 +812,7 @@ export default function HomePage() {
 
           <AnimateOnScroll variant="fade" delay={400}>
             <div className="mt-12 text-center">
-              <div className="flex items-center justify-center gap-2 text-sm text-white/40">
+              <div className="flex items-center justify-center gap-2 text-sm text-white/70">
                 <Shield className="h-4 w-4" />
                 <span>100% satisfaction guarantee — full refund if not actionable</span>
               </div>
@@ -859,11 +859,11 @@ export default function HomePage() {
                 </button>
               </a>
             </div>
-            <p className="mt-6 text-sm text-white/30">
+            <p className="mt-6 text-sm text-white/80">
               Questions?{' '}
               <a
                 href="mailto:hello@withwavelength.com"
-                className="text-white/50 hover:text-white/70 underline underline-offset-4 transition-colors"
+                className="text-white/70 hover:text-white/70 underline underline-offset-4 transition-colors"
               >
                 hello@withwavelength.com
               </a>

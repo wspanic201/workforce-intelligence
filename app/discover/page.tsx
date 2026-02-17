@@ -61,9 +61,9 @@ export default function DiscoverPage() {
                 </button>
               </a>
             </div>
-            <p className="mt-4 text-sm text-white/30">
+            <p className="mt-4 text-sm text-white/80">
               Not sure yet?{' '}
-              <Link href="/report/demo" className="text-white/50 hover:text-white/70 underline underline-offset-4 transition-colors">
+              <Link href="/report/demo" className="text-white/70 hover:text-white/70 underline underline-offset-4 transition-colors">
                 See a real example first
               </Link>
             </p>
@@ -124,7 +124,7 @@ export default function DiscoverPage() {
                   <Icon className="h-5 w-5 text-purple-400" />
                 </div>
                 <h3 className="font-heading font-semibold text-white mb-2">{title}</h3>
-                <p className="text-white/40 text-sm leading-relaxed">{desc}</p>
+                <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -144,7 +144,7 @@ export default function DiscoverPage() {
             >
               What we found for Wake Technical Community College
             </h2>
-            <p className="text-white/40 text-sm mt-2">
+            <p className="text-white/70 text-sm mt-2">
               Research Triangle — Raleigh, Durham, Chapel Hill · Real data, real analysis
             </p>
           </AnimateOnScroll>
@@ -153,7 +153,7 @@ export default function DiscoverPage() {
             <div className="card-cosmic rounded-2xl overflow-hidden">
               {/* Conventional */}
               <div className="p-6 md:p-8 border-b border-white/[0.06]">
-                <h3 className="text-xs font-medium uppercase tracking-widest text-white/40 mb-4">
+                <h3 className="text-xs font-medium uppercase tracking-widest text-white/70 mb-4">
                   Conventional Opportunities
                 </h3>
                 <div className="space-y-2">
@@ -167,7 +167,7 @@ export default function DiscoverPage() {
                     <div key={p.name} className="flex items-center justify-between py-2.5 px-4 rounded-lg bg-white/[0.02]">
                       <div className="flex items-center gap-3 flex-wrap">
                         <span className="text-white/80 text-sm">{p.name}</span>
-                        <span className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/[0.05] text-white/40">
+                        <span className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/[0.05] text-white/70">
                           {p.tag}
                         </span>
                       </div>
@@ -178,7 +178,7 @@ export default function DiscoverPage() {
                             style={{ width: `${(p.score / 10) * 100}%` }}
                           />
                         </div>
-                        <span className="text-white/50 text-sm font-mono w-7 text-right">{p.score}</span>
+                        <span className="text-white/70 text-sm font-mono w-7 text-right">{p.score}</span>
                       </div>
                     </div>
                   ))}
@@ -187,10 +187,10 @@ export default function DiscoverPage() {
 
               {/* Blue Ocean */}
               <div className="p-6 md:p-8">
-                <h3 className="text-xs font-medium uppercase tracking-widest text-white/40 mb-1">
+                <h3 className="text-xs font-medium uppercase tracking-widest text-white/70 mb-1">
                   Blue Ocean — Hidden Opportunities
                 </h3>
-                <p className="text-white/30 text-xs mb-4">
+                <p className="text-white/80 text-xs mb-4">
                   The programs standard analyses miss entirely
                 </p>
                 <div className="space-y-2">
@@ -271,7 +271,7 @@ export default function DiscoverPage() {
                 <CheckCircle2 className="h-5 w-5 text-purple-400 flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="font-heading font-semibold text-white mb-1">{title}</h3>
-                  <p className="text-white/40 text-sm leading-relaxed">{desc}</p>
+                  <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}
@@ -290,7 +290,7 @@ export default function DiscoverPage() {
             >
               Start free. Go deeper when you&apos;re ready.
             </h2>
-            <p className="text-white/50 mt-3 max-w-xl mx-auto">
+            <p className="text-white/70 mt-3 max-w-xl mx-auto">
               The Pell Readiness Check is free and gets you started in 60 seconds. When you&apos;re ready for full market intelligence, a Market Scan is the next step.
             </p>
           </AnimateOnScroll>
@@ -305,7 +305,7 @@ export default function DiscoverPage() {
                 </div>
 
                 <h3 className="font-heading font-bold text-white text-xl mb-2">Pell Readiness Check</h3>
-                <p className="text-white/40 text-sm mb-5">
+                <p className="text-white/70 text-sm mb-5">
                   Find out if your programs qualify for Workforce Pell before July 1, 2026.
                 </p>
 
@@ -320,7 +320,7 @@ export default function DiscoverPage() {
                     'Pell gap identification',
                     'Delivered in ~48 hours',
                   ].map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-sm text-white/60">
+                    <li key={item} className="flex items-start gap-3 text-sm text-white/80">
                       <CheckCircle2 className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" />
                       {item}
                     </li>
@@ -333,7 +333,7 @@ export default function DiscoverPage() {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </button>
                 </a>
-                <p className="text-white/20 text-xs mt-3">No login required.</p>
+                <p className="text-white/70 text-xs mt-3">No login required.</p>
               </div>
             </AnimateOnScroll>
 
@@ -347,15 +347,15 @@ export default function DiscoverPage() {
                 </div>
                 <div className="mt-3">
                   <h3 className="font-heading font-bold text-white text-xl mb-2">Market Scan</h3>
-                  <p className="text-white/40 text-sm mb-5">
+                  <p className="text-white/70 text-sm mb-5">
                     Full market intelligence — 25+ pages, 50+ sources, programs scored and ranked.
                   </p>
 
                   <div className="mb-1">
                     <span className="font-heading font-bold text-4xl text-white">$1,500</span>
-                    <span className="text-white/30 text-sm ml-2 line-through">$3,500</span>
+                    <span className="text-white/80 text-sm ml-2 line-through">$3,500</span>
                   </div>
-                  <p className="text-white/30 text-xs mb-5">Founding rate — first 5 institutions</p>
+                  <p className="text-white/80 text-xs mb-5">Founding rate — first 5 institutions</p>
 
                   <ul className="text-left max-w-xs mx-auto space-y-3 mb-7 flex-1">
                     {[
@@ -367,7 +367,7 @@ export default function DiscoverPage() {
                       'Grant alignment for each program',
                       'Delivered in ~1 week',
                     ].map((item) => (
-                      <li key={item} className="flex items-start gap-3 text-sm text-white/60">
+                      <li key={item} className="flex items-start gap-3 text-sm text-white/80">
                         <CheckCircle2 className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" />
                         {item}
                       </li>
@@ -380,7 +380,7 @@ export default function DiscoverPage() {
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </button>
                   </a>
-                  <p className="text-white/20 text-xs mt-3">
+                  <p className="text-white/70 text-xs mt-3">
                     We&apos;ll follow up within 48 hours.
                   </p>
                 </div>
@@ -400,7 +400,7 @@ export default function DiscoverPage() {
             >
               After Your Market Scan
             </h2>
-            <p className="text-white/40 mt-3">
+            <p className="text-white/70 mt-3">
               Your Market Scan identifies the opportunities. The next stages help you act on them.
             </p>
           </AnimateOnScroll>
@@ -425,11 +425,11 @@ export default function DiscoverPage() {
             ].map(({ stage, name, desc }) => (
               <div key={stage} className="flex gap-4 p-5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                 <div className="w-10 h-10 rounded-lg bg-white/[0.05] flex items-center justify-center flex-shrink-0">
-                  <span className="font-mono text-sm text-white/30">{stage}</span>
+                  <span className="font-mono text-sm text-white/80">{stage}</span>
                 </div>
                 <div>
                   <h3 className="font-heading font-semibold text-white text-sm">{name}</h3>
-                  <p className="text-white/40 text-sm mt-1">{desc}</p>
+                  <p className="text-white/70 text-sm mt-1">{desc}</p>
                 </div>
               </div>
             ))}

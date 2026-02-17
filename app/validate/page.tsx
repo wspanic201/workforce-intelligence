@@ -95,7 +95,7 @@ export default function ValidatePage() {
             >
               Seven deliverables. One comprehensive answer.
             </h2>
-            <p className="text-white/40 mt-3 max-w-xl mx-auto">
+            <p className="text-white/70 mt-3 max-w-xl mx-auto">
               Validation goes far deeper than Market Scan surface signals — every analysis is verified against primary data, comparable programs, and employer reality.
             </p>
           </AnimateOnScroll>
@@ -143,7 +143,7 @@ export default function ValidatePage() {
                   <Icon className="h-5 w-5 text-purple-400" />
                 </div>
                 <h3 className="font-heading font-semibold text-white mb-2">{title}</h3>
-                <p className="text-white/40 text-sm leading-relaxed">{desc}</p>
+                <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -167,7 +167,7 @@ export default function ValidatePage() {
             >
               Seven specialist analyses, working in sequence.
             </h2>
-            <p className="text-white/40 mt-3 max-w-xl mx-auto">
+            <p className="text-white/70 mt-3 max-w-xl mx-auto">
               Each discipline produces an independent finding. Together they build the complete picture.
             </p>
           </AnimateOnScroll>
@@ -214,9 +214,9 @@ export default function ValidatePage() {
                   desc: 'Scopes the implementation: what faculty, equipment, and space this program requires — and a realistic timeline from approval to first cohort.',
                 },
               ].map(({ icon: Icon, role, desc }, i) => (
-                <div key={role} className="flex gap-5 p-5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.08] transition-colors">
+                <div key={role} className="flex gap-5 p-5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.15] transition-colors">
                   <div className="relative flex-shrink-0">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-white/[0.08] flex items-center justify-center z-10 relative">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-white/[0.15] flex items-center justify-center z-10 relative">
                       <Icon className="h-4 w-4 text-purple-400" />
                     </div>
                   </div>
@@ -225,7 +225,7 @@ export default function ValidatePage() {
                       <span className="font-mono text-[10px] text-white/25 tracking-widest">0{i + 1}</span>
                       <h3 className="font-heading font-semibold text-white text-sm">{role}</h3>
                     </div>
-                    <p className="text-white/40 text-sm leading-relaxed">{desc}</p>
+                    <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
                   </div>
                 </div>
               ))}
@@ -276,7 +276,7 @@ export default function ValidatePage() {
                 <CheckCircle2 className="h-5 w-5 text-purple-400 flex-shrink-0 mt-1" />
                 <div>
                   <h3 className="font-heading font-semibold text-white mb-1">{title}</h3>
-                  <p className="text-white/40 text-sm leading-relaxed">{desc}</p>
+                  <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}
@@ -299,7 +299,7 @@ export default function ValidatePage() {
             >
               Know before you build.
             </h2>
-            <p className="text-white/50 mt-3">
+            <p className="text-white/70 mt-3">
               One Validation pays for itself if it stops a single failed program — or confirms one that becomes a revenue engine.
             </p>
           </AnimateOnScroll>
@@ -314,9 +314,9 @@ export default function ValidatePage() {
               <div className="mb-6">
                 <div className="flex items-baseline justify-center gap-3">
                   <span className="font-heading font-bold text-4xl text-white">$2,000</span>
-                  <span className="text-white/30 text-sm line-through">$5,500</span>
+                  <span className="text-white/80 text-sm line-through">$5,500</span>
                 </div>
-                <p className="text-white/40 text-sm mt-2">
+                <p className="text-white/70 text-sm mt-2">
                   Full Validation — includes Market Scan deliverables
                 </p>
               </div>
@@ -332,7 +332,7 @@ export default function ValidatePage() {
                   'Implementation Roadmap',
                   'GO / NO-GO Recommendation',
                 ].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm text-white/60">
+                  <li key={item} className="flex items-start gap-3 text-sm text-white/80">
                     <CheckCircle2 className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" />
                     {item}
                   </li>
@@ -346,7 +346,7 @@ export default function ValidatePage() {
                 </button>
               </a>
 
-              <p className="text-white/20 text-xs mt-4">
+              <p className="text-white/70 text-xs mt-4">
                 Email us at hello@withwavelength.com — we&apos;ll follow up within 48 hours.
               </p>
             </div>
@@ -364,7 +364,7 @@ export default function ValidatePage() {
             >
               After Validation
             </h2>
-            <p className="text-white/40 mt-3">
+            <p className="text-white/70 mt-3">
               A GO recommendation means you&apos;re cleared to build. The next stages take you from validated concept to fully operational program.
             </p>
           </AnimateOnScroll>
@@ -389,11 +389,11 @@ export default function ValidatePage() {
             ].map(({ stage, name, desc }) => (
               <div key={stage} className="flex gap-4 p-5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                 <div className="w-10 h-10 rounded-lg bg-white/[0.05] flex items-center justify-center flex-shrink-0">
-                  <span className="font-mono text-sm text-white/30">{stage}</span>
+                  <span className="font-mono text-sm text-white/80">{stage}</span>
                 </div>
                 <div>
                   <h3 className="font-heading font-semibold text-white text-sm">{name}</h3>
-                  <p className="text-white/40 text-sm mt-1">{desc}</p>
+                  <p className="text-white/70 text-sm mt-1">{desc}</p>
                 </div>
               </div>
             ))}
