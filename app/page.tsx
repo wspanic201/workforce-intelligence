@@ -24,18 +24,15 @@ export default function HomePage() {
           <AnimateOnScroll variant="fade-up" duration={800}>
             <h1
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"
-              style={{ fontSize: 'clamp(2.75rem, 6vw + 0.5rem, 5rem)' }}
+              style={{ fontSize: 'clamp(2.5rem, 5.5vw + 0.5rem, 4.5rem)' }}
             >
-              Know exactly what programs to build.
+              Market intelligence for community college program development.
             </h1>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={150} duration={800}>
-            <p className="mt-6 text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed font-medium">
-              Market intelligence for community college program development — now with Workforce Pell readiness scoring.
-            </p>
-            <p className="mt-3 text-base md:text-lg text-white/45 max-w-2xl mx-auto leading-relaxed">
-              From discovery to launch — every recommendation backed by real labor market data, employer signals, and competitive analysis. Every program scored for Pell eligibility.
+            <p className="mt-6 text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
+              Know exactly what to build, backed by real labor market data, employer signals, and competitive analysis. Every program scored for Workforce Pell eligibility.
             </p>
           </AnimateOnScroll>
 
