@@ -25,7 +25,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { runPellAudit } from '@/lib/stages/pell-audit/orchestrator';
 
-export const maxDuration = 600; // 10 min timeout (Vercel Pro)
+export const maxDuration = 300; // 5 min timeout (Vercel Hobby max)
 
 export async function POST(request: NextRequest) {
   try {
