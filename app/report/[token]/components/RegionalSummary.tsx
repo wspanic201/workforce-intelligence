@@ -216,11 +216,32 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
               <h4 className="text-xs font-semibold uppercase tracking-wider text-teal-400/70 mb-3">
                 Market Gaps (White Space)
               </h4>
-              <ul className="space-y-1.5">
-                {(typeof gaps[0] === 'string' ? gaps as string[] : []).map((g, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-white/60">
-                    <span className="text-teal-400 shrink-0">◆</span>
-                    {g}
+              <ul className="space-y-3">
+                {gaps.map((g: any, i: number) => (
+                  <li key={i} className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-teal-400 shrink-0">◆</span>
+                      <span className="text-sm font-medium text-white/80">
+                        {typeof g === 'string' ? g : g.occupation || g.name || 'Opportunity'}
+                      </span>
+                      {g.socCode && (
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.05] text-white/30 font-mono">
+                          {g.socCode}
+                        </span>
+                      )}
+                      {g.demandSignalStrength && (
+                        <span className={`text-[11px] px-2 py-0.5 rounded-full border ${
+                          g.demandSignalStrength === 'strong'
+                            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+                            : 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+                        }`}>
+                          {g.demandSignalStrength}
+                        </span>
+                      )}
+                    </div>
+                    {g.opportunity && (
+                      <p className="text-xs text-white/50 ml-6 leading-relaxed">{g.opportunity}</p>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -268,9 +289,9 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
               Trending Certifications
             </h3>
             <div className="flex flex-wrap gap-2">
-              {trendingCerts.map((cert, i) => (
+              {trendingCerts.map((cert: any, i: number) => (
                 <span key={i} className="text-xs px-3 py-1.5 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20">
-                  {cert}
+                  {typeof cert === 'string' ? cert : cert.certification || cert.name || 'Certification'}
                 </span>
               ))}
             </div>
