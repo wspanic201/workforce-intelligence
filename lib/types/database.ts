@@ -41,6 +41,8 @@ export interface ValidationProject {
   competing_programs?: string;
   soc_codes?: string;
   onet_codes?: string;
+  industry_sector?: string;
+  program_level?: string;
   target_enrollment_per_cohort?: number;
   desired_start_date?: string;
   stackable_credential?: boolean;

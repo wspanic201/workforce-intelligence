@@ -96,7 +96,7 @@ export function generateReport(input: ReportInput): string {
 **Institution:** ${project.client_name}
 **Program Type:** ${project.program_type || 'Not specified'}
 **Report Date:** ${reportDate}
-**Prepared by:** Workforce Intelligence
+**Prepared by:** WorkforceOS
 
 ---
 

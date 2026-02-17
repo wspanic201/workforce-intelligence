@@ -100,12 +100,21 @@ export async function searchONET(keyword: string): Promise<string | null> {
   }
 
   const data = await response.json();
-  return data.occupation?.[0]?.code || null;
+  const code = data.occupation?.[0]?.code || null;
+  
+  // Ensure O*NET format (XX-XXXX.XX)
+  if (code && !code.includes('.')) {
+    return `${code}.00`;
+  }
+  return code;
 }
 
 export async function getONETCompetencies(onetCode: string): Promise<ONETCompetencies> {
   const headers = getONETHeaders();
-  const basePath = `online/occupations/${onetCode}`;
+  
+  // O*NET API requires XX-XXXX.XX format — append .00 if missing
+  const normalizedCode = onetCode.includes('.') ? onetCode : `${onetCode}.00`;
+  const basePath = `online/occupations/${normalizedCode}`;
 
   // Serialize requests with delays to avoid rate limiting
   const endpoints = [
@@ -139,9 +148,9 @@ export async function getONETCompetencies(onetCode: string): Promise<ONETCompete
 
   const occupation = results.occupation;
   if (!occupation) {
-    console.warn(`[O*NET] Could not fetch occupation data for ${onetCode} — returning minimal data`);
+    console.warn(`[O*NET] Could not fetch occupation data for ${normalizedCode} — returning minimal data`);
     return {
-      code: onetCode,
+      code: normalizedCode,
       title: 'Unknown',
       description: 'O*NET data unavailable due to API issues',
       skills: [],
@@ -170,7 +179,7 @@ export async function getONETCompetencies(onetCode: string): Promise<ONETCompete
   };
 
   return {
-    code: onetCode,
+    code: normalizedCode,
     title: occupation.title,
     description: occupation.description,
     skills: mapElements(results.skills, 'skill'),

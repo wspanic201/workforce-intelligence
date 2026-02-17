@@ -1,5 +1,6 @@
 import { callClaude } from '@/lib/ai/anthropic';
-import { fetchBLSData, searchJobsBrave } from '@/lib/apis/web-fallbacks';
+import { getBLSData } from '@/lib/apis/bls';
+import { searchJobsBrave } from '@/lib/apis/web-fallbacks';
 import { withCache } from '@/lib/apis/cache';
 
 export interface OccupationDemand {
@@ -88,7 +89,7 @@ Important:
       const blsData = await withCache(
         'bls_data',
         { socCode: occ.socCode },
-        () => fetchBLSData(occ.socCode),
+        () => getBLSData(occ.socCode),
         168 // 7 days
       ).catch(() => null);
 

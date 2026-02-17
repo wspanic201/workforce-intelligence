@@ -253,7 +253,7 @@ FACTUAL INTEGRITY RULES (MANDATORY):
 Respond with the complete markdown document above.`;
 
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 16000,
+      maxTokens: 4000,  // 4k — synthesis should be concise, not repeat agent findings
       temperature: 1.0,
     });
 

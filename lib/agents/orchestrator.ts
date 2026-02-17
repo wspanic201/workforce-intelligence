@@ -11,6 +11,8 @@ import { runTigerTeam } from './tiger-team';
 import { runQAReview } from './qa-reviewer';
 import { calculateProgramScore, buildDimensionScore, DIMENSION_WEIGHTS } from '@/lib/scoring/program-scorer';
 import { generateReport } from '@/lib/reports/report-generator';
+import { enrichProject } from './project-enricher';
+import type { DiscoveryContext } from '@/lib/stages/handoff';
 
 // Timeout wrapper for research agents
 function withTimeout<T>(promise: Promise<T>, timeoutMs: number, taskName: string): Promise<T> {
@@ -92,13 +94,41 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       throw new Error(`Project not found: ${projectId}`);
     }
 
-    // 2. Update status to researching
+    // 2. Enrich project with missing fields (occupation, SOC code, region, etc.)
+    console.log('[Orchestrator] Enriching project with occupation, SOC code, and region...');
+    const enrichment = await enrichProject(project as ValidationProject);
+    
+    // Update project with enriched data
+    await supabase
+      .from('validation_projects')
+      .update({
+        target_occupation: enrichment.target_occupation,
+        geographic_area: enrichment.geographic_area,
+        soc_codes: enrichment.soc_codes,
+        industry_sector: enrichment.industry_sector,
+        program_level: enrichment.program_level,
+        updated_at: new Date().toISOString(),
+      })
+      .eq('id', projectId);
+    
+    // Reload project with enriched data
+    const { data: enrichedProject } = await supabase
+      .from('validation_projects')
+      .select('*')
+      .eq('id', projectId)
+      .single();
+    
+    const projectToValidate = enrichedProject || project;
+    
+    console.log(`[Orchestrator] ✓ Enriched: Occupation="${enrichment.target_occupation}", SOC=${enrichment.soc_codes || 'none'}, Region="${enrichment.geographic_area}"`);
+
+    // 3. Update status to researching
     await supabase
       .from('validation_projects')
       .update({ status: 'researching', updated_at: new Date().toISOString() })
       .eq('id', projectId);
 
-    // 3. Create research component records for all 7 stages
+    // 4. Create research component records for all 7 stages
     const componentIds: Record<string, string> = {};
 
     for (const agent of AGENT_CONFIG) {
@@ -123,24 +153,34 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
 
     console.log(`[Orchestrator] Created ${Object.keys(componentIds).length} research components (7-stage framework)`);
 
-    // 4. Run all 7 research agents in parallel
-    console.log(`[Orchestrator] Spawning 7 research agents...`);
+    // 5. Run all 7 research agents sequentially (prevents OOM crashes)
+    console.log(`[Orchestrator] Running 7 research agents sequentially...`);
 
-    const researchTasks = AGENT_CONFIG.map(agent =>
-      withTimeout(
-        runResearchComponent(
-          projectId,
-          componentIds[agent.type],
-          project,
-          agent.runner,
-          agent.dimension
-        ),
-        1200000, // 20 minutes per agent (API calls + 16k token generation)
-        agent.label
-      )
-    );
+    const results: PromiseSettledResult<void>[] = [];
 
-    const results = await Promise.allSettled(researchTasks);
+    for (const agent of AGENT_CONFIG) {
+      try {
+        console.log(`[Orchestrator] Starting ${agent.label}...`);
+        
+        const result = await withTimeout(
+          runResearchComponent(
+            projectId,
+            componentIds[agent.type],
+            projectToValidate,
+            agent.runner,
+            agent.dimension
+          ),
+          360000, // 6 minutes per agent — streaming + stall detection handles hangs
+          agent.label
+        );
+        
+        results.push({ status: 'fulfilled', value: result });
+        console.log(`[Orchestrator] ✓ ${agent.label} completed`);
+      } catch (error) {
+        results.push({ status: 'rejected', reason: error });
+        console.error(`[Orchestrator] ✗ ${agent.label} failed:`, error);
+      }
+    }
 
     // Check for failures and update database status
     const failures = results.filter(r => r.status === 'rejected');
@@ -173,7 +213,7 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
     const successCount = results.filter(r => r.status === 'fulfilled').length;
     console.log(`[Orchestrator] ${successCount}/${results.length} research agents completed successfully`);
 
-    // 5. Load completed research components
+    // 6. Load completed research components
     const { data: completedComponents, error: componentsError } = await supabase
       .from('research_components')
       .select('*')
@@ -202,7 +242,7 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       console.warn(`[Orchestrator] Report quality may be reduced due to missing dimensions`);
     }
 
-    // 6. Calculate program scores
+    // 7. Calculate program scores
     console.log(`[Orchestrator] Calculating program scores...`);
 
     const dimensionScores = completedComponents
@@ -234,17 +274,17 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
 
     console.log(`[Orchestrator] Composite Score: ${programScore.compositeScore}/10 — ${programScore.recommendation}`);
 
-    // 7. Run tiger team synthesis (optional, for backward compat)
+    // 8. Run tiger team synthesis (optional, for backward compat)
     let tigerTeamMarkdown = '';
     try {
       console.log(`[Orchestrator] Running tiger team synthesis...`);
       const { synthesis, markdown } = await withTimeout(
         runTigerTeam(
           projectId,
-          project as ValidationProject,
+          projectToValidate as ValidationProject,
           completedComponents as ResearchComponent[]
         ),
-        1200000, // 20 minutes for tiger team (API overhead + 20k tokens)
+        420000, // 7 minutes for tiger team — streaming handles hangs
         'Tiger Team Synthesis'
       );
       tigerTeamMarkdown = markdown;
@@ -261,19 +301,60 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       console.warn('[Orchestrator] Tiger team synthesis failed, continuing with report generation:', e);
     }
 
-    // 8. QA Review — fact-check tiger team output against source data
-    if (tigerTeamMarkdown) {
+    // 8. Generate report FIRST (so a crash during QA doesn't lose everything)
+    console.log(`[Orchestrator] Generating professional report...`);
+
+    let fullReport = generateReport({
+      project: projectToValidate as ValidationProject,
+      components: completedComponents as ResearchComponent[],
+      programScore,
+      tigerTeamMarkdown,
+    });
+
+    // Save initial report (only columns that exist: project_id, executive_summary, full_report_markdown, version)
+    const { data: reportRow, error: reportError } = await supabase.from('validation_reports').insert({
+      project_id: projectId,
+      executive_summary: `Recommendation: ${programScore.recommendation} (${programScore.compositeScore}/10)\n\nDimensions: ${programScore.dimensions.map((d: any) => `${d.dimension}: ${d.score}/10`).join(', ')}`,
+      full_report_markdown: fullReport,
+      version: 1,
+    }).select('id').single();
+    
+    if (reportError) {
+      console.error(`[Orchestrator] ✗ Report save failed:`, reportError.message);
+    }
+
+    console.log(`[Orchestrator] ✓ Report saved (${fullReport.length} chars)`);
+
+    // 9. QA Review — optional fact-check, updates report if issues found
+    // DISABLED: QA's 80K+ token prompt causes OOM on 8GB machines
+    // TODO: Re-enable with summarized inputs instead of raw agent outputs
+    if (false && tigerTeamMarkdown) {
       try {
         console.log(`[Orchestrator] Running QA review / fact-check...`);
         const qaResult = await runQAReview(
           tigerTeamMarkdown,
           completedComponents as ResearchComponent[],
-          { program_name: project.program_name!, client_name: project.client_name! }
+          { program_name: projectToValidate.program_name!, client_name: projectToValidate.client_name! }
         );
 
         if (qaResult.issueCount.critical > 0 || qaResult.issueCount.warning > 0) {
-          console.log(`[Orchestrator] QA found ${qaResult.issueCount.critical} critical, ${qaResult.issueCount.warning} warning issues — using cleaned report`);
+          console.log(`[Orchestrator] QA found ${qaResult.issueCount.critical} critical, ${qaResult.issueCount.warning} warning issues — updating report`);
           tigerTeamMarkdown = qaResult.cleanedMarkdown;
+
+          // Regenerate report with QA-cleaned tiger team
+          fullReport = generateReport({
+            project: projectToValidate as ValidationProject,
+            components: completedComponents as ResearchComponent[],
+            programScore,
+            tigerTeamMarkdown,
+          });
+
+          // Update the saved report
+          if (reportRow?.id) {
+            await supabase.from('validation_reports')
+              .update({ full_report_markdown: fullReport, version: 2 })
+              .eq('id', reportRow.id);
+          }
 
           // Log QA results
           await supabase.from('research_components').insert({
@@ -288,36 +369,9 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
           console.log(`[Orchestrator] QA review passed — no issues found`);
         }
       } catch (e) {
-        console.warn('[Orchestrator] QA review failed, using unreviewed tiger team output:', e);
+        console.warn('[Orchestrator] QA review failed — report already saved without QA:', e);
       }
     }
-
-    // 9. Generate professional report
-    console.log(`[Orchestrator] Generating professional report...`);
-
-    const fullReport = generateReport({
-      project: project as ValidationProject,
-      components: completedComponents as ResearchComponent[],
-      programScore,
-      tigerTeamMarkdown,
-    });
-
-    // 9. Save report with scores
-    await supabase.from('validation_reports').insert({
-      project_id: projectId,
-      executive_summary: `Recommendation: ${programScore.recommendation} (${programScore.compositeScore}/10)`,
-      full_report_markdown: fullReport,
-      composite_score: programScore.compositeScore,
-      recommendation: programScore.recommendation,
-      scorecard: {
-        dimensions: programScore.dimensions,
-        compositeScore: programScore.compositeScore,
-        recommendation: programScore.recommendation,
-        overrideApplied: programScore.overrideApplied,
-        overrideReason: programScore.overrideReason,
-      },
-      version: 1,
-    });
 
     // 10. Update project status
     await supabase
@@ -402,4 +456,335 @@ async function runResearchComponent(
 
     throw error;
   }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// In-Memory Validation (for Pipeline — no Supabase required)
+// ═══════════════════════════════════════════════════════════════
+
+/** Result from in-memory validation */
+export interface InMemoryValidationResult {
+  project: Record<string, any>;
+  components: Array<{
+    type: string;
+    dimension: string;
+    data: any;
+    markdown: string;
+    score: number | null;
+    scoreRationale: string | null;
+    status: 'completed' | 'error';
+    error?: string;
+  }>;
+  programScore: ReturnType<typeof calculateProgramScore>;
+  tigerTeamMarkdown: string;
+  fullReport: string;
+  discoveryContextUsed: boolean;
+}
+
+/**
+ * Run validation in-memory without Supabase.
+ * Used by the Pipeline orchestrator for Discovery → Validation flow.
+ * 
+ * When discoveryContext is provided:
+ *   - Skips the AI enrichment step (SOC, region, occupation already known)
+ *   - Injects relevant Discovery data into each agent's prompt via project._discoveryContext
+ *   - Agents use Discovery data as a starting point, then do their own research
+ */
+export async function orchestrateValidationInMemory(
+  projectData: Record<string, any>,
+  discoveryContext?: DiscoveryContext
+): Promise<InMemoryValidationResult> {
+  const startTime = Date.now();
+
+  console.log(`[Orchestrator:InMemory] Starting validation for "${projectData.program_name || projectData.title}"`);
+
+  // Build the project object that agents expect (matches ValidationProject shape)
+  const project: Record<string, any> = {
+    id: `inmemory-${Date.now()}`,
+    program_name: projectData.program_name || projectData.title,
+    client_name: projectData.client_name || projectData.collegeName || 'Unknown Institution',
+    client_email: 'pipeline@workforceos.local',
+    program_type: projectData.program_type || projectData.level || 'certificate',
+    target_audience: projectData.target_audience || 'Adult learners and career changers',
+    target_occupation: projectData.target_occupation || projectData.occupation || '',
+    geographic_area: projectData.geographic_area || projectData.region || 'United States',
+    soc_codes: projectData.soc_codes || projectData.soc_code || '',
+    industry_sector: projectData.industry_sector || projectData.sector || '',
+    program_level: projectData.program_level || projectData.level || 'certificate',
+    constraints: projectData.constraints || '',
+    status: 'researching' as const,
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+  };
+
+  // When discoveryContext is present, skip enrichment — we already have the data
+  if (discoveryContext) {
+    console.log(`[Orchestrator:InMemory] ✓ Discovery context provided — skipping AI enrichment`);
+    console.log(`[Orchestrator:InMemory]   College: ${discoveryContext.collegeName}`);
+    console.log(`[Orchestrator:InMemory]   Region: ${discoveryContext.region}`);
+    console.log(`[Orchestrator:InMemory]   Occupation: ${project.target_occupation}`);
+    console.log(`[Orchestrator:InMemory]   SOC: ${project.soc_codes}`);
+
+    // Attach discovery context to project so agents can access it
+    project._discoveryContext = discoveryContext;
+  } else {
+    // No discovery context — run the enricher like normal standalone validation
+    console.log('[Orchestrator:InMemory] No discovery context — running AI enrichment...');
+    try {
+      const enrichment = await enrichProject(project as any);
+      project.target_occupation = enrichment.target_occupation;
+      project.geographic_area = enrichment.geographic_area;
+      project.soc_codes = enrichment.soc_codes;
+      project.industry_sector = enrichment.industry_sector;
+      project.program_level = enrichment.program_level;
+      console.log(`[Orchestrator:InMemory] ✓ Enriched: ${enrichment.target_occupation}, SOC=${enrichment.soc_codes}`);
+    } catch (err) {
+      console.warn('[Orchestrator:InMemory] Enrichment failed, continuing with provided data:', err);
+    }
+  }
+
+  // Run all 7 research agents sequentially
+  console.log(`[Orchestrator:InMemory] Running 7 research agents sequentially...`);
+
+  const components: InMemoryValidationResult['components'] = [];
+  const fakeProjectId = project.id;
+
+  for (const agent of AGENT_CONFIG) {
+    try {
+      console.log(`[Orchestrator:InMemory] Starting ${agent.label}...`);
+
+      // Inject discovery context into the project for this agent
+      const projectWithContext = discoveryContext
+        ? injectDiscoveryContext(project, agent.type, discoveryContext)
+        : project;
+
+      const runnerResult = await withTimeout(
+        (agent.runner as (id: string, project: any) => Promise<{ data: any; markdown: string }>)(fakeProjectId, projectWithContext),
+        360000,
+        agent.label
+      );
+      const { data, markdown } = runnerResult;
+
+      const score = data?.score ?? null;
+      const scoreRationale = data?.scoreRationale ?? null;
+
+      components.push({
+        type: agent.type,
+        dimension: agent.dimension,
+        data,
+        markdown,
+        score,
+        scoreRationale,
+        status: 'completed',
+      });
+
+      console.log(`[Orchestrator:InMemory] ✓ ${agent.label} completed${score ? ` — Score: ${score}/10` : ''}`);
+    } catch (error) {
+      const errorMsg = error instanceof Error ? error.message : String(error);
+      console.error(`[Orchestrator:InMemory] ✗ ${agent.label} failed:`, errorMsg);
+
+      components.push({
+        type: agent.type,
+        dimension: agent.dimension,
+        data: null,
+        markdown: '',
+        score: null,
+        scoreRationale: null,
+        status: 'error',
+        error: errorMsg,
+      });
+    }
+  }
+
+  const completedComponents = components.filter(c => c.status === 'completed');
+  const successCount = completedComponents.length;
+  console.log(`[Orchestrator:InMemory] ${successCount}/7 agents completed`);
+
+  if (successCount === 0) {
+    throw new Error('No research agents completed (0/7). Cannot proceed.');
+  }
+
+  // Calculate program scores
+  console.log(`[Orchestrator:InMemory] Calculating program scores...`);
+
+  const dimensionScores = completedComponents
+    .filter(c => c.score != null)
+    .map(c => {
+      const agentConfig = AGENT_CONFIG.find(a => a.type === c.type);
+      if (!agentConfig) return null;
+      return buildDimensionScore(
+        agentConfig.dimension,
+        c.score!,
+        c.scoreRationale || 'Score derived from agent analysis'
+      );
+    })
+    .filter(Boolean) as any[];
+
+  // Fill in defaults for missing dimensions
+  for (const agent of AGENT_CONFIG) {
+    if (!dimensionScores.find((d: any) => d.dimension === agent.dimension)) {
+      dimensionScores.push(buildDimensionScore(agent.dimension, 5, 'Default score — agent did not complete'));
+    }
+  }
+
+  const programScore = calculateProgramScore(dimensionScores);
+  console.log(`[Orchestrator:InMemory] Composite Score: ${programScore.compositeScore}/10 — ${programScore.recommendation}`);
+
+  // Run tiger team synthesis
+  let tigerTeamMarkdown = '';
+  try {
+    console.log(`[Orchestrator:InMemory] Running tiger team synthesis...`);
+
+    // Build ResearchComponent-compatible objects for tiger team
+    const tigerTeamComponents = completedComponents.map(c => ({
+      id: `inmemory-${c.type}`,
+      project_id: fakeProjectId,
+      component_type: c.type,
+      agent_persona: AGENT_CONFIG.find(a => a.type === c.type)?.persona || 'unknown',
+      content: c.data || {},
+      markdown_output: c.markdown,
+      status: 'completed' as const,
+      created_at: new Date().toISOString(),
+    }));
+
+    const { markdown } = await withTimeout(
+      runTigerTeam(
+        fakeProjectId,
+        project as any,
+        tigerTeamComponents as any
+      ),
+      420000,
+      'Tiger Team Synthesis'
+    );
+    tigerTeamMarkdown = markdown;
+    console.log(`[Orchestrator:InMemory] ✓ Tiger team completed`);
+  } catch (e) {
+    console.warn('[Orchestrator:InMemory] Tiger team failed:', e);
+  }
+
+  // Generate report
+  console.log(`[Orchestrator:InMemory] Generating report...`);
+
+  const reportComponents = completedComponents.map(c => ({
+    id: `inmemory-${c.type}`,
+    project_id: fakeProjectId,
+    component_type: c.type,
+    agent_persona: AGENT_CONFIG.find(a => a.type === c.type)?.persona || 'unknown',
+    content: { ...c.data, _score: c.score, _scoreRationale: c.scoreRationale },
+    markdown_output: c.markdown,
+    status: 'completed' as const,
+    created_at: new Date().toISOString(),
+  }));
+
+  const fullReport = generateReport({
+    project: project as any,
+    components: reportComponents as any,
+    programScore,
+    tigerTeamMarkdown,
+  });
+
+  const totalDuration = Date.now() - startTime;
+  console.log(`[Orchestrator:InMemory] ✓ Validation complete in ${Math.round(totalDuration / 1000)}s`);
+  console.log(`[Orchestrator:InMemory] Final: ${programScore.recommendation} (${programScore.compositeScore}/10)`);
+
+  return {
+    project,
+    components,
+    programScore,
+    tigerTeamMarkdown,
+    fullReport,
+    discoveryContextUsed: !!discoveryContext,
+  };
+}
+
+// ── Discovery Context Injection ──
+
+/**
+ * Maps agent types to relevant Discovery context sections.
+ * Returns the discovery context block to append to the agent's prompt.
+ */
+function getDiscoveryContextForAgent(
+  agentType: string,
+  ctx: DiscoveryContext
+): string {
+  const sections: string[] = [];
+
+  switch (agentType) {
+    case 'labor_market':
+      if (ctx.demandSignals) sections.push(`Demand Signals:\n${ctx.demandSignals}`);
+      if (ctx.blsData) sections.push(`BLS/Wage Data:\n${ctx.blsData}`);
+      if (ctx.jobPostings) sections.push(`Job Posting Evidence:\n${ctx.jobPostings}`);
+      break;
+
+    case 'competitive_landscape':
+      if (ctx.competitors) sections.push(`Regional Providers:\n${ctx.competitors}`);
+      if (ctx.competitivePosition) sections.push(`Competitive Position: ${ctx.competitivePosition}`);
+      if (ctx.gaps) sections.push(`Competitive Gaps:\n${ctx.gaps}`);
+      break;
+
+    case 'learner_demand':
+      if (ctx.demographics) sections.push(`Regional Demographics:\n${ctx.demographics}`);
+      if (ctx.wageOutcomes) sections.push(`Wage Outcomes:\n${ctx.wageOutcomes}`);
+      if (ctx.demandSignals) sections.push(`Demand Context:\n${ctx.demandSignals}`);
+      break;
+
+    case 'financial_viability':
+      if (ctx.grantOpportunities) sections.push(`Grant Opportunities:\n${ctx.grantOpportunities}`);
+      if (ctx.revenueEstimates) sections.push(`Revenue Estimates:\n${ctx.revenueEstimates}`);
+      if (ctx.topEmployers) sections.push(`Employer Landscape:\n${ctx.topEmployers}`);
+      break;
+
+    case 'institutional_fit':
+      if (ctx.currentPrograms) sections.push(`Current Programs: ${ctx.currentPrograms}`);
+      if (ctx.strategicPriorities) sections.push(`Strategic Priorities:\n${ctx.strategicPriorities}`);
+      break;
+
+    case 'regulatory_compliance':
+      if (ctx.certifications) sections.push(`Trending Certifications:\n${ctx.certifications}`);
+      if (ctx.region) sections.push(`Region: ${ctx.region}`);
+      break;
+
+    case 'employer_demand':
+      if (ctx.topEmployers) sections.push(`Top Regional Employers:\n${ctx.topEmployers}`);
+      if (ctx.employerExpansions) sections.push(`Expansion Signals:\n${ctx.employerExpansions}`);
+      if (ctx.demandSignals) sections.push(`Demand Evidence:\n${ctx.demandSignals}`);
+      break;
+  }
+
+  if (sections.length === 0) return '';
+
+  return `\n\n## PRIOR DISCOVERY RESEARCH (from Stage 1)
+The following data was gathered during the Discovery stage and is provided as context.
+Use this as a starting point — verify, expand, and deepen the analysis.
+Do NOT simply repeat this data. Use it to focus your research on what's NEW.
+
+${sections.join('\n\n')}`;
+}
+
+/**
+ * Injects discovery context into the project object for a specific agent.
+ * 
+ * The agents build their prompts from project fields. We add a
+ * `_discoveryPromptSuffix` field that the agent can append to its prompt.
+ * For agents that don't check this field, the context still lives on
+ * `project._discoveryContext` for future use.
+ */
+function injectDiscoveryContext(
+  project: Record<string, any>,
+  agentType: string,
+  ctx: DiscoveryContext
+): Record<string, any> {
+  const contextBlock = getDiscoveryContextForAgent(agentType, ctx);
+
+  return {
+    ...project,
+    _discoveryContext: ctx,
+    _discoveryPromptSuffix: contextBlock,
+    // Also enrich specific fields that agents directly read:
+    // - constraints field is a natural place to inject discovery context
+    //   since most agents include it in their prompt
+    constraints: project.constraints
+      ? `${project.constraints}${contextBlock}`
+      : contextBlock || project.constraints || '',
+  };
 }

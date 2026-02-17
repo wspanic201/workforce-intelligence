@@ -55,6 +55,26 @@ export async function runFinancialAnalysis(
 
     const prompt = `${persona.fullContext}
 
+═══════════════════════════════════════════════════════════
+⚠️ MANDATORY: NO CLARIFYING QUESTIONS ALLOWED ⚠️
+═══════════════════════════════════════════════════════════
+
+You are a CFO consultant hired for $7,500 to deliver financial projections. You WILL NOT:
+- Ask for more data
+- Request clarifications
+- Say you cannot estimate
+- Provide options or ask what the client prefers
+
+You WILL:
+- Make reasonable estimates based on the baseline ranges provided below
+- Deliver specific dollar amounts in all fields
+- Use your expertise to fill gaps with industry-standard assumptions
+- Return ONLY the JSON output requested (no preamble, no questions)
+
+This is what the client paid for. Deliver it.
+
+═══════════════════════════════════════════════════════════
+
 TASK: Develop financial projections and ROI analysis for a workforce program.
 
 PROGRAM DETAILS:
@@ -64,9 +84,18 @@ PROGRAM DETAILS:
 - Client: ${project.client_name}
 ${project.constraints ? `- Constraints: ${project.constraints}` : ''}
 
-═══════════════════════════════════════════════════════════
-FINANCIAL ANALYSIS REQUIRED (THIS IS A $7,500 CFO-LEVEL ENGAGEMENT):
-═══════════════════════════════════════════════════════════
+**BASELINE COST RANGES (Community College Workforce Programs):**
+- Curriculum development: $15,000-$35,000 (150-350 hours @ $100/hr)
+- Equipment/lab setup: $10,000-$50,000 (depends on field—healthcare higher, business lower)
+- Marketing launch: $8,000-$20,000 (6-month campaign)
+- Faculty training: $3,000-$8,000 (onboarding + professional development)
+- Accreditation fees: $2,000-$15,000 (if pursuing specialized accreditation)
+- Faculty salaries: $55,000-$75,000 loaded for lead instructor
+- Adjunct: $800-$1,200 per credit hour
+- Program tuition: $3,000-$6,500 for 6-12 month certificate
+- Typical enrollment: 12-20 students per cohort (conservative launch)
+
+Use these as baselines and adjust based on program specifics. Provide SPECIFIC NUMBERS in all fields—no ranges, no "TBD", no requests for more data.
 
 Provide a COMPREHENSIVE financial analysis of 2,500-3,500 words with detailed modeling.
 
@@ -376,10 +405,18 @@ CRITICAL REQUIREMENTS:
 - Identify relevant grant opportunities (NSF, DOL, etc.)
 - Be honest about financial viability
 
-Respond with valid JSON wrapped in \`\`\`json code blocks.`;
+═══════════════════════════════════════════════════════════
+FINAL INSTRUCTION: 
+Your response must be ONLY the JSON object shown above, wrapped in \`\`\`json code blocks.
+NO preamble, NO explanations, NO questions. Just the JSON.
+
+If you ask ANY clarifying questions or say you cannot estimate, you have failed this engagement.
+═══════════════════════════════════════════════════════════
+
+Respond NOW with the JSON:`;
 
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 16000,
+      maxTokens: 4000,  // 4k ≈ 1,500 words — balanced depth vs API speed
     });
 
     const data = extractJSON(content) as FinancialProjectionsData;

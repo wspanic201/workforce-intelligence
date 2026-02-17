@@ -2,6 +2,8 @@ import { callClaude, extractJSON } from '@/lib/ai/anthropic';
 import { ValidationProject } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { PROGRAM_VALIDATOR_SYSTEM_PROMPT } from '@/lib/prompts/program-validator';
+import { searchGoogleJobs } from '@/lib/apis/serpapi';
+import { withCache } from '@/lib/apis/cache';
 
 export interface EmployerDemandData {
   score: number;
@@ -55,6 +57,30 @@ export async function runEmployerDemand(
   try {
     console.log(`[Employer Demand] Starting for "${project.program_name}"`);
 
+    // Fetch real Google Jobs data to identify actual employers hiring
+    const targetOccupation = (project as any).target_occupation || 
+      project.program_name.replace(/\s*(certificate|diploma|degree|program|associate|bachelor|training|course)/gi, '').trim();
+    const location = (project as any).geographic_area || 'United States';
+    
+    let jobsData = null;
+    let employerList: Array<{ name: string; openings: number }> = [];
+    
+    try {
+      jobsData = await withCache(
+        'employer_jobs',
+        { occupation: targetOccupation, location },
+        () => searchGoogleJobs(targetOccupation, location),
+        168 // 7 days
+      );
+      
+      if (jobsData && jobsData.topEmployers.length > 0) {
+        employerList = jobsData.topEmployers.slice(0, 10);
+        console.log(`[Employer Demand] Found ${jobsData.count} jobs, top employer: ${employerList[0]?.name} (${employerList[0]?.openings} openings)`);
+      }
+    } catch (err) {
+      console.warn('[Employer Demand] Google Jobs failed:', err);
+    }
+
     const prompt = `${PROGRAM_VALIDATOR_SYSTEM_PROMPT}
 
 ROLE: You are conducting Stage 7 — Employer Demand & Partnership Potential Analysis.
@@ -64,9 +90,29 @@ PROGRAM DETAILS:
 - Program Type: ${project.program_type || 'Not specified'}
 - Target Audience: ${project.target_audience || 'Not specified'}
 - Institution: ${project.client_name}
-- Geographic Area: ${(project as any).geographic_area || 'the specified region'}
+- Geographic Area: ${location}
+- Target Occupation: ${targetOccupation}
 ${project.constraints ? `- Constraints: ${project.constraints}` : ''}
 ${(project as any).employer_interest ? `- Known Employer Interest: ${(project as any).employer_interest}` : ''}
+
+${employerList.length > 0 ? `
+═══════════════════════════════════════════════════════════
+REAL DATA FROM GOOGLE JOBS (${new Date().toLocaleDateString()}):
+═══════════════════════════════════════════════════════════
+
+Current Job Openings: ${jobsData!.count}
+
+Top Employers Currently Hiring:
+${employerList.map((e, i) => `${i + 1}. ${e.name} — ${e.openings} active openings`).join('\n')}
+
+NOTE: Use this real employer data as the foundation for your analysis.
+Identify which employers are actively hiring, their sectors (hospital,
+retail pharmacy, specialty clinic, etc.), and estimated annual demand.
+═══════════════════════════════════════════════════════════
+` : `
+NOTE: Live employer data unavailable. Use your knowledge of the
+occupation and region to identify top employers by sector.
+`}
 
 ANALYSIS REQUIRED:
 1. Employer demand signals (top 3-5)

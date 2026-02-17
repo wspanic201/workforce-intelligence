@@ -1,16 +1,12 @@
 import Anthropic from '@anthropic-ai/sdk';
 
 // Lazy initialization so env vars are available in CLI scripts (dotenv loads at runtime)
-let _anthropic: Anthropic | null = null;
+// Always create a fresh client to pick up config changes during hot reload
 function getAnthropicClient(): Anthropic {
-  if (!_anthropic) {
-    _anthropic = new Anthropic({
-      apiKey: process.env.ANTHROPIC_API_KEY,
-      timeout: 10 * 60 * 1000, // 10 minutes (for 16k token depth agents)
-      maxRetries: 2,
-    });
-  }
-  return _anthropic;
+  return new Anthropic({
+    apiKey: process.env.ANTHROPIC_API_KEY,
+    maxRetries: 0, // No retries — fail fast, let orchestrator handle errors
+  });
 }
 
 export interface AICallOptions {
@@ -19,6 +15,17 @@ export interface AICallOptions {
   temperature?: number;
 }
 
+// ── Streaming + Hard Timeout ────────────────────────────────────────
+// Instead of a blocking create() call that hangs silently, we use
+// streaming so tokens arrive incrementally. Two kill-switches:
+//   1. STALL timeout — if no new token arrives in STALL_MS, abort.
+//   2. OVERALL timeout — hard cap on total wall-clock time.
+// If we got partial content before the stall, we return it (better
+// than nothing). On total failure we throw so orchestrator can skip.
+
+const STALL_TIMEOUT_MS = 45_000;   // 45s with no token = stalled
+const OVERALL_TIMEOUT_MS = 5 * 60_000; // 5 min hard cap per call
+
 export async function callClaude(
   prompt: string,
   options: AICallOptions = {}
@@ -26,8 +33,8 @@ export async function callClaude(
   // TEST MODE: Use cheaper model and lower tokens for testing workflow
   const isTestMode = process.env.TEST_MODE === 'true';
   const defaultModel = isTestMode 
-    ? (process.env.TEST_MODEL || 'claude-3-5-haiku-20241022')  // Claude 3.5 Haiku
-    : 'claude-opus-4-6';  // Claude Opus 4.6 (faster generation, better quality)
+    ? (process.env.TEST_MODEL || 'claude-3-5-haiku-20241022')
+    : 'claude-sonnet-4-5';
   const defaultMaxTokens = isTestMode
     ? parseInt(process.env.TEST_MAX_TOKENS || '4000')
     : 8000;
@@ -49,38 +56,171 @@ export async function callClaude(
   }
 
   const startTime = Date.now();
+  let chunks: string[] = [];
+  let inputTokens = 0;
+  let outputTokens = 0;
 
-  try {
-    const response = await getAnthropicClient().messages.create({
-      model,
-      max_tokens: maxTokens,
-      temperature,
-      messages: [
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-    });
-
-    const duration = Date.now() - startTime;
-    const textContent = response.content
-      .filter((block) => block.type === 'text')
-      .map((block) => (block as any).text)
-      .join('\n');
-
-    const tokensUsed = response.usage.input_tokens + response.usage.output_tokens;
-
-    console.log(`Claude API call completed in ${duration}ms, ${tokensUsed} tokens`);
-
-    return {
-      content: textContent,
-      tokensUsed,
-    };
-  } catch (error) {
-    console.error('Error calling Claude API:', error);
-    throw error;
+  // Retry wrapper: try once, if stall/timeout retry once, then fail
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      const result = await streamWithTimeout(prompt, model, maxTokens, temperature);
+      
+      const duration = Date.now() - startTime;
+      console.log(`[Claude API] ✓ Completed in ${Math.round(duration / 1000)}s, ${result.tokensUsed} tokens (attempt ${attempt})`);
+      
+      return result;
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      const errMsg = error instanceof Error ? error.message : String(error);
+      
+      if (attempt === 1 && (errMsg.includes('stalled') || errMsg.includes('timed out'))) {
+        console.warn(`[Claude API] ⚠ Attempt 1 failed after ${Math.round(duration / 1000)}s: ${errMsg} — retrying...`);
+        continue; // retry once
+      }
+      
+      // Check if we got partial content from the error
+      if (error instanceof PartialContentError && error.partialContent.length > 200) {
+        console.warn(`[Claude API] ⚠ Returning partial content (${error.partialContent.length} chars) after ${errMsg}`);
+        return {
+          content: error.partialContent,
+          tokensUsed: error.tokensUsed || 0,
+        };
+      }
+      
+      console.error(`[Claude API] ✗ Failed after ${Math.round(duration / 1000)}s (model: ${model}, maxTokens: ${maxTokens}): ${errMsg}`);
+      throw error;
+    }
   }
+
+  // Should never reach here, but TypeScript needs it
+  throw new Error('callClaude: exhausted retries');
+}
+
+class PartialContentError extends Error {
+  constructor(
+    message: string,
+    public partialContent: string,
+    public tokensUsed: number
+  ) {
+    super(message);
+    this.name = 'PartialContentError';
+  }
+}
+
+async function streamWithTimeout(
+  prompt: string,
+  model: string,
+  maxTokens: number,
+  temperature: number
+): Promise<{ content: string; tokensUsed: number }> {
+  const client = getAnthropicClient();
+  const chunks: string[] = [];
+  let inputTokens = 0;
+  let outputTokens = 0;
+
+  return new Promise<{ content: string; tokensUsed: number }>((resolve, reject) => {
+    let stallTimer: ReturnType<typeof setTimeout> | null = null;
+    let overallTimer: ReturnType<typeof setTimeout> | null = null;
+    let settled = false;
+    let stream: any = null;
+
+    function cleanup() {
+      if (stallTimer) clearTimeout(stallTimer);
+      if (overallTimer) clearTimeout(overallTimer);
+      try { stream?.abort?.(); } catch {}
+    }
+
+    function finish(err?: Error) {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      if (err) reject(err);
+      else resolve({ content: chunks.join(''), tokensUsed: inputTokens + outputTokens });
+    }
+
+    function resetStallTimer() {
+      if (stallTimer) clearTimeout(stallTimer);
+      stallTimer = setTimeout(() => {
+        const partial = chunks.join('');
+        if (partial.length > 200) {
+          finish(new PartialContentError(
+            `Stream stalled (no token for ${STALL_TIMEOUT_MS / 1000}s)`,
+            partial,
+            inputTokens + outputTokens
+          ));
+        } else {
+          finish(new Error(`Stream stalled after ${STALL_TIMEOUT_MS / 1000}s with only ${partial.length} chars`));
+        }
+      }, STALL_TIMEOUT_MS);
+    }
+
+    // Hard overall timeout
+    overallTimer = setTimeout(() => {
+      const partial = chunks.join('');
+      if (partial.length > 200) {
+        finish(new PartialContentError(
+          `Overall timeout (${OVERALL_TIMEOUT_MS / 1000}s)`,
+          partial,
+          inputTokens + outputTokens
+        ));
+      } else {
+        finish(new Error(`Overall timeout after ${OVERALL_TIMEOUT_MS / 1000}s with only ${partial.length} chars`));
+      }
+    }, OVERALL_TIMEOUT_MS);
+
+    // Start streaming
+    resetStallTimer();
+    console.log(`[Stream] Starting (model=${model}, maxTokens=${maxTokens}, promptLen=${prompt.length})...`);
+    
+    (async () => {
+      try {
+        stream = client.messages.stream({
+          model,
+          max_tokens: maxTokens,
+          temperature,
+          messages: [{ role: 'user', content: prompt }],
+        });
+
+        let chunkCount = 0;
+        stream.on('text', (text: string) => {
+          chunks.push(text);
+          chunkCount++;
+          if (chunkCount === 1) console.log(`[Stream] First token received`);
+          if (chunkCount % 200 === 0) console.log(`[Stream] ${chunkCount} chunks, ${chunks.join('').length} chars`);
+          resetStallTimer();
+        });
+
+        stream.on('message', (msg: any) => {
+          if (msg.usage) {
+            inputTokens = msg.usage.input_tokens || 0;
+            outputTokens = msg.usage.output_tokens || 0;
+          }
+        });
+
+        stream.on('error', (err: Error) => {
+          console.error(`[Stream] Error: ${err.message}`);
+          finish(chunks.length > 0 
+            ? new PartialContentError(`Stream error: ${err.message}`, chunks.join(''), inputTokens + outputTokens)
+            : err
+          );
+        });
+
+        stream.on('end', () => {
+          console.log(`[Stream] Complete (${chunkCount} chunks)`);
+          stream.finalMessage().then((msg: any) => {
+            if (msg?.usage) {
+              inputTokens = msg.usage.input_tokens || 0;
+              outputTokens = msg.usage.output_tokens || 0;
+            }
+            finish();
+          }).catch(() => finish());
+        });
+      } catch (err) {
+        console.error(`[Stream] Setup error: ${err}`);
+        finish(err instanceof Error ? err : new Error(String(err)));
+      }
+    })();
+  });
 }
 
 function cleanJSON(str: string): string {

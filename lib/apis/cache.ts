@@ -7,9 +7,12 @@ export async function withCache<T>(
   fetcher: () => Promise<T>,
   ttlHours: number = 168 // 7 days
 ): Promise<T> {
-  // TEMPORARY: Bypass cache until APIs are validated (poisoned cache issue)
-  console.log(`[Cache BYPASS] Fetching fresh ${apiName} (cache disabled)`);
-  return fetcher();
+  // Bypass cache in TEST_MODE for fresh data during iteration
+  const isTestMode = process.env.TEST_MODE === 'true';
+  if (isTestMode) {
+    console.log(`[Cache BYPASS] TEST_MODE - fetching fresh ${apiName}`);
+    return fetcher();
+  }
   
   const supabase = getSupabaseServerClient();
 
