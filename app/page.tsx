@@ -31,10 +31,11 @@ export default function HomePage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={150} duration={800}>
-            <p className="mt-6 text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
-              AI-powered workforce intelligence for community colleges.
-              <br className="hidden sm:block" />
-              Discover the programs your region actually needs — before your competitors do.
+            <p className="mt-6 text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed font-medium">
+              Labor market intelligence for community colleges.
+            </p>
+            <p className="mt-3 text-base md:text-lg text-white/45 max-w-2xl mx-auto leading-relaxed">
+              We analyze your region and tell you exactly which workforce programs to build — and why. Every finding sourced. Every opportunity scored.
             </p>
           </AnimateOnScroll>
 
@@ -57,9 +58,9 @@ export default function HomePage() {
           <AnimateOnScroll variant="fade-up" delay={450} duration={800}>
             <div className="mt-16 flex flex-wrap justify-center gap-8 md:gap-16">
               {[
-                { value: '74+', label: 'data sources analyzed' },
-                { value: '13+', label: 'opportunities per brief' },
-                { value: '~25 pg', label: 'actionable intelligence' },
+                { value: '74+', label: 'live data sources' },
+                { value: '25+', label: 'page brief' },
+                { value: '100%', label: 'cited & sourced' },
               ].map(({ value, label }) => (
                 <div key={label} className="text-center">
                   <div className="font-heading font-bold text-2xl md:text-3xl text-gradient-cosmic">
@@ -70,123 +71,6 @@ export default function HomePage() {
               ))}
             </div>
           </AnimateOnScroll>
-        </div>
-      </section>
-
-      {/* ===== PROBLEM / SOLUTION SPLIT ===== */}
-      <section className="relative py-20 md:py-32">
-        {/* Constellation decoration */}
-        <div className="constellation" aria-hidden="true">
-          <div className="constellation-dot" style={{ top: '20%', left: '48%' }} />
-          <div className="constellation-dot" style={{ top: '35%', left: '50%' }} />
-          <div className="constellation-dot" style={{ top: '50%', left: '49%' }} />
-          <div className="constellation-dot" style={{ top: '65%', left: '51%' }} />
-          <div
-            className="constellation-line"
-            style={{
-              top: '20%',
-              left: '48%',
-              width: '80px',
-              transform: 'rotate(75deg)',
-            }}
-          />
-          <div
-            className="constellation-line"
-            style={{
-              top: '35%',
-              left: '49%',
-              width: '70px',
-              transform: 'rotate(80deg)',
-            }}
-          />
-          <div
-            className="constellation-line"
-            style={{
-              top: '50%',
-              left: '49%',
-              width: '75px',
-              transform: 'rotate(78deg)',
-            }}
-          />
-        </div>
-
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
-            {/* Left — The Problem */}
-            <AnimateOnScroll variant="fade-right" duration={700}>
-              <div className="card-cosmic rounded-2xl p-8 md:p-10 h-full">
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="w-2 h-2 rounded-full bg-red-500/80" />
-                  <span className="text-red-400/80 text-sm font-medium uppercase tracking-wider">
-                    The status quo
-                  </span>
-                </div>
-                <h2 className="font-heading font-bold text-2xl md:text-3xl text-white mb-6">
-                  How programs get built today
-                </h2>
-                <ul className="space-y-4">
-                  {[
-                    'Gut feel and anecdote from advisory meetings',
-                    'Copying whatever the college next door launched',
-                    '6-month consulting engagements',
-                    '$75K fees before a single student enrolls',
-                    'Committee meetings that end in "let\'s table this"',
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-3">
-                      <span className="text-red-400/60 mt-1 text-sm">✕</span>
-                      <span className="text-white/50 text-sm leading-relaxed">
-                        {item}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </AnimateOnScroll>
-
-            {/* Right — The Solution */}
-            <AnimateOnScroll variant="fade-left" duration={700} delay={150}>
-              <div className="card-cosmic rounded-2xl p-8 md:p-10 h-full relative overflow-hidden">
-                {/* Subtle glow */}
-                <div
-                  className="absolute -top-20 -right-20 w-60 h-60 rounded-full opacity-20 pointer-events-none"
-                  style={{
-                    background: 'radial-gradient(circle, rgba(124,58,237,0.4), transparent 70%)',
-                    filter: 'blur(40px)',
-                  }}
-                  aria-hidden="true"
-                />
-                <div className="relative z-10">
-                  <div className="flex items-center gap-2 mb-6">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                    <span className="text-emerald-400 text-sm font-medium uppercase tracking-wider">
-                      A better way
-                    </span>
-                  </div>
-                  <h2 className="font-heading font-bold text-2xl md:text-3xl text-white mb-6">
-                    How they should be built
-                  </h2>
-                  <ul className="space-y-4">
-                    {[
-                      'AI-powered analysis across 74+ live data sources',
-                      'Real employer demand signals — not last year\'s surveys',
-                      'Blue Ocean opportunities your competitors can\'t see',
-                      'Full 25-page brief with every finding cited',
-                      'Under $5K — no Board approval needed',
-                    ].map((item) => (
-                      <li key={item} className="flex items-start gap-3">
-                        <span className="text-emerald-400 mt-0.5">
-                          <Check className="h-4 w-4" />
-                        </span>
-                        <span className="text-white/70 text-sm leading-relaxed">
-                          {item}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </AnimateOnScroll>
-          </div>
         </div>
       </section>
 
