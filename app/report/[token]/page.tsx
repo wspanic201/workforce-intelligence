@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const institution = data.structuredData?.regionalIntelligence?.institution?.name || 'Institution';
   return {
     title: `${institution} — Program Discovery Brief | [BRAND]`,
-    description: `AI-generated program discovery analysis for ${institution}. ${data.brief?.programCount || 0} program opportunities identified.`,
+    description: `Program discovery analysis for ${institution}. ${data.brief?.programCount || 0} program opportunities identified.`,
     robots: { index: false, follow: false },
   };
 }

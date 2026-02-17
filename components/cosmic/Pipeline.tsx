@@ -24,7 +24,7 @@ const stages: Stage[] = [
     name: 'Validate',
     short: 'Deep-dive market validation with financial projections, employer demand verification, and a clear GO or NO-GO recommendation before you invest.',
     detail:
-      'Seven specialist agents analyze market size, competitive positioning, regulatory requirements, financial viability, learner demand, employer alignment, and institutional fit.',
+      'Deep analysis across market size, competitive positioning, regulatory requirements, financial viability, learner demand, employer alignment, and institutional fit.',
     status: 'built',
   },
   {

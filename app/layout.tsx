@@ -20,7 +20,7 @@ const jakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: "[BRAND] — Program Intelligence for Community Colleges",
   description:
-    "AI-powered program intelligence. 29 agents. 76 data sources. Discover, validate, and launch the programs your region actually needs.",
+    "Program intelligence for the full lifecycle. Discover, validate, and launch the programs your region actually needs.",
 };
 
 export default function RootLayout({
@@ -46,7 +46,7 @@ export default function RootLayout({
                   [BRAND]
                 </p>
                 <p className="text-sm text-white/40 mt-1">
-                  AI-powered program intelligence for community colleges
+                  Program intelligence for community colleges
                 </p>
               </div>
               <div className="flex gap-8 text-sm text-white/40">
@@ -76,11 +76,7 @@ export default function RootLayout({
                   © {new Date().getFullYear()} [BRAND]. All rights reserved.
                 </p>
                 <div className="flex items-center gap-1">
-                  <span className="text-xs text-white/20">Built with</span>
-                  <span className="text-gradient-cosmic text-xs font-medium">
-                    29 AI agents
-                  </span>
-                  <span className="text-xs text-white/20">and a lot of ☕</span>
+                  <span className="text-xs text-white/20">Built in Iowa 🌽</span>
                 </div>
               </div>
             </div>
