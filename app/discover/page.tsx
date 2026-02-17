@@ -68,46 +68,6 @@ export default function DiscoverPage() {
         </div>
       </section>
 
-      {/* ===== THE PROBLEM ===== */}
-      <section className="relative py-20 md:py-28">
-        <div className="max-w-[900px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up">
-            <h2
-              className="font-heading font-bold text-white text-center mb-12"
-              style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
-            >
-              How most colleges decide what programs to build
-            </h2>
-          </AnimateOnScroll>
-
-          <StaggerChildren stagger={100} variant="fade-up" className="space-y-4">
-            {[
-              'A Dean mentions something they heard at a conference',
-              'Someone Googles job postings and calls it "labor market research"',
-              'An advisory board member says their company needs workers',
-              'A competitor launches something, so you rush to match it',
-              'You hire a consulting firm for $30K and wait 6 months',
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="flex items-start gap-4 p-4 rounded-lg bg-white/[0.02] border border-white/[0.04]"
-              >
-                <span className="text-white/20 font-mono text-sm mt-0.5">{i + 1}.</span>
-                <p className="text-white/50">{item}</p>
-              </div>
-            ))}
-          </StaggerChildren>
-
-          <AnimateOnScroll variant="fade-up" delay={200}>
-            <p className="mt-8 text-center text-white/60 text-lg">
-              None of this tells you what your region <span className="text-white font-medium">actually needs</span>.
-              <br />
-              A Discovery Brief does.
-            </p>
-          </AnimateOnScroll>
-        </div>
-      </section>
-
       {/* ===== WHAT'S INSIDE ===== */}
       <section className="relative py-20 md:py-28">
         <div className="max-w-[1200px] mx-auto px-6">
