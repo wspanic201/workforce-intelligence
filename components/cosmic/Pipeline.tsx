@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 
 interface Stage {
   number: number;
@@ -8,6 +9,7 @@ interface Stage {
   short: string;
   detail: string;
   status: 'built' | 'coming';
+  href?: string;
 }
 
 const stages: Stage[] = [
@@ -18,6 +20,7 @@ const stages: Stage[] = [
     detail:
       'Regional intelligence, employer demand signals, competitive landscape mapping, opportunity scoring, Blue Ocean scanning, and a fully cited 25-page Discovery Brief.',
     status: 'built',
+    href: '/discover',
   },
   {
     number: 2,
@@ -26,6 +29,7 @@ const stages: Stage[] = [
     detail:
       'Deep analysis across market size, competitive positioning, regulatory requirements, financial viability, learner demand, employer alignment, and institutional fit.',
     status: 'built',
+    href: '/validate',
   },
   {
     number: 3,
@@ -122,6 +126,16 @@ export function Pipeline() {
                 <p className="text-white/50 text-sm leading-relaxed">
                   {hoveredStage === i ? stage.detail : stage.short}
                 </p>
+
+                {/* Learn More link for built stages */}
+                {stage.href && hoveredStage === i && (
+                  <Link
+                    href={stage.href}
+                    className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-purple-400 hover:text-purple-300 transition-colors"
+                  >
+                    Learn more →
+                  </Link>
+                )}
               </div>
 
               {/* Connector line */}
@@ -171,6 +185,14 @@ export function Pipeline() {
               <p className="text-white/50 text-sm leading-relaxed">
                 {hoveredStage === i ? stage.detail : stage.short}
               </p>
+              {stage.href && hoveredStage === i && (
+                <Link
+                  href={stage.href}
+                  className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-purple-400 hover:text-purple-300 transition-colors"
+                >
+                  Learn more →
+                </Link>
+              )}
             </div>
             {/* Vertical connector */}
             {i < stages.length - 1 && (
