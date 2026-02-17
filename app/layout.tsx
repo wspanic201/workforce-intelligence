@@ -90,38 +90,75 @@ export default function RootLayout({
         {/* Footer */}
         <footer className="border-t border-white/[0.06] bg-[#050510]">
           <div className="mx-auto max-w-[1200px] px-6 py-12">
-            <div className="flex flex-col md:flex-row justify-between items-start gap-8">
-              <div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+              {/* Brand */}
+              <div className="sm:col-span-2 lg:col-span-1">
                 <p className="font-heading font-bold text-white inline-flex items-center gap-2">
                   <WavelengthMark className="w-5 h-5" />
                   Wavelength
                 </p>
-                <p className="text-sm text-white/40 mt-1">
-                  Tuned to your market. Backed by data.
+                <p className="text-sm text-white/40 mt-2 leading-relaxed max-w-xs">
+                  Market intelligence for community college programs. 7–10 vetted program leads, backed by 50+ verified sources.
                 </p>
               </div>
-              <div className="flex gap-8 text-sm text-white/40">
-                <Link
-                  href="#how-it-works"
-                  className="hover:text-white/70 transition-colors"
-                >
-                  How It Works
-                </Link>
-                <Link
-                  href="#products"
-                  className="hover:text-white/70 transition-colors"
-                >
-                  Pricing
-                </Link>
-                <Link
-                  href="#report-preview"
-                  className="hover:text-white/70 transition-colors"
-                >
-                  Sample Report
-                </Link>
+
+              {/* Products */}
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/30 mb-4">Products</p>
+                <div className="space-y-2.5">
+                  <Link href="/pell" className="block text-sm text-white/50 hover:text-white transition-colors">
+                    Pell Readiness Check
+                    <span className="text-teal-400/60 text-[10px] ml-1.5">Free</span>
+                  </Link>
+                  <Link href="/compliance-gap" className="block text-sm text-white/50 hover:text-white transition-colors">
+                    Compliance Gap Report
+                    <span className="text-blue-400/60 text-[10px] ml-1.5">$295</span>
+                  </Link>
+                  <Link href="/discover" className="block text-sm text-white/50 hover:text-white transition-colors">
+                    Market Scan
+                    <span className="text-purple-400/60 text-[10px] ml-1.5">$1,500</span>
+                  </Link>
+                  <Link href="/validate" className="block text-sm text-white/50 hover:text-white transition-colors">
+                    Program Validation
+                    <span className="text-emerald-400/60 text-[10px] ml-1.5">$2,000</span>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Resources */}
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/30 mb-4">Resources</p>
+                <div className="space-y-2.5">
+                  <Link href="/report/demo" className="block text-sm text-white/50 hover:text-white transition-colors">
+                    Sample Report
+                  </Link>
+                  <Link href="/blog" className="block text-sm text-white/50 hover:text-white transition-colors">
+                    Blog
+                  </Link>
+                  <Link href="/#how-it-works" className="block text-sm text-white/50 hover:text-white transition-colors">
+                    How It Works
+                  </Link>
+                  <Link href="/#faq" className="block text-sm text-white/50 hover:text-white transition-colors">
+                    FAQ
+                  </Link>
+                </div>
+              </div>
+
+              {/* Contact */}
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/30 mb-4">Get in Touch</p>
+                <div className="space-y-2.5">
+                  <a href="mailto:hello@withwavelength.com" className="block text-sm text-white/50 hover:text-white transition-colors">
+                    hello@withwavelength.com
+                  </a>
+                  <Link href="/pell" className="block text-sm text-white/50 hover:text-white transition-colors">
+                    Start Free →
+                  </Link>
+                </div>
               </div>
             </div>
-            <div className="mt-8 pt-8 border-t border-white/[0.06]">
+
+            <div className="mt-10 pt-8 border-t border-white/[0.06]">
               <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <p className="text-xs text-white/20">
                   © {new Date().getFullYear()} Wavelength. All rights reserved.
