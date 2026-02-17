@@ -18,8 +18,8 @@ export function NavBar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-[#050510]/90 backdrop-blur-xl border-b border-white/[0.06]'
+        scrolled || mobileOpen
+          ? 'bg-[#050510]/95 backdrop-blur-xl border-b border-white/[0.06]'
           : 'bg-transparent'
       }`}
     >
@@ -72,18 +72,18 @@ export function NavBar() {
             aria-label="Toggle menu"
           >
             <span
-              className={`w-5 h-0.5 bg-white/70 transition-all duration-300 ${
-                mobileOpen ? 'rotate-45 translate-y-2' : ''
+              className={`w-6 h-[2px] bg-white transition-all duration-300 ${
+                mobileOpen ? 'rotate-45 translate-y-[7px]' : ''
               }`}
             />
             <span
-              className={`w-5 h-0.5 bg-white/70 transition-all duration-300 ${
+              className={`w-6 h-[2px] bg-white transition-all duration-300 ${
                 mobileOpen ? 'opacity-0' : ''
               }`}
             />
             <span
-              className={`w-5 h-0.5 bg-white/70 transition-all duration-300 ${
-                mobileOpen ? '-rotate-45 -translate-y-2' : ''
+              className={`w-6 h-[2px] bg-white transition-all duration-300 ${
+                mobileOpen ? '-rotate-45 -translate-y-[7px]' : ''
               }`}
             />
           </button>
@@ -91,33 +91,35 @@ export function NavBar() {
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="md:hidden pb-6 space-y-4 border-t border-white/[0.06] pt-4">
+          <div className="md:hidden pb-6 space-y-1 border-t border-white/[0.08] pt-4">
             <Link
               href="#how-it-works"
-              className="block text-sm font-medium text-white/50 hover:text-white transition-colors"
+              className="block text-base font-medium text-white/80 hover:text-white py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               How It Works
             </Link>
             <Link
               href="#pricing"
-              className="block text-sm font-medium text-white/50 hover:text-white transition-colors"
+              className="block text-base font-medium text-white/80 hover:text-white py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               Pricing
             </Link>
             <Link
               href="#report-preview"
-              className="block text-sm font-medium text-white/50 hover:text-white transition-colors"
+              className="block text-base font-medium text-white/80 hover:text-white py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               Sample Report
             </Link>
-            <Link href="#pricing" onClick={() => setMobileOpen(false)}>
-              <button className="btn-cosmic btn-cosmic-primary text-sm py-2 px-6 w-full mt-2">
-                Get Started
-              </button>
-            </Link>
+            <div className="pt-3">
+              <Link href="#pricing" onClick={() => setMobileOpen(false)}>
+                <button className="btn-cosmic btn-cosmic-primary text-sm py-3 px-6 w-full">
+                  Get Started
+                </button>
+              </Link>
+            </div>
           </div>
         )}
       </nav>
