@@ -365,7 +365,7 @@ function HeroCarousel() {
   const slide = HERO_SLIDES[current];
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16 overflow-hidden">
+    <section className="relative h-[90vh] min-h-[700px] max-h-[900px] flex items-center justify-center pt-24 pb-16 overflow-hidden">
       <Stars count={250} />
       <Aurora />
       <Waveform className="opacity-60" />
@@ -375,7 +375,7 @@ function HeroCarousel() {
 
           {/* Left: Content */}
           <div
-            className={`flex-1 text-center lg:text-left transition-all duration-500 ease-out ${
+            className={`flex-1 text-center lg:text-left transition-all duration-500 ease-out min-h-[320px] ${
               isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
             }`}
           >
@@ -426,7 +426,7 @@ function HeroCarousel() {
 
           {/* Right: Form or floating card */}
           <div
-            className={`w-full lg:w-auto lg:min-w-[420px] transition-all duration-500 ease-out ${
+            className={`w-full lg:w-auto lg:min-w-[420px] lg:min-h-[350px] flex items-center transition-all duration-500 ease-out ${
               isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
             }`}
           >
