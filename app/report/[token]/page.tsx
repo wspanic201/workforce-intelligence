@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import fs from 'fs';
+import path from 'path';
 import { ReportViewer } from './components/ReportViewer';
 import type { ReportData } from './types';
 
@@ -11,7 +12,8 @@ interface PageProps {
 async function loadReportData(token: string): Promise<ReportData | null> {
   if (token === 'demo') {
     try {
-      const raw = fs.readFileSync('/tmp/wake-tech-report-data.json', 'utf-8');
+      const dataPath = path.join(process.cwd(), 'data', 'demo-report.json');
+      const raw = fs.readFileSync(dataPath, 'utf-8');
       const data = JSON.parse(raw);
       return {
         ...data,
