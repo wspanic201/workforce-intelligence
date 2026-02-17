@@ -85,13 +85,12 @@ export default function HomePage() {
               className="font-heading font-bold text-white mx-auto max-w-3xl"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              Every stage delivers standalone value.
+              From discovery to launch.
             </h2>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
             <p className="text-white/50 text-lg max-w-2xl mx-auto">
-              Buy one stage or the full journey. Each one stands alone.
-              Each one makes you want the next.
+              Eight stages. Buy one or buy them all.
             </p>
           </AnimateOnScroll>
 
