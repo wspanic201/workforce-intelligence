@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { WavelengthMark } from './WavelengthLogo';
 
 export function NavBar() {
   const [scrolled, setScrolled] = useState(false);
@@ -28,7 +29,10 @@ export function NavBar() {
             href="/"
             className="font-heading text-lg font-bold tracking-tight text-white hover:text-white/80 transition-colors"
           >
-            <span className="text-gradient-cosmic" title="~∿ tuned in ∿~">Wavelength</span>
+            <span className="inline-flex items-center gap-2" title="~∿ tuned in ∿~">
+              <WavelengthMark className="w-6 h-6" />
+              <span className="text-gradient-cosmic">Wavelength</span>
+            </span>
           </Link>
 
           {/* Desktop nav */}

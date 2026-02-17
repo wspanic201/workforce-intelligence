@@ -12,25 +12,33 @@ import { Pipeline } from '@/components/cosmic/Pipeline';
 
 function WaveDivider() {
   return (
-    <div className="w-full overflow-hidden py-4" aria-hidden="true">
+    <div className="w-full overflow-hidden py-6" aria-hidden="true">
       <svg
-        viewBox="0 0 1200 40"
-        className="w-full h-8 opacity-[0.07]"
+        viewBox="0 0 1200 60"
+        className="w-full h-10 opacity-[0.15]"
         preserveAspectRatio="none"
       >
-        <path
-          d="M0,20 C100,5 200,35 300,20 C400,5 500,35 600,20 C700,5 800,35 900,20 C1000,5 1100,35 1200,20"
-          fill="none"
-          stroke="url(#wave-gradient)"
-          strokeWidth="2"
-        />
         <defs>
           <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#a855f7" />
-            <stop offset="50%" stopColor="#6366f1" />
-            <stop offset="100%" stopColor="#2dd4bf" />
+            <stop offset="0%" stopColor="#7c3aed" />
+            <stop offset="50%" stopColor="#3b82f6" />
+            <stop offset="100%" stopColor="#14b8a6" />
           </linearGradient>
         </defs>
+        <path
+          d="M0,30 C100,10 200,50 300,30 C400,10 500,50 600,30 C700,10 800,50 900,30 C1000,10 1100,50 1200,30"
+          fill="none"
+          stroke="url(#wave-gradient)"
+          strokeWidth="2.5"
+        />
+        <path
+          d="M0,30 C100,10 200,50 300,30 C400,10 500,50 600,30 C700,10 800,50 900,30 C1000,10 1100,50 1200,30"
+          fill="none"
+          stroke="url(#wave-gradient)"
+          strokeWidth="1"
+          opacity="0.4"
+          transform="translate(0, 6)"
+        />
       </svg>
     </div>
   );

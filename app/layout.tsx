@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { Inter, Space_Grotesk } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 import { NavBar } from "@/components/cosmic/NavBar";
+import { WavelengthMark } from "@/components/cosmic/WavelengthLogo";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -10,11 +11,11 @@ const inter = Inter({
   display: "swap",
 });
 
-const jakarta = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta-sans",
+const spaceGrotesk = Space_Grotesk({
+  variable: "--font-space-grotesk",
   subsets: ["latin"],
   display: "swap",
-  weight: ["500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -31,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${inter.variable} ${jakarta.variable} font-sans antialiased bg-[#050510] text-[#e2e8f0]`}
+        className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased bg-[#050510] text-[#e2e8f0]`}
       >
         <NavBar />
 
@@ -42,7 +43,8 @@ export default function RootLayout({
           <div className="mx-auto max-w-[1200px] px-6 py-12">
             <div className="flex flex-col md:flex-row justify-between items-start gap-8">
               <div>
-                <p className="font-heading font-bold text-white">
+                <p className="font-heading font-bold text-white inline-flex items-center gap-2">
+                  <WavelengthMark className="w-5 h-5" />
                   Wavelength
                 </p>
                 <p className="text-sm text-white/40 mt-1">
