@@ -26,16 +26,16 @@ export default function HomePage() {
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"
               style={{ fontSize: 'clamp(2.75rem, 6vw + 0.5rem, 5rem)' }}
             >
-              See what others can&apos;t.
+              Know exactly what programs to build.
             </h1>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={150} duration={800}>
             <p className="mt-6 text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed font-medium">
-              Program intelligence for the full lifecycle.
+              Market intelligence for community college program development.
             </p>
             <p className="mt-3 text-base md:text-lg text-white/45 max-w-2xl mx-auto leading-relaxed">
-              Find what to build. Validate the market. Design the curriculum. Launch with confidence. Every finding sourced. Every decision backed by data.
+              From discovery to launch — every recommendation backed by real labor market data, employer signals, and competitive analysis.
             </p>
           </AnimateOnScroll>
 
