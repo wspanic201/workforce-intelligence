@@ -29,7 +29,7 @@ const stages: Stage[] = [
   },
   {
     number: 3,
-    name: 'Curriculum Design',
+    name: 'Curriculum Design & Development',
     short: 'Competency mapping, course architecture, and learning outcomes built from real occupation data — not generic templates.',
     detail:
       'Maps skills to occupations using live job posting data, industry certifications, and employer requirements. Produces program structure, credit hours, and prerequisite chains.',
