@@ -387,23 +387,24 @@ export default function HomePage() {
               </button>
             </div>
 
-            {/* Tier 3 — Full Lifecycle */}
-            <div className="card-cosmic rounded-2xl p-8">
+            {/* Tier 3 — Full Lifecycle (Coming Soon) */}
+            <div className="card-cosmic rounded-2xl p-8 relative opacity-80">
+              <div className="absolute -top-3 right-4">
+                <span className="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-medium uppercase tracking-wider text-white/50 border border-white/10">
+                  Coming Soon
+                </span>
+              </div>
               <h3 className="font-heading font-semibold text-white text-lg">
                 Full Lifecycle
               </h3>
               <p className="text-white/40 text-sm mt-1">
                 Build it right.
               </p>
-              <div className="mt-5 mb-1">
-                <span className="font-heading font-bold text-4xl text-gradient-cosmic">
-                  $3,000
-                </span>
-                <span className="text-white/30 text-sm ml-2 line-through">
-                  $6,500
+              <div className="mt-5 mb-6">
+                <span className="font-heading font-bold text-2xl text-white/30">
+                  Pricing TBD
                 </span>
               </div>
-              <p className="text-xs text-white/30 mb-6">Founding rate</p>
               <ul className="space-y-3 mb-8">
                 {[
                   'Everything above, plus:',
@@ -416,15 +417,15 @@ export default function HomePage() {
                   <li key={item} className="flex items-start gap-3">
                     <Check
                       className={`h-4 w-4 flex-shrink-0 mt-0.5 ${
-                        i === 0 ? 'text-purple-400' : 'text-cosmic-teal'
+                        i === 0 ? 'text-purple-400/50' : 'text-cosmic-teal/50'
                       }`}
                       strokeWidth={2}
                     />
                     <span
                       className={`text-sm ${
                         i === 0
-                          ? 'text-purple-300 font-medium'
-                          : 'text-white/60'
+                          ? 'text-purple-300/50 font-medium'
+                          : 'text-white/40'
                       }`}
                     >
                       {item}
@@ -432,8 +433,8 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
-              <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
-                Get Started
+              <button className="btn-cosmic btn-cosmic-ghost w-full text-sm opacity-50 cursor-not-allowed" disabled>
+                Notify Me
               </button>
             </div>
           </StaggerChildren>
