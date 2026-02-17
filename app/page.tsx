@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Check, Shield, ArrowRight, Zap, Clock, Database, TrendingUp } from 'lucide-react';
+import { Check, Shield, ArrowRight, Zap, Database, TrendingUp } from 'lucide-react';
 import {
   AnimateOnScroll,
   StaggerChildren,
@@ -248,11 +248,11 @@ export default function HomePage() {
                     </p>
                   </div>
                   <div className="flex items-center gap-2 text-sm text-white/30">
-                    <Clock className="h-4 w-4" />
-                    <span>676 seconds</span>
-                    <span className="mx-1">·</span>
                     <Database className="h-4 w-4" />
-                    <span>74 searches</span>
+                    <span>74 data sources</span>
+                    <span className="mx-1">·</span>
+                    <TrendingUp className="h-4 w-4" />
+                    <span>~25 pages</span>
                   </div>
                 </div>
               </div>
@@ -321,8 +321,8 @@ export default function HomePage() {
               <div className="grid grid-cols-3 divide-x divide-white/[0.06]">
                 {[
                   { value: '13', label: 'opportunities found' },
-                  { value: '74', label: 'data sources queried' },
-                  { value: '676s', label: 'total analysis time' },
+                  { value: '20+', label: 'employers researched' },
+                  { value: '8', label: 'competitors mapped' },
                 ].map(({ value, label }) => (
                   <div key={label} className="p-4 md:p-6 text-center">
                     <div className="font-heading font-bold text-xl text-gradient-cosmic">
