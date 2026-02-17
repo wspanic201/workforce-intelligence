@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Check, Shield, ArrowRight, Database, TrendingUp } from 'lucide-react';
+import { Check, Shield, ArrowRight, Database, TrendingUp, Clock, Zap } from 'lucide-react';
 import {
   AnimateOnScroll,
   StaggerChildren,
@@ -32,10 +32,10 @@ export default function HomePage() {
 
           <AnimateOnScroll variant="fade-up" delay={150} duration={800}>
             <p className="mt-6 text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed font-medium">
-              Market intelligence for community college program development.
+              Market intelligence for community college program development — now with Workforce Pell readiness scoring.
             </p>
             <p className="mt-3 text-base md:text-lg text-white/45 max-w-2xl mx-auto leading-relaxed">
-              From discovery to launch — every recommendation backed by real labor market data, employer signals, and competitive analysis.
+              From discovery to launch — every recommendation backed by real labor market data, employer signals, and competitive analysis. Every program scored for Pell eligibility.
             </p>
           </AnimateOnScroll>
 
@@ -61,6 +61,7 @@ export default function HomePage() {
                 { value: '50+', label: 'sources cited & verified' },
                 { value: '25+', label: 'page brief' },
                 { value: '100%', label: 'cited & sourced' },
+                { value: 'Pell', label: 'readiness scored' },
               ].map(({ value, label }) => (
                 <div key={label} className="text-center">
                   <div className="font-heading font-bold text-2xl md:text-3xl text-gradient-cosmic">
@@ -69,6 +70,44 @@ export default function HomePage() {
                   <p className="text-white/40 text-sm mt-1">{label}</p>
                 </div>
               ))}
+            </div>
+          </AnimateOnScroll>
+        </div>
+      </section>
+
+      {/* ===== WORKFORCE PELL URGENCY BANNER ===== */}
+      <section className="relative py-12 md:py-16">
+        <div className="max-w-[1100px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up">
+            <div className="card-cosmic rounded-2xl p-8 md:p-10 border-purple-500/20 relative overflow-hidden">
+              {/* Subtle gradient accent */}
+              <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-purple-500 to-transparent" />
+              
+              <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-10">
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Clock className="h-4 w-4 text-purple-400" />
+                    <span className="text-xs font-bold uppercase tracking-widest text-purple-400">
+                      July 1, 2026 Deadline
+                    </span>
+                  </div>
+                  <h3 className="font-heading font-bold text-white text-xl md:text-2xl leading-tight mb-3">
+                    Workforce Pell is here.{' '}
+                    <span className="text-gradient-cosmic">Is your program portfolio ready?</span>
+                  </h3>
+                  <p className="text-white/50 text-sm md:text-base leading-relaxed">
+                    Starting July 1, short-term programs (150–599 clock hours) become eligible for federal Pell Grant funding for the first time. Colleges that identify and validate Pell-eligible programs now will capture enrollment — and federal dollars — first. Every Discovery Brief includes a Workforce Pell readiness assessment for each recommended program.
+                  </p>
+                </div>
+                <div className="flex-shrink-0">
+                  <Link href="#pricing">
+                    <button className="btn-cosmic btn-cosmic-primary text-sm whitespace-nowrap">
+                      <Zap className="mr-2 h-4 w-4" />
+                      Get Pell-Ready
+                    </button>
+                  </Link>
+                </div>
+              </div>
             </div>
           </AnimateOnScroll>
         </div>
@@ -274,6 +313,7 @@ export default function HomePage() {
                   'Demand signal analysis',
                   'Competitive landscape',
                   'Blue Ocean opportunities',
+                  'Workforce Pell readiness scoring',
                   'Grant alignment',
                   'Scored & ranked programs',
                 ].map((item) => (
