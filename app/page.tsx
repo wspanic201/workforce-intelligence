@@ -1231,10 +1231,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== SATELLITE — pointing up toward the stars ===== */}
-      <div className="relative py-16 md:py-24 flex justify-center">
-        <Satellite />
-      </div>
+      {/* ===== SATELLITE DISH — fixed to bottom-left, pointing toward the stars ===== */}
+      <Satellite className="hidden lg:block" />
     </div>
   );
 }
