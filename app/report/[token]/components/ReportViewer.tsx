@@ -169,8 +169,28 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
   return (
     <div className="min-h-screen bg-[#050510] text-[#e2e8f0]">
 
+      {/* ═══ SITE NAV ═══════════════════════════════════════ */}
+      <nav className="sticky top-0 z-50 bg-[#050510]/90 backdrop-blur-md border-b border-white/[0.06]">
+        <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-1.5 group">
+            <span className="text-teal-400 font-bold text-lg">∿</span>
+            <span className="font-heading font-bold text-white text-sm group-hover:text-teal-300 transition-colors">Wavelength</span>
+          </a>
+          <div className="flex items-center gap-5 text-sm">
+            <a href="/" className="text-white/50 hover:text-white transition-colors hidden sm:inline">Home</a>
+            <a href="/discover" className="text-white/50 hover:text-white transition-colors hidden sm:inline">Market Scan</a>
+            <a href="/compliance-gap" className="text-white/50 hover:text-white transition-colors hidden sm:inline">Compliance</a>
+            <a href="/pell" className="text-white/50 hover:text-white transition-colors hidden sm:inline">Pell Check</a>
+            <a href="/blog" className="text-white/50 hover:text-white transition-colors hidden sm:inline">Blog</a>
+            <a href="/#products" className="bg-gradient-to-r from-purple-600 to-teal-500 text-white px-4 py-1.5 rounded-full text-xs font-semibold hover:opacity-90 transition-opacity">
+              Get Started
+            </a>
+          </div>
+        </div>
+      </nav>
+
       {/* ═══ HERO HEADER ═══════════════════════════════════════ */}
-      <header className="relative overflow-hidden pt-20 pb-16 px-6">
+      <header className="relative overflow-hidden pt-12 pb-16 px-6">
         {/* Background effects */}
         <div className="absolute inset-0 pointer-events-none">
           <Stars />
@@ -182,7 +202,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
         <div className="relative z-10 max-w-5xl mx-auto">
           {/* Breadcrumb */}
           <div className="flex items-center gap-1.5 text-xs text-white/30 mb-6">
-            <span>Wavelength</span>
+            <a href="/" className="hover:text-white/50 transition-colors">Wavelength</a>
             <ChevronRight className="w-3 h-3" />
             <span>Program Market Scan</span>
             <ChevronRight className="w-3 h-3" />
