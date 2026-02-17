@@ -9,6 +9,7 @@ import {
 import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
 import { Pipeline } from '@/components/cosmic/Pipeline';
+import { Waveform } from '@/components/cosmic/Waveform';
 
 function WaveDivider() {
   return (
@@ -52,6 +53,7 @@ export default function HomePage() {
         {/* Background layers */}
         <Stars count={250} />
         <Aurora />
+        <Waveform className="opacity-60" />
 
         {/* Content */}
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
@@ -87,18 +89,21 @@ export default function HomePage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={450} duration={800}>
-            <div className="mt-16 flex flex-wrap justify-center gap-8 md:gap-16">
+            <div className="mt-16 flex flex-wrap justify-center gap-6 md:gap-10">
               {[
-                { value: '50+', label: 'sources cited & verified' },
-                { value: '25+', label: 'page brief' },
-                { value: '100%', label: 'cited & sourced' },
-                { value: 'Pell', label: 'readiness scored' },
-              ].map(({ value, label }) => (
-                <div key={label} className="text-center">
+                { value: '50+', label: 'sources cited & verified', freq: '▁▃▅▇▅▃▁' },
+                { value: '25+', label: 'page brief', freq: '▂▅▇▅▂▄▇' },
+                { value: '100%', label: 'cited & sourced', freq: '▇▇▇▇▇▇▇' },
+                { value: 'Pell', label: 'readiness scored', freq: '▃▅▇▅▃▅▇' },
+              ].map(({ value, label, freq }) => (
+                <div key={label} className="text-center group">
+                  <div className="text-[10px] tracking-[0.3em] text-purple-500/40 font-mono mb-1 group-hover:text-purple-400/60 transition-colors">
+                    {freq}
+                  </div>
                   <div className="font-heading font-bold text-2xl md:text-3xl text-gradient-cosmic">
                     {value}
                   </div>
-                  <p className="text-white/40 text-sm mt-1">{label}</p>
+                  <p className="text-white/40 text-xs mt-1 uppercase tracking-wider">{label}</p>
                 </div>
               ))}
             </div>
@@ -150,7 +155,11 @@ export default function HomePage() {
       <section className="relative py-20 md:py-32" id="how-it-works">
         <div className="max-w-[1400px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-4">
-            <span className="overline">Our Services</span>
+            <span className="overline inline-flex items-center gap-3">
+              <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/50" />
+              Our Services
+              <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-teal-500/50" />
+            </span>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-6">
             <h2
@@ -310,7 +319,11 @@ export default function HomePage() {
       <section className="relative py-20 md:py-32" id="pricing">
         <div className="max-w-[1200px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-4">
-            <span className="overline">Pricing</span>
+            <span className="overline inline-flex items-center gap-3">
+              <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/50" />
+              Pricing
+              <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-teal-500/50" />
+            </span>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-4">
             <h2
@@ -492,9 +505,10 @@ export default function HomePage() {
 
       {/* ===== FINAL CTA ===== */}
       <section className="relative py-24 md:py-40 overflow-hidden">
-        {/* Aurora background */}
+        {/* Aurora + waveform background */}
         <Aurora />
         <Stars count={100} />
+        <Waveform className="opacity-40" />
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up">
