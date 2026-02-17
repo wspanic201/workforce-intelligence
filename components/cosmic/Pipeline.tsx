@@ -45,7 +45,7 @@ const stages: Stage[] = [
   },
   {
     number: 5,
-    name: 'Content Creation',
+    name: 'Course Content Creation',
     short: 'Syllabi, learning outcomes, assessments, and instructor guides mapped directly to industry competencies.',
     detail:
       'Generates course materials aligned to the curriculum architecture — assessment rubrics, OER-aligned content, lab exercises, and capstone project frameworks.',
