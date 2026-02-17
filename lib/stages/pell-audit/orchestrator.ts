@@ -23,6 +23,7 @@ import { scrapeCatalog } from './agents/catalog-scraper';
 import { classifyPrograms } from './agents/program-classifier';
 import { scorePellAlignment } from './agents/pell-scorer';
 import { analyzeGaps } from './agents/gap-analyzer';
+import { scanRegulatoryMandates, RegulatoryScanOutput } from './agents/regulatory-scanner';
 import { writeReport } from './agents/report-writer';
 import type { PellAuditInput, PellAuditOutput } from './types';
 
@@ -136,24 +137,46 @@ export async function runPellAudit(
     progress(4, 'Gap Analyzer', 'error', msg);
   }
 
-  // ── Phase 5: Report Writer ──
+  // ── Phase 4b: Regulatory Mandate Scanner ──
+  let regulatoryScanning: RegulatoryScanOutput | null = null;
+  try {
+    progress(5, 'Regulatory Scanner', 'starting', `Scanning ${input.state} regulatory mandates...`);
+    const phaseStart = Date.now();
+    regulatoryScanning = await scanRegulatoryMandates(
+      classification?.programs || [],
+      catalog?.institution.name || input.collegeName,
+      input.state,
+      input.city
+    );
+    phaseTiming['regulatory'] = Math.round((Date.now() - phaseStart) / 1000);
+    totalSearches += regulatoryScanning.searchesUsed;
+    progress(5, 'Regulatory Scanner', 'complete', 
+      `${regulatoryScanning.summary.gapsIdentified} mandated program gaps found (${regulatoryScanning.summary.pellEligibleGaps} Pell-eligible)`);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    errors.push(`Phase 4b (Regulatory Scanner): ${msg}`);
+    progress(5, 'Regulatory Scanner', 'error', msg);
+  }
+
+  // ── Phase 6: Report Writer ──
   let report = null;
   if (catalog && (classification || gapAnalysis)) {
     try {
-      progress(5, 'Report Writer', 'starting', 'Generating Pell Readiness Audit report...');
+      progress(6, 'Report Writer', 'starting', 'Generating Pell Readiness Audit report...');
       const phaseStart = Date.now();
       report = await writeReport(
         catalog,
         classification || { programs: [], summary: { totalPrograms: 0, alreadyPellEligible: 0, workforcePellCandidates: 0, tooShort: 0, tooLong: 0, unclear: 0 } },
         pellScoring || { scoredPrograms: [], institutionSummary: { pellReady: 0, likelyReady: 0, needsWork: 0, notEligible: 0 } },
-        gapAnalysis || { gaps: [], methodology: '', dataSources: [], regionAnalyzed: '' }
+        gapAnalysis || { gaps: [], methodology: '', dataSources: [], regionAnalyzed: '' },
+        regulatoryScanning
       );
       phaseTiming['report'] = Math.round((Date.now() - phaseStart) / 1000);
-      progress(5, 'Report Writer', 'complete', `${report.fullMarkdown.length} chars written`);
+      progress(6, 'Report Writer', 'complete', `${report.fullMarkdown.length} chars written`);
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
-      errors.push(`Phase 5 (Report Writer): ${msg}`);
-      progress(5, 'Report Writer', 'error', msg);
+      errors.push(`Phase 6 (Report Writer): ${msg}`);
+      progress(6, 'Report Writer', 'error', msg);
     }
   }
 
@@ -166,6 +189,7 @@ export async function runPellAudit(
   console.log(`  Programs Found: ${catalog?.totalProgramsFound || 0}`);
   console.log(`  Pell Candidates: ${classification?.summary.workforcePellCandidates || 0}`);
   console.log(`  Gaps Identified: ${gapAnalysis?.gaps.length || 0}`);
+  console.log(`  Regulatory Gaps: ${regulatoryScanning?.summary.gapsIdentified || 0}`);
   if (errors.length > 0) console.log(`  Errors: ${errors.length}`);
   console.log('═'.repeat(60) + '\n');
 

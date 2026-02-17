@@ -19,6 +19,7 @@ import type {
   GapAnalysisOutput,
   PellAuditReport,
 } from '../types';
+import type { RegulatoryScanOutput } from './regulatory-scanner';
 
 // ── Main Agent ──
 
@@ -26,7 +27,8 @@ export async function writeReport(
   catalog: CatalogScrapeOutput,
   classification: ProgramClassificationOutput,
   scoring: PellScoringOutput,
-  gaps: GapAnalysisOutput
+  gaps: GapAnalysisOutput,
+  regulatory?: RegulatoryScanOutput | null
 ): Promise<PellAuditReport> {
   console.log(`\n[Report Writer] Generating Workforce Pell Readiness Audit report`);
   const startTime = Date.now();
@@ -105,7 +107,20 @@ ${gapDetails}
 GAP ANALYSIS METHODOLOGY:
 ${gaps.methodology}
 
-DATA SOURCES: ${gaps.dataSources.length} sources + BLS wage data + ${catalog.catalogUrls.length} institutional pages scraped
+${regulatory && regulatory.notOffered.length > 0 ? `
+REGULATORY MANDATE GAPS (state-mandated programs NOT currently offered):
+${regulatory.notOffered.map((m, i) => 
+  `${i + 1}. **${m.occupation}** — ${m.regulatoryBody}
+   Mandate: ${m.trainingRequirement} (${m.clockHours} hours) [${m.statute}]
+   Regional Demand: ${m.estimatedRegionalDemand}
+   Revenue Potential: ${m.revenueEstimate}
+   Pell-Eligible: ${m.pellEligible ? 'Yes' : 'No'}
+   Renewal/CE Required: ${m.renewalRequired ? `Yes — ${m.renewalDetails}` : 'No'}
+   Score: ${m.opportunityScore}/10`
+).join('\n\n')}
+` : 'No regulatory mandate data available.'}
+
+DATA SOURCES: ${gaps.dataSources.length} sources + BLS wage data + ${catalog.catalogUrls.length} institutional pages scraped${regulatory ? ` + ${regulatory.searchesUsed} regulatory searches` : ''}
 
 REPORT STRUCTURE — Write the following sections in clean, professional Markdown:
 
@@ -132,14 +147,21 @@ REPORT STRUCTURE — Write the following sections in clean, professional Markdow
    - Prioritize by opportunity score
    - Make it clear these gaps represent real revenue and enrollment opportunities
 
-5. **STRATEGIC RECOMMENDATIONS** (4-6 bullet points)
+5. **REGULATORY MANDATE GAPS: GUARANTEED-DEMAND PROGRAMS** (if regulatory data available)
+   - Lead with: "The following programs are REQUIRED by ${state} state law. Every licensed professional must complete this training — the only question is where."
+   - Present each mandated program gap with: regulatory body, statute reference, required hours, estimated regional demand, revenue potential
+   - Flag which are Pell-eligible
+   - Note renewal/CE requirements (ongoing revenue stream)
+   - This section should make the dean think: "Why are we leaving this money on the table?"
+
+6. **STRATEGIC RECOMMENDATIONS** (4-6 bullet points)
    - What to do NOW (before July 1)
    - Quick wins (programs closest to Pell-ready)
    - Medium-term (programs that need work)
    - Data infrastructure needs (completion/placement tracking)
    - New program development priorities (from gap analysis)
 
-6. **METHODOLOGY & SOURCES**
+7. **METHODOLOGY & SOURCES**
    - Brief description of our analysis approach
    - List key data sources
    - Note any limitations
@@ -187,8 +209,8 @@ Write the COMPLETE report. All 6 sections. In markdown format.`;
     metadata: {
       totalPrograms: classification.summary.totalPrograms,
       pellReadyCount: scoring.institutionSummary.pellReady + scoring.institutionSummary.likelyReady,
-      gapsIdentified: gaps.gaps.length,
-      dataSources: gaps.dataSources.length + catalog.catalogUrls.length,
+      gapsIdentified: gaps.gaps.length + (regulatory?.notOffered.length || 0),
+      dataSources: gaps.dataSources.length + catalog.catalogUrls.length + (regulatory?.searchesUsed || 0),
     },
   };
 }

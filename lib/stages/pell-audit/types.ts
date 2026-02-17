@@ -165,6 +165,9 @@ export interface GapAnalysisOutput {
   regionAnalyzed: string;
 }
 
+// ── Phase 4b: Regulatory Scanner Output ──
+// (imported from regulatory-scanner.ts — RegulatoryMandate, RegulatoryScanOutput)
+
 // ── Phase 5: Report Writer Output ──
 
 export interface PellAuditReport {

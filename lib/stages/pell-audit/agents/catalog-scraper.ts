@@ -207,31 +207,127 @@ Return JSON in this exact format:
 Return ONLY valid JSON. No markdown, no explanations.`;
 
   const extraction = await callClaude(extractionPrompt, {
-    maxTokens: 8000,
+    maxTokens: 16000,  // Large colleges can have 100+ programs
     temperature: 0.1,  // Low temp for extraction accuracy
   });
 
+  // Debug: log the response structure
+  console.log(`[Catalog Scraper] AI response length: ${extraction.content.length} chars`);
+  const hasPrograms = extraction.content.includes('"programs"');
+  const hasBrackets = extraction.content.includes('"programs": [') || extraction.content.includes('"programs":[');
+  console.log(`[Catalog Scraper] Contains "programs" key: ${hasPrograms}, array: ${hasBrackets}`);
+  
   let parsed: any;
   try {
     parsed = extractJSON(extraction.content);
+    // Verify we actually got programs
+    if (!parsed.programs || !Array.isArray(parsed.programs) || parsed.programs.length === 0) {
+      console.warn(`[Catalog Scraper] extractJSON returned object but programs array is ${JSON.stringify(parsed.programs)?.slice(0, 100)}`);
+      throw new Error('No programs in parsed result — try recovery');
+    }
   } catch (err) {
-    console.error('[Catalog Scraper] Failed to parse extraction:', err);
-    // Return minimal result
-    return {
-      institution: {
-        name: collegeName,
-        url: siteUrl,
-        city: city || '',
-        state,
-        type: 'Community College',
-        accreditation: null,
-      },
-      programs: [],
-      catalogUrls,
-      totalProgramsFound: 0,
-      scrapedAt: new Date().toISOString(),
-      searchesUsed: searchCount,
-    };
+    console.warn('[Catalog Scraper] Standard extraction failed, trying recovery...');
+    // Try multiple recovery strategies
+    // Strategy 1: Strip code fences and try full parse
+    try {
+      const stripped = extraction.content
+        .replace(/```(?:json)?\s*\n?/g, '')
+        .replace(/\n?```/g, '')
+        .trim();
+      parsed = JSON.parse(stripped);
+      if (parsed.programs?.length > 0) {
+        console.log(`[Catalog Scraper] Recovery Strategy 1: ${parsed.programs.length} programs from stripped content`);
+      } else {
+        parsed = null;
+      }
+    } catch {}
+
+    // Strategy 2: Find the first { that precedes "institution" or "programs"
+    if (!parsed) {
+      try {
+        const instIdx = extraction.content.indexOf('"institution"');
+        const progIdx = extraction.content.indexOf('"programs"');
+        const targetIdx = Math.min(
+          instIdx >= 0 ? instIdx : Infinity,
+          progIdx >= 0 ? progIdx : Infinity
+        );
+        if (targetIdx < Infinity) {
+          // Walk backward to find the opening {
+          let startIdx = targetIdx;
+          while (startIdx > 0 && extraction.content[startIdx] !== '{') startIdx--;
+          
+          let jsonStr = extraction.content.substring(startIdx);
+          // Auto-close any open brackets/braces
+          let braces = 0, brackets = 0, inStr = false, esc = false;
+          for (const ch of jsonStr) {
+            if (esc) { esc = false; continue; }
+            if (ch === '\\') { esc = true; continue; }
+            if (ch === '"') { inStr = !inStr; continue; }
+            if (inStr) continue;
+            if (ch === '{') braces++;
+            if (ch === '}') braces--;
+            if (ch === '[') brackets++;
+            if (ch === ']') brackets--;
+          }
+          if (inStr) jsonStr += '"';
+          jsonStr = jsonStr.replace(/,\s*$/, '');
+          while (brackets > 0) { jsonStr += ']'; brackets--; }
+          while (braces > 0) { jsonStr += '}'; braces--; }
+          
+          // Clean common JSON issues
+          jsonStr = jsonStr.replace(/,\s*([\]}])/g, '$1');
+          
+          parsed = JSON.parse(jsonStr);
+          console.log(`[Catalog Scraper] Recovery Strategy 2: ${(parsed.programs || []).length} programs from auto-closed JSON`);
+        }
+      } catch (e) {
+        console.warn('[Catalog Scraper] Strategy 2 failed:', (e as Error).message?.slice(0, 100));
+      }
+    }
+
+    // Strategy 3: Extract individual program objects via regex
+    if (!parsed || !(parsed.programs?.length > 0)) {
+      try {
+        const programPattern = /\{[^{}]*"name"\s*:\s*"[^"]+?"[^{}]*"credentialType"\s*:\s*"[^"]+?"[^{}]*\}/g;
+        const matches = extraction.content.match(programPattern);
+        if (matches && matches.length > 0) {
+          const programs = matches.map(m => {
+            try { return JSON.parse(m); } catch { return null; }
+          }).filter(Boolean);
+          if (programs.length > 0) {
+            parsed = { programs, institution: {} };
+            console.log(`[Catalog Scraper] Recovery Strategy 3: ${programs.length} programs from regex extraction`);
+          }
+        }
+      } catch {}
+    }
+
+    if (!parsed) {
+      // Last resort: save raw response for debugging
+      const debugPath = `/tmp/pell-audit-raw-response-${Date.now()}.txt`;
+      const { writeFileSync: wfs } = await import('fs');
+      wfs(debugPath, extraction.content);
+      console.error(`[Catalog Scraper] All recovery failed. Raw response saved to ${debugPath}`);
+    }
+    
+    if (!parsed) {
+      console.error('[Catalog Scraper] All parse attempts failed');
+      return {
+        institution: {
+          name: collegeName,
+          url: siteUrl,
+          city: city || '',
+          state,
+          type: 'Community College',
+          accreditation: null,
+        },
+        programs: [],
+        catalogUrls,
+        totalProgramsFound: 0,
+        scrapedAt: new Date().toISOString(),
+        searchesUsed: searchCount,
+      };
+    }
   }
 
   const programs: ScrapedProgram[] = (parsed.programs || []).map((p: any) => ({
