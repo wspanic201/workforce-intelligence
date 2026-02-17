@@ -108,9 +108,9 @@ export default function HomePage() {
               className="font-heading font-bold text-white mx-auto max-w-3xl"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              This is what invisible looks like
+              A real brief. A real region.
               <br className="hidden sm:block" />
-              <span className="text-gradient-cosmic">when you can finally see it.</span>
+              <span className="text-gradient-cosmic">Real findings.</span>
             </h2>
           </AnimateOnScroll>
 
