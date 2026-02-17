@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "wos": "npx tsx cli.ts",
+    "wos:discover": "npx tsx cli.ts discover",
+    "wos:validate": "npx tsx cli.ts validate",
+    "wos:pipeline": "npx tsx cli.ts pipeline",
+    "wos:report": "npx tsx cli.ts report"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.74.0",
@@ -19,6 +24,7 @@
     "lucide-react": "^0.564.0",
     "marked": "^17.0.2",
     "next": "16.1.6",
+    "puppeteer-core": "^24.37.3",
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
     "react-dom": "19.2.3",
