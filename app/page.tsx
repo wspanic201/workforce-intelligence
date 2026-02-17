@@ -412,48 +412,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ===== FOUNDER SECTION ===== */}
-      <section className="relative py-20 md:py-32">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="max-w-3xl mx-auto">
-            <AnimateOnScroll variant="fade-up">
-              <div className="card-cosmic rounded-2xl p-8 md:p-12">
-                <div className="flex flex-col md:flex-row gap-8 items-start">
-                  {/* Photo placeholder */}
-                  <div className="flex-shrink-0">
-                    <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-white/[0.06] flex items-center justify-center">
-                      <span className="text-white/20 text-xs font-medium text-center">
-                        [FOUNDER<br />PHOTO]
-                      </span>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h2
-                      className="font-heading font-bold text-white mb-4"
-                      style={{ fontSize: 'clamp(1.25rem, 2vw, 1.75rem)' }}
-                    >
-                      Built by someone who&apos;s been in your shoes.
-                    </h2>
-                    <p className="text-white/50 leading-relaxed mb-4">
-                      15 years of building workforce programs at a community college.
-                      I got tired of guessing what to build next. So I built the thing I
-                      wish I&apos;d had — a system that sees the full market picture in
-                      days, not months.
-                    </p>
-                    <p className="text-white/50 leading-relaxed">
-                      The first Discovery Brief I ran found a $2M opportunity that every
-                      competitor had missed. That&apos;s when I knew this needed to exist
-                      for every college, not just mine.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </AnimateOnScroll>
-          </div>
-        </div>
-      </section>
-
       {/* ===== FINAL CTA ===== */}
       <section className="relative py-24 md:py-40 overflow-hidden">
         {/* Aurora background */}
