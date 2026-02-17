@@ -291,11 +291,11 @@ const HERO_SLIDES = [
   },
   {
     id: 'compliance',
-    badge: '$79 · Instant ROI',
+    badge: '$295 · Instant ROI',
     headline: 'What mandated programs are you missing?',
     subtitle: 'Every state requires specific training programs — CNA, cosmetology, CDL, pharmacy tech, and more. We cross-reference your catalog against state regulatory codes and show you exactly what you\'re not offering — and what it\'s worth.',
     stats: [
-      { value: '$79', label: 'one-time' },
+      { value: '$295', label: 'one-time' },
       { value: '21+', label: 'gap categories' },
       { value: '$4.2M', label: 'avg opportunity' },
     ],
@@ -589,14 +589,14 @@ export default function HomePage() {
             <AnimateOnScroll variant="fade-up" delay={200} className="w-full lg:flex-1">
               <div className="card-cosmic rounded-2xl p-7 h-full">
                 <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 mb-4">
-                  <span className="text-blue-300 text-[10px] font-bold uppercase tracking-wider">$79</span>
+                  <span className="text-blue-300 text-[10px] font-bold uppercase tracking-wider">$295</span>
                 </div>
                 <h3 className="font-heading font-bold text-white text-xl mb-2">Compliance Gap Report</h3>
                 <p className="text-white/70 text-sm leading-relaxed mb-6">
                   See every mandated program you&apos;re not offering — and the revenue you&apos;re leaving on the table.
                 </p>
                 <div className="mb-6">
-                  <span className="font-heading font-bold text-4xl text-gradient-cosmic">$79</span>
+                  <span className="font-heading font-bold text-4xl text-gradient-cosmic">$295</span>
                 </div>
                 <ul className="space-y-2.5 mb-7">
                   {[
@@ -937,7 +937,7 @@ export default function HomePage() {
               <h3 className="font-heading font-semibold text-white text-lg">Compliance Gap Report</h3>
               <p className="text-white/70 text-sm mt-1">Find the revenue you&apos;re missing.</p>
               <div className="mt-5 mb-6">
-                <span className="font-heading font-bold text-4xl text-gradient-cosmic">$79</span>
+                <span className="font-heading font-bold text-4xl text-gradient-cosmic">$295</span>
               </div>
               <ul className="space-y-2.5 mb-7">
                 {[

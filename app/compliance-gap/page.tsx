@@ -200,7 +200,7 @@ export default function ComplianceGapPage() {
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <a href="mailto:hello@withwavelength.com?subject=Compliance Gap Report Request">
                 <button className="btn-cosmic btn-cosmic-primary">
-                  Get My Gap Report — $79
+                  Get My Gap Report — $295
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </a>
@@ -379,7 +379,7 @@ export default function ComplianceGapPage() {
               <p className="overline mb-4">ONE-TIME REPORT</p>
 
               <div className="flex items-end justify-center gap-2 mb-2">
-                <span className="text-6xl font-heading font-black text-white">$79</span>
+                <span className="text-6xl font-heading font-black text-white">$295</span>
                 <span className="text-white/70 mb-3 text-lg">one-time</span>
               </div>
               <p className="text-white/70 text-sm mb-8">
@@ -403,7 +403,7 @@ export default function ComplianceGapPage() {
               </div>
 
               <a
-                href="mailto:hello@withwavelength.com?subject=Compliance Gap Report — $79&body=Institution Name:%0AState:%0ACity (optional):%0AWebsite (optional):%0A%0AI'd like to order a Compliance Gap Report."
+                href="mailto:hello@withwavelength.com?subject=Compliance Gap Report — $295&body=Institution Name:%0AState:%0ACity (optional):%0AWebsite (optional):%0A%0AI'd like to order a Compliance Gap Report."
                 className="block"
               >
                 <button className="btn-cosmic btn-cosmic-primary w-full text-base py-4">
