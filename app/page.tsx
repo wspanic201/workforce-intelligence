@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { Check, Shield, ArrowRight, Clock, Zap, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { Check, Shield, ArrowRight, Clock, Zap, ChevronDown, ChevronUp, FileSearch, BarChart3, Radio } from 'lucide-react';
 import {
   AnimateOnScroll,
   StaggerChildren,
@@ -254,69 +254,261 @@ function FAQSection() {
   );
 }
 
+/* ───────────── Hero Carousel ───────────── */
+
+const HERO_SLIDES = [
+  {
+    id: 'main',
+    badge: null,
+    headline: 'Market intelligence for community college programs.',
+    subtitle: 'We scan 50+ data sources so you can build programs with confidence — not guesswork. From compliance gaps to full market scans, Wavelength tunes you into what your region actually needs.',
+    stats: [
+      { value: '50+', label: 'verified sources' },
+      { value: '3', label: 'product tiers' },
+      { value: '$0', label: 'to get started' },
+    ],
+    cta: { text: 'See Our Products ↓', href: '#products' },
+    ctaSecondary: { text: 'View Sample Report', href: '/report/demo' },
+    icon: <Radio className="h-3.5 w-3.5 text-teal-400" />,
+    badgeColor: 'teal',
+    showForm: false,
+  },
+  {
+    id: 'pell',
+    badge: 'July 1, 2026 Deadline',
+    headline: 'Is your institution Workforce Pell ready?',
+    subtitle: 'Starting July 1, 2026, short-term programs qualify for federal Pell Grants for the first time. Find out which of your programs are eligible — for free — before your competitors get there first.',
+    stats: [
+      { value: '50+', label: 'verified sources' },
+      { value: 'Free', label: 'readiness check' },
+      { value: '48h', label: 'turnaround' },
+    ],
+    cta: null,
+    ctaSecondary: null,
+    icon: <Clock className="h-3.5 w-3.5 text-purple-400" />,
+    badgeColor: 'purple',
+    showForm: true,
+  },
+  {
+    id: 'compliance',
+    badge: '$79 · Instant ROI',
+    headline: 'What mandated programs are you missing?',
+    subtitle: 'Every state requires specific training programs — CNA, cosmetology, CDL, pharmacy tech, and more. We cross-reference your catalog against state regulatory codes and show you exactly what you\'re not offering — and what it\'s worth.',
+    stats: [
+      { value: '$79', label: 'one-time' },
+      { value: '21+', label: 'gap categories' },
+      { value: '$4.2M', label: 'avg opportunity' },
+    ],
+    cta: { text: 'Learn More →', href: '/compliance-gap' },
+    ctaSecondary: { text: 'Order Now', href: 'mailto:hello@withwavelength.com?subject=Compliance%20Gap%20Report' },
+    icon: <FileSearch className="h-3.5 w-3.5 text-blue-400" />,
+    badgeColor: 'blue',
+    showForm: false,
+  },
+  {
+    id: 'market-scan',
+    badge: 'Founding Rate · $1,500',
+    headline: 'Full market intelligence before you build.',
+    subtitle: 'A comprehensive market scan for any program you\'re considering. Demand signals, employer verification, financial projections, competitive analysis, and a clear GO / NO-GO recommendation backed by real data.',
+    stats: [
+      { value: '$1,500', label: 'founding rate' },
+      { value: '6', label: 'research phases' },
+      { value: '25+', label: 'page report' },
+    ],
+    cta: { text: 'Learn More →', href: '/discover' },
+    ctaSecondary: { text: 'Order a Market Scan', href: 'mailto:hello@withwavelength.com?subject=Market%20Scan%20Order' },
+    icon: <BarChart3 className="h-3.5 w-3.5 text-emerald-400" />,
+    badgeColor: 'emerald',
+    showForm: false,
+  },
+];
+
+const BADGE_COLORS: Record<string, string> = {
+  teal: 'bg-teal-500/10 border-teal-500/20 text-teal-300',
+  purple: 'bg-purple-500/10 border-purple-500/20 text-purple-300',
+  blue: 'bg-blue-500/10 border-blue-500/20 text-blue-300',
+  emerald: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-300',
+};
+
+const DOT_COLORS: Record<string, string> = {
+  teal: 'bg-teal-400',
+  purple: 'bg-purple-400',
+  blue: 'bg-blue-400',
+  emerald: 'bg-emerald-400',
+};
+
+function HeroCarousel() {
+  const [current, setCurrent] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const goTo = useCallback((index: number) => {
+    if (index === current || isTransitioning) return;
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setCurrent(index);
+      setTimeout(() => setIsTransitioning(false), 50);
+    }, 300);
+  }, [current, isTransitioning]);
+
+  // Auto-rotate every 8 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrent(prev => (prev + 1) % HERO_SLIDES.length);
+        setTimeout(() => setIsTransitioning(false), 50);
+      }, 300);
+    }, 8000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const slide = HERO_SLIDES[current];
+
+  return (
+    <section className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16 overflow-hidden">
+      <Stars count={250} />
+      <Aurora />
+      <Waveform className="opacity-60" />
+
+      <div className="relative z-10 max-w-[1200px] mx-auto px-6 w-full">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+
+          {/* Left: Content */}
+          <div
+            className={`flex-1 text-center lg:text-left transition-all duration-500 ease-out ${
+              isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+            }`}
+          >
+            {slide.badge && (
+              <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border mb-6 ${BADGE_COLORS[slide.badgeColor]}`}>
+                {slide.icon}
+                <span className="text-xs font-medium uppercase tracking-wider">{slide.badge}</span>
+              </div>
+            )}
+
+            <h1
+              className="text-gradient-cosmic font-heading font-bold leading-[1.05]"
+              style={{ fontSize: 'clamp(2.2rem, 5vw + 0.5rem, 4rem)' }}
+            >
+              {slide.headline}
+            </h1>
+
+            <p className="mt-6 text-lg md:text-xl text-white/80 leading-relaxed max-w-xl">
+              {slide.subtitle}
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-5 lg:justify-start justify-center">
+              {slide.stats.map(({ value, label }) => (
+                <div key={label} className="text-center">
+                  <div className="font-heading font-bold text-2xl text-gradient-cosmic">{value}</div>
+                  <p className="text-white/70 text-xs mt-0.5 uppercase tracking-wider">{label}</p>
+                </div>
+              ))}
+            </div>
+
+            {slide.cta && (
+              <div className="mt-8 flex flex-wrap gap-4 lg:justify-start justify-center">
+                <Link href={slide.cta.href}>
+                  <button className="btn-cosmic btn-cosmic-primary text-sm">
+                    {slide.cta.text}
+                  </button>
+                </Link>
+                {slide.ctaSecondary && (
+                  <Link href={slide.ctaSecondary.href}>
+                    <button className="btn-cosmic btn-cosmic-ghost text-sm">
+                      {slide.ctaSecondary.text}
+                    </button>
+                  </Link>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Right: Form or floating card */}
+          <div
+            className={`w-full lg:w-auto lg:min-w-[420px] transition-all duration-500 ease-out ${
+              isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+            }`}
+          >
+            {slide.showForm ? (
+              <PellForm />
+            ) : (
+              <div className="card-cosmic rounded-2xl p-8 text-center">
+                <div className={`w-16 h-16 rounded-full ${BADGE_COLORS[slide.badgeColor].split(' ')[0]} flex items-center justify-center mx-auto mb-4`}>
+                  <div className="scale-[2.5]">{slide.icon}</div>
+                </div>
+                <h3 className="font-heading font-bold text-white text-lg mb-2">
+                  {slide.id === 'main' && 'Tuned to your market.'}
+                  {slide.id === 'compliance' && 'Revenue hiding in plain sight.'}
+                  {slide.id === 'market-scan' && 'Data-backed GO / NO-GO.'}
+                </h3>
+                <p className="text-white/70 text-sm leading-relaxed">
+                  {slide.id === 'main' && 'Three products. One mission. Build programs your region actually needs.'}
+                  {slide.id === 'compliance' && 'The average college is missing 15-25 state-mandated programs. Each one is guaranteed demand.'}
+                  {slide.id === 'market-scan' && 'Six research phases. 50+ sources. A definitive recommendation — not a maybe.'}
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Navigation dots */}
+        <div className="flex items-center justify-center lg:justify-start gap-3 mt-12">
+          {HERO_SLIDES.map((s, i) => (
+            <button
+              key={s.id}
+              onClick={() => goTo(i)}
+              className={`group relative flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 cursor-pointer ${
+                i === current
+                  ? `${BADGE_COLORS[s.badgeColor]} border`
+                  : 'bg-white/5 border border-white/10 hover:border-white/20'
+              }`}
+            >
+              <span className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                i === current ? DOT_COLORS[s.badgeColor] : 'bg-white/30 group-hover:bg-white/50'
+              }`} />
+              <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
+                i === current ? '' : 'text-white/40 group-hover:text-white/60'
+              }`}>
+                {s.id === 'main' && 'Overview'}
+                {s.id === 'pell' && 'Pell Check'}
+                {s.id === 'compliance' && 'Compliance'}
+                {s.id === 'market-scan' && 'Market Scan'}
+              </span>
+            </button>
+          ))}
+        </div>
+
+        {/* Progress bar */}
+        <div className="mt-4 max-w-md lg:mx-0 mx-auto">
+          <div className="h-[2px] bg-white/10 rounded-full overflow-hidden">
+            <div
+              key={current}
+              className={`h-full ${DOT_COLORS[HERO_SLIDES[current].badgeColor]} rounded-full`}
+              style={{
+                animation: 'heroProgress 8s linear',
+              }}
+            />
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes heroProgress {
+          from { width: 0%; }
+          to { width: 100%; }
+        }
+      `}</style>
+    </section>
+  );
+}
+
 export default function HomePage() {
   return (
     <div className="overflow-x-hidden bg-[#050510]">
 
-      {/* ===== HERO — PELL READINESS CHECK ===== */}
-      <section className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16">
-        <Stars count={250} />
-        <Aurora />
-        <Waveform className="opacity-60" />
-
-        <div className="relative z-10 max-w-[1200px] mx-auto px-6">
-          <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
-
-            {/* Left: Headline + subtitle */}
-            <div className="flex-1 text-center lg:text-left">
-              <AnimateOnScroll variant="fade-up" duration={800}>
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
-                  <Clock className="h-3.5 w-3.5 text-purple-400" />
-                  <span className="text-purple-300 text-xs font-medium uppercase tracking-wider">July 1, 2026 Deadline</span>
-                </div>
-              </AnimateOnScroll>
-
-              <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
-                <h1
-                  className="text-gradient-cosmic font-heading font-bold leading-[1.05]"
-                  style={{ fontSize: 'clamp(2.2rem, 5vw + 0.5rem, 4rem)' }}
-                >
-                  Is your institution Workforce Pell ready?
-                </h1>
-              </AnimateOnScroll>
-
-              <AnimateOnScroll variant="fade-up" delay={250} duration={800}>
-                <p className="mt-6 text-lg md:text-xl text-white/80 leading-relaxed max-w-xl">
-                  Starting July 1, 2026, short-term programs qualify for federal Pell Grants for the first time.
-                  Find out which of your programs are eligible — for free — before your competitors get there first.
-                </p>
-              </AnimateOnScroll>
-
-              <AnimateOnScroll variant="fade-up" delay={380} duration={800}>
-                <div className="mt-8 flex flex-wrap gap-5 lg:justify-start justify-center">
-                  {[
-                    { value: '50+', label: 'verified sources' },
-                    { value: 'Free', label: 'readiness check' },
-                    { value: '48h', label: 'turnaround' },
-                  ].map(({ value, label }) => (
-                    <div key={label} className="text-center">
-                      <div className="font-heading font-bold text-2xl text-gradient-cosmic">{value}</div>
-                      <p className="text-white/70 text-xs mt-0.5 uppercase tracking-wider">{label}</p>
-                    </div>
-                  ))}
-                </div>
-              </AnimateOnScroll>
-            </div>
-
-            {/* Right: Email capture form */}
-            <div className="w-full lg:w-auto lg:min-w-[420px]">
-              <AnimateOnScroll variant="fade-up" delay={200} duration={800}>
-                <PellForm />
-              </AnimateOnScroll>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ===== HERO CAROUSEL ===== */}
+      <HeroCarousel />
 
       <WaveDivider />
 
