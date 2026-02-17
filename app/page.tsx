@@ -32,9 +32,9 @@ export default function HomePage() {
 
           <AnimateOnScroll variant="fade-up" delay={150} duration={800}>
             <p className="mt-6 text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
-              AI-powered program intelligence for community colleges.
+              AI-powered workforce intelligence for community colleges.
               <br className="hidden sm:block" />
-              29 agents. 76 data sources. The hidden opportunities nobody else finds.
+              Discover the programs your region actually needs — before your competitors do.
             </p>
           </AnimateOnScroll>
 
@@ -57,9 +57,9 @@ export default function HomePage() {
           <AnimateOnScroll variant="fade-up" delay={450} duration={800}>
             <div className="mt-16 flex flex-wrap justify-center gap-8 md:gap-16">
               {[
-                { value: '12 min', label: 'average delivery' },
-                { value: '76', label: 'data sources' },
-                { value: '93%', label: 'gross margin' },
+                { value: '74+', label: 'data sources analyzed' },
+                { value: '13+', label: 'opportunities per brief' },
+                { value: '~25 pg', label: 'actionable intelligence' },
               ].map(({ value, label }) => (
                 <div key={label} className="text-center">
                   <div className="font-heading font-bold text-2xl md:text-3xl text-gradient-cosmic">
@@ -167,10 +167,10 @@ export default function HomePage() {
                   </h2>
                   <ul className="space-y-4">
                     {[
-                      '29 AI agents analyzing simultaneously',
-                      'Real-time employer demand data — not last year\'s BLS',
+                      'AI-powered analysis across 74+ live data sources',
+                      'Real employer demand signals — not last year\'s surveys',
                       'Blue Ocean opportunities your competitors can\'t see',
-                      '12 minutes, not 6 months',
+                      'Full 25-page brief with every finding cited',
                       'Under $5K — no Board approval needed',
                     ].map((item) => (
                       <li key={item} className="flex items-start gap-3">
@@ -563,7 +563,7 @@ export default function HomePage() {
                       15 years of building workforce programs at a community college.
                       I got tired of guessing what to build next. So I built the thing I
                       wish I&apos;d had — an AI system that sees the full market picture in
-                      minutes, not months.
+                      days, not months.
                     </p>
                     <p className="text-white/50 leading-relaxed">
                       The first Discovery Brief I ran found a $2M opportunity that every
