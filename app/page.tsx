@@ -78,7 +78,7 @@ export default function HomePage() {
       <section className="relative py-20 md:py-32" id="how-it-works">
         <div className="max-w-[1400px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-4">
-            <span className="overline">The Platform</span>
+            <span className="overline">Our Services</span>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-6">
             <h2
