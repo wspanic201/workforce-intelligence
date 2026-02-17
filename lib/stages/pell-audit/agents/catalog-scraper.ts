@@ -33,7 +33,7 @@ export async function scrapeCatalog(
     console.log('[Catalog Scraper] No URL provided, searching...');
     const findSite = await searchWeb(`${collegeName} ${state} official website`);
     searchCount++;
-    siteUrl = findSite.results[0]?.url || null;
+    siteUrl = findSite.results[0]?.url || undefined;
     if (siteUrl) {
       // Extract base domain
       try {
