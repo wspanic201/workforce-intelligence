@@ -41,7 +41,7 @@ export default function HomePage() {
 
           <AnimateOnScroll variant="fade-up" delay={300} duration={800}>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="#pricing">
+              <Link href="/discover">
                 <button className="btn-cosmic btn-cosmic-primary">
                   Get Your Discovery Brief
                   <ArrowRight className="ml-2 h-4 w-4" />
