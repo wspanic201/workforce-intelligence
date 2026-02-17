@@ -30,6 +30,18 @@
   --gold-100: #faf3dc;
   --gold-50: #fdf9f0;
 
+  /* --- Cosmic Colors --- */
+  --cosmic-bg: #050510;
+  --cosmic-surface: #0a0a1a;
+  --cosmic-surface-light: #12122a;
+  --cosmic-purple: #7c3aed;
+  --cosmic-blue: #3b82f6;
+  --cosmic-teal: #14b8a6;
+  --cosmic-green: #10b981;
+  --cosmic-amber: #f59e0b;
+  --cosmic-amber-light: #fbbf24;
+  --cosmic-coral: #f97316;
+
   /* --- Typography --- */
   --font-heading: var(--font-plus-jakarta-sans), system-ui, sans-serif;
   --font-body: var(--font-inter), system-ui, sans-serif;
@@ -48,6 +60,8 @@
   --shadow-elevated: 0 20px 40px -12px rgb(0 0 0 / 0.12);
   --shadow-glow-navy: 0 0 40px -8px rgba(53, 99, 168, 0.3);
   --shadow-glow-gold: 0 0 40px -8px rgba(184, 146, 46, 0.3);
+  --shadow-glow-cosmic: 0 0 60px -12px rgba(124, 58, 237, 0.3), 0 0 40px -8px rgba(59, 130, 246, 0.2);
+  --shadow-glow-amber: 0 0 40px -8px rgba(245, 158, 11, 0.4);
 
   /* --- Transitions --- */
   --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
@@ -61,31 +75,31 @@
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
 
-  /* --- shadcn overrides --- */
-  --background: #ffffff;
-  --foreground: #0f172a;
-  --card: #ffffff;
-  --card-foreground: #0f172a;
-  --popover: #ffffff;
-  --popover-foreground: #0f172a;
-  --primary: #162d54;
+  /* --- shadcn overrides (Dark Mode) --- */
+  --background: #050510;
+  --foreground: #e2e8f0;
+  --card: #0a0a1a;
+  --card-foreground: #e2e8f0;
+  --popover: #0a0a1a;
+  --popover-foreground: #e2e8f0;
+  --primary: #7c3aed;
   --primary-foreground: #ffffff;
-  --secondary: #f1f5f9;
-  --secondary-foreground: #1e293b;
-  --muted: #f1f5f9;
-  --muted-foreground: #64748b;
-  --accent: #b8922e;
-  --accent-foreground: #0f172a;
+  --secondary: #12122a;
+  --secondary-foreground: #e2e8f0;
+  --muted: #12122a;
+  --muted-foreground: #94a3b8;
+  --accent: #f59e0b;
+  --accent-foreground: #050510;
   --destructive: #dc2626;
-  --border: #e2e8f0;
-  --input: #e2e8f0;
-  --ring: #3563a8;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: #7c3aed;
 
-  --chart-1: #162d54;
-  --chart-2: #3563a8;
-  --chart-3: #b8922e;
-  --chart-4: #16a34a;
-  --chart-5: #d4ad3c;
+  --chart-1: #7c3aed;
+  --chart-2: #3b82f6;
+  --chart-3: #14b8a6;
+  --chart-4: #f59e0b;
+  --chart-5: #10b981;
 }
 
 @theme inline {
@@ -132,6 +146,13 @@
   --color-gold-100: var(--gold-100);
   --color-gold-50: var(--gold-50);
 
+  --color-cosmic-bg: var(--cosmic-bg);
+  --color-cosmic-surface: var(--cosmic-surface);
+  --color-cosmic-purple: var(--cosmic-purple);
+  --color-cosmic-blue: var(--cosmic-blue);
+  --color-cosmic-teal: var(--cosmic-teal);
+  --color-cosmic-amber: var(--cosmic-amber);
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius-lg);
@@ -165,15 +186,198 @@
   }
 
   :focus-visible {
-    outline: 2px solid var(--navy-500);
+    outline: 2px solid var(--cosmic-purple);
     outline-offset: 2px;
     border-radius: 2px;
   }
 
   ::selection {
-    background-color: var(--navy-100);
-    color: var(--navy-900);
+    background-color: rgba(124, 58, 237, 0.3);
+    color: #ffffff;
   }
+}
+
+/* ============================================
+   COSMIC EFFECTS
+   ============================================ */
+
+/* --- Aurora Borealis --- */
+.aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.aurora-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  mix-blend-mode: screen;
+  will-change: transform;
+}
+
+.aurora-blob-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.25) 0%, transparent 70%);
+  top: -15%;
+  left: -5%;
+  animation: auroraFloat1 12s ease-in-out infinite alternate;
+}
+
+.aurora-blob-2 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.2) 0%, transparent 70%);
+  top: -10%;
+  right: 10%;
+  animation: auroraFloat2 15s ease-in-out infinite alternate;
+}
+
+.aurora-blob-3 {
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(20, 184, 166, 0.18) 0%, transparent 70%);
+  bottom: 10%;
+  left: 30%;
+  animation: auroraFloat3 18s ease-in-out infinite alternate;
+}
+
+.aurora-blob-4 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
+  top: 40%;
+  right: -5%;
+  animation: auroraFloat4 14s ease-in-out infinite alternate;
+}
+
+/* --- Star Twinkle --- */
+.star-twinkle {
+  animation: twinkle 3s ease-in-out infinite alternate;
+}
+
+/* --- Cosmic Glow (for sections/cards) --- */
+.cosmic-glow {
+  position: relative;
+}
+.cosmic-glow::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(59, 130, 246, 0.1), rgba(20, 184, 166, 0.08));
+  z-index: -1;
+  filter: blur(40px);
+  opacity: 0.6;
+}
+
+/* --- Gradient Text --- */
+.text-gradient-cosmic {
+  background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 40%, #14b8a6 70%, #10b981 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* --- Cosmic Card (glass + glow border) --- */
+.card-cosmic {
+  background: linear-gradient(145deg, rgba(10, 10, 26, 0.9) 0%, rgba(5, 5, 16, 0.95) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow:
+    0 0 0 1px rgba(124, 58, 237, 0.05),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.03),
+    0 8px 32px -8px rgba(0, 0, 0, 0.5);
+  transition: all 400ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.card-cosmic:hover {
+  border-color: rgba(124, 58, 237, 0.15);
+  box-shadow:
+    0 0 0 1px rgba(124, 58, 237, 0.1),
+    0 0 40px -8px rgba(124, 58, 237, 0.15),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05),
+    0 16px 48px -12px rgba(0, 0, 0, 0.6);
+}
+
+/* --- Cosmic CTA Button --- */
+.btn-cosmic {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 2rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border-radius: 9999px;
+  transition: all 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-cosmic-primary {
+  background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  color: #050510;
+  box-shadow:
+    0 0 20px -4px rgba(245, 158, 11, 0.3),
+    0 4px 16px -4px rgba(245, 158, 11, 0.2);
+}
+
+.btn-cosmic-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 0 40px -4px rgba(245, 158, 11, 0.4),
+    0 8px 24px -4px rgba(245, 158, 11, 0.3);
+}
+
+.btn-cosmic-primary:active {
+  transform: translateY(0);
+}
+
+.btn-cosmic-ghost {
+  background: transparent;
+  color: #e2e8f0;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.btn-cosmic-ghost:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.btn-cosmic-ghost:active {
+  transform: translateY(0);
+}
+
+/* --- Constellation Lines --- */
+.constellation {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.constellation-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.15), rgba(59, 130, 246, 0.1), transparent);
+  transform-origin: left center;
+}
+
+.constellation-dot {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(124, 58, 237, 0.4);
+  box-shadow: 0 0 6px rgba(124, 58, 237, 0.3);
 }
 
 /* ============================================
@@ -204,7 +408,7 @@
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: var(--navy-600);
+    color: var(--cosmic-purple);
   }
 
   /* Card hover effect — enhanced */
@@ -218,42 +422,34 @@
   .card-hover:hover {
     box-shadow: var(--shadow-card-hover);
     transform: translateY(-4px) scale(1.005);
-    border-color: var(--navy-200);
+    border-color: rgba(124, 58, 237, 0.2);
   }
 
   /* Glass card */
   .card-glass {
-    background: rgba(255, 255, 255, 0.6);
+    background: rgba(10, 10, 26, 0.6);
     backdrop-filter: blur(16px) saturate(180%);
     -webkit-backdrop-filter: blur(16px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.06);
   }
   .card-glass-dark {
     backdrop-filter: blur(10px);
-    background: linear-gradient(rgba(22,45,84,0.2) 0%, rgba(10,22,40,0.8) 100%);
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: inset 0px -1px 0px 0px rgba(0,0,0,0.25), 0px 10px 40px 0px rgba(22,45,84,0.3);
+    background: linear-gradient(rgba(10, 10, 26, 0.6) 0%, rgba(5, 5, 16, 0.9) 100%);
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow: inset 0px -1px 0px 0px rgba(0,0,0,0.25), 0px 10px 40px 0px rgba(0,0,0,0.3);
   }
 
   /* Brand gradient */
   .bg-brand-gradient {
-    background: linear-gradient(180deg, #faf3dc 0%, #b8922e 30%, #162d54 60%, #0a1628 100%);
-  }
-
-  /* Conic gradient decorations */
-  .bg-conic-left {
-    background: conic-gradient(from 90deg at 16.8% 81.7%, #162d54 0deg, #000 90deg, #162d54 157deg, #5a86c4 272deg, #faf3dc 360deg);
-  }
-  .bg-conic-right {
-    background: conic-gradient(from 90deg at 21.9% 18.3%, #faf3dc 0deg, #5a86c4 90deg, #162d54 157deg, #000 272deg, #162d54 360deg);
+    background: linear-gradient(180deg, #050510 0%, #0a0a1a 50%, #050510 100%);
   }
 
   /* Medium weight headings */
   .heading-display {
     font-family: var(--font-heading);
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: -0.02em;
-    color: #1F2023;
+    color: #e2e8f0;
   }
 
   /* Button hover lift — enhanced */
@@ -262,11 +458,11 @@
   }
   .btn-lift:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px -4px rgb(0 0 0 / 0.15);
+    box-shadow: 0 8px 24px -4px rgb(0 0 0 / 0.3);
   }
   .btn-lift:active {
     transform: translateY(0);
-    box-shadow: 0 2px 8px -2px rgb(0 0 0 / 0.1);
+    box-shadow: 0 2px 8px -2px rgb(0 0 0 / 0.2);
   }
 
   /* Button glow variants */
@@ -279,7 +475,7 @@
 
   /* Gradient text — static */
   .text-gradient {
-    background: linear-gradient(135deg, var(--navy-800), var(--navy-500));
+    background: linear-gradient(135deg, var(--cosmic-purple), var(--cosmic-blue));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -287,7 +483,7 @@
 
   /* Gradient stats text */
   .text-gradient-stats {
-    background: linear-gradient(139deg, #5a86c4 0%, #162d54 35%, #b8922e 65%, #d4ad3c 100%);
+    background: linear-gradient(139deg, #7c3aed 0%, #3b82f6 35%, #14b8a6 65%, #f59e0b 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -304,22 +500,6 @@
     gap: 3rem;
     animation: marquee 30s linear infinite;
     width: max-content;
-  }
-
-  /* Section divider — angled */
-  .section-divider-top {
-    position: relative;
-  }
-  .section-divider-top::before {
-    content: '';
-    position: absolute;
-    top: -1px;
-    left: 0;
-    right: 0;
-    height: 80px;
-    background: inherit;
-    clip-path: polygon(0 0, 100% 60px, 100% 100%, 0 100%);
-    z-index: 1;
   }
 
   /* Animated link underline */
@@ -352,7 +532,7 @@
     left: 0;
     right: 0;
     height: 120px;
-    background: linear-gradient(to bottom, transparent, var(--navy-950));
+    background: linear-gradient(to bottom, transparent, var(--cosmic-bg));
     pointer-events: none;
     z-index: 1;
   }
@@ -367,7 +547,7 @@
     left: 0;
     right: 0;
     height: 120px;
-    background: linear-gradient(to top, transparent, var(--navy-950));
+    background: linear-gradient(to top, transparent, var(--cosmic-bg));
     pointer-events: none;
     z-index: 1;
   }
@@ -410,6 +590,37 @@
   to { transform: translateX(-50%); }
 }
 
+/* Aurora floating animations */
+@keyframes auroraFloat1 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(80px, 40px) scale(1.1); }
+  100% { transform: translate(-40px, 60px) scale(0.95); }
+}
+
+@keyframes auroraFloat2 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-60px, 50px) scale(1.15); }
+  100% { transform: translate(40px, -30px) scale(1.05); }
+}
+
+@keyframes auroraFloat3 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(50px, -40px) scale(1.1); }
+  100% { transform: translate(-30px, 20px) scale(0.9); }
+}
+
+@keyframes auroraFloat4 {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-40px, -30px) scale(1.2); }
+  100% { transform: translate(60px, 40px) scale(1); }
+}
+
+/* Star twinkle */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
 
@@ -421,6 +632,15 @@
 
   .marquee-track {
     animation: none !important;
+  }
+
+  .aurora-blob {
+    animation: none !important;
+  }
+
+  .star-twinkle {
+    animation: none !important;
+    opacity: 0.6;
   }
 }
 

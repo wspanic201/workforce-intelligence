@@ -1,574 +1,614 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Check, Shield } from 'lucide-react';
+import { Check, Shield, ArrowRight, Zap, Clock, Database, TrendingUp } from 'lucide-react';
 import {
   AnimateOnScroll,
   StaggerChildren,
-  CountUp,
 } from '@/components/motion';
-import { Marquee } from '@/components/marquee';
-
-const tabs = [
-  {
-    label: 'Assess Market',
-    title: 'Assess Market Demand',
-    desc: 'Understand real employer demand before you invest. We synthesize labor market data from BLS projections, O*NET standards, and 50,000+ employer job postings to show you exactly where the jobs are — and where they\'re headed.',
-    features: ['BLS employment projections', 'Real-time job posting analysis', 'Regional wage benchmarks', 'Growth trend mapping'],
-  },
-  {
-    label: 'Model Financials',
-    title: 'Model Financials',
-    desc: 'CFO-ready financial modeling that answers the hard questions. Know your startup costs, enrollment projections, break-even timeline, and true ROI before committing resources.',
-    features: ['Startup cost modeling', 'Enrollment projections', 'Break-even analysis', 'Scenario modeling'],
-  },
-  {
-    label: 'Map Curriculum',
-    title: 'Map Curriculum',
-    desc: 'Design programs that align directly with employer needs. We map skills to occupations, identify credential pathways, and benchmark against competing programs in your region.',
-    features: ['Skill-to-job alignment', 'Credential pathways', 'Competitive landscape', 'Stackable certificates'],
-  },
-  {
-    label: 'Plan Marketing',
-    title: 'Plan Marketing',
-    desc: 'Launch with a clear strategy for student recruitment, employer partnerships, and community engagement. Every recommendation is backed by demographic and market data.',
-    features: ['Target demographics', 'Recruitment strategy', 'Employer partnerships', 'Community engagement'],
-  },
-];
+import { Stars } from '@/components/cosmic/Stars';
+import { Aurora } from '@/components/cosmic/Aurora';
+import { Pipeline } from '@/components/cosmic/Pipeline';
 
 export default function HomePage() {
-  const [activeTab, setActiveTab] = useState(0);
-
   return (
-    <div className="overflow-x-hidden">
+    <div className="overflow-x-hidden bg-[#050510]">
       {/* ===== HERO ===== */}
-      <section className="bg-white pt-24 pb-16">
-        <div className="max-w-[1200px] mx-auto px-6 text-center">
+      <section className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16">
+        {/* Background layers */}
+        <Stars count={250} />
+        <Aurora />
+
+        {/* Content */}
+        <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={800}>
-            <h1 className="heading-display text-[clamp(2.5rem,5vw,3.75rem)] leading-[1.08] mx-auto max-w-3xl">
-              Validation that drives decisions
+            <h1
+              className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"
+              style={{ fontSize: 'clamp(2.75rem, 6vw + 0.5rem, 5rem)' }}
+            >
+              See what others can&apos;t.
             </h1>
           </AnimateOnScroll>
-          <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
-            <p className="mt-6 text-lg text-[#4C4C4C] max-w-2xl mx-auto">
-              Workforce Intelligence helps institutions turn program concepts into confident launch decisions with comprehensive market analysis, financial projections, and strategic recommendations.
+
+          <AnimateOnScroll variant="fade-up" delay={150} duration={800}>
+            <p className="mt-6 text-lg md:text-xl text-white/60 max-w-2xl mx-auto leading-relaxed">
+              AI-powered program intelligence for community colleges.
+              <br className="hidden sm:block" />
+              29 agents. 76 data sources. The hidden opportunities nobody else finds.
             </p>
           </AnimateOnScroll>
-          <AnimateOnScroll variant="fade-up" delay={200} duration={800}>
-            <div className="mt-8 flex gap-3 justify-center">
-              <Link href="/submit">
-                <Button className="bg-[#1F2023] hover:bg-black text-white rounded-full px-8 h-12 font-medium text-base">
-                  Start Validation
-                </Button>
+
+          <AnimateOnScroll variant="fade-up" delay={300} duration={800}>
+            <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="#pricing">
+                <button className="btn-cosmic btn-cosmic-primary">
+                  Get Your Discovery Brief
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </button>
               </Link>
-              <Link href="#sample-report">
-                <Button variant="outline" className="rounded-full px-8 h-12 font-medium text-base border-[#E0E0E0] text-[#1F2023] hover:bg-gray-50">
+              <Link href="#report-preview">
+                <button className="btn-cosmic btn-cosmic-ghost">
                   See Sample Report
-                </Button>
+                </button>
               </Link>
             </div>
           </AnimateOnScroll>
-        </div>
-      </section>
 
-      {/* ===== TRUST BAR ===== */}
-      <section className="bg-white">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <Marquee />
-        </div>
-      </section>
-
-      {/* ===== HERO FEATURE CALLOUTS + PREVIEW ===== */}
-      <section className="bg-white pt-16 pb-24">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up" delay={100}>
-            <div className="grid md:grid-cols-3 gap-8 mb-12">
+          <AnimateOnScroll variant="fade-up" delay={450} duration={800}>
+            <div className="mt-16 flex flex-wrap justify-center gap-8 md:gap-16">
               {[
-                { title: 'Discover demand', desc: 'Answer market questions in hours, not months.' },
-                { title: 'Understand viability', desc: 'See financial projections, competition, and curriculum fit in one unified view.' },
-                { title: 'Act with confidence', desc: 'Back every program decision with data you can trust.' },
-              ].map(({ title, desc }) => (
-                <div key={title} className="text-center">
-                  <h3 className="heading-display text-lg">{title}</h3>
-                  <p className="mt-2 text-sm text-[#4C4C4C]">{desc}</p>
+                { value: '12 min', label: 'average delivery' },
+                { value: '76', label: 'data sources' },
+                { value: '93%', label: 'gross margin' },
+              ].map(({ value, label }) => (
+                <div key={label} className="text-center">
+                  <div className="font-heading font-bold text-2xl md:text-3xl text-gradient-cosmic">
+                    {value}
+                  </div>
+                  <p className="text-white/40 text-sm mt-1">{label}</p>
                 </div>
               ))}
             </div>
           </AnimateOnScroll>
+        </div>
+      </section>
 
-          {/* Product Preview Card */}
-          <AnimateOnScroll variant="fade-up" delay={200}>
-            <div className="rounded-2xl bg-[#FAFAFA] shadow-[0_2px_40px_-12px_rgba(0,0,0,0.12)] p-8 sm:p-10">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-6 border-b border-gray-200">
-                <div>
-                  <p className="text-xs font-medium uppercase tracking-widest text-[#4C4C4C] mb-1">Program Validation Report</p>
-                  <p className="heading-display text-xl">Industrial Coatings Specialist Certificate</p>
-                </div>
-                <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 border border-emerald-200 px-4 py-1.5">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+      {/* ===== PROBLEM / SOLUTION SPLIT ===== */}
+      <section className="relative py-20 md:py-32">
+        {/* Constellation decoration */}
+        <div className="constellation" aria-hidden="true">
+          <div className="constellation-dot" style={{ top: '20%', left: '48%' }} />
+          <div className="constellation-dot" style={{ top: '35%', left: '50%' }} />
+          <div className="constellation-dot" style={{ top: '50%', left: '49%' }} />
+          <div className="constellation-dot" style={{ top: '65%', left: '51%' }} />
+          <div
+            className="constellation-line"
+            style={{
+              top: '20%',
+              left: '48%',
+              width: '80px',
+              transform: 'rotate(75deg)',
+            }}
+          />
+          <div
+            className="constellation-line"
+            style={{
+              top: '35%',
+              left: '49%',
+              width: '70px',
+              transform: 'rotate(80deg)',
+            }}
+          />
+          <div
+            className="constellation-line"
+            style={{
+              top: '50%',
+              left: '49%',
+              width: '75px',
+              transform: 'rotate(78deg)',
+            }}
+          />
+        </div>
+
+        <div className="max-w-[1200px] mx-auto px-6">
+          <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+            {/* Left — The Problem */}
+            <AnimateOnScroll variant="fade-right" duration={700}>
+              <div className="card-cosmic rounded-2xl p-8 md:p-10 h-full">
+                <div className="flex items-center gap-2 mb-6">
+                  <div className="w-2 h-2 rounded-full bg-red-500/80" />
+                  <span className="text-red-400/80 text-sm font-medium uppercase tracking-wider">
+                    The status quo
                   </span>
-                  <span className="text-sm font-medium text-emerald-700">Conditional GO</span>
+                </div>
+                <h2 className="font-heading font-bold text-2xl md:text-3xl text-white mb-6">
+                  How programs get built today
+                </h2>
+                <ul className="space-y-4">
+                  {[
+                    'Gut feel and anecdote from advisory meetings',
+                    'Copying whatever the college next door launched',
+                    '6-month consulting engagements',
+                    '$75K fees before a single student enrolls',
+                    'Committee meetings that end in "let\'s table this"',
+                  ].map((item) => (
+                    <li key={item} className="flex items-start gap-3">
+                      <span className="text-red-400/60 mt-1 text-sm">✕</span>
+                      <span className="text-white/50 text-sm leading-relaxed">
+                        {item}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </AnimateOnScroll>
+
+            {/* Right — The Solution */}
+            <AnimateOnScroll variant="fade-left" duration={700} delay={150}>
+              <div className="card-cosmic rounded-2xl p-8 md:p-10 h-full relative overflow-hidden">
+                {/* Subtle glow */}
+                <div
+                  className="absolute -top-20 -right-20 w-60 h-60 rounded-full opacity-20 pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(124,58,237,0.4), transparent 70%)',
+                    filter: 'blur(40px)',
+                  }}
+                  aria-hidden="true"
+                />
+                <div className="relative z-10">
+                  <div className="flex items-center gap-2 mb-6">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500" />
+                    <span className="text-emerald-400 text-sm font-medium uppercase tracking-wider">
+                      A better way
+                    </span>
+                  </div>
+                  <h2 className="font-heading font-bold text-2xl md:text-3xl text-white mb-6">
+                    How they should be built
+                  </h2>
+                  <ul className="space-y-4">
+                    {[
+                      '29 AI agents analyzing simultaneously',
+                      'Real-time employer demand data — not last year\'s BLS',
+                      'Blue Ocean opportunities your competitors can\'t see',
+                      '12 minutes, not 6 months',
+                      'Under $5K — no Board approval needed',
+                    ].map((item) => (
+                      <li key={item} className="flex items-start gap-3">
+                        <span className="text-emerald-400 mt-0.5">
+                          <Check className="h-4 w-4" />
+                        </span>
+                        <span className="text-white/70 text-sm leading-relaxed">
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
-              <div className="grid sm:grid-cols-3 gap-6">
-                {[
-                  { label: 'Region', value: 'Midwest Region' },
-                  { label: 'Job Growth', value: '18% projected' },
-                  { label: 'Median Salary', value: '$52,000' },
-                ].map(({ label, value }) => (
-                  <div key={label}>
-                    <p className="text-xs text-[#4C4C4C] uppercase tracking-wider mb-1">{label}</p>
-                    <p className="text-[#1F2023] font-medium text-lg">{value}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
+            </AnimateOnScroll>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== PIPELINE SECTION ===== */}
+      <section className="relative py-20 md:py-32" id="how-it-works">
+        <div className="max-w-[1400px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up" className="text-center mb-4">
+            <span className="overline">The Full Lifecycle</span>
+          </AnimateOnScroll>
+          <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-6">
+            <h2
+              className="font-heading font-bold text-white mx-auto max-w-3xl"
+              style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
+            >
+              Every stage delivers standalone value.
+            </h2>
+          </AnimateOnScroll>
+          <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
+            <p className="text-white/50 text-lg max-w-2xl mx-auto">
+              Buy one stage or the full journey. Each one stands alone.
+              Each one makes you want the next.
+            </p>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll variant="fade-up" delay={300}>
+            <Pipeline />
           </AnimateOnScroll>
         </div>
       </section>
 
-      {/* ===== TABBED FEATURES ===== */}
-      <section className="bg-white py-16 md:py-[120px]">
+      {/* ===== REPORT PREVIEW / PROOF ===== */}
+      <section className="relative py-20 md:py-32" id="report-preview">
         <div className="max-w-[1200px] mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
-            <div className="min-w-0">
-              <AnimateOnScroll variant="fade-up">
-                <h2 className="heading-display text-[clamp(1.75rem,3vw,2.25rem)]">
-                  Turn data into action — at every stage
-                </h2>
-                <p className="mt-4 text-[#4C4C4C] text-base md:text-lg">
-                  From initial market assessment to launch-ready marketing plan, every section of your report is designed to move you forward.
-                </p>
-                <div className="mt-8 hidden lg:block">
-                  <Link href="#sample-report">
-                    <Button variant="outline" className="rounded-full px-6 h-11 font-medium border-[#E0E0E0] text-[#1F2023] hover:bg-gray-50">
-                      See Sample Report
-                    </Button>
-                  </Link>
-                </div>
-              </AnimateOnScroll>
-            </div>
+          <AnimateOnScroll variant="fade-up" className="text-center mb-16">
+            <h2
+              className="font-heading font-bold text-white mx-auto max-w-3xl"
+              style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
+            >
+              This is what invisible looks like
+              <br className="hidden sm:block" />
+              <span className="text-gradient-cosmic">when you can finally see it.</span>
+            </h2>
+          </AnimateOnScroll>
 
-            <div className="min-w-0">
-              {/* Tab buttons — horizontal scroll on mobile */}
-              <div className="flex flex-row lg:flex-col gap-2 lg:gap-1 mb-6 lg:mb-8 overflow-x-auto pb-2 lg:pb-0 -mx-2 px-2 scrollbar-hide">
-                {tabs.map((tab, i) => (
-                  <button
-                    key={tab.label}
-                    onClick={() => setActiveTab(i)}
-                    className={`text-left px-4 lg:px-5 py-2.5 lg:py-3 rounded-full lg:rounded-xl transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
-                      activeTab === i
-                        ? 'bg-[#1F2023] text-white lg:bg-[#FAFAFA] lg:text-[#1F2023] shadow-sm'
-                        : 'bg-[#FAFAFA] text-[#4C4C4C] lg:bg-transparent hover:bg-gray-50'
-                    }`}
-                  >
-                    <span className="font-heading font-medium text-sm">
-                      {tab.label}
-                    </span>
-                  </button>
-                ))}
+          <AnimateOnScroll variant="scale" delay={100}>
+            <div className="max-w-4xl mx-auto card-cosmic rounded-2xl overflow-hidden">
+              {/* Header */}
+              <div className="p-6 md:p-8 border-b border-white/[0.06]">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div>
+                    <p className="text-xs font-medium uppercase tracking-widest text-white/40 mb-1">
+                      Discovery Brief
+                    </p>
+                    <p className="font-heading font-semibold text-white text-xl">
+                      Sample Institution
+                    </p>
+                    <p className="text-white/40 text-sm mt-0.5">
+                      Midwest Regional Corridor
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 text-sm text-white/30">
+                    <Clock className="h-4 w-4" />
+                    <span>708 seconds</span>
+                    <span className="mx-1">·</span>
+                    <Database className="h-4 w-4" />
+                    <span>76 searches</span>
+                  </div>
+                </div>
               </div>
 
-              {/* Active tab content */}
-              <div className="rounded-2xl bg-[#FAFAFA] p-6 md:p-8 shadow-sm">
-                <h3 className="heading-display text-lg md:text-xl mb-3">{tabs[activeTab].title}</h3>
-                <p className="text-[#4C4C4C] text-sm leading-relaxed mb-6">{tabs[activeTab].desc}</p>
-                <div className="space-y-2">
-                  {tabs[activeTab].features.map((f) => (
-                    <div key={f} className="flex items-center gap-3">
-                      <Check className="h-4 w-4 text-navy-600 flex-shrink-0" strokeWidth={2} />
-                      <span className="text-sm text-[#4C4C4C]">{f}</span>
+              {/* Top Programs */}
+              <div className="p-6 md:p-8 border-b border-white/[0.06]">
+                <h3 className="text-xs font-medium uppercase tracking-widest text-white/40 mb-4">
+                  Top Opportunities — Scored & Ranked
+                </h3>
+                <div className="space-y-3">
+                  {[
+                    {
+                      name: 'Health Services Management',
+                      score: 9.1,
+                      badge: null,
+                    },
+                    {
+                      name: 'Sterile Processing Technology',
+                      score: 8.7,
+                      badge: 'Blue Ocean',
+                    },
+                    {
+                      name: 'CDL / Commercial Driving',
+                      score: 8.5,
+                      badge: null,
+                    },
+                  ].map((program) => (
+                    <div
+                      key={program.name}
+                      className="flex items-center justify-between py-3 px-4 rounded-lg bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
+                    >
+                      <div className="flex items-center gap-3">
+                        <span className="text-white/80 text-sm font-medium">
+                          {program.name}
+                        </span>
+                        {program.badge && (
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cosmic-teal/20 text-teal-300 border border-teal-500/20">
+                            {program.badge}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="w-16 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                          <div
+                            className="h-full rounded-full bg-gradient-to-r from-purple-500 to-blue-500"
+                            style={{
+                              width: `${(program.score / 10) * 100}%`,
+                            }}
+                          />
+                        </div>
+                        <span className="text-white/60 text-sm font-mono w-8 text-right">
+                          {program.score}
+                        </span>
+                      </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="mt-6 lg:hidden">
-                <Link href="#sample-report">
-                  <Button variant="outline" className="rounded-full px-6 h-11 font-medium border-[#E0E0E0] text-[#1F2023] hover:bg-gray-50 w-full">
-                    See Sample Report
-                  </Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== GRADIENT HERO SECTION ===== */}
-      <section className="bg-brand-gradient pt-24 pb-32" style={{ borderBottomLeftRadius: 40, borderBottomRightRadius: 40 }}>
-        <div className="max-w-[1200px] mx-auto px-6 text-center">
-          <AnimateOnScroll variant="fade-up">
-            <h2 className="heading-display text-[clamp(1.75rem,3vw,2.25rem)] !text-white">
-              The engine for confident program decisions
-            </h2>
-            <p className="mt-4 text-white/70 text-lg max-w-2xl mx-auto">
-              Every report combines six expert perspectives into one comprehensive analysis — delivered in 48 hours, not 6 months.
-            </p>
-            <div className="mt-8">
-              <Link href="/submit">
-                <Button className="bg-white text-[#1F2023] hover:bg-white/90 rounded-full px-8 h-12 font-medium text-base">
-                  Start Validation
-                </Button>
-              </Link>
-            </div>
-          </AnimateOnScroll>
-
-          <StaggerChildren stagger={100} variant="fade-up" className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mt-16">
-            {[
-              { title: 'All your trusted data, in one place', desc: 'BLS, O*NET, Census, real-time job market — synthesized into clear insights.' },
-              { title: 'Get answers in 48 hours', desc: 'Parallel analysis across all 6 lenses. No waiting months for a consulting firm.' },
-              { title: 'Make confident decisions', desc: 'GO/NO-GO recommendations backed by comprehensive, cited data.' },
-              { title: 'From validation to launch', desc: 'Implementation roadmap and marketing strategy included in every report.' },
-            ].map(({ title, desc }) => (
-              <div key={title} className="card-glass-dark rounded-2xl p-6 text-left">
-                <h3 className="font-heading font-medium text-white text-base mb-2">{title}</h3>
-                <p className="text-white/60 text-sm leading-relaxed">{desc}</p>
-              </div>
-            ))}
-          </StaggerChildren>
-        </div>
-      </section>
-
-      {/* ===== WHY INSTITUTIONS CHOOSE US ===== */}
-      <section className="bg-white py-16 md:py-[120px]">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
-            <div>
-              <AnimateOnScroll variant="fade-up">
-                <h2 className="heading-display text-[clamp(1.75rem,3vw,2.25rem)] max-w-lg">
-                  Why institutions choose Workforce Intelligence
-                </h2>
-              </AnimateOnScroll>
-            </div>
-            <AnimateOnScroll variant="fade-up" delay={100}>
-              <div className="flex flex-col items-start lg:items-end gap-3">
-                <p className="text-[#4C4C4C] max-w-sm lg:text-right">
-                  Replace months of consulting with 48-hour validation backed by federal data sources.
-                </p>
-                <Link href="/submit">
-                  <Button className="bg-[#1F2023] hover:bg-black text-white rounded-full px-6 h-11 font-medium">
-                    Start Validation
-                  </Button>
-                </Link>
-              </div>
-            </AnimateOnScroll>
-          </div>
-
-          <StaggerChildren stagger={100} variant="fade-up" className="grid md:grid-cols-2 gap-6">
-            {[
-              { title: 'Built for speed', desc: '48-hour delivery, not 6-month consulting engagements. Run all research in parallel across six analytical lenses.' },
-              { title: 'Comprehensive analysis', desc: '6 expert perspectives in every report — market demand, financials, curriculum, competition, implementation, and marketing.' },
-              { title: 'Data you can trust', desc: 'Federal sources including BLS, O*NET, and Census. Real-time job market data from 50,000+ employers. Every claim cited.' },
-              { title: 'From concept to launch', desc: 'Not just validation — you get a complete implementation roadmap, risk mitigation strategies, and marketing plan.' },
-            ].map(({ title, desc }) => (
-              <div key={title} className="rounded-2xl bg-[#FAFAFA] p-8 shadow-sm">
-                <h3 className="heading-display text-lg mb-3">{title}</h3>
-                <p className="text-[#4C4C4C] text-sm leading-relaxed">{desc}</p>
-              </div>
-            ))}
-          </StaggerChildren>
-        </div>
-      </section>
-
-      {/* ===== ENTERPRISE / TESTIMONIAL ===== */}
-      <section className="relative overflow-hidden" style={{ background: 'linear-gradient(180deg, #0a1628 0%, #162d54 50%, #0a1628 100%)' }}>
-        {/* Conic gradient decorations */}
-        <div className="absolute inset-0 opacity-30">
-          <div className="absolute left-0 top-0 w-1/2 h-full bg-conic-left" />
-          <div className="absolute right-0 top-0 w-1/2 h-full bg-conic-right" />
-        </div>
-
-        <div className="relative z-10 max-w-[1200px] mx-auto px-6 py-24">
-          <AnimateOnScroll variant="fade-up" className="text-center mb-12">
-            <h2 className="heading-display text-[clamp(1.75rem,3vw,2.25rem)] !text-white">
-              Enterprise-ready. Without the complexity.
-            </h2>
-            <div className="mt-6 flex flex-wrap gap-3 justify-center">
-              {['Trusted Methodology', 'SOC 2 Compliant', 'Secure by Default'].map((pill) => (
-                <span key={pill} className="card-glass-dark rounded-full px-5 py-2 text-sm text-white/80 font-medium">
-                  {pill}
-                </span>
-              ))}
-            </div>
-          </AnimateOnScroll>
-
-          {/* Testimonial */}
-          <AnimateOnScroll variant="fade-up" delay={100}>
-            <div className="card-glass-dark rounded-2xl p-8 sm:p-10 max-w-3xl mx-auto mb-16">
-              <p className="text-white/80 text-lg leading-relaxed italic">
-                &ldquo;The depth of analysis was equivalent to what we previously received from a $75,000 consulting engagement — delivered in two days instead of four months.&rdquo;
-              </p>
-              <div className="mt-6 pt-6 border-t border-white/10">
-                <p className="font-heading font-medium text-white">VP of Academic Affairs</p>
-                <p className="text-white/50 text-sm">Midwest Community College</p>
-              </div>
-            </div>
-          </AnimateOnScroll>
-
-          {/* Stats */}
-          <AnimateOnScroll variant="fade-up" delay={200}>
-            <div className="flex justify-center gap-8 md:gap-16 flex-wrap">
-              {[
-                { value: 48, suffix: 'hr', label: 'Average delivery time' },
-                { value: 6, suffix: '', label: 'Expert perspectives per report' },
-                { value: 14, suffix: '+', label: 'Pages of comprehensive analysis' },
-              ].map(({ value, suffix, label }) => (
-                <div key={label} className="text-center">
-                  <div className="font-heading font-medium text-white text-4xl md:text-6xl tracking-tight">
-                    <CountUp end={value} suffix={suffix} duration={2200} />
+              {/* Stats row */}
+              <div className="grid grid-cols-3 divide-x divide-white/[0.06]">
+                {[
+                  { value: '13', label: 'opportunities found' },
+                  { value: '76', label: 'data sources queried' },
+                  { value: '708s', label: 'total analysis time' },
+                ].map(({ value, label }) => (
+                  <div key={label} className="p-4 md:p-6 text-center">
+                    <div className="font-heading font-bold text-xl text-gradient-cosmic">
+                      {value}
+                    </div>
+                    <p className="text-white/30 text-xs mt-1">{label}</p>
                   </div>
-                  <p className="text-white/50 text-sm mt-2">{label}</p>
-                </div>
-              ))}
+                ))}
+              </div>
+
+              {/* CTA */}
+              <div className="p-6 md:p-8 border-t border-white/[0.06] flex justify-center">
+                <button className="btn-cosmic btn-cosmic-ghost text-sm">
+                  Download Sample Brief
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </button>
+              </div>
             </div>
           </AnimateOnScroll>
-        </div>
-      </section>
-
-      {/* ===== SUPPORT FOR EVERY STEP ===== */}
-      <section className="bg-white py-16 md:py-[120px]">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up" className="text-center mb-16">
-            <h2 className="heading-display text-[clamp(1.75rem,3vw,2.25rem)]">
-              Support for every step of the journey
-            </h2>
-          </AnimateOnScroll>
-
-          <StaggerChildren stagger={100} variant="fade-up" className="grid md:grid-cols-3 gap-8">
-            {[
-              { title: 'Self-service validation', desc: 'Submit your program concept and receive a comprehensive validation report in 48 hours.', cta: 'Start Validation', href: '/submit' },
-              { title: 'Partner with experts', desc: 'Standard plan includes a 1-hour consultation call to walk through findings and next steps.', cta: 'Learn More', href: '#pricing' },
-              { title: 'Dedicated partnerships', desc: 'Annual plans with up to 5 validations, quarterly market updates, and priority support.', cta: 'Contact Us', href: 'mailto:hello@workforceintel.com' },
-            ].map(({ title, desc, cta, href }) => (
-              <div key={title} className="rounded-2xl bg-[#FAFAFA] p-8 shadow-sm flex flex-col">
-                <h3 className="heading-display text-lg mb-3">{title}</h3>
-                <p className="text-[#4C4C4C] text-sm leading-relaxed flex-1">{desc}</p>
-                <Link href={href} className="mt-6 text-sm font-medium text-[#1F2023] hover:underline underline-offset-4">
-                  {cta} →
-                </Link>
-              </div>
-            ))}
-          </StaggerChildren>
         </div>
       </section>
 
       {/* ===== PRICING ===== */}
-      <section id="pricing" className="bg-white py-16 md:py-[120px]">
+      <section className="relative py-20 md:py-32" id="pricing">
         <div className="max-w-[1200px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up" className="text-center mb-16">
-            <h2 className="heading-display text-[clamp(1.75rem,3vw,2.25rem)]">
-              Transparent pricing
+          <AnimateOnScroll variant="fade-up" className="text-center mb-4">
+            <span className="overline">Pricing</span>
+          </AnimateOnScroll>
+          <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-4">
+            <h2
+              className="font-heading font-bold text-white"
+              style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
+            >
+              Transparent pricing. No &ldquo;contact us&rdquo; games.
             </h2>
-            <p className="mt-4 text-[#4C4C4C] text-lg">
-              No &quot;contact for pricing&quot; — here&apos;s exactly what it costs.
+          </AnimateOnScroll>
+          <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
+            <p className="text-white/50 text-lg">
+              🚀 Founding rates — first 5 institutions only
             </p>
           </AnimateOnScroll>
 
           <StaggerChildren stagger={150} variant="fade-up" className="grid lg:grid-cols-3 gap-8 mx-auto max-w-5xl items-start">
-            {/* Entry */}
-            <div className="rounded-2xl bg-[#FAFAFA] p-8 shadow-sm">
-              <h3 className="heading-display text-lg">Entry Validation</h3>
-              <p className="text-sm text-[#4C4C4C] mt-1">Perfect for testing our service</p>
-              <div className="mt-4 mb-6">
-                <span className="font-heading font-medium text-4xl text-[#1F2023]">$2,500</span>
-                <span className="text-sm text-[#4C4C4C] ml-1">one-time</span>
+            {/* Tier 1 — Discovery Brief */}
+            <div className="card-cosmic rounded-2xl p-8">
+              <h3 className="font-heading font-semibold text-white text-lg">
+                Discovery Brief
+              </h3>
+              <p className="text-white/40 text-sm mt-1">
+                What should you build?
+              </p>
+              <div className="mt-5 mb-1">
+                <span className="font-heading font-bold text-4xl text-gradient-cosmic">
+                  $1,500
+                </span>
+                <span className="text-white/30 text-sm ml-2 line-through">
+                  $3,500
+                </span>
               </div>
+              <p className="text-xs text-white/30 mb-6">Founding rate</p>
               <ul className="space-y-3 mb-8">
-                {['Single program validation', 'All 6 lenses analyzed', 'GO/NO-GO recommendation', '48-hour delivery'].map((item) => (
+                {[
+                  'Regional market intelligence',
+                  'Demand signal analysis',
+                  'Competitive landscape',
+                  'Blue Ocean opportunities',
+                  'Grant alignment',
+                  'Scored & ranked programs',
+                ].map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <Check className="h-4 w-4 text-navy-600 flex-shrink-0 mt-0.5" strokeWidth={2} />
-                    <span className="text-sm text-[#4C4C4C]">{item}</span>
+                    <Check className="h-4 w-4 text-cosmic-teal flex-shrink-0 mt-0.5" strokeWidth={2} />
+                    <span className="text-sm text-white/60">{item}</span>
                   </li>
                 ))}
               </ul>
-              <Link href="/submit" className="block">
-                <Button variant="outline" className="w-full h-11 rounded-full border-[#E0E0E0] text-[#1F2023] hover:bg-white font-medium">
-                  Get Started
-                </Button>
-              </Link>
+              <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                Get Started
+              </button>
             </div>
 
-            {/* Standard — Featured */}
-            <div className="relative rounded-2xl bg-[#1F2023] text-white p-8 lg:-mt-4 lg:mb-[-1rem]">
+            {/* Tier 2 — Discovery + Validation (POPULAR) */}
+            <div className="card-cosmic rounded-2xl p-8 relative border-purple-500/20 lg:-mt-4 lg:mb-[-1rem]">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                <span className="inline-flex items-center rounded-full bg-gold-400 px-4 py-1 text-xs font-medium uppercase tracking-wider text-[#1F2023]">
+                <span className="inline-flex items-center rounded-full bg-gradient-to-r from-purple-500 to-blue-500 px-4 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-purple-500/20">
                   Most Popular
                 </span>
               </div>
               <div className="mt-2">
-                <h3 className="font-heading font-medium text-lg text-white">Standard Validation</h3>
-                <p className="text-sm text-white/50 mt-1">Comprehensive analysis + roadmap</p>
-                <div className="mt-4 mb-6">
-                  <span className="font-heading font-medium text-4xl text-white">$7,500</span>
-                  <span className="text-sm text-white/50 ml-1">one-time</span>
+                <h3 className="font-heading font-semibold text-white text-lg">
+                  Discovery + Validation
+                </h3>
+                <p className="text-white/40 text-sm mt-1">
+                  Should you build it?
+                </p>
+                <div className="mt-5 mb-1">
+                  <span className="font-heading font-bold text-4xl text-gradient-cosmic">
+                    $2,000
+                  </span>
+                  <span className="text-white/30 text-sm ml-2 line-through">
+                    $4,500
+                  </span>
                 </div>
+                <p className="text-xs text-white/30 mb-6">Founding rate</p>
               </div>
               <ul className="space-y-3 mb-8">
-                {['Everything in Entry, plus:', 'Implementation roadmap', 'Risk mitigation strategies', '1-hour consultation call'].map((item) => (
+                {[
+                  'Everything in Discovery, plus:',
+                  'Deep market validation',
+                  'Financial projections',
+                  'Regulatory analysis',
+                  'Employer demand verification',
+                  'Implementation roadmap',
+                  'GO/NO-GO recommendation',
+                ].map((item, i) => (
                   <li key={item} className="flex items-start gap-3">
-                    <Check className="h-4 w-4 text-gold-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
-                    <span className="text-sm text-white/80">{item}</span>
+                    <Check
+                      className={`h-4 w-4 flex-shrink-0 mt-0.5 ${
+                        i === 0 ? 'text-purple-400' : 'text-cosmic-teal'
+                      }`}
+                      strokeWidth={2}
+                    />
+                    <span
+                      className={`text-sm ${
+                        i === 0
+                          ? 'text-purple-300 font-medium'
+                          : 'text-white/60'
+                      }`}
+                    >
+                      {item}
+                    </span>
                   </li>
                 ))}
               </ul>
-              <Link href="/submit" className="block">
-                <Button className="w-full h-11 rounded-full bg-white text-[#1F2023] hover:bg-gray-100 font-medium">
-                  Get Started
-                </Button>
-              </Link>
+              <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
+                Get Started
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </button>
             </div>
 
-            {/* Annual */}
-            <div className="rounded-2xl bg-[#FAFAFA] p-8 shadow-sm">
-              <h3 className="heading-display text-lg">Annual Partnership</h3>
-              <p className="text-sm text-[#4C4C4C] mt-1">Up to 5 validations per year</p>
-              <div className="mt-4 mb-6">
-                <span className="font-heading font-medium text-4xl text-[#1F2023]">$25,000</span>
-                <span className="text-sm text-[#4C4C4C] ml-1">/year</span>
+            {/* Tier 3 — Full Lifecycle */}
+            <div className="card-cosmic rounded-2xl p-8">
+              <h3 className="font-heading font-semibold text-white text-lg">
+                Full Lifecycle
+              </h3>
+              <p className="text-white/40 text-sm mt-1">
+                Build it right.
+              </p>
+              <div className="mt-5 mb-1">
+                <span className="font-heading font-bold text-4xl text-gradient-cosmic">
+                  $3,000
+                </span>
+                <span className="text-white/30 text-sm ml-2 line-through">
+                  $6,500
+                </span>
               </div>
+              <p className="text-xs text-white/30 mb-6">Founding rate</p>
               <ul className="space-y-3 mb-8">
-                {['5 standard validations', 'Quarterly market updates', 'Priority support', 'Save $12,500/year'].map((item) => (
+                {[
+                  'Everything above, plus:',
+                  'Curriculum architecture',
+                  'Pathway mapping',
+                  'Marketing strategy',
+                  'Launch plan',
+                  'Quality framework',
+                ].map((item, i) => (
                   <li key={item} className="flex items-start gap-3">
-                    <Check className="h-4 w-4 text-navy-600 flex-shrink-0 mt-0.5" strokeWidth={2} />
-                    <span className="text-sm text-[#4C4C4C]">{item}</span>
+                    <Check
+                      className={`h-4 w-4 flex-shrink-0 mt-0.5 ${
+                        i === 0 ? 'text-purple-400' : 'text-cosmic-teal'
+                      }`}
+                      strokeWidth={2}
+                    />
+                    <span
+                      className={`text-sm ${
+                        i === 0
+                          ? 'text-purple-300 font-medium'
+                          : 'text-white/60'
+                      }`}
+                    >
+                      {item}
+                    </span>
                   </li>
                 ))}
               </ul>
-              <Link href="/submit" className="block">
-                <Button variant="outline" className="w-full h-11 rounded-full border-[#E0E0E0] text-[#1F2023] hover:bg-white font-medium">
-                  Contact Us
-                </Button>
-              </Link>
+              <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
+                Get Started
+              </button>
             </div>
           </StaggerChildren>
 
+          {/* Under $5K note */}
           <AnimateOnScroll variant="fade" delay={400}>
-            <div className="mt-10 text-center">
-              <div className="inline-flex items-center gap-2 text-sm text-[#4C4C4C]">
+            <div className="mt-12 text-center space-y-4">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.06]">
+                <Zap className="h-4 w-4 text-amber-400" />
+                <span className="text-sm text-white/60">
+                  All founding tier prices are under Dean-level purchase authority.{' '}
+                  <span className="text-white/80 font-medium">
+                    No Board approval needed.
+                  </span>
+                </span>
+              </div>
+              <div className="flex items-center justify-center gap-2 text-sm text-white/40">
                 <Shield className="h-4 w-4" />
-                <span>100% satisfaction guarantee — full refund if not actionable</span>
+                <span>
+                  100% satisfaction guarantee — full refund if not actionable
+                </span>
               </div>
             </div>
           </AnimateOnScroll>
         </div>
       </section>
 
-      {/* ===== SAMPLE REPORT ===== */}
-      <section id="sample-report" className="bg-white py-16 md:py-[120px]">
+      {/* ===== FOUNDER SECTION ===== */}
+      <section className="relative py-20 md:py-32">
         <div className="max-w-[1200px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up" className="text-center mb-12">
-            <h2 className="heading-display text-[clamp(1.75rem,3vw,2.25rem)]">
-              See a real validation report
-            </h2>
-            <p className="mt-4 text-[#4C4C4C] text-lg max-w-2xl mx-auto">
-              Industrial Coatings Specialist Certificate — validated for a Midwest community college in February 2026.
-            </p>
-          </AnimateOnScroll>
+          <div className="max-w-3xl mx-auto">
+            <AnimateOnScroll variant="fade-up">
+              <div className="card-cosmic rounded-2xl p-8 md:p-12">
+                <div className="flex flex-col md:flex-row gap-8 items-start">
+                  {/* Photo placeholder */}
+                  <div className="flex-shrink-0">
+                    <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-white/[0.06] flex items-center justify-center">
+                      <span className="text-white/20 text-xs font-medium text-center">
+                        [FOUNDER<br />PHOTO]
+                      </span>
+                    </div>
+                  </div>
 
-          <AnimateOnScroll variant="fade-up" delay={100}>
-            <div className="max-w-4xl mx-auto rounded-2xl bg-[#FAFAFA] shadow-[0_2px_40px_-12px_rgba(0,0,0,0.12)] overflow-hidden">
-              {/* Preview header */}
-              <div className="p-6 md:p-8 border-b border-gray-200">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div>
-                    <p className="text-xs font-medium uppercase tracking-widest text-[#4C4C4C] mb-1">Program Validation Report</p>
-                    <p className="heading-display text-xl">Industrial Coatings Specialist Certificate</p>
-                  </div>
-                  <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 border border-emerald-200 px-4 py-1.5 w-fit">
-                    <span className="relative flex h-2 w-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-                    </span>
-                    <span className="text-sm font-medium text-emerald-700">Conditional GO</span>
+                    <h2
+                      className="font-heading font-bold text-white mb-4"
+                      style={{ fontSize: 'clamp(1.25rem, 2vw, 1.75rem)' }}
+                    >
+                      Built by someone who&apos;s been in your shoes.
+                    </h2>
+                    <p className="text-white/50 leading-relaxed mb-4">
+                      15 years of building workforce programs at a community college.
+                      I got tired of guessing what to build next. So I built the thing I
+                      wish I&apos;d had — an AI system that sees the full market picture in
+                      minutes, not months.
+                    </p>
+                    <p className="text-white/50 leading-relaxed">
+                      The first Discovery Brief I ran found a $2M opportunity that every
+                      competitor had missed. That&apos;s when I knew this needed to exist
+                      for every college, not just mine.
+                    </p>
                   </div>
                 </div>
               </div>
-
-              {/* Stats grid */}
-              <div className="grid sm:grid-cols-3 gap-6 p-6 md:p-8 border-b border-gray-200">
-                {[
-                  { label: 'Market Demand', value: '8.2/10' },
-                  { label: 'Financial Viability', value: '6.0/10' },
-                  { label: 'Competitive Position', value: '6.0/10' },
-                ].map(({ label, value }) => (
-                  <div key={label}>
-                    <p className="text-xs text-[#4C4C4C] uppercase tracking-wider mb-1">{label}</p>
-                    <p className="text-[#1F2023] font-medium text-2xl font-heading">{value}</p>
-                  </div>
-                ))}
-              </div>
-
-              {/* Key insights preview */}
-              <div className="p-6 md:p-8 space-y-4">
-                <div>
-                  <h3 className="font-heading font-medium text-sm uppercase tracking-wider text-[#4C4C4C] mb-2">KEY FINDINGS</h3>
-                  <ul className="space-y-2 text-sm text-[#4C4C4C]">
-                    <li className="flex items-start gap-2">
-                      <span className="text-emerald-600 mt-0.5">✓</span>
-                      <span>Strong employer demand with 18% projected job growth through 2032</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-emerald-600 mt-0.5">✓</span>
-                      <span>Median salary of $52,000 aligns with institutional placement goals</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-600 mt-0.5">!</span>
-                      <span>Limited competition in region but requires employer partnerships</span>
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="pt-4 border-t border-gray-200">
-                  <a
-                    href="/sample-report.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-[#1F2023] hover:underline underline-offset-4 font-medium"
-                  >
-                    View Full Report (PDF)
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                    </svg>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </AnimateOnScroll>
+            </AnimateOnScroll>
+          </div>
         </div>
       </section>
 
       {/* ===== FINAL CTA ===== */}
-      <section className="bg-white py-16 md:py-20">
-        <div className="max-w-[1200px] mx-auto px-6">
+      <section className="relative py-24 md:py-40 overflow-hidden">
+        {/* Aurora background */}
+        <Aurora />
+        <Stars count={100} />
+
+        <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up">
-            <div className="mx-auto max-w-3xl text-center">
-              <h2 className="heading-display text-[clamp(1.75rem,3.5vw,2.75rem)]">
-                Workforce Intelligence is for teams that plan. Make your move.
-              </h2>
-              <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/submit">
-                  <Button className="bg-[#1F2023] hover:bg-black text-white rounded-full px-8 h-14 font-medium text-base">
-                    Start Validation
-                  </Button>
-                </Link>
-                <Link href="#pricing">
-                  <Button variant="outline" className="rounded-full px-8 h-14 font-medium text-base border-[#E0E0E0] text-[#1F2023] hover:bg-gray-50">
-                    See Pricing
-                  </Button>
-                </Link>
-              </div>
-              <p className="mt-6 text-sm text-[#4C4C4C]">
-                Questions?{' '}
-                <a href="mailto:hello@workforceintel.com" className="text-[#1F2023] hover:underline underline-offset-2">
-                  hello@workforceintel.com
-                </a>
-              </p>
+            <h2
+              className="font-heading font-bold text-white mx-auto max-w-3xl leading-tight"
+              style={{ fontSize: 'clamp(1.75rem, 4vw + 0.5rem, 3rem)' }}
+            >
+              Your next great program is hiding in plain sight.
+              <br className="hidden sm:block" />
+              <span className="text-gradient-cosmic">Let&apos;s find it.</span>
+            </h2>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll variant="fade-up" delay={200}>
+            <div className="mt-10">
+              <Link href="#pricing">
+                <button className="btn-cosmic btn-cosmic-primary text-base px-10 py-4">
+                  Get Your Discovery Brief
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </button>
+              </Link>
             </div>
+            <p className="mt-6 text-sm text-white/30">
+              Questions?{' '}
+              <a
+                href="mailto:hello@workforceintel.com"
+                className="text-white/50 hover:text-white/70 underline underline-offset-4 transition-colors"
+              >
+                hello@workforceintel.com
+              </a>
+            </p>
           </AnimateOnScroll>
         </div>
       </section>
