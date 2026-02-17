@@ -365,7 +365,7 @@ function HeroCarousel() {
   const slide = HERO_SLIDES[current];
 
   return (
-    <section className="relative h-[90vh] min-h-[700px] max-h-[900px] flex items-center justify-center pt-24 pb-16 overflow-hidden">
+    <section className="relative min-h-[90vh] lg:h-[90vh] lg:min-h-[700px] lg:max-h-[900px] flex items-center justify-center pt-28 pb-16 overflow-hidden">
       <Stars count={250} />
       <Aurora />
       <Waveform className="opacity-60" />
