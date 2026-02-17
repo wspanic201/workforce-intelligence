@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ["/api/", "/projects/"],
       },
     ],
-    sitemap: "https://workforce-intelligence-wine.vercel.app/sitemap.xml",
+    sitemap: "https://withwavelength.com/sitemap.xml",
   };
 }

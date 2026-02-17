@@ -527,7 +527,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
                 href="/"
                 className="text-xs text-violet-400 hover:text-violet-300 transition-colors mt-1 inline-block"
               >
-                workforceos.com →
+                withwavelength.com →
               </a>
             </div>
           </div>

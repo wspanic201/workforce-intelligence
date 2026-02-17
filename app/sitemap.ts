@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const siteUrl = "https://workforce-intelligence-wine.vercel.app";
+const siteUrl = "https://withwavelength.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

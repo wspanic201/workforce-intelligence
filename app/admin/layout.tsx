@@ -63,7 +63,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <form onSubmit={handleLogin} className="bg-white rounded-xl shadow-lg p-8 w-full max-w-sm space-y-4">
           <div className="text-center">
-            <h1 className="font-heading text-xl font-bold text-slate-900">WorkforceOS Admin</h1>
+            <h1 className="font-heading text-xl font-bold text-slate-900">Wavelength Admin</h1>
             <p className="text-sm text-slate-500 mt-1">Enter admin password</p>
           </div>
           <Input

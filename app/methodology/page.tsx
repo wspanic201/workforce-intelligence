@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: "Methodology — 6-Lens Workforce Program Validation Framework",
   description:
-    "Learn how Workforce Intelligence validates community college programs using a 6-lens framework: market demand, financial viability, competitive landscape, curriculum design, workforce alignment, and marketing strategy.",
+    "Learn how Wavelength validates community college programs using a 6-lens framework: market demand, financial viability, competitive landscape, curriculum design, workforce alignment, and marketing strategy.",
   alternates: {
     canonical: "/methodology",
   },
