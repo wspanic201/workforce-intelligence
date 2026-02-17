@@ -190,7 +190,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'What is a Market Scan?',
-    a: 'A Market Scan is a 25+ page intelligence report that identifies the workforce programs your region actually needs. It includes regional market analysis, demand signal detection, competitive landscape mapping, Blue Ocean opportunity scoring, and Workforce Pell readiness assessment — all from 50+ verified sources.',
+    a: 'A Market Scan delivers 7–10 vetted, data-backed new program leads for your region — each scored across five dimensions. The 25+ page report includes regional labor market intelligence, employer demand verification, competitive landscape mapping, Blue Ocean opportunity scoring, and Workforce Pell readiness — all from 50+ verified sources.',
   },
   {
     q: 'What is the Compliance Gap Report?',
@@ -264,10 +264,10 @@ const HERO_SLIDES = [
     id: 'main',
     badge: null,
     headline: 'Market intelligence for community college programs.',
-    subtitle: 'We scan 50+ data sources so you can build programs with confidence — not guesswork. From compliance gaps to full market scans, Wavelength tunes you into what your region actually needs.',
+    subtitle: 'Get 7–10 vetted, data-backed new program leads — scored, ranked, and ready to act on. From compliance gaps to full market scans, Wavelength tunes you into what your region actually needs.',
     stats: [
+      { value: '7–10', label: 'vetted program leads' },
       { value: '50+', label: 'verified sources' },
-      { value: '3', label: 'product tiers' },
       { value: '$0', label: 'to get started' },
     ],
     cta: { text: 'See Our Products ↓', href: '#products' },
@@ -312,10 +312,10 @@ const HERO_SLIDES = [
     id: 'market-scan',
     badge: 'Founding Rate · $1,500',
     headline: 'Full market intelligence before you build.',
-    subtitle: 'A comprehensive market scan for any program you\'re considering. Demand signals, employer verification, financial projections, competitive analysis, and a clear GO / NO-GO recommendation backed by real data.',
+    subtitle: '7–10 vetted new program opportunities for your region — each scored across five dimensions, backed by real employer signals and labor data, with a clear GO / NO-GO recommendation.',
     stats: [
-      { value: '$1,500', label: 'founding rate' },
-      { value: '6', label: 'research phases' },
+      { value: '7–10', label: 'vetted program leads' },
+      { value: '50+', label: 'verified sources' },
       { value: '25+', label: 'page report' },
     ],
     cta: { text: 'Learn More →', href: '/discover' },
@@ -448,7 +448,7 @@ function HeroCarousel() {
                 {[
                   { icon: '🎯', label: 'Pell Readiness Check', tag: 'Free', color: 'purple', desc: 'Know if your programs qualify' },
                   { icon: '📋', label: 'Compliance Gap Report', tag: '$295', color: 'blue', desc: '21+ regulatory categories scanned' },
-                  { icon: '📊', label: 'Market Scan', tag: '$1,500', color: 'teal', desc: '50+ sources, 25+ page report' },
+                  { icon: '📊', label: 'Market Scan', tag: '$1,500', color: 'teal', desc: '7–10 vetted new program leads' },
                 ].map((item, idx) => (
                   <div
                     key={item.label}
@@ -786,7 +786,7 @@ export default function HomePage() {
                   </div>
                   <h3 className="font-heading font-bold text-white text-xl mb-2">Market Scan</h3>
                   <p className="text-white/70 text-sm leading-relaxed mb-6">
-                    The full picture before you invest. 25+ page report backed by 50+ verified sources with a clear GO / NO-GO recommendation.
+                    7–10 vetted, data-backed new program leads for your region — scored, ranked, and ready to act on. 25+ pages backed by 50+ verified sources.
                   </p>
                   <div className="mb-1">
                     <span className="font-heading font-bold text-4xl text-gradient-cosmic">$1,500</span>
@@ -799,10 +799,11 @@ export default function HomePage() {
                   </div>
                   <ul className="space-y-2.5 mb-7">
                     {[
+                      '7–10 vetted new program leads for your region',
+                      'Each program scored, ranked & categorized',
                       'Regional labor market intelligence',
                       'Employer demand verification',
                       'Competitive landscape + Blue Ocean analysis',
-                      'Programs scored, ranked & categorized',
                       'Financial projections & enrollment modeling',
                       'Workforce Pell readiness scoring',
                       'Grant alignment + funding opportunities',
@@ -902,7 +903,7 @@ export default function HomePage() {
               {
                 step: '03',
                 title: 'Clear Signal',
-                desc: 'A sourced report with scored opportunities and specific next steps. No jargon. No hedging. Just signal.',
+                desc: '7–10 vetted program leads, scored and ranked with specific next steps. No jargon. No hedging. Just signal.',
                 icon: (
                   <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M8 20 C8 20 10 18 14 18 C18 18 20 20 20 20" stroke="url(#sigGrad)" strokeWidth="1.5" strokeLinecap="round" opacity="0.35" />
@@ -951,12 +952,12 @@ export default function HomePage() {
               className="font-heading font-bold text-white"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              Six phases of research. One comprehensive report.
+              Six phases of research. 7–10 vetted program leads.
             </h2>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
             <p className="text-white/70 text-lg max-w-2xl mx-auto">
-              Every data point sourced and cited. Every opportunity scored across five dimensions.
+              Every lead backed by real data. Every opportunity scored across five dimensions.
             </p>
           </AnimateOnScroll>
 
@@ -990,7 +991,7 @@ export default function HomePage() {
               {
                 num: '06',
                 title: 'The Market Scan Report',
-                desc: '25+ pages with scored programs, evidence trails, grant alignment, barriers, Workforce Pell readiness scores, and specific next steps.',
+                desc: '7–10 vetted program leads in a 25+ page report — scored, ranked, with evidence trails, grant alignment, Pell readiness, and specific next steps.',
               },
             ].map(({ num, title, desc }) => (
               <div key={num} className="card-cosmic rounded-xl p-6">
