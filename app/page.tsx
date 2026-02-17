@@ -56,7 +56,7 @@ function WaveDivider() {
   );
 }
 
-function PellForm() {
+function PellForm({ onFocus, onBlur }: { onFocus?: () => void; onBlur?: () => void } = {}) {
   const [formData, setFormData] = useState({ name: '', email: '', institution: '', state: '' });
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
 
@@ -94,7 +94,7 @@ function PellForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="card-cosmic rounded-2xl p-6 md:p-8 max-w-md mx-auto w-full">
+    <form onSubmit={handleSubmit} onFocus={onFocus} onBlur={onBlur} className="card-cosmic rounded-2xl p-6 md:p-8 max-w-md mx-auto w-full">
       <div className="space-y-4">
         <div>
           <label className="block text-xs font-medium text-white/70 uppercase tracking-wider mb-1.5">
@@ -340,6 +340,7 @@ const DOT_COLORS: Record<string, string> = {
 function HeroCarousel() {
   const [current, setCurrent] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [paused, setPaused] = useState(false);
 
   const goTo = useCallback((index: number) => {
     if (index === current || isTransitioning) return;
@@ -350,8 +351,9 @@ function HeroCarousel() {
     }, 300);
   }, [current, isTransitioning]);
 
-  // Auto-rotate every 8 seconds
+  // Auto-rotate every 8 seconds — pauses when user is interacting with form
   useEffect(() => {
+    if (paused) return;
     const timer = setInterval(() => {
       setIsTransitioning(true);
       setTimeout(() => {
@@ -360,7 +362,7 @@ function HeroCarousel() {
       }, 300);
     }, 8000);
     return () => clearInterval(timer);
-  }, []);
+  }, [paused]);
 
   const slide = HERO_SLIDES[current];
 
@@ -431,7 +433,7 @@ function HeroCarousel() {
             }`}
           >
             {slide.showForm ? (
-              <PellForm />
+              <PellForm onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} />
             ) : (
               <div className="card-cosmic rounded-2xl p-8 text-center">
                 <div className={`w-16 h-16 rounded-full ${BADGE_COLORS[slide.badgeColor].split(' ')[0]} flex items-center justify-center mx-auto mb-4`}>
