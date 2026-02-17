@@ -263,8 +263,8 @@ const HERO_SLIDES = [
   {
     id: 'main',
     badge: null,
-    headline: 'Market intelligence for community college programs.',
-    subtitle: 'Get 7–10 vetted, data-backed new program leads — scored, ranked, and ready to act on. From compliance gaps to full market scans, Wavelength tunes you into what your region actually needs.',
+    headline: 'Build the programs your community actually needs.',
+    subtitle: 'Wavelength delivers 7–10 vetted, data-backed new program leads — so you can invest in programs that fill real workforce gaps, create careers, and strengthen your institution.',
     stats: [
       { value: '7–10', label: 'vetted program leads' },
       { value: '50+', label: 'verified sources' },
@@ -311,8 +311,8 @@ const HERO_SLIDES = [
   {
     id: 'market-scan',
     badge: 'Founding Rate · $1,500',
-    headline: 'Full market intelligence before you build.',
-    subtitle: '7–10 vetted new program opportunities for your region — each scored across five dimensions, backed by real employer signals and labor data, with a clear GO / NO-GO recommendation.',
+    headline: 'Know exactly what to build next.',
+    subtitle: '7–10 vetted new program opportunities for your region — each backed by real employer demand and scored across five dimensions. Build with confidence, not guesswork.',
     stats: [
       { value: '7–10', label: 'vetted program leads' },
       { value: '50+', label: 'verified sources' },
@@ -852,7 +852,7 @@ export default function HomePage() {
               className="font-heading font-bold text-white"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              From static to signal.
+              From question to program plan.
             </h2>
           </AnimateOnScroll>
 
@@ -861,17 +861,17 @@ export default function HomePage() {
               {
                 step: '01',
                 title: 'Tune In',
-                desc: 'Tell us your institution, state, and any program focus areas. Takes 60 seconds to dial in.',
+                desc: 'Tell us about your institution, region, and any program focus areas. Takes 60 seconds.',
               },
               {
                 step: '02',
                 title: 'We Scan',
-                desc: '50+ verified sources — labor data, employer signals, competitive maps — scanned and cross-referenced for your region.',
+                desc: 'We cross-reference 50+ sources — labor data, employer signals, competitive gaps — to find the programs your region is missing.',
               },
               {
                 step: '03',
                 title: 'Clear Signal',
-                desc: '7–10 vetted program leads, scored and ranked with specific next steps. No jargon. No hedging. Just signal.',
+                desc: '7–10 vetted new program leads — scored, ranked, and ready to build. Each one backed by real demand and a clear path forward.',
               },
             ].map(({ step, title, desc }, i) => (
               <div key={step} className="text-center relative">
@@ -916,12 +916,12 @@ export default function HomePage() {
               className="font-heading font-bold text-white"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              Six phases of research. 7–10 vetted program leads.
+              Six phases of research. 7–10 programs worth building.
             </h2>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
             <p className="text-white/70 text-lg max-w-2xl mx-auto">
-              Every lead backed by real data. Every opportunity scored across five dimensions.
+              Every program lead backed by real workforce demand. Every opportunity scored so you know exactly where to invest.
             </p>
           </AnimateOnScroll>
 
@@ -1054,9 +1054,9 @@ export default function HomePage() {
               className="font-heading font-bold text-white mx-auto max-w-3xl leading-tight"
               style={{ fontSize: 'clamp(1.75rem, 4vw + 0.5rem, 3rem)' }}
             >
-              Your next great program is hiding in the noise.
+              Your community needs programs you haven&apos;t built yet.
               <br className="hidden sm:block" />
-              <span className="text-gradient-cosmic">We&apos;ll tune you in.</span>
+              <span className="text-gradient-cosmic">Let&apos;s find them.</span>
             </h2>
           </AnimateOnScroll>
 

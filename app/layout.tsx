@@ -98,7 +98,7 @@ export default function RootLayout({
                   Wavelength
                 </p>
                 <p className="text-sm text-white/40 mt-2 leading-relaxed max-w-xs">
-                  Market intelligence for community college programs. 7–10 vetted program leads, backed by 50+ verified sources.
+                  Helping community colleges build the programs their communities actually need. Data-backed program development starts here.
                 </p>
               </div>
 
