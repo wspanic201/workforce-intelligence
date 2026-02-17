@@ -11,6 +11,7 @@ import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
 import { Waveform } from '@/components/cosmic/Waveform';
 import { ParticleConstellation } from '@/components/cosmic/ParticleConstellation';
+import { Equalizer, EqualizerWide } from '@/components/cosmic/Equalizer';
 
 const US_STATES = [
   'Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut',
@@ -397,7 +398,11 @@ function HeroCarousel() {
               {slide.headline}
             </h1>
 
-            <p className="mt-6 text-lg md:text-xl text-white/80 leading-relaxed max-w-xl">
+            <div className="mt-4 flex lg:justify-start justify-center">
+              <Equalizer bars={9} size="sm" muted />
+            </div>
+
+            <p className="mt-4 text-lg md:text-xl text-white/80 leading-relaxed max-w-xl">
               {slide.subtitle}
             </p>
 
@@ -514,7 +519,10 @@ export default function HomePage() {
       {/* ===== HERO CAROUSEL ===== */}
       <HeroCarousel />
 
-      <WaveDivider />
+      {/* Equalizer divider — replaces wave after hero */}
+      <div className="py-6 flex justify-center">
+        <EqualizerWide bars={60} height={36} />
+      </div>
 
       {/* ===== THREE-PRODUCT FUNNEL ===== */}
       <section className="relative py-20 md:py-32" id="products">
