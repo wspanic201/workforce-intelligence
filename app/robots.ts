@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/projects/"],
+        disallow: ["/admin/", "/api/", "/report/"],
       },
     ],
     sitemap: "https://withwavelength.com/sitemap.xml",
