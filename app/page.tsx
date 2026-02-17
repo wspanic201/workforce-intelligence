@@ -12,6 +12,7 @@ import { Aurora } from '@/components/cosmic/Aurora';
 import { Waveform } from '@/components/cosmic/Waveform';
 import { ParticleConstellation } from '@/components/cosmic/ParticleConstellation';
 import { Equalizer, EqualizerWide } from '@/components/cosmic/Equalizer';
+import { Satellite } from '@/components/cosmic/Satellite';
 
 const US_STATES = [
   'Alabama','Alaska','Arizona','Arkansas','California','Colorado','Connecticut',
@@ -1125,6 +1126,11 @@ export default function HomePage() {
           </AnimateOnScroll>
         </div>
       </section>
+
+      {/* ===== SATELLITE — pointing up toward the stars ===== */}
+      <div className="relative py-16 md:py-24 flex justify-center">
+        <Satellite />
+      </div>
     </div>
   );
 }
