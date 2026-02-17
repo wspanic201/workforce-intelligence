@@ -32,10 +32,10 @@ export default function HomePage() {
 
           <AnimateOnScroll variant="fade-up" delay={150} duration={800}>
             <p className="mt-6 text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed font-medium">
-              Labor market intelligence for community colleges.
+              Program intelligence for the full lifecycle.
             </p>
             <p className="mt-3 text-base md:text-lg text-white/45 max-w-2xl mx-auto leading-relaxed">
-              We analyze your region and tell you exactly which workforce programs to build — and why. Every finding sourced. Every opportunity scored.
+              Find what to build. Validate the market. Design the curriculum. Launch with confidence. Every finding sourced. Every decision backed by data.
             </p>
           </AnimateOnScroll>
 
