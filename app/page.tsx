@@ -241,7 +241,7 @@ export default function HomePage() {
               className="font-heading font-bold text-white"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              Transparent pricing. No &ldquo;contact us&rdquo; games.
+              Simple, transparent pricing.
             </h2>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
