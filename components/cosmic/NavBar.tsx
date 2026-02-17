@@ -44,7 +44,7 @@ export function NavBar() {
               How It Works
             </Link>
             <Link
-              href="#pricing"
+              href="#products"
               className="text-sm font-medium text-white/50 hover:text-white transition-colors"
             >
               Pricing
@@ -58,7 +58,7 @@ export function NavBar() {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
-            <Link href="#pricing">
+            <Link href="#products">
               <button className="btn-cosmic btn-cosmic-primary text-sm py-2 px-6">
                 Get Started
               </button>
@@ -100,7 +100,7 @@ export function NavBar() {
               How It Works
             </Link>
             <Link
-              href="#pricing"
+              href="#products"
               className="block text-base font-medium text-white/80 hover:text-white py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
               onClick={() => setMobileOpen(false)}
             >
@@ -114,7 +114,7 @@ export function NavBar() {
               Sample Report
             </Link>
             <div className="pt-3">
-              <Link href="#pricing" onClick={() => setMobileOpen(false)}>
+              <Link href="#products" onClick={() => setMobileOpen(false)}>
                 <button className="btn-cosmic btn-cosmic-primary text-sm py-3 px-6 w-full">
                   Get Started
                 </button>

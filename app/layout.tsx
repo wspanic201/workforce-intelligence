@@ -108,7 +108,7 @@ export default function RootLayout({
                   How It Works
                 </Link>
                 <Link
-                  href="#pricing"
+                  href="#products"
                   className="hover:text-white/70 transition-colors"
                 >
                   Pricing
