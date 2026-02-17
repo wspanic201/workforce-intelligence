@@ -30,9 +30,9 @@ export async function GET(
     }
   }
 
-  // Load demo data from file
+  // Load demo data from bundled file
   try {
-    const dataPath = '/tmp/wake-tech-report-data.json';
+    const dataPath = path.join(process.cwd(), 'data', 'demo-report.json');
     const raw = fs.readFileSync(dataPath, 'utf-8');
     const data = JSON.parse(raw);
     return NextResponse.json({
