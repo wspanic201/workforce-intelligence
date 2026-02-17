@@ -20,8 +20,8 @@ export async function POST(request: NextRequest) {
     // Notify Matt of new lead
     try {
       await resend.emails.send({
-        from: 'Wavelength <hello@withwavelength.com>',
-        to: 'hello@withwavelength.com',
+        from: 'Wavelength <hello@signal.withwavelength.com>',
+        to: 'mttmrphy@icloud.com',
         subject: `🎯 New Pell Check Lead: ${institution} (${state})`,
         html: `
           <div style="font-family: -apple-system, sans-serif; max-width: 500px;">
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
     // Send confirmation to the lead
     try {
       await resend.emails.send({
-        from: 'Wavelength <hello@withwavelength.com>',
+        from: 'Wavelength <hello@signal.withwavelength.com>',
         to: email,
         subject: `Your Pell Readiness Check is on the way`,
         html: `
