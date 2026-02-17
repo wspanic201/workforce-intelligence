@@ -548,16 +548,21 @@ export default function HomePage() {
                 <p className="text-white/70 text-sm leading-relaxed mb-6">
                   Find out if your programs qualify before July 1 — before your competitors do.
                 </p>
-                <div className="mb-6">
+                <div className="mb-2">
                   <span className="font-heading font-bold text-4xl text-gradient-cosmic">$0</span>
                   <span className="text-white/80 text-sm ml-2">— email required</span>
                 </div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 mb-6">
+                  <Clock className="h-3 w-3 text-teal-400" />
+                  <span className="text-teal-300 text-[10px] font-bold uppercase tracking-wider">Delivered in 48 hours</span>
+                </div>
                 <ul className="space-y-2.5 mb-7">
                   {[
-                    'Program eligibility assessment',
-                    'Clock-hour compliance review',
-                    'Pell gap identification',
-                    'Delivered in ~48 hours',
+                    'Full program catalog review',
+                    'Clock-hour & duration compliance check',
+                    'Pell eligibility scoring (state + federal criteria)',
+                    'Gap identification — programs you should add',
+                    'Summary report with next steps',
                   ].map(item => (
                     <li key={item} className="flex items-start gap-2.5">
                       <Check className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
@@ -593,17 +598,23 @@ export default function HomePage() {
                 </div>
                 <h3 className="font-heading font-bold text-white text-xl mb-2">Compliance Gap Report</h3>
                 <p className="text-white/70 text-sm leading-relaxed mb-6">
-                  See every mandated program you&apos;re not offering — and the revenue you&apos;re leaving on the table.
+                  Every state requires specific training programs. We show you which ones you&apos;re not offering — and what they&apos;re worth.
                 </p>
-                <div className="mb-6">
+                <div className="mb-2">
                   <span className="font-heading font-bold text-4xl text-gradient-cosmic">$295</span>
+                </div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 mb-6">
+                  <Clock className="h-3 w-3 text-blue-400" />
+                  <span className="text-blue-300 text-[10px] font-bold uppercase tracking-wider">Delivered in 3–5 business days</span>
                 </div>
                 <ul className="space-y-2.5 mb-7">
                   {[
-                    'State-mandated program gap analysis',
-                    'Regional demand by program area',
-                    'Revenue opportunity sizing',
-                    'Prioritized action list',
+                    'Full catalog scan of your current programs',
+                    'State regulatory code cross-reference',
+                    'Every mandated gap with statutory citation',
+                    'Revenue estimate per missing program',
+                    'Prioritized opportunity ranking (1–10)',
+                    'Professional consulting-grade report',
                   ].map(item => (
                     <li key={item} className="flex items-start gap-2.5">
                       <Check className="h-4 w-4 text-cosmic-teal flex-shrink-0 mt-0.5" strokeWidth={2} />
@@ -646,21 +657,27 @@ export default function HomePage() {
                   </div>
                   <h3 className="font-heading font-bold text-white text-xl mb-2">Market Scan</h3>
                   <p className="text-white/70 text-sm leading-relaxed mb-6">
-                    Full market intelligence before you build — 25+ pages, 50+ sources, programs scored and ranked.
+                    The full picture before you invest. 25+ page report backed by 50+ verified sources with a clear GO / NO-GO recommendation.
                   </p>
                   <div className="mb-1">
                     <span className="font-heading font-bold text-4xl text-gradient-cosmic">$1,500</span>
                     <span className="text-white/80 text-sm ml-2 line-through">$3,500</span>
                   </div>
-                  <p className="text-xs text-white/80 mb-6">Founding rate — first 5 institutions</p>
+                  <p className="text-xs text-white/80 mb-2">Founding rate — first 5 institutions</p>
+                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
+                    <Clock className="h-3 w-3 text-purple-400" />
+                    <span className="text-purple-300 text-[10px] font-bold uppercase tracking-wider">Delivered in 5–7 business days</span>
+                  </div>
                   <ul className="space-y-2.5 mb-7">
                     {[
-                      'Regional market intelligence',
-                      'Employer demand signals',
-                      'Competitive landscape + Blue Ocean',
-                      'Programs scored & ranked',
+                      'Regional labor market intelligence',
+                      'Employer demand verification',
+                      'Competitive landscape + Blue Ocean analysis',
+                      'Programs scored, ranked & categorized',
+                      'Financial projections & enrollment modeling',
                       'Workforce Pell readiness scoring',
-                      'Grant alignment',
+                      'Grant alignment + funding opportunities',
+                      'Executive summary + full report (25+ pages)',
                     ].map(item => (
                       <li key={item} className="flex items-start gap-2.5">
                         <Check className="h-4 w-4 text-cosmic-teal flex-shrink-0 mt-0.5" strokeWidth={2} />
