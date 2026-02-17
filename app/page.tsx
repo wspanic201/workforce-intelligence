@@ -856,79 +856,43 @@ export default function HomePage() {
             </h2>
           </AnimateOnScroll>
 
-          <StaggerChildren stagger={120} variant="fade-up" className="grid md:grid-cols-3 gap-8">
+          <StaggerChildren stagger={120} variant="fade-up" className="grid md:grid-cols-3 gap-12 md:gap-8">
             {[
               {
                 step: '01',
                 title: 'Tune In',
                 desc: 'Tell us your institution, state, and any program focus areas. Takes 60 seconds to dial in.',
-                icon: (
-                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="14" cy="14" r="10" stroke="url(#tuneGrad)" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.4" />
-                    <circle cx="14" cy="14" r="5" stroke="url(#tuneGrad)" strokeWidth="1.5" />
-                    <circle cx="14" cy="14" r="1.5" fill="url(#tuneGrad)" />
-                    <line x1="14" y1="4" x2="14" y2="1" stroke="url(#tuneGrad)" strokeWidth="1.5" strokeLinecap="round" />
-                    <line x1="14" y1="27" x2="14" y2="24" stroke="url(#tuneGrad)" strokeWidth="1.5" strokeLinecap="round" />
-                    <line x1="4" y1="14" x2="1" y2="14" stroke="url(#tuneGrad)" strokeWidth="1.5" strokeLinecap="round" />
-                    <line x1="27" y1="14" x2="24" y2="14" stroke="url(#tuneGrad)" strokeWidth="1.5" strokeLinecap="round" />
-                    <defs>
-                      <linearGradient id="tuneGrad" x1="0" y1="0" x2="28" y2="28">
-                        <stop stopColor="#a78bfa" />
-                        <stop offset="1" stopColor="#2dd4bf" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                ),
               },
               {
                 step: '02',
                 title: 'We Scan',
                 desc: '50+ verified sources — labor data, employer signals, competitive maps — scanned and cross-referenced for your region.',
-                icon: (
-                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 20 Q5 20 7 14 Q9 8 11 14 Q13 20 14 14 Q15 8 17 14 Q19 20 21 12 Q23 4 25 14 Q26 18 27 16" stroke="url(#scanGrad)" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-                    <rect x="0" y="24" width="28" height="1" rx="0.5" fill="url(#scanGrad)" opacity="0.15" />
-                    <line x1="14" y1="2" x2="14" y2="6" stroke="url(#scanGrad)" strokeWidth="1" strokeLinecap="round" opacity="0.3" />
-                    <circle cx="14" cy="14" r="2" fill="url(#scanGrad)" opacity="0.25" />
-                    <defs>
-                      <linearGradient id="scanGrad" x1="0" y1="0" x2="28" y2="28">
-                        <stop stopColor="#a78bfa" />
-                        <stop offset="0.5" stopColor="#818cf8" />
-                        <stop offset="1" stopColor="#2dd4bf" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                ),
               },
               {
                 step: '03',
                 title: 'Clear Signal',
                 desc: '7–10 vetted program leads, scored and ranked with specific next steps. No jargon. No hedging. Just signal.',
-                icon: (
-                  <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M8 20 C8 20 10 18 14 18 C18 18 20 20 20 20" stroke="url(#sigGrad)" strokeWidth="1.5" strokeLinecap="round" opacity="0.35" />
-                    <path d="M5 23 C5 23 8 19 14 19 C20 19 23 23 23 23" stroke="url(#sigGrad)" strokeWidth="1.5" strokeLinecap="round" opacity="0.2" />
-                    <path d="M11 17 C11 17 12 16 14 16 C16 16 17 17 17 17" stroke="url(#sigGrad)" strokeWidth="1.5" strokeLinecap="round" opacity="0.55" />
-                    <circle cx="14" cy="13" r="2" fill="url(#sigGrad)" />
-                    <path d="M14 11 L14 5" stroke="url(#sigGrad)" strokeWidth="1.5" strokeLinecap="round" />
-                    <path d="M12 6 L14 3 L16 6" stroke="url(#sigGrad)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <defs>
-                      <linearGradient id="sigGrad" x1="0" y1="0" x2="28" y2="28">
-                        <stop stopColor="#818cf8" />
-                        <stop offset="1" stopColor="#2dd4bf" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                ),
               },
-            ].map(({ step, title, desc, icon }) => (
-              <div key={step} className="text-center">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/10 to-teal-500/10 border border-white/[0.06] flex items-center justify-center mx-auto mb-5">
-                  {icon}
+            ].map(({ step, title, desc }, i) => (
+              <div key={step} className="text-center relative">
+                {/* Gradient number */}
+                <div className="mx-auto mb-6 relative">
+                  <span
+                    className="font-heading font-bold text-6xl text-gradient-cosmic opacity-20 select-none"
+                    aria-hidden="true"
+                  >
+                    {step}
+                  </span>
                 </div>
-                <div className="font-mono text-xs text-white/25 tracking-widest mb-2">{step}</div>
                 <h3 className="font-heading font-bold text-white text-xl mb-3">{title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed">{desc}</p>
+                <p className="text-white/50 text-sm leading-relaxed max-w-[280px] mx-auto">{desc}</p>
+
+                {/* Connector line between steps (desktop only) */}
+                {i < 2 && (
+                  <div className="hidden md:block absolute top-8 -right-4 w-8">
+                    <div className="h-[1px] w-full bg-gradient-to-r from-purple-500/20 to-teal-500/20" />
+                  </div>
+                )}
               </div>
             ))}
           </StaggerChildren>
