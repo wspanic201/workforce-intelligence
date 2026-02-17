@@ -79,6 +79,7 @@ Commands:
   discover     Run Discovery analysis for an institution
   validate     Run Validation on discovered programs
   pipeline     Run full Discovery → Validation pipeline
+  pell-audit   Run Workforce Pell Readiness Audit (lead magnet)
   report       List/regenerate reports from cached data
 
 Discovery Options:
@@ -90,6 +91,14 @@ Discovery Options:
   --metro      Metro area label (e.g., "Cedar Rapids-Iowa City Corridor")
   --focus      Focus areas (e.g., "Healthcare, Manufacturing, Technology")
   --context    Additional context about the institution
+  --url        Institution website URL (for pell-audit)
+
+Pell Audit Options:
+  --college    Institution name
+  --state      State (required)
+  --city       City (helps scope regional data)
+  --url        Institution website URL (optional — we'll find it)
+  --context    Additional context
 
 Validation Options:
   --top <n>    Validate top N programs from discovery (default: 1)
@@ -108,6 +117,7 @@ General Options:
 Examples:
   npx tsx cli.ts discover
   npx tsx cli.ts discover --college "Kirkwood" --city "Cedar Rapids" --state "Iowa"
+  npx tsx cli.ts pell-audit --college "Wake Tech" --city "Raleigh" --state "North Carolina"
   npx tsx cli.ts validate --top 3
   npx tsx cli.ts pipeline --college "Kirkwood" --city "Cedar Rapids" --state "Iowa" --top 2
   npx tsx cli.ts report
@@ -139,6 +149,7 @@ function parseArgs(): CLIFlags {
       case '--metro': flags.metro = next; i++; break;
       case '--focus': flags.focus = next; i++; break;
       case '--context': flags.context = next; i++; break;
+      case '--url': (flags as any).url = next; i++; break;
       case '--test': flags.test = true; break;
       case '--output': flags.output = next; i++; break;
       case '--json': flags.json = true; break;
@@ -692,6 +703,126 @@ async function showReports(flags: CLIFlags) {
   }
 }
 
+// ── Pell Audit Command ──
+
+async function runPellAudit(flags: CLIFlags) {
+  header('WORKFORCE PELL READINESS AUDIT');
+  log('Scrapes an institution\'s website, catalogs programs, and scores');
+  log('each against Workforce Pell eligibility criteria (effective July 1, 2026).');
+  console.log('');
+
+  const college = flags.college || await ask('Institution name');
+  const state = flags.state || await ask('State');
+  const city = flags.city || await ask('City (helps scope regional data)');
+  const url = (flags as any).url || await ask('Institution website URL (or Enter to auto-find)');
+  const context = flags.context || await ask('Additional context (or Enter to skip)');
+
+  if (!college || !state) {
+    fail('Institution name and state are required.');
+    return;
+  }
+
+  // Confirm
+  console.log('');
+  log('┌─────────────────────────────────────────────');
+  log(`│ Institution:  ${college}`);
+  log(`│ Location:     ${city ? `${city}, ` : ''}${state}`);
+  log(`│ Website:      ${url || '(auto-detect)'}`);
+  if (context) log(`│ Context:      ${context.slice(0, 80)}`);
+  log(`│ Mode:         ${flags.test ? 'TEST' : 'PRODUCTION (~$2-4)'}`);
+  log('└─────────────────────────────────────────────');
+  console.log('');
+
+  const confirmed = await askConfirm('Run Pell Audit?');
+  if (!confirmed) {
+    log('Cancelled.');
+    return;
+  }
+
+  if (flags.test) {
+    process.env.TEST_MODE = 'true';
+    log('🧪 TEST MODE — using Haiku model with lower token limits');
+  }
+
+  console.log('');
+  log('Starting Pell Audit pipeline...');
+  console.log('');
+
+  const { runPellAudit: runAudit } = await import('./lib/stages/pell-audit/orchestrator');
+
+  const startTime = Date.now();
+  const result = await runAudit(
+    {
+      collegeName: college,
+      collegeUrl: url || undefined,
+      state,
+      city: city || undefined,
+      additionalContext: context || undefined,
+    },
+    (event) => {
+      const icon = event.status === 'complete' ? '✅' : event.status === 'error' ? '❌' : '⏳';
+      log(`${icon} Phase ${event.phase}/5: ${event.phaseName} — ${event.message} [${event.elapsed}s]`);
+    }
+  );
+
+  const duration = Math.round((Date.now() - startTime) / 1000);
+
+  // Save results
+  console.log('');
+  header('RESULTS');
+
+  if (result.status === 'error') {
+    fail('Pell Audit failed. Check errors above.');
+    return;
+  }
+
+  // Save report
+  if (result.report) {
+    const sanitized = sanitizeFilename(college);
+    const reportPath = join(flags.output, `Pell-Audit-${sanitized}-${timestamp()}.md`);
+    writeFileSync(reportPath, result.report.fullMarkdown);
+    success(`Report saved: ${reportPath}`);
+
+    if (flags.json) {
+      const jsonPath = join(flags.output, `Pell-Audit-${sanitized}-${timestamp()}.json`);
+      writeFileSync(jsonPath, JSON.stringify(result, null, 2));
+      success(`JSON data saved: ${jsonPath}`);
+    }
+
+    // Cache for later use
+    const key = `pell-${cacheKey(college)}`;
+    saveCacheData(key, {
+      input: { college, state, city, url, context },
+      output: result,
+      timestamp: new Date().toISOString(),
+    });
+    success(`Cached: ~/.workforceos/${key}.json`);
+  }
+
+  // Summary
+  console.log('');
+  log('┌─────────────────────────────────────────────');
+  log(`│ Status:              ${result.status.toUpperCase()}`);
+  log(`│ Duration:            ${formatDuration(duration)}`);
+  log(`│ Programs Found:      ${result.report?.metadata.totalPrograms || 0}`);
+  log(`│ Pell-Ready/Likely:   ${result.report?.metadata.pellReadyCount || 0}`);
+  log(`│ Gap Opportunities:   ${result.report?.metadata.gapsIdentified || 0}`);
+  log(`│ Data Sources:        ${result.report?.metadata.dataSources || 0}`);
+  log(`│ Errors:              ${result.metadata.errors.length}`);
+  log('└─────────────────────────────────────────────');
+
+  if (result.metadata.errors.length > 0) {
+    console.log('');
+    warn('Errors during run:');
+    for (const err of result.metadata.errors) {
+      log(`  - ${err}`);
+    }
+  }
+
+  console.log('');
+  success(`Pell Audit complete in ${formatDuration(duration)}`);
+}
+
 // ── Main ──
 
 async function main() {
@@ -728,6 +859,12 @@ async function main() {
       case 'reports':
       case 'r':
         await showReports(flags);
+        break;
+
+      case 'pell-audit':
+      case 'pell':
+      case 'audit':
+        await runPellAudit(flags);
         break;
 
       default:
