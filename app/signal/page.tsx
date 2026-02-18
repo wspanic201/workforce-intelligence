@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Check, ArrowRight, Radio, Mail, Zap } from 'lucide-react';
 import { Stars } from '@/components/cosmic/Stars';
@@ -26,6 +26,11 @@ export default function SignalPage() {
   const [formData, setFormData] = useState({ email: '', firstName: '', institution: '' });
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,9 +60,9 @@ export default function SignalPage() {
 
       {/* Hero */}
       <section className="relative min-h-[60vh] flex items-center justify-center pt-32 pb-16 overflow-hidden">
-        <Stars count={200} />
+        <Stars count={isMobile ? 60 : 200} />
         <Aurora />
-        <Waveform className="opacity-40" />
+        {!isMobile && <Waveform className="opacity-40" />}
 
         <div className="relative z-10 max-w-[680px] mx-auto px-6 text-center">
           {/* Badge */}

@@ -703,3 +703,27 @@
 .signal-glow {
   filter: drop-shadow(0 0 8px rgba(124, 58, 237, 0.4)) drop-shadow(0 0 16px rgba(59, 130, 246, 0.2));
 }
+
+/* ============================================
+   MOBILE PERFORMANCE — reduce heavy GPU effects
+   filter: blur() and mix-blend-mode are expensive
+   on mobile Safari. Cut them significantly.
+   ============================================ */
+@media (max-width: 768px) {
+  .aurora-blob {
+    filter: blur(40px) !important;
+    mix-blend-mode: normal !important;
+    opacity: 0.6;
+  }
+
+  .aurora-blob-1 { width: 280px; height: 280px; }
+  .aurora-blob-2 { width: 240px; height: 240px; }
+  .aurora-blob-3 { width: 220px; height: 220px; }
+  .aurora-blob-4 { width: 180px; height: 180px; }
+
+  /* Slow down aurora animations — less repaints */
+  .aurora-blob-1 { animation-duration: 20s !important; }
+  .aurora-blob-2 { animation-duration: 24s !important; }
+  .aurora-blob-3 { animation-duration: 28s !important; }
+  .aurora-blob-4 { animation-duration: 22s !important; }
+}
