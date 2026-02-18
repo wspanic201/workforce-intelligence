@@ -115,6 +115,13 @@ export function NavBar() {
             >
               Blog
             </Link>
+            <Link
+              href="/signal"
+              className="text-sm font-medium text-white/50 hover:text-white transition-colors inline-flex items-center gap-1.5"
+            >
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+              The Signal
+            </Link>
           </div>
 
           <div className="hidden md:flex items-center gap-3">
@@ -192,6 +199,14 @@ export function NavBar() {
               onClick={() => setMobileOpen(false)}
             >
               Blog
+            </Link>
+            <Link
+              href="/signal"
+              className="flex items-center gap-2 text-base font-medium text-teal-400 hover:text-teal-300 py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
+              onClick={() => setMobileOpen(false)}
+            >
+              <span className="inline-block w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
+              The Signal — Free Newsletter
             </Link>
 
             <div className="pt-3">
