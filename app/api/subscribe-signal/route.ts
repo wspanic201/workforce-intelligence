@@ -195,15 +195,21 @@ export async function POST(request: NextRequest) {
 </body>
 </html>`;
 
-    // Fire confirmation email (non-blocking — don't fail signup if email fails)
-    resend.emails.send({
-      from: 'The Signal by Wavelength <hello@signal.withwavelength.com>',
-      to: cleanEmail,
-      subject: "You're in — here's what's moving in workforce dev right now",
-      html: confirmationHtml,
-    }).catch(err => {
-      console.error('[Subscribe Signal] Confirmation email failed:', err);
-    });
+    // Send confirmation email — must be awaited before returning the response.
+    // Vercel serverless functions terminate immediately on response; fire-and-forget
+    // promises are killed before they can complete.
+    try {
+      await resend.emails.send({
+        from: 'The Signal by Wavelength <hello@signal.withwavelength.com>',
+        to: cleanEmail,
+        subject: "You're in — here's what's moving in workforce dev right now",
+        html: confirmationHtml,
+      });
+      console.log(`[Subscribe Signal] Confirmation email sent to ${cleanEmail}`);
+    } catch (emailErr) {
+      // Log but don't fail the signup — contact is already in the audience
+      console.error('[Subscribe Signal] Confirmation email failed:', emailErr);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
