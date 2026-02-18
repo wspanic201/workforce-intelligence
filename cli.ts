@@ -80,6 +80,7 @@ Commands:
   validate     Run Validation on discovered programs
   pipeline     Run full Discovery → Validation pipeline
   pell-audit   Run Workforce Pell Readiness Audit (lead magnet)
+  grant-finder Find, score, and rank federal grants for your college
   report       List/regenerate reports from cached data
 
 Discovery Options:
@@ -119,6 +120,7 @@ Examples:
   npx tsx cli.ts discover --college "Kirkwood" --city "Cedar Rapids" --state "Iowa"
   npx tsx cli.ts pell-audit --college "Wake Tech" --city "Raleigh" --state "North Carolina"
   npx tsx cli.ts compliance-gap --college "Wake Tech" --state "North Carolina"
+  npx tsx cli.ts grant-finder --college "Kirkwood Community College" --state "Iowa" --city "Cedar Rapids" --focus "manufacturing,healthcare,IT"
   npx tsx cli.ts validate --top 3
   npx tsx cli.ts pipeline --college "Kirkwood" --city "Cedar Rapids" --state "Iowa" --top 2
   npx tsx cli.ts report
@@ -824,6 +826,147 @@ async function runPellAudit(flags: CLIFlags) {
   success(`Pell Audit complete in ${formatDuration(duration)}`);
 }
 
+// ── Grant Finder Command ──
+
+async function runGrantFinder(flags: CLIFlags) {
+  header('GRANT FINDER — Federal & Foundation Grants for Your College');
+  log('Searches Grants.gov and the web for grant opportunities,');
+  log('scores each for fit, researches past awards, and writes a');
+  log('comprehensive Grant Intelligence Report.');
+  console.log('');
+
+  const college = flags.college || await ask('Institution name');
+  const state = flags.state || await ask('State');
+  const city = flags.city || await ask('City');
+  const focusInput = flags.focus || await ask('Program focus areas (comma-separated, or Enter to skip)');
+  const focusAreas = focusInput
+    ? focusInput.split(',').map((f: string) => f.trim()).filter(Boolean)
+    : [];
+
+  if (!college || !state) {
+    fail('Institution name and state are required.');
+    return;
+  }
+
+  // Confirm
+  console.log('');
+  log('┌─────────────────────────────────────────────');
+  log(`│ Institution:  ${college}`);
+  log(`│ Location:     ${city ? `${city}, ` : ''}${state}`);
+  log(`│ Focus Areas:  ${focusAreas.length > 0 ? focusAreas.join(', ') : '(all workforce areas)'}`);
+  log(`│ Mode:         ${flags.test ? 'TEST' : 'PRODUCTION (~$3-6)'}`);
+  log('└─────────────────────────────────────────────');
+  console.log('');
+
+  const confirmed = await askConfirm('Run Grant Finder?');
+  if (!confirmed) {
+    log('Cancelled.');
+    return;
+  }
+
+  if (flags.test) {
+    process.env.TEST_MODE = 'true';
+    log('🧪 TEST MODE — using Haiku model with lower token limits');
+  }
+
+  console.log('');
+  log('Starting Grant Finder pipeline...');
+  log('This takes 5-10 minutes. Grab a coffee ☕');
+  console.log('');
+
+  const { runGrantFinder: runFinder } = await import('./lib/stages/grant-finder/orchestrator');
+
+  const startTime = Date.now();
+  const result = await runFinder(
+    {
+      collegeName: college,
+      state,
+      city: city || undefined,
+      programFocusAreas: focusAreas.length > 0 ? focusAreas : undefined,
+    },
+    (event) => {
+      const icon = event.status === 'complete' ? '✅' : event.status === 'error' ? '❌' : '⏳';
+      log(`${icon} Agent ${event.agent}/5: ${event.agentName} — ${event.message} [${event.elapsed}s]`);
+    }
+  );
+
+  const duration = Math.round((Date.now() - startTime) / 1000);
+
+  // Save results
+  console.log('');
+  header('RESULTS');
+
+  if (!result.report && result.status === 'error') {
+    fail('Grant Finder failed. Check errors above.');
+    if (result.errors.length > 0) {
+      for (const err of result.errors) warn(`  - ${err}`);
+    }
+    return;
+  }
+
+  // Save report
+  const sanitized = sanitizeFilename(college);
+
+  if (result.report) {
+    const reportPath = join(flags.output, `Grant-Intelligence-${sanitized}-${timestamp()}.md`);
+    writeFileSync(reportPath, result.report.fullMarkdown);
+    success(`Report saved: ${reportPath}`);
+  }
+
+  if (flags.json && result.grants) {
+    const jsonPath = join(flags.output, `Grant-Intelligence-${sanitized}-${timestamp()}.json`);
+    writeFileSync(jsonPath, JSON.stringify(result, null, 2));
+    success(`JSON data saved: ${jsonPath}`);
+  }
+
+  // Cache
+  const key = `grant-finder-${cacheKey(college)}`;
+  saveCacheData(key, {
+    input: { college, state, city, focusAreas },
+    output: result,
+    timestamp: new Date().toISOString(),
+  });
+  success(`Cached: ~/.workforceos/${key}.json`);
+
+  // Summary
+  console.log('');
+  log('┌─────────────────────────────────────────────');
+  log(`│ Status:                ${result.status.toUpperCase()}`);
+  log(`│ Duration:              ${formatDuration(duration)}`);
+  log(`│ Grants Reviewed:       ${result.metadata.grantsFound}`);
+  log(`│ Priority Grants:       ${result.report?.metadata.priorityGrantCount ?? 0}`);
+  log(`│ Strategic Grants:      ${result.report?.metadata.strategicGrantCount ?? 0}`);
+  log(`│ Monitor List:          ${result.report?.metadata.monitorGrantCount ?? 0}`);
+  if (result.report) {
+    log(`│ Report Length:         ${result.report.wordCount} words (~${result.report.pageEstimate} pages)`);
+    log(`│ Top Grant:             ${result.report.metadata.topGrantTitle}`);
+  }
+  log(`│ Errors:                ${result.errors.length}`);
+  log('└─────────────────────────────────────────────');
+
+  if (result.errors.length > 0) {
+    console.log('');
+    warn('Errors during run:');
+    for (const err of result.errors) {
+      log(`  - ${err}`);
+    }
+  }
+
+  // Show top grants
+  if (result.grants && result.grants.length > 0) {
+    console.log('');
+    log('TOP GRANT OPPORTUNITIES:');
+    result.grants.slice(0, 8).forEach((grant: any, i: number) => {
+      const tierIcon = grant.matchTier === 'priority' ? '🟢' : grant.matchTier === 'strategic' ? '🔵' : grant.matchTier === 'monitor' ? '🟡' : '⚪';
+      const award = grant.awardCeiling ? ` — up to $${(grant.awardCeiling / 1000).toFixed(0)}K` : '';
+      log(`  ${tierIcon} ${i + 1}. ${grant.title || grant.id} (${grant.scores?.composite?.toFixed(1) || '?'}/10)${award}`);
+    });
+  }
+
+  console.log('');
+  success(`Grant Finder complete in ${formatDuration(duration)}`);
+}
+
 // ── Compliance Gap Command ──
 
 async function runComplianceGap(flags: CLIFlags) {
@@ -1001,6 +1144,12 @@ async function main() {
       case 'compliance':
       case 'gap':
         await runComplianceGap(flags);
+        break;
+
+      case 'grant-finder':
+      case 'grants':
+      case 'grant':
+        await runGrantFinder(flags);
         break;
 
       default:
