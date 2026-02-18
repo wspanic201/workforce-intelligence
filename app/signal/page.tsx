@@ -156,9 +156,14 @@ export default function SignalPage() {
                   <Check className="h-7 w-7 text-teal-400" />
                 </div>
                 <h3 className="font-heading font-bold text-white text-xl mb-2">You&apos;re in.</h3>
-                <p className="text-white/60 text-sm">
+                <p className="text-white/60 text-sm mb-3">
                   Your first edition lands Monday, Wednesday, or Friday — whichever comes first.
                   Welcome to the Signal.
+                </p>
+                <p className="text-white/35 text-xs leading-relaxed">
+                  Using a work or college email? Check your spam folder and add{' '}
+                  <span className="text-white/50 font-mono">hello@signal.withwavelength.com</span>{' '}
+                  to your contacts to make sure editions get through.
                 </p>
                 <Link href="/" className="block mt-6">
                   <button className="btn-cosmic btn-cosmic-ghost text-sm">
