@@ -114,6 +114,10 @@ export default function RootLayout({
                     Compliance Gap Report
                     <span className="text-blue-400/60 text-[10px] ml-1.5">$295</span>
                   </Link>
+                  <Link href="/grants" className="block text-sm text-white/50 hover:text-white transition-colors">
+                    Grant Intelligence Scan
+                    <span className="text-green-400/60 text-[10px] ml-1.5">$495</span>
+                  </Link>
                   <Link href="/discover" className="block text-sm text-white/50 hover:text-white transition-colors">
                     Market Scan
                     <span className="text-purple-400/60 text-[10px] ml-1.5">$1,500</span>

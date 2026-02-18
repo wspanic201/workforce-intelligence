@@ -7,6 +7,7 @@ import { WavelengthMark } from './WavelengthLogo';
 const PRODUCTS = [
   { label: 'Pell Readiness Check', href: '/pell', tag: 'Free', tagColor: 'text-teal-400 bg-teal-500/10' },
   { label: 'Compliance Gap Report', href: '/compliance-gap', tag: '$295', tagColor: 'text-blue-400 bg-blue-500/10' },
+  { label: 'Grant Intelligence Scan', href: '/grants', tag: '$495', tagColor: 'text-green-400 bg-green-500/10' },
   { label: 'Market Scan', href: '/discover', tag: '$1,500', tagColor: 'text-purple-400 bg-purple-500/10' },
   { label: 'Program Validation', href: '/validate', tag: '$2,000', tagColor: 'text-emerald-400 bg-emerald-500/10' },
 ];

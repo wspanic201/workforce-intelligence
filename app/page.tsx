@@ -350,20 +350,20 @@ function HeroCarousel() {
     setIsTransitioning(true);
     setTimeout(() => {
       setCurrent(index);
-      setTimeout(() => setIsTransitioning(false), 50);
-    }, 300);
+      setTimeout(() => setIsTransitioning(false), 30);
+    }, 350);
   }, [current, isTransitioning]);
 
-  // Auto-rotate every 8 seconds — pauses when user is interacting with form
+  // Auto-rotate every 12 seconds — pauses when user is interacting with form
   useEffect(() => {
     if (paused) return;
     const timer = setInterval(() => {
       setIsTransitioning(true);
       setTimeout(() => {
         setCurrent(prev => (prev + 1) % HERO_SLIDES.length);
-        setTimeout(() => setIsTransitioning(false), 50);
-      }, 300);
-    }, 8000);
+        setTimeout(() => setIsTransitioning(false), 30);
+      }, 350);
+    }, 12000);
     return () => clearInterval(timer);
   }, [paused]);
 
@@ -381,8 +381,8 @@ function HeroCarousel() {
 
           {/* Left: Content */}
           <div
-            className={`flex-1 text-center lg:text-left transition-all duration-500 ease-out min-h-[320px] ${
-              isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+            className={`flex-1 text-center lg:text-left transition-all duration-300 ease-out min-h-[320px] ${
+              isTransitioning ? 'opacity-0 translate-y-3' : 'opacity-100 translate-y-0'
             }`}
           >
             {slide.badge && (
@@ -436,8 +436,8 @@ function HeroCarousel() {
 
           {/* Right: Form or visual card */}
           <div
-            className={`w-full lg:w-auto lg:min-w-[420px] lg:max-w-[480px] lg:min-h-[350px] flex items-center transition-all duration-500 ease-out ${
-              isTransitioning ? 'opacity-0 translate-y-4' : 'opacity-100 translate-y-0'
+            className={`w-full lg:w-auto lg:min-w-[420px] lg:max-w-[480px] lg:min-h-[350px] flex items-center transition-all duration-300 ease-out ${
+              isTransitioning ? 'opacity-0 translate-y-3' : 'opacity-100 translate-y-0'
             }`}
           >
             {slide.showForm ? (
