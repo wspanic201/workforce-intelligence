@@ -183,7 +183,7 @@ ${programScore.recommendation === 'Strong Go' ? `
 
 This validation report was produced using Workforce Intelligence's 7-stage Program Validator framework, which combines:
 
-1. **Multi-Agent Analysis:** Seven specialized AI research agents each conducting focused analysis
+1. **Multi-Source Analysis:** Seven specialized research dimensions each conducting focused analysis
 2. **Weighted Scoring:** Evidence-based scoring across 7 dimensions with predetermined weights
 3. **Override Rules:** Automatic safety checks that prevent launching programs with critical weaknesses
 4. **Real Data Sources:** All findings grounded in publicly available labor market data, competitor research, and industry standards

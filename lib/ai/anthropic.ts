@@ -24,7 +24,7 @@ export interface AICallOptions {
 // than nothing). On total failure we throw so orchestrator can skip.
 
 const STALL_TIMEOUT_MS = 45_000;   // 45s with no token = stalled
-const OVERALL_TIMEOUT_MS = 5 * 60_000; // 5 min hard cap per call
+const OVERALL_TIMEOUT_MS = 10 * 60_000; // 10 min hard cap per call
 
 export async function callClaude(
   prompt: string,

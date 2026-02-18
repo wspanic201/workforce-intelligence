@@ -105,7 +105,8 @@ TIER SUMMARY:
 
 BRANDING RULE: Do not mention any third-party company or brand names that were not found in the source data above.
 
-Write a comprehensive Grant Intelligence Report in Markdown. Include these sections:
+Write a comprehensive Grant Intelligence Report in Markdown. Use the following structure.
+IMPORTANT: Write ONE section per grant — do NOT duplicate grants across sections. Each Priority/Strategic grant gets its full detail card inline. Do NOT create a separate "Grant Detail Cards" section.
 
 ---
 
@@ -113,58 +114,64 @@ Write a comprehensive Grant Intelligence Report in Markdown. Include these secti
 *Prepared: ${reportDate} | ${scoredGrants.length} opportunities reviewed*
 
 ## Executive Summary
-(3-5 sentences highlighting the top 3-5 opportunities and the overall funding landscape for ${input.collegeName}. Mention total potential funding if the top grants were awarded.)
+(3-5 sentences: top opportunities, total potential funding, overall landscape assessment for ${input.collegeName}.)
 
 ## Priority Grants — Pursue Immediately
-(For each priority-tier grant: grant name as ### heading, then: agency, deadline, award range, fit score, why it fits the college, top 2-3 action items to begin applying. Sort by deadline ascending.)
+(For EACH priority-tier grant, write one detailed card as a ### heading. Each card includes ALL of the following inline — no separate detail section:
+- **Grant Number / Agency / Award Range / Deadline** (with days remaining)
+- **Fit Score:** X.X/10 with 5-criterion breakdown table
+- **Past Award Intelligence:** recipients, avg award, success rate, competitive insights
+- **Application Requirements:** narrative sections, data needed, letters of support required
+- **Budget Notes:** allowable costs, indirect rate, equipment rules
+- **Match Requirements:** cost sharing, in-kind contributions
+- **Estimated Effort:** 🟢/🟡/🔴 level + hour range + breakdown by task
+- **Why This Fits ${input.collegeName}:** 3-5 specific reasons
+- **Grants.gov Link:** URL
+Sort by deadline ascending.)
 
 ## Strategic Grants — Plan Ahead
-(For each strategic-tier grant: similar detail cards but shorter. Mention approximate future cycle if this cycle's deadline has passed.)
+(Same card format as Priority, but for strategic-tier grants. If a deadline has passed, mention expected next cycle.)
 
 ## Monitor List — Track for Future Cycles
-(Bullet list format: grant name, agency, why it's worth watching, what needs to change for it to become priority)
+(Bullet list: grant name, agency, why it's worth watching, what needs to change)
 
 ## Skip List
-(Bullet list with one-sentence explanation of why each was deprioritized)
-
-## Grant Detail Cards
-(Full detail card for each Priority and Strategic grant. Each card should include:
-- **Grant Name:** full title
-- **Grant Number:** number
-- **Agency:** name
-- **Award Range:** floor to ceiling
-- **Deadline:** date + days remaining
-- **Fit Score:** X.X/10 with breakdown table
-- **Past Award Intelligence:** who won before, avg award, success rate, competitive insights
-- **Application Requirements:** narrative sections, data needs, letters of support, budget notes, match requirements
-- **Estimated Effort:** level + hours + rationale
-- **Why This Fits ${input.collegeName}:** specific rationale
-- **Grants.gov Link:** URL
-)
+(Bullet list: grant name + one sentence on why it was deprioritized)
 
 ## Deadline Calendar
-(Table or month-by-month list of all priority + strategic grant deadlines)
+(Table: Month | Grant Name | Deadline | Tier | Action Needed)
 
 ## Recommendations
 
 ### Apply NOW (Next 30-60 Days)
-(Specific grants with clear action steps)
+(Specific grants with numbered action steps)
 
 ### Plan for Next Quarter
 (Specific grants to prepare for, with prep steps)
 
 ### Foundation and State Funding to Explore
-(Brief section on other funding sources beyond what was found in Grants.gov)
+(Brief section on other funding sources beyond Grants.gov)
 
 ---
 
 Write in a professional but accessible consulting style. Be specific and actionable — avoid generic advice. 
 Every recommendation should be tied to actual data from the grants above.
 Use tables where they add clarity.
-Include Grants.gov URLs for all featured grants.`;
+Include Grants.gov URLs for all featured grants.
+Write the COMPLETE report — do not truncate or abbreviate any grant's detail card.`;
 
-  const response = await callClaude(prompt, { temperature: 0.5, maxTokens: 16000 });
+  const response = await callClaude(prompt, { temperature: 0.5, maxTokens: 32000 });
   const markdown = response.content;
+
+  // Detect truncation — report should end with a proper section, not mid-sentence
+  const lastLine = markdown.trim().split('\n').pop()?.trim() || '';
+  const looksComplete = lastLine.endsWith('.') || lastLine.endsWith(')')
+    || lastLine.endsWith('---') || lastLine.endsWith('|')
+    || lastLine.startsWith('http') || lastLine.length === 0;
+  if (!looksComplete) {
+    console.warn(`[Grant Brief Writer] ⚠ POSSIBLE TRUNCATION — last line: "${lastLine.slice(0, 80)}"`);
+    console.warn(`[Grant Brief Writer] ⚠ Report may be incomplete. Consider increasing maxTokens.`);
+  }
 
   // Compute metadata
   const wordCount = markdown.split(/\s+/).length;

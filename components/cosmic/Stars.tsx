@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 
 interface Star {
   id: number;
@@ -13,7 +13,11 @@ interface Star {
 }
 
 export function Stars({ count = 200 }: { count?: number }) {
-  const stars = useMemo<Star[]>(() => {
+  // Use state + useEffect so stars only generate client-side,
+  // preventing SSR/hydration mismatch from Math.random() differences.
+  const [stars, setStars] = useState<Star[]>([]);
+
+  useEffect(() => {
     const seed: Star[] = [];
     for (let i = 0; i < count; i++) {
       seed.push({
@@ -26,7 +30,7 @@ export function Stars({ count = 200 }: { count?: number }) {
         delay: Math.random() * 5,
       });
     }
-    return seed;
+    setStars(seed);
   }, [count]);
 
   return (

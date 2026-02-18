@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect, useCallback } from 'react';
-import { Check, Shield, ArrowRight, Clock, Zap, ChevronDown, ChevronUp, FileSearch, BarChart3, Radio } from 'lucide-react';
+import { Check, Shield, ArrowRight, Clock, Zap, ChevronDown, ChevronUp, FileSearch, BarChart3, Radio, Mail } from 'lucide-react';
 import {
   AnimateOnScroll,
   StaggerChildren,
@@ -106,7 +106,7 @@ function PellForm({ onFocus, onBlur }: { onFocus?: () => void; onBlur?: () => vo
           <input
             type="text"
             required
-            placeholder="Dr. Jane Smith"
+            placeholder="Dr. Sarah Chen"
             value={formData.name}
             onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
             className="w-full bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
@@ -119,7 +119,7 @@ function PellForm({ onFocus, onBlur }: { onFocus?: () => void; onBlur?: () => vo
           <input
             type="email"
             required
-            placeholder="you@college.edu"
+            placeholder="sarah@college.edu"
             value={formData.email}
             onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
             className="w-full bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
@@ -132,7 +132,7 @@ function PellForm({ onFocus, onBlur }: { onFocus?: () => void; onBlur?: () => vo
           <input
             type="text"
             required
-            placeholder="Midwest Community College"
+            placeholder="Lakeland Community College"
             value={formData.institution}
             onChange={e => setFormData(p => ({ ...p, institution: e.target.value }))}
             className="w-full bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
@@ -1038,6 +1038,36 @@ export default function HomePage() {
         </div>
       </section>
 
+
+      {/* ===== THE SIGNAL NEWSLETTER STRIP ===== */}
+      <section className="relative py-16 md:py-20">
+        <div className="max-w-[720px] mx-auto px-6">
+          <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-blue-500/20">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 mb-5">
+              <Radio className="h-3.5 w-3.5 text-blue-400" />
+              <span className="text-blue-300 text-xs font-semibold uppercase tracking-wider">Free Newsletter</span>
+            </div>
+            <h2 className="font-heading font-bold text-white text-2xl md:text-3xl mb-3">
+              The Signal <span className="text-white/50 font-normal text-xl">by Wavelength</span>
+            </h2>
+            <p className="text-white/60 text-sm leading-relaxed max-w-md mx-auto mb-8">
+              Labor market signals, workforce news, and industry spotlights — for CE and workforce development teams. Free, 3× per week.
+            </p>
+            <Link href="/signal">
+              <button className="btn-cosmic btn-cosmic-primary text-sm">
+                <Mail className="mr-2 h-4 w-4" />
+                Subscribe Free
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </button>
+            </Link>
+            <div className="flex flex-wrap justify-center gap-5 mt-6 text-xs text-white/40">
+              <span className="flex items-center gap-1.5"><Check className="h-3 w-3 text-teal-400" /> No credit card</span>
+              <span className="flex items-center gap-1.5"><Check className="h-3 w-3 text-teal-400" /> No spam</span>
+              <span className="flex items-center gap-1.5"><Check className="h-3 w-3 text-teal-400" /> Unsubscribe anytime</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ===== FAQ ===== */}
       <FAQSection />
