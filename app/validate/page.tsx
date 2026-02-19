@@ -242,6 +242,99 @@ export default function ValidatePage() {
         </div>
       </section>
 
+      {/* ===== SAMPLE OUTPUT ===== */}
+      <section className="relative py-20 md:py-28">
+        <div className="max-w-[900px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up" className="text-center mb-4">
+            <div className="flex items-center justify-center gap-3">
+              <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/60" />
+              <span className="overline">SAMPLE OUTPUT</span>
+              <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-purple-500/60" />
+            </div>
+          </AnimateOnScroll>
+          <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-16">
+            <h2
+              className="font-heading font-bold text-theme-primary"
+              style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
+            >
+              What your validation looks like
+            </h2>
+            <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
+              Every validation produces a scored assessment across five dimensions — plus a definitive GO&nbsp;/&nbsp;NO-GO recommendation.
+            </p>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll variant="scale" delay={200}>
+            <div className="card-cosmic rounded-2xl p-8 md:p-10">
+              {/* Program header */}
+              <div className="mb-6">
+                <h3 className="font-heading font-bold text-theme-primary text-xl">
+                  Advanced Cybersecurity Operations Certificate
+                </h3>
+                <p className="text-theme-tertiary text-sm mt-1">
+                  Prairie State Technical College · Cedar Rapids, IA
+                </p>
+              </div>
+
+              {/* Score bars */}
+              <div className="space-y-3 mb-8">
+                {[
+                  { label: 'Demand Evidence', score: 8.2, color: 'blue' as const },
+                  { label: 'Competitive Gap', score: 7.1, color: 'teal' as const },
+                  { label: 'Revenue Viability', score: 8.9, color: 'green' as const },
+                  { label: 'Wage Outcomes', score: 7.7, color: 'amber' as const },
+                  { label: 'Launch Speed', score: 6.5, color: 'purple' as const },
+                ].map((dim) => (
+                  <div key={dim.label} className="flex items-center gap-3">
+                    <span className="text-xs text-theme-tertiary w-28 shrink-0 text-right">{dim.label}</span>
+                    <div className="flex-1 rounded-full bg-white/[0.06] h-2.5 overflow-hidden">
+                      <div
+                        className={`h-full rounded-full bg-gradient-to-r ${
+                          dim.color === 'blue' ? 'from-blue-600 to-blue-400' :
+                          dim.color === 'teal' ? 'from-teal-600 to-teal-400' :
+                          dim.color === 'green' ? 'from-emerald-600 to-emerald-400' :
+                          dim.color === 'amber' ? 'from-amber-600 to-amber-400' :
+                          'from-violet-600 to-purple-500'
+                        }`}
+                        style={{ width: `${(dim.score / 10) * 100}%` }}
+                      />
+                    </div>
+                    <span className={`text-sm font-bold tabular-nums w-8 text-right ${
+                      dim.color === 'blue' ? 'text-blue-400' :
+                      dim.color === 'teal' ? 'text-teal-400' :
+                      dim.color === 'green' ? 'text-emerald-400' :
+                      dim.color === 'amber' ? 'text-amber-400' :
+                      'text-violet-400'
+                    }`}>
+                      {dim.score.toFixed(1)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Composite score */}
+              <div className="flex items-center justify-between py-4 px-5 rounded-xl bg-white/[0.03] border border-white/[0.06] mb-6">
+                <span className="text-sm font-medium text-theme-secondary">Composite Score</span>
+                <span className="font-heading font-black text-2xl text-gradient-cosmic">7.7 / 10</span>
+              </div>
+
+              {/* Verdict */}
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                  <span className="font-heading font-bold text-emerald-500 text-lg">
+                    GO — Strong market fundamentals with manageable competition
+                  </span>
+                </div>
+                <p className="text-sm text-theme-secondary leading-relaxed pl-[18px]">
+                  Regional cybersecurity demand significantly exceeds current training capacity, with employer partnerships readily available and median wages well above program cost thresholds.
+                </p>
+              </div>
+            </div>
+          </AnimateOnScroll>
+        </div>
+      </section>
+
       {/* ===== WHAT MAKES THIS DIFFERENT ===== */}
       <section className="relative py-20 md:py-28">
         <div className="max-w-[900px] mx-auto px-6">
@@ -353,6 +446,12 @@ export default function ValidatePage() {
                 Email us at hello@withwavelength.com — we&apos;ll follow up within 48 hours.
               </p>
             </div>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll variant="fade-up" delay={200} className="text-center mt-8">
+            <p className="text-theme-tertiary text-sm">
+              Delivered as: PDF report + executive summary — typically within 5 business days
+            </p>
           </AnimateOnScroll>
         </div>
       </section>

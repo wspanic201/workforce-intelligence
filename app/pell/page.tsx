@@ -504,6 +504,80 @@ export default function PellPage() {
 
       <WaveDivider />
 
+      {/* ═══════════════ SAMPLE REPORT ═══════════════ */}
+      <section className="relative py-20 px-6">
+        <div className="max-w-[900px] mx-auto">
+          <AnimateOnScroll variant="fade-up">
+            <div className="text-center mb-14">
+              <SectionLabel>SAMPLE REPORT</SectionLabel>
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary mt-4">
+                What your report looks like
+              </h2>
+              <p className="mt-4 text-theme-secondary max-w-xl mx-auto">
+                Every program in your catalog gets evaluated individually. Here&apos;s a single-program result.
+              </p>
+            </div>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll variant="scale" delay={100}>
+            <div className="card-cosmic rounded-2xl p-8 md:p-10">
+              {/* Program header */}
+              <div className="mb-6">
+                <h3 className="font-heading font-bold text-theme-primary text-xl">
+                  Medical Billing &amp; Coding Certificate
+                </h3>
+                <p className="text-theme-tertiary text-sm mt-1">
+                  Lakeview Community College · Des Moines, IA
+                </p>
+              </div>
+
+              {/* Verdict */}
+              <div className="flex items-center gap-2 mb-8">
+                <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                <span className="font-heading font-bold text-emerald-500 text-lg">
+                  ✓ Pell Eligible
+                </span>
+              </div>
+
+              {/* Criteria rows */}
+              <div className="space-y-3 mb-8">
+                {[
+                  { label: 'Program Length', value: '16 weeks', pass: true },
+                  { label: 'Credential Type', value: 'Certificate', pass: true },
+                  { label: 'SOC Code Alignment', value: '29-2071', pass: true },
+                  { label: 'Completion Rate Projection', value: '72%', pass: true },
+                  { label: 'Wage Threshold', value: '$38,500', pass: true },
+                ].map((row) => (
+                  <div
+                    key={row.label}
+                    className="flex items-center justify-between py-2.5 px-4 rounded-lg bg-white/[0.02] border border-white/[0.04]"
+                  >
+                    <span className="text-sm text-theme-secondary">{row.label}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-medium text-theme-primary tabular-nums">
+                        {row.value}
+                      </span>
+                      {row.pass ? (
+                        <CheckCircle className="h-4 w-4 text-emerald-400" />
+                      ) : (
+                        <AlertCircle className="h-4 w-4 text-amber-400" />
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Note */}
+              <p className="text-xs text-theme-muted leading-relaxed border-t border-theme-subtle pt-5">
+                Full report includes detailed SOC mapping, regional wage data, and Perkins V alignment analysis.
+              </p>
+            </div>
+          </AnimateOnScroll>
+        </div>
+      </section>
+
+      <WaveDivider />
+
       {/* ═══════════════ PRICING ═══════════════ */}
       <section className="relative py-24 px-6">
         <Stars count={60} />
