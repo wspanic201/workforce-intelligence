@@ -172,7 +172,7 @@ export default function DiscoverPage() {
               className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              What we found for Wake Technical Community College
+              What we found for Regional Community College
             </h2>
             <p className="text-theme-secondary text-sm mt-2">
               Research Triangle — Raleigh, Durham, Chapel Hill · Real data, real analysis
@@ -258,7 +258,7 @@ export default function DiscoverPage() {
               <div className="p-6 md:p-8 border-t border-theme-subtle flex justify-center">
                 <Link href="/report/demo">
                   <button className="btn-cosmic btn-cosmic-ghost text-sm">
-                    Read the Full Wake Tech Market Scan
+                    View Full Sample Report
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </button>
                 </Link>

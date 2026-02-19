@@ -204,7 +204,7 @@ export default function SignalPage() {
                   </label>
                   <input
                     type="text"
-                    placeholder="Lakeland Community College"
+                    placeholder="Your community college"
                     value={formData.institution}
                     onChange={e => setFormData(p => ({ ...p, institution: e.target.value }))}
                     className="w-full bg-theme-input border border-theme-base rounded-lg px-4 py-2.5 text-theme-primary placeholder-white/40 text-sm focus:outline-none focus:border-blue-500/50 transition-colors"

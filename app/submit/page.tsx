@@ -116,7 +116,7 @@ export default function SubmitPage() {
       employer_interest: 'Collins Aerospace and UnityPoint Health have expressed general interest in cybersecurity training for employees.',
       strategic_context: 'Aligns with college strategic plan to expand IT and healthcare IT programs. No existing cybersecurity offering.',
       constraints: 'Budget: $50k startup, must be profitable by year 2. Timeline: Launch Fall 2026.',
-      competing_programs: 'Kirkwood offers a credit cybersecurity AAS. No local non-credit options.',
+      competing_programs: 'Regional competitor offers a credit-side program. No local noncredit options.',
       soc_codes: '15-1212',
       onet_codes: '15-1212.00',
       target_enrollment_per_cohort: '20',
@@ -160,7 +160,7 @@ export default function SubmitPage() {
                   required
                   value={formData.client_name}
                   onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
-                  placeholder="e.g., Kirkwood Community College"
+                  placeholder="Your community college"
                 />
               </div>
 

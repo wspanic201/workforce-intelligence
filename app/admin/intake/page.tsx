@@ -233,7 +233,7 @@ export default function AdminIntakePage() {
               required
               value={form.institution_name}
               onChange={e => set('institution_name', e.target.value)}
-              placeholder="Kirkwood Community College"
+              placeholder="Your community college"
             />
           </div>
 

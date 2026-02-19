@@ -527,7 +527,7 @@ export default function PellPage() {
                   Medical Billing &amp; Coding Certificate
                 </h3>
                 <p className="text-theme-tertiary text-sm mt-1">
-                  Lakeview Community College · Des Moines, IA
+                  Riverside Community College · Des Moines, IA
                 </p>
               </div>
 

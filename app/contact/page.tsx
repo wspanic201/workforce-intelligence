@@ -58,7 +58,7 @@ export default function ContactPage() {
         value={form[id]}
         onChange={(e) => setForm((f) => ({ ...f, [id]: e.target.value }))}
         className="w-full px-4 py-3 rounded-xl bg-theme-surface border border-theme-base text-theme-primary placeholder:text-theme-muted text-sm focus:outline-none focus:border-purple-500/60 focus:ring-1 focus:ring-purple-500/30 transition-colors"
-        placeholder={id === 'email' ? 'you@institution.edu' : id === 'institution' ? 'Iowa Valley Community College' : ''}
+        placeholder={id === 'email' ? 'you@institution.edu' : id === 'institution' ? 'Your community college' : ''}
       />
     </div>
   );

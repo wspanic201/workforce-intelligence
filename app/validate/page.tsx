@@ -200,7 +200,7 @@ export default function ValidatePage() {
                   Advanced Cybersecurity Operations Certificate
                 </h3>
                 <p className="text-theme-tertiary text-sm mt-1">
-                  Prairie State Technical College · Cedar Rapids, IA
+                  Midwest Community College · Cedar Rapids, IA
                 </p>
               </div>
 
