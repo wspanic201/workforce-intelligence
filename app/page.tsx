@@ -9,9 +9,7 @@ import {
 } from '@/components/motion';
 import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
-import { Waveform } from '@/components/cosmic/Waveform';
 import { ParticleConstellation } from '@/components/cosmic/ParticleConstellation';
-import { Equalizer, EqualizerWide } from '@/components/cosmic/Equalizer';
 // import { Satellite } from '@/components/cosmic/Satellite';
 
 const US_STATES = [
@@ -351,7 +349,6 @@ function StaticHero() {
     <section className="relative min-h-[90vh] lg:min-h-[700px] flex items-center justify-center pt-36 lg:pt-40 pb-16 overflow-hidden">
       <Stars count={120} />
       <Aurora />
-      <Waveform className="opacity-30" />
       <ParticleConstellation particleCount={30} connectionDistance={90} mouseRadius={120} speed={0.2} />
 
       <div className="relative z-10 max-w-[860px] mx-auto px-6 w-full text-center">
@@ -434,11 +431,6 @@ export default function HomePage() {
 
       {/* ===== HERO ===== */}
       <StaticHero />
-
-      {/* Equalizer divider — replaces wave after hero */}
-      <div className="py-6 flex justify-center">
-        <EqualizerWide bars={60} height={36} muted />
-      </div>
 
       {/* ===== FIND YOUR PATH — CATEGORY GRID ===== */}
       <section className="relative py-24 md:py-36" id="products">
@@ -852,8 +844,6 @@ export default function HomePage() {
       <section className="relative py-24 md:py-40 overflow-hidden">
         <Aurora />
         <Stars count={60} />
-        <Waveform className="opacity-20" />
-
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up">
             <h2
