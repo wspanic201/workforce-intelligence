@@ -170,7 +170,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
     <div className="min-h-screen bg-theme-page text-theme-primary">
 
       {/* ═══ HERO HEADER ═══════════════════════════════════════ */}
-      <header className="relative overflow-hidden pt-6 pb-16 px-6">
+      <header className="relative overflow-hidden pt-24 pb-16 px-6">
         {/* Background effects */}
         <div className="absolute inset-0 pointer-events-none">
           <Stars />
