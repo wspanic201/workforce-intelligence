@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Mail, CheckCircle, AlertTriangle, TrendingUp, FileText, ArrowRight, DollarSign, BookOpen, MapPin } from 'lucide-react';
 import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
 import { Stars } from '@/components/cosmic/Stars';
@@ -437,6 +438,31 @@ export default function ComplianceGapPage() {
                 Email us your institution name + state. We'll invoice and deliver your report.
               </p>
             </div>
+          </AnimateOnScroll>
+        </div>
+      </section>
+
+      {/* ═══════════════ CROSS-SELL ═══════════════ */}
+      <section className="relative py-16 md:py-20">
+        <div className="max-w-[800px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up" className="text-center mb-8">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-blue-300">Also in Program Analysis</span>
+          </AnimateOnScroll>
+          <AnimateOnScroll variant="fade-up" delay={100}>
+            <Link href="/pell" className="block card-cosmic rounded-2xl p-7 border-blue-500/20 hover:bg-white/[0.03] transition-colors group">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <h3 className="font-heading font-bold text-white text-lg">Pell Readiness Check</h3>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-300">Free</span>
+                  </div>
+                  <p className="text-white/70 text-sm">Find out which of your programs qualify for Workforce Pell — and which need adjustments before the July 1 deadline.</p>
+                </div>
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-blue-300 group-hover:gap-2 transition-all flex-shrink-0">
+                  Learn More <ArrowRight className="h-4 w-4" />
+                </span>
+              </div>
+            </Link>
           </AnimateOnScroll>
         </div>
       </section>

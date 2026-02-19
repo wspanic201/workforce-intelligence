@@ -710,13 +710,13 @@ export default function HomePage() {
         <EqualizerWide bars={60} height={36} />
       </div>
 
-      {/* ===== THREE-PRODUCT FUNNEL ===== */}
+      {/* ===== FIND YOUR PATH — CATEGORY GRID ===== */}
       <section className="relative py-20 md:py-32" id="products">
         <div className="max-w-[1200px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-4">
             <span className="overline inline-flex items-center gap-3">
               <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/50" />
-              Our Products
+              Where to Start
               <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-teal-500/50" />
             </span>
           </AnimateOnScroll>
@@ -725,238 +725,89 @@ export default function HomePage() {
               className="font-heading font-bold text-white"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              Start free. Dial in when you&apos;re ready.
+              Find what you need.
             </h2>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
             <p className="text-white/70 text-lg max-w-2xl mx-auto">
-              Start with what you&apos;re missing. Prove what you should build. Then build it right.
+              Wavelength has five product categories. Pick the one that matches what you&apos;re trying to do — and go straight to the right product.
             </p>
           </AnimateOnScroll>
 
-          <div className="flex flex-col lg:flex-row items-center gap-4 lg:gap-0 max-w-5xl mx-auto">
-
-            {/* Card 1 — Pell Readiness Check */}
-            <AnimateOnScroll variant="fade-up" delay={100} className="w-full lg:flex-1">
-              <div className="card-cosmic rounded-2xl p-7 border-teal-500/20 h-full">
-                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 mb-4">
-                  <span className="text-teal-300 text-[10px] font-bold uppercase tracking-wider">Free</span>
-                </div>
-                <h3 className="font-heading font-bold text-white text-xl mb-2">Pell Readiness Check</h3>
-                <p className="text-white/70 text-sm leading-relaxed mb-6">
-                  We review your full program catalog and tell you exactly which programs qualify for Workforce Pell — and which ones need adjustments before the July 1 deadline.
-                </p>
-                <div className="mb-2">
-                  <span className="font-heading font-bold text-4xl text-gradient-cosmic">$0</span>
-                  <span className="text-white/80 text-sm ml-2">— email required</span>
-                </div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 mb-6">
-                  <Clock className="h-3 w-3 text-teal-400" />
-                  <span className="text-teal-300 text-[10px] font-bold uppercase tracking-wider">Delivered in 48 hours</span>
-                </div>
-                <ul className="space-y-2.5 mb-7">
-                  {[
-                    'Full program catalog review',
-                    'Clock-hour & duration compliance check',
-                    'Pell eligibility scoring (state + federal criteria)',
-                    'Gap identification — programs you should add',
-                    'Summary report with next steps',
-                  ].map(item => (
-                    <li key={item} className="flex items-start gap-2.5">
-                      <Check className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
-                      <span className="text-sm text-white/80">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <a href="#hero">
-                  <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
-                    Get Started — It&apos;s Free
-                  </button>
-                </a>
-                <Link href="/pell" className="block mt-2">
-                  <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
-                    Learn More
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </button>
-                </Link>
-              </div>
-            </AnimateOnScroll>
-
-            {/* Arrow 1 */}
-            <div className="hidden lg:flex items-center justify-center px-2 flex-shrink-0">
-              <div className="flex flex-col items-center gap-1">
-                <ArrowRight className="h-6 w-6 text-purple-500/50" />
-              </div>
-            </div>
-            <div className="lg:hidden flex items-center justify-center py-1">
-              <svg viewBox="0 0 24 24" className="h-6 w-6 text-purple-500/50 rotate-90" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-
-            {/* Card 2 — Compliance Gap Report */}
-            <AnimateOnScroll variant="fade-up" delay={200} className="w-full lg:flex-1">
-              <div className="card-cosmic rounded-2xl p-7 h-full">
-                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 mb-4">
-                  <span className="text-blue-300 text-[10px] font-bold uppercase tracking-wider">$295</span>
-                </div>
-                <h3 className="font-heading font-bold text-white text-xl mb-2">Program Gap Audit</h3>
-                <p className="text-white/70 text-sm leading-relaxed mb-6">
-                  We find every state-mandated program your institution isn&apos;t offering — and attach a revenue estimate to each gap. The average institution is leaving $2M+ on the table.
-                </p>
-                <div className="mb-2">
-                  <span className="font-heading font-bold text-4xl text-gradient-cosmic">$295</span>
-                </div>
-                <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 mb-6">
-                  <Clock className="h-3 w-3 text-blue-400" />
-                  <span className="text-blue-300 text-[10px] font-bold uppercase tracking-wider">Delivered in 3–5 business days</span>
-                </div>
-                <ul className="space-y-2.5 mb-7">
-                  {[
-                    'Full catalog scan of your current programs',
-                    'State regulatory code cross-reference',
-                    'Every mandated gap with statutory citation',
-                    'Revenue estimate per missing program',
-                    'Prioritized opportunity ranking (1–10)',
-                    'Professional consulting-grade report',
-                  ].map(item => (
-                    <li key={item} className="flex items-start gap-2.5">
-                      <Check className="h-4 w-4 text-cosmic-teal flex-shrink-0 mt-0.5" strokeWidth={2} />
-                      <span className="text-sm text-white/80">{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <a href="mailto:hello@withwavelength.com?subject=Compliance%20Gap%20Report&body=College%20name%3A%20%0ACity%2C%20State%3A%20">
-                  <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
-                    Order Report
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </button>
-                </a>
-                <Link href="/compliance-gap" className="block mt-2">
-                  <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
-                    Learn More
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </button>
-                </Link>
-              </div>
-            </AnimateOnScroll>
-
-            {/* Arrow 2 */}
-            <div className="hidden lg:flex items-center justify-center px-2 flex-shrink-0">
-              <div className="flex flex-col items-center gap-1">
-                <ArrowRight className="h-6 w-6 text-purple-500/50" />
-              </div>
-            </div>
-            <div className="lg:hidden flex items-center justify-center py-1">
-              <svg viewBox="0 0 24 24" className="h-6 w-6 text-purple-500/50 rotate-90" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </div>
-
-            {/* Card 3 — Market Scan */}
-            <AnimateOnScroll variant="fade-up" delay={300} className="w-full lg:flex-1">
-              <div className="card-cosmic rounded-2xl p-7 border-purple-500/20 relative h-full">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-purple-500 to-blue-500 px-4 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-purple-500/20">
-                    Most Popular
-                  </span>
-                </div>
-                <div className="mt-3">
-                  <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-4">
-                    <span className="text-purple-300 text-[10px] font-bold uppercase tracking-wider">Founding Rate</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
+            {[
+              {
+                category: 'Market Research',
+                headline: 'Not sure what to build next?',
+                pain: "Your region is signaling demand you haven\'t captured yet. We surface the programs worth building — before your competitors do.",
+                products: [{ name: 'Program Opportunity Scan', price: '$1,500' }],
+                href: '/market-research',
+                border: 'border-violet-500/30',
+                text: 'text-violet-300',
+                bg: 'bg-violet-500/10',
+              },
+              {
+                category: 'Program Analysis',
+                headline: "Not sure what you\'re missing?",
+                pain: 'Between Workforce Pell eligibility and state compliance mandates, most institutions are leaving programs — and funding — uncaptured.',
+                products: [{ name: 'Pell Readiness Check', price: 'Free' }, { name: 'Program Gap Audit', price: '$295' }],
+                href: '/program-analysis',
+                border: 'border-blue-500/30',
+                text: 'text-blue-300',
+                bg: 'bg-blue-500/10',
+              },
+              {
+                category: 'Program Development',
+                headline: 'Have an idea and need to validate it?',
+                pain: 'Before you invest in curriculum, advisory boards, and approvals — get data-backed confirmation that real demand exists.',
+                products: [{ name: 'Program Validation', price: '$2,000' }],
+                href: '/program-development',
+                border: 'border-emerald-500/30',
+                text: 'text-emerald-300',
+                bg: 'bg-emerald-500/10',
+              },
+              {
+                category: 'Grant Alignment',
+                headline: 'Need funding before you can build?',
+                pain: 'Perkins V, WIOA, and state workforce grants are available — most institutions pursue fewer than a third of what they qualify for.',
+                products: [{ name: 'Grant Intelligence Scan', price: '$495' }],
+                href: '/grant-alignment',
+                border: 'border-green-500/30',
+                text: 'text-green-300',
+                bg: 'bg-green-500/10',
+              },
+              {
+                category: 'Program Health',
+                headline: 'Worried your programs are falling behind?',
+                pain: 'Employer requirements shift faster than curriculum review cycles. Know exactly where your programs are drifting — every quarter.',
+                products: [{ name: 'Drift Monitor', price: 'from $1,200/yr' }],
+                href: '/program-health',
+                border: 'border-orange-500/30',
+                text: 'text-orange-300',
+                bg: 'bg-orange-500/10',
+              },
+            ].map((cat, i) => (
+              <AnimateOnScroll key={cat.category} variant="fade-up" delay={100 * i} className={i === 4 ? 'md:col-span-2 md:max-w-[calc(50%-0.5rem)] md:mx-auto' : ''}>
+                <Link href={cat.href} className={`block card-cosmic rounded-2xl p-7 ${cat.border} h-full group hover:bg-white/[0.03] transition-colors`}>
+                  <div className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-full ${cat.bg} border ${cat.border} mb-4`}>
+                    <span className={`${cat.text} text-[10px] font-bold uppercase tracking-wider`}>{cat.category}</span>
                   </div>
-                  <h3 className="font-heading font-bold text-white text-xl mb-2">Program Opportunity Scan</h3>
-                  <p className="text-white/70 text-sm leading-relaxed mb-6">
-                    We research your regional labor market across 50+ sources and deliver 7–10 validated program opportunities — each scored, ranked, and backed by real employer demand. Build with confidence, not guesswork.
-                  </p>
-                  <div className="mb-1">
-                    <span className="font-heading font-bold text-4xl text-gradient-cosmic">$1,500</span>
-                    <span className="text-white/80 text-sm ml-2 line-through">$3,500</span>
-                  </div>
-                  <p className="text-xs text-white/80 mb-2">Founding rate — first 5 institutions</p>
-                  <p className="text-xs text-white/60 mb-2">Eligible for Perkins V, WIOA, and state workforce development funding</p>
-                  <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
-                    <Clock className="h-3 w-3 text-purple-400" />
-                    <span className="text-purple-300 text-[10px] font-bold uppercase tracking-wider">Delivered in 5–7 business days</span>
-                  </div>
-                  <ul className="space-y-2.5 mb-7">
-                    {[
-                      '7–10 validated program opportunities for your region',
-                      'Each program scored, ranked & categorized',
-                      'Regional labor market intelligence',
-                      'Employer demand verification',
-                      'Competitive landscape + Blue Ocean analysis',
-                      'Financial projections & enrollment modeling',
-                      'Workforce Pell readiness scoring',
-                      'Grant alignment + funding opportunities',
-                      'Executive summary + full report (25+ pages)',
-                    ].map(item => (
-                      <li key={item} className="flex items-start gap-2.5">
-                        <Check className="h-4 w-4 text-cosmic-teal flex-shrink-0 mt-0.5" strokeWidth={2} />
-                        <span className="text-sm text-white/80">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <a href="mailto:hello@withwavelength.com?subject=Market%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AAny%20focus%20areas%3A%20">
-                    <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
-                      Order Program Opportunity Scan
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </button>
-                  </a>
-                  <Link href="/discover" className="block mt-2">
-                    <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
-                      Learn More
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </AnimateOnScroll>
-
-          </div>
-
-          {/* Drift Monitor — Program Health row */}
-          <AnimateOnScroll variant="fade-up" delay={400} className="mt-8 max-w-5xl mx-auto">
-            <div className="relative card-cosmic rounded-2xl p-7 border-orange-500/20">
-              <div className="absolute -top-3 left-8">
-                <span className="inline-flex items-center rounded-full bg-orange-500/10 border border-orange-500/30 px-4 py-1 text-xs font-bold uppercase tracking-wider text-orange-300">
-                  Program Health &amp; Maintenance
-                </span>
-              </div>
-              <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mt-2">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-heading font-bold text-white text-xl">Drift Monitor</h3>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-300">From $1,200/yr</span>
-                  </div>
-                  <p className="text-white/70 text-sm leading-relaxed max-w-2xl">
-                    Already have programs? Keep them current. We run quarterly scans of live job postings against your curriculum and deliver a Drift Score — so you know exactly which programs are falling behind employer demand before your placement numbers do.
-                  </p>
-                  <div className="flex flex-wrap gap-4 mt-4">
-                    {['Quarterly curriculum scans', 'Drift Score + gap analysis', 'Accreditation-ready reports', 'Perkins V / WIOA eligible'].map(f => (
-                      <span key={f} className="flex items-center gap-1.5 text-xs text-white/60">
-                        <Check className="h-3 w-3 text-orange-400" />{f}
+                  <h3 className="font-heading font-bold text-white text-xl mb-2">{cat.headline}</h3>
+                  <p className="text-white/70 text-sm leading-relaxed mb-5">{cat.pain}</p>
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {cat.products.map(p => (
+                      <span key={p.name} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.05] border border-white/[0.08] text-xs text-white/80">
+                        {p.name} <span className={`${cat.text} font-semibold`}>{p.price}</span>
                       </span>
                     ))}
                   </div>
-                </div>
-                <div className="flex flex-col gap-2 flex-shrink-0 w-full md:w-auto">
-                  <Link href="/drift">
-                    <button className="btn-cosmic btn-cosmic-primary w-full md:w-auto text-sm whitespace-nowrap">
-                      Learn More
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </button>
-                  </Link>
-                  <a href="mailto:hello@withwavelength.com?subject=Drift%20Monitor%20Free%20Scan&body=Program%20name%3A%20%0ATarget%20occupation%3A%20%0AInstitution%3A%20">
-                    <button className="btn-cosmic btn-cosmic-ghost w-full md:w-auto text-sm whitespace-nowrap">
-                      Run a Free Scan
-                    </button>
-                  </a>
-                </div>
-              </div>
-            </div>
-          </AnimateOnScroll>
-
+                  <span className={`inline-flex items-center gap-1 text-sm font-semibold ${cat.text} group-hover:gap-2 transition-all`}>
+                    Go <ArrowRight className="h-4 w-4" />
+                  </span>
+                </Link>
+              </AnimateOnScroll>
+            ))}
+          </div>
         </div>
       </section>
 

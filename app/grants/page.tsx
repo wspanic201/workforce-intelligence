@@ -580,6 +580,41 @@ export default function GrantsPage() {
         </div>
       </section>
 
+      {/* ═══════════════ CROSS-SELL ═══════════════ */}
+      <section className="relative py-16 md:py-20">
+        <div className="max-w-[900px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up" className="text-center mb-8">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Where to go next</span>
+          </AnimateOnScroll>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <AnimateOnScroll variant="fade-up" delay={100}>
+              <Link href="/market-research" className="block card-cosmic rounded-2xl p-7 border-violet-500/20 hover:bg-white/[0.03] transition-colors group h-full">
+                <div className="flex items-center gap-3 mb-2">
+                  <h3 className="font-heading font-bold text-white text-lg">Program Opportunity Scan</h3>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300">$1,500</span>
+                </div>
+                <p className="text-white/70 text-sm mb-4">Discover 7–10 validated program opportunities for your region — scored, ranked, and backed by real employer demand.</p>
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-violet-300 group-hover:gap-2 transition-all">
+                  Learn More <ArrowRight className="h-4 w-4" />
+                </span>
+              </Link>
+            </AnimateOnScroll>
+            <AnimateOnScroll variant="fade-up" delay={200}>
+              <Link href="/program-development" className="block card-cosmic rounded-2xl p-7 border-emerald-500/20 hover:bg-white/[0.03] transition-colors group h-full">
+                <div className="flex items-center gap-3 mb-2">
+                  <h3 className="font-heading font-bold text-white text-lg">Program Validation</h3>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">$2,000</span>
+                </div>
+                <p className="text-white/70 text-sm mb-4">Validate a specific program idea with a full financial model, competitive analysis, and Go/No-Go recommendation.</p>
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-300 group-hover:gap-2 transition-all">
+                  Learn More <ArrowRight className="h-4 w-4" />
+                </span>
+              </Link>
+            </AnimateOnScroll>
+          </div>
+        </div>
+      </section>
+
       {/* ===== FINAL CTA ===== */}
       <section className="relative py-20 md:py-28">
         <div className="max-w-[700px] mx-auto px-6 text-center">

@@ -587,6 +587,31 @@ export default function PellPage() {
         </div>
       </section>
 
+      {/* ═══════════════ CROSS-SELL ═══════════════ */}
+      <section className="relative py-16 md:py-20">
+        <div className="max-w-[800px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up" className="text-center mb-8">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-blue-300">Also in Program Analysis</span>
+          </AnimateOnScroll>
+          <AnimateOnScroll variant="fade-up" delay={100}>
+            <Link href="/compliance-gap" className="block card-cosmic rounded-2xl p-7 border-blue-500/20 hover:bg-white/[0.03] transition-colors group">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-3 mb-2">
+                    <h3 className="font-heading font-bold text-white text-lg">Program Gap Audit</h3>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300">$295</span>
+                  </div>
+                  <p className="text-white/70 text-sm">Find every state-mandated program your institution isn&apos;t offering — with revenue estimates for each gap.</p>
+                </div>
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-blue-300 group-hover:gap-2 transition-all flex-shrink-0">
+                  Learn More <ArrowRight className="h-4 w-4" />
+                </span>
+              </div>
+            </Link>
+          </AnimateOnScroll>
+        </div>
+      </section>
+
       {/* ═══════════════ FOOTER CTA ═══════════════ */}
       <section className="relative py-20 px-6 text-center">
         <Stars count={80} />

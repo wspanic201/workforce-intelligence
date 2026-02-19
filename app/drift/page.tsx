@@ -571,6 +571,41 @@ export default function DriftPage() {
         </AnimateOnScroll>
       </section>
 
+      {/* ═══════════════ CROSS-SELL ═══════════════ */}
+      <section className="relative py-16 md:py-20">
+        <div className="max-w-[900px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up" className="text-center mb-8">
+            <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Looking to build new programs?</span>
+          </AnimateOnScroll>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <AnimateOnScroll variant="fade-up" delay={100}>
+              <Link href="/market-research" className="block card-cosmic rounded-2xl p-7 border-violet-500/20 hover:bg-white/[0.03] transition-colors group h-full">
+                <div className="flex items-center gap-3 mb-2">
+                  <h3 className="font-heading font-bold text-white text-lg">Market Research</h3>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300">From $1,500</span>
+                </div>
+                <p className="text-white/70 text-sm mb-4">Discover what programs your region needs — backed by 50+ live data sources and real employer demand signals.</p>
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-violet-300 group-hover:gap-2 transition-all">
+                  Learn More <ArrowRight className="h-4 w-4" />
+                </span>
+              </Link>
+            </AnimateOnScroll>
+            <AnimateOnScroll variant="fade-up" delay={200}>
+              <Link href="/program-analysis" className="block card-cosmic rounded-2xl p-7 border-blue-500/20 hover:bg-white/[0.03] transition-colors group h-full">
+                <div className="flex items-center gap-3 mb-2">
+                  <h3 className="font-heading font-bold text-white text-lg">Program Analysis</h3>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300">Free + $295</span>
+                </div>
+                <p className="text-white/70 text-sm mb-4">Audit your existing portfolio for Workforce Pell eligibility and state compliance gaps you may be missing.</p>
+                <span className="inline-flex items-center gap-1 text-sm font-semibold text-blue-300 group-hover:gap-2 transition-all">
+                  Learn More <ArrowRight className="h-4 w-4" />
+                </span>
+              </Link>
+            </AnimateOnScroll>
+          </div>
+        </div>
+      </section>
+
       {/* ═══════════════ FOOTER ═══════════════ */}
       <footer className="py-10 px-6 text-center border-t border-white/5">
         <p className="text-white/70 text-sm">

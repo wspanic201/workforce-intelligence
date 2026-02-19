@@ -43,6 +43,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${siteUrl}/market-research`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
+      url: `${siteUrl}/program-analysis`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
+      url: `${siteUrl}/program-development`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
+      url: `${siteUrl}/grant-alignment`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
+      url: `${siteUrl}/program-health`,
+      lastModified: now,
+      changeFrequency: "monthly",
+      priority: 0.75,
+    },
+    {
       url: `${siteUrl}/methodology`,
       lastModified: now,
       changeFrequency: "monthly",

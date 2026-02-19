@@ -109,9 +109,16 @@ export function NavBar() {
                       {catIdx > 0 && (
                         <div className="mx-2 my-1 border-t border-white/[0.06]" />
                       )}
-                      <p className="text-[10px] font-bold uppercase tracking-widest text-white/25 px-4 pt-3 pb-1">
+                      <Link
+                        href={`/${cat.category.toLowerCase().replace(/\s+/g, '-')}`}
+                        onClick={() => setProductsOpen(false)}
+                        className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-white/25 hover:text-white/50 transition-colors px-4 pt-3 pb-1 w-full"
+                      >
                         {cat.category}
-                      </p>
+                        <svg className="w-2.5 h-2.5 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
                       {cat.items.map((p) => (
                         <Link
                           key={p.href}
@@ -201,9 +208,16 @@ export function NavBar() {
                 {catIdx > 0 && (
                   <div className="border-t border-white/[0.06] my-2" />
                 )}
-                <p className="text-[10px] font-bold uppercase tracking-widest text-white/25 px-2 pt-2 pb-1">
+                <Link
+                  href={`/${cat.category.toLowerCase().replace(/\s+/g, '-')}`}
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-white/25 hover:text-white/50 transition-colors px-2 pt-2 pb-1 w-full"
+                >
                   {cat.category}
-                </p>
+                  <svg className="w-2.5 h-2.5 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
                 {cat.items.map((p) => (
                   <Link
                     key={p.href}
