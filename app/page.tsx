@@ -339,11 +339,11 @@ function FAQSection() {
 /* ───────────── Static Hero ───────────── */
 
 const CATEGORY_CHIPS = [
-  { label: 'Market Research',      href: '/market-research',      color: 'text-violet-300 border-violet-500/30 bg-violet-500/10 hover:bg-violet-500/20' },
-  { label: 'Program Analysis',     href: '/program-analysis',     color: 'text-blue-300 border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20' },
-  { label: 'Program Development',  href: '/program-development',  color: 'text-emerald-300 border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20' },
-  { label: 'Grant Alignment',      href: '/grant-alignment',      color: 'text-green-300 border-green-500/30 bg-green-500/10 hover:bg-green-500/20' },
-  { label: 'Program Health',       href: '/program-health',       color: 'text-orange-300 border-orange-500/30 bg-orange-500/10 hover:bg-orange-500/20' },
+  { label: 'Market Research',     href: '/market-research' },
+  { label: 'Program Analysis',    href: '/program-analysis' },
+  { label: 'Program Development', href: '/program-development' },
+  { label: 'Grant Alignment',     href: '/grant-alignment' },
+  { label: 'Program Health',      href: '/program-health' },
 ];
 
 function StaticHero() {
@@ -395,9 +395,9 @@ function StaticHero() {
             <Link
               key={chip.label}
               href={chip.href}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full border text-sm font-semibold transition-colors ${chip.color}`}
+              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-theme-base bg-theme-card text-theme-secondary text-sm font-medium hover:border-theme-strong hover:text-theme-primary transition-colors"
             >
-              <span className="opacity-60">●</span>
+              <span className="opacity-40">●</span>
               {chip.label}
             </Link>
           ))}
