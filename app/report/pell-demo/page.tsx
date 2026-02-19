@@ -568,42 +568,38 @@ export default function PellDemoPage() {
 
           <AnimateOnScroll variant="fade-up" delay={80}>
             <div className="card-cosmic rounded-2xl overflow-hidden">
-              {/* Header row */}
-              <div className="grid grid-cols-[1fr_auto_auto_auto] gap-4 px-5 py-3 border-b border-theme-subtle">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-theme-muted">Program</span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-theme-muted text-right">Clock Hrs</span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-theme-muted text-right">Score</span>
-                <span className="text-[10px] font-bold uppercase tracking-widest text-theme-muted text-right">Status</span>
-              </div>
-
-              {/* Program rows */}
-              {programs.map((p, i) => {
-                const { text: sText, cls: sCls } = statusLabel(p.status);
-                return (
-                  <div
-                    key={p.id}
-                    className={`grid grid-cols-[1fr_auto_auto_auto] gap-4 items-center px-5 py-3.5 ${
-                      i < programs.length - 1 ? 'border-b border-theme-subtle' : ''
-                    }`}
-                  >
-                    <span className="text-sm font-medium text-theme-primary truncate pr-2">
-                      {p.name}
-                    </span>
-                    <span className="text-sm font-mono text-theme-secondary text-right">
-                      {p.clockHours}
-                    </span>
-                    <span className={`text-sm font-mono font-bold text-right ${scoreColor(p.score)}`}>
-                      {p.score}
-                    </span>
-                    <div className="flex items-center gap-1.5 justify-end">
-                      <span className={`w-2 h-2 rounded-full flex-shrink-0 ${statusDot(p.status)}`} />
-                      <span className={`text-[11px] font-semibold hidden sm:inline ${sCls.split(' ').filter(c => c.startsWith('text-')).join(' ')}`}>
-                        {sText}
-                      </span>
-                    </div>
-                  </div>
-                );
-              })}
+              <table className="w-full border-collapse">
+                <thead>
+                  <tr className="border-b border-theme-subtle">
+                    <th className="text-left px-5 py-3 text-[10px] font-bold uppercase tracking-widest text-theme-muted">Program</th>
+                    <th className="text-right px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-theme-muted w-24">Clock Hrs</th>
+                    <th className="text-right px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-theme-muted w-16">Score</th>
+                    <th className="text-right px-5 py-3 text-[10px] font-bold uppercase tracking-widest text-theme-muted w-40">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {programs.map((p, i) => {
+                    const { text: sText, cls: sCls } = statusLabel(p.status);
+                    const textColor = sCls.split(' ').filter((c: string) => c.startsWith('text-')).join(' ');
+                    return (
+                      <tr
+                        key={p.id}
+                        className={i < programs.length - 1 ? 'border-b border-theme-subtle' : ''}
+                      >
+                        <td className="px-5 py-3.5 text-sm font-medium text-theme-primary">{p.name}</td>
+                        <td className="px-4 py-3.5 text-sm font-mono text-theme-secondary text-right">{p.clockHours}</td>
+                        <td className={`px-4 py-3.5 text-sm font-mono font-bold text-right ${scoreColor(p.score)}`}>{p.score}</td>
+                        <td className="px-5 py-3.5 text-right">
+                          <span className="inline-flex items-center justify-end gap-1.5">
+                            <span className={`w-2 h-2 rounded-full flex-shrink-0 ${statusDot(p.status)}`} />
+                            <span className={`text-[11px] font-semibold ${textColor}`}>{sText}</span>
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </AnimateOnScroll>
         </div>
