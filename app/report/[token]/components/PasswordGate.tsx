@@ -44,7 +44,7 @@ export function PasswordGate({ token, institutionName, onUnlock }: PasswordGateP
   };
 
   return (
-    <div className="min-h-screen bg-[#050510] flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen bg-theme-page flex items-center justify-center relative overflow-hidden">
       <Aurora />
 
       <div className="relative z-10 w-full max-w-md px-6">
@@ -62,10 +62,10 @@ export function PasswordGate({ token, institutionName, onUnlock }: PasswordGateP
             </p>
           )}
 
-          <h1 className="text-xl font-bold text-white mb-2">
+          <h1 className="text-xl font-bold text-theme-primary mb-2">
             Password Protected Report
           </h1>
-          <p className="text-sm text-white/50 mb-8 leading-relaxed">
+          <p className="text-sm text-theme-tertiary mb-8 leading-relaxed">
             This Market Scan is password-protected. Enter your access password to view the report.
           </p>
 
@@ -81,7 +81,7 @@ export function PasswordGate({ token, institutionName, onUnlock }: PasswordGateP
                 }}
                 placeholder="Enter password"
                 autoFocus
-                className={`w-full bg-white/[0.05] border rounded-xl px-4 py-3 text-sm text-white placeholder:text-white/30 focus:outline-none transition-all text-center tracking-widest ${
+                className={`w-full bg-white/[0.05] border rounded-xl px-4 py-3 text-sm text-theme-primary placeholder:text-theme-muted focus:outline-none transition-all text-center tracking-widest ${
                   error
                     ? 'border-red-500/50 focus:border-red-500/70 bg-red-500/[0.04]'
                     : 'border-white/10 focus:border-violet-500/50 focus:bg-white/[0.07]'
@@ -111,7 +111,7 @@ export function PasswordGate({ token, institutionName, onUnlock }: PasswordGateP
             </button>
           </form>
 
-          <p className="mt-6 text-xs text-white/25">
+          <p className="mt-6 text-xs text-theme-muted">
             Password provided by Wavelength when your report was delivered.
           </p>
         </div>

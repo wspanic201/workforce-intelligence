@@ -255,16 +255,16 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
         {/* Top industries */}
         {topIndustries.length > 0 && (
           <div className="card-cosmic rounded-2xl p-6">
-            <h3 className="text-base font-semibold text-white mb-4 flex items-center gap-2">
+            <h3 className="text-base font-semibold text-theme-primary mb-4 flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-teal-400" />
               Top Industries
             </h3>
             <div className="space-y-3">
               {topIndustries.map((ind, i) => (
                 <div key={i} className="flex items-center justify-between text-sm">
-                  <span className="text-white/70">{ind.industry}</span>
+                  <span className="text-theme-secondary">{ind.industry}</span>
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-white/30">{ind.signalCount} signals</span>
+                    <span className="text-xs text-theme-muted">{ind.signalCount} signals</span>
                     <span className={`text-[11px] px-2 py-0.5 rounded-full border ${
                       ind.averageStrength === 'high'
                         ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
@@ -284,7 +284,7 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
         {/* Trending certifications */}
         {trendingCerts.length > 0 && (
           <div className="card-cosmic rounded-2xl p-6">
-            <h3 className="text-base font-semibold text-white mb-4 flex items-center gap-2">
+            <h3 className="text-base font-semibold text-theme-primary mb-4 flex items-center gap-2">
               <Briefcase className="w-4 h-4 text-blue-400" />
               Trending Certifications
             </h3>

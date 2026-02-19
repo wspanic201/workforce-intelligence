@@ -91,21 +91,21 @@ export function AuditTrail({ programs, onScrollToProgram }: AuditTrailProps) {
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <div className="card-cosmic rounded-xl p-4 text-center">
           <div className="text-2xl font-bold text-gradient-cosmic">{allCitations.length}</div>
-          <div className="text-xs text-white/40 mt-1">Total Citations</div>
+          <div className="text-xs text-theme-muted mt-1">Total Citations</div>
         </div>
         <div className="card-cosmic rounded-xl p-4 text-center">
           <div className="text-2xl font-bold text-gradient-cosmic">{uniqueSources}</div>
-          <div className="text-xs text-white/40 mt-1">Unique Sources</div>
+          <div className="text-xs text-theme-muted mt-1">Unique Sources</div>
         </div>
         <div className="card-cosmic rounded-xl p-4 text-center">
           <div className="text-2xl font-bold text-gradient-cosmic">{programs.length}</div>
-          <div className="text-xs text-white/40 mt-1">Programs Analyzed</div>
+          <div className="text-xs text-theme-muted mt-1">Programs Analyzed</div>
         </div>
         <div className="card-cosmic rounded-xl p-4 text-center">
           <div className="text-2xl font-bold text-gradient-cosmic">
             {Object.keys(typeCounts).length}
           </div>
-          <div className="text-xs text-white/40 mt-1">Source Types</div>
+          <div className="text-xs text-theme-muted mt-1">Source Types</div>
         </div>
       </div>
 
@@ -116,7 +116,7 @@ export function AuditTrail({ programs, onScrollToProgram }: AuditTrailProps) {
           className={`text-xs px-3 py-1.5 rounded-full border transition-all ${
             filterType === 'all'
               ? 'bg-violet-500/20 text-violet-300 border-violet-500/40'
-              : 'bg-white/[0.04] text-white/50 border-white/10 hover:border-white/20'
+              : 'bg-white/[0.04] text-theme-tertiary border-white/10 hover:border-white/20'
           }`}
         >
           All ({allCitations.length})
@@ -131,7 +131,7 @@ export function AuditTrail({ programs, onScrollToProgram }: AuditTrailProps) {
               className={`text-xs px-3 py-1.5 rounded-full border transition-all flex items-center gap-1.5 ${
                 filterType === t
                   ? `${cfg.badge}`
-                  : 'bg-white/[0.04] text-white/50 border-white/10 hover:border-white/20'
+                  : 'bg-white/[0.04] text-theme-tertiary border-white/10 hover:border-white/20'
               }`}
             >
               <Icon className="w-3 h-3" />
@@ -150,7 +150,7 @@ export function AuditTrail({ programs, onScrollToProgram }: AuditTrailProps) {
             placeholder="Search citations, sources, programs..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white/[0.04] border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-sm text-white/80 placeholder:text-white/30 focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.06] transition-all"
+            className="w-full bg-white/[0.04] border border-white/10 rounded-xl pl-9 pr-4 py-2.5 text-sm text-theme-secondary placeholder:text-theme-muted focus:outline-none focus:border-violet-500/40 focus:bg-white/[0.06] transition-all"
           />
         </div>
         <div className="flex items-center gap-2">
@@ -158,7 +158,7 @@ export function AuditTrail({ programs, onScrollToProgram }: AuditTrailProps) {
           <select
             value={sortKey}
             onChange={(e) => setSortKey(e.target.value as SortKey)}
-            className="bg-white/[0.04] border border-white/10 rounded-xl px-3 py-2.5 text-sm text-white/70 focus:outline-none focus:border-violet-500/40 cursor-pointer"
+            className="bg-white/[0.04] border border-white/10 rounded-xl px-3 py-2.5 text-sm text-theme-secondary focus:outline-none focus:border-violet-500/40 cursor-pointer"
           >
             <option value="rank">Sort by Program Rank</option>
             <option value="sourceType">Sort by Source Type</option>
@@ -170,7 +170,7 @@ export function AuditTrail({ programs, onScrollToProgram }: AuditTrailProps) {
       {/* Citation rows */}
       <div className="space-y-2">
         {filtered.length === 0 && (
-          <div className="text-center py-12 text-white/30 text-sm">No citations match your filters.</div>
+          <div className="text-center py-12 text-theme-muted text-sm">No citations match your filters.</div>
         )}
         {filtered.map((row, i) => (
           <div
@@ -183,10 +183,10 @@ export function AuditTrail({ programs, onScrollToProgram }: AuditTrailProps) {
                 <span className={`inline-block w-2 h-2 rounded-full ${SOURCE_CONFIG[row.sourceType].dot}`} />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm text-white/80 leading-relaxed">{row.point}</p>
+                <p className="text-sm text-theme-secondary leading-relaxed">{row.point}</p>
                 <div className="flex flex-wrap items-center gap-2 mt-2">
                   <SourceBadge source={row.source} />
-                  <span className="text-xs text-white/30">{row.source}</span>
+                  <span className="text-xs text-theme-muted">{row.source}</span>
                 </div>
               </div>
             </div>

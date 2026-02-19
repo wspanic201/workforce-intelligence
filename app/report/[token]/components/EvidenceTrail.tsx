@@ -75,8 +75,8 @@ function EvidenceItem({ item, index }: EvidenceItemProps) {
     <div
       className={`rounded-lg border transition-all duration-200 overflow-hidden ${
         open
-          ? 'border-white/12 bg-white/[0.04]'
-          : 'border-white/[0.06] bg-white/[0.02] hover:border-white/10 hover:bg-white/[0.03]'
+          ? 'border-theme-base bg-white/[0.04]'
+          : 'border-theme-subtle bg-white/[0.02] hover:border-theme-base hover:bg-white/[0.03]'
       }`}
     >
       <button
@@ -87,25 +87,25 @@ function EvidenceItem({ item, index }: EvidenceItemProps) {
           <span className={`inline-block w-1.5 h-1.5 rounded-full mt-1 ${config.dot}`} />
         </span>
         <div className="flex-1 min-w-0">
-          <p className="text-sm text-white/80 leading-relaxed line-clamp-2 group-hover:line-clamp-none">
+          <p className="text-sm text-theme-secondary leading-relaxed line-clamp-2 group-hover:line-clamp-none">
             {item.point}
           </p>
         </div>
         <ChevronDown
-          className={`w-3.5 h-3.5 shrink-0 text-white/30 transition-transform duration-200 mt-0.5 ${open ? 'rotate-180' : ''}`}
+          className={`w-3.5 h-3.5 shrink-0 text-theme-muted transition-transform duration-200 mt-0.5 ${open ? 'rotate-180' : ''}`}
         />
       </button>
 
       {open && (
         <div className="px-3 pb-3 pt-0">
           <div className="pl-4 border-l-2 border-white/10">
-            <p className="text-sm text-white/80 leading-relaxed mb-2">{item.point}</p>
+            <p className="text-sm text-theme-secondary leading-relaxed mb-2">{item.point}</p>
             <div className="flex items-center gap-2 flex-wrap">
               <span className={`inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full ${config.badge}`}>
                 <Icon className="w-3 h-3" />
                 {config.label}
               </span>
-              <span className="text-xs text-white/40">{item.source}</span>
+              <span className="text-xs text-theme-muted">{item.source}</span>
             </div>
           </div>
         </div>
@@ -124,10 +124,10 @@ export function EvidenceTrail({ evidence, title = 'Evidence Trail' }: EvidenceTr
 
   return (
     <div>
-      <h4 className="text-xs font-semibold uppercase tracking-wider text-white/40 mb-3 flex items-center gap-2">
+      <h4 className="text-xs font-semibold uppercase tracking-wider text-theme-muted mb-3 flex items-center gap-2">
         <span className="inline-block w-4 h-px bg-white/20" />
         {title}
-        <span className="text-white/20 font-normal">({evidence.length} signals)</span>
+        <span className="text-theme-muted font-normal">({evidence.length} signals)</span>
       </h4>
       <div className="space-y-1.5">
         {evidence.map((item, i) => (

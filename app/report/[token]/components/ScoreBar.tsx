@@ -58,7 +58,7 @@ export function ScoreBar({
   return (
     <div className="flex items-center gap-3">
       {label && (
-        <span className="text-xs text-white/50 w-24 shrink-0 text-right">{label}</span>
+        <span className="text-xs text-theme-tertiary w-24 shrink-0 text-right">{label}</span>
       )}
       <div className={`flex-1 rounded-full bg-white/[0.06] ${barH} overflow-hidden`}>
         <div
@@ -230,10 +230,10 @@ export function OverviewBar({
       className="w-full text-left group hover:bg-white/[0.02] rounded-lg px-3 py-2.5 transition-colors duration-150 cursor-pointer"
     >
       <div className="flex items-center gap-3">
-        <span className="text-xs text-white/30 w-5 text-right shrink-0">#{rank}</span>
+        <span className="text-xs text-theme-muted w-5 text-right shrink-0">#{rank}</span>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-sm font-medium text-white/90 truncate group-hover:text-white transition-colors">
+            <span className="text-sm font-medium text-theme-secondary truncate group-hover:text-theme-primary transition-colors">
               {programName}
             </span>
             <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full shrink-0 ${style.badge}`}>
@@ -252,7 +252,7 @@ export function OverviewBar({
                 style={{ width: `${pct}%` }}
               />
             </div>
-            <span className="text-xs font-bold tabular-nums text-white/60 w-8 text-right">
+            <span className="text-xs font-bold tabular-nums text-theme-tertiary w-8 text-right">
               {score.toFixed(1)}
             </span>
           </div>
