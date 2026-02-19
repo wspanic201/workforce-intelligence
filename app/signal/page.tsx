@@ -81,8 +81,7 @@ export default function SignalPage() {
           </h1>
 
           <p className="text-lg md:text-xl text-white/70 leading-relaxed max-w-xl mx-auto mb-8">
-            Workforce intelligence for community college CE and workforce development teams.
-            3× per week. Free. No noise.
+            Workforce program intelligence for CE and workforce development teams — delivered 3× a week. Free. No noise.
           </p>
 
           <div className="flex flex-wrap justify-center gap-6 text-sm text-white/60 mb-12">

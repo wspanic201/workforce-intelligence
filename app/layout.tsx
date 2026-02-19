@@ -19,17 +19,17 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Wavelength — Workforce Pell Readiness & Market Intelligence for Community Colleges",
+  title: "Wavelength — Workforce Program Intelligence for Community Colleges",
   description:
-    "How community colleges identify which workforce programs to build. Free Pell readiness check, compliance gap audit, and data-backed program opportunity scans for CE and workforce teams.",
+    "Wavelength is the workforce program intelligence platform for community colleges. Find, validate, fund, and maintain the right programs — backed by live labor market data.",
   metadataBase: new URL("https://withwavelength.com"),
   alternates: {
     canonical: "/",
   },
   openGraph: {
-    title: "Wavelength — Workforce Pell Readiness & Market Intelligence",
+    title: "Wavelength — Workforce Program Intelligence",
     description:
-      "Data-driven program intelligence for community colleges. Free Pell Readiness Check, Compliance Gap Report, Market Scan.",
+      "Wavelength is the workforce program intelligence platform for community colleges. Find, validate, fund, and maintain the right programs — backed by live labor market data.",
     type: "website",
     url: "https://withwavelength.com",
     siteName: "Wavelength",
@@ -37,9 +37,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Wavelength — Workforce Pell Readiness & Market Intelligence",
+    title: "Wavelength — Workforce Program Intelligence",
     description:
-      "Data-driven program intelligence for community colleges. Free Pell Readiness Check.",
+      "Wavelength is the workforce program intelligence platform for community colleges. Find, validate, fund, and maintain the right programs — backed by live labor market data.",
   },
 };
 

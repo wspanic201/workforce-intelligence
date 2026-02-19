@@ -7,7 +7,7 @@ import { Aurora } from '@/components/cosmic/Aurora';
 
 export const metadata: Metadata = {
   title: 'Program Portfolio Analysis for Community Colleges | Wavelength',
-  description: "Understand what programs you're missing, what you already have that qualifies for Workforce Pell, and where your compliance gaps are costing you.",
+  description: "Understand what programs you're missing, what you already have that qualifies for Workforce Pell, and where your compliance gaps are costing you — by Wavelength, the workforce program intelligence platform for community colleges.",
   alternates: { canonical: 'https://withwavelength.com/program-analysis' },
 };
 

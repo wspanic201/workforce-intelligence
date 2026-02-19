@@ -7,7 +7,7 @@ import { Aurora } from '@/components/cosmic/Aurora';
 
 export const metadata: Metadata = {
   title: 'Program Health & Curriculum Alignment | Wavelength Drift Monitor',
-  description: 'Keep existing workforce programs aligned to employer demand. Quarterly drift scans compare your curriculum against live job postings and deliver a Drift Score.',
+  description: 'Keep existing workforce programs aligned to employer demand. Quarterly drift scans compare your curriculum against live job postings and deliver a Drift Score — by Wavelength, the workforce program intelligence platform for community colleges.',
   alternates: { canonical: 'https://withwavelength.com/program-health' },
 };
 

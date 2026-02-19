@@ -7,7 +7,7 @@ import { Aurora } from '@/components/cosmic/Aurora';
 
 export const metadata: Metadata = {
   title: 'Grant Intelligence for Community College Workforce Programs | Wavelength',
-  description: 'Find and prioritize the federal, state, and foundation grants your workforce programs qualify for. Scored, ranked, and ready to pursue.',
+  description: 'Find and prioritize the federal, state, and foundation grants your workforce programs qualify for. Scored, ranked, and ready to pursue — by Wavelength, the workforce program intelligence platform for community colleges.',
   alternates: { canonical: 'https://withwavelength.com/grant-alignment' },
 };
 

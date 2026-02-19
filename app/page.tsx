@@ -343,7 +343,7 @@ const HERO_SLIDES = [
     id: 'main',
     badge: null,
     headline: 'Your next high-demand program exists. Wavelength finds it.',
-    subtitle: 'Community colleges that build the right programs — at the right time — earn more, retain more, and serve their communities better. Wavelength surfaces the opportunities your region is ready for, backed by real labor market data.',
+    subtitle: 'Wavelength is the workforce program intelligence platform for community colleges — find programs worth building, validate demand, secure funding, and keep your curriculum current. All from live labor market data.',
     stats: [
       { value: '7–10', label: 'vetted program leads' },
       { value: '50+', label: 'verified sources' },
@@ -482,6 +482,10 @@ function HeroCarousel() {
             <div className="mt-4 flex lg:justify-start justify-center">
               <Equalizer bars={9} size="sm" muted />
             </div>
+
+            <p className="mt-2 text-xs font-mono tracking-widest text-white/30 uppercase lg:text-left text-center">
+              Workforce Program Intelligence · Community Colleges
+            </p>
 
             <p className="mt-4 text-lg md:text-xl text-white/80 leading-relaxed max-w-xl">
               {slide.subtitle}
@@ -1151,6 +1155,9 @@ export default function HomePage() {
                 </button>
               </a>
             </div>
+            <p className="mt-8 text-xs font-mono text-white/20 tracking-widest uppercase">
+              Wavelength · Workforce Program Intelligence · withwavelength.com
+            </p>
             <p className="mt-6 text-sm text-white/80">
               Questions?{' '}
               <a

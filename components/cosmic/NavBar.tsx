@@ -78,7 +78,10 @@ export function NavBar() {
           >
             <span className="inline-flex items-center gap-2" title="~∿ tuned in ∿~">
               <WavelengthMark className="w-6 h-6" />
-              <span className="text-gradient-cosmic">Wavelength</span>
+              <span className="inline-flex flex-col items-start leading-none">
+                <span className="text-gradient-cosmic">Wavelength</span>
+                <span className="text-[9px] font-mono text-white/25 tracking-widest uppercase hidden lg:block">Workforce Program Intelligence</span>
+              </span>
             </span>
           </Link>
 

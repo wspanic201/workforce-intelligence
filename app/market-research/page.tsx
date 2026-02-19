@@ -7,7 +7,7 @@ import { Aurora } from '@/components/cosmic/Aurora';
 
 export const metadata: Metadata = {
   title: 'Market Research for Community College Programs | Wavelength',
-  description: 'Find the workforce programs your region actually needs. Data-backed program opportunity scans for community college CE and workforce teams.',
+  description: 'Find the workforce programs your region actually needs. Data-backed program opportunity scans for community college CE and workforce teams — by Wavelength, the workforce program intelligence platform for community colleges.',
   alternates: { canonical: 'https://withwavelength.com/market-research' },
 };
 

@@ -7,7 +7,7 @@ import { Aurora } from '@/components/cosmic/Aurora';
 
 export const metadata: Metadata = {
   title: 'Program Validation for Community Colleges | Wavelength',
-  description: 'Validate new program ideas with real market data before you invest in curriculum, advisory boards, and approvals.',
+  description: 'Validate new program ideas with real market data before you invest in curriculum, advisory boards, and approvals — by Wavelength, the workforce program intelligence platform for community colleges.',
   alternates: { canonical: 'https://withwavelength.com/program-development' },
 };
 
