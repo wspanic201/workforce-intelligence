@@ -34,7 +34,7 @@ const discoverProductJsonLd = {
 
 export default function DiscoverPage() {
   return (
-    <div className="overflow-x-hidden bg-[#050510]">
+    <div className="overflow-x-hidden bg-theme-page">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(discoverProductJsonLd) }}
@@ -70,10 +70,10 @@ export default function DiscoverPage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={200} duration={800}>
-            <p className="mt-6 text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed font-medium">
+            <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed font-medium">
               Find out exactly what programs your region needs — before you invest a dollar in development.
             </p>
-            <p className="mt-3 text-base md:text-lg text-white/45 max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-3 text-base md:text-lg text-theme-tertiary max-w-2xl mx-auto leading-relaxed">
               A 25+ page report with scored opportunities, competitive gaps, employer demand signals, grant alignment, and hidden opportunities your competitors will miss. All from 50+ verified sources.
             </p>
           </AnimateOnScroll>
@@ -93,9 +93,9 @@ export default function DiscoverPage() {
                 </button>
               </a>
             </div>
-            <p className="mt-4 text-sm text-white/80">
+            <p className="mt-4 text-sm text-theme-secondary">
               Not sure yet?{' '}
-              <Link href="/report/demo" className="text-white/70 hover:text-white/70 underline underline-offset-4 transition-colors">
+              <Link href="/report/demo" className="text-theme-secondary hover:text-theme-secondary underline underline-offset-4 transition-colors">
                 See a real example first
               </Link>
             </p>
@@ -111,7 +111,7 @@ export default function DiscoverPage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-16">
             <h2
-              className="font-heading font-bold text-white"
+              className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
               Six phases of research. One comprehensive Program Opportunity Scan.
@@ -155,8 +155,8 @@ export default function DiscoverPage() {
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center mb-4">
                   <Icon className="h-5 w-5 text-purple-400" />
                 </div>
-                <h3 className="font-heading font-semibold text-white mb-2">{title}</h3>
-                <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
+                <h3 className="font-heading font-semibold text-theme-primary mb-2">{title}</h3>
+                <p className="text-theme-secondary text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -171,12 +171,12 @@ export default function DiscoverPage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-12">
             <h2
-              className="font-heading font-bold text-white"
+              className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
               What we found for Wake Technical Community College
             </h2>
-            <p className="text-white/70 text-sm mt-2">
+            <p className="text-theme-secondary text-sm mt-2">
               Research Triangle — Raleigh, Durham, Chapel Hill · Real data, real analysis
             </p>
           </AnimateOnScroll>
@@ -184,8 +184,8 @@ export default function DiscoverPage() {
           <AnimateOnScroll variant="fade-up" delay={200}>
             <div className="card-cosmic rounded-2xl overflow-hidden">
               {/* Conventional */}
-              <div className="p-6 md:p-8 border-b border-white/[0.06]">
-                <h3 className="text-xs font-medium uppercase tracking-widest text-white/70 mb-4">
+              <div className="p-6 md:p-8 border-b border-theme-subtle">
+                <h3 className="text-xs font-medium uppercase tracking-widest text-theme-secondary mb-4">
                   Conventional Opportunities
                 </h3>
                 <div className="space-y-2">
@@ -198,8 +198,8 @@ export default function DiscoverPage() {
                   ].map((p) => (
                     <div key={p.name} className="flex items-center justify-between py-2.5 px-4 rounded-lg bg-white/[0.02]">
                       <div className="flex items-center gap-3 flex-wrap">
-                        <span className="text-white/80 text-sm">{p.name}</span>
-                        <span className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/[0.05] text-white/70">
+                        <span className="text-theme-secondary text-sm">{p.name}</span>
+                        <span className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/[0.05] text-theme-secondary">
                           {p.tag}
                         </span>
                       </div>
@@ -210,7 +210,7 @@ export default function DiscoverPage() {
                             style={{ width: `${(p.score / 10) * 100}%` }}
                           />
                         </div>
-                        <span className="text-white/70 text-sm font-mono w-7 text-right">{p.score}</span>
+                        <span className="text-theme-secondary text-sm font-mono w-7 text-right">{p.score}</span>
                       </div>
                     </div>
                   ))}
@@ -219,10 +219,10 @@ export default function DiscoverPage() {
 
               {/* Blue Ocean */}
               <div className="p-6 md:p-8">
-                <h3 className="text-xs font-medium uppercase tracking-widest text-white/70 mb-1">
+                <h3 className="text-xs font-medium uppercase tracking-widest text-theme-secondary mb-1">
                   Blue Ocean — Hidden Opportunities
                 </h3>
-                <p className="text-white/80 text-xs mb-4">
+                <p className="text-theme-secondary text-xs mb-4">
                   The programs standard analyses miss entirely
                 </p>
                 <div className="space-y-2">
@@ -235,7 +235,7 @@ export default function DiscoverPage() {
                   ].map((p) => (
                     <div key={p.name} className="flex items-center justify-between py-2.5 px-4 rounded-lg bg-teal-500/[0.03] border border-teal-500/[0.08]">
                       <div className="flex items-center gap-3 flex-wrap">
-                        <span className="text-white/80 text-sm">{p.name}</span>
+                        <span className="text-theme-secondary text-sm">{p.name}</span>
                         <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cosmic-teal/20 text-teal-300 border border-teal-500/20">
                           Blue Ocean
                         </span>
@@ -255,7 +255,7 @@ export default function DiscoverPage() {
               </div>
 
               {/* CTA */}
-              <div className="p-6 md:p-8 border-t border-white/[0.06] flex justify-center">
+              <div className="p-6 md:p-8 border-t border-theme-subtle flex justify-center">
                 <Link href="/report/demo">
                   <button className="btn-cosmic btn-cosmic-ghost text-sm">
                     Read the Full Wake Tech Market Scan
@@ -273,7 +273,7 @@ export default function DiscoverPage() {
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
             <h2
-              className="font-heading font-bold text-white"
+              className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
               Not another labor market report.
@@ -302,8 +302,8 @@ export default function DiscoverPage() {
               <div key={title} className="flex gap-4">
                 <CheckCircle2 className="h-5 w-5 text-purple-400 flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-heading font-semibold text-white mb-1">{title}</h3>
-                  <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
+                  <h3 className="font-heading font-semibold text-theme-primary mb-1">{title}</h3>
+                  <p className="text-theme-secondary text-sm leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}
@@ -317,12 +317,12 @@ export default function DiscoverPage() {
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
             <span className="overline">Get Started</span>
             <h2
-              className="font-heading font-bold text-white mt-4"
+              className="font-heading font-bold text-theme-primary mt-4"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
               Start free. Go deeper when you&apos;re ready.
             </h2>
-            <p className="text-white/70 mt-3 max-w-xl mx-auto">
+            <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
               The Pell Readiness Check is free and gets you started in 60 seconds. When you&apos;re ready for full market intelligence, a Program Opportunity Scan is the next step.
             </p>
           </AnimateOnScroll>
@@ -336,13 +336,13 @@ export default function DiscoverPage() {
                   <span className="text-teal-300 text-xs font-medium">Free — No Credit Card</span>
                 </div>
 
-                <h3 className="font-heading font-bold text-white text-xl mb-2">Pell Readiness Check</h3>
-                <p className="text-white/70 text-sm mb-5">
+                <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Pell Readiness Check</h3>
+                <p className="text-theme-secondary text-sm mb-5">
                   Find out if your programs qualify for Workforce Pell before July 1, 2026.
                 </p>
 
                 <div className="mb-5">
-                  <span className="font-heading font-bold text-4xl text-white">$0</span>
+                  <span className="font-heading font-bold text-4xl text-theme-primary">$0</span>
                 </div>
 
                 <ul className="text-left max-w-xs mx-auto space-y-3 mb-7 flex-1">
@@ -352,7 +352,7 @@ export default function DiscoverPage() {
                     'Pell gap identification',
                     'Delivered in ~48 hours',
                   ].map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-sm text-white/80">
+                    <li key={item} className="flex items-start gap-3 text-sm text-theme-secondary">
                       <CheckCircle2 className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" />
                       {item}
                     </li>
@@ -365,7 +365,7 @@ export default function DiscoverPage() {
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </button>
                 </a>
-                <p className="text-white/70 text-xs mt-3">No login required.</p>
+                <p className="text-theme-secondary text-xs mt-3">No login required.</p>
               </div>
             </AnimateOnScroll>
 
@@ -373,22 +373,22 @@ export default function DiscoverPage() {
             <AnimateOnScroll variant="scale" delay={200}>
               <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-purple-500/20 h-full flex flex-col relative">
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-purple-500 to-blue-500 px-4 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-purple-500/20">
+                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-purple-500 to-blue-500 px-4 py-1 text-xs font-bold uppercase tracking-wider text-theme-primary shadow-lg shadow-purple-500/20">
                     Founding Rate
                   </span>
                 </div>
                 <div className="mt-3">
-                  <h3 className="font-heading font-bold text-white text-xl mb-2">Program Opportunity Scan</h3>
-                  <p className="text-white/70 text-sm mb-5">
+                  <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Program Opportunity Scan</h3>
+                  <p className="text-theme-secondary text-sm mb-5">
                     Full market intelligence — 25+ pages, 50+ sources, programs scored and ranked.
                   </p>
 
                   <div className="mb-1">
-                    <span className="font-heading font-bold text-4xl text-white">$1,500</span>
-                    <span className="text-white/80 text-sm ml-2 line-through">$3,500</span>
+                    <span className="font-heading font-bold text-4xl text-theme-primary">$1,500</span>
+                    <span className="text-theme-secondary text-sm ml-2 line-through">$3,500</span>
                   </div>
-                  <p className="text-white/80 text-xs mb-2">Founding rate — first 5 institutions</p>
-                  <p className="text-white/60 text-xs mb-5">Eligible for Perkins V, WIOA, and state workforce grant funding</p>
+                  <p className="text-theme-secondary text-xs mb-2">Founding rate — first 5 institutions</p>
+                  <p className="text-theme-tertiary text-xs mb-5">Eligible for Perkins V, WIOA, and state workforce grant funding</p>
 
                   <ul className="text-left max-w-xs mx-auto space-y-3 mb-7 flex-1">
                     {[
@@ -400,7 +400,7 @@ export default function DiscoverPage() {
                       'Grant alignment for each program',
                       'Delivered in ~1 week',
                     ].map((item) => (
-                      <li key={item} className="flex items-start gap-3 text-sm text-white/80">
+                      <li key={item} className="flex items-start gap-3 text-sm text-theme-secondary">
                         <CheckCircle2 className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" />
                         {item}
                       </li>
@@ -413,7 +413,7 @@ export default function DiscoverPage() {
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </button>
                   </a>
-                  <p className="text-white/70 text-xs mt-3">
+                  <p className="text-theme-secondary text-xs mt-3">
                     We&apos;ll follow up within 48 hours.
                   </p>
                 </div>
@@ -427,16 +427,16 @@ export default function DiscoverPage() {
       <section className="relative py-16 md:py-20">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-8">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Where to go next</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-theme-muted">Where to go next</span>
           </AnimateOnScroll>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <AnimateOnScroll variant="fade-up" delay={100}>
               <Link href="/program-development" className="block card-cosmic rounded-2xl p-7 border-emerald-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-white text-lg">Program Validation</h3>
+                  <h3 className="font-heading font-bold text-theme-primary text-lg">Program Validation</h3>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">$2,000</span>
                 </div>
-                <p className="text-white/70 text-sm mb-4">Validate a specific program idea with a full financial model, competitive analysis, and Go/No-Go recommendation.</p>
+                <p className="text-theme-secondary text-sm mb-4">Validate a specific program idea with a full financial model, competitive analysis, and Go/No-Go recommendation.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-300 group-hover:gap-2 transition-all">
                   Learn More <ArrowRight className="h-4 w-4" />
                 </span>
@@ -445,10 +445,10 @@ export default function DiscoverPage() {
             <AnimateOnScroll variant="fade-up" delay={200}>
               <Link href="/grant-alignment" className="block card-cosmic rounded-2xl p-7 border-green-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-white text-lg">Grant Intelligence Scan</h3>
+                  <h3 className="font-heading font-bold text-theme-primary text-lg">Grant Intelligence Scan</h3>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-300">$495</span>
                 </div>
-                <p className="text-white/70 text-sm mb-4">Find and prioritize the grants your programs qualify for — scored, ranked, and ready to pursue.</p>
+                <p className="text-theme-secondary text-sm mb-4">Find and prioritize the grants your programs qualify for — scored, ranked, and ready to pursue.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-green-300 group-hover:gap-2 transition-all">
                   Learn More <ArrowRight className="h-4 w-4" />
                 </span>
@@ -463,12 +463,12 @@ export default function DiscoverPage() {
         <div className="max-w-[800px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
             <h2
-              className="font-heading font-bold text-white"
+              className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
               After Your Program Opportunity Scan
             </h2>
-            <p className="text-white/70 mt-3">
+            <p className="text-theme-secondary mt-3">
               Your Program Opportunity Scan identifies the opportunities. The next stages help you act on them.
             </p>
           </AnimateOnScroll>
@@ -493,11 +493,11 @@ export default function DiscoverPage() {
             ].map(({ stage, name, desc }) => (
               <div key={stage} className="flex gap-4 p-5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                 <div className="w-10 h-10 rounded-lg bg-white/[0.05] flex items-center justify-center flex-shrink-0">
-                  <span className="font-mono text-sm text-white/80">{stage}</span>
+                  <span className="font-mono text-sm text-theme-secondary">{stage}</span>
                 </div>
                 <div>
-                  <h3 className="font-heading font-semibold text-white text-sm">{name}</h3>
-                  <p className="text-white/70 text-sm mt-1">{desc}</p>
+                  <h3 className="font-heading font-semibold text-theme-primary text-sm">{name}</h3>
+                  <p className="text-theme-secondary text-sm mt-1">{desc}</p>
                 </div>
               </div>
             ))}

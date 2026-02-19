@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function ProgramDevelopmentPage() {
   return (
-    <div className="overflow-x-hidden bg-[#050510]">
+    <div className="overflow-x-hidden bg-theme-page">
       {/* ===== HERO ===== */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16">
         <Stars count={100} />
@@ -31,7 +31,7 @@ export default function ProgramDevelopmentPage() {
             </h1>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200}>
-            <p className="text-white/80 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
+            <p className="text-theme-secondary text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
               A Market Scan tells you what to build. Program Validation tells you whether a specific idea is worth the investment — with a full financial model, competitive analysis, and accreditation pathway mapped out before you write a single course objective.
             </p>
           </AnimateOnScroll>
@@ -51,7 +51,7 @@ export default function ProgramDevelopmentPage() {
       <section className="relative py-20 md:py-28">
         <div className="max-w-[1000px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
-            <h2 className="font-heading font-bold text-white" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
+            <h2 className="font-heading font-bold text-theme-primary" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
               Who this is for
             </h2>
           </AnimateOnScroll>
@@ -63,7 +63,7 @@ export default function ProgramDevelopmentPage() {
             ].map(({ role, pain }) => (
               <div key={role} className="card-cosmic rounded-2xl p-6 border-emerald-500/20">
                 <h3 className="font-heading font-semibold text-emerald-300 text-sm uppercase tracking-wider mb-3">{role}</h3>
-                <p className="text-white/80 text-sm leading-relaxed">{pain}</p>
+                <p className="text-theme-secondary text-sm leading-relaxed">{pain}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -78,8 +78,8 @@ export default function ProgramDevelopmentPage() {
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 mb-4">
                 <span className="text-emerald-300 text-[10px] font-bold uppercase tracking-wider">$2,000</span>
               </div>
-              <h3 className="font-heading font-bold text-white text-2xl mb-3">Program Validation</h3>
-              <p className="text-white/80 text-sm leading-relaxed mb-6">
+              <h3 className="font-heading font-bold text-theme-primary text-2xl mb-3">Program Validation</h3>
+              <p className="text-theme-secondary text-sm leading-relaxed mb-6">
                 Full feasibility analysis for a specific program idea — market validation, financial model, competitive intelligence, and a Go/No-Go recommendation.
               </p>
               <ul className="space-y-2.5 mb-8">
@@ -95,7 +95,7 @@ export default function ProgramDevelopmentPage() {
                 ].map(item => (
                   <li key={item} className="flex items-start gap-2.5">
                     <Check className="h-4 w-4 text-emerald-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
-                    <span className="text-sm text-white/80">{item}</span>
+                    <span className="text-sm text-theme-secondary">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -114,10 +114,10 @@ export default function ProgramDevelopmentPage() {
       <section className="relative py-20 md:py-28">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
-            <h2 className="font-heading font-bold text-white" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
+            <h2 className="font-heading font-bold text-theme-primary" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
               How it connects
             </h2>
-            <p className="text-white/80 mt-4 max-w-2xl mx-auto">
+            <p className="text-theme-secondary mt-4 max-w-2xl mx-auto">
               Program Validation is most powerful when it follows Market Research. A Program Opportunity Scan identifies what your region needs — Validation confirms that one specific program is worth building. After validation, Grant Alignment finds funding.
             </p>
           </AnimateOnScroll>
@@ -127,10 +127,10 @@ export default function ProgramDevelopmentPage() {
               { step: '2', label: 'Program Validation', desc: 'Confirm demand is real', href: '/program-development', active: true },
               { step: '3', label: 'Grant Alignment', desc: 'Find the funding', href: '/grant-alignment', active: false },
             ].map(({ step, label, desc, href, active }) => (
-              <Link key={step} href={href} className={`block p-5 rounded-xl border ${active ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-white/[0.06] bg-white/[0.02]'} hover:bg-white/[0.04] transition-colors`}>
-                <span className="font-mono text-xs text-white/40">Step {step}</span>
-                <h3 className={`font-heading font-semibold text-sm mt-1 ${active ? 'text-emerald-300' : 'text-white'}`}>{label}</h3>
-                <p className="text-white/60 text-xs mt-1">{desc}</p>
+              <Link key={step} href={href} className={`block p-5 rounded-xl border ${active ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-theme-subtle bg-white/[0.02]'} hover:bg-white/[0.04] transition-colors`}>
+                <span className="font-mono text-xs text-theme-muted">Step {step}</span>
+                <h3 className={`font-heading font-semibold text-sm mt-1 ${active ? 'text-emerald-300' : 'text-theme-primary'}`}>{label}</h3>
+                <p className="text-theme-tertiary text-xs mt-1">{desc}</p>
               </Link>
             ))}
           </StaggerChildren>
@@ -141,7 +141,7 @@ export default function ProgramDevelopmentPage() {
       <section className="relative py-20 md:py-28 text-center">
         <div className="max-w-[600px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
-            <h2 className="font-heading font-bold text-white text-2xl md:text-3xl mb-6">
+            <h2 className="font-heading font-bold text-theme-primary text-2xl md:text-3xl mb-6">
               Have a program idea? Let&apos;s validate it.
             </h2>
             <a href="mailto:hello@withwavelength.com?subject=Program%20Validation&body=College%20name%3A%20%0AProgram%20idea%3A%20%0ACity%2C%20State%3A%20">
@@ -151,7 +151,7 @@ export default function ProgramDevelopmentPage() {
               </button>
             </a>
             <div className="mt-4">
-              <Link href="/market-research" className="text-sm text-white/50 hover:text-white/70 transition-colors">
+              <Link href="/market-research" className="text-sm text-theme-tertiary hover:text-theme-secondary transition-colors">
                 Start with a Program Opportunity Scan first →
               </Link>
             </div>

@@ -104,12 +104,12 @@ export default function ProgramStrategy2026Page() {
             <span className="text-xs font-mono text-blue-400 border border-blue-400/30 px-3 py-1 rounded-full">
               Program Strategy
             </span>
-            <span className="text-white/30 text-sm">February 19, 2026</span>
-            <span className="text-white/20 text-sm">·</span>
-            <span className="text-white/30 text-sm">9 min read</span>
+            <span className="text-theme-muted text-sm">February 19, 2026</span>
+            <span className="text-theme-muted text-sm">·</span>
+            <span className="text-theme-muted text-sm">9 min read</span>
           </div>
           <h1
-            className="font-bold leading-tight mb-5 text-white"
+            className="font-bold leading-tight mb-5 text-theme-primary"
             style={{
               fontFamily: "var(--font-space-grotesk)",
               fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)",
@@ -120,7 +120,7 @@ export default function ProgramStrategy2026Page() {
               the Ones You Haven&apos;t Built Yet
             </span>
           </h1>
-          <p className="text-white/60 text-xl leading-relaxed">
+          <p className="text-theme-tertiary text-xl leading-relaxed">
             The labor market data for 2026 tells a consistent story: acute shortages in
             healthcare, advanced manufacturing, skilled trades, and technology-adjacent
             fields. A Pell Grant expansion that unlocks federal funding for short-term
@@ -140,7 +140,7 @@ export default function ProgramStrategy2026Page() {
             >
               2.1M
             </div>
-            <div className="text-white/60 text-sm leading-snug">
+            <div className="text-theme-tertiary text-sm leading-snug">
               manufacturing jobs projected to go unfilled by 2030 (Deloitte)
             </div>
           </div>
@@ -151,7 +151,7 @@ export default function ProgramStrategy2026Page() {
             >
               3.5M
             </div>
-            <div className="text-white/60 text-sm leading-snug">
+            <div className="text-theme-tertiary text-sm leading-snug">
               cybersecurity jobs unfilled globally (Cybersecurity Ventures)
             </div>
           </div>
@@ -162,7 +162,7 @@ export default function ProgramStrategy2026Page() {
             >
               Jul 1
             </div>
-            <div className="text-white/60 text-sm leading-snug">
+            <div className="text-theme-tertiary text-sm leading-snug">
               2026: Workforce Pell implementation date — programs must be designated
             </div>
           </div>
@@ -173,7 +173,7 @@ export default function ProgramStrategy2026Page() {
             >
               12–18 mo
             </div>
-            <div className="text-white/60 text-sm leading-snug">
+            <div className="text-theme-tertiary text-sm leading-snug">
               typical program development timeline from approval to launch
             </div>
           </div>
@@ -182,7 +182,7 @@ export default function ProgramStrategy2026Page() {
         {/* Section 1 */}
         <section className="mb-12">
           <h2
-            className="font-bold text-white mb-4"
+            className="font-bold text-theme-primary mb-4"
             style={{
               fontFamily: "var(--font-space-grotesk)",
               fontSize: "clamp(1.3rem, 2vw, 1.6rem)",
@@ -193,12 +193,12 @@ export default function ProgramStrategy2026Page() {
 
           <div className="bg-white/5 border border-white/10 rounded-xl p-6 mb-6">
             <h3
-              className="font-bold text-white mb-2"
+              className="font-bold text-theme-primary mb-2"
               style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
               1. Healthcare &amp; Allied Health
             </h3>
-            <p className="text-white/80 leading-relaxed">
+            <p className="text-theme-secondary leading-relaxed">
               The Bureau of Labor Statistics projects 13% employment growth in healthcare
               occupations from 2022 to 2032 — nearly twice the average across all
               occupations. The shortage is most acute in licensed practical nursing, CNA,
@@ -214,12 +214,12 @@ export default function ProgramStrategy2026Page() {
 
           <div className="bg-white/5 border border-white/10 rounded-xl p-6 mb-6">
             <h3
-              className="font-bold text-white mb-2"
+              className="font-bold text-theme-primary mb-2"
               style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
               2. Advanced Manufacturing &amp; Skilled Trades
             </h3>
-            <p className="text-white/80 leading-relaxed">
+            <p className="text-theme-secondary leading-relaxed">
               Deloitte projects 2.1 million manufacturing jobs will go unfilled by 2030 —
               not because manufacturing is declining, but because the workforce pipeline
               isn&apos;t keeping up with retirements and growth. CNC machining, welding, and
@@ -234,12 +234,12 @@ export default function ProgramStrategy2026Page() {
 
           <div className="bg-white/5 border border-white/10 rounded-xl p-6 mb-6">
             <h3
-              className="font-bold text-white mb-2"
+              className="font-bold text-theme-primary mb-2"
               style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
               3. Cybersecurity &amp; IT
             </h3>
-            <p className="text-white/80 leading-relaxed">
+            <p className="text-theme-secondary leading-relaxed">
               Cybersecurity Ventures estimates 3.5 million cybersecurity jobs are unfilled
               globally — a number that has grown every year for the past five years. The
               most in-demand entry-level credentials are CompTIA Security+, CompTIA Network+,
@@ -255,12 +255,12 @@ export default function ProgramStrategy2026Page() {
 
           <div className="bg-white/5 border border-white/10 rounded-xl p-6 mb-6">
             <h3
-              className="font-bold text-white mb-2"
+              className="font-bold text-theme-primary mb-2"
               style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
               4. Clean Energy &amp; HVAC
             </h3>
-            <p className="text-white/80 leading-relaxed">
+            <p className="text-theme-secondary leading-relaxed">
               Inflation Reduction Act provisions are driving a sustained build-out of clean
               energy infrastructure that requires trained workers at scale. Solar installation,
               energy auditing, EV maintenance, and advanced HVAC work (smart building
@@ -276,19 +276,19 @@ export default function ProgramStrategy2026Page() {
         {/* Mid-article CTA */}
         <div className="bg-gradient-to-r from-violet-900/40 to-teal-900/40 border border-white/10 rounded-2xl p-8 mt-2 mb-12 text-center">
           <h2
-            className="text-xl font-bold text-white mb-3"
+            className="text-xl font-bold text-theme-primary mb-3"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
             Stop guessing which programs your region needs
           </h2>
-          <p className="text-white/60 mb-6 max-w-xl mx-auto">
+          <p className="text-theme-tertiary mb-6 max-w-xl mx-auto">
             Wavelength&apos;s Market Scan analyzes 50+ live data sources to surface the 7–10
             strongest program opportunities for your specific region — scored, ranked, and
             ready to present to your leadership team.
           </p>
           <Link
             href="/discover"
-            className="inline-block bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-500 hover:to-blue-500 text-white px-6 py-3 rounded-xl font-semibold transition-all"
+            className="inline-block bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-500 hover:to-blue-500 text-theme-primary px-6 py-3 rounded-xl font-semibold transition-all"
           >
             Order a Market Scan →
           </Link>
@@ -297,7 +297,7 @@ export default function ProgramStrategy2026Page() {
         {/* Section 2 */}
         <section className="mb-12">
           <h2
-            className="font-bold text-white mb-4"
+            className="font-bold text-theme-primary mb-4"
             style={{
               fontFamily: "var(--font-space-grotesk)",
               fontSize: "clamp(1.3rem, 2vw, 1.6rem)",
@@ -305,7 +305,7 @@ export default function ProgramStrategy2026Page() {
           >
             Why Gut Instinct Fails for Program Development
           </h2>
-          <p className="text-white/80 leading-relaxed mb-6">
+          <p className="text-theme-secondary leading-relaxed mb-6">
             Most new community college programs are initiated because someone heard about
             demand. An employer mentioned it at an advisory board meeting. A faculty member
             knows the field. A workforce board highlighted the sector. These aren&apos;t bad
@@ -315,7 +315,7 @@ export default function ProgramStrategy2026Page() {
             unionized, and motivated by very specific labor pipeline challenges that may not
             represent broader regional demand.
           </p>
-          <p className="text-white/80 leading-relaxed mb-6">
+          <p className="text-theme-secondary leading-relaxed mb-6">
             &ldquo;We hear about it a lot&rdquo; is not the same as market demand. Demand requires
             verifiable signals: job posting volume (are employers actually advertising for
             this role?), wage levels (do wages support the ROI claim to students?),
@@ -326,7 +326,7 @@ export default function ProgramStrategy2026Page() {
             — account for a significant portion of the programs that were eliminated or
             quietly suspended in the decade following 2008.
           </p>
-          <p className="text-white/80 leading-relaxed mb-6">
+          <p className="text-theme-secondary leading-relaxed mb-6">
             The right framework evaluates all four dimensions before a single faculty member
             is hired or a single piece of equipment is purchased: labor market signals,
             competitive landscape, financial modeling, and regulatory pathway. Skipping any
@@ -338,7 +338,7 @@ export default function ProgramStrategy2026Page() {
         {/* Section 3 */}
         <section className="mb-12">
           <h2
-            className="font-bold text-white mb-4"
+            className="font-bold text-theme-primary mb-4"
             style={{
               fontFamily: "var(--font-space-grotesk)",
               fontSize: "clamp(1.3rem, 2vw, 1.6rem)",
@@ -346,7 +346,7 @@ export default function ProgramStrategy2026Page() {
           >
             The Decision Framework: What to Evaluate Before Saying Yes
           </h2>
-          <p className="text-white/80 leading-relaxed mb-6">
+          <p className="text-theme-secondary leading-relaxed mb-6">
             Before committing to a new program, institutional leadership should be able to
             answer each of the following questions with data — not intuition:
           </p>
@@ -401,19 +401,19 @@ export default function ProgramStrategy2026Page() {
               >
                 <div className="flex gap-4">
                   <span
-                    className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-sm font-bold text-white shrink-0 mt-0.5"
+                    className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-sm font-bold text-theme-primary shrink-0 mt-0.5"
                     style={{ fontFamily: "var(--font-space-grotesk)" }}
                   >
                     {item.num}
                   </span>
                   <div>
                     <h3
-                      className="font-bold text-white mb-1"
+                      className="font-bold text-theme-primary mb-1"
                       style={{ fontFamily: "var(--font-space-grotesk)" }}
                     >
                       {item.title}
                     </h3>
-                    <p className="text-white/70 text-sm leading-relaxed">{item.detail}</p>
+                    <p className="text-theme-secondary text-sm leading-relaxed">{item.detail}</p>
                   </div>
                 </div>
               </div>
@@ -424,7 +424,7 @@ export default function ProgramStrategy2026Page() {
         {/* Section 4 */}
         <section className="mb-12">
           <h2
-            className="font-bold text-white mb-4"
+            className="font-bold text-theme-primary mb-4"
             style={{
               fontFamily: "var(--font-space-grotesk)",
               fontSize: "clamp(1.3rem, 2vw, 1.6rem)",
@@ -432,7 +432,7 @@ export default function ProgramStrategy2026Page() {
           >
             The Timing Window
           </h2>
-          <p className="text-white/80 leading-relaxed mb-6">
+          <p className="text-theme-secondary leading-relaxed mb-6">
             Workforce Pell opens on July 1, 2026. Institutions that have qualifying programs
             formally designated at that date will be able to offer Pell funding to eligible
             students starting on day one. Institutions that are still in the designation
@@ -442,7 +442,7 @@ export default function ProgramStrategy2026Page() {
             programs that need to be live and Pell-eligible on July 1, 2026 needed to start
             their development process in early to mid-2025 at the latest.
           </p>
-          <p className="text-white/80 leading-relaxed mb-6">
+          <p className="text-theme-secondary leading-relaxed mb-6">
             For institutions that haven&apos;t started, the window hasn&apos;t fully closed — but it
             is closing. There are still program types (particularly in healthcare and advanced
             manufacturing) where accelerated development timelines are possible with the
@@ -453,7 +453,7 @@ export default function ProgramStrategy2026Page() {
             that have already locked in employer partnerships and built enrollment pipelines.
           </p>
           <div className="bg-white/5 border border-blue-500/20 rounded-xl p-6 mb-8">
-            <p className="text-white/80 leading-relaxed italic">
+            <p className="text-theme-secondary leading-relaxed italic">
               &ldquo;The colleges that start now will be first. The colleges that wait six months
               will be second — competing in a market where the best employer relationships
               are already taken.&rdquo;
@@ -464,19 +464,19 @@ export default function ProgramStrategy2026Page() {
         {/* End CTA */}
         <div className="bg-gradient-to-r from-violet-900/40 to-teal-900/40 border border-white/10 rounded-2xl p-8 mt-12 text-center">
           <h2
-            className="text-xl font-bold text-white mb-3"
+            className="text-xl font-bold text-theme-primary mb-3"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
             Not sure if a specific program will perform? Validate it first.
           </h2>
-          <p className="text-white/60 mb-6 max-w-xl mx-auto">
+          <p className="text-theme-tertiary mb-6 max-w-xl mx-auto">
             Before you invest in curriculum, faculty, and facilities — know with certainty.
             Wavelength Validate runs a 7-agent market analysis on any specific program
             concept and tells you: go, cautious proceed, or no-go.
           </p>
           <Link
             href="/validate"
-            className="inline-block bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white px-6 py-3 rounded-xl font-semibold transition-all"
+            className="inline-block bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-theme-primary px-6 py-3 rounded-xl font-semibold transition-all"
           >
             Learn About Program Validation →
           </Link>

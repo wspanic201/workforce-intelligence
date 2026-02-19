@@ -88,11 +88,11 @@ export default function ProgramDevelopmentPage() {
             <span className="text-xs font-mono bg-blue-500/10 text-blue-300 px-3 py-1 rounded-full">
               Program Strategy
             </span>
-            <span className="text-white/30 text-sm">February 17, 2026</span>
-            <span className="text-white/30 text-sm">· 8 min read</span>
+            <span className="text-theme-muted text-sm">February 17, 2026</span>
+            <span className="text-theme-muted text-sm">· 8 min read</span>
           </div>
           <h1
-            className="font-bold leading-tight mb-5 text-white"
+            className="font-bold leading-tight mb-5 text-theme-primary"
             style={{ fontSize: "clamp(1.8rem, 4vw, 2.8rem)" }}
           >
             Data-Driven Program Development for Community Colleges:{" "}
@@ -100,7 +100,7 @@ export default function ProgramDevelopmentPage() {
               A Practical Framework
             </span>
           </h1>
-          <p className="text-white/60 text-xl leading-relaxed">
+          <p className="text-theme-tertiary text-xl leading-relaxed">
             Most new community college programs are built on employer conversations, regional
             intuition, and the programs that peer institutions happen to be running. Some of those
             programs succeed. Many don't — and the difference usually comes down to whether the
@@ -111,13 +111,13 @@ export default function ProgramDevelopmentPage() {
 
         {/* Table of Contents */}
         <nav
-          className="bg-white/[0.03] border border-white/[0.08] rounded-xl p-6 mb-12"
+          className="bg-white/[0.03] border border-theme-subtle rounded-xl p-6 mb-12"
           aria-label="Table of Contents"
         >
           <h2 className="text-xs font-mono text-blue-400 uppercase tracking-widest mb-4">
             Table of Contents
           </h2>
-          <ol className="space-y-2 text-white/50 text-sm">
+          <ol className="space-y-2 text-theme-tertiary text-sm">
             <li>
               <a href="#problem" className="hover:text-blue-400 transition-colors">
                 1. Why Intuition-Based Program Development Fails
@@ -163,17 +163,17 @@ export default function ProgramDevelopmentPage() {
 
         {/* Section 1 */}
         <section id="problem" className="mb-12">
-          <h2 className="text-2xl font-bold mb-4 text-white">
+          <h2 className="text-2xl font-bold mb-4 text-theme-primary">
             Why Intuition-Based Program Development Fails
           </h2>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             The community college program development process has several structural weaknesses
             that make intuition-based decisions dangerous. Understanding these patterns is the
             first step toward building something better.
           </p>
 
           <h3 className="text-xl font-semibold mb-3 text-white/90">The Employer Survey Problem</h3>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Employer surveys consistently over-represent demand. When an HR director says "we
             could hire 30 people with these credentials," they're describing an aspirational
             scenario — not a confirmed hiring plan. Employers don't lose anything by expressing
@@ -182,7 +182,7 @@ export default function ProgramDevelopmentPage() {
           </p>
 
           <h3 className="text-xl font-semibold mb-3 text-white/90">The Peer Institution Lag</h3>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Watching what programs peer institutions are launching and replicating them sounds
             rational. In practice, it produces a two- to three-year lag. By the time you've
             identified that a peer is growing a program, gone through curriculum approval, and
@@ -191,7 +191,7 @@ export default function ProgramDevelopmentPage() {
           </p>
 
           <h3 className="text-xl font-semibold mb-3 text-white/90">The Completion Assumption</h3>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Programs built around the assumption that enrolled students will complete at high
             rates often don't account for the specific barriers that affect their target population.
             Labor market demand can be real and the program can still underperform if the
@@ -202,24 +202,24 @@ export default function ProgramDevelopmentPage() {
 
         {/* Section 2 */}
         <section id="market-scanning" className="mb-12">
-          <h2 className="text-2xl font-bold mb-4 text-white">
+          <h2 className="text-2xl font-bold mb-4 text-theme-primary">
             Stage One: Regional Market Scanning
           </h2>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Market scanning is the process of mapping what the regional labor market is asking
             for — before any program idea is on the table. Done well, it surfaces opportunities
             you wouldn't have found through advisory board conversations alone.
           </p>
 
           <h3 className="text-xl font-semibold mb-3 text-white/90">What to Look For</h3>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Effective market scanning focuses on several overlapping data streams:
           </p>
-          <ul className="space-y-3 text-white/60 mb-6">
+          <ul className="space-y-3 text-theme-tertiary mb-6">
             <li className="flex gap-3">
               <span className="text-teal-400 mt-1 flex-shrink-0">→</span>
               <span>
-                <strong className="text-white">Job posting volume and velocity:</strong> How many
+                <strong className="text-theme-primary">Job posting volume and velocity:</strong> How many
                 positions with specific credential requirements are being posted in your region,
                 and is that volume growing, stable, or declining? Job postings are a leading
                 indicator of employer demand — more current than occupation projections.
@@ -228,7 +228,7 @@ export default function ProgramDevelopmentPage() {
             <li className="flex gap-3">
               <span className="text-teal-400 mt-1 flex-shrink-0">→</span>
               <span>
-                <strong className="text-white">Median wages for target occupations:</strong> Does
+                <strong className="text-theme-primary">Median wages for target occupations:</strong> Does
                 the wage for completers justify program costs and, if applicable, Workforce Pell
                 gainful employment thresholds? High-demand occupations with suppressed wages are
                 a structural trap.
@@ -237,7 +237,7 @@ export default function ProgramDevelopmentPage() {
             <li className="flex gap-3">
               <span className="text-teal-400 mt-1 flex-shrink-0">→</span>
               <span>
-                <strong className="text-white">Credential specificity in job postings:</strong>
+                <strong className="text-theme-primary">Credential specificity in job postings:</strong>
                 Are employers asking for a general degree, a specific certification, or on-the-job
                 training? Programs that align to specific employer credential requirements have
                 clearer placement pathways.
@@ -246,7 +246,7 @@ export default function ProgramDevelopmentPage() {
             <li className="flex gap-3">
               <span className="text-teal-400 mt-1 flex-shrink-0">→</span>
               <span>
-                <strong className="text-white">Employer concentration:</strong> Is demand spread
+                <strong className="text-theme-primary">Employer concentration:</strong> Is demand spread
                 across dozens of employers or concentrated in two or three? Concentrated demand
                 means higher placement efficiency but also higher dependency risk.
               </span>
@@ -254,14 +254,14 @@ export default function ProgramDevelopmentPage() {
           </ul>
 
           <h3 className="text-xl font-semibold mb-3 text-white/90">Defining Your Labor Market Region</h3>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Your labor market region is not your county. It's the geographic area within which
             your typical completer will plausibly seek employment — usually defined by commute
             patterns, major employment centers, and regional industry clusters. For most community
             colleges, this is somewhere between 30 and 90 miles depending on population density
             and transportation infrastructure.
           </p>
-          <p className="text-white/60 leading-relaxed">
+          <p className="text-theme-tertiary leading-relaxed">
             Getting this wrong in either direction distorts your analysis. Too narrow, and you
             undercount demand. Too broad, and you include employers your graduates can't
             realistically reach. For{" "}
@@ -275,10 +275,10 @@ export default function ProgramDevelopmentPage() {
 
         {/* Section 3 */}
         <section id="demand-signals" className="mb-12">
-          <h2 className="text-2xl font-bold mb-4 text-white">
+          <h2 className="text-2xl font-bold mb-4 text-theme-primary">
             Reading Demand Signals Correctly
           </h2>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Not all demand signals point in the same direction, and learning to read them in
             combination is a core skill for anyone doing serious program development work.
           </p>
@@ -324,7 +324,7 @@ export default function ProgramDevelopmentPage() {
             ))}
           </div>
 
-          <p className="text-white/60 leading-relaxed">
+          <p className="text-theme-tertiary leading-relaxed">
             The most reliable picture comes from combining job posting data with wage data and
             talking to actual hiring managers (not HR generalists) at the specific companies
             doing the most relevant hiring in your region. That combination — quantitative signal
@@ -335,10 +335,10 @@ export default function ProgramDevelopmentPage() {
 
         {/* Section 4 */}
         <section id="competitive-analysis" className="mb-12">
-          <h2 className="text-2xl font-bold mb-4 text-white">
+          <h2 className="text-2xl font-bold mb-4 text-theme-primary">
             Competitive Analysis: What Peer Institutions Reveal
           </h2>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Understanding what programs are available within your labor market region — not just
             at your institution — is essential context for program development decisions. A market
             with genuine demand but no program supply is an opportunity. A market with demand and
@@ -346,11 +346,11 @@ export default function ProgramDevelopmentPage() {
           </p>
 
           <h3 className="text-xl font-semibold mb-3 text-white/90">What to Map</h3>
-          <ul className="space-y-3 text-white/60 mb-6">
+          <ul className="space-y-3 text-theme-tertiary mb-6">
             <li className="flex gap-3">
               <span className="text-blue-400 mt-1 flex-shrink-0">→</span>
               <span>
-                <strong className="text-white">Program availability:</strong> Which institutions in
+                <strong className="text-theme-primary">Program availability:</strong> Which institutions in
                 your region offer programs in the target occupational area, at what credential
                 level, and in what format (in-person, hybrid, online)?
               </span>
@@ -358,7 +358,7 @@ export default function ProgramDevelopmentPage() {
             <li className="flex gap-3">
               <span className="text-blue-400 mt-1 flex-shrink-0">→</span>
               <span>
-                <strong className="text-white">Enrollment and completion patterns:</strong> Where
+                <strong className="text-theme-primary">Enrollment and completion patterns:</strong> Where
                 available, completion rates at peer institutions in the same or adjacent programs
                 tell you whether there's unmet demand or whether the market is being served
                 adequately.
@@ -367,7 +367,7 @@ export default function ProgramDevelopmentPage() {
             <li className="flex gap-3">
               <span className="text-blue-400 mt-1 flex-shrink-0">→</span>
               <span>
-                <strong className="text-white">Format and schedule gaps:</strong> A peer offering
+                <strong className="text-theme-primary">Format and schedule gaps:</strong> A peer offering
                 only day-time in-person instruction may not be serving working adult learners.
                 Evening, weekend, and hybrid formats can create a real differentiation opportunity
                 even in a "competitive" market.
@@ -376,7 +376,7 @@ export default function ProgramDevelopmentPage() {
             <li className="flex gap-3">
               <span className="text-blue-400 mt-1 flex-shrink-0">→</span>
               <span>
-                <strong className="text-white">Cost and access gaps:</strong> Programs at
+                <strong className="text-theme-primary">Cost and access gaps:</strong> Programs at
                 four-year institutions or private training providers that carry significantly
                 higher costs represent a genuine community college opportunity — particularly
                 for short-term programs that qualify for Workforce Pell.
@@ -387,17 +387,17 @@ export default function ProgramDevelopmentPage() {
 
         {/* Section 5 */}
         <section id="validation" className="mb-12">
-          <h2 className="text-2xl font-bold mb-4 text-white">
+          <h2 className="text-2xl font-bold mb-4 text-theme-primary">
             Validation Before You Build
           </h2>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Market scanning tells you whether an opportunity exists. Validation tells you whether
             your institution can capture it. These are different questions, and collapsing them
             into one creates programs that should have been built differently or not at all.
           </p>
 
           <h3 className="text-xl font-semibold mb-3 text-white/90">Demand Validation</h3>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Demand validation means confirming, through direct employer contact, that your
             specific program concept — at the credential level and length you're considering —
             would lead to actual hiring decisions. This is different from employer enthusiasm.
@@ -406,7 +406,7 @@ export default function ProgramDevelopmentPage() {
             realistically hire at the wage listed in your job postings, within 90 days of
             completion?"
           </p>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Our{" "}
             <Link href="/validate" className="text-teal-400 underline hover:no-underline">
               Program Validation tool
@@ -417,12 +417,12 @@ export default function ProgramDevelopmentPage() {
           </p>
 
           <h3 className="text-xl font-semibold mb-3 text-white/90">Student Pipeline Validation</h3>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Employer demand is necessary but not sufficient. You also need to confirm that your
             institution can actually reach and enroll the students who would benefit from this
             program. Questions to answer before building:
           </p>
-          <ul className="space-y-2 text-white/60 mb-4">
+          <ul className="space-y-2 text-theme-tertiary mb-4">
             <li className="flex gap-2">
               <span className="text-blue-400">→</span>
               Does your current student population include people who would enroll in this program?
@@ -447,16 +447,16 @@ export default function ProgramDevelopmentPage() {
 
         {/* Section 6 */}
         <section id="launch-criteria" className="mb-12">
-          <h2 className="text-2xl font-bold mb-4 text-white">
+          <h2 className="text-2xl font-bold mb-4 text-theme-primary">
             Launch Criteria: When to Move Forward
           </h2>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             One of the most useful things a program development framework can do is establish
             clear criteria for when to launch — and when not to. Without pre-defined criteria,
             programs get approved on momentum, relationship dynamics, or the fact that someone
             already spent time developing the curriculum.
           </p>
-          <p className="text-white/60 leading-relaxed mb-6">
+          <p className="text-theme-tertiary leading-relaxed mb-6">
             A workable launch threshold requires all of the following:
           </p>
           <div className="space-y-3">
@@ -484,13 +484,13 @@ export default function ProgramDevelopmentPage() {
             ].map((item, i) => (
               <div
                 key={i}
-                className="border border-white/[0.08] rounded-xl p-5 bg-white/[0.02]"
+                className="border border-theme-subtle rounded-xl p-5 bg-white/[0.02]"
               >
-                <p className="text-white font-semibold mb-2 flex items-start gap-2">
+                <p className="text-theme-primary font-semibold mb-2 flex items-start gap-2">
                   <span className="text-teal-400 mt-0.5 flex-shrink-0">✓</span>
                   {item.criterion}
                 </p>
-                <p className="text-white/50 text-sm leading-relaxed pl-6">{item.note}</p>
+                <p className="text-theme-tertiary text-sm leading-relaxed pl-6">{item.note}</p>
               </div>
             ))}
           </div>
@@ -498,21 +498,21 @@ export default function ProgramDevelopmentPage() {
 
         {/* Section 7 */}
         <section id="portfolio-management" className="mb-12">
-          <h2 className="text-2xl font-bold mb-4 text-white">
+          <h2 className="text-2xl font-bold mb-4 text-theme-primary">
             Managing the Program Portfolio Over Time
           </h2>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Program development doesn't end at launch. A portfolio managed well over time
             requires periodic re-validation — labor markets shift, employer demand evolves, and
             programs that were strong candidates three years ago may be at risk today.
           </p>
 
           <h3 className="text-xl font-semibold mb-3 text-white/90">Annual Program Review</h3>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Each year, run every program in your short-term portfolio through a simplified version
             of the same framework you used to build it. Key questions:
           </p>
-          <ul className="space-y-2 text-white/60 mb-6">
+          <ul className="space-y-2 text-theme-tertiary mb-6">
             <li className="flex gap-2">
               <span className="text-blue-400">→</span>
               Is regional job posting volume for this program's target occupations stable or declining?
@@ -538,13 +538,13 @@ export default function ProgramDevelopmentPage() {
           </ul>
 
           <h3 className="text-xl font-semibold mb-3 text-white/90">Sunsetting Programs</h3>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Sunsetting is the part of portfolio management that most institutions avoid too long.
             Discontinued programs create operational complexity, consume faculty and administrative
             attention, and dilute the brand signal you're trying to build with employers. The
             right time to close a program is before it fails enrollment minimums, not after.
           </p>
-          <p className="text-white/60 leading-relaxed">
+          <p className="text-theme-tertiary leading-relaxed">
             Establish a clear, pre-announced threshold: programs that fail to meet minimum
             enrollment for two consecutive terms are under review. Programs under review that
             don't have a documented remediation plan within one term are sunset. This removes
@@ -554,16 +554,16 @@ export default function ProgramDevelopmentPage() {
 
         {/* Section 8 */}
         <section id="tools" className="mb-12">
-          <h2 className="text-2xl font-bold mb-4 text-white">
+          <h2 className="text-2xl font-bold mb-4 text-theme-primary">
             Tools and Resources
           </h2>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             The framework described in this guide requires data that doesn't come from a single
             source. Assembling a complete picture typically involves job posting databases,
             regional wage surveys, IPEDS completions data, and direct employer outreach. That
             work is time-consuming when done manually.
           </p>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Wavelength's tools are designed to accelerate the most data-intensive parts of this
             process:
           </p>
@@ -611,15 +611,15 @@ export default function ProgramDevelopmentPage() {
         </section>
 
         {/* Related Posts */}
-        <section className="mb-12 border-t border-white/[0.06] pt-10">
-          <h2 className="text-xl font-bold mb-6 text-white">Continue Reading</h2>
+        <section className="mb-12 border-t border-theme-subtle pt-10">
+          <h2 className="text-xl font-bold mb-6 text-theme-primary">Continue Reading</h2>
           <div className="grid md:grid-cols-1 gap-4">
             <Link
               href="/blog/workforce-pell-grant-eligibility"
-              className="border border-white/[0.08] rounded-xl p-5 hover:border-purple-500/30 transition-colors group bg-white/[0.02]"
+              className="border border-theme-subtle rounded-xl p-5 hover:border-purple-500/30 transition-colors group bg-white/[0.02]"
             >
               <p className="text-xs text-purple-400 font-mono mb-2">Pell Readiness</p>
-              <h3 className="font-bold text-white/80 group-hover:text-white transition-colors">
+              <h3 className="font-bold text-theme-secondary group-hover:text-theme-primary transition-colors">
                 Workforce Pell Grant Eligibility: What Community Colleges Need to Know Before July 2026
               </h3>
             </Link>
@@ -628,7 +628,7 @@ export default function ProgramDevelopmentPage() {
 
         {/* CTA */}
         <div className="bg-gradient-to-br from-blue-900/30 via-teal-900/20 to-purple-900/20 border border-blue-500/20 rounded-2xl p-8 text-center">
-          <h2 className="text-2xl font-bold mb-3 text-white">
+          <h2 className="text-2xl font-bold mb-3 text-theme-primary">
             Start with Your Regional Market Scan
           </h2>
           <p className="text-white/55 mb-6 max-w-xl mx-auto">
@@ -638,13 +638,13 @@ export default function ProgramDevelopmentPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/discover"
-              className="bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-white px-6 py-3 rounded-lg font-semibold transition-all"
+              className="bg-gradient-to-r from-blue-500 to-teal-500 hover:from-blue-600 hover:to-teal-600 text-theme-primary px-6 py-3 rounded-lg font-semibold transition-all"
             >
               Discover Programs in Your Region
             </Link>
             <Link
               href="/validate"
-              className="border border-white/20 text-white hover:border-white/40 px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="border border-white/20 text-theme-primary hover:border-white/40 px-6 py-3 rounded-lg font-semibold transition-colors"
             >
               Validate a Program Concept
             </Link>

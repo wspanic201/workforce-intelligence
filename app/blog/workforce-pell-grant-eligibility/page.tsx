@@ -93,12 +93,12 @@ export default function WorkforcePellEligibilityPage() {
             <span className="text-xs font-mono text-violet-400 border border-violet-400/30 px-3 py-1 rounded-full">
               Policy &amp; Compliance
             </span>
-            <span className="text-white/30 text-sm">January 10, 2026</span>
-            <span className="text-white/20 text-sm">·</span>
-            <span className="text-white/30 text-sm">8 min read</span>
+            <span className="text-theme-muted text-sm">January 10, 2026</span>
+            <span className="text-theme-muted text-sm">·</span>
+            <span className="text-theme-muted text-sm">8 min read</span>
           </div>
           <h1
-            className="font-bold leading-tight mb-5 text-white"
+            className="font-bold leading-tight mb-5 text-theme-primary"
             style={{
               fontFamily: "var(--font-space-grotesk)",
               fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)",
@@ -109,7 +109,7 @@ export default function WorkforcePellEligibilityPage() {
               What Community Colleges Need to Know in 2026
             </span>
           </h1>
-          <p className="text-white/60 text-xl leading-relaxed">
+          <p className="text-theme-tertiary text-xl leading-relaxed">
             The FAFSA Simplification Act's Workforce Pell provisions represent the largest
             expansion of Pell Grant eligibility in decades. For community colleges, the
             July 2026 implementation deadline isn't a distant policy date — it's a live
@@ -119,7 +119,7 @@ export default function WorkforcePellEligibilityPage() {
 
         {/* TOC */}
         <nav
-          className="bg-white/[0.03] border border-white/[0.08] rounded-2xl p-6 mb-12"
+          className="bg-white/[0.03] border border-theme-subtle rounded-2xl p-6 mb-12"
           aria-label="Table of Contents"
         >
           <h2
@@ -128,7 +128,7 @@ export default function WorkforcePellEligibilityPage() {
           >
             Table of Contents
           </h2>
-          <ol className="space-y-2 text-white/50 text-sm">
+          <ol className="space-y-2 text-theme-tertiary text-sm">
             {[
               ["#what-is-workforce-pell", "1. What Is the Workforce Pell Grant?"],
               ["#who-qualifies", "2. Which Programs Qualify — and Which Don't"],
@@ -150,19 +150,19 @@ export default function WorkforcePellEligibilityPage() {
         {/* Section 1 */}
         <section id="what-is-workforce-pell" className="mb-12">
           <h2
-            className="text-2xl font-bold mb-4 text-white"
+            className="text-2xl font-bold mb-4 text-theme-primary"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
             What Is the Workforce Pell Grant?
           </h2>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             The Workforce Pell Grant — formalized through the FAFSA Simplification Act —
             extends Pell Grant eligibility to short-term workforce training programs for the
             first time in the program's history. Previously, students in programs lasting
             fewer than two semesters (600 clock hours or equivalent) were categorically
             ineligible for Pell funding.
           </p>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             The expansion targets a specific category: short-term programs between 8 and 15
             weeks (150–600 clock hours) that lead to recognized industry credentials in
             high-demand fields. For community colleges, this is a substantial shift in how
@@ -175,7 +175,7 @@ export default function WorkforcePellEligibilityPage() {
               certificates financially accessible in a way they never were before.
             </p>
           </div>
-          <p className="text-white/60 leading-relaxed">
+          <p className="text-theme-tertiary leading-relaxed">
             This changes the enrollment calculus significantly. Programs that previously
             required full out-of-pocket payment (or relied entirely on employer sponsorship)
             can now recruit from a much broader pool of students who qualify for federal aid.
@@ -185,19 +185,19 @@ export default function WorkforcePellEligibilityPage() {
         {/* Section 2 */}
         <section id="who-qualifies" className="mb-12">
           <h2
-            className="text-2xl font-bold mb-4 text-white"
+            className="text-2xl font-bold mb-4 text-theme-primary"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
             Which Programs Qualify — and Which Don't
           </h2>
-          <p className="text-white/60 leading-relaxed mb-6">
+          <p className="text-theme-tertiary leading-relaxed mb-6">
             Eligibility isn't automatic. Programs must meet a specific set of federal
             criteria to qualify. Here's the framework:
           </p>
 
           <div className="space-y-4 mb-8">
             <h3
-              className="text-lg font-bold text-white"
+              className="text-lg font-bold text-theme-primary"
               style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
               Programs That Qualify
@@ -226,13 +226,13 @@ export default function WorkforcePellEligibilityPage() {
             ].map((item) => (
               <div
                 key={item.criterion}
-                className="border border-white/[0.08] rounded-xl p-5 bg-white/[0.02]"
+                className="border border-theme-subtle rounded-xl p-5 bg-white/[0.02]"
               >
                 <div className="flex gap-3">
                   <span className="text-teal-400 mt-0.5 shrink-0">✓</span>
                   <div>
-                    <p className="text-white font-semibold mb-1">{item.criterion}</p>
-                    <p className="text-white/50 text-sm">{item.detail}</p>
+                    <p className="text-theme-primary font-semibold mb-1">{item.criterion}</p>
+                    <p className="text-theme-tertiary text-sm">{item.detail}</p>
                   </div>
                 </div>
               </div>
@@ -241,7 +241,7 @@ export default function WorkforcePellEligibilityPage() {
 
           <div className="space-y-3">
             <h3
-              className="text-lg font-bold text-white"
+              className="text-lg font-bold text-theme-primary"
               style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
               Common Programs That Don't Qualify
@@ -253,7 +253,7 @@ export default function WorkforcePellEligibilityPage() {
               "Programs in occupations not meeting your state's wage/demand threshold",
               "Programs where the institution hasn't filed the appropriate Title IV eligibility documentation",
             ].map((item) => (
-              <div key={item} className="flex gap-3 text-white/50 text-sm">
+              <div key={item} className="flex gap-3 text-theme-tertiary text-sm">
                 <span className="text-red-400/70 mt-0.5 shrink-0">✗</span>
                 {item}
               </div>
@@ -264,12 +264,12 @@ export default function WorkforcePellEligibilityPage() {
         {/* Section 3 */}
         <section id="july-2026" className="mb-12">
           <h2
-            className="text-2xl font-bold mb-4 text-white"
+            className="text-2xl font-bold mb-4 text-theme-primary"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
             The July 2026 Deadline: What It Actually Means
           </h2>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             July 1, 2026 is the date the Department of Education has set for full
             implementation of Workforce Pell Grant provisions. For institutions, this
             creates a concrete operational timeline:
@@ -309,14 +309,14 @@ export default function WorkforcePellEligibilityPage() {
                 key={step.date}
                 className={`border-l-2 ${step.color} pl-5`}
               >
-                <p className="text-xs font-mono text-white/40 mb-1">{step.date}</p>
+                <p className="text-xs font-mono text-theme-muted mb-1">{step.date}</p>
                 <p
-                  className="text-white font-semibold mb-1"
+                  className="text-theme-primary font-semibold mb-1"
                   style={{ fontFamily: "var(--font-space-grotesk)" }}
                 >
                   {step.action}
                 </p>
-                <p className="text-white/50 text-sm">{step.detail}</p>
+                <p className="text-theme-tertiary text-sm">{step.detail}</p>
               </div>
             ))}
           </div>
@@ -325,12 +325,12 @@ export default function WorkforcePellEligibilityPage() {
         {/* Section 4 */}
         <section id="requirements" className="mb-12">
           <h2
-            className="text-2xl font-bold mb-4 text-white"
+            className="text-2xl font-bold mb-4 text-theme-primary"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
             Federal Requirements Your Programs Must Meet
           </h2>
-          <p className="text-white/60 leading-relaxed mb-6">
+          <p className="text-theme-tertiary leading-relaxed mb-6">
             Beyond duration and credential recognition, Workforce Pell eligibility requires
             compliance with several additional federal requirements that many institutions
             haven't had to navigate for short-term programs before:
@@ -370,15 +370,15 @@ export default function WorkforcePellEligibilityPage() {
             ].map((item) => (
               <div
                 key={item.req}
-                className="border border-white/[0.08] rounded-xl p-5 bg-white/[0.02]"
+                className="border border-theme-subtle rounded-xl p-5 bg-white/[0.02]"
               >
                 <h3
-                  className="text-white font-semibold mb-2 text-sm"
+                  className="text-theme-primary font-semibold mb-2 text-sm"
                   style={{ fontFamily: "var(--font-space-grotesk)" }}
                 >
                   {item.req}
                 </h3>
-                <p className="text-white/50 text-xs leading-relaxed">{item.detail}</p>
+                <p className="text-theme-tertiary text-xs leading-relaxed">{item.detail}</p>
               </div>
             ))}
           </div>
@@ -387,12 +387,12 @@ export default function WorkforcePellEligibilityPage() {
         {/* Section 5 */}
         <section id="gaps" className="mb-12">
           <h2
-            className="text-2xl font-bold mb-4 text-white"
+            className="text-2xl font-bold mb-4 text-theme-primary"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
             Common Compliance Gaps We See at Community Colleges
           </h2>
-          <p className="text-white/60 leading-relaxed mb-6">
+          <p className="text-theme-tertiary leading-relaxed mb-6">
             Based on our institutional assessments, these are the most frequently
             encountered gaps between where community colleges currently stand and where
             they need to be for Workforce Pell:
@@ -425,7 +425,7 @@ export default function WorkforcePellEligibilityPage() {
                 className="border border-amber-500/20 rounded-xl p-5 bg-amber-500/[0.02]"
               >
                 <p className="text-amber-400 font-semibold mb-2">⚠ {item.gap}</p>
-                <p className="text-white/50 text-sm leading-relaxed">{item.detail}</p>
+                <p className="text-theme-tertiary text-sm leading-relaxed">{item.detail}</p>
               </div>
             ))}
           </div>
@@ -434,12 +434,12 @@ export default function WorkforcePellEligibilityPage() {
         {/* Section 6 */}
         <section id="action-steps" className="mb-12">
           <h2
-            className="text-2xl font-bold mb-4 text-white"
+            className="text-2xl font-bold mb-4 text-theme-primary"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
             Action Steps Before the Deadline
           </h2>
-          <p className="text-white/60 leading-relaxed mb-6">
+          <p className="text-theme-tertiary leading-relaxed mb-6">
             With the July 2026 deadline approaching, here's a practical checklist for
             institutional leadership:
           </p>
@@ -455,10 +455,10 @@ export default function WorkforcePellEligibilityPage() {
               "Establish an employer advisory record system if you don't have one",
             ].map((step, i) => (
               <div key={i} className="flex gap-4">
-                <span className="w-6 h-6 rounded-full bg-gradient-to-br from-violet-600 to-blue-600 flex items-center justify-center text-xs font-bold text-white shrink-0 mt-0.5">
+                <span className="w-6 h-6 rounded-full bg-gradient-to-br from-violet-600 to-blue-600 flex items-center justify-center text-xs font-bold text-theme-primary shrink-0 mt-0.5">
                   {i + 1}
                 </span>
-                <p className="text-white/60">{step}</p>
+                <p className="text-theme-tertiary">{step}</p>
               </div>
             ))}
           </div>
@@ -467,12 +467,12 @@ export default function WorkforcePellEligibilityPage() {
         {/* Section 7 */}
         <section id="how-wavelength-helps" className="mb-12">
           <h2
-            className="text-2xl font-bold mb-4 text-white"
+            className="text-2xl font-bold mb-4 text-theme-primary"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
             How to Check Your Readiness Now
           </h2>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             Mapping your institution's current programs against all of the requirements above
             is a significant project. Wavelength's{" "}
             <Link
@@ -485,7 +485,7 @@ export default function WorkforcePellEligibilityPage() {
             three minutes — identifying which programs are likely ready, which need work,
             and which have structural barriers that may prevent eligibility.
           </p>
-          <p className="text-white/60 leading-relaxed mb-4">
+          <p className="text-theme-tertiary leading-relaxed mb-4">
             For institutions that want a deeper compliance review, our{" "}
             <Link
               href="/compliance-gap"
@@ -496,7 +496,7 @@ export default function WorkforcePellEligibilityPage() {
             provides a line-by-line assessment against federal requirements, with specific
             remediation guidance for each gap identified.
           </p>
-          <p className="text-white/60 leading-relaxed">
+          <p className="text-theme-tertiary leading-relaxed">
             The July 2026 deadline is closer than it looks. Institutions that move early will
             have time to remediate gaps. Those that wait may find themselves operationally
             unprepared on day one.
@@ -504,20 +504,20 @@ export default function WorkforcePellEligibilityPage() {
         </section>
 
         {/* Related Posts */}
-        <section className="mb-12 border-t border-white/[0.06] pt-10">
+        <section className="mb-12 border-t border-theme-subtle pt-10">
           <h2
-            className="text-xl font-bold mb-6 text-white"
+            className="text-xl font-bold mb-6 text-theme-primary"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
             Continue Reading
           </h2>
           <Link
             href="/blog/community-college-program-development"
-            className="block border border-white/[0.08] rounded-xl p-5 hover:border-white/20 transition-all group"
+            className="block border border-theme-subtle rounded-xl p-5 hover:border-white/20 transition-all group"
           >
             <p className="text-xs text-blue-400 font-mono mb-2">Program Development</p>
             <h3
-              className="font-bold text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-violet-400 group-hover:to-teal-400 transition-all"
+              className="font-bold text-theme-primary group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-violet-400 group-hover:to-teal-400 transition-all"
               style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
               Community College Program Development: A Data-Driven Approach
@@ -543,25 +543,25 @@ export default function WorkforcePellEligibilityPage() {
           />
           <div className="relative">
             <h2
-              className="text-2xl font-bold mb-3 text-white"
+              className="text-2xl font-bold mb-3 text-theme-primary"
               style={{ fontFamily: "var(--font-space-grotesk)" }}
             >
               Check Your Pell Readiness — Free
             </h2>
-            <p className="text-white/60 mb-6 max-w-xl mx-auto">
+            <p className="text-theme-tertiary mb-6 max-w-xl mx-auto">
               A 3-minute assessment that tells you exactly where your institution stands
               against Workforce Pell requirements — before the July 2026 deadline.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/pell"
-                className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-500 hover:to-blue-500 text-white px-6 py-3 rounded-xl font-semibold transition-all"
+                className="bg-gradient-to-r from-violet-600 to-blue-600 hover:from-violet-500 hover:to-blue-500 text-theme-primary px-6 py-3 rounded-xl font-semibold transition-all"
               >
                 Start Free Pell Check
               </Link>
               <Link
                 href="/compliance-gap"
-                className="border border-white/20 text-white hover:border-white/40 px-6 py-3 rounded-xl font-semibold transition-colors"
+                className="border border-white/20 text-theme-primary hover:border-white/40 px-6 py-3 rounded-xl font-semibold transition-colors"
               >
                 Get Compliance Gap Report — $295
               </Link>

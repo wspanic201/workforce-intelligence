@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function ProgramAnalysisPage() {
   return (
-    <div className="overflow-x-hidden bg-[#050510]">
+    <div className="overflow-x-hidden bg-theme-page">
       {/* ===== HERO ===== */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16">
         <Stars count={100} />
@@ -31,7 +31,7 @@ export default function ProgramAnalysisPage() {
             </h1>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200}>
-            <p className="text-white/80 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
+            <p className="text-theme-secondary text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
               Two tools. One clear picture. Pell Readiness Check tells you which programs qualify for federal funding starting July 1, 2026. Program Gap Audit shows you every state-mandated program you&apos;re not offering — and what each one is worth.
             </p>
           </AnimateOnScroll>
@@ -51,7 +51,7 @@ export default function ProgramAnalysisPage() {
       <section className="relative py-20 md:py-28">
         <div className="max-w-[1000px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
-            <h2 className="font-heading font-bold text-white" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
+            <h2 className="font-heading font-bold text-theme-primary" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
               Who this is for
             </h2>
           </AnimateOnScroll>
@@ -63,7 +63,7 @@ export default function ProgramAnalysisPage() {
             ].map(({ role, pain }) => (
               <div key={role} className="card-cosmic rounded-2xl p-6 border-blue-500/20">
                 <h3 className="font-heading font-semibold text-blue-300 text-sm uppercase tracking-wider mb-3">{role}</h3>
-                <p className="text-white/80 text-sm leading-relaxed">{pain}</p>
+                <p className="text-theme-secondary text-sm leading-relaxed">{pain}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -79,8 +79,8 @@ export default function ProgramAnalysisPage() {
                 <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 mb-4">
                   <span className="text-teal-300 text-[10px] font-bold uppercase tracking-wider">Free</span>
                 </div>
-                <h3 className="font-heading font-bold text-white text-xl mb-3">Pell Readiness Check</h3>
-                <p className="text-white/80 text-sm leading-relaxed mb-6">
+                <h3 className="font-heading font-bold text-theme-primary text-xl mb-3">Pell Readiness Check</h3>
+                <p className="text-theme-secondary text-sm leading-relaxed mb-6">
                   Full catalog review against federal and state Workforce Pell criteria. Know which programs qualify before the July 1 deadline.
                 </p>
                 <ul className="space-y-2.5 mb-8">
@@ -94,7 +94,7 @@ export default function ProgramAnalysisPage() {
                   ].map(item => (
                     <li key={item} className="flex items-start gap-2.5">
                       <Check className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
-                      <span className="text-sm text-white/80">{item}</span>
+                      <span className="text-sm text-theme-secondary">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -111,8 +111,8 @@ export default function ProgramAnalysisPage() {
                 <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 mb-4">
                   <span className="text-blue-300 text-[10px] font-bold uppercase tracking-wider">$295</span>
                 </div>
-                <h3 className="font-heading font-bold text-white text-xl mb-3">Program Gap Audit</h3>
-                <p className="text-white/80 text-sm leading-relaxed mb-6">
+                <h3 className="font-heading font-bold text-theme-primary text-xl mb-3">Program Gap Audit</h3>
+                <p className="text-theme-secondary text-sm leading-relaxed mb-6">
                   Every state-mandated program you&apos;re not offering — with revenue estimates and statutory citations.
                 </p>
                 <ul className="space-y-2.5 mb-8">
@@ -126,7 +126,7 @@ export default function ProgramAnalysisPage() {
                   ].map(item => (
                     <li key={item} className="flex items-start gap-2.5">
                       <Check className="h-4 w-4 text-blue-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
-                      <span className="text-sm text-white/80">{item}</span>
+                      <span className="text-sm text-theme-secondary">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -146,10 +146,10 @@ export default function ProgramAnalysisPage() {
       <section className="relative py-20 md:py-28">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
-            <h2 className="font-heading font-bold text-white" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
+            <h2 className="font-heading font-bold text-theme-primary" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
               How it connects
             </h2>
-            <p className="text-white/80 mt-4 max-w-2xl mx-auto">
+            <p className="text-theme-secondary mt-4 max-w-2xl mx-auto">
               Program Analysis tells you what you have and what you&apos;re missing. Market Research shows you what new programs your region is ready for. Grant Alignment finds funding to build what you discover.
             </p>
           </AnimateOnScroll>
@@ -159,10 +159,10 @@ export default function ProgramAnalysisPage() {
               { step: '2', label: 'Market Research', desc: 'Find what to build', href: '/market-research', active: false },
               { step: '3', label: 'Grant Alignment', desc: 'Find the funding', href: '/grant-alignment', active: false },
             ].map(({ step, label, desc, href, active }) => (
-              <Link key={step} href={href} className={`block p-5 rounded-xl border ${active ? 'border-blue-500/30 bg-blue-500/5' : 'border-white/[0.06] bg-white/[0.02]'} hover:bg-white/[0.04] transition-colors`}>
-                <span className="font-mono text-xs text-white/40">Step {step}</span>
-                <h3 className={`font-heading font-semibold text-sm mt-1 ${active ? 'text-blue-300' : 'text-white'}`}>{label}</h3>
-                <p className="text-white/60 text-xs mt-1">{desc}</p>
+              <Link key={step} href={href} className={`block p-5 rounded-xl border ${active ? 'border-blue-500/30 bg-blue-500/5' : 'border-theme-subtle bg-white/[0.02]'} hover:bg-white/[0.04] transition-colors`}>
+                <span className="font-mono text-xs text-theme-muted">Step {step}</span>
+                <h3 className={`font-heading font-semibold text-sm mt-1 ${active ? 'text-blue-300' : 'text-theme-primary'}`}>{label}</h3>
+                <p className="text-theme-tertiary text-xs mt-1">{desc}</p>
               </Link>
             ))}
           </StaggerChildren>
@@ -173,7 +173,7 @@ export default function ProgramAnalysisPage() {
       <section className="relative py-20 md:py-28 text-center">
         <div className="max-w-[600px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
-            <h2 className="font-heading font-bold text-white text-2xl md:text-3xl mb-6">
+            <h2 className="font-heading font-bold text-theme-primary text-2xl md:text-3xl mb-6">
               Start with what you know — your existing catalog.
             </h2>
             <Link href="/pell">
@@ -183,7 +183,7 @@ export default function ProgramAnalysisPage() {
               </button>
             </Link>
             <div className="mt-4">
-              <Link href="/compliance-gap" className="text-sm text-white/50 hover:text-white/70 transition-colors">
+              <Link href="/compliance-gap" className="text-sm text-theme-tertiary hover:text-theme-secondary transition-colors">
                 Order a Program Gap Audit — $295 →
               </Link>
             </div>

@@ -102,12 +102,12 @@ export default function AiCurriculumAlignmentPage() {
             <span className="text-xs font-mono text-amber-400 border border-amber-400/30 px-3 py-1 rounded-full">
               Curriculum Strategy
             </span>
-            <span className="text-white/30 text-sm">February 19, 2026</span>
-            <span className="text-white/20 text-sm">·</span>
-            <span className="text-white/30 text-sm">6 min read</span>
+            <span className="text-theme-muted text-sm">February 19, 2026</span>
+            <span className="text-theme-muted text-sm">·</span>
+            <span className="text-theme-muted text-sm">6 min read</span>
           </div>
           <h1
-            className="font-bold leading-tight mb-5 text-white"
+            className="font-bold leading-tight mb-5 text-theme-primary"
             style={{
               fontFamily: "var(--font-space-grotesk)",
               fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)",
@@ -118,7 +118,7 @@ export default function AiCurriculumAlignmentPage() {
               Is Your Curriculum Keeping Up?
             </span>
           </h1>
-          <p className="text-white/60 text-xl leading-relaxed">
+          <p className="text-theme-tertiary text-xl leading-relaxed">
             New research from the Burning Glass Institute documents what workforce educators
             have been sensing: AI isn&apos;t just creating new jobs — it&apos;s fundamentally reshaping
             what existing jobs require. Skills that were core to an occupation two years ago
@@ -137,7 +137,7 @@ export default function AiCurriculumAlignmentPage() {
             >
               3–5 yrs
             </div>
-            <div className="text-white/60 text-sm leading-snug">
+            <div className="text-theme-tertiary text-sm leading-snug">
               average curriculum review cycle at community colleges
             </div>
           </div>
@@ -148,7 +148,7 @@ export default function AiCurriculumAlignmentPage() {
             >
               12–18 mo
             </div>
-            <div className="text-white/60 text-sm leading-snug">
+            <div className="text-theme-tertiary text-sm leading-snug">
               for employer skill requirements to shift in tech-adjacent fields
             </div>
           </div>
@@ -159,7 +159,7 @@ export default function AiCurriculumAlignmentPage() {
             >
               70%
             </div>
-            <div className="text-white/60 text-sm leading-snug">
+            <div className="text-theme-tertiary text-sm leading-snug">
               job placement requirement for Workforce Pell eligibility (within 180 days)
             </div>
           </div>
@@ -168,7 +168,7 @@ export default function AiCurriculumAlignmentPage() {
         {/* Section 1 */}
         <section className="mb-12">
           <h2
-            className="font-bold text-white mb-4"
+            className="font-bold text-theme-primary mb-4"
             style={{
               fontFamily: "var(--font-space-grotesk)",
               fontSize: "clamp(1.3rem, 2vw, 1.6rem)",
@@ -176,7 +176,7 @@ export default function AiCurriculumAlignmentPage() {
           >
             How AI Is Changing Occupational Skill Requirements
           </h2>
-          <p className="text-white/80 leading-relaxed mb-6">
+          <p className="text-theme-secondary leading-relaxed mb-6">
             The Burning Glass Institute&apos;s research on AI and occupational skill demand reveals
             a structural disruption in the way employers define jobs. Traditional job
             taxonomy — the idea that a &ldquo;Pharmacy Technician&rdquo; or &ldquo;HVAC Technician&rdquo; job
@@ -185,7 +185,7 @@ export default function AiCurriculumAlignmentPage() {
             three years ago. They&apos;re posting for a redesigned role with a meaningfully
             different skill profile, often without changing the job title.
           </p>
-          <p className="text-white/80 leading-relaxed mb-6">
+          <p className="text-theme-secondary leading-relaxed mb-6">
             The shift moves in two directions simultaneously. In the first direction, AI is
             handling routine tasks — data entry, basic pattern recognition, standardized
             documentation — so those skills are dropping out of job postings. An employer
@@ -195,7 +195,7 @@ export default function AiCurriculumAlignmentPage() {
             collaboration, data interpretation, and the ability to validate and correct
             AI-generated outputs.
           </p>
-          <p className="text-white/80 leading-relaxed mb-6">
+          <p className="text-theme-secondary leading-relaxed mb-6">
             The occupational examples are concrete. Pharmacy technician postings now
             increasingly cite automation system operation and robotic dispensing familiarity
             as requirements — skills that weren&apos;t in 2021 job postings for the same role.
@@ -210,7 +210,7 @@ export default function AiCurriculumAlignmentPage() {
         {/* Section 2 */}
         <section className="mb-12">
           <h2
-            className="font-bold text-white mb-4"
+            className="font-bold text-theme-primary mb-4"
             style={{
               fontFamily: "var(--font-space-grotesk)",
               fontSize: "clamp(1.3rem, 2vw, 1.6rem)",
@@ -218,7 +218,7 @@ export default function AiCurriculumAlignmentPage() {
           >
             The Curriculum Lag Problem
           </h2>
-          <p className="text-white/80 leading-relaxed mb-6">
+          <p className="text-theme-secondary leading-relaxed mb-6">
             Community college curriculum review runs on a 3-to-5-year cycle in most
             institutions — committee-driven, documentation-heavy, and built for a world
             where occupational skill requirements changed slowly. That cycle made sense
@@ -226,7 +226,7 @@ export default function AiCurriculumAlignmentPage() {
             In technology-adjacent fields, meaningful skill shifts are happening in 12 to 18
             months. The gap between those two timelines is where curriculum drift lives.
           </p>
-          <p className="text-white/80 leading-relaxed mb-6">
+          <p className="text-theme-secondary leading-relaxed mb-6">
             The practical result: a program that was well-aligned to employer demand when
             it launched can drift 15–20 skill points in 18 months without anyone catching
             it. The courses haven&apos;t changed. The competencies listed in the catalog are still
@@ -234,13 +234,13 @@ export default function AiCurriculumAlignmentPage() {
             institution typically doesn&apos;t discover the misalignment through any systematic
             process. They discover it when:
           </p>
-          <ul className="list-disc list-outside pl-6 space-y-2 text-white/80 mb-6">
+          <ul className="list-disc list-outside pl-6 space-y-2 text-theme-secondary mb-6">
             <li>Employer partners start mentioning that graduates seem underprepared for the current version of the role</li>
             <li>Job placement rates begin declining — slowly at first, then faster</li>
             <li>An accreditor or state agency asks for employer feedback data and the numbers don&apos;t support the program&apos;s stated outcomes</li>
           </ul>
           <div className="bg-white/5 border border-white/10 rounded-xl p-6 mb-8">
-            <p className="text-white/80 leading-relaxed">
+            <p className="text-theme-secondary leading-relaxed">
               <strong className="text-amber-400">The Workforce Pell stakes:</strong> The
               Workforce Pell Grant expansion requires participating programs to demonstrate
               70% job placement within 180 days of completion. For programs experiencing
@@ -256,7 +256,7 @@ export default function AiCurriculumAlignmentPage() {
         {/* Section 3 */}
         <section className="mb-12">
           <h2
-            className="font-bold text-white mb-4"
+            className="font-bold text-theme-primary mb-4"
             style={{
               fontFamily: "var(--font-space-grotesk)",
               fontSize: "clamp(1.3rem, 2vw, 1.6rem)",
@@ -264,7 +264,7 @@ export default function AiCurriculumAlignmentPage() {
           >
             What a &ldquo;Drift Score&rdquo; Actually Reveals
           </h2>
-          <p className="text-white/80 leading-relaxed mb-6">
+          <p className="text-theme-secondary leading-relaxed mb-6">
             A Drift Score measures the gap between what your curriculum currently teaches
             and what employers are actively hiring for in your target occupation — expressed
             as a 0–100 scale where lower scores indicate greater misalignment. The
@@ -274,7 +274,7 @@ export default function AiCurriculumAlignmentPage() {
             in your labor market. When skill requirements diverge — when employers are asking
             for things your curriculum doesn&apos;t cover — the gap shows up quantifiably.
           </p>
-          <p className="text-white/80 leading-relaxed mb-6">
+          <p className="text-theme-secondary leading-relaxed mb-6">
             A concrete example: a community college Pharmacy Technician program recently
             scored 60/100 — Moderate Drift. The top gaps identified weren&apos;t in core pharmacy
             knowledge, which the program covered well. They were in patient interaction
@@ -290,12 +290,12 @@ export default function AiCurriculumAlignmentPage() {
         {/* End CTA */}
         <div className="bg-gradient-to-r from-violet-900/40 to-teal-900/40 border border-white/10 rounded-2xl p-8 mt-12 text-center">
           <h2
-            className="text-xl font-bold text-white mb-3"
+            className="text-xl font-bold text-theme-primary mb-3"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
             Know before your students do.
           </h2>
-          <p className="text-white/60 mb-6 max-w-xl mx-auto">
+          <p className="text-theme-tertiary mb-6 max-w-xl mx-auto">
             Wavelength Drift Monitor analyzes live job postings for your programs&apos; target
             occupations every quarter — and tells you exactly which skills employers want
             that your curriculum isn&apos;t covering. Run a free baseline scan for one program.
@@ -303,13 +303,13 @@ export default function AiCurriculumAlignmentPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="https://withwavelength.com/drift"
-              className="inline-block bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-white px-6 py-3 rounded-xl font-semibold transition-all"
+              className="inline-block bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-theme-primary px-6 py-3 rounded-xl font-semibold transition-all"
             >
               Run a Free Drift Scan →
             </Link>
             <Link
               href="https://withwavelength.com/drift"
-              className="inline-block border border-white/20 text-white hover:border-white/40 px-6 py-3 rounded-xl font-semibold transition-colors"
+              className="inline-block border border-white/20 text-theme-primary hover:border-white/40 px-6 py-3 rounded-xl font-semibold transition-colors"
             >
               Learn how the Drift Score works
             </Link>

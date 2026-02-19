@@ -100,7 +100,7 @@ const FREE_SCAN_MAILTO =
 
 export default function DriftPage() {
   return (
-    <div className="overflow-x-hidden bg-[#050510]">
+    <div className="overflow-x-hidden bg-theme-page">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(driftProductJsonLd) }}
@@ -143,7 +143,7 @@ export default function DriftPage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={220} duration={800}>
-            <p className="mt-6 text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed">
               Drift Monitor tracks what employers are actually hiring for — and tells you exactly where your programs are falling behind.
             </p>
           </AnimateOnScroll>
@@ -161,7 +161,7 @@ export default function DriftPage() {
                 </button>
               </a>
             </div>
-            <p className="mt-4 text-sm text-white/40">
+            <p className="mt-4 text-sm text-theme-muted">
               No login required. One program, instant results.
             </p>
           </AnimateOnScroll>
@@ -176,17 +176,17 @@ export default function DriftPage() {
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-14">
               <SectionLabel>The Problem</SectionLabel>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mt-4">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary mt-4">
                 The curriculum gap you can&apos;t see
               </h2>
-              <div className="mt-6 text-white/70 max-w-2xl mx-auto space-y-4 text-base leading-relaxed text-left">
+              <div className="mt-6 text-theme-secondary max-w-2xl mx-auto space-y-4 text-base leading-relaxed text-left">
                 <p>
                   Your programs were built on solid research. But that was 18 months ago. Two years ago. Maybe longer.
                 </p>
                 <p>
                   The job market doesn&apos;t wait for your next curriculum review cycle. Employers redesign job requirements quarterly. New tools emerge. Soft skills shift. Certifications change. And the credential your students earn quietly drifts from what hiring managers are actually posting.
                 </p>
-                <p className="font-medium text-white/90">
+                <p className="font-medium text-theme-primary">
                   You don&apos;t feel it until the placement numbers come in.
                 </p>
               </div>
@@ -205,7 +205,7 @@ export default function DriftPage() {
                   <div className="font-heading font-black text-4xl text-gradient-cosmic mb-2">
                     {stat.value}
                   </div>
-                  <p className="text-white/60 text-sm leading-relaxed">{stat.label}</p>
+                  <p className="text-theme-tertiary text-sm leading-relaxed">{stat.label}</p>
                 </div>
               </AnimateOnScroll>
             ))}
@@ -221,7 +221,7 @@ export default function DriftPage() {
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-14">
               <SectionLabel>How It Works</SectionLabel>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mt-4">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary mt-4">
                 Know before your students do.
               </h2>
             </div>
@@ -251,10 +251,10 @@ export default function DriftPage() {
                     {step.step}
                   </div>
                   <div>
-                    <h3 className="font-heading font-semibold text-white text-lg mb-2">
+                    <h3 className="font-heading font-semibold text-theme-primary text-lg mb-2">
                       {step.title}
                     </h3>
-                    <p className="text-white/70 leading-relaxed text-sm">{step.desc}</p>
+                    <p className="text-theme-secondary leading-relaxed text-sm">{step.desc}</p>
                   </div>
                 </div>
               </AnimateOnScroll>
@@ -271,7 +271,7 @@ export default function DriftPage() {
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-14">
               <SectionLabel>The Score</SectionLabel>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mt-4">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary mt-4">
                 One number that tells you everything.
               </h2>
             </div>
@@ -287,16 +287,16 @@ export default function DriftPage() {
             ].map((tier, idx) => (
               <AnimateOnScroll key={tier.score} variant="fade-up" delay={idx * 80}>
                 <div className={`card-cosmic rounded-xl p-5 border ${tier.border} ${tier.bg} text-center h-full flex flex-col`}>
-                  <div className="font-heading font-black text-2xl text-white mb-1">{tier.score}</div>
-                  <div className="text-sm font-semibold text-white/90 mb-2">{tier.status}</div>
-                  <p className="text-xs text-white/60 leading-relaxed mt-auto">{tier.meaning}</p>
+                  <div className="font-heading font-black text-2xl text-theme-primary mb-1">{tier.score}</div>
+                  <div className="text-sm font-semibold text-theme-primary mb-2">{tier.status}</div>
+                  <p className="text-xs text-theme-tertiary leading-relaxed mt-auto">{tier.meaning}</p>
                 </div>
               </AnimateOnScroll>
             ))}
           </div>
 
           <AnimateOnScroll variant="fade-up" delay={200}>
-            <p className="text-center text-white/60 text-sm leading-relaxed max-w-2xl mx-auto">
+            <p className="text-center text-theme-tertiary text-sm leading-relaxed max-w-2xl mx-auto">
               Most programs don&apos;t start at critical. They drift there slowly, quarter by quarter, while everyone assumes the curriculum is fine because it was fine last year.
             </p>
           </AnimateOnScroll>
@@ -309,7 +309,7 @@ export default function DriftPage() {
       <section className="relative py-20 px-6">
         <div className="max-w-[860px] mx-auto">
           <AnimateOnScroll variant="fade-up">
-            <h2 className="font-heading text-3xl md:text-4xl font-bold text-white text-center mb-10">
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary text-center mb-10">
               What drift looks like in practice
             </h2>
           </AnimateOnScroll>
@@ -324,7 +324,7 @@ export default function DriftPage() {
                   <span className="text-xl">📡</span>
                 </div>
                 <div>
-                  <h3 className="font-heading font-bold text-white text-lg">
+                  <h3 className="font-heading font-bold text-theme-primary text-lg">
                     Pharmacy Technician Certificate — Drift Score: 60 / Moderate
                   </h3>
                   <span className="inline-flex items-center gap-1.5 mt-1 px-2 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-[10px] font-bold uppercase tracking-wider text-orange-300">
@@ -337,7 +337,7 @@ export default function DriftPage() {
                 The program covers core dispensing and compliance well. But employer postings have shifted: patient interaction, collaborative care, and pharmacy automation systems are now in the top 10 requirements — and none appear in the current curriculum objectives.
               </p>
 
-              <p className="mt-5 text-white/45 text-sm italic">
+              <p className="mt-5 text-theme-tertiary text-sm italic">
                 This program hasn&apos;t been updated since 2023. The field has.
               </p>
             </div>
@@ -353,7 +353,7 @@ export default function DriftPage() {
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-14">
               <SectionLabel>Who It&apos;s For</SectionLabel>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mt-4">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary mt-4">
                 Built for the people responsible for program quality
               </h2>
             </div>
@@ -388,9 +388,9 @@ export default function DriftPage() {
                     <div className="p-2 rounded-lg bg-orange-500/10 border border-orange-500/20 text-xl">
                       {card.icon}
                     </div>
-                    <h3 className="font-heading font-semibold text-white text-lg">{card.role}</h3>
+                    <h3 className="font-heading font-semibold text-theme-primary text-lg">{card.role}</h3>
                   </div>
-                  <p className="text-white/70 text-sm leading-relaxed">{card.desc}</p>
+                  <p className="text-theme-secondary text-sm leading-relaxed">{card.desc}</p>
                 </div>
               </AnimateOnScroll>
             ))}
@@ -408,7 +408,7 @@ export default function DriftPage() {
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-4">
               <SectionLabel>Pricing</SectionLabel>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mt-4">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary mt-4">
                 Straightforward, subscription-based
               </h2>
               <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-green-500/30 bg-green-500/10">
@@ -427,10 +427,10 @@ export default function DriftPage() {
                 <div className="mb-6">
                   <p className="text-orange-300 text-[11px] font-bold uppercase tracking-widest mb-2">Essentials</p>
                   <div className="flex items-end gap-1 mb-1">
-                    <span className="font-heading font-black text-4xl text-white">$1,200</span>
-                    <span className="text-white/60 text-sm mb-1">/program/year</span>
+                    <span className="font-heading font-black text-4xl text-theme-primary">$1,200</span>
+                    <span className="text-theme-tertiary text-sm mb-1">/program/year</span>
                   </div>
-                  <p className="text-white/50 text-xs">One program, fully monitored</p>
+                  <p className="text-theme-tertiary text-xs">One program, fully monitored</p>
                 </div>
                 <ul className="space-y-3 flex-1 mb-8">
                   {[
@@ -457,17 +457,17 @@ export default function DriftPage() {
             <AnimateOnScroll variant="fade-up" delay={200}>
               <div className="card-cosmic rounded-2xl p-8 h-full flex flex-col border-orange-500/30 relative">
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-lg shadow-orange-500/20">
+                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-1 text-xs font-bold uppercase tracking-wider text-theme-primary shadow-lg shadow-orange-500/20">
                     Most Popular
                   </span>
                 </div>
                 <div className="mb-6 mt-3">
                   <p className="text-orange-300 text-[11px] font-bold uppercase tracking-widest mb-2">Portfolio</p>
                   <div className="flex items-end gap-1 mb-1">
-                    <span className="font-heading font-black text-4xl text-white">$4,800</span>
-                    <span className="text-white/60 text-sm mb-1">/year</span>
+                    <span className="font-heading font-black text-4xl text-theme-primary">$4,800</span>
+                    <span className="text-theme-tertiary text-sm mb-1">/year</span>
                   </div>
-                  <p className="text-white/50 text-xs">Starting at — up to 5 programs</p>
+                  <p className="text-theme-tertiary text-xs">Starting at — up to 5 programs</p>
                 </div>
                 <ul className="space-y-3 flex-1 mb-8">
                   {[
@@ -496,9 +496,9 @@ export default function DriftPage() {
                 <div className="mb-6">
                   <p className="text-orange-300 text-[11px] font-bold uppercase tracking-widest mb-2">Enterprise</p>
                   <div className="flex items-end gap-1 mb-1">
-                    <span className="font-heading font-black text-4xl text-white">Custom</span>
+                    <span className="font-heading font-black text-4xl text-theme-primary">Custom</span>
                   </div>
-                  <p className="text-white/50 text-xs">15–50+ programs monitored</p>
+                  <p className="text-theme-tertiary text-xs">15–50+ programs monitored</p>
                 </div>
                 <ul className="space-y-3 flex-1 mb-8">
                   {[
@@ -542,7 +542,7 @@ export default function DriftPage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-12">
             <h2
-              className="font-heading font-bold text-white mt-4"
+              className="font-heading font-bold text-theme-primary mt-4"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
               Common questions
@@ -562,12 +562,12 @@ export default function DriftPage() {
           <div className="max-w-[680px] mx-auto">
             <SectionLabel>Ready?</SectionLabel>
             <h2
-              className="font-heading font-bold text-white mt-5 mb-5"
+              className="font-heading font-bold text-theme-primary mt-5 mb-5"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
               Don&apos;t wait for the placement numbers to tell you.
             </h2>
-            <p className="text-white/70 text-lg leading-relaxed mb-8 max-w-xl mx-auto">
+            <p className="text-theme-secondary text-lg leading-relaxed mb-8 max-w-xl mx-auto">
               Run a free drift scan on one of your existing programs. See your score. No sales call required.
             </p>
             <a href={FREE_SCAN_MAILTO}>
@@ -575,7 +575,7 @@ export default function DriftPage() {
                 Run a Free Drift Scan →
               </button>
             </a>
-            <p className="mt-6 text-white/35 text-sm">
+            <p className="mt-6 text-theme-muted text-sm">
               One program, one scan, zero commitment. If the score is green, great — you&apos;ll know. If it&apos;s not, you&apos;ll know that too.
             </p>
           </div>
@@ -586,16 +586,16 @@ export default function DriftPage() {
       <section className="relative py-16 md:py-20">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-8">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Looking to build new programs?</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-theme-muted">Looking to build new programs?</span>
           </AnimateOnScroll>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <AnimateOnScroll variant="fade-up" delay={100}>
               <Link href="/market-research" className="block card-cosmic rounded-2xl p-7 border-violet-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-white text-lg">Market Research</h3>
+                  <h3 className="font-heading font-bold text-theme-primary text-lg">Market Research</h3>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300">From $1,500</span>
                 </div>
-                <p className="text-white/70 text-sm mb-4">Discover what programs your region needs — backed by 50+ live data sources and real employer demand signals.</p>
+                <p className="text-theme-secondary text-sm mb-4">Discover what programs your region needs — backed by 50+ live data sources and real employer demand signals.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-violet-300 group-hover:gap-2 transition-all">
                   Learn More <ArrowRight className="h-4 w-4" />
                 </span>
@@ -604,10 +604,10 @@ export default function DriftPage() {
             <AnimateOnScroll variant="fade-up" delay={200}>
               <Link href="/program-analysis" className="block card-cosmic rounded-2xl p-7 border-blue-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-white text-lg">Program Analysis</h3>
+                  <h3 className="font-heading font-bold text-theme-primary text-lg">Program Analysis</h3>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300">Free + $295</span>
                 </div>
-                <p className="text-white/70 text-sm mb-4">Audit your existing portfolio for Workforce Pell eligibility and state compliance gaps you may be missing.</p>
+                <p className="text-theme-secondary text-sm mb-4">Audit your existing portfolio for Workforce Pell eligibility and state compliance gaps you may be missing.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-blue-300 group-hover:gap-2 transition-all">
                   Learn More <ArrowRight className="h-4 w-4" />
                 </span>
@@ -619,16 +619,16 @@ export default function DriftPage() {
 
       {/* ═══════════════ FOOTER ═══════════════ */}
       <footer className="py-10 px-6 text-center border-t border-white/5">
-        <p className="text-white/70 text-sm">
+        <p className="text-theme-secondary text-sm">
           Wavelength Workforce Intelligence ·{' '}
           <a
             href="mailto:hello@withwavelength.com"
-            className="hover:text-white/80 transition-colors"
+            className="hover:text-theme-secondary transition-colors"
           >
             hello@withwavelength.com
           </a>
         </p>
-        <p className="mt-2 text-white/20 text-xs">
+        <p className="mt-2 text-theme-muted text-xs">
           Drift Monitor reports are research deliverables based on live job posting analysis. They do not constitute legal or accreditation advice.
         </p>
       </footer>

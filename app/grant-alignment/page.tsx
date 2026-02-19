@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function GrantAlignmentPage() {
   return (
-    <div className="overflow-x-hidden bg-[#050510]">
+    <div className="overflow-x-hidden bg-theme-page">
       {/* ===== HERO ===== */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16">
         <Stars count={100} />
@@ -31,7 +31,7 @@ export default function GrantAlignmentPage() {
             </h1>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200}>
-            <p className="text-white/80 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
+            <p className="text-theme-secondary text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
               Most institutions pursue fewer than a third of the grants they&apos;re eligible for. Not because the funding isn&apos;t there — because finding, evaluating, and prioritizing 30+ opportunities takes research capacity most teams don&apos;t have. We do it for you in a week.
             </p>
           </AnimateOnScroll>
@@ -51,7 +51,7 @@ export default function GrantAlignmentPage() {
       <section className="relative py-20 md:py-28">
         <div className="max-w-[1000px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
-            <h2 className="font-heading font-bold text-white" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
+            <h2 className="font-heading font-bold text-theme-primary" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
               Who this is for
             </h2>
           </AnimateOnScroll>
@@ -63,7 +63,7 @@ export default function GrantAlignmentPage() {
             ].map(({ role, pain }) => (
               <div key={role} className="card-cosmic rounded-2xl p-6 border-green-500/20">
                 <h3 className="font-heading font-semibold text-green-300 text-sm uppercase tracking-wider mb-3">{role}</h3>
-                <p className="text-white/80 text-sm leading-relaxed">{pain}</p>
+                <p className="text-theme-secondary text-sm leading-relaxed">{pain}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -78,8 +78,8 @@ export default function GrantAlignmentPage() {
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-green-500/10 border border-green-500/30 mb-4">
                 <span className="text-green-300 text-[10px] font-bold uppercase tracking-wider">$495</span>
               </div>
-              <h3 className="font-heading font-bold text-white text-2xl mb-3">Grant Intelligence Scan</h3>
-              <p className="text-white/80 text-sm leading-relaxed mb-6">
+              <h3 className="font-heading font-bold text-theme-primary text-2xl mb-3">Grant Intelligence Scan</h3>
+              <p className="text-theme-secondary text-sm leading-relaxed mb-6">
                 We scan 30+ federal and foundation grants, score each against your institution profile, and deliver a ranked, prioritized report — ready to act on.
               </p>
               <ul className="space-y-2.5 mb-6">
@@ -95,11 +95,11 @@ export default function GrantAlignmentPage() {
                 ].map(item => (
                   <li key={item} className="flex items-start gap-2.5">
                     <Check className="h-4 w-4 text-green-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
-                    <span className="text-sm text-white/80">{item}</span>
+                    <span className="text-sm text-theme-secondary">{item}</span>
                   </li>
                 ))}
               </ul>
-              <p className="text-xs text-white/65 mb-6 italic">
+              <p className="text-xs text-theme-tertiary mb-6 italic">
                 Many institutions fund the Grant Intelligence Scan itself through Perkins V or institutional effectiveness line items.
               </p>
               <Link href="/grants">
@@ -117,10 +117,10 @@ export default function GrantAlignmentPage() {
       <section className="relative py-20 md:py-28">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
-            <h2 className="font-heading font-bold text-white" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
+            <h2 className="font-heading font-bold text-theme-primary" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
               How it connects
             </h2>
-            <p className="text-white/80 mt-4 max-w-2xl mx-auto">
+            <p className="text-theme-secondary mt-4 max-w-2xl mx-auto">
               Grant Alignment works best after Market Research or Program Analysis — once you know what you&apos;re building, we find the funding to build it. Perkins V, WIOA Title I, and state workforce development grants are all eligible for program intelligence tools like Wavelength&apos;s full product suite.
             </p>
           </AnimateOnScroll>
@@ -130,10 +130,10 @@ export default function GrantAlignmentPage() {
               { step: '2', label: 'Program Analysis', desc: 'Audit what you have', href: '/program-analysis', active: false },
               { step: '3', label: 'Grant Alignment', desc: 'Find the funding', href: '/grant-alignment', active: true },
             ].map(({ step, label, desc, href, active }) => (
-              <Link key={step} href={href} className={`block p-5 rounded-xl border ${active ? 'border-green-500/30 bg-green-500/5' : 'border-white/[0.06] bg-white/[0.02]'} hover:bg-white/[0.04] transition-colors`}>
-                <span className="font-mono text-xs text-white/40">Step {step}</span>
-                <h3 className={`font-heading font-semibold text-sm mt-1 ${active ? 'text-green-300' : 'text-white'}`}>{label}</h3>
-                <p className="text-white/60 text-xs mt-1">{desc}</p>
+              <Link key={step} href={href} className={`block p-5 rounded-xl border ${active ? 'border-green-500/30 bg-green-500/5' : 'border-theme-subtle bg-white/[0.02]'} hover:bg-white/[0.04] transition-colors`}>
+                <span className="font-mono text-xs text-theme-muted">Step {step}</span>
+                <h3 className={`font-heading font-semibold text-sm mt-1 ${active ? 'text-green-300' : 'text-theme-primary'}`}>{label}</h3>
+                <p className="text-theme-tertiary text-xs mt-1">{desc}</p>
               </Link>
             ))}
           </StaggerChildren>
@@ -144,7 +144,7 @@ export default function GrantAlignmentPage() {
       <section className="relative py-20 md:py-28 text-center">
         <div className="max-w-[600px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
-            <h2 className="font-heading font-bold text-white text-2xl md:text-3xl mb-6">
+            <h2 className="font-heading font-bold text-theme-primary text-2xl md:text-3xl mb-6">
               Stop leaving funding on the table.
             </h2>
             <a href="mailto:hello@withwavelength.com?subject=Grant%20Intelligence%20Scan&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AProgram%20focus%20areas%3A%20">
@@ -154,7 +154,7 @@ export default function GrantAlignmentPage() {
               </button>
             </a>
             <div className="mt-4">
-              <Link href="/market-research" className="text-sm text-white/50 hover:text-white/70 transition-colors">
+              <Link href="/market-research" className="text-sm text-theme-tertiary hover:text-theme-secondary transition-colors">
                 Not sure what to build yet? Start with Market Research →
               </Link>
             </div>

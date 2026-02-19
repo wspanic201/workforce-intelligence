@@ -25,7 +25,7 @@ import { Waveform } from '@/components/cosmic/Waveform';
 
 export default function ValidatePage() {
   return (
-    <div className="overflow-x-hidden bg-[#050510]">
+    <div className="overflow-x-hidden bg-theme-page">
 
       {/* ===== HERO ===== */}
       <section className="relative min-h-[75vh] flex items-center justify-center pt-24 pb-16 overflow-hidden">
@@ -63,10 +63,10 @@ export default function ValidatePage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={200} duration={800}>
-            <p className="mt-6 text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed font-medium">
+            <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed font-medium">
               Confirm feasibility before you invest. Before you hire faculty, build curriculum, or seek approval — know with certainty that your program will succeed.
             </p>
-            <p className="mt-3 text-base md:text-lg text-white/45 max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-3 text-base md:text-lg text-theme-tertiary max-w-2xl mx-auto leading-relaxed">
               Seven specialist analyses. Financial projections grounded in comparable program data. A definitive GO&nbsp;/&nbsp;NO-GO recommendation — not a maybe.
             </p>
           </AnimateOnScroll>
@@ -101,12 +101,12 @@ export default function ValidatePage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-16">
             <h2
-              className="font-heading font-bold text-white"
+              className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
               Seven deliverables. One comprehensive answer.
             </h2>
-            <p className="text-white/70 mt-3 max-w-xl mx-auto">
+            <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
               Validation goes far deeper than Market Scan surface signals — every analysis is verified against primary data, comparable programs, and employer reality.
             </p>
           </AnimateOnScroll>
@@ -153,8 +153,8 @@ export default function ValidatePage() {
                 <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center mb-4">
                   <Icon className="h-5 w-5 text-purple-400" />
                 </div>
-                <h3 className="font-heading font-semibold text-white mb-2">{title}</h3>
-                <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
+                <h3 className="font-heading font-semibold text-theme-primary mb-2">{title}</h3>
+                <p className="text-theme-secondary text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -173,12 +173,12 @@ export default function ValidatePage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-16">
             <h2
-              className="font-heading font-bold text-white"
+              className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
               Seven specialist analyses, working in sequence.
             </h2>
-            <p className="text-white/70 mt-3 max-w-xl mx-auto">
+            <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
               Each discipline produces an independent finding. Together they build the complete picture.
             </p>
           </AnimateOnScroll>
@@ -225,18 +225,18 @@ export default function ValidatePage() {
                   desc: 'Scopes the implementation: what faculty, equipment, and space this program requires — and a realistic timeline from approval to first cohort.',
                 },
               ].map(({ icon: Icon, role, desc }, i) => (
-                <div key={role} className="flex gap-5 p-5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-white/[0.15] transition-colors">
+                <div key={role} className="flex gap-5 p-5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-theme-strong transition-colors">
                   <div className="relative flex-shrink-0">
-                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-white/[0.15] flex items-center justify-center z-10 relative">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-theme-strong flex items-center justify-center z-10 relative">
                       <Icon className="h-4 w-4 text-purple-400" />
                     </div>
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-mono text-[10px] text-white/25 tracking-widest">0{i + 1}</span>
-                      <h3 className="font-heading font-semibold text-white text-sm">{role}</h3>
+                      <span className="font-mono text-[10px] text-theme-muted tracking-widest">0{i + 1}</span>
+                      <h3 className="font-heading font-semibold text-theme-primary text-sm">{role}</h3>
                     </div>
-                    <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
+                    <p className="text-theme-secondary text-sm leading-relaxed">{desc}</p>
                   </div>
                 </div>
               ))}
@@ -257,7 +257,7 @@ export default function ValidatePage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-12">
             <h2
-              className="font-heading font-bold text-white"
+              className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
               Not a feasibility study. A decision.
@@ -286,8 +286,8 @@ export default function ValidatePage() {
               <div key={title} className="flex gap-4">
                 <CheckCircle2 className="h-5 w-5 text-purple-400 flex-shrink-0 mt-1" />
                 <div>
-                  <h3 className="font-heading font-semibold text-white mb-1">{title}</h3>
-                  <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
+                  <h3 className="font-heading font-semibold text-theme-primary mb-1">{title}</h3>
+                  <p className="text-theme-secondary text-sm leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}
@@ -305,12 +305,12 @@ export default function ValidatePage() {
               <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-purple-500/60" />
             </div>
             <h2
-              className="font-heading font-bold text-white"
+              className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
               Know before you build.
             </h2>
-            <p className="text-white/70 mt-3">
+            <p className="text-theme-secondary mt-3">
               One Validation pays for itself if it stops a single failed program — or confirms one that becomes a revenue engine.
             </p>
           </AnimateOnScroll>
@@ -324,10 +324,10 @@ export default function ValidatePage() {
 
               <div className="mb-6">
                 <div className="flex items-baseline justify-center gap-3">
-                  <span className="font-heading font-bold text-4xl text-white">$2,000</span>
-                  <span className="text-white/80 text-sm line-through">$5,500</span>
+                  <span className="font-heading font-bold text-4xl text-theme-primary">$2,000</span>
+                  <span className="text-theme-secondary text-sm line-through">$5,500</span>
                 </div>
-                <p className="text-white/70 text-sm mt-2">
+                <p className="text-theme-secondary text-sm mt-2">
                   Full Validation — includes Market Scan deliverables
                 </p>
               </div>
@@ -343,7 +343,7 @@ export default function ValidatePage() {
                   'Implementation Roadmap',
                   'GO / NO-GO Recommendation',
                 ].map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-sm text-white/80">
+                  <li key={item} className="flex items-start gap-3 text-sm text-theme-secondary">
                     <CheckCircle2 className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" />
                     {item}
                   </li>
@@ -357,7 +357,7 @@ export default function ValidatePage() {
                 </button>
               </a>
 
-              <p className="text-white/70 text-xs mt-4">
+              <p className="text-theme-secondary text-xs mt-4">
                 Email us at hello@withwavelength.com — we&apos;ll follow up within 48 hours.
               </p>
             </div>
@@ -369,16 +369,16 @@ export default function ValidatePage() {
       <section className="relative py-16 md:py-20">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-8">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">Where to go next</span>
+            <span className="text-[10px] font-bold uppercase tracking-widest text-theme-muted">Where to go next</span>
           </AnimateOnScroll>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <AnimateOnScroll variant="fade-up" delay={100}>
               <Link href="/market-research" className="block card-cosmic rounded-2xl p-7 border-violet-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-white text-lg">Program Opportunity Scan</h3>
+                  <h3 className="font-heading font-bold text-theme-primary text-lg">Program Opportunity Scan</h3>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300">$1,500</span>
                 </div>
-                <p className="text-white/70 text-sm mb-4">Discover 7–10 validated program opportunities for your region — scored, ranked, and backed by real employer demand.</p>
+                <p className="text-theme-secondary text-sm mb-4">Discover 7–10 validated program opportunities for your region — scored, ranked, and backed by real employer demand.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-violet-300 group-hover:gap-2 transition-all">
                   Learn More <ArrowRight className="h-4 w-4" />
                 </span>
@@ -387,10 +387,10 @@ export default function ValidatePage() {
             <AnimateOnScroll variant="fade-up" delay={200}>
               <Link href="/grant-alignment" className="block card-cosmic rounded-2xl p-7 border-green-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-white text-lg">Grant Intelligence Scan</h3>
+                  <h3 className="font-heading font-bold text-theme-primary text-lg">Grant Intelligence Scan</h3>
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-300">$495</span>
                 </div>
-                <p className="text-white/70 text-sm mb-4">Find and prioritize the grants your programs qualify for — scored, ranked, and ready to pursue.</p>
+                <p className="text-theme-secondary text-sm mb-4">Find and prioritize the grants your programs qualify for — scored, ranked, and ready to pursue.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-green-300 group-hover:gap-2 transition-all">
                   Learn More <ArrowRight className="h-4 w-4" />
                 </span>
@@ -405,12 +405,12 @@ export default function ValidatePage() {
         <div className="max-w-[800px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
             <h2
-              className="font-heading font-bold text-white"
+              className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
               After Validation
             </h2>
-            <p className="text-white/70 mt-3">
+            <p className="text-theme-secondary mt-3">
               A GO recommendation means you&apos;re cleared to build. The next stages take you from validated concept to fully operational program.
             </p>
           </AnimateOnScroll>
@@ -435,11 +435,11 @@ export default function ValidatePage() {
             ].map(({ stage, name, desc }) => (
               <div key={stage} className="flex gap-4 p-5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
                 <div className="w-10 h-10 rounded-lg bg-white/[0.05] flex items-center justify-center flex-shrink-0">
-                  <span className="font-mono text-sm text-white/80">{stage}</span>
+                  <span className="font-mono text-sm text-theme-secondary">{stage}</span>
                 </div>
                 <div>
-                  <h3 className="font-heading font-semibold text-white text-sm">{name}</h3>
-                  <p className="text-white/70 text-sm mt-1">{desc}</p>
+                  <h3 className="font-heading font-semibold text-theme-primary text-sm">{name}</h3>
+                  <p className="text-theme-secondary text-sm mt-1">{desc}</p>
                 </div>
               </div>
             ))}

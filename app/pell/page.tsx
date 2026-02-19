@@ -221,7 +221,7 @@ const pellProductJsonLd = {
 
 export default function PellPage() {
   return (
-    <div className="overflow-x-hidden bg-[#050510]">
+    <div className="overflow-x-hidden bg-theme-page">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(pellProductJsonLd) }}
@@ -265,7 +265,7 @@ export default function PellPage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={220} duration={800}>
-            <p className="mt-6 text-lg md:text-xl text-white/80 max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed">
               Starting July 1, 2026, short-term workforce programs can qualify for federal Pell Grants for the first time in history. This free check tells you exactly which of your programs qualify — and what to do before the deadline.
             </p>
           </AnimateOnScroll>
@@ -299,7 +299,7 @@ export default function PellPage() {
                   <div className="text-3xl md:text-4xl font-heading font-black text-gradient-cosmic">
                     {stat.value}
                   </div>
-                  <div className="mt-1 text-xs text-white/50 tracking-widest uppercase">
+                  <div className="mt-1 text-xs text-theme-tertiary tracking-widest uppercase">
                     {stat.label}
                   </div>
                 </div>
@@ -317,13 +317,13 @@ export default function PellPage() {
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-14">
               <SectionLabel>THE LEGISLATION</SectionLabel>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mt-4">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary mt-4">
                 What is Workforce Pell?
               </h2>
-              <p className="mt-5 text-white/70 max-w-2xl mx-auto leading-relaxed">
+              <p className="mt-5 text-theme-secondary max-w-2xl mx-auto leading-relaxed">
                 Bipartisan legislation expanding Pell Grant eligibility to short-term workforce programs — 150 to 599 clock hours, 8 to 15 weeks in length. For the first time, students in career-focused, non-degree programs can access federal grant funding.
               </p>
-              <p className="mt-3 text-white/70 max-w-2xl mx-auto leading-relaxed">
+              <p className="mt-3 text-theme-secondary max-w-2xl mx-auto leading-relaxed">
                 Colleges that prepare early will be positioned to enroll Pell-eligible students from Day 1. Those that wait will lose those students to institutions that are ready.
               </p>
             </div>
@@ -337,7 +337,7 @@ export default function PellPage() {
                   <div className="p-2 rounded-lg bg-violet-500/10 border border-violet-500/20">
                     <Star className="h-5 w-5 text-violet-400" />
                   </div>
-                  <h3 className="font-heading font-semibold text-white text-lg">
+                  <h3 className="font-heading font-semibold text-theme-primary text-lg">
                     State Criteria
                   </h3>
                 </div>
@@ -350,7 +350,7 @@ export default function PellPage() {
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3">
                       <CheckCircle className="h-4 w-4 text-violet-400 mt-0.5 shrink-0" />
-                      <span className="text-sm text-white/70">{item}</span>
+                      <span className="text-sm text-theme-secondary">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -364,7 +364,7 @@ export default function PellPage() {
                   <div className="p-2 rounded-lg bg-teal-500/10 border border-teal-500/20">
                     <TrendingUp className="h-5 w-5 text-teal-400" />
                   </div>
-                  <h3 className="font-heading font-semibold text-white text-lg">
+                  <h3 className="font-heading font-semibold text-theme-primary text-lg">
                     Federal Criteria
                   </h3>
                 </div>
@@ -377,7 +377,7 @@ export default function PellPage() {
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-3">
                       <CheckCircle className="h-4 w-4 text-teal-400 mt-0.5 shrink-0" />
-                      <span className="text-sm text-white/70">{item}</span>
+                      <span className="text-sm text-theme-secondary">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -395,10 +395,10 @@ export default function PellPage() {
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-14">
               <SectionLabel>THE DELIVERABLE</SectionLabel>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mt-4">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary mt-4">
                 What you get
               </h2>
-              <p className="mt-4 text-white/70 max-w-xl mx-auto">
+              <p className="mt-4 text-theme-secondary max-w-xl mx-auto">
                 A complete Pell Readiness Check — specific to your institution's catalog and your state's eligibility landscape.
               </p>
             </div>
@@ -414,11 +414,11 @@ export default function PellPage() {
                       <div className="p-2 rounded-lg bg-violet-500/10 border border-violet-500/20">
                         <Icon className="h-5 w-5 text-violet-400" />
                       </div>
-                      <h3 className="font-heading font-semibold text-white text-base">
+                      <h3 className="font-heading font-semibold text-theme-primary text-base">
                         {item.title}
                       </h3>
                     </div>
-                    <p className="text-sm text-white/70 leading-relaxed">
+                    <p className="text-sm text-theme-secondary leading-relaxed">
                       {item.description}
                     </p>
                   </div>
@@ -437,10 +437,10 @@ export default function PellPage() {
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-14">
               <SectionLabel>THE WINDOW</SectionLabel>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mt-4">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary mt-4">
                 Why act now
               </h2>
-              <p className="mt-4 text-white/70 max-w-xl mx-auto">
+              <p className="mt-4 text-theme-secondary max-w-xl mx-auto">
                 Workforce Pell is one of the most significant shifts in community college funding in decades. The colleges that prepare now will define the competitive landscape for years.
               </p>
             </div>
@@ -456,11 +456,11 @@ export default function PellPage() {
                       <div className={`p-2 rounded-lg border ${item.bg}`}>
                         <Icon className={`h-5 w-5 ${item.color}`} />
                       </div>
-                      <h3 className="font-heading font-semibold text-white text-base">
+                      <h3 className="font-heading font-semibold text-theme-primary text-base">
                         {item.title}
                       </h3>
                     </div>
-                    <p className="text-sm text-white/70 leading-relaxed">
+                    <p className="text-sm text-theme-secondary leading-relaxed">
                       {item.description}
                     </p>
                   </div>
@@ -479,7 +479,7 @@ export default function PellPage() {
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-14">
               <SectionLabel>THE PROCESS</SectionLabel>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mt-4">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary mt-4">
                 How it works
               </h2>
             </div>
@@ -493,10 +493,10 @@ export default function PellPage() {
                     {step.step}
                   </div>
                   <div>
-                    <h3 className="font-heading font-semibold text-white text-lg mb-2">
+                    <h3 className="font-heading font-semibold text-theme-primary text-lg mb-2">
                       {step.title}
                     </h3>
-                    <p className="text-white/70 leading-relaxed text-sm">
+                    <p className="text-theme-secondary leading-relaxed text-sm">
                       {step.description}
                     </p>
                   </div>
@@ -519,10 +519,10 @@ export default function PellPage() {
               <SectionLabel>PRICING</SectionLabel>
 
               <div className="flex items-end justify-center gap-2 mt-5 mb-2">
-                <span className="text-6xl font-heading font-black text-white">$0</span>
-                <span className="text-white/70 mb-3 text-lg">— always free</span>
+                <span className="text-6xl font-heading font-black text-theme-primary">$0</span>
+                <span className="text-theme-secondary mb-3 text-lg">— always free</span>
               </div>
-              <p className="text-white/70 text-sm mb-8">
+              <p className="text-theme-secondary text-sm mb-8">
                 No login. No sales call. Just data.
               </p>
 
@@ -530,7 +530,7 @@ export default function PellPage() {
                 {DELIVERABLES.map((item) => (
                   <div key={item} className="flex items-center gap-3">
                     <CheckCircle className="h-4 w-4 text-emerald-400 shrink-0" />
-                    <span className="text-sm text-white/80">{item}</span>
+                    <span className="text-sm text-theme-secondary">{item}</span>
                   </div>
                 ))}
               </div>
@@ -545,7 +545,7 @@ export default function PellPage() {
                 </button>
               </a>
 
-              <p className="mt-5 text-white/40 text-xs">
+              <p className="mt-5 text-theme-muted text-xs">
                 Email us your institution name and state. We handle the rest.
               </p>
             </div>
@@ -561,10 +561,10 @@ export default function PellPage() {
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-14">
               <SectionLabel>WHAT COMES NEXT</SectionLabel>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-white mt-4">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary mt-4">
                 After your Pell Check
               </h2>
-              <p className="mt-4 text-white/70 max-w-xl mx-auto">
+              <p className="mt-4 text-theme-secondary max-w-xl mx-auto">
                 The Pell Readiness Check is your starting point. Once you know where you stand, Wavelength can help you move fast.
               </p>
             </div>
@@ -574,19 +574,19 @@ export default function PellPage() {
             {UPSELL_PRODUCTS.map((product, idx) => (
               <AnimateOnScroll key={product.name} variant="fade-up" delay={idx * 120}>
                 <Link href={product.href} className="block h-full">
-                  <div className={`card-cosmic rounded-xl p-7 h-full border ${product.border} bg-gradient-to-br ${product.color} hover:border-white/20 transition-all group`}>
+                  <div className={`card-cosmic rounded-xl p-7 h-full border ${product.border} bg-gradient-to-br ${product.color} hover:border-theme-strong transition-all group`}>
                     <div className="flex items-start justify-between mb-4">
-                      <h3 className="font-heading font-bold text-white text-xl">
+                      <h3 className="font-heading font-bold text-theme-primary text-xl">
                         {product.name}
                       </h3>
-                      <span className="font-heading font-black text-white/80 text-xl shrink-0 ml-4">
+                      <span className="font-heading font-black text-theme-secondary text-xl shrink-0 ml-4">
                         {product.price}
                       </span>
                     </div>
-                    <p className="text-white/70 text-sm leading-relaxed mb-5">
+                    <p className="text-theme-secondary text-sm leading-relaxed mb-5">
                       {product.description}
                     </p>
-                    <div className="flex items-center gap-2 text-sm text-white/60 group-hover:text-white/80 transition-colors">
+                    <div className="flex items-center gap-2 text-sm text-theme-tertiary group-hover:text-theme-secondary transition-colors">
                       <span>Learn more</span>
                       <ChevronRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                     </div>
@@ -609,10 +609,10 @@ export default function PellPage() {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-heading font-bold text-white text-lg">Program Gap Audit</h3>
+                    <h3 className="font-heading font-bold text-theme-primary text-lg">Program Gap Audit</h3>
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300">$295</span>
                   </div>
-                  <p className="text-white/70 text-sm">Find every state-mandated program your institution isn&apos;t offering — with revenue estimates for each gap.</p>
+                  <p className="text-theme-secondary text-sm">Find every state-mandated program your institution isn&apos;t offering — with revenue estimates for each gap.</p>
                 </div>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-blue-300 group-hover:gap-2 transition-all flex-shrink-0">
                   Learn More <ArrowRight className="h-4 w-4" />
@@ -627,8 +627,8 @@ export default function PellPage() {
       <section className="relative py-20 px-6 text-center">
         <Stars count={40} />
         <AnimateOnScroll variant="fade-up">
-          <p className="text-white/50 text-sm tracking-widest uppercase mb-3">Ready?</p>
-          <h2 className="font-heading text-2xl md:text-3xl font-bold text-white mb-6">
+          <p className="text-theme-tertiary text-sm tracking-widest uppercase mb-3">Ready?</p>
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-theme-primary mb-6">
             Get your free Pell Readiness Check today.
           </h2>
           <a href="mailto:hello@withwavelength.com?subject=Pell%20Readiness%20Check">
@@ -637,7 +637,7 @@ export default function PellPage() {
               hello@withwavelength.com
             </button>
           </a>
-          <p className="mt-5 text-white/40 text-sm">
+          <p className="mt-5 text-theme-muted text-sm">
             No login. No sales call. Just data.
           </p>
         </AnimateOnScroll>
@@ -645,16 +645,16 @@ export default function PellPage() {
 
       {/* ═══════════════ FOOTER ═══════════════ */}
       <footer className="py-10 px-6 text-center border-t border-white/5">
-        <p className="text-white/70 text-sm">
+        <p className="text-theme-secondary text-sm">
           Wavelength Workforce Intelligence ·{' '}
           <a
             href="mailto:hello@withwavelength.com"
-            className="hover:text-white/80 transition-colors"
+            className="hover:text-theme-secondary transition-colors"
           >
             hello@withwavelength.com
           </a>
         </p>
-        <p className="mt-2 text-white/20 text-xs">
+        <p className="mt-2 text-theme-muted text-xs">
           Pell Readiness Check is a research deliverable based on publicly available federal and state regulatory data. It does not constitute legal or compliance advice.
         </p>
       </footer>

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function ProgramHealthPage() {
   return (
-    <div className="overflow-x-hidden bg-[#050510]">
+    <div className="overflow-x-hidden bg-theme-page">
       {/* ===== HERO ===== */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16">
         <Stars count={100} />
@@ -31,7 +31,7 @@ export default function ProgramHealthPage() {
             </h1>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200}>
-            <p className="text-white/80 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
+            <p className="text-theme-secondary text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
               Employer skill requirements shift every 12–18 months. Most curriculum review cycles run every 3–5 years. Drift Monitor bridges that gap — quarterly scans, live job posting analysis, and a Drift Score that tells you exactly where your programs are falling behind.
             </p>
           </AnimateOnScroll>
@@ -51,7 +51,7 @@ export default function ProgramHealthPage() {
       <section className="relative py-20 md:py-28">
         <div className="max-w-[1000px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
-            <h2 className="font-heading font-bold text-white" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
+            <h2 className="font-heading font-bold text-theme-primary" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
               Who this is for
             </h2>
           </AnimateOnScroll>
@@ -63,7 +63,7 @@ export default function ProgramHealthPage() {
             ].map(({ role, pain }) => (
               <div key={role} className="card-cosmic rounded-2xl p-6 border-orange-500/20">
                 <h3 className="font-heading font-semibold text-orange-300 text-sm uppercase tracking-wider mb-3">{role}</h3>
-                <p className="text-white/80 text-sm leading-relaxed">{pain}</p>
+                <p className="text-theme-secondary text-sm leading-relaxed">{pain}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -78,8 +78,8 @@ export default function ProgramHealthPage() {
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 mb-4">
                 <span className="text-orange-300 text-[10px] font-bold uppercase tracking-wider">From $1,200/yr</span>
               </div>
-              <h3 className="font-heading font-bold text-white text-2xl mb-3">Drift Monitor</h3>
-              <p className="text-white/80 text-sm leading-relaxed mb-6">
+              <h3 className="font-heading font-bold text-theme-primary text-2xl mb-3">Drift Monitor</h3>
+              <p className="text-theme-secondary text-sm leading-relaxed mb-6">
                 Quarterly scans of live job postings against your curriculum. A Drift Score tells you exactly where programs are falling behind employer demand.
               </p>
               <ul className="space-y-2.5 mb-8">
@@ -93,7 +93,7 @@ export default function ProgramHealthPage() {
                 ].map(item => (
                   <li key={item} className="flex items-start gap-2.5">
                     <Check className="h-4 w-4 text-orange-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
-                    <span className="text-sm text-white/80">{item}</span>
+                    <span className="text-sm text-theme-secondary">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -112,10 +112,10 @@ export default function ProgramHealthPage() {
       <section className="relative py-20 md:py-28">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
-            <h2 className="font-heading font-bold text-white" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
+            <h2 className="font-heading font-bold text-theme-primary" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
               How it connects
             </h2>
-            <p className="text-white/80 mt-4 max-w-2xl mx-auto">
+            <p className="text-theme-secondary mt-4 max-w-2xl mx-auto">
               Program Health is the ongoing layer. Market Research finds the right programs to build. Program Validation confirms demand. Drift Monitor keeps them aligned once they&apos;re live.
             </p>
           </AnimateOnScroll>
@@ -125,10 +125,10 @@ export default function ProgramHealthPage() {
               { step: '2', label: 'Program Validation', desc: 'Confirm demand', href: '/program-development', active: false },
               { step: '3', label: 'Program Health', desc: 'Keep programs aligned', href: '/program-health', active: true },
             ].map(({ step, label, desc, href, active }) => (
-              <Link key={step} href={href} className={`block p-5 rounded-xl border ${active ? 'border-orange-500/30 bg-orange-500/5' : 'border-white/[0.06] bg-white/[0.02]'} hover:bg-white/[0.04] transition-colors`}>
-                <span className="font-mono text-xs text-white/40">Step {step}</span>
-                <h3 className={`font-heading font-semibold text-sm mt-1 ${active ? 'text-orange-300' : 'text-white'}`}>{label}</h3>
-                <p className="text-white/60 text-xs mt-1">{desc}</p>
+              <Link key={step} href={href} className={`block p-5 rounded-xl border ${active ? 'border-orange-500/30 bg-orange-500/5' : 'border-theme-subtle bg-white/[0.02]'} hover:bg-white/[0.04] transition-colors`}>
+                <span className="font-mono text-xs text-theme-muted">Step {step}</span>
+                <h3 className={`font-heading font-semibold text-sm mt-1 ${active ? 'text-orange-300' : 'text-theme-primary'}`}>{label}</h3>
+                <p className="text-theme-tertiary text-xs mt-1">{desc}</p>
               </Link>
             ))}
           </StaggerChildren>
@@ -139,7 +139,7 @@ export default function ProgramHealthPage() {
       <section className="relative py-20 md:py-28 text-center">
         <div className="max-w-[600px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
-            <h2 className="font-heading font-bold text-white text-2xl md:text-3xl mb-6">
+            <h2 className="font-heading font-bold text-theme-primary text-2xl md:text-3xl mb-6">
               See how your programs are performing.
             </h2>
             <Link href="/drift">
@@ -149,7 +149,7 @@ export default function ProgramHealthPage() {
               </button>
             </Link>
             <div className="mt-4">
-              <Link href="/drift" className="text-sm text-white/50 hover:text-white/70 transition-colors">
+              <Link href="/drift" className="text-sm text-theme-tertiary hover:text-theme-secondary transition-colors">
                 See the full Drift Monitor page →
               </Link>
             </div>

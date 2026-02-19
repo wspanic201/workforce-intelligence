@@ -88,8 +88,8 @@ function PellForm({ onFocus, onBlur }: { onFocus?: () => void; onBlur?: () => vo
         <div className="w-12 h-12 rounded-full bg-teal-500/20 flex items-center justify-center mx-auto mb-4">
           <Check className="h-6 w-6 text-teal-400" />
         </div>
-        <h3 className="font-heading font-bold text-white text-xl mb-2">Check your inbox</h3>
-        <p className="text-white/70 text-sm">
+        <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Check your inbox</h3>
+        <p className="text-theme-secondary text-sm">
           We&apos;ll be in touch within 48 hours with your Pell Readiness Check results.
         </p>
       </div>
@@ -100,7 +100,7 @@ function PellForm({ onFocus, onBlur }: { onFocus?: () => void; onBlur?: () => vo
     <form onSubmit={handleSubmit} onFocus={onFocus} onBlur={onBlur} className="card-cosmic rounded-2xl p-6 md:p-8 max-w-md mx-auto w-full">
       <div className="space-y-4">
         <div>
-          <label className="block text-xs font-medium text-white/70 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-medium text-theme-secondary uppercase tracking-wider mb-1.5">
             Your Name
           </label>
           <input
@@ -109,11 +109,11 @@ function PellForm({ onFocus, onBlur }: { onFocus?: () => void; onBlur?: () => vo
             placeholder="Dr. Sarah Chen"
             value={formData.name}
             onChange={e => setFormData(p => ({ ...p, name: e.target.value }))}
-            className="w-full bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
+            className="w-full bg-white/[0.05] border border-theme-strong rounded-lg px-4 py-2.5 text-theme-primary placeholder-white/40 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-white/70 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-medium text-theme-secondary uppercase tracking-wider mb-1.5">
             Work Email
           </label>
           <input
@@ -122,11 +122,11 @@ function PellForm({ onFocus, onBlur }: { onFocus?: () => void; onBlur?: () => vo
             placeholder="sarah@college.edu"
             value={formData.email}
             onChange={e => setFormData(p => ({ ...p, email: e.target.value }))}
-            className="w-full bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
+            className="w-full bg-white/[0.05] border border-theme-strong rounded-lg px-4 py-2.5 text-theme-primary placeholder-white/40 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-white/70 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-medium text-theme-secondary uppercase tracking-wider mb-1.5">
             Institution
           </label>
           <input
@@ -135,22 +135,22 @@ function PellForm({ onFocus, onBlur }: { onFocus?: () => void; onBlur?: () => vo
             placeholder="Lakeland Community College"
             value={formData.institution}
             onChange={e => setFormData(p => ({ ...p, institution: e.target.value }))}
-            className="w-full bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
+            className="w-full bg-white/[0.05] border border-theme-strong rounded-lg px-4 py-2.5 text-theme-primary placeholder-white/40 text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
           />
         </div>
         <div>
-          <label className="block text-xs font-medium text-white/70 uppercase tracking-wider mb-1.5">
+          <label className="block text-xs font-medium text-theme-secondary uppercase tracking-wider mb-1.5">
             State
           </label>
           <select
             required
             value={formData.state}
             onChange={e => setFormData(p => ({ ...p, state: e.target.value }))}
-            className="w-full bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500/50 transition-colors appearance-none"
+            className="w-full bg-white/[0.05] border border-theme-strong rounded-lg px-4 py-2.5 text-theme-primary text-sm focus:outline-none focus:border-purple-500/50 transition-colors appearance-none"
           >
-            <option value="" className="bg-[#050510]">Select your state…</option>
+            <option value="" className="bg-theme-page">Select your state…</option>
             {US_STATES.map(s => (
-              <option key={s} value={s} className="bg-[#050510]">{s}</option>
+              <option key={s} value={s} className="bg-theme-page">{s}</option>
             ))}
           </select>
         </div>
@@ -172,7 +172,7 @@ function PellForm({ onFocus, onBlur }: { onFocus?: () => void; onBlur?: () => vo
           </>
         )}
       </button>
-      <p className="text-white/70 text-xs text-center mt-3">
+      <p className="text-theme-secondary text-xs text-center mt-3">
         No credit card. No login. Results delivered by email.
       </p>
     </form>
@@ -206,8 +206,8 @@ function LeadMagnetForm() {
         <div className="w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center mx-auto mb-3">
           <Check className="h-5 w-5 text-teal-400" />
         </div>
-        <p className="text-white font-semibold mb-1">Check your inbox</p>
-        <p className="text-white/60 text-sm">Your checklist is on its way.</p>
+        <p className="text-theme-primary font-semibold mb-1">Check your inbox</p>
+        <p className="text-theme-tertiary text-sm">Your checklist is on its way.</p>
       </div>
     );
   }
@@ -221,7 +221,7 @@ function LeadMagnetForm() {
           placeholder="your@college.edu"
           value={email}
           onChange={e => setEmail(e.target.value)}
-          className="flex-1 bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-teal-500/50 transition-colors"
+          className="flex-1 bg-white/[0.05] border border-theme-strong rounded-lg px-4 py-2.5 text-theme-primary placeholder-white/40 text-sm focus:outline-none focus:border-teal-500/50 transition-colors"
         />
         <input
           type="text"
@@ -229,7 +229,7 @@ function LeadMagnetForm() {
           placeholder="Institution name"
           value={institution}
           onChange={e => setInstitution(e.target.value)}
-          className="flex-1 bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-teal-500/50 transition-colors"
+          className="flex-1 bg-white/[0.05] border border-theme-strong rounded-lg px-4 py-2.5 text-theme-primary placeholder-white/40 text-sm focus:outline-none focus:border-teal-500/50 transition-colors"
         />
       </div>
       {status === 'error' && <p className="text-xs text-red-400">Something went wrong — please try again.</p>}
@@ -245,7 +245,7 @@ function LeadMagnetForm() {
           </>
         )}
       </button>
-      <p className="text-white/40 text-xs text-center">No spam. Unsubscribe anytime.</p>
+      <p className="text-theme-muted text-xs text-center">No spam. Unsubscribe anytime.</p>
     </form>
   );
 }
@@ -299,7 +299,7 @@ function FAQSection() {
         </AnimateOnScroll>
         <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-12">
           <h2
-            className="font-heading font-bold text-white"
+            className="font-heading font-bold text-theme-primary"
             style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
           >
             Common questions
@@ -314,17 +314,17 @@ function FAQSection() {
                   onClick={() => setOpen(open === i ? null : i)}
                   className="w-full flex items-center justify-between p-5 text-left gap-4"
                 >
-                  <span className="font-heading font-semibold text-white text-sm md:text-base">
+                  <span className="font-heading font-semibold text-theme-primary text-sm md:text-base">
                     {item.q}
                   </span>
                   {open === i
-                    ? <ChevronUp className="h-4 w-4 text-white/70 flex-shrink-0" />
-                    : <ChevronDown className="h-4 w-4 text-white/70 flex-shrink-0" />
+                    ? <ChevronUp className="h-4 w-4 text-theme-secondary flex-shrink-0" />
+                    : <ChevronDown className="h-4 w-4 text-theme-secondary flex-shrink-0" />
                   }
                 </button>
                 {open === i && (
                   <div className="px-5 pb-5">
-                    <p className="text-white/80 text-sm leading-relaxed">{item.a}</p>
+                    <p className="text-theme-secondary text-sm leading-relaxed">{item.a}</p>
                   </div>
                 )}
               </div>
@@ -483,11 +483,11 @@ function HeroCarousel() {
               <Equalizer bars={9} size="sm" muted />
             </div>
 
-            <p className="mt-2 text-xs font-mono tracking-widest text-white/30 uppercase lg:text-left text-center">
+            <p className="mt-2 text-xs font-mono tracking-widest text-theme-muted uppercase lg:text-left text-center">
               Workforce Program Intelligence · Community Colleges
             </p>
 
-            <p className="mt-4 text-lg md:text-xl text-white/80 leading-relaxed max-w-xl">
+            <p className="mt-4 text-lg md:text-xl text-theme-secondary leading-relaxed max-w-xl">
               {slide.subtitle}
             </p>
 
@@ -495,7 +495,7 @@ function HeroCarousel() {
               {slide.stats.map(({ value, label }) => (
                 <div key={label} className="text-center">
                   <div className="font-heading font-bold text-2xl text-gradient-cosmic">{value}</div>
-                  <p className="text-white/70 text-xs mt-0.5 uppercase tracking-wider">{label}</p>
+                  <p className="text-theme-secondary text-xs mt-0.5 uppercase tracking-wider">{label}</p>
                 </div>
               ))}
             </div>
@@ -537,25 +537,25 @@ function HeroCarousel() {
                 ].map((item, idx) => (
                   <div
                     key={item.label}
-                    className="card-cosmic rounded-xl p-4 flex items-center gap-4 hover:border-white/20 transition-all cursor-default"
+                    className="card-cosmic rounded-xl p-4 flex items-center gap-4 hover:border-theme-strong transition-all cursor-default"
                     style={{ animationDelay: `${idx * 150}ms` }}
                   >
                     <span className="text-2xl">{item.icon}</span>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
-                        <h4 className="font-heading font-semibold text-white text-sm">{item.label}</h4>
+                        <h4 className="font-heading font-semibold text-theme-primary text-sm">{item.label}</h4>
                         <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${BADGE_COLORS[item.color]}`}>
                           {item.tag}
                         </span>
                       </div>
-                      <p className="text-white/50 text-xs mt-0.5">{item.desc}</p>
+                      <p className="text-theme-tertiary text-xs mt-0.5">{item.desc}</p>
                     </div>
-                    <ArrowRight className="h-4 w-4 text-white/30 flex-shrink-0" />
+                    <ArrowRight className="h-4 w-4 text-theme-muted flex-shrink-0" />
                   </div>
                 ))}
                 <div className="pt-2 flex items-center gap-2 justify-center">
                   <Equalizer bars={5} size="sm" muted />
-                  <span className="text-white/30 text-xs tracking-wider uppercase">Tuned to your market</span>
+                  <span className="text-theme-muted text-xs tracking-wider uppercase">Tuned to your market</span>
                   <Equalizer bars={5} size="sm" muted />
                 </div>
               </div>
@@ -566,7 +566,7 @@ function HeroCarousel() {
                   <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
                     <FileSearch className="h-4 w-4 text-blue-400" />
                   </div>
-                  <h4 className="font-heading font-semibold text-white text-sm">Sample Gap Findings</h4>
+                  <h4 className="font-heading font-semibold text-theme-primary text-sm">Sample Gap Findings</h4>
                 </div>
                 <div className="space-y-2">
                   {[
@@ -580,16 +580,16 @@ function HeroCarousel() {
                       <span className={`w-2 h-2 rounded-full flex-shrink-0 ${
                         row.urgency === 'high' ? 'bg-red-400' : row.urgency === 'med' ? 'bg-yellow-400' : 'bg-green-400'
                       }`} />
-                      <span className="text-white/80 flex-1 font-medium">{row.program}</span>
+                      <span className="text-theme-secondary flex-1 font-medium">{row.program}</span>
                       <span className={`font-medium ${
                         row.status === 'Missing' ? 'text-red-400' : row.status === 'Partial' ? 'text-yellow-400' : 'text-green-400'
                       }`}>{row.status}</span>
-                      <span className="text-white/50 w-14 text-right">{row.revenue}</span>
+                      <span className="text-theme-tertiary w-14 text-right">{row.revenue}</span>
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-                  <span className="text-white/40 text-xs">Total uncaptured revenue</span>
+                <div className="mt-4 pt-3 border-t border-theme-base flex items-center justify-between">
+                  <span className="text-theme-muted text-xs">Total uncaptured revenue</span>
                   <span className="text-blue-400 font-heading font-bold text-sm">$2.18M</span>
                 </div>
               </div>
@@ -600,7 +600,7 @@ function HeroCarousel() {
                   <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                     <BarChart3 className="h-4 w-4 text-emerald-400" />
                   </div>
-                  <h4 className="font-heading font-semibold text-white text-sm">6-Phase Research Pipeline</h4>
+                  <h4 className="font-heading font-semibold text-theme-primary text-sm">6-Phase Research Pipeline</h4>
                 </div>
                 <div className="space-y-3">
                   {[
@@ -613,8 +613,8 @@ function HeroCarousel() {
                   ].map((step, idx) => (
                     <div key={step.phase} className="space-y-1">
                       <div className="flex items-center justify-between text-xs">
-                        <span className="text-white/70">{idx + 1}. {step.phase}</span>
-                        <span className={`font-medium ${step.pct === 100 ? 'text-emerald-400' : 'text-white/50'}`}>
+                        <span className="text-theme-secondary">{idx + 1}. {step.phase}</span>
+                        <span className={`font-medium ${step.pct === 100 ? 'text-emerald-400' : 'text-theme-tertiary'}`}>
                           {step.pct === 100 ? '✓' : `${step.pct}%`}
                         </span>
                       </div>
@@ -633,8 +633,8 @@ function HeroCarousel() {
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
-                  <span className="text-white/40 text-xs">Estimated completion</span>
+                <div className="mt-4 pt-3 border-t border-theme-base flex items-center justify-between">
+                  <span className="text-theme-muted text-xs">Estimated completion</span>
                   <span className="text-emerald-400 font-heading font-bold text-sm flex items-center gap-1.5">
                     <span className="relative flex h-2 w-2">
                       <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -657,14 +657,14 @@ function HeroCarousel() {
               className={`group relative flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 cursor-pointer ${
                 i === current
                   ? `${BADGE_COLORS[s.badgeColor]} border`
-                  : 'bg-white/5 border border-white/10 hover:border-white/20'
+                  : 'bg-white/5 border border-theme-base hover:border-theme-strong'
               }`}
             >
               <span className={`w-2 h-2 rounded-full transition-all duration-300 ${
                 i === current ? DOT_COLORS[s.badgeColor] : 'bg-white/30 group-hover:bg-white/50'
               }`} />
               <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
-                i === current ? '' : 'text-white/40 group-hover:text-white/60'
+                i === current ? '' : 'text-theme-muted group-hover:text-theme-tertiary'
               }`}>
                 {s.id === 'main' && 'Overview'}
                 {s.id === 'pell' && 'Pell Check'}
@@ -704,7 +704,7 @@ function HeroCarousel() {
 
 export default function HomePage() {
   return (
-    <div className="overflow-x-hidden bg-[#050510]">
+    <div className="overflow-x-hidden bg-theme-page">
 
       {/* ===== HERO CAROUSEL ===== */}
       <HeroCarousel />
@@ -726,14 +726,14 @@ export default function HomePage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-4">
             <h2
-              className="font-heading font-bold text-white"
+              className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
               Find what you need.
             </h2>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
-            <p className="text-white/80 text-lg max-w-2xl mx-auto">
+            <p className="text-theme-secondary text-lg max-w-2xl mx-auto">
               Wavelength has five product categories. Pick the one that matches what you&apos;re trying to do — and go straight to the right product.
             </p>
           </AnimateOnScroll>
@@ -796,11 +796,11 @@ export default function HomePage() {
                   <div className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-full ${cat.bg} border ${cat.border} mb-4`}>
                     <span className={`${cat.text} text-[10px] font-bold uppercase tracking-wider`}>{cat.category}</span>
                   </div>
-                  <h3 className="font-heading font-bold text-white text-xl mb-2">{cat.headline}</h3>
-                  <p className="text-white/80 text-sm leading-relaxed mb-5">{cat.pain}</p>
+                  <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">{cat.headline}</h3>
+                  <p className="text-theme-secondary text-sm leading-relaxed mb-5">{cat.pain}</p>
                   <div className="flex flex-wrap gap-2 mb-5">
                     {cat.products.map(p => (
-                      <span key={p.name} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.05] border border-white/[0.08] text-xs text-white/80">
+                      <span key={p.name} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.05] border border-theme-subtle text-xs text-theme-secondary">
                         {p.name} <span className={`${cat.text} font-semibold`}>{p.price}</span>
                       </span>
                     ))}
@@ -823,10 +823,10 @@ export default function HomePage() {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20 mb-4">
                 <span className="text-teal-300 text-xs font-semibold uppercase tracking-wider">Free Download</span>
               </div>
-              <h2 className="font-heading font-bold text-white text-2xl md:text-3xl mb-3">
+              <h2 className="font-heading font-bold text-theme-primary text-2xl md:text-3xl mb-3">
                 5 Signs Your Program Portfolio Has Gaps
               </h2>
-              <p className="text-white/60 text-sm leading-relaxed max-w-md mx-auto">
+              <p className="text-theme-tertiary text-sm leading-relaxed max-w-md mx-auto">
                 A quick self-assessment for workforce leaders. See which gaps are costing your institution enrollment — and what to do about them.
               </p>
             </div>
@@ -849,7 +849,7 @@ export default function HomePage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-16">
             <h2
-              className="font-heading font-bold text-white"
+              className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
               From signal to program plan.
@@ -884,8 +884,8 @@ export default function HomePage() {
                     {step}
                   </span>
                 </div>
-                <h3 className="font-heading font-bold text-white text-xl mb-3">{title}</h3>
-                <p className="text-white/65 text-sm leading-relaxed max-w-[280px] mx-auto">{desc}</p>
+                <h3 className="font-heading font-bold text-theme-primary text-xl mb-3">{title}</h3>
+                <p className="text-theme-tertiary text-sm leading-relaxed max-w-[280px] mx-auto">{desc}</p>
 
                 {/* Connector line between steps (desktop only) */}
                 {i < 2 && (
@@ -910,10 +910,10 @@ export default function HomePage() {
               In The Field
               <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-teal-500/50" />
             </span>
-            <h2 className="font-heading font-bold text-white mt-4" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
+            <h2 className="font-heading font-bold text-theme-primary mt-4" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
               Built by someone who&apos;s been in the room.
             </h2>
-            <p className="text-white/60 text-base max-w-xl mx-auto mt-4 leading-relaxed">
+            <p className="text-theme-tertiary text-base max-w-xl mx-auto mt-4 leading-relaxed">
               Wavelength was built by a 15-year community college workforce development professional who ran into the same wall every institution does: too many requests, too little data, and no good way to know which programs were actually worth building.
             </p>
           </AnimateOnScroll>
@@ -927,8 +927,8 @@ export default function HomePage() {
               <AnimateOnScroll key={label} variant="fade-up">
                 <div className="card-cosmic rounded-xl p-6 text-center">
                   <div className="font-heading font-bold text-3xl text-gradient-cosmic mb-1">{value}</div>
-                  <div className="text-white font-medium text-sm mb-1">{label}</div>
-                  <div className="text-white/40 text-xs">{sub}</div>
+                  <div className="text-theme-primary font-medium text-sm mb-1">{label}</div>
+                  <div className="text-theme-muted text-xs">{sub}</div>
                 </div>
               </AnimateOnScroll>
             ))}
@@ -937,12 +937,12 @@ export default function HomePage() {
           <AnimateOnScroll variant="fade-up" delay={200} className="mt-10">
             <div className="card-cosmic rounded-2xl p-8 border-purple-500/20 relative">
               <div className="absolute top-6 left-8 text-purple-400/30 font-serif text-6xl leading-none select-none">&ldquo;</div>
-              <blockquote className="relative z-10 text-white/80 text-lg leading-relaxed italic pt-4 text-center max-w-2xl mx-auto">
+              <blockquote className="relative z-10 text-theme-secondary text-lg leading-relaxed italic pt-4 text-center max-w-2xl mx-auto">
                 &ldquo;The programs we were offering looked fine on paper. What we didn&apos;t know was how many we were missing — and what each one was worth. That&apos;s the gap this fills.&rdquo;
               </blockquote>
               <div className="mt-6 text-center">
-                <div className="text-white font-semibold text-sm">Workforce Development Leader</div>
-                <div className="text-white/40 text-xs mt-1">Midwest Community College</div>
+                <div className="text-theme-primary font-semibold text-sm">Workforce Development Leader</div>
+                <div className="text-theme-muted text-xs mt-1">Midwest Community College</div>
               </div>
             </div>
           </AnimateOnScroll>
@@ -963,14 +963,14 @@ export default function HomePage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-4">
             <h2
-              className="font-heading font-bold text-white"
+              className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
               Six phases of research. 7–10 programs worth building.
             </h2>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
-            <p className="text-white/80 text-lg max-w-2xl mx-auto">
+            <p className="text-theme-secondary text-lg max-w-2xl mx-auto">
               Every program lead backed by real workforce demand. Every opportunity scored so you know exactly where to invest.
             </p>
           </AnimateOnScroll>
@@ -1009,9 +1009,9 @@ export default function HomePage() {
               },
             ].map(({ num, title, desc }) => (
               <div key={num} className="card-cosmic rounded-xl p-6">
-                <div className="font-mono text-xs text-white/25 tracking-widest mb-3">{num}</div>
-                <h3 className="font-heading font-semibold text-white mb-2">{title}</h3>
-                <p className="text-white/80 text-sm leading-relaxed">{desc}</p>
+                <div className="font-mono text-xs text-theme-muted tracking-widest mb-3">{num}</div>
+                <h3 className="font-heading font-semibold text-theme-primary mb-2">{title}</h3>
+                <p className="text-theme-secondary text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -1019,27 +1019,27 @@ export default function HomePage() {
           {/* Report preview card */}
           <AnimateOnScroll variant="scale" delay={200} className="mt-16">
             <div className="max-w-4xl mx-auto card-cosmic rounded-2xl overflow-hidden">
-              <div className="p-6 md:p-8 border-b border-white/[0.06]">
+              <div className="p-6 md:p-8 border-b border-theme-subtle">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div>
-                    <p className="text-xs font-medium uppercase tracking-widest text-white/70 mb-1">
+                    <p className="text-xs font-medium uppercase tracking-widest text-theme-secondary mb-1">
                       Program Opportunity Scan
                     </p>
-                    <p className="font-heading font-semibold text-white text-xl">
+                    <p className="font-heading font-semibold text-theme-primary text-xl">
                       Wake Technical Community College
                     </p>
-                    <p className="text-white/70 text-sm mt-0.5">
+                    <p className="text-theme-secondary text-sm mt-0.5">
                       Research Triangle — Raleigh, Durham, Chapel Hill, Cary
                     </p>
                   </div>
-                  <div className="flex items-center gap-2 text-sm text-white/80">
+                  <div className="flex items-center gap-2 text-sm text-theme-secondary">
                     <span>50+ cited sources · ~25 pages</span>
                   </div>
                 </div>
               </div>
 
-              <div className="p-6 md:p-8 border-b border-white/[0.06]">
-                <h3 className="text-xs font-medium uppercase tracking-widest text-white/70 mb-4">
+              <div className="p-6 md:p-8 border-b border-theme-subtle">
+                <h3 className="text-xs font-medium uppercase tracking-widest text-theme-secondary mb-4">
                   Top Opportunities — Scored &amp; Ranked
                 </h3>
                 <div className="space-y-3">
@@ -1054,7 +1054,7 @@ export default function HomePage() {
                       className="flex items-center justify-between py-3 px-4 rounded-lg bg-white/[0.02] hover:bg-white/[0.04] transition-colors"
                     >
                       <div className="flex items-center gap-3 flex-wrap">
-                        <span className="text-white/80 text-sm font-medium">{program.name}</span>
+                        <span className="text-theme-secondary text-sm font-medium">{program.name}</span>
                         {program.badge && (
                           <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cosmic-teal/20 text-teal-300 border border-teal-500/20">
                             {program.badge}
@@ -1068,14 +1068,14 @@ export default function HomePage() {
                             style={{ width: `${(program.score / 10) * 100}%` }}
                           />
                         </div>
-                        <span className="text-white/80 text-sm font-mono w-8 text-right">{program.score}</span>
+                        <span className="text-theme-secondary text-sm font-mono w-8 text-right">{program.score}</span>
                       </div>
                     </div>
                   ))}
                 </div>
               </div>
 
-              <div className="p-6 md:p-8 border-t border-white/[0.06] flex justify-center">
+              <div className="p-6 md:p-8 border-t border-theme-subtle flex justify-center">
                 <Link href="/report/demo">
                   <button className="btn-cosmic btn-cosmic-ghost text-sm">
                     View Full Sample Report
@@ -1097,10 +1097,10 @@ export default function HomePage() {
               <Radio className="h-3.5 w-3.5 text-blue-400" />
               <span className="text-blue-300 text-xs font-semibold uppercase tracking-wider">Free Newsletter</span>
             </div>
-            <h2 className="font-heading font-bold text-white text-2xl md:text-3xl mb-3">
-              The Signal <span className="text-white/50 font-normal text-xl">by Wavelength</span>
+            <h2 className="font-heading font-bold text-theme-primary text-2xl md:text-3xl mb-3">
+              The Signal <span className="text-theme-tertiary font-normal text-xl">by Wavelength</span>
             </h2>
-            <p className="text-white/60 text-sm leading-relaxed max-w-md mx-auto mb-8">
+            <p className="text-theme-tertiary text-sm leading-relaxed max-w-md mx-auto mb-8">
               Labor market signals, workforce news, and industry spotlights — for CE and workforce development teams. Free, 3× per week.
             </p>
             <Link href="/signal">
@@ -1110,7 +1110,7 @@ export default function HomePage() {
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </Link>
-            <div className="flex flex-wrap justify-center gap-5 mt-6 text-xs text-white/40">
+            <div className="flex flex-wrap justify-center gap-5 mt-6 text-xs text-theme-muted">
               <span className="flex items-center gap-1.5"><Check className="h-3 w-3 text-teal-400" /> No credit card</span>
               <span className="flex items-center gap-1.5"><Check className="h-3 w-3 text-teal-400" /> No spam</span>
               <span className="flex items-center gap-1.5"><Check className="h-3 w-3 text-teal-400" /> Unsubscribe anytime</span>
@@ -1131,7 +1131,7 @@ export default function HomePage() {
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up">
             <h2
-              className="font-heading font-bold text-white mx-auto max-w-3xl leading-tight"
+              className="font-heading font-bold text-theme-primary mx-auto max-w-3xl leading-tight"
               style={{ fontSize: 'clamp(1.75rem, 4vw + 0.5rem, 3rem)' }}
             >
               Your community needs programs you haven&apos;t built yet.
@@ -1155,14 +1155,14 @@ export default function HomePage() {
                 </button>
               </a>
             </div>
-            <p className="mt-8 text-xs font-mono text-white/20 tracking-widest uppercase">
+            <p className="mt-8 text-xs font-mono text-theme-muted tracking-widest uppercase">
               Wavelength · Workforce Program Intelligence · withwavelength.com
             </p>
-            <p className="mt-6 text-sm text-white/80">
+            <p className="mt-6 text-sm text-theme-secondary">
               Questions?{' '}
               <a
                 href="mailto:hello@withwavelength.com"
-                className="text-white/70 hover:text-white/70 underline underline-offset-4 transition-colors"
+                className="text-theme-secondary hover:text-theme-secondary underline underline-offset-4 transition-colors"
               >
                 hello@withwavelength.com
               </a>
