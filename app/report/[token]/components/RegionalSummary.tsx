@@ -19,16 +19,17 @@ function BigStat({ label, value }: { label: string; value: string | number }) {
 }
 
 function CompetitorBadge({ type }: { type: string }) {
-  const labels: Record<string, { label: string; style: string }> = {
-    community_college: { label: 'Community College', style: 'bg-blue-500/20 text-blue-300 border-blue-500/30' },
-    university: { label: 'University', style: 'bg-violet-500/20 text-violet-300 border-violet-500/30' },
-    proprietary: { label: 'Proprietary', style: 'bg-amber-500/20 text-amber-300 border-amber-500/30' },
-    online: { label: 'Online Provider', style: 'bg-teal-500/20 text-teal-300 border-teal-500/30' },
-    workforce: { label: 'Workforce Dev', style: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30' },
+  const labels: Record<string, { label: string; textClass: string; dot: string }> = {
+    community_college: { label: 'Community College', textClass: 'text-blue-300', dot: 'bg-blue-500/60' },
+    university: { label: 'University', textClass: 'text-violet-300', dot: 'bg-violet-500/60' },
+    proprietary: { label: 'Proprietary', textClass: 'text-amber-300', dot: 'bg-amber-500/60' },
+    online: { label: 'Online Provider', textClass: 'text-teal-300', dot: 'bg-teal-500/60' },
+    workforce: { label: 'Workforce Dev', textClass: 'text-emerald-300', dot: 'bg-emerald-500/60' },
   };
-  const match = labels[type] || { label: type, style: 'bg-white/10 text-white/50 border-white/20' };
+  const match = labels[type] || { label: type, textClass: 'text-white/50', dot: 'bg-white/40' };
   return (
-    <span className={`text-[11px] px-2 py-0.5 rounded-full border ${match.style}`}>
+    <span className={`flex items-center gap-1.5 text-[11px] font-medium ${match.textClass}`}>
+      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${match.dot}`} />
       {match.label}
     </span>
   );
@@ -165,13 +166,9 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
                   <CompetitorBadge type={p.type} />
                 </div>
                 {p.programs?.length && (
-                  <div className="flex flex-wrap gap-1.5 mt-2">
-                    {p.programs.slice(0, 4).map((prog, j) => (
-                      <span key={j} className="text-[11px] px-2 py-0.5 rounded-full bg-white/[0.05] text-theme-muted border border-theme-subtle">
-                        {prog}
-                      </span>
-                    ))}
-                  </div>
+                  <p className="text-xs text-theme-muted mt-2">
+                    {p.programs.slice(0, 4).join(', ')}
+                  </p>
                 )}
               </div>
             ))}
@@ -196,11 +193,12 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
                         </span>
                       )}
                       {g.demandSignalStrength && (
-                        <span className={`text-[11px] px-2 py-0.5 rounded-full border ${
-                          g.demandSignalStrength === 'strong'
-                            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
-                            : 'bg-amber-500/20 text-amber-300 border-amber-500/30'
+                        <span className={`flex items-center gap-1.5 text-[11px] font-medium ${
+                          g.demandSignalStrength === 'strong' ? 'text-emerald-300' : 'text-amber-300'
                         }`}>
+                          <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                            g.demandSignalStrength === 'strong' ? 'bg-emerald-500/60' : 'bg-amber-500/60'
+                          }`} />
                           {g.demandSignalStrength}
                         </span>
                       )}
@@ -235,13 +233,16 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-theme-muted">{ind.signalCount} signals</span>
-                    <span className={`text-[11px] px-2 py-0.5 rounded-full border ${
-                      ind.averageStrength === 'high'
-                        ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
-                        : ind.averageStrength === 'moderate'
-                        ? 'bg-amber-500/20 text-amber-300 border-amber-500/30'
-                        : 'bg-white/10 text-white/40 border-white/20'
+                    <span className={`flex items-center gap-1.5 text-[11px] font-medium ${
+                      ind.averageStrength === 'high' ? 'text-emerald-300'
+                        : ind.averageStrength === 'moderate' ? 'text-amber-300'
+                        : 'text-white/40'
                     }`}>
+                      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${
+                        ind.averageStrength === 'high' ? 'bg-emerald-500/60'
+                          : ind.averageStrength === 'moderate' ? 'bg-amber-500/60'
+                          : 'bg-white/20'
+                      }`} />
                       {ind.averageStrength}
                     </span>
                   </div>
@@ -257,13 +258,11 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
               <Briefcase className="w-4 h-4 text-blue-400" />
               Trending Certifications
             </h3>
-            <div className="flex flex-wrap gap-2">
-              {trendingCerts.map((cert: any, i: number) => (
-                <span key={i} className="text-xs px-3 py-1.5 rounded-full bg-blue-500/10 text-blue-300 border border-blue-500/20">
-                  {typeof cert === 'string' ? cert : cert.certification || cert.name || 'Certification'}
-                </span>
-              ))}
-            </div>
+            <p className="text-xs text-theme-muted leading-relaxed">
+              {trendingCerts.map((cert: any) =>
+                typeof cert === 'string' ? cert : cert.certification || cert.name || 'Certification'
+              ).join(', ')}
+            </p>
           </div>
         )}
       </div>

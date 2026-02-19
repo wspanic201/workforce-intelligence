@@ -21,42 +21,49 @@ const SOURCE_CONFIG: Record<SourceType, {
   label: string;
   badge: string;
   dot: string;
+  dotText: string;
 }> = {
   government: {
     icon: Database,
     label: 'Gov / BLS Data',
     badge: 'bg-blue-500/20 text-blue-300 border border-blue-500/30',
     dot: 'bg-blue-400',
+    dotText: 'text-blue-400',
   },
   employer: {
     icon: Building2,
     label: 'Employer Signal',
     badge: 'bg-violet-500/20 text-violet-300 border border-violet-500/30',
     dot: 'bg-violet-400',
+    dotText: 'text-violet-400',
   },
   economic_development: {
     icon: TrendingUp,
     label: 'Economic Development',
     badge: 'bg-teal-500/20 text-teal-300 border border-teal-500/30',
     dot: 'bg-teal-400',
+    dotText: 'text-teal-400',
   },
   academic: {
     icon: GraduationCap,
     label: 'Academic / Research',
     badge: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
     dot: 'bg-amber-400',
+    dotText: 'text-amber-400',
   },
   news: {
     icon: Newspaper,
     label: 'News / Media',
     badge: 'bg-rose-500/20 text-rose-300 border border-rose-500/30',
     dot: 'bg-rose-400',
+    dotText: 'text-rose-400',
   },
   other: {
     icon: MapPin,
     label: 'Regional Data',
     badge: 'bg-white/10 text-white/50 border border-white/20',
     dot: 'bg-white/40',
+    dotText: 'text-white/50',
   },
 };
 
@@ -69,7 +76,6 @@ function EvidenceItem({ item, index }: EvidenceItemProps) {
   const [open, setOpen] = useState(false);
   const sourceType = classifySource(item.source);
   const config = SOURCE_CONFIG[sourceType];
-  const Icon = config.icon;
 
   return (
     <div
@@ -101,8 +107,8 @@ function EvidenceItem({ item, index }: EvidenceItemProps) {
           <div className="pl-4 border-l-2 border-white/10">
             <p className="text-sm text-theme-secondary leading-relaxed mb-2">{item.point}</p>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className={`inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full ${config.badge}`}>
-                <Icon className="w-3 h-3" />
+              <span className={`inline-flex items-center gap-1 text-[11px] font-medium ${config.dotText}`}>
+                <span className={`w-1.5 h-1.5 rounded-full inline-block ${config.dot}`} />
                 {config.label}
               </span>
               <span className="text-xs text-theme-muted">{item.source}</span>
@@ -142,10 +148,9 @@ export function EvidenceTrail({ evidence, title = 'Evidence Trail' }: EvidenceTr
 export function SourceBadge({ source }: { source: string }) {
   const type = classifySource(source);
   const config = SOURCE_CONFIG[type];
-  const Icon = config.icon;
   return (
-    <span className={`inline-flex items-center gap-1 text-[11px] font-medium px-2 py-0.5 rounded-full ${config.badge}`}>
-      <Icon className="w-3 h-3" />
+    <span className={`inline-flex items-center gap-1 text-[11px] font-medium ${config.dotText}`}>
+      <span className={`w-1.5 h-1.5 rounded-full inline-block ${config.dot}`} />
       {config.label}
     </span>
   );

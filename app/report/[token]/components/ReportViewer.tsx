@@ -258,9 +258,10 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
               </div>
 
               {/* Legend */}
-              <div className="flex flex-wrap gap-3 mb-5">
-                {Object.entries(TIER_STYLES).map(([key, { label, badge }]) => (
-                  <span key={key} className={`text-[11px] px-2 py-1 rounded-full font-medium ${badge}`}>
+              <div className="flex flex-wrap gap-4 mb-5">
+                {Object.entries(TIER_STYLES).map(([key, { label, dot, dotText }]) => (
+                  <span key={key} className={`flex items-center gap-1.5 text-[11px] font-medium ${dotText}`}>
+                    <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${dot}`} />
                     {label}
                   </span>
                 ))}
@@ -314,7 +315,8 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
                           <h3 className="text-sm font-semibold text-theme-primary truncate group-hover:text-violet-300 transition-colors">
                             {title}
                           </h3>
-                          <span className={`inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded-full mt-1 ${tierStyle.badge}`}>
+                          <span className={`inline-flex items-center gap-1.5 text-[10px] font-medium mt-1 ${tierStyle.dotText}`}>
+                            <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${tierStyle.dot}`} />
                             {tierStyle.label}
                           </span>
 

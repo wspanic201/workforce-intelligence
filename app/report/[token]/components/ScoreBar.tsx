@@ -194,9 +194,9 @@ export function ScoreBreakdown({ scores, isBlueOcean = false }: ScoreBreakdownPr
 }
 
 // ─── Tier badge styles (shared) ──────────────────────────────
-export const TIER_STYLES: Record<string, { label: string; badge: string }> = {
-  quick_win: { label: 'Quick Win', badge: 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' },
-  strategic_build: { label: 'Strategic Build', badge: 'bg-amber-500/20 text-amber-400 border border-amber-500/30' },
-  emerging: { label: 'Emerging', badge: 'bg-violet-500/20 text-violet-400 border border-violet-500/30' },
-  blue_ocean: { label: 'Blue Ocean', badge: 'bg-teal-500/20 text-teal-400 border border-teal-500/30' },
+export const TIER_STYLES: Record<string, { label: string; badge: string; dot: string; dotText: string }> = {
+  quick_win: { label: 'Quick Win', badge: 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30', dot: 'bg-emerald-400', dotText: 'text-emerald-400' },
+  strategic_build: { label: 'Strategic Build', badge: 'bg-amber-500/20 text-amber-400 border border-amber-500/30', dot: 'bg-amber-400', dotText: 'text-amber-400' },
+  emerging: { label: 'Emerging', badge: 'bg-violet-500/20 text-violet-400 border border-violet-500/30', dot: 'bg-violet-400', dotText: 'text-violet-400' },
+  blue_ocean: { label: 'Blue Ocean', badge: 'bg-teal-500/20 text-teal-400 border border-teal-500/30', dot: 'bg-teal-400', dotText: 'text-teal-400' },
 };

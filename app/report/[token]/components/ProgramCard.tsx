@@ -3,39 +3,36 @@
 import { useState, useId } from 'react';
 import {
   ChevronDown,
-  Zap,
-  Building2,
   Clock,
   GraduationCap,
   AlertTriangle,
   CheckCircle2,
-  Telescope,
   Waves,
 } from 'lucide-react';
 import { ScoreArc, CompactScoreBar } from './ScoreBar';
 import { EvidenceTrail } from './EvidenceTrail';
 import type { ScoredOpportunity, BlueOceanOpportunity } from '../types';
 
-const TIER_CONFIG: Record<string, { label: string; badge: string; icon: React.ComponentType<{className?: string}> }> = {
+const TIER_CONFIG: Record<string, { label: string; dot: string; textClass: string }> = {
   quick_win: {
     label: 'Quick Win',
-    badge: 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30',
-    icon: Zap,
+    dot: 'bg-emerald-400',
+    textClass: 'text-emerald-400',
   },
   strategic_build: {
     label: 'Strategic Build',
-    badge: 'bg-amber-500/20 text-amber-300 border border-amber-500/30',
-    icon: Building2,
+    dot: 'bg-amber-400',
+    textClass: 'text-amber-400',
   },
   emerging: {
     label: 'Emerging',
-    badge: 'bg-violet-500/20 text-violet-300 border border-violet-500/30',
-    icon: Telescope,
+    dot: 'bg-violet-400',
+    textClass: 'text-violet-400',
   },
   blue_ocean: {
     label: 'Blue Ocean',
-    badge: 'bg-teal-500/20 text-teal-300 border border-teal-500/30',
-    icon: Waves,
+    dot: 'bg-teal-400',
+    textClass: 'text-teal-400',
   },
 };
 
@@ -71,7 +68,6 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
 
   const tier = isBO ? 'blue_ocean' : ((conventional?.tier || 'emerging').toLowerCase());
   const tierConfig = TIER_CONFIG[tier] || TIER_CONFIG['emerging'];
-  const TierIcon = tierConfig.icon;
 
   const evidence = isBO ? blueOcean!.evidence : (conventional?.demandEvidence || []);
   const validationItems = program.whatValidationWouldConfirm || [];
@@ -110,12 +106,13 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
               <h3 className="text-base font-semibold text-theme-primary leading-tight group-hover:text-violet-300 transition-colors truncate">
                 {title}
               </h3>
-              <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${tierConfig.badge}`}>
-                <TierIcon className="w-3 h-3" />
+              <span className={`flex items-center gap-1.5 text-[11px] font-semibold shrink-0 ${tierConfig.textClass}`}>
+                <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${tierConfig.dot}`} />
                 {tierConfig.label}
               </span>
               {isBO && (
-                <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/25 shrink-0">
+                <span className="flex items-center gap-1.5 text-[11px] font-semibold shrink-0 text-teal-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-teal-500/60 shrink-0" />
                   ◆ Hidden
                 </span>
               )}
@@ -288,13 +285,9 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
               {conventional.programSnapshot.stackableCredentials?.length && (
                 <div className="mt-3">
                   <span className="text-white/40 text-xs">Stackable: </span>
-                  <div className="flex flex-wrap gap-1.5 mt-1">
-                    {conventional.programSnapshot.stackableCredentials.map((c, i) => (
-                      <span key={i} className="text-[11px] px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-300 border border-violet-500/20">
-                        {c}
-                      </span>
-                    ))}
-                  </div>
+                  <span className="text-theme-muted text-xs">
+                    {conventional.programSnapshot.stackableCredentials.join(', ')}
+                  </span>
                 </div>
               )}
             </div>
