@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { InstitutionTypeahead } from '@/components/ui/InstitutionTypeahead';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -155,12 +156,11 @@ export default function SubmitPage() {
             <div className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="client_name">Institution Name *</Label>
-                <Input
-                  id="client_name"
-                  required
+                <InstitutionTypeahead
                   value={formData.client_name}
-                  onChange={(e) => setFormData({ ...formData, client_name: e.target.value })}
+                  onChange={(value) => setFormData({ ...formData, client_name: value })}
                   placeholder="Your community college"
+                  required
                 />
               </div>
 

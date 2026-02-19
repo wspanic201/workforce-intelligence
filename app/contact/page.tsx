@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
+import { InstitutionTypeahead } from '@/components/ui/InstitutionTypeahead';
 
 const SUBJECTS = [
   'Program Opportunity Scan',
@@ -108,7 +109,17 @@ export default function ContactPage() {
                     {field('email', 'Work Email', 'email', true)}
                   </div>
 
-                  {field('institution', 'Institution', 'text', false)}
+                  {/* Institution typeahead */}
+                  <div>
+                    <label htmlFor="institution" className="block text-xs font-semibold text-theme-secondary uppercase tracking-wider mb-2">
+                      Institution
+                    </label>
+                    <InstitutionTypeahead
+                      value={form.institution}
+                      onChange={(value) => setForm((f) => ({ ...f, institution: value }))}
+                      placeholder="Your community college"
+                    />
+                  </div>
 
                   {/* Subject */}
                   <div>

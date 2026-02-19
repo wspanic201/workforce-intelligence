@@ -1,0 +1,5288 @@
+[
+  {
+    "unitid": 217615,
+    "name": "Aiken Technical College",
+    "city": "Graniteville",
+    "state": "SC"
+  },
+  {
+    "unitid": 199786,
+    "name": "Alamance Community College",
+    "city": "Graham",
+    "state": "NC"
+  },
+  {
+    "unitid": 138682,
+    "name": "Albany Technical College",
+    "city": "Albany",
+    "state": "GA"
+  },
+  {
+    "unitid": 172918,
+    "name": "Alexandria Technical & Community College",
+    "city": "Alexandria",
+    "state": "MN"
+  },
+  {
+    "unitid": 108807,
+    "name": "Allan Hancock College",
+    "city": "Santa Maria",
+    "state": "CA"
+  },
+  {
+    "unitid": 161688,
+    "name": "Allegany College of Maryland",
+    "city": "Cumberland",
+    "state": "MD"
+  },
+  {
+    "unitid": 154642,
+    "name": "Allen County Community College",
+    "city": "Iola",
+    "state": "KS"
+  },
+  {
+    "unitid": 222567,
+    "name": "Alvin Community College",
+    "city": "Alvin",
+    "state": "TX"
+  },
+  {
+    "unitid": 222576,
+    "name": "Amarillo College",
+    "city": "Amarillo",
+    "state": "TX"
+  },
+  {
+    "unitid": 109208,
+    "name": "American River College",
+    "city": "Sacramento",
+    "state": "CA"
+  },
+  {
+    "unitid": 222822,
+    "name": "Angelina College",
+    "city": "Lufkin",
+    "state": "TX"
+  },
+  {
+    "unitid": 161767,
+    "name": "Anne Arundel Community College",
+    "city": "Arnold",
+    "state": "MD"
+  },
+  {
+    "unitid": 172954,
+    "name": "Anoka Technical College",
+    "city": "Anoka",
+    "state": "MN"
+  },
+  {
+    "unitid": 172963,
+    "name": "Anoka-Ramsey Community College",
+    "city": "Coon Rapids",
+    "state": "MN"
+  },
+  {
+    "unitid": 104160,
+    "name": "Arizona Western College",
+    "city": "Yuma",
+    "state": "AZ"
+  },
+  {
+    "unitid": 107327,
+    "name": "Arkansas Northeastern College",
+    "city": "Blytheville",
+    "state": "AR"
+  },
+  {
+    "unitid": 107318,
+    "name": "Arkansas State University Mid-South",
+    "city": "West Memphis",
+    "state": "AR"
+  },
+  {
+    "unitid": 107521,
+    "name": "Arkansas State University Three Rivers",
+    "city": "Malvern",
+    "state": "AR"
+  },
+  {
+    "unitid": 106449,
+    "name": "Arkansas State University-Beebe",
+    "city": "Beebe",
+    "state": "AR"
+  },
+  {
+    "unitid": 420538,
+    "name": "Arkansas State University-Mountain Home",
+    "city": "Mountain Home",
+    "state": "AR"
+  },
+  {
+    "unitid": 440402,
+    "name": "Arkansas State University-Newport",
+    "city": "Newport",
+    "state": "AR"
+  },
+  {
+    "unitid": 197887,
+    "name": "Asheville-Buncombe Technical Community College",
+    "city": "Asheville",
+    "state": "NC"
+  },
+  {
+    "unitid": 156231,
+    "name": "Ashland Community and Technical College",
+    "city": "Ashland",
+    "state": "KY"
+  },
+  {
+    "unitid": 128577,
+    "name": "Asnuntuck Community College",
+    "city": "Enfield",
+    "state": "CT"
+  },
+  {
+    "unitid": 246813,
+    "name": "Athens Technical College",
+    "city": "Athens",
+    "state": "GA"
+  },
+  {
+    "unitid": 138840,
+    "name": "Atlanta Technical College",
+    "city": "Atlanta",
+    "state": "GA"
+  },
+  {
+    "unitid": 183655,
+    "name": "Atlantic Cape Community College",
+    "city": "Mays Landing",
+    "state": "NJ"
+  },
+  {
+    "unitid": 132374,
+    "name": "Atlantic Technical College",
+    "city": "Coconut Creek",
+    "state": "FL"
+  },
+  {
+    "unitid": 138956,
+    "name": "Augusta Technical College",
+    "city": "Augusta",
+    "state": "GA"
+  },
+  {
+    "unitid": 365213,
+    "name": "Autry Technology Center",
+    "city": "Enid",
+    "state": "OK"
+  },
+  {
+    "unitid": 161864,
+    "name": "Baltimore City Community College",
+    "city": "Baltimore",
+    "state": "MD"
+  },
+  {
+    "unitid": 109907,
+    "name": "Barstow Community College",
+    "city": "Barstow",
+    "state": "CA"
+  },
+  {
+    "unitid": 154697,
+    "name": "Barton County Community College",
+    "city": "Great Bend",
+    "state": "KS"
+  },
+  {
+    "unitid": 235671,
+    "name": "Bates Technical College",
+    "city": "Tacoma",
+    "state": "WA"
+  },
+  {
+    "unitid": 437103,
+    "name": "Baton Rouge Community College",
+    "city": "Baton Rouge",
+    "state": "LA"
+  },
+  {
+    "unitid": 168883,
+    "name": "Bay de Noc Community College",
+    "city": "Escanaba",
+    "state": "MI"
+  },
+  {
+    "unitid": 197966,
+    "name": "Beaufort County Community College",
+    "city": "Washington",
+    "state": "NC"
+  },
+  {
+    "unitid": 201283,
+    "name": "Belmont College",
+    "city": "St Clairsville",
+    "state": "OH"
+  },
+  {
+    "unitid": 183743,
+    "name": "Bergen Community College",
+    "city": "Paramus",
+    "state": "NJ"
+  },
+  {
+    "unitid": 125170,
+    "name": "Berkeley City College",
+    "city": "Berkeley",
+    "state": "CA"
+  },
+  {
+    "unitid": 164775,
+    "name": "Berkshire Community College",
+    "city": "Pittsfield",
+    "state": "MA"
+  },
+  {
+    "unitid": 102429,
+    "name": "Bevill State Community College",
+    "city": "Jasper",
+    "state": "AL"
+  },
+  {
+    "unitid": 157553,
+    "name": "Big Sandy Community and Technical College",
+    "city": "Prestonsburg",
+    "state": "KY"
+  },
+  {
+    "unitid": 102030,
+    "name": "Bishop State Community College",
+    "city": "Mobile",
+    "state": "AL"
+  },
+  {
+    "unitid": 143279,
+    "name": "Black Hawk College",
+    "city": "Moline",
+    "state": "IL"
+  },
+  {
+    "unitid": 106625,
+    "name": "Black River Technical College",
+    "city": "Pocahontas",
+    "state": "AR"
+  },
+  {
+    "unitid": 238397,
+    "name": "Blackhawk Technical College",
+    "city": "Janesville",
+    "state": "WI"
+  },
+  {
+    "unitid": 198011,
+    "name": "Bladen Community College",
+    "city": "Dublin",
+    "state": "NC"
+  },
+  {
+    "unitid": 223427,
+    "name": "Blinn College District",
+    "city": "Brenham",
+    "state": "TX"
+  },
+  {
+    "unitid": 208275,
+    "name": "Blue Mountain Community College",
+    "city": "Pendleton",
+    "state": "OR"
+  },
+  {
+    "unitid": 446774,
+    "name": "Blue Ridge Community and Technical College",
+    "city": "Martinsburg",
+    "state": "WV"
+  },
+  {
+    "unitid": 198039,
+    "name": "Blue Ridge Community College",
+    "city": "Flat Rock",
+    "state": "NC"
+  },
+  {
+    "unitid": 231536,
+    "name": "Blue Ridge Community College",
+    "city": "Weyers Cave",
+    "state": "VA"
+  },
+  {
+    "unitid": 156392,
+    "name": "Bluegrass Community and Technical College",
+    "city": "Lexington",
+    "state": "KY"
+  },
+  {
+    "unitid": 498386,
+    "name": "Boone Career and Technical Center",
+    "city": "Foster",
+    "state": "WV"
+  },
+  {
+    "unitid": 158431,
+    "name": "Bossier Parish Community College",
+    "city": "Bossier City",
+    "state": "LA"
+  },
+  {
+    "unitid": 484932,
+    "name": "BridgeValley Community & Technical College",
+    "city": "South  Charleston",
+    "state": "WV"
+  },
+  {
+    "unitid": 232450,
+    "name": "Brightpoint Community College",
+    "city": "Chester",
+    "state": "VA"
+  },
+  {
+    "unitid": 165033,
+    "name": "Bristol Community College",
+    "city": "Fall River",
+    "state": "MA"
+  },
+  {
+    "unitid": 183859,
+    "name": "Brookdale Community College",
+    "city": "Lincroft",
+    "state": "NJ"
+  },
+  {
+    "unitid": 198084,
+    "name": "Brunswick Community College",
+    "city": "Bolivia",
+    "state": "NC"
+  },
+  {
+    "unitid": 211307,
+    "name": "Bucks County Community College",
+    "city": "Newtown",
+    "state": "PA"
+  },
+  {
+    "unitid": 165112,
+    "name": "Bunker Hill Community College",
+    "city": "Boston",
+    "state": "MA"
+  },
+  {
+    "unitid": 154800,
+    "name": "Butler Community College",
+    "city": "El Dorado",
+    "state": "KS"
+  },
+  {
+    "unitid": 211343,
+    "name": "Butler County Community College",
+    "city": "Butler",
+    "state": "PA"
+  },
+  {
+    "unitid": 110246,
+    "name": "Butte College",
+    "city": "Oroville",
+    "state": "CA"
+  },
+  {
+    "unitid": 110334,
+    "name": "Cabrillo College",
+    "city": "Aptos",
+    "state": "CA"
+  },
+  {
+    "unitid": 198118,
+    "name": "Caldwell Community College and Technical Institute",
+    "city": "Hudson",
+    "state": "NC"
+  },
+  {
+    "unitid": 495271,
+    "name": "California Indian Nations College",
+    "city": "Palm Desert",
+    "state": "CA"
+  },
+  {
+    "unitid": 183938,
+    "name": "Camden County College",
+    "city": "Blackwood",
+    "state": "NJ"
+  },
+  {
+    "unitid": 111434,
+    "name": "Canada College",
+    "city": "Redwood City",
+    "state": "CA"
+  },
+  {
+    "unitid": 365374,
+    "name": "Canadian Valley Technology Center",
+    "city": "El Reno",
+    "state": "OK"
+  },
+  {
+    "unitid": 200208,
+    "name": "Cankdeska Cikana Community College",
+    "city": "Fort Totten",
+    "state": "ND"
+  },
+  {
+    "unitid": 165194,
+    "name": "Cape Cod Community College",
+    "city": "West Barnstable",
+    "state": "MA"
+  },
+  {
+    "unitid": 198154,
+    "name": "Cape Fear Community College",
+    "city": "Wilmington",
+    "state": "NC"
+  },
+  {
+    "unitid": 176798,
+    "name": "Cape Girardeau Career and Technology Center",
+    "city": "Cape Girardeau",
+    "state": "MO"
+  },
+  {
+    "unitid": 206923,
+    "name": "Carl Albert State College",
+    "city": "Poteau",
+    "state": "OK"
+  },
+  {
+    "unitid": 143613,
+    "name": "Carl Sandburg College",
+    "city": "Galesburg",
+    "state": "IL"
+  },
+  {
+    "unitid": 405872,
+    "name": "Carroll Community College",
+    "city": "Westminster",
+    "state": "MD"
+  },
+  {
+    "unitid": 198206,
+    "name": "Carteret Community College",
+    "city": "Morehead City",
+    "state": "NC"
+  },
+  {
+    "unitid": 430795,
+    "name": "Carver Career Center",
+    "city": "Charleston",
+    "state": "WV"
+  },
+  {
+    "unitid": 240505,
+    "name": "Casper College",
+    "city": "Casper",
+    "state": "WY"
+  },
+  {
+    "unitid": 198233,
+    "name": "Catawba Valley Community College",
+    "city": "Hickory",
+    "state": "NC"
+  },
+  {
+    "unitid": 189839,
+    "name": "Cayuga County Community College",
+    "city": "Auburn",
+    "state": "NY"
+  },
+  {
+    "unitid": 162104,
+    "name": "Cecil College",
+    "city": "North East",
+    "state": "MD"
+  },
+  {
+    "unitid": 100760,
+    "name": "Central Alabama Community College",
+    "city": "Alexander City",
+    "state": "AL"
+  },
+  {
+    "unitid": 104346,
+    "name": "Central Arizona College",
+    "city": "Coolidge",
+    "state": "AZ"
+  },
+  {
+    "unitid": 198251,
+    "name": "Central Carolina Community College",
+    "city": "Sanford",
+    "state": "NC"
+  },
+  {
+    "unitid": 218858,
+    "name": "Central Carolina Technical College",
+    "city": "Sumter",
+    "state": "SC"
+  },
+  {
+    "unitid": 180902,
+    "name": "Central Community College",
+    "city": "Grand Island",
+    "state": "NE"
+  },
+  {
+    "unitid": 483045,
+    "name": "Central Georgia Technical College",
+    "city": "Warner Robins",
+    "state": "GA"
+  },
+  {
+    "unitid": 173203,
+    "name": "Central Lakes College-Brainerd",
+    "city": "Brainerd",
+    "state": "MN"
+  },
+  {
+    "unitid": 158088,
+    "name": "Central Louisiana Technical Community College",
+    "city": "Alexandria",
+    "state": "LA"
+  },
+  {
+    "unitid": 161077,
+    "name": "Central Maine Community College",
+    "city": "Auburn",
+    "state": "ME"
+  },
+  {
+    "unitid": 187532,
+    "name": "Central New Mexico Community College",
+    "city": "Albuquerque",
+    "state": "NM"
+  },
+  {
+    "unitid": 208318,
+    "name": "Central Oregon Community College",
+    "city": "Bend",
+    "state": "OR"
+  },
+  {
+    "unitid": 369668,
+    "name": "Central Pennsylvania Institute of Science and Technology",
+    "city": "Pleasant Gap",
+    "state": "PA"
+  },
+  {
+    "unitid": 198260,
+    "name": "Central Piedmont Community College",
+    "city": "Charlotte",
+    "state": "NC"
+  },
+  {
+    "unitid": 223816,
+    "name": "Central Texas College",
+    "city": "Killeen",
+    "state": "TX"
+  },
+  {
+    "unitid": 231697,
+    "name": "Central Virginia Community College",
+    "city": "Lynchburg",
+    "state": "VA"
+  },
+  {
+    "unitid": 175315,
+    "name": "Century College",
+    "city": "White Bear Lake",
+    "state": "MN"
+  },
+  {
+    "unitid": 111887,
+    "name": "Cerritos College",
+    "city": "Norwalk",
+    "state": "CA"
+  },
+  {
+    "unitid": 111896,
+    "name": "Cerro Coso Community College",
+    "city": "Ridgecrest",
+    "state": "CA"
+  },
+  {
+    "unitid": 111920,
+    "name": "Chabot College",
+    "city": "Hayward",
+    "state": "CA"
+  },
+  {
+    "unitid": 111939,
+    "name": "Chaffey College",
+    "city": "Rancho Cucamonga",
+    "state": "CA"
+  },
+  {
+    "unitid": 364025,
+    "name": "Chandler-Gilbert Community College",
+    "city": "Chandler",
+    "state": "AZ"
+  },
+  {
+    "unitid": 140331,
+    "name": "Chattahoochee Technical College",
+    "city": "Marietta",
+    "state": "GA"
+  },
+  {
+    "unitid": 101028,
+    "name": "Chattahoochee Valley Community College",
+    "city": "Phenix City",
+    "state": "AL"
+  },
+  {
+    "unitid": 219824,
+    "name": "Chattanooga State Community College",
+    "city": "Chattanooga",
+    "state": "TN"
+  },
+  {
+    "unitid": 162168,
+    "name": "Chesapeake College",
+    "city": "Wye Mills",
+    "state": "MD"
+  },
+  {
+    "unitid": 180160,
+    "name": "Chief Dull Knife College",
+    "city": "Lame Deer",
+    "state": "MT"
+  },
+  {
+    "unitid": 240116,
+    "name": "Chippewa Valley Technical College",
+    "city": "Eau Claire",
+    "state": "WI"
+  },
+  {
+    "unitid": 223898,
+    "name": "Cisco College",
+    "city": "Cisco",
+    "state": "TX"
+  },
+  {
+    "unitid": 112172,
+    "name": "Citrus College",
+    "city": "Glendora",
+    "state": "CA"
+  },
+  {
+    "unitid": 112190,
+    "name": "City College of San Francisco",
+    "city": "San Francisco",
+    "state": "CA"
+  },
+  {
+    "unitid": 144209,
+    "name": "City Colleges of Chicago-Harold Washington College",
+    "city": "Chicago",
+    "state": "IL"
+  },
+  {
+    "unitid": 144184,
+    "name": "City Colleges of Chicago-Harry S Truman College",
+    "city": "Chicago",
+    "state": "IL"
+  },
+  {
+    "unitid": 144157,
+    "name": "City Colleges of Chicago-Kennedy-King College",
+    "city": "Chicago",
+    "state": "IL"
+  },
+  {
+    "unitid": 144166,
+    "name": "City Colleges of Chicago-Malcolm X College",
+    "city": "Chicago",
+    "state": "IL"
+  },
+  {
+    "unitid": 144175,
+    "name": "City Colleges of Chicago-Olive-Harvey College",
+    "city": "Chicago",
+    "state": "IL"
+  },
+  {
+    "unitid": 144193,
+    "name": "City Colleges of Chicago-Richard J Daley College",
+    "city": "Chicago",
+    "state": "IL"
+  },
+  {
+    "unitid": 144218,
+    "name": "City Colleges of Chicago-Wilbur Wright College",
+    "city": "Chicago",
+    "state": "IL"
+  },
+  {
+    "unitid": 208406,
+    "name": "Clackamas Community College",
+    "city": "Oregon City",
+    "state": "OR"
+  },
+  {
+    "unitid": 223922,
+    "name": "Clarendon College",
+    "city": "Clarendon",
+    "state": "TX"
+  },
+  {
+    "unitid": 208415,
+    "name": "Clatsop Community College",
+    "city": "Astoria",
+    "state": "OR"
+  },
+  {
+    "unitid": 198321,
+    "name": "Cleveland Community College",
+    "city": "Shelby",
+    "state": "NC"
+  },
+  {
+    "unitid": 219879,
+    "name": "Cleveland State Community College",
+    "city": "Cleveland",
+    "state": "TN"
+  },
+  {
+    "unitid": 190053,
+    "name": "Clinton Community College",
+    "city": "Plattsburgh",
+    "state": "NY"
+  },
+  {
+    "unitid": 154907,
+    "name": "Cloud County Community College",
+    "city": "Concordia",
+    "state": "KS"
+  },
+  {
+    "unitid": 187639,
+    "name": "Clovis Community College",
+    "city": "Clovis",
+    "state": "NM"
+  },
+  {
+    "unitid": 489201,
+    "name": "Clovis Community College",
+    "city": "Fresno",
+    "state": "CA"
+  },
+  {
+    "unitid": 175519,
+    "name": "Coahoma Community College",
+    "city": "Clarksdale",
+    "state": "MS"
+  },
+  {
+    "unitid": 125462,
+    "name": "Coalinga College",
+    "city": "Coalinga",
+    "state": "CA"
+  },
+  {
+    "unitid": 101161,
+    "name": "Coastal Alabama Community College",
+    "city": "Bay Minette",
+    "state": "AL"
+  },
+  {
+    "unitid": 223320,
+    "name": "Coastal Bend College",
+    "city": "Beeville",
+    "state": "TX"
+  },
+  {
+    "unitid": 198330,
+    "name": "Coastal Carolina Community College",
+    "city": "Jacksonville",
+    "state": "NC"
+  },
+  {
+    "unitid": 485458,
+    "name": "Coastal Pines Technical College",
+    "city": "Waycross",
+    "state": "GA"
+  },
+  {
+    "unitid": 112385,
+    "name": "Coastline Community College",
+    "city": "Fountain Valley",
+    "state": "CA"
+  },
+  {
+    "unitid": 104425,
+    "name": "Cochise County Community College District",
+    "city": "Sierra Vista",
+    "state": "AZ"
+  },
+  {
+    "unitid": 404426,
+    "name": "Coconino Community College",
+    "city": "Flagstaff",
+    "state": "AZ"
+  },
+  {
+    "unitid": 154925,
+    "name": "Coffeyville Community College",
+    "city": "Coffeyville",
+    "state": "KS"
+  },
+  {
+    "unitid": 154934,
+    "name": "Colby Community College",
+    "city": "Colby",
+    "state": "KS"
+  },
+  {
+    "unitid": 108667,
+    "name": "College of Alameda",
+    "city": "Alameda",
+    "state": "CA"
+  },
+  {
+    "unitid": 144865,
+    "name": "College of DuPage",
+    "city": "Glen Ellyn",
+    "state": "IL"
+  },
+  {
+    "unitid": 142179,
+    "name": "College of Eastern Idaho",
+    "city": "Idaho Falls",
+    "state": "ID"
+  },
+  {
+    "unitid": 146472,
+    "name": "College of Lake County",
+    "city": "Grayslake",
+    "state": "IL"
+  },
+  {
+    "unitid": 118347,
+    "name": "College of Marin",
+    "city": "Kentfield",
+    "state": "CA"
+  },
+  {
+    "unitid": 122791,
+    "name": "College of San Mateo",
+    "city": "San Mateo",
+    "state": "CA"
+  },
+  {
+    "unitid": 162122,
+    "name": "College of Southern Maryland",
+    "city": "La Plata",
+    "state": "MD"
+  },
+  {
+    "unitid": 197814,
+    "name": "College of the Albemarle",
+    "city": "Elizabeth City",
+    "state": "NC"
+  },
+  {
+    "unitid": 111461,
+    "name": "College of the Canyons",
+    "city": "Santa Clarita",
+    "state": "CA"
+  },
+  {
+    "unitid": 113573,
+    "name": "College of the Desert",
+    "city": "Palm Desert",
+    "state": "CA"
+  },
+  {
+    "unitid": 480967,
+    "name": "College of the Muscogee Nation",
+    "city": "Okmulgee",
+    "state": "OK"
+  },
+  {
+    "unitid": 121707,
+    "name": "College of the Redwoods",
+    "city": "Eureka",
+    "state": "CA"
+  },
+  {
+    "unitid": 123217,
+    "name": "College of the Sequoias",
+    "city": "Visalia",
+    "state": "CA"
+  },
+  {
+    "unitid": 123484,
+    "name": "College of the Siskiyous",
+    "city": "Weed",
+    "state": "CA"
+  },
+  {
+    "unitid": 455114,
+    "name": "College of Western Idaho",
+    "city": "Nampa",
+    "state": "ID"
+  },
+  {
+    "unitid": 203614,
+    "name": "Collins Career Technical Center",
+    "city": "Chesapeake",
+    "state": "OH"
+  },
+  {
+    "unitid": 126748,
+    "name": "Colorado Northwestern Community College",
+    "city": "Rangely",
+    "state": "CO"
+  },
+  {
+    "unitid": 112561,
+    "name": "Columbia College",
+    "city": "Sonora",
+    "state": "CA"
+  },
+  {
+    "unitid": 420556,
+    "name": "Columbia Gorge Community College",
+    "city": "The Dalles",
+    "state": "OR"
+  },
+  {
+    "unitid": 219888,
+    "name": "Columbia State Community College",
+    "city": "Columbia",
+    "state": "TN"
+  },
+  {
+    "unitid": 190169,
+    "name": "Columbia-Greene Community College",
+    "city": "Hudson",
+    "state": "NY"
+  },
+  {
+    "unitid": 202222,
+    "name": "Columbus State Community College",
+    "city": "Columbus",
+    "state": "OH"
+  },
+  {
+    "unitid": 139357,
+    "name": "Columbus Technical College",
+    "city": "Columbus",
+    "state": "GA"
+  },
+  {
+    "unitid": 498012,
+    "name": "Commonwealth of Puerto Rico Department of Education-PRAMI",
+    "city": "Fajardo",
+    "state": "PR"
+  },
+  {
+    "unitid": 210605,
+    "name": "Community College of Allegheny County",
+    "city": "Pittsburgh",
+    "state": "PA"
+  },
+  {
+    "unitid": 126863,
+    "name": "Community College of Aurora",
+    "city": "Aurora",
+    "state": "CO"
+  },
+  {
+    "unitid": 434672,
+    "name": "Community College of Baltimore County",
+    "city": "Baltimore",
+    "state": "MD"
+  },
+  {
+    "unitid": 211079,
+    "name": "Community College of Beaver County",
+    "city": "Monaca",
+    "state": "PA"
+  },
+  {
+    "unitid": 215239,
+    "name": "Community College of Philadelphia",
+    "city": "Philadelphia",
+    "state": "PA"
+  },
+  {
+    "unitid": 217475,
+    "name": "Community College of Rhode Island",
+    "city": "Warwick",
+    "state": "RI"
+  },
+  {
+    "unitid": 230861,
+    "name": "Community College of Vermont",
+    "city": "Montpelier",
+    "state": "VT"
+  },
+  {
+    "unitid": 112686,
+    "name": "Compton College",
+    "city": "Compton",
+    "state": "CA"
+  },
+  {
+    "unitid": 129367,
+    "name": "Connecticut State Community College",
+    "city": "Hartford",
+    "state": "CT"
+  },
+  {
+    "unitid": 130396,
+    "name": "Connecticut State Community College Gateway",
+    "city": "New Haven",
+    "state": "CT"
+  },
+  {
+    "unitid": 129543,
+    "name": "Connecticut State Community College Housatonic",
+    "city": "Bridgeport",
+    "state": "CT"
+  },
+  {
+    "unitid": 130004,
+    "name": "Connecticut State Community College Norwalk",
+    "city": "Norwalk",
+    "state": "CT"
+  },
+  {
+    "unitid": 130606,
+    "name": "Connecticut State Community College Tunxis",
+    "city": "Farmington",
+    "state": "CT"
+  },
+  {
+    "unitid": 206996,
+    "name": "Connors State College",
+    "city": "Warner",
+    "state": "OK"
+  },
+  {
+    "unitid": 112826,
+    "name": "Contra Costa College",
+    "city": "San Pablo",
+    "state": "CA"
+  },
+  {
+    "unitid": 175573,
+    "name": "Copiah-Lincoln Community College",
+    "city": "Wesson",
+    "state": "MS"
+  },
+  {
+    "unitid": 395362,
+    "name": "Copper Mountain Community College",
+    "city": "Joshua Tree",
+    "state": "CA"
+  },
+  {
+    "unitid": 106795,
+    "name": "Cossatot Community College of the University of Arkansas",
+    "city": "De Queen",
+    "state": "AR"
+  },
+  {
+    "unitid": 113096,
+    "name": "Cosumnes River College",
+    "city": "Sacramento",
+    "state": "CA"
+  },
+  {
+    "unitid": 184180,
+    "name": "County College of Morris",
+    "city": "Randolph",
+    "state": "NJ"
+  },
+  {
+    "unitid": 154952,
+    "name": "Cowley County Community College",
+    "city": "Arkansas City",
+    "state": "KS"
+  },
+  {
+    "unitid": 113111,
+    "name": "Crafton Hills College",
+    "city": "Yucaipa",
+    "state": "CA"
+  },
+  {
+    "unitid": 198367,
+    "name": "Craven Community College",
+    "city": "New Bern",
+    "state": "NC"
+  },
+  {
+    "unitid": 177135,
+    "name": "Crowder College",
+    "city": "Neosho",
+    "state": "MO"
+  },
+  {
+    "unitid": 417248,
+    "name": "CT Aerotech",
+    "city": "Hartford",
+    "state": "CT"
+  },
+  {
+    "unitid": 113193,
+    "name": "Cuesta College",
+    "city": "San Luis Obispo",
+    "state": "CA"
+  },
+  {
+    "unitid": 190521,
+    "name": "CUNY Borough of Manhattan Community College",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
+    "unitid": 190530,
+    "name": "CUNY Bronx Community College",
+    "city": "Bronx",
+    "state": "NY"
+  },
+  {
+    "unitid": 190585,
+    "name": "CUNY Hostos Community College",
+    "city": "Bronx",
+    "state": "NY"
+  },
+  {
+    "unitid": 190619,
+    "name": "CUNY Kingsborough Community College",
+    "city": "Brooklyn",
+    "state": "NY"
+  },
+  {
+    "unitid": 190628,
+    "name": "CUNY LaGuardia Community College",
+    "city": "Long Island City",
+    "state": "NY"
+  },
+  {
+    "unitid": 190673,
+    "name": "CUNY Queensborough Community College",
+    "city": "Bayside",
+    "state": "NY"
+  },
+  {
+    "unitid": 475565,
+    "name": "CUNY Stella and Charles Guttman Community College",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
+    "unitid": 202356,
+    "name": "Cuyahoga Community College District",
+    "city": "Cleveland",
+    "state": "OH"
+  },
+  {
+    "unitid": 113218,
+    "name": "Cuyamaca College",
+    "city": "El Cajon",
+    "state": "CA"
+  },
+  {
+    "unitid": 200314,
+    "name": "Dakota College at Bottineau",
+    "city": "Bottineau",
+    "state": "ND"
+  },
+  {
+    "unitid": 173416,
+    "name": "Dakota County Technical College",
+    "city": "Rosemount",
+    "state": "MN"
+  },
+  {
+    "unitid": 144564,
+    "name": "Danville Area Community College",
+    "city": "Danville",
+    "state": "IL"
+  },
+  {
+    "unitid": 231882,
+    "name": "Danville Community College",
+    "city": "Danville",
+    "state": "VA"
+  },
+  {
+    "unitid": 198376,
+    "name": "Davidson-Davie Community College",
+    "city": "Thomasville",
+    "state": "NC"
+  },
+  {
+    "unitid": 180151,
+    "name": "Dawson Community College",
+    "city": "Glendive",
+    "state": "MT"
+  },
+  {
+    "unitid": 113333,
+    "name": "De Anza College",
+    "city": "Cupertino",
+    "state": "CA"
+  },
+  {
+    "unitid": 211927,
+    "name": "Delaware County Community College",
+    "city": "Media",
+    "state": "PA"
+  },
+  {
+    "unitid": 158662,
+    "name": "Delgado Community College",
+    "city": "New Orleans",
+    "state": "LA"
+  },
+  {
+    "unitid": 169521,
+    "name": "Delta College",
+    "city": "University Center",
+    "state": "MI"
+  },
+  {
+    "unitid": 217989,
+    "name": "Denmark Technical College",
+    "city": "Denmark",
+    "state": "SC"
+  },
+  {
+    "unitid": 153214,
+    "name": "Des Moines Area Community College",
+    "city": "Ankeny",
+    "state": "IA"
+  },
+  {
+    "unitid": 113634,
+    "name": "Diablo Valley College",
+    "city": "Pleasant Hill",
+    "state": "CA"
+  },
+  {
+    "unitid": 154998,
+    "name": "Dodge City Community College",
+    "city": "Dodge City",
+    "state": "KS"
+  },
+  {
+    "unitid": 371690,
+    "name": "Downey Adult School",
+    "city": "Downey",
+    "state": "CA"
+  },
+  {
+    "unitid": 198455,
+    "name": "Durham Technical Community College",
+    "city": "Durham",
+    "state": "NC"
+  },
+  {
+    "unitid": 190840,
+    "name": "Dutchess Community College",
+    "city": "Poughkeepsie",
+    "state": "NY"
+  },
+  {
+    "unitid": 220057,
+    "name": "Dyersburg State Community College",
+    "city": "Dyersburg",
+    "state": "TN"
+  },
+  {
+    "unitid": 106883,
+    "name": "East Arkansas Community College",
+    "city": "Forrest City",
+    "state": "AR"
+  },
+  {
+    "unitid": 177250,
+    "name": "East Central College",
+    "city": "Union",
+    "state": "MO"
+  },
+  {
+    "unitid": 175643,
+    "name": "East Central Community College",
+    "city": "Decatur",
+    "state": "MS"
+  },
+  {
+    "unitid": 113856,
+    "name": "East Los Angeles College",
+    "city": "Monterey Park",
+    "state": "CA"
+  },
+  {
+    "unitid": 175652,
+    "name": "East Mississippi Community College",
+    "city": "Scooba",
+    "state": "MS"
+  },
+  {
+    "unitid": 104577,
+    "name": "Eastern Arizona College",
+    "city": "Thatcher",
+    "state": "AZ"
+  },
+  {
+    "unitid": 203331,
+    "name": "Eastern Gateway Community College",
+    "city": "Steubenville",
+    "state": "OH"
+  },
+  {
+    "unitid": 153311,
+    "name": "Eastern Iowa Community College District",
+    "city": "Davenport",
+    "state": "IA"
+  },
+  {
+    "unitid": 161138,
+    "name": "Eastern Maine Community College",
+    "city": "Bangor",
+    "state": "ME"
+  },
+  {
+    "unitid": 383996,
+    "name": "Eastern New Mexico University Ruidoso Branch Community College",
+    "city": "Ruidoso",
+    "state": "NM"
+  },
+  {
+    "unitid": 187666,
+    "name": "Eastern New Mexico University-Roswell Campus",
+    "city": "Roswell",
+    "state": "NM"
+  },
+  {
+    "unitid": 207050,
+    "name": "Eastern Oklahoma State College",
+    "city": "Wilburton",
+    "state": "OK"
+  },
+  {
+    "unitid": 232052,
+    "name": "Eastern Shore Community College",
+    "city": "Melfa",
+    "state": "VA"
+  },
+  {
+    "unitid": 438708,
+    "name": "Eastern West Virginia Community and Technical College",
+    "city": "Moorefield",
+    "state": "WV"
+  },
+  {
+    "unitid": 240596,
+    "name": "Eastern Wyoming College",
+    "city": "Torrington",
+    "state": "WY"
+  },
+  {
+    "unitid": 198491,
+    "name": "Edgecombe Community College",
+    "city": "Tarboro",
+    "state": "NC"
+  },
+  {
+    "unitid": 202648,
+    "name": "Edison State Community College",
+    "city": "Piqua",
+    "state": "OH"
+  },
+  {
+    "unitid": 113980,
+    "name": "El Camino Community College District",
+    "city": "Torrance",
+    "state": "CA"
+  },
+  {
+    "unitid": 224642,
+    "name": "El Paso Community College",
+    "city": "El Paso",
+    "state": "TX"
+  },
+  {
+    "unitid": 144944,
+    "name": "Elgin Community College",
+    "city": "Elgin",
+    "state": "IL"
+  },
+  {
+    "unitid": 156648,
+    "name": "Elizabethtown Community and Technical College",
+    "city": "Elizabethtown",
+    "state": "KY"
+  },
+  {
+    "unitid": 153296,
+    "name": "Ellsworth Community College",
+    "city": "Iowa Falls",
+    "state": "IA"
+  },
+  {
+    "unitid": 101143,
+    "name": "Enterprise State Community College",
+    "city": "Enterprise",
+    "state": "AL"
+  },
+  {
+    "unitid": 191083,
+    "name": "Erie Community College",
+    "city": "Buffalo",
+    "state": "NY"
+  },
+  {
+    "unitid": 369419,
+    "name": "Erwin Technical College",
+    "city": "Tampa",
+    "state": "FL"
+  },
+  {
+    "unitid": 452106,
+    "name": "Escuela De Troqueleria Y Herramentaje",
+    "city": "Bayamon",
+    "state": "PR"
+  },
+  {
+    "unitid": 184481,
+    "name": "Essex County College",
+    "city": "Newark",
+    "state": "NJ"
+  },
+  {
+    "unitid": 384333,
+    "name": "Estrella Mountain Community College",
+    "city": "Avondale",
+    "state": "AZ"
+  },
+  {
+    "unitid": 114266,
+    "name": "Evergreen Valley College",
+    "city": "San Jose",
+    "state": "CA"
+  },
+  {
+    "unitid": 198534,
+    "name": "Fayetteville Technical Community College",
+    "city": "Fayetteville",
+    "state": "NC"
+  },
+  {
+    "unitid": 191199,
+    "name": "Finger Lakes Community College",
+    "city": "Canandaigua",
+    "state": "NY"
+  },
+  {
+    "unitid": 461245,
+    "name": "Flagler Technical College",
+    "city": "Palm Coast",
+    "state": "FL"
+  },
+  {
+    "unitid": 180197,
+    "name": "Flathead Valley Community College",
+    "city": "Kalispell",
+    "state": "MT"
+  },
+  {
+    "unitid": 160481,
+    "name": "Fletcher Technical Community College",
+    "city": "Schriever",
+    "state": "LA"
+  },
+  {
+    "unitid": 155052,
+    "name": "Flint Hills Technical College",
+    "city": "Emporia",
+    "state": "KS"
+  },
+  {
+    "unitid": 218025,
+    "name": "Florence-Darlington Technical College",
+    "city": "Florence",
+    "state": "SC"
+  },
+  {
+    "unitid": 444219,
+    "name": "Folsom Lake College",
+    "city": "Folsom",
+    "state": "CA"
+  },
+  {
+    "unitid": 198552,
+    "name": "Forsyth Technical Community College",
+    "city": "Winston-Salem",
+    "state": "NC"
+  },
+  {
+    "unitid": 135267,
+    "name": "Fort Myers Technical College",
+    "city": "Fort Myers",
+    "state": "FL"
+  },
+  {
+    "unitid": 180212,
+    "name": "Fort Peck Community College",
+    "city": "Poplar",
+    "state": "MT"
+  },
+  {
+    "unitid": 155098,
+    "name": "Fort Scott Community College",
+    "city": "Fort Scott",
+    "state": "KS"
+  },
+  {
+    "unitid": 238722,
+    "name": "Fox Valley Technical College",
+    "city": "Appleton",
+    "state": "WI"
+  },
+  {
+    "unitid": 224891,
+    "name": "Frank Phillips College",
+    "city": "Borger",
+    "state": "TX"
+  },
+  {
+    "unitid": 459329,
+    "name": "Fred K Marchman Technical College",
+    "city": "New Port Richey",
+    "state": "FL"
+  },
+  {
+    "unitid": 237844,
+    "name": "Fred W Eberle Technical Center",
+    "city": "Buckhannon",
+    "state": "WV"
+  },
+  {
+    "unitid": 162557,
+    "name": "Frederick Community College",
+    "city": "Frederick",
+    "state": "MD"
+  },
+  {
+    "unitid": 114789,
+    "name": "Fresno City College",
+    "city": "Fresno",
+    "state": "CA"
+  },
+  {
+    "unitid": 403469,
+    "name": "Frontier Community College",
+    "city": "Fairfield",
+    "state": "IL"
+  },
+  {
+    "unitid": 114859,
+    "name": "Fullerton College",
+    "city": "Fullerton",
+    "state": "CA"
+  },
+  {
+    "unitid": 191302,
+    "name": "Fulton-Montgomery Community College",
+    "city": "Johnstown",
+    "state": "NY"
+  },
+  {
+    "unitid": 101240,
+    "name": "Gadsden State Community College",
+    "city": "Gadsden",
+    "state": "AL"
+  },
+  {
+    "unitid": 155104,
+    "name": "Garden City Community College",
+    "city": "Garden City",
+    "state": "KS"
+  },
+  {
+    "unitid": 162609,
+    "name": "Garrett College",
+    "city": "McHenry",
+    "state": "MD"
+  },
+  {
+    "unitid": 198570,
+    "name": "Gaston College",
+    "city": "Dallas",
+    "state": "NC"
+  },
+  {
+    "unitid": 157438,
+    "name": "Gateway Community and Technical College",
+    "city": "Florence",
+    "state": "KY"
+  },
+  {
+    "unitid": 238759,
+    "name": "Gateway Technical College",
+    "city": "Kenosha",
+    "state": "WI"
+  },
+  {
+    "unitid": 114938,
+    "name": "Gavilan College",
+    "city": "Gilroy",
+    "state": "CA"
+  },
+  {
+    "unitid": 191339,
+    "name": "Genesee Community College",
+    "city": "Batavia",
+    "state": "NY"
+  },
+  {
+    "unitid": 101286,
+    "name": "George C Wallace Community College-Dothan",
+    "city": "Dothan",
+    "state": "AL"
+  },
+  {
+    "unitid": 101295,
+    "name": "George C Wallace State Community College-Hanceville",
+    "city": "Hanceville",
+    "state": "AL"
+  },
+  {
+    "unitid": 101301,
+    "name": "George C Wallace State Community College-Selma",
+    "city": "Selma",
+    "state": "AL"
+  },
+  {
+    "unitid": 134291,
+    "name": "George Stone Technical College",
+    "city": "Pensacola",
+    "state": "FL"
+  },
+  {
+    "unitid": 139384,
+    "name": "Georgia Northwestern Technical College",
+    "city": "Rome",
+    "state": "GA"
+  },
+  {
+    "unitid": 244446,
+    "name": "Georgia Piedmont Technical College",
+    "city": "Clarkston",
+    "state": "GA"
+  },
+  {
+    "unitid": 244437,
+    "name": "Georgia State University-Perimeter College",
+    "city": "Atlanta",
+    "state": "GA"
+  },
+  {
+    "unitid": 232195,
+    "name": "Germanna Community College",
+    "city": "Locust Grove",
+    "state": "VA"
+  },
+  {
+    "unitid": 169974,
+    "name": "Glen Oaks Community College",
+    "city": "Centreville",
+    "state": "MI"
+  },
+  {
+    "unitid": 115001,
+    "name": "Glendale Community College",
+    "city": "Glendale",
+    "state": "CA"
+  },
+  {
+    "unitid": 169992,
+    "name": "Gogebic Community College",
+    "city": "Ironwood",
+    "state": "MI"
+  },
+  {
+    "unitid": 115126,
+    "name": "Golden West College",
+    "city": "Huntington Beach",
+    "state": "CA"
+  },
+  {
+    "unitid": 375683,
+    "name": "Gordon Cooper Technology Center",
+    "city": "Shawnee",
+    "state": "OK"
+  },
+  {
+    "unitid": 139746,
+    "name": "Grady Health System Professional Schools",
+    "city": "Atlanta",
+    "state": "GA"
+  },
+  {
+    "unitid": 170055,
+    "name": "Grand Rapids Community College",
+    "city": "Grand Rapids",
+    "state": "MI"
+  },
+  {
+    "unitid": 183150,
+    "name": "Great Bay Community College",
+    "city": "Portsmouth",
+    "state": "NH"
+  },
+  {
+    "unitid": 180249,
+    "name": "Great Falls College Montana State University",
+    "city": "Great Falls",
+    "state": "MT"
+  },
+  {
+    "unitid": 165981,
+    "name": "Greenfield Community College",
+    "city": "Greenfield",
+    "state": "MA"
+  },
+  {
+    "unitid": 115296,
+    "name": "Grossmont College",
+    "city": "El Cajon",
+    "state": "CA"
+  },
+  {
+    "unitid": 198622,
+    "name": "Guilford Technical Community College",
+    "city": "Jamestown",
+    "state": "NC"
+  },
+  {
+    "unitid": 140012,
+    "name": "Gwinnett Technical College",
+    "city": "Lawrenceville",
+    "state": "GA"
+  },
+  {
+    "unitid": 102313,
+    "name": "H Councill Trenholm State Community College",
+    "city": "Montgomery",
+    "state": "AL"
+  },
+  {
+    "unitid": 367875,
+    "name": "H W Brewster Technical College",
+    "city": "Tampa",
+    "state": "FL"
+  },
+  {
+    "unitid": 162690,
+    "name": "Hagerstown Community College",
+    "city": "Hagerstown",
+    "state": "MD"
+  },
+  {
+    "unitid": 198640,
+    "name": "Halifax Community College",
+    "city": "Weldon",
+    "state": "NC"
+  },
+  {
+    "unitid": 162706,
+    "name": "Harford Community College",
+    "city": "Bel Air",
+    "state": "MD"
+  },
+  {
+    "unitid": 212878,
+    "name": "Harrisburg Area Community College",
+    "city": "Harrisburg",
+    "state": "PA"
+  },
+  {
+    "unitid": 115393,
+    "name": "Hartnell College",
+    "city": "Salinas",
+    "state": "CA"
+  },
+  {
+    "unitid": 383190,
+    "name": "Hawaii Community College",
+    "city": "Hilo",
+    "state": "HI"
+  },
+  {
+    "unitid": 153445,
+    "name": "Hawkeye Community College",
+    "city": "Waterloo",
+    "state": "IA"
+  },
+  {
+    "unitid": 198668,
+    "name": "Haywood Community College",
+    "city": "Clyde",
+    "state": "NC"
+  },
+  {
+    "unitid": 156790,
+    "name": "Hazard Community and Technical College",
+    "city": "Hazard",
+    "state": "KY"
+  },
+  {
+    "unitid": 384342,
+    "name": "Heartland Community College",
+    "city": "Normal",
+    "state": "IL"
+  },
+  {
+    "unitid": 180276,
+    "name": "Helena College University of Montana",
+    "city": "Helena",
+    "state": "MT"
+  },
+  {
+    "unitid": 156851,
+    "name": "Henderson Community College",
+    "city": "Henderson",
+    "state": "KY"
+  },
+  {
+    "unitid": 173708,
+    "name": "Hennepin Technical College",
+    "city": "Brooklyn Park",
+    "state": "MN"
+  },
+  {
+    "unitid": 191612,
+    "name": "Herkimer County Community College",
+    "city": "Herkimer",
+    "state": "NY"
+  },
+  {
+    "unitid": 145521,
+    "name": "Highland Community College",
+    "city": "Freeport",
+    "state": "IL"
+  },
+  {
+    "unitid": 155186,
+    "name": "Highland Community College",
+    "city": "Highland",
+    "state": "KS"
+  },
+  {
+    "unitid": 180081,
+    "name": "Highlands College of Montana Tech",
+    "city": "Butte",
+    "state": "MT"
+  },
+  {
+    "unitid": 225371,
+    "name": "Hill College",
+    "city": "Hillsboro",
+    "state": "TX"
+  },
+  {
+    "unitid": 175786,
+    "name": "Hinds Community College",
+    "city": "Raymond",
+    "state": "MS"
+  },
+  {
+    "unitid": 203155,
+    "name": "Hocking College",
+    "city": "Nelsonville",
+    "state": "OH"
+  },
+  {
+    "unitid": 175810,
+    "name": "Holmes Community College",
+    "city": "Goodman",
+    "state": "MS"
+  },
+  {
+    "unitid": 166133,
+    "name": "Holyoke Community College",
+    "city": "Holyoke",
+    "state": "MA"
+  },
+  {
+    "unitid": 141680,
+    "name": "Honolulu Community College",
+    "city": "Honolulu",
+    "state": "HI"
+  },
+  {
+    "unitid": 156860,
+    "name": "Hopkinsville Community College",
+    "city": "Hopkinsville",
+    "state": "KY"
+  },
+  {
+    "unitid": 218140,
+    "name": "Horry-Georgetown Technical College",
+    "city": "Conway",
+    "state": "SC"
+  },
+  {
+    "unitid": 225520,
+    "name": "Howard College",
+    "city": "Big Spring",
+    "state": "TX"
+  },
+  {
+    "unitid": 162779,
+    "name": "Howard Community College",
+    "city": "Columbia",
+    "state": "MD"
+  },
+  {
+    "unitid": 184995,
+    "name": "Hudson County Community College",
+    "city": "Jersey City",
+    "state": "NJ"
+  },
+  {
+    "unitid": 191719,
+    "name": "Hudson Valley Community College",
+    "city": "Troy",
+    "state": "NY"
+  },
+  {
+    "unitid": 155195,
+    "name": "Hutchinson Community College",
+    "city": "Hutchinson",
+    "state": "KS"
+  },
+  {
+    "unitid": 145682,
+    "name": "Illinois Central College",
+    "city": "East Peoria",
+    "state": "IL"
+  },
+  {
+    "unitid": 145831,
+    "name": "Illinois Valley Community College",
+    "city": "Oglesby",
+    "state": "IL"
+  },
+  {
+    "unitid": 457387,
+    "name": "Immokalee Technical College",
+    "city": "Immokalee",
+    "state": "FL"
+  },
+  {
+    "unitid": 115861,
+    "name": "Imperial Valley College",
+    "city": "Imperial",
+    "state": "CA"
+  },
+  {
+    "unitid": 155201,
+    "name": "Independence Community College",
+    "city": "Independence",
+    "state": "KS"
+  },
+  {
+    "unitid": 418296,
+    "name": "Indian Capital Technology Center-Muskogee",
+    "city": "Muskogee",
+    "state": "OK"
+  },
+  {
+    "unitid": 153472,
+    "name": "Indian Hills Community College",
+    "city": "Ottumwa",
+    "state": "IA"
+  },
+  {
+    "unitid": 242556,
+    "name": "Instituto Tecnologico de Puerto Rico-Recinto de Guayama",
+    "city": "Guayama",
+    "state": "PR"
+  },
+  {
+    "unitid": 242042,
+    "name": "Instituto Tecnologico de Puerto Rico-Recinto de Manati",
+    "city": "Manati",
+    "state": "PR"
+  },
+  {
+    "unitid": 242583,
+    "name": "Instituto Tecnologico de Puerto Rico-Recinto de San Juan",
+    "city": "San Juan",
+    "state": "PR"
+  },
+  {
+    "unitid": 173799,
+    "name": "Inver Hills Community College",
+    "city": "Inver Grove Heights",
+    "state": "MN"
+  },
+  {
+    "unitid": 153524,
+    "name": "Iowa Central Community College",
+    "city": "Fort Dodge",
+    "state": "IA"
+  },
+  {
+    "unitid": 153533,
+    "name": "Iowa Lakes Community College",
+    "city": "Estherville",
+    "state": "IA"
+  },
+  {
+    "unitid": 153630,
+    "name": "Iowa Western Community College",
+    "city": "Council Bluffs",
+    "state": "IA"
+  },
+  {
+    "unitid": 116439,
+    "name": "Irvine Valley College",
+    "city": "Irvine",
+    "state": "CA"
+  },
+  {
+    "unitid": 198710,
+    "name": "Isothermal Community College",
+    "city": "Spindale",
+    "state": "NC"
+  },
+  {
+    "unitid": 175829,
+    "name": "Itawamba Community College",
+    "city": "Fulton",
+    "state": "MS"
+  },
+  {
+    "unitid": 150987,
+    "name": "Ivy Tech Community College",
+    "city": "Indianapolis",
+    "state": "IN"
+  },
+  {
+    "unitid": 232414,
+    "name": "J Sargeant Reynolds Community College",
+    "city": "Richmond",
+    "state": "VA"
+  },
+  {
+    "unitid": 101462,
+    "name": "J. F. Drake State Community and Technical College",
+    "city": "Huntsville",
+    "state": "AL"
+  },
+  {
+    "unitid": 220400,
+    "name": "Jackson State Community College",
+    "city": "Jackson",
+    "state": "TN"
+  },
+  {
+    "unitid": 198729,
+    "name": "James Sprunt Community College",
+    "city": "Kenansville",
+    "state": "NC"
+  },
+  {
+    "unitid": 191986,
+    "name": "Jamestown Community College",
+    "city": "Jamestown",
+    "state": "NY"
+  },
+  {
+    "unitid": 177676,
+    "name": "Jefferson College",
+    "city": "Hillsboro",
+    "state": "MO"
+  },
+  {
+    "unitid": 156921,
+    "name": "Jefferson Community and Technical College",
+    "city": "Louisville",
+    "state": "KY"
+  },
+  {
+    "unitid": 192022,
+    "name": "Jefferson Community College",
+    "city": "Watertown",
+    "state": "NY"
+  },
+  {
+    "unitid": 101505,
+    "name": "Jefferson State Community College",
+    "city": "Birmingham",
+    "state": "AL"
+  },
+  {
+    "unitid": 146205,
+    "name": "John A Logan College",
+    "city": "Carterville",
+    "state": "IL"
+  },
+  {
+    "unitid": 101514,
+    "name": "John C Calhoun State Community College",
+    "city": "Tanner",
+    "state": "AL"
+  },
+  {
+    "unitid": 146278,
+    "name": "John Wood Community College",
+    "city": "Quincy",
+    "state": "IL"
+  },
+  {
+    "unitid": 155210,
+    "name": "Johnson County Community College",
+    "city": "Overland Park",
+    "state": "KS"
+  },
+  {
+    "unitid": 198774,
+    "name": "Johnston Community College",
+    "city": "Smithfield",
+    "state": "NC"
+  },
+  {
+    "unitid": 146296,
+    "name": "Joliet Junior College",
+    "city": "Joliet",
+    "state": "IL"
+  },
+  {
+    "unitid": 175883,
+    "name": "Jones County Junior College",
+    "city": "Ellisville",
+    "state": "MS"
+  },
+  {
+    "unitid": 170541,
+    "name": "Kalamazoo Valley Community College",
+    "city": "Kalamazoo",
+    "state": "MI"
+  },
+  {
+    "unitid": 146348,
+    "name": "Kankakee Community College",
+    "city": "Kankakee",
+    "state": "IL"
+  },
+  {
+    "unitid": 155292,
+    "name": "Kansas City Kansas Community College",
+    "city": "Kansas City",
+    "state": "KS"
+  },
+  {
+    "unitid": 141796,
+    "name": "Kapiolani Community College",
+    "city": "Honolulu",
+    "state": "HI"
+  },
+  {
+    "unitid": 146366,
+    "name": "Kaskaskia College",
+    "city": "Centralia",
+    "state": "IL"
+  },
+  {
+    "unitid": 141802,
+    "name": "Kauai Community College",
+    "city": "Lihue",
+    "state": "HI"
+  },
+  {
+    "unitid": 170550,
+    "name": "Kellogg Community College",
+    "city": "Battle Creek",
+    "state": "MI"
+  },
+  {
+    "unitid": 161192,
+    "name": "Kennebec Valley Community College",
+    "city": "Fairfield",
+    "state": "ME"
+  },
+  {
+    "unitid": 461315,
+    "name": "Keweenaw Bay Ojibwa Community College",
+    "city": "Baraga",
+    "state": "MI"
+  },
+  {
+    "unitid": 226019,
+    "name": "Kilgore College",
+    "city": "Kilgore",
+    "state": "TX"
+  },
+  {
+    "unitid": 153737,
+    "name": "Kirkwood Community College",
+    "city": "Cedar Rapids",
+    "state": "IA"
+  },
+  {
+    "unitid": 170587,
+    "name": "Kirtland Community College",
+    "city": "Grayling",
+    "state": "MI"
+  },
+  {
+    "unitid": 146418,
+    "name": "Kishwaukee College",
+    "city": "Malta",
+    "state": "IL"
+  },
+  {
+    "unitid": 428392,
+    "name": "Klamath Community College",
+    "city": "Klamath Falls",
+    "state": "OR"
+  },
+  {
+    "unitid": 155450,
+    "name": "Labette Community College",
+    "city": "Parsons",
+    "state": "KS"
+  },
+  {
+    "unitid": 219143,
+    "name": "Lake Area Technical College",
+    "city": "Watertown",
+    "state": "SD"
+  },
+  {
+    "unitid": 146506,
+    "name": "Lake Land College",
+    "city": "Mattoon",
+    "state": "IL"
+  },
+  {
+    "unitid": 170620,
+    "name": "Lake Michigan College",
+    "city": "Benton Harbor",
+    "state": "MI"
+  },
+  {
+    "unitid": 200192,
+    "name": "Lake Region State College",
+    "city": "Devils Lake",
+    "state": "ND"
+  },
+  {
+    "unitid": 173461,
+    "name": "Lake Superior College",
+    "city": "Duluth",
+    "state": "MN"
+  },
+  {
+    "unitid": 117195,
+    "name": "Lake Tahoe Community College",
+    "city": "South Lake Tahoe",
+    "state": "CA"
+  },
+  {
+    "unitid": 203599,
+    "name": "Lakeland Community College",
+    "city": "Kirtland",
+    "state": "OH"
+  },
+  {
+    "unitid": 183123,
+    "name": "Lakes Region Community College",
+    "city": "Laconia",
+    "state": "NH"
+  },
+  {
+    "unitid": 239008,
+    "name": "Lakeshore Technical College",
+    "city": "Cleveland",
+    "state": "WI"
+  },
+  {
+    "unitid": 127389,
+    "name": "Lamar Community College",
+    "city": "Lamar",
+    "state": "CO"
+  },
+  {
+    "unitid": 441760,
+    "name": "Lamar Institute of Technology",
+    "city": "Beaumont",
+    "state": "TX"
+  },
+  {
+    "unitid": 226107,
+    "name": "Lamar State College-Orange",
+    "city": "Orange",
+    "state": "TX"
+  },
+  {
+    "unitid": 226116,
+    "name": "Lamar State College-Port Arthur",
+    "city": "Port Arthur",
+    "state": "TX"
+  },
+  {
+    "unitid": 418533,
+    "name": "Lancaster County Career and Technology Center",
+    "city": "Willow Street",
+    "state": "PA"
+  },
+  {
+    "unitid": 209038,
+    "name": "Lane Community College",
+    "city": "Eugene",
+    "state": "OR"
+  },
+  {
+    "unitid": 117247,
+    "name": "Laney College",
+    "city": "Oakland",
+    "state": "CA"
+  },
+  {
+    "unitid": 140243,
+    "name": "Lanier Technical College",
+    "city": "Gainesville",
+    "state": "GA"
+  },
+  {
+    "unitid": 170657,
+    "name": "Lansing Community College",
+    "city": "Lansing",
+    "state": "MI"
+  },
+  {
+    "unitid": 366401,
+    "name": "Las Positas College",
+    "city": "Livermore",
+    "state": "CA"
+  },
+  {
+    "unitid": 117274,
+    "name": "Lassen Community College",
+    "city": "Susanville",
+    "state": "CA"
+  },
+  {
+    "unitid": 232575,
+    "name": "Laurel Ridge Community College",
+    "city": "Middletown",
+    "state": "VA"
+  },
+  {
+    "unitid": 101569,
+    "name": "Lawson State Community College",
+    "city": "Birmingham",
+    "state": "AL"
+  },
+  {
+    "unitid": 226204,
+    "name": "Lee College",
+    "city": "Baytown",
+    "state": "TX"
+  },
+  {
+    "unitid": 413626,
+    "name": "Leech Lake Tribal College",
+    "city": "Cass Lake",
+    "state": "MN"
+  },
+  {
+    "unitid": 141811,
+    "name": "Leeward Community College",
+    "city": "Pearl City",
+    "state": "HI"
+  },
+  {
+    "unitid": 213525,
+    "name": "Lehigh Carbon Community College",
+    "city": "Schnecksville",
+    "state": "PA"
+  },
+  {
+    "unitid": 448594,
+    "name": "Lemoore College",
+    "city": "Lemoore",
+    "state": "CA"
+  },
+  {
+    "unitid": 198817,
+    "name": "Lenoir Community College",
+    "city": "Kinston",
+    "state": "NC"
+  },
+  {
+    "unitid": 146603,
+    "name": "Lewis and Clark Community College",
+    "city": "Godfrey",
+    "state": "IL"
+  },
+  {
+    "unitid": 146685,
+    "name": "Lincoln Land Community College",
+    "city": "Springfield",
+    "state": "IL"
+  },
+  {
+    "unitid": 403478,
+    "name": "Lincoln Trail College",
+    "city": "Robinson",
+    "state": "IL"
+  },
+  {
+    "unitid": 135294,
+    "name": "Lindsey Hopkins Technical College",
+    "city": "Miami",
+    "state": "FL"
+  },
+  {
+    "unitid": 209074,
+    "name": "Linn-Benton Community College",
+    "city": "Albany",
+    "state": "OR"
+  },
+  {
+    "unitid": 180328,
+    "name": "Little Big Horn College",
+    "city": "Crow Agency",
+    "state": "MT"
+  },
+  {
+    "unitid": 434016,
+    "name": "Little Priest Tribal College",
+    "city": "Winnebago",
+    "state": "NE"
+  },
+  {
+    "unitid": 117645,
+    "name": "Long Beach City College",
+    "city": "Long Beach",
+    "state": "CA"
+  },
+  {
+    "unitid": 117788,
+    "name": "Los Angeles City College",
+    "city": "Los Angeles",
+    "state": "CA"
+  },
+  {
+    "unitid": 117803,
+    "name": "Los Angeles County College of Nursing and Allied Health",
+    "city": "Los Angeles",
+    "state": "CA"
+  },
+  {
+    "unitid": 117690,
+    "name": "Los Angeles Harbor College",
+    "city": "Wilmington",
+    "state": "CA"
+  },
+  {
+    "unitid": 117867,
+    "name": "Los Angeles Mission College",
+    "city": "Sylmar",
+    "state": "CA"
+  },
+  {
+    "unitid": 117706,
+    "name": "Los Angeles Pierce College",
+    "city": "Woodland Hills",
+    "state": "CA"
+  },
+  {
+    "unitid": 117715,
+    "name": "Los Angeles Southwest College",
+    "city": "Los Angeles",
+    "state": "CA"
+  },
+  {
+    "unitid": 117724,
+    "name": "Los Angeles Trade Technical College",
+    "city": "Los Angeles",
+    "state": "CA"
+  },
+  {
+    "unitid": 117733,
+    "name": "Los Angeles Valley College",
+    "city": "Valley Glen",
+    "state": "CA"
+  },
+  {
+    "unitid": 117894,
+    "name": "Los Medanos College",
+    "city": "Pittsburg",
+    "state": "CA"
+  },
+  {
+    "unitid": 483212,
+    "name": "Louisiana Delta Community College",
+    "city": "Monroe",
+    "state": "LA"
+  },
+  {
+    "unitid": 159407,
+    "name": "Louisiana State University-Eunice",
+    "city": "Eunice",
+    "state": "LA"
+  },
+  {
+    "unitid": 363633,
+    "name": "Luna Community College",
+    "city": "Las Vegas",
+    "state": "NM"
+  },
+  {
+    "unitid": 101602,
+    "name": "Lurleen B Wallace Community College",
+    "city": "Andalusia",
+    "state": "AL"
+  },
+  {
+    "unitid": 213659,
+    "name": "Luzerne County Community College",
+    "city": "Nanticoke",
+    "state": "PA"
+  },
+  {
+    "unitid": 170790,
+    "name": "Macomb Community College",
+    "city": "Warren",
+    "state": "MI"
+  },
+  {
+    "unitid": 497046,
+    "name": "Madera Community College",
+    "city": "Madera",
+    "state": "CA"
+  },
+  {
+    "unitid": 375407,
+    "name": "Madison Adult Career Center",
+    "city": "Mansfield",
+    "state": "OH"
+  },
+  {
+    "unitid": 157304,
+    "name": "Madisonville Community College",
+    "city": "Madisonville",
+    "state": "KY"
+  },
+  {
+    "unitid": 135407,
+    "name": "Manatee Technical College",
+    "city": "Bradenton",
+    "state": "FL"
+  },
+  {
+    "unitid": 129695,
+    "name": "Manchester Community College",
+    "city": "Manchester",
+    "state": "CT"
+  },
+  {
+    "unitid": 183132,
+    "name": "Manchester Community College",
+    "city": "Manchester",
+    "state": "NH"
+  },
+  {
+    "unitid": 155487,
+    "name": "Manhattan Area Technical College",
+    "city": "Manhattan",
+    "state": "KS"
+  },
+  {
+    "unitid": 101648,
+    "name": "Marion Military Institute",
+    "city": "Marion",
+    "state": "AL"
+  },
+  {
+    "unitid": 419226,
+    "name": "Marion Technical College",
+    "city": "Ocala",
+    "state": "FL"
+  },
+  {
+    "unitid": 153922,
+    "name": "Marshalltown Community College",
+    "city": "Marshalltown",
+    "state": "IA"
+  },
+  {
+    "unitid": 198905,
+    "name": "Martin Community College",
+    "city": "Williamston",
+    "state": "NC"
+  },
+  {
+    "unitid": 166647,
+    "name": "Massachusetts Bay Community College",
+    "city": "Wellesley Hills",
+    "state": "MA"
+  },
+  {
+    "unitid": 166823,
+    "name": "Massasoit Community College",
+    "city": "Brockton",
+    "state": "MA"
+  },
+  {
+    "unitid": 198914,
+    "name": "Mayland Community College",
+    "city": "Spruce Pine",
+    "state": "NC"
+  },
+  {
+    "unitid": 157331,
+    "name": "Maysville Community and Technical College",
+    "city": "Maysville",
+    "state": "KY"
+  },
+  {
+    "unitid": 198923,
+    "name": "McDowell Technical Community College",
+    "city": "Marion",
+    "state": "NC"
+  },
+  {
+    "unitid": 147004,
+    "name": "McHenry County College",
+    "city": "Crystal Lake",
+    "state": "IL"
+  },
+  {
+    "unitid": 226578,
+    "name": "McLennan Community College",
+    "city": "Waco",
+    "state": "TX"
+  },
+  {
+    "unitid": 118684,
+    "name": "Mendocino College",
+    "city": "Ukiah",
+    "state": "CA"
+  },
+  {
+    "unitid": 118718,
+    "name": "Merced College",
+    "city": "Merced",
+    "state": "CA"
+  },
+  {
+    "unitid": 185509,
+    "name": "Mercer County Community College",
+    "city": "West Windsor",
+    "state": "NJ"
+  },
+  {
+    "unitid": 237543,
+    "name": "Mercer County Technical Education Center",
+    "city": "Princeton",
+    "state": "WV"
+  },
+  {
+    "unitid": 175935,
+    "name": "Meridian Community College",
+    "city": "Meridian",
+    "state": "MS"
+  },
+  {
+    "unitid": 365480,
+    "name": "Meridian Technology Center",
+    "city": "Stillwater",
+    "state": "OK"
+  },
+  {
+    "unitid": 118772,
+    "name": "Merritt College",
+    "city": "Oakland",
+    "state": "CA"
+  },
+  {
+    "unitid": 105154,
+    "name": "Mesa Community College",
+    "city": "Mesa",
+    "state": "AZ"
+  },
+  {
+    "unitid": 188261,
+    "name": "Mesalands Community College",
+    "city": "Tucumcari",
+    "state": "NM"
+  },
+  {
+    "unitid": 363165,
+    "name": "Metro Technology Centers",
+    "city": "Oklahoma City",
+    "state": "OK"
+  },
+  {
+    "unitid": 181303,
+    "name": "Metropolitan Community College Area",
+    "city": "Omaha",
+    "state": "NE"
+  },
+  {
+    "unitid": 177995,
+    "name": "Metropolitan Community College-Kansas City",
+    "city": "Kansas City",
+    "state": "MO"
+  },
+  {
+    "unitid": 135647,
+    "name": "Miami Lakes Educational Center and Technical College",
+    "city": "Miami Lakes",
+    "state": "FL"
+  },
+  {
+    "unitid": 171155,
+    "name": "Mid Michigan College",
+    "city": "Harrison",
+    "state": "MI"
+  },
+  {
+    "unitid": 181312,
+    "name": "Mid-Plains Community College",
+    "city": "North Platte",
+    "state": "NE"
+  },
+  {
+    "unitid": 239220,
+    "name": "Mid-State Technical College",
+    "city": "Wisconsin Rapids",
+    "state": "WI"
+  },
+  {
+    "unitid": 185536,
+    "name": "Middlesex College",
+    "city": "Edison",
+    "state": "NJ"
+  },
+  {
+    "unitid": 129756,
+    "name": "Middlesex Community College",
+    "city": "Middletown",
+    "state": "CT"
+  },
+  {
+    "unitid": 166887,
+    "name": "Middlesex Community College",
+    "city": "Bedford",
+    "state": "MA"
+  },
+  {
+    "unitid": 218353,
+    "name": "Midlands Technical College",
+    "city": "West Columbia",
+    "state": "SC"
+  },
+  {
+    "unitid": 180373,
+    "name": "Miles Community College",
+    "city": "Miles City",
+    "state": "MT"
+  },
+  {
+    "unitid": 239248,
+    "name": "Milwaukee Area Technical College",
+    "city": "Milwaukee",
+    "state": "WI"
+  },
+  {
+    "unitid": 178217,
+    "name": "Mineral Area College",
+    "city": "Park Hills",
+    "state": "MO"
+  },
+  {
+    "unitid": 174136,
+    "name": "Minneapolis Community and Technical College",
+    "city": "Minneapolis",
+    "state": "MN"
+  },
+  {
+    "unitid": 173735,
+    "name": "Minnesota North College",
+    "city": "Hibbing",
+    "state": "MN"
+  },
+  {
+    "unitid": 175263,
+    "name": "Minnesota State College Southeast",
+    "city": "Winona",
+    "state": "MN"
+  },
+  {
+    "unitid": 173559,
+    "name": "Minnesota State Community and Technical College",
+    "city": "Fergus Falls",
+    "state": "MN"
+  },
+  {
+    "unitid": 173638,
+    "name": "Minnesota West Community and Technical College",
+    "city": "Granite Falls",
+    "state": "MN"
+  },
+  {
+    "unitid": 118930,
+    "name": "Mission College",
+    "city": "Santa Clara",
+    "state": "CA"
+  },
+  {
+    "unitid": 176008,
+    "name": "Mississippi Delta Community College",
+    "city": "Moorhead",
+    "state": "MS"
+  },
+  {
+    "unitid": 176071,
+    "name": "Mississippi Gulf Coast Community College",
+    "city": "Perkinston",
+    "state": "MS"
+  },
+  {
+    "unitid": 179344,
+    "name": "Missouri State University-West Plains",
+    "city": "West Plains",
+    "state": "MO"
+  },
+  {
+    "unitid": 198987,
+    "name": "Mitchell Community College",
+    "city": "Statesville",
+    "state": "NC"
+  },
+  {
+    "unitid": 219189,
+    "name": "Mitchell Technical College",
+    "city": "Mitchell",
+    "state": "SD"
+  },
+  {
+    "unitid": 178448,
+    "name": "Moberly Area Community College",
+    "city": "Moberly",
+    "state": "MO"
+  },
+  {
+    "unitid": 105206,
+    "name": "Mohave Community College",
+    "city": "Kingman",
+    "state": "AZ"
+  },
+  {
+    "unitid": 193283,
+    "name": "Mohawk Valley Community College",
+    "city": "Utica",
+    "state": "NY"
+  },
+  {
+    "unitid": 193326,
+    "name": "Monroe Community College",
+    "city": "Rochester",
+    "state": "NY"
+  },
+  {
+    "unitid": 171225,
+    "name": "Monroe County Community College",
+    "city": "Monroe",
+    "state": "MI"
+  },
+  {
+    "unitid": 171234,
+    "name": "Montcalm Community College",
+    "city": "Sidney",
+    "state": "MI"
+  },
+  {
+    "unitid": 119067,
+    "name": "Monterey Peninsula College",
+    "city": "Monterey",
+    "state": "CA"
+  },
+  {
+    "unitid": 163426,
+    "name": "Montgomery College",
+    "city": "Rockville",
+    "state": "MD"
+  },
+  {
+    "unitid": 199023,
+    "name": "Montgomery Community College",
+    "city": "Troy",
+    "state": "NC"
+  },
+  {
+    "unitid": 214111,
+    "name": "Montgomery County Community College",
+    "city": "Blue Bell",
+    "state": "PA"
+  },
+  {
+    "unitid": 248606,
+    "name": "Moore Norman Technology Center",
+    "city": "Norman",
+    "state": "OK"
+  },
+  {
+    "unitid": 119137,
+    "name": "Moorpark College",
+    "city": "Moorpark",
+    "state": "CA"
+  },
+  {
+    "unitid": 239372,
+    "name": "Moraine Park Technical College",
+    "city": "Fond du Lac",
+    "state": "WI"
+  },
+  {
+    "unitid": 147378,
+    "name": "Moraine Valley Community College",
+    "city": "Palos Hills",
+    "state": "IL"
+  },
+  {
+    "unitid": 460394,
+    "name": "Moreno Valley College",
+    "city": "Moreno Valley",
+    "state": "CA"
+  },
+  {
+    "unitid": 147411,
+    "name": "Morton College",
+    "city": "Cicero",
+    "state": "IL"
+  },
+  {
+    "unitid": 221096,
+    "name": "Motlow State Community College",
+    "city": "Tullahoma",
+    "state": "TN"
+  },
+  {
+    "unitid": 169275,
+    "name": "Mott Community College",
+    "city": "Flint",
+    "state": "MI"
+  },
+  {
+    "unitid": 166957,
+    "name": "Mount Wachusett Community College",
+    "city": "Gardner",
+    "state": "MA"
+  },
+  {
+    "unitid": 232788,
+    "name": "Mountain Empire Community College",
+    "city": "Big Stone Gap",
+    "state": "VA"
+  },
+  {
+    "unitid": 231873,
+    "name": "Mountain Gateway Community College",
+    "city": "Clifton Forge",
+    "state": "VA"
+  },
+  {
+    "unitid": 444954,
+    "name": "Mountwest Community and Technical College",
+    "city": "Huntington",
+    "state": "WV"
+  },
+  {
+    "unitid": 119164,
+    "name": "Mt San Antonio College",
+    "city": "Walnut",
+    "state": "CA"
+  },
+  {
+    "unitid": 119216,
+    "name": "Mt San Jacinto Community College District",
+    "city": "San Jacinto",
+    "state": "CA"
+  },
+  {
+    "unitid": 207236,
+    "name": "Murray State College",
+    "city": "Tishomingo",
+    "state": "OK"
+  },
+  {
+    "unitid": 171304,
+    "name": "Muskegon Community College",
+    "city": "Muskegon",
+    "state": "MI"
+  },
+  {
+    "unitid": 119331,
+    "name": "Napa Valley College",
+    "city": "Napa",
+    "state": "CA"
+  },
+  {
+    "unitid": 199087,
+    "name": "Nash Community College",
+    "city": "Rocky Mount",
+    "state": "NC"
+  },
+  {
+    "unitid": 183141,
+    "name": "Nashua Community College",
+    "city": "Nashua",
+    "state": "NH"
+  },
+  {
+    "unitid": 221184,
+    "name": "Nashville State Community College",
+    "city": "Nashville",
+    "state": "TN"
+  },
+  {
+    "unitid": 193478,
+    "name": "Nassau Community College",
+    "city": "Garden City",
+    "state": "NY"
+  },
+  {
+    "unitid": 106980,
+    "name": "National Park College",
+    "city": "Hot Springs",
+    "state": "AR"
+  },
+  {
+    "unitid": 129729,
+    "name": "Naugatuck Valley Community College",
+    "city": "Waterbury",
+    "state": "CT"
+  },
+  {
+    "unitid": 181765,
+    "name": "Nebraska College of Technical Agriculture",
+    "city": "Curtis",
+    "state": "NE"
+  },
+  {
+    "unitid": 155566,
+    "name": "Neosho County Community College",
+    "city": "Chanute",
+    "state": "KS"
+  },
+  {
+    "unitid": 187903,
+    "name": "New Mexico Junior College",
+    "city": "Hobbs",
+    "state": "NM"
+  },
+  {
+    "unitid": 187912,
+    "name": "New Mexico Military Institute",
+    "city": "Roswell",
+    "state": "NM"
+  },
+  {
+    "unitid": 187994,
+    "name": "New Mexico State University-Alamogordo",
+    "city": "Alamogordo",
+    "state": "NM"
+  },
+  {
+    "unitid": 187620,
+    "name": "New Mexico State University-Dona Ana",
+    "city": "Las Cruces",
+    "state": "NM"
+  },
+  {
+    "unitid": 188021,
+    "name": "New Mexico State University-Grants",
+    "city": "Grants",
+    "state": "NM"
+  },
+  {
+    "unitid": 447582,
+    "name": "New River Community and Technical College",
+    "city": "Beaver",
+    "state": "WV"
+  },
+  {
+    "unitid": 232867,
+    "name": "New River Community College",
+    "city": "Dublin",
+    "state": "VA"
+  },
+  {
+    "unitid": 183099,
+    "name": "NHTI-Concord's Community College",
+    "city": "Concord",
+    "state": "NH"
+  },
+  {
+    "unitid": 193946,
+    "name": "Niagara County Community College",
+    "city": "Sanborn",
+    "state": "NY"
+  },
+  {
+    "unitid": 239442,
+    "name": "Nicolet Area Technical College",
+    "city": "Rhinelander",
+    "state": "WI"
+  },
+  {
+    "unitid": 460464,
+    "name": "Norco College",
+    "city": "Norco",
+    "state": "CA"
+  },
+  {
+    "unitid": 174428,
+    "name": "Normandale Community College",
+    "city": "Bloomington",
+    "state": "MN"
+  },
+  {
+    "unitid": 107460,
+    "name": "North Arkansas College",
+    "city": "Harrison",
+    "state": "AR"
+  },
+  {
+    "unitid": 155593,
+    "name": "North Central Kansas Technical College",
+    "city": "Beloit",
+    "state": "KS"
+  },
+  {
+    "unitid": 171395,
+    "name": "North Central Michigan College",
+    "city": "Petoskey",
+    "state": "MI"
+  },
+  {
+    "unitid": 179715,
+    "name": "North Central Missouri College",
+    "city": "Trenton",
+    "state": "MO"
+  },
+  {
+    "unitid": 224110,
+    "name": "North Central Texas College",
+    "city": "Gainesville",
+    "state": "TX"
+  },
+  {
+    "unitid": 194028,
+    "name": "North Country Community College",
+    "city": "Saranac Lake",
+    "state": "NY"
+  },
+  {
+    "unitid": 200305,
+    "name": "North Dakota State College of Science",
+    "city": "Wahpeton",
+    "state": "ND"
+  },
+  {
+    "unitid": 140678,
+    "name": "North Georgia Technical College",
+    "city": "Clarkesville",
+    "state": "GA"
+  },
+  {
+    "unitid": 174376,
+    "name": "North Hennepin Community College",
+    "city": "Brooklyn Park",
+    "state": "MN"
+  },
+  {
+    "unitid": 142443,
+    "name": "North Idaho College",
+    "city": "Coeur d'Alene",
+    "state": "ID"
+  },
+  {
+    "unitid": 154059,
+    "name": "North Iowa Area Community College",
+    "city": "Mason City",
+    "state": "IA"
+  },
+  {
+    "unitid": 167312,
+    "name": "North Shore Community College",
+    "city": "Danvers",
+    "state": "MA"
+  },
+  {
+    "unitid": 214379,
+    "name": "Northampton County Area Community College",
+    "city": "Bethlehem",
+    "state": "PA"
+  },
+  {
+    "unitid": 239460,
+    "name": "Northcentral Technical College",
+    "city": "Wausau",
+    "state": "WI"
+  },
+  {
+    "unitid": 101897,
+    "name": "Northeast Alabama Community College",
+    "city": "Rainsville",
+    "state": "AL"
+  },
+  {
+    "unitid": 181491,
+    "name": "Northeast Community College",
+    "city": "Norfolk",
+    "state": "NE"
+  },
+  {
+    "unitid": 154110,
+    "name": "Northeast Iowa Community College",
+    "city": "Calmar",
+    "state": "IA"
+  },
+  {
+    "unitid": 488730,
+    "name": "Northeast Lakeview College",
+    "city": "Universal City",
+    "state": "TX"
+  },
+  {
+    "unitid": 176169,
+    "name": "Northeast Mississippi Community College",
+    "city": "Booneville",
+    "state": "MS"
+  },
+  {
+    "unitid": 221908,
+    "name": "Northeast State Community College",
+    "city": "Blountville",
+    "state": "TN"
+  },
+  {
+    "unitid": 227225,
+    "name": "Northeast Texas Community College",
+    "city": "Mount Pleasant",
+    "state": "TX"
+  },
+  {
+    "unitid": 239488,
+    "name": "Northeast Wisconsin Technical College",
+    "city": "Green Bay",
+    "state": "WI"
+  },
+  {
+    "unitid": 127732,
+    "name": "Northeastern Junior College",
+    "city": "Sterling",
+    "state": "CO"
+  },
+  {
+    "unitid": 207290,
+    "name": "Northeastern Oklahoma A&M College",
+    "city": "Miami",
+    "state": "OK"
+  },
+  {
+    "unitid": 217837,
+    "name": "Northeastern Technical College",
+    "city": "Cheraw",
+    "state": "SC"
+  },
+  {
+    "unitid": 167376,
+    "name": "Northern Essex Community College",
+    "city": "Haverhill",
+    "state": "MA"
+  },
+  {
+    "unitid": 161484,
+    "name": "Northern Maine Community College",
+    "city": "Presque Isle",
+    "state": "ME"
+  },
+  {
+    "unitid": 207281,
+    "name": "Northern Oklahoma College",
+    "city": "Tonkawa",
+    "state": "OK"
+  },
+  {
+    "unitid": 494959,
+    "name": "Northern Pennsylvania Regional College",
+    "city": "Warren",
+    "state": "PA"
+  },
+  {
+    "unitid": 232946,
+    "name": "Northern Virginia Community College",
+    "city": "Annandale",
+    "state": "VA"
+  },
+  {
+    "unitid": 240666,
+    "name": "Northern Wyoming Community College District",
+    "city": "Sheridan",
+    "state": "WY"
+  },
+  {
+    "unitid": 174473,
+    "name": "Northland Community and Technical College",
+    "city": "Thief River Falls",
+    "state": "MN"
+  },
+  {
+    "unitid": 105349,
+    "name": "Northland Pioneer College",
+    "city": "Holbrook",
+    "state": "AZ"
+  },
+  {
+    "unitid": 160667,
+    "name": "Northshore Technical Community College",
+    "city": "Lacombe",
+    "state": "LA"
+  },
+  {
+    "unitid": 367459,
+    "name": "NorthWest Arkansas Community College",
+    "city": "Bentonville",
+    "state": "AR"
+  },
+  {
+    "unitid": 154129,
+    "name": "Northwest Iowa Community College",
+    "city": "Sheldon",
+    "state": "IA"
+  },
+  {
+    "unitid": 155618,
+    "name": "Northwest Kansas Technical College",
+    "city": "Goodland",
+    "state": "KS"
+  },
+  {
+    "unitid": 160010,
+    "name": "Northwest Louisiana Technical Community College",
+    "city": "Minden",
+    "state": "LA"
+  },
+  {
+    "unitid": 176178,
+    "name": "Northwest Mississippi Community College",
+    "city": "Senatobia",
+    "state": "MS"
+  },
+  {
+    "unitid": 101736,
+    "name": "Northwest Shoals Community College",
+    "city": "Muscle Shoals",
+    "state": "AL"
+  },
+  {
+    "unitid": 204440,
+    "name": "Northwest State Community College",
+    "city": "Archbold",
+    "state": "OH"
+  },
+  {
+    "unitid": 173115,
+    "name": "Northwest Technical College",
+    "city": "Bemidji",
+    "state": "MN"
+  },
+  {
+    "unitid": 420398,
+    "name": "Northwest Vista College",
+    "city": "San Antonio",
+    "state": "TX"
+  },
+  {
+    "unitid": 130040,
+    "name": "Northwestern Connecticut Community College",
+    "city": "Winsted",
+    "state": "CT"
+  },
+  {
+    "unitid": 240198,
+    "name": "Northwood Technical College",
+    "city": "Rice Lake",
+    "state": "WI"
+  },
+  {
+    "unitid": 158884,
+    "name": "Nunez Community College",
+    "city": "Chalmette",
+    "state": "LA"
+  },
+  {
+    "unitid": 171535,
+    "name": "Oakland Community College",
+    "city": "Auburn Hills",
+    "state": "MI"
+  },
+  {
+    "unitid": 147800,
+    "name": "Oakton College",
+    "city": "Des Plaines",
+    "state": "IL"
+  },
+  {
+    "unitid": 185873,
+    "name": "Ocean County College",
+    "city": "Toms River",
+    "state": "NJ"
+  },
+  {
+    "unitid": 420431,
+    "name": "Oconee Fall Line Technical College",
+    "city": "Sandersville",
+    "state": "GA"
+  },
+  {
+    "unitid": 366465,
+    "name": "Ogeechee Technical College",
+    "city": "Statesboro",
+    "state": "GA"
+  },
+  {
+    "unitid": 204662,
+    "name": "Ohio State University Agricultural Technical Institute",
+    "city": "Wooster",
+    "state": "OH"
+  },
+  {
+    "unitid": 120290,
+    "name": "Ohlone College",
+    "city": "Fremont",
+    "state": "CA"
+  },
+  {
+    "unitid": 207449,
+    "name": "Oklahoma City Community College",
+    "city": "Oklahoma City",
+    "state": "OK"
+  },
+  {
+    "unitid": 145707,
+    "name": "Olney Central College",
+    "city": "Olney",
+    "state": "IL"
+  },
+  {
+    "unitid": 194222,
+    "name": "Onondaga Community College",
+    "city": "Syracuse",
+    "state": "NY"
+  },
+  {
+    "unitid": 120342,
+    "name": "Orange Coast College",
+    "city": "Costa Mesa",
+    "state": "CA"
+  },
+  {
+    "unitid": 194240,
+    "name": "Orange County Community College",
+    "city": "Middletown",
+    "state": "NY"
+  },
+  {
+    "unitid": 138488,
+    "name": "Orange Technical College-East Campus",
+    "city": "Winter Park",
+    "state": "FL"
+  },
+  {
+    "unitid": 135735,
+    "name": "Orange Technical College-South Campus",
+    "city": "Orlando",
+    "state": "FL"
+  },
+  {
+    "unitid": 138372,
+    "name": "Orange Technical College-West Campus",
+    "city": "Winter Garden",
+    "state": "FL"
+  },
+  {
+    "unitid": 218487,
+    "name": "Orangeburg Calhoun Technical College",
+    "city": "Orangeburg",
+    "state": "SC"
+  },
+  {
+    "unitid": 423652,
+    "name": "Oregon Coast Community College",
+    "city": "Newport",
+    "state": "OR"
+  },
+  {
+    "unitid": 127778,
+    "name": "Otero College",
+    "city": "La Junta",
+    "state": "CO"
+  },
+  {
+    "unitid": 204945,
+    "name": "Owens Community College",
+    "city": "Perrysburg",
+    "state": "OH"
+  },
+  {
+    "unitid": 247940,
+    "name": "Owensboro Community and Technical College",
+    "city": "Owensboro",
+    "state": "KY"
+  },
+  {
+    "unitid": 120421,
+    "name": "Oxnard College",
+    "city": "Oxnard",
+    "state": "CA"
+  },
+  {
+    "unitid": 107549,
+    "name": "Ozarka College",
+    "city": "Melbourne",
+    "state": "AR"
+  },
+  {
+    "unitid": 243647,
+    "name": "Palau Community College",
+    "city": "Koror",
+    "state": "PW"
+  },
+  {
+    "unitid": 246354,
+    "name": "Palo Alto College",
+    "city": "San Antonio",
+    "state": "TX"
+  },
+  {
+    "unitid": 120953,
+    "name": "Palo Verde College",
+    "city": "Blythe",
+    "state": "CA"
+  },
+  {
+    "unitid": 120971,
+    "name": "Palomar College",
+    "city": "San Marcos",
+    "state": "CA"
+  },
+  {
+    "unitid": 199263,
+    "name": "Pamlico Community College",
+    "city": "Grantsboro",
+    "state": "NC"
+  },
+  {
+    "unitid": 227386,
+    "name": "Panola College",
+    "city": "Carthage",
+    "state": "TX"
+  },
+  {
+    "unitid": 227401,
+    "name": "Paris Junior College",
+    "city": "Paris",
+    "state": "TX"
+  },
+  {
+    "unitid": 147916,
+    "name": "Parkland College",
+    "city": "Champaign",
+    "state": "IL"
+  },
+  {
+    "unitid": 121044,
+    "name": "Pasadena City College",
+    "city": "Pasadena",
+    "state": "CA"
+  },
+  {
+    "unitid": 186034,
+    "name": "Passaic County Community College",
+    "city": "Paterson",
+    "state": "NJ"
+  },
+  {
+    "unitid": 233019,
+    "name": "Patrick & Henry Community College",
+    "city": "Martinsville",
+    "state": "VA"
+  },
+  {
+    "unitid": 233037,
+    "name": "Paul D Camp Community College",
+    "city": "Franklin",
+    "state": "VA"
+  },
+  {
+    "unitid": 176239,
+    "name": "Pearl River Community College",
+    "city": "Poplarville",
+    "state": "MS"
+  },
+  {
+    "unitid": 221643,
+    "name": "Pellissippi State Community College",
+    "city": "Knoxville",
+    "state": "TN"
+  },
+  {
+    "unitid": 414911,
+    "name": "Pennsylvania Highlands Community College",
+    "city": "Johnstown",
+    "state": "PA"
+  },
+  {
+    "unitid": 107619,
+    "name": "Phillips Community College of the University of Arkansas",
+    "city": "Helena",
+    "state": "AR"
+  },
+  {
+    "unitid": 105428,
+    "name": "Phoenix College",
+    "city": "Phoenix",
+    "state": "AZ"
+  },
+  {
+    "unitid": 128151,
+    "name": "Pickens Technical College",
+    "city": "Aurora",
+    "state": "CO"
+  },
+  {
+    "unitid": 199324,
+    "name": "Piedmont Community College",
+    "city": "Roxboro",
+    "state": "NC"
+  },
+  {
+    "unitid": 218520,
+    "name": "Piedmont Technical College",
+    "city": "Greenwood",
+    "state": "SC"
+  },
+  {
+    "unitid": 233116,
+    "name": "Piedmont Virginia Community College",
+    "city": "Charlottesville",
+    "state": "VA"
+  },
+  {
+    "unitid": 443492,
+    "name": "Pierpont Community and Technical College",
+    "city": "Fairmont",
+    "state": "WV"
+  },
+  {
+    "unitid": 105525,
+    "name": "Pima Community College",
+    "city": "Tucson",
+    "state": "AZ"
+  },
+  {
+    "unitid": 174570,
+    "name": "Pine Technical & Community College",
+    "city": "Pine City",
+    "state": "MN"
+  },
+  {
+    "unitid": 136491,
+    "name": "Pinellas Technical College-Clearwater",
+    "city": "Clearwater",
+    "state": "FL"
+  },
+  {
+    "unitid": 137087,
+    "name": "Pinellas Technical College-St. Petersburg",
+    "city": "Saint Petersburg",
+    "state": "FL"
+  },
+  {
+    "unitid": 199333,
+    "name": "Pitt Community College",
+    "city": "Winterville",
+    "state": "NC"
+  },
+  {
+    "unitid": 121363,
+    "name": "Porterville College",
+    "city": "Porterville",
+    "state": "CA"
+  },
+  {
+    "unitid": 209746,
+    "name": "Portland Community College",
+    "city": "Portland",
+    "state": "OR"
+  },
+  {
+    "unitid": 148007,
+    "name": "Prairie State College",
+    "city": "Chicago Heights",
+    "state": "IL"
+  },
+  {
+    "unitid": 155715,
+    "name": "Pratt Community College",
+    "city": "Pratt",
+    "state": "KS"
+  },
+  {
+    "unitid": 163657,
+    "name": "Prince George's Community College",
+    "city": "Largo",
+    "state": "MD"
+  },
+  {
+    "unitid": 130217,
+    "name": "Quinebaug Valley Community College",
+    "city": "Danielson",
+    "state": "CT"
+  },
+  {
+    "unitid": 167534,
+    "name": "Quinsigamond Community College",
+    "city": "Worcester",
+    "state": "MA"
+  },
+  {
+    "unitid": 136659,
+    "name": "Radford M Locklin Technical College",
+    "city": "Milton",
+    "state": "FL"
+  },
+  {
+    "unitid": 199421,
+    "name": "Randolph Community College",
+    "city": "Asheboro",
+    "state": "NC"
+  },
+  {
+    "unitid": 227687,
+    "name": "Ranger College",
+    "city": "Ranger",
+    "state": "TX"
+  },
+  {
+    "unitid": 233310,
+    "name": "Rappahannock Community College",
+    "city": "Glenns",
+    "state": "VA"
+  },
+  {
+    "unitid": 186645,
+    "name": "Raritan Valley Community College",
+    "city": "Branchburg",
+    "state": "NJ"
+  },
+  {
+    "unitid": 215585,
+    "name": "Reading Area Community College",
+    "city": "Reading",
+    "state": "PA"
+  },
+  {
+    "unitid": 491844,
+    "name": "Red Lake Nation College",
+    "city": "Red Lake",
+    "state": "MN"
+  },
+  {
+    "unitid": 207069,
+    "name": "Redlands Community College",
+    "city": "El Reno",
+    "state": "OK"
+  },
+  {
+    "unitid": 117052,
+    "name": "Reedley College",
+    "city": "Reedley",
+    "state": "CA"
+  },
+  {
+    "unitid": 101994,
+    "name": "Reid State Technical College",
+    "city": "Evergreen",
+    "state": "AL"
+  },
+  {
+    "unitid": 148256,
+    "name": "Rend Lake College",
+    "city": "Ina",
+    "state": "IL"
+  },
+  {
+    "unitid": 233338,
+    "name": "Richard Bland College",
+    "city": "South Prince George",
+    "state": "VA"
+  },
+  {
+    "unitid": 148292,
+    "name": "Richland Community College",
+    "city": "Decatur",
+    "state": "IL"
+  },
+  {
+    "unitid": 199449,
+    "name": "Richmond Community College",
+    "city": "Hamlet",
+    "state": "NC"
+  },
+  {
+    "unitid": 175236,
+    "name": "Ridgewater College",
+    "city": "Willmar",
+    "state": "MN"
+  },
+  {
+    "unitid": 436304,
+    "name": "River Parishes Community College",
+    "city": "Gonzales",
+    "state": "LA"
+  },
+  {
+    "unitid": 183114,
+    "name": "River Valley Community College",
+    "city": "Claremont",
+    "state": "NH"
+  },
+  {
+    "unitid": 173063,
+    "name": "Riverland Community College",
+    "city": "Austin",
+    "state": "MN"
+  },
+  {
+    "unitid": 137713,
+    "name": "Riveroak Technical College",
+    "city": "Live Oak",
+    "state": "FL"
+  },
+  {
+    "unitid": 121901,
+    "name": "Riverside City College",
+    "city": "Riverside",
+    "state": "CA"
+  },
+  {
+    "unitid": 221397,
+    "name": "Roane State Community College",
+    "city": "Harriman",
+    "state": "TN"
+  },
+  {
+    "unitid": 364575,
+    "name": "Roane-Jackson Technical Center",
+    "city": "Leroy",
+    "state": "WV"
+  },
+  {
+    "unitid": 199467,
+    "name": "Roanoke-Chowan Community College",
+    "city": "Ahoskie",
+    "state": "NC"
+  },
+  {
+    "unitid": 136826,
+    "name": "Robert Morgan Educational Center and Technical College",
+    "city": "Miami",
+    "state": "FL"
+  },
+  {
+    "unitid": 199476,
+    "name": "Robeson Community College",
+    "city": "Lumberton",
+    "state": "NC"
+  },
+  {
+    "unitid": 174738,
+    "name": "Rochester Community and Technical College",
+    "city": "Rochester",
+    "state": "MN"
+  },
+  {
+    "unitid": 148380,
+    "name": "Rock Valley College",
+    "city": "Rockford",
+    "state": "IL"
+  },
+  {
+    "unitid": 199485,
+    "name": "Rockingham Community College",
+    "city": "Wentworth",
+    "state": "NC"
+  },
+  {
+    "unitid": 195058,
+    "name": "Rockland Community College",
+    "city": "Suffern",
+    "state": "NY"
+  },
+  {
+    "unitid": 209940,
+    "name": "Rogue Community College",
+    "city": "Grants Pass",
+    "state": "OR"
+  },
+  {
+    "unitid": 207670,
+    "name": "Rose State College",
+    "city": "Midwest City",
+    "state": "OK"
+  },
+  {
+    "unitid": 183877,
+    "name": "Rowan College at Burlington County",
+    "city": "Mount Laurel",
+    "state": "NJ"
+  },
+  {
+    "unitid": 184205,
+    "name": "Rowan College of South Jersey-Cumberland Campus",
+    "city": "Vineland",
+    "state": "NJ"
+  },
+  {
+    "unitid": 184791,
+    "name": "Rowan College of South Jersey-Gloucester Campus",
+    "city": "Sewell",
+    "state": "NJ"
+  },
+  {
+    "unitid": 199494,
+    "name": "Rowan-Cabarrus Community College",
+    "city": "Salisbury",
+    "state": "NC"
+  },
+  {
+    "unitid": 167631,
+    "name": "Roxbury Community College",
+    "city": "Roxbury Crossing",
+    "state": "MA"
+  },
+  {
+    "unitid": 122180,
+    "name": "Sacramento City College",
+    "city": "Sacramento",
+    "state": "CA"
+  },
+  {
+    "unitid": 122205,
+    "name": "Saddleback College",
+    "city": "Mission Viejo",
+    "state": "CA"
+  },
+  {
+    "unitid": 441070,
+    "name": "Saginaw Chippewa Tribal College",
+    "city": "Mount Pleasant",
+    "state": "MI"
+  },
+  {
+    "unitid": 175041,
+    "name": "Saint Paul College",
+    "city": "Saint Paul",
+    "state": "MN"
+  },
+  {
+    "unitid": 186469,
+    "name": "Salem Community College",
+    "city": "Carneys Point",
+    "state": "NJ"
+  },
+  {
+    "unitid": 155830,
+    "name": "Salina Area Technical College",
+    "city": "Salina",
+    "state": "KS"
+  },
+  {
+    "unitid": 230746,
+    "name": "Salt Lake Community College",
+    "city": "Salt Lake City",
+    "state": "UT"
+  },
+  {
+    "unitid": 199625,
+    "name": "Sampson Community College",
+    "city": "Clinton",
+    "state": "NC"
+  },
+  {
+    "unitid": 123527,
+    "name": "San Bernardino Valley College",
+    "city": "San Bernardino",
+    "state": "CA"
+  },
+  {
+    "unitid": 122339,
+    "name": "San Diego City College",
+    "city": "San Diego",
+    "state": "CA"
+  },
+  {
+    "unitid": 122384,
+    "name": "San Diego Miramar College",
+    "city": "San Diego",
+    "state": "CA"
+  },
+  {
+    "unitid": 122658,
+    "name": "San Joaquin Delta College",
+    "city": "Stockton",
+    "state": "CA"
+  },
+  {
+    "unitid": 122746,
+    "name": "San Jose City College",
+    "city": "San Jose",
+    "state": "CA"
+  },
+  {
+    "unitid": 188100,
+    "name": "San Juan College",
+    "city": "Farmington",
+    "state": "NM"
+  },
+  {
+    "unitid": 199634,
+    "name": "Sandhills Community College",
+    "city": "Pinehurst",
+    "state": "NC"
+  },
+  {
+    "unitid": 122889,
+    "name": "Santa Barbara City College",
+    "city": "Santa Barbara",
+    "state": "CA"
+  },
+  {
+    "unitid": 188137,
+    "name": "Santa Fe Community College",
+    "city": "Santa Fe",
+    "state": "NM"
+  },
+  {
+    "unitid": 123013,
+    "name": "Santa Rosa Junior College",
+    "city": "Santa Rosa",
+    "state": "CA"
+  },
+  {
+    "unitid": 399212,
+    "name": "Santiago Canyon College",
+    "city": "Orange",
+    "state": "CA"
+  },
+  {
+    "unitid": 148672,
+    "name": "Sauk Valley Community College",
+    "city": "Dixon",
+    "state": "IL"
+  },
+  {
+    "unitid": 140942,
+    "name": "Savannah Technical College",
+    "city": "Savannah",
+    "state": "GA"
+  },
+  {
+    "unitid": 195322,
+    "name": "Schenectady County Community College",
+    "city": "Schenectady",
+    "state": "NY"
+  },
+  {
+    "unitid": 105747,
+    "name": "Scottsdale Community College",
+    "city": "Scottsdale",
+    "state": "AZ"
+  },
+  {
+    "unitid": 207740,
+    "name": "Seminole State College",
+    "city": "Seminole",
+    "state": "OK"
+  },
+  {
+    "unitid": 155858,
+    "name": "Seward County Community College",
+    "city": "Liberal",
+    "state": "KS"
+  },
+  {
+    "unitid": 148821,
+    "name": "Shawnee Community College",
+    "city": "Ullin",
+    "state": "IL"
+  },
+  {
+    "unitid": 102067,
+    "name": "Shelton State Community College",
+    "city": "Tuscaloosa",
+    "state": "AL"
+  },
+  {
+    "unitid": 137245,
+    "name": "Sheridan Technical College",
+    "city": "Hollywood",
+    "state": "FL"
+  },
+  {
+    "unitid": 236610,
+    "name": "Shoreline Community College",
+    "city": "Shoreline",
+    "state": "WA"
+  },
+  {
+    "unitid": 123341,
+    "name": "Sierra College",
+    "city": "Rocklin",
+    "state": "CA"
+  },
+  {
+    "unitid": 102076,
+    "name": "Snead State Community College",
+    "city": "Boaz",
+    "state": "AL"
+  },
+  {
+    "unitid": 157711,
+    "name": "Somerset Community College",
+    "city": "Somerset",
+    "state": "KY"
+  },
+  {
+    "unitid": 107974,
+    "name": "South Arkansas College",
+    "city": "El Dorado",
+    "state": "AR"
+  },
+  {
+    "unitid": 173911,
+    "name": "South Central College",
+    "city": "North Mankato",
+    "state": "MN"
+  },
+  {
+    "unitid": 141006,
+    "name": "South Georgia Technical College",
+    "city": "Americus",
+    "state": "GA"
+  },
+  {
+    "unitid": 434061,
+    "name": "South Louisiana Community College",
+    "city": "Lafayette",
+    "state": "LA"
+  },
+  {
+    "unitid": 105792,
+    "name": "South Mountain Community College",
+    "city": "Phoenix",
+    "state": "AZ"
+  },
+  {
+    "unitid": 197850,
+    "name": "South Piedmont Community College",
+    "city": "Polkton",
+    "state": "NC"
+  },
+  {
+    "unitid": 228158,
+    "name": "South Plains College",
+    "city": "Levelland",
+    "state": "TX"
+  },
+  {
+    "unitid": 236656,
+    "name": "South Puget Sound Community College",
+    "city": "Olympia",
+    "state": "WA"
+  },
+  {
+    "unitid": 149365,
+    "name": "South Suburban College",
+    "city": "South Holland",
+    "state": "IL"
+  },
+  {
+    "unitid": 156338,
+    "name": "Southcentral Kentucky Community and Technical College",
+    "city": "Bowling Green",
+    "state": "KY"
+  },
+  {
+    "unitid": 107637,
+    "name": "Southeast Arkansas College",
+    "city": "Pine Bluff",
+    "state": "AR"
+  },
+  {
+    "unitid": 181640,
+    "name": "Southeast Community College Area",
+    "city": "Lincoln",
+    "state": "NE"
+  },
+  {
+    "unitid": 157739,
+    "name": "Southeast Kentucky Community & Technical College",
+    "city": "Cumberland",
+    "state": "KY"
+  },
+  {
+    "unitid": 188003,
+    "name": "Southeast New Mexico College",
+    "city": "Carlsbad",
+    "state": "NM"
+  },
+  {
+    "unitid": 219426,
+    "name": "Southeast Technical College",
+    "city": "Sioux Falls",
+    "state": "SD"
+  },
+  {
+    "unitid": 154378,
+    "name": "Southeastern Community College",
+    "city": "West Burlington",
+    "state": "IA"
+  },
+  {
+    "unitid": 199722,
+    "name": "Southeastern Community College",
+    "city": "Whiteville",
+    "state": "NC"
+  },
+  {
+    "unitid": 148937,
+    "name": "Southeastern Illinois College",
+    "city": "Harrisburg",
+    "state": "IL"
+  },
+  {
+    "unitid": 368911,
+    "name": "Southeastern Technical College",
+    "city": "Vidalia",
+    "state": "GA"
+  },
+  {
+    "unitid": 107992,
+    "name": "Southern Arkansas University Tech",
+    "city": "Camden",
+    "state": "AR"
+  },
+  {
+    "unitid": 139986,
+    "name": "Southern Crescent Technical College",
+    "city": "Griffin",
+    "state": "GA"
+  },
+  {
+    "unitid": 161545,
+    "name": "Southern Maine Community College",
+    "city": "South Portland",
+    "state": "ME"
+  },
+  {
+    "unitid": 487162,
+    "name": "Southern Regional Technical College",
+    "city": "Thomasville",
+    "state": "GA"
+  },
+  {
+    "unitid": 205966,
+    "name": "Southern State Community College",
+    "city": "Hillsboro",
+    "state": "OH"
+  },
+  {
+    "unitid": 251260,
+    "name": "Southern Union State Community College",
+    "city": "Wadley",
+    "state": "AL"
+  },
+  {
+    "unitid": 160649,
+    "name": "Southern University at Shreveport",
+    "city": "Shreveport",
+    "state": "LA"
+  },
+  {
+    "unitid": 237817,
+    "name": "Southern West Virginia Community and Technical College",
+    "city": "Logan",
+    "state": "WV"
+  },
+  {
+    "unitid": 233639,
+    "name": "Southside Virginia Community College",
+    "city": "Alberta",
+    "state": "VA"
+  },
+  {
+    "unitid": 382911,
+    "name": "Southwest College for the Deaf",
+    "city": "Big Spring",
+    "state": "TX"
+  },
+  {
+    "unitid": 176354,
+    "name": "Southwest Mississippi Community College",
+    "city": "Summit",
+    "state": "MS"
+  },
+  {
+    "unitid": 221485,
+    "name": "Southwest Tennessee Community College",
+    "city": "Memphis",
+    "state": "TN"
+  },
+  {
+    "unitid": 228316,
+    "name": "Southwest Texas Junior College",
+    "city": "Uvalde",
+    "state": "TX"
+  },
+  {
+    "unitid": 233648,
+    "name": "Southwest Virginia Community College",
+    "city": "Cedar Bluff",
+    "state": "VA"
+  },
+  {
+    "unitid": 239910,
+    "name": "Southwest Wisconsin Technical College",
+    "city": "Fennimore",
+    "state": "WI"
+  },
+  {
+    "unitid": 123800,
+    "name": "Southwestern College",
+    "city": "Chula Vista",
+    "state": "CA"
+  },
+  {
+    "unitid": 154396,
+    "name": "Southwestern Community College",
+    "city": "Creston",
+    "state": "IA"
+  },
+  {
+    "unitid": 199731,
+    "name": "Southwestern Community College",
+    "city": "Sylva",
+    "state": "NC"
+  },
+  {
+    "unitid": 143215,
+    "name": "Southwestern Illinois College",
+    "city": "Belleville",
+    "state": "IL"
+  },
+  {
+    "unitid": 188216,
+    "name": "Southwestern Indian Polytechnic Institute",
+    "city": "Albuquerque",
+    "state": "NM"
+  },
+  {
+    "unitid": 172307,
+    "name": "Southwestern Michigan College",
+    "city": "Dowagiac",
+    "state": "MI"
+  },
+  {
+    "unitid": 210155,
+    "name": "Southwestern Oregon Community College",
+    "city": "Coos Bay",
+    "state": "OR"
+  },
+  {
+    "unitid": 160579,
+    "name": "SOWELA Technical Community College",
+    "city": "Lake Charles",
+    "state": "LA"
+  },
+  {
+    "unitid": 218830,
+    "name": "Spartanburg Community College",
+    "city": "Spartanburg",
+    "state": "SC"
+  },
+  {
+    "unitid": 148991,
+    "name": "Spoon River College",
+    "city": "Canton",
+    "state": "IL"
+  },
+  {
+    "unitid": 167905,
+    "name": "Springfield Technical Community College",
+    "city": "Springfield",
+    "state": "MA"
+  },
+  {
+    "unitid": 262031,
+    "name": "St Charles Community College",
+    "city": "Cottleville",
+    "state": "MO"
+  },
+  {
+    "unitid": 172291,
+    "name": "St Clair County Community College",
+    "city": "Port Huron",
+    "state": "MI"
+  },
+  {
+    "unitid": 174756,
+    "name": "St Cloud Technical and Community College",
+    "city": "Saint Cloud",
+    "state": "MN"
+  },
+  {
+    "unitid": 227854,
+    "name": "St Philip's College",
+    "city": "San Antonio",
+    "state": "TX"
+  },
+  {
+    "unitid": 199740,
+    "name": "Stanly Community College",
+    "city": "Albemarle",
+    "state": "NC"
+  },
+  {
+    "unitid": 205841,
+    "name": "Stark State College",
+    "city": "North Canton",
+    "state": "OH"
+  },
+  {
+    "unitid": 179539,
+    "name": "State Fair Community College",
+    "city": "Sedalia",
+    "state": "MO"
+  },
+  {
+    "unitid": 177977,
+    "name": "State Technical College of Missouri",
+    "city": "Linn",
+    "state": "MO"
+  },
+  {
+    "unitid": 417275,
+    "name": "Stratford School for Aviation Maintenance Technicians",
+    "city": "Stratford",
+    "state": "CT"
+  },
+  {
+    "unitid": 366395,
+    "name": "Suffolk County Community College",
+    "city": "Selden",
+    "state": "NY"
+  },
+  {
+    "unitid": 195988,
+    "name": "Sullivan County Community College",
+    "city": "Loch Sheldrake",
+    "state": "NY"
+  },
+  {
+    "unitid": 137120,
+    "name": "Suncoast Technical College",
+    "city": "Sarasota",
+    "state": "FL"
+  },
+  {
+    "unitid": 188438,
+    "name": "SUNY Adirondack",
+    "city": "Queensbury",
+    "state": "NY"
+  },
+  {
+    "unitid": 189547,
+    "name": "SUNY Broome Community College",
+    "city": "Binghamton",
+    "state": "NY"
+  },
+  {
+    "unitid": 190442,
+    "name": "SUNY Corning Community College",
+    "city": "Corning",
+    "state": "NY"
+  },
+  {
+    "unitid": 197294,
+    "name": "SUNY Westchester Community College",
+    "city": "Valhalla",
+    "state": "NY"
+  },
+  {
+    "unitid": 199768,
+    "name": "Surry Community College",
+    "city": "Dobson",
+    "state": "NC"
+  },
+  {
+    "unitid": 247603,
+    "name": "Sussex County Community College",
+    "city": "Newton",
+    "state": "NJ"
+  },
+  {
+    "unitid": 124113,
+    "name": "Taft College",
+    "city": "Taft",
+    "state": "CA"
+  },
+  {
+    "unitid": 228547,
+    "name": "Tarrant County College District",
+    "city": "Fort Worth",
+    "state": "TX"
+  },
+  {
+    "unitid": 217712,
+    "name": "Technical College of the Lowcountry",
+    "city": "Beaufort",
+    "state": "SC"
+  },
+  {
+    "unitid": 228608,
+    "name": "Temple College",
+    "city": "Temple",
+    "state": "TX"
+  },
+  {
+    "unitid": 248925,
+    "name": "Tennessee College of Applied Technology Nashville",
+    "city": "Nashville",
+    "state": "TN"
+  },
+  {
+    "unitid": 221236,
+    "name": "Tennessee College of Applied Technology Northwest",
+    "city": "Newbern",
+    "state": "TN"
+  },
+  {
+    "unitid": 219596,
+    "name": "Tennessee College of Applied Technology-Athens",
+    "city": "Athens",
+    "state": "TN"
+  },
+  {
+    "unitid": 219921,
+    "name": "Tennessee College of Applied Technology-Covington",
+    "city": "Covington",
+    "state": "TN"
+  },
+  {
+    "unitid": 221591,
+    "name": "Tennessee College of Applied Technology-Crossville",
+    "city": "Crossville",
+    "state": "TN"
+  },
+  {
+    "unitid": 221430,
+    "name": "Tennessee College of Applied Technology-Crump",
+    "city": "Crump",
+    "state": "TN"
+  },
+  {
+    "unitid": 219994,
+    "name": "Tennessee College of Applied Technology-Dickson",
+    "city": "Dickson",
+    "state": "TN"
+  },
+  {
+    "unitid": 220127,
+    "name": "Tennessee College of Applied Technology-Elizabethton",
+    "city": "Elizabethton",
+    "state": "TN"
+  },
+  {
+    "unitid": 220251,
+    "name": "Tennessee College of Applied Technology-Harriman",
+    "city": "Harriman",
+    "state": "TN"
+  },
+  {
+    "unitid": 220279,
+    "name": "Tennessee College of Applied Technology-Hartsville",
+    "city": "Hartsville",
+    "state": "TN"
+  },
+  {
+    "unitid": 221281,
+    "name": "Tennessee College of Applied Technology-Henry/Carroll",
+    "city": "Paris",
+    "state": "TN"
+  },
+  {
+    "unitid": 220321,
+    "name": "Tennessee College of Applied Technology-Hohenwald",
+    "city": "Hohenwald",
+    "state": "TN"
+  },
+  {
+    "unitid": 220394,
+    "name": "Tennessee College of Applied Technology-Jacksboro",
+    "city": "Jacksboro",
+    "state": "TN"
+  },
+  {
+    "unitid": 221616,
+    "name": "Tennessee College of Applied Technology-Jackson",
+    "city": "Jackson",
+    "state": "TN"
+  },
+  {
+    "unitid": 221625,
+    "name": "Tennessee College of Applied Technology-Knoxville",
+    "city": "Knoxville",
+    "state": "TN"
+  },
+  {
+    "unitid": 220640,
+    "name": "Tennessee College of Applied Technology-Livingston",
+    "city": "Livingston",
+    "state": "TN"
+  },
+  {
+    "unitid": 220756,
+    "name": "Tennessee College of Applied Technology-McKenzie",
+    "city": "McKenzie",
+    "state": "TN"
+  },
+  {
+    "unitid": 221607,
+    "name": "Tennessee College of Applied Technology-McMinnville",
+    "city": "McMinnville",
+    "state": "TN"
+  },
+  {
+    "unitid": 220853,
+    "name": "Tennessee College of Applied Technology-Memphis",
+    "city": "Memphis",
+    "state": "TN"
+  },
+  {
+    "unitid": 221050,
+    "name": "Tennessee College of Applied Technology-Morristown",
+    "city": "Morristown",
+    "state": "TN"
+  },
+  {
+    "unitid": 221102,
+    "name": "Tennessee College of Applied Technology-Murfreesboro",
+    "city": "Murfreesboro",
+    "state": "TN"
+  },
+  {
+    "unitid": 221582,
+    "name": "Tennessee College of Applied Technology-Oneida-Huntsville",
+    "city": "Huntsville",
+    "state": "TN"
+  },
+  {
+    "unitid": 221333,
+    "name": "Tennessee College of Applied Technology-Pulaski",
+    "city": "Pulaski",
+    "state": "TN"
+  },
+  {
+    "unitid": 221388,
+    "name": "Tennessee College of Applied Technology-Ripley",
+    "city": "Ripley",
+    "state": "TN"
+  },
+  {
+    "unitid": 221494,
+    "name": "Tennessee College of Applied Technology-Shelbyville",
+    "city": "Shelbyville",
+    "state": "TN"
+  },
+  {
+    "unitid": 206011,
+    "name": "Terra State Community College",
+    "city": "Fremont",
+    "state": "OH"
+  },
+  {
+    "unitid": 228699,
+    "name": "Texarkana College",
+    "city": "Texarkana",
+    "state": "TX"
+  },
+  {
+    "unitid": 227377,
+    "name": "Texas Southmost College",
+    "city": "Brownsville",
+    "state": "TX"
+  },
+  {
+    "unitid": 487320,
+    "name": "Texas State Technical College",
+    "city": "Waco",
+    "state": "TX"
+  },
+  {
+    "unitid": 216296,
+    "name": "Thaddeus Stevens College of Technology",
+    "city": "Lancaster",
+    "state": "PA"
+  },
+  {
+    "unitid": 179645,
+    "name": "Three Rivers College",
+    "city": "Poplar Bluff",
+    "state": "MO"
+  },
+  {
+    "unitid": 129808,
+    "name": "Three Rivers Community College",
+    "city": "Norwich",
+    "state": "CT"
+  },
+  {
+    "unitid": 233772,
+    "name": "Tidewater Community College",
+    "city": "Norfolk",
+    "state": "VA"
+  },
+  {
+    "unitid": 420723,
+    "name": "Tillamook Bay Community College",
+    "city": "Tillamook",
+    "state": "OR"
+  },
+  {
+    "unitid": 442781,
+    "name": "Tohono O'odham Community College",
+    "city": "Sells",
+    "state": "AZ"
+  },
+  {
+    "unitid": 204459,
+    "name": "Toledo Public Schools Adult and Continuing Education",
+    "city": "Toledo",
+    "state": "OH"
+  },
+  {
+    "unitid": 196565,
+    "name": "Tompkins Cortland Community College",
+    "city": "Dryden",
+    "state": "NY"
+  },
+  {
+    "unitid": 210234,
+    "name": "Treasure Valley Community College",
+    "city": "Ontario",
+    "state": "OR"
+  },
+  {
+    "unitid": 484233,
+    "name": "Tri-Community Adult Education",
+    "city": "Covina",
+    "state": "CA"
+  },
+  {
+    "unitid": 199795,
+    "name": "Tri-County Community College",
+    "city": "Murphy",
+    "state": "NC"
+  },
+  {
+    "unitid": 218885,
+    "name": "Tri-County Technical College",
+    "city": "Pendleton",
+    "state": "SC"
+  },
+  {
+    "unitid": 218894,
+    "name": "Trident Technical College",
+    "city": "Charleston",
+    "state": "SC"
+  },
+  {
+    "unitid": 149532,
+    "name": "Triton College",
+    "city": "River Grove",
+    "state": "IL"
+  },
+  {
+    "unitid": 207935,
+    "name": "Tulsa Community College",
+    "city": "Tulsa",
+    "state": "OK"
+  },
+  {
+    "unitid": 488934,
+    "name": "Tulsa Technology Center",
+    "city": "Tulsa",
+    "state": "OK"
+  },
+  {
+    "unitid": 187198,
+    "name": "UCNJ Union College of Union County, NJ",
+    "city": "Cranford",
+    "state": "NJ"
+  },
+  {
+    "unitid": 196699,
+    "name": "Ulster County Community College",
+    "city": "Stone Ridge",
+    "state": "NY"
+  },
+  {
+    "unitid": 210270,
+    "name": "Umpqua Community College",
+    "city": "Roseburg",
+    "state": "OR"
+  },
+  {
+    "unitid": 200846,
+    "name": "University of Akron Wayne College",
+    "city": "Orrville",
+    "state": "OH"
+  },
+  {
+    "unitid": 107743,
+    "name": "University of Arkansas Community College Rich Mountain",
+    "city": "Mena",
+    "state": "AR"
+  },
+  {
+    "unitid": 106999,
+    "name": "University of Arkansas Community College-Batesville",
+    "city": "Batesville",
+    "state": "AR"
+  },
+  {
+    "unitid": 107585,
+    "name": "University of Arkansas Community College-Morrilton",
+    "city": "Morrilton",
+    "state": "AR"
+  },
+  {
+    "unitid": 107725,
+    "name": "University of Arkansas Hope-Texarkana",
+    "city": "Hope",
+    "state": "AR"
+  },
+  {
+    "unitid": 107664,
+    "name": "University of Arkansas-Pulaski Technical College",
+    "city": "North Little Rock",
+    "state": "AR"
+  },
+  {
+    "unitid": 187958,
+    "name": "University of New Mexico-Gallup Campus",
+    "city": "Gallup",
+    "state": "NM"
+  },
+  {
+    "unitid": 187976,
+    "name": "University of New Mexico-Los Alamos Campus",
+    "city": "Los Alamos",
+    "state": "NM"
+  },
+  {
+    "unitid": 188225,
+    "name": "University of New Mexico-Taos Campus",
+    "city": "Ranchos de Taos",
+    "state": "NM"
+  },
+  {
+    "unitid": 188049,
+    "name": "University of New Mexico-Valencia County Campus",
+    "city": "Los Lunas",
+    "state": "NM"
+  },
+  {
+    "unitid": 215309,
+    "name": "University of Pittsburgh-Titusville",
+    "city": "Titusville",
+    "state": "PA"
+  },
+  {
+    "unitid": 218672,
+    "name": "University of South Carolina-Lancaster",
+    "city": "Lancaster",
+    "state": "SC"
+  },
+  {
+    "unitid": 218681,
+    "name": "University of South Carolina-Salkehatchie",
+    "city": "Allendale",
+    "state": "SC"
+  },
+  {
+    "unitid": 218690,
+    "name": "University of South Carolina-Sumter",
+    "city": "Sumter",
+    "state": "SC"
+  },
+  {
+    "unitid": 218706,
+    "name": "University of South Carolina-Union",
+    "city": "Union",
+    "state": "SC"
+  },
+  {
+    "unitid": 199838,
+    "name": "Vance-Granville Community College",
+    "city": "Henderson",
+    "state": "NC"
+  },
+  {
+    "unitid": 125028,
+    "name": "Ventura College",
+    "city": "Ventura",
+    "state": "CA"
+  },
+  {
+    "unitid": 229504,
+    "name": "Vernon College",
+    "city": "Vernon",
+    "state": "TX"
+  },
+  {
+    "unitid": 125091,
+    "name": "Victor Valley College",
+    "city": "Victorville",
+    "state": "CA"
+  },
+  {
+    "unitid": 229540,
+    "name": "Victoria College",
+    "city": "Victoria",
+    "state": "TX"
+  },
+  {
+    "unitid": 233903,
+    "name": "Virginia Highlands Community College",
+    "city": "Abingdon",
+    "state": "VA"
+  },
+  {
+    "unitid": 233754,
+    "name": "Virginia Peninsula Community College",
+    "city": "Hampton",
+    "state": "VA"
+  },
+  {
+    "unitid": 233949,
+    "name": "Virginia Western Community College",
+    "city": "Roanoke",
+    "state": "VA"
+  },
+  {
+    "unitid": 222053,
+    "name": "Volunteer State Community College",
+    "city": "Gallatin",
+    "state": "TN"
+  },
+  {
+    "unitid": 403487,
+    "name": "Wabash Valley College",
+    "city": "Mount Carmel",
+    "state": "IL"
+  },
+  {
+    "unitid": 199856,
+    "name": "Wake Technical Community College",
+    "city": "Raleigh",
+    "state": "NC"
+  },
+  {
+    "unitid": 222062,
+    "name": "Walters State Community College",
+    "city": "Morristown",
+    "state": "TN"
+  },
+  {
+    "unitid": 245625,
+    "name": "Warren County Community College",
+    "city": "Washington",
+    "state": "NJ"
+  },
+  {
+    "unitid": 161581,
+    "name": "Washington County Community College",
+    "city": "Calais",
+    "state": "ME"
+  },
+  {
+    "unitid": 172617,
+    "name": "Washtenaw Community College",
+    "city": "Ann Arbor",
+    "state": "MI"
+  },
+  {
+    "unitid": 149727,
+    "name": "Waubonsee Community College",
+    "city": "Sugar Grove",
+    "state": "IL"
+  },
+  {
+    "unitid": 240125,
+    "name": "Waukesha County Technical College",
+    "city": "Pewaukee",
+    "state": "WI"
+  },
+  {
+    "unitid": 199892,
+    "name": "Wayne Community College",
+    "city": "Goldsboro",
+    "state": "NC"
+  },
+  {
+    "unitid": 172635,
+    "name": "Wayne County Community College District",
+    "city": "Detroit",
+    "state": "MI"
+  },
+  {
+    "unitid": 139278,
+    "name": "West Georgia Technical College",
+    "city": "Waco",
+    "state": "GA"
+  },
+  {
+    "unitid": 157483,
+    "name": "West Kentucky Community and Technical College",
+    "city": "Paducah",
+    "state": "KY"
+  },
+  {
+    "unitid": 172671,
+    "name": "West Shore Community College",
+    "city": "Scottville",
+    "state": "MI"
+  },
+  {
+    "unitid": 125499,
+    "name": "West Valley College",
+    "city": "Saratoga",
+    "state": "CA"
+  },
+  {
+    "unitid": 238014,
+    "name": "West Virginia Northern Community College",
+    "city": "Wheeling",
+    "state": "WV"
+  },
+  {
+    "unitid": 219480,
+    "name": "Western Dakota Technical College",
+    "city": "Rapid City",
+    "state": "SD"
+  },
+  {
+    "unitid": 154572,
+    "name": "Western Iowa Tech Community College",
+    "city": "Sioux City",
+    "state": "IA"
+  },
+  {
+    "unitid": 495013,
+    "name": "Western Maricopa Education Center",
+    "city": "Glendale",
+    "state": "AZ"
+  },
+  {
+    "unitid": 181817,
+    "name": "Western Nebraska Community College",
+    "city": "Scottsbluff",
+    "state": "NE"
+  },
+  {
+    "unitid": 208035,
+    "name": "Western Oklahoma State College",
+    "city": "Altus",
+    "state": "OK"
+  },
+  {
+    "unitid": 199908,
+    "name": "Western Piedmont Community College",
+    "city": "Morganton",
+    "state": "NC"
+  },
+  {
+    "unitid": 420468,
+    "name": "Western Suffolk BOCES",
+    "city": "Northport",
+    "state": "NY"
+  },
+  {
+    "unitid": 240170,
+    "name": "Western Technical College",
+    "city": "La Crosse",
+    "state": "WI"
+  },
+  {
+    "unitid": 229832,
+    "name": "Western Texas College",
+    "city": "Snyder",
+    "state": "TX"
+  },
+  {
+    "unitid": 216825,
+    "name": "Westmoreland County Community College",
+    "city": "Youngwood",
+    "state": "PA"
+  },
+  {
+    "unitid": 229841,
+    "name": "Wharton County Junior College",
+    "city": "Wharton",
+    "state": "TX"
+  },
+  {
+    "unitid": 183105,
+    "name": "White Mountains Community College",
+    "city": "Berlin",
+    "state": "NH"
+  },
+  {
+    "unitid": 156107,
+    "name": "Wichita State University-Campus of Applied Sciences and Technology",
+    "city": "Wichita",
+    "state": "KS"
+  },
+  {
+    "unitid": 199926,
+    "name": "Wilkes Community College",
+    "city": "Wilkesboro",
+    "state": "NC"
+  },
+  {
+    "unitid": 149842,
+    "name": "William Rainey Harper College",
+    "city": "Palatine",
+    "state": "IL"
+  },
+  {
+    "unitid": 138479,
+    "name": "William T McFatter Technical College",
+    "city": "Davie",
+    "state": "FL"
+  },
+  {
+    "unitid": 218955,
+    "name": "Williamsburg Technical College",
+    "city": "Kingstree",
+    "state": "SC"
+  },
+  {
+    "unitid": 200341,
+    "name": "Williston State College",
+    "city": "Williston",
+    "state": "ND"
+  },
+  {
+    "unitid": 199953,
+    "name": "Wilson Community College",
+    "city": "Wilson",
+    "state": "NC"
+  },
+  {
+    "unitid": 141990,
+    "name": "Windward Community College",
+    "city": "Kaneohe",
+    "state": "HI"
+  },
+  {
+    "unitid": 141255,
+    "name": "Wiregrass Georgia Technical College",
+    "city": "Valdosta",
+    "state": "GA"
+  },
+  {
+    "unitid": 138497,
+    "name": "Withlacoochee Technical College",
+    "city": "Inverness",
+    "state": "FL"
+  },
+  {
+    "unitid": 455512,
+    "name": "Woodland Community College",
+    "city": "Woodland",
+    "state": "CA"
+  },
+  {
+    "unitid": 164313,
+    "name": "Wor-Wic Community College",
+    "city": "Salisbury",
+    "state": "MD"
+  },
+  {
+    "unitid": 234377,
+    "name": "Wytheville Community College",
+    "city": "Wytheville",
+    "state": "VA"
+  },
+  {
+    "unitid": 420440,
+    "name": "York County Community College",
+    "city": "Wells",
+    "state": "ME"
+  },
+  {
+    "unitid": 218991,
+    "name": "York Technical College",
+    "city": "Rock Hill",
+    "state": "SC"
+  },
+  {
+    "unitid": 126119,
+    "name": "Yuba College",
+    "city": "Marysville",
+    "state": "CA"
+  }
+]
