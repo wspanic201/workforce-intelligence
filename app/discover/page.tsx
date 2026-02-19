@@ -49,6 +49,17 @@ export default function DiscoverPage() {
             <span className="overline">Market Intelligence</span>
           </AnimateOnScroll>
 
+          <AnimateOnScroll variant="fade-up" delay={50} duration={800}>
+            <div className="flex items-center justify-center gap-3 mb-4 mt-4">
+              <Link
+                href="/market-research"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-300 text-xs font-semibold uppercase tracking-wider hover:bg-violet-500/20 transition-colors"
+              >
+                ← Market Research
+              </Link>
+            </div>
+          </AnimateOnScroll>
+
           <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
             <h1
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl mt-4"

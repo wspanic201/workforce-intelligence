@@ -244,6 +244,17 @@ export default function PellPage() {
             </div>
           </AnimateOnScroll>
 
+          <AnimateOnScroll variant="fade-up" delay={50} duration={800}>
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Link
+                href="/program-analysis"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-semibold uppercase tracking-wider hover:bg-blue-500/20 transition-colors"
+              >
+                ← Program Analysis
+              </Link>
+            </div>
+          </AnimateOnScroll>
+
           <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
             <h1
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"

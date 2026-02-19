@@ -204,6 +204,14 @@ export default function ComplianceGapPage() {
             <p className="overline mb-4 tracking-widest">
               WAVELENGTH COMPLIANCE INTELLIGENCE
             </p>
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Link
+                href="/program-analysis"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-semibold uppercase tracking-wider hover:bg-blue-500/20 transition-colors"
+              >
+                ← Program Analysis
+              </Link>
+            </div>
             <h1
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"
               style={{ fontSize: 'clamp(2.5rem, 5.5vw + 0.5rem, 4.5rem)' }}

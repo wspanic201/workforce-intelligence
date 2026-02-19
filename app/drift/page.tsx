@@ -122,6 +122,17 @@ export default function DriftPage() {
             </div>
           </AnimateOnScroll>
 
+          <AnimateOnScroll variant="fade-up" delay={50} duration={800}>
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Link
+                href="/program-health"
+                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-300 text-xs font-semibold uppercase tracking-wider hover:bg-orange-500/20 transition-colors"
+              >
+                ← Program Health
+              </Link>
+            </div>
+          </AnimateOnScroll>
+
           <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
             <h1
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"
