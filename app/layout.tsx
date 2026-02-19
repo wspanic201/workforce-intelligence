@@ -27,14 +27,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
   },
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "32x32", type: "image/x-icon" },
-      { url: "/icon.svg", type: "image/svg+xml" },
-    ],
-    apple: "/apple-icon.svg",
-    shortcut: "/favicon.ico",
-  },
   openGraph: {
     title: "Wavelength — Workforce Program Intelligence",
     description:
