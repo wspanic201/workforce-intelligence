@@ -1,11 +1,33 @@
+/**
+ * Financial Viability Agent — Wavelength Program Validator
+ *
+ * Architecture:
+ *  1. buildFinancialModelWithBLS()  — fetches real BLS data, runs deterministic P&L model
+ *  2. callClaude()                  — interprets the model numbers (does NOT invent them)
+ *
+ * Score comes from the model. Claude writes narrative. No more hallucinated financials.
+ */
+
 import { loadPersona } from '@/lib/confluence-labs/loader';
 import { callClaude, extractJSON } from '@/lib/ai/anthropic';
 import { ValidationProject } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
+import {
+  buildFinancialModelWithBLS,
+  mapProgramToInstructorSoc,
+  FinancialModelOutput,
+} from '@/lib/stages/validation/financial-model';
+
+// ─── Output Types ─────────────────────────────────────────────────────────────
 
 export interface FinancialProjectionsData {
   score: number;
   scoreRationale: string;
+  financialModel: FinancialModelOutput;
+  keyRisks: string[];
+  mitigations: string[];
+  assumptions: Array<{ item: string; value: string; source: string }>;
+  // Legacy fields preserved for backward compatibility with report renderer
   startup_costs: {
     curriculum_development: number;
     equipment_labs: number;
@@ -43,392 +65,259 @@ export interface FinancialProjectionsData {
   recommendations: string[];
 }
 
+// ─── Claude Interpretation Prompt ────────────────────────────────────────────
+
+function buildInterpretationPrompt(
+  model: FinancialModelOutput,
+  project: ValidationProject,
+  persona: { fullContext: string }
+): string {
+  const fmt = (n: number) => `$${Math.round(n).toLocaleString()}`;
+  const pct = (n: number) => `${(n * 100).toFixed(1)}%`;
+
+  const b = model.scenarios.base;
+  const p = model.scenarios.pessimistic;
+  const o = model.scenarios.optimistic;
+
+  return `${persona.fullContext}
+
+You are a CFO consultant interpreting a completed financial model. The numbers are already calculated — your job is to explain them, identify risks, and suggest mitigations. Do NOT invent new numbers.
+
+═══════════════════════════════════════════════════════════
+FINANCIAL MODEL OUTPUT — ${project.program_name}
+Client: ${project.client_name}
+═══════════════════════════════════════════════════════════
+
+VIABILITY SCORE (from model): ${model.viabilityScore}/10
+Score logic: ${model.viabilityRationale}
+
+YEAR 1 P&L:
+  Pessimistic (${p.enrollment} students): Revenue ${fmt(p.revenue.total)} | Expenses ${fmt(p.expenses.total)} | Net ${fmt(p.netPosition)} | Margin ${pct(p.margin)}
+  Base (${b.enrollment} students): Revenue ${fmt(b.revenue.total)} | Expenses ${fmt(b.expenses.total)} | Net ${fmt(b.netPosition)} | Margin ${pct(b.margin)}
+  Optimistic (${o.enrollment} students): Revenue ${fmt(o.revenue.total)} | Expenses ${fmt(o.expenses.total)} | Net ${fmt(o.netPosition)} | Margin ${pct(o.margin)}
+
+YEAR 2 P&L (base: ${model.year2Base.enrollment} students, no lab setup):
+  Net: ${fmt(model.year2Base.netPosition)} | Margin: ${pct(model.year2Base.margin)}
+
+YEAR 3 P&L (base: ${model.year3Base.enrollment} students):
+  Net: ${fmt(model.year3Base.netPosition)} | Margin: ${pct(model.year3Base.margin)}
+
+BREAK-EVEN: ${model.breakEvenEnrollment} students (${((model.breakEvenEnrollment / b.enrollment) * 100).toFixed(0)}% of base enrollment)
+PERKINS V IMPACT: ${model.perkinsImpact}
+
+KEY COST DRIVERS:
+  - Instructor cost (Year 1): ${fmt(b.expenses.instructorCost)} (BLS-sourced adjunct rate)
+  - Lab setup (Year 1, one-time): ${fmt(b.expenses.labSetup)}
+  - Admin overhead (15% of direct): ${fmt(b.expenses.adminOverhead)}
+  - Coordinator (0.25 FTE): ${fmt(b.expenses.coordinatorCost)}
+
+ASSUMPTIONS USED:
+${model.assumptions.map(a => `  - ${a.item}: ${a.value} [${a.source}]`).join('\n')}
+
+═══════════════════════════════════════════════════════════
+YOUR TASK:
+Write a brief narrative interpretation of these model results. Then identify 3-5 key financial risks with mitigations, and 3-5 strategic recommendations.
+
+You MUST return ONLY the following JSON — no preamble, no questions:
+
+{
+  "scoreRationale": "2-3 sentence interpretation of why this score makes sense given the model results",
+  "keyRisks": [
+    "Risk 1 — specific, grounded in the model numbers",
+    "Risk 2",
+    "Risk 3"
+  ],
+  "mitigations": [
+    "Mitigation 1 — actionable and specific",
+    "Mitigation 2",
+    "Mitigation 3"
+  ],
+  "recommendations": [
+    "Recommendation 1",
+    "Recommendation 2",
+    "Recommendation 3"
+  ],
+  "funding_sources": [
+    "Perkins V — $8,000–$28,000/yr (eligible based on CIP code)",
+    "WIOA ETPL — per-student funding for eligible participants",
+    "Employer tuition reimbursement"
+  ]
+}
+
+CRITICAL: Return ONLY the JSON. No preamble.`;
+}
+
+// ─── Agent Runner ─────────────────────────────────────────────────────────────
+
 export async function runFinancialAnalysis(
   projectId: string,
-  project: ValidationProject
+  project: ValidationProject & {
+    geographic_area?: string;
+    delivery_format?: string;
+    estimated_tuition?: string;
+    has_existing_lab_space?: boolean;
+    target_cohort_size?: number;
+    program_credit_hours?: number;
+    funding_sources?: string[];
+  }
 ): Promise<{ data: FinancialProjectionsData; markdown: string }> {
   const startTime = Date.now();
   const supabase = getSupabaseServerClient();
 
   try {
-    const persona = await loadPersona('cfo');
-
-    const prompt = `${persona.fullContext}
-
-═══════════════════════════════════════════════════════════
-⚠️ MANDATORY: NO CLARIFYING QUESTIONS ALLOWED ⚠️
-═══════════════════════════════════════════════════════════
-
-You are a CFO consultant hired for $7,500 to deliver financial projections. You WILL NOT:
-- Ask for more data
-- Request clarifications
-- Say you cannot estimate
-- Provide options or ask what the client prefers
-
-You WILL:
-- Make reasonable estimates based on the baseline ranges provided below
-- Deliver specific dollar amounts in all fields
-- Use your expertise to fill gaps with industry-standard assumptions
-- Return ONLY the JSON output requested (no preamble, no questions)
-
-This is what the client paid for. Deliver it.
-
-═══════════════════════════════════════════════════════════
-
-TASK: Develop financial projections and ROI analysis for a workforce program.
-
-PROGRAM DETAILS:
-- Program Name: ${project.program_name}
-- Program Type: ${project.program_type || 'Not specified'}
-- Target Audience: ${project.target_audience || 'Not specified'}
-- Client: ${project.client_name}
-${project.constraints ? `- Constraints: ${project.constraints}` : ''}
-
-**BASELINE COST RANGES (Community College Workforce Programs):**
-- Curriculum development: $15,000-$35,000 (150-350 hours @ $100/hr)
-- Equipment/lab setup: $10,000-$50,000 (depends on field—healthcare higher, business lower)
-- Marketing launch: $8,000-$20,000 (6-month campaign)
-- Faculty training: $3,000-$8,000 (onboarding + professional development)
-- Accreditation fees: $2,000-$15,000 (if pursuing specialized accreditation)
-- Faculty salaries: $55,000-$75,000 loaded for lead instructor
-- Adjunct: $800-$1,200 per credit hour
-- Program tuition: $3,000-$6,500 for 6-12 month certificate
-- Typical enrollment: 12-20 students per cohort (conservative launch)
-
-Use these as baselines and adjust based on program specifics. Provide SPECIFIC NUMBERS in all fields—no ranges, no "TBD", no requests for more data.
-
-Provide a COMPREHENSIVE financial analysis of 2,500-3,500 words with detailed modeling.
-
-## 1. DETAILED STARTUP COSTS (Line-Item Breakdown)
-
-### Curriculum Development ($X,XXX)
-- Course design and development (hours × rate)
-- Learning management system setup
-- Instructional materials creation (textbooks, handouts, online resources)
-- Curriculum review and approval process
-- Advisory committee formation costs
-
-### Equipment & Lab Setup ($X,XXX)
-- Specific equipment list with costs (e.g., pharmacy software licenses, counting trays, pill dispensers)
-- Lab furniture and fixtures
-- Safety equipment and supplies
-- Technology (computers, printers, barcode scanners)
-- Initial inventory of practice materials
-
-### Marketing & Launch Campaign ($X,XXX)
-- Website development/updates
-- Digital advertising (Google Ads, Facebook, 6-month budget)
-- Print materials (brochures, posters, program one-pagers)
-- Open house events and information sessions
-- Public relations and media outreach
-
-### Faculty & Staff Training ($X,XXX)
-- Instructor onboarding and professional development
-- Clinical site coordinator training
-- Staff time for program setup (hours × loaded rate)
-
-### Accreditation & Regulatory Fees ($X,XXX)
-- State board of pharmacy application and approval
-- Professional association memberships
-- Accreditation application fees (if pursuing ASHP/ACPE)
-- Legal review and compliance costs
-
-### Other Startup Costs ($X,XXX)
-- Contingency (10-15% of total)
-- Miscellaneous supplies and setup
-
-**TOTAL STARTUP INVESTMENT:** $XXX,XXX
-
-## 2. ANNUAL OPERATING COSTS (3-Year Projection)
-
-### Faculty & Instructional Costs
-**Year 1:** $XX,XXX
-- Lead instructor (1.0 FTE @ $XX,XXX loaded)
-- Adjunct instructors (X credit hours @ $XXX/credit hour)
-- Clinical coordinator (0.25 FTE @ $XX,XXX loaded)
-- Professional development ($X,XXX annually)
-
-**Year 2:** $XX,XXX (adjustments for second cohort, wage increases)
-**Year 3:** $XX,XXX
-
-### Marketing & Recruitment
-**Year 1:** $XX,XXX (launch campaign)
-**Year 2:** $XX,XXX (ongoing marketing)
-**Year 3:** $XX,XXX (reduced as word-of-mouth builds)
-- Digital advertising budget
-- Event participation (career fairs, health expo)
-- Content marketing and social media
-- Email marketing and CRM tools
-
-### Equipment Maintenance & Supplies
-**Year 1-3:** $X,XXX annually
-- Software license renewals
-- Equipment repairs and replacement
-- Practice materials and consumables
-- Technology refresh
-
-### Administrative Overhead
-**Year 1-3:** $XX,XXX annually
-- Advising and student services (0.15 FTE)
-- Registration and records management
-- Facilities cost allocation
-- General institutional overhead
-
-**TOTAL OPERATING COSTS:**
-- Year 1: $XXX,XXX
-- Year 2: $XXX,XXX
-- Year 3: $XXX,XXX
-
-## 3. REVENUE PROJECTIONS (3-Year Model with Scenarios)
-
-### BASE CASE SCENARIO (Conservative)
-
-**Year 1:**
-- Enrollment: XX students (X cohorts)
-- Tuition per student: $X,XXX
-- Tuition revenue: $XX,XXX
-- Grant funding: $XX,XXX (Perkins V, WIOA)
-- Total revenue: $XX,XXX
-
-**Year 2:**
-- Enrollment: XX students (enrollment growth based on demand)
-- Tuition revenue: $XX,XXX
-- Grant funding: $XX,XXX
-- Total revenue: $XX,XXX
-
-**Year 3:**
-- Enrollment: XX students (steady state)
-- Tuition revenue: $XX,XXX
-- Grant funding: $XX,XXX
-- Total revenue: $XX,XXX
-
-### OPTIMISTIC SCENARIO (+20% Enrollment)
-[Repeat structure with higher enrollment assumptions]
-
-### PESSIMISTIC SCENARIO (-20% Enrollment)
-[Repeat structure with lower enrollment assumptions]
-
-## 4. BREAK-EVEN ANALYSIS
-
-### Break-Even Enrollment per Cohort
-- Fixed costs per cohort: $XX,XXX
-- Variable cost per student: $X,XXX
-- Tuition revenue per student: $X,XXX
-- **Break-even enrollment:** XX students per cohort
-
-### Break-Even Timeline
-**Base case:** 
-- Cumulative cash flow by month (show when positive)
-- Break-even month: Month XX (late Year 2)
-
-**Sensitivity analysis:**
-- If Year 1 enrollment is 12 vs 15: Break-even extends to Month XX
-- If startup costs increase 20%: Break-even extends to Month XX
-- If clinical sites charge fees: Break-even extends to Month XX
-
-### Monthly Cash Flow Model (36 months)
-[Provide table showing cumulative position: Month 1: -$XX,XXX, Month 12: -$XX,XXX, etc.]
-
-## 5. ROI ANALYSIS & FINANCIAL METRICS
-
-### 3-Year Net Present Value
-- Total investment (startup + 3-year operating): $XXX,XXX
-- Total revenue (3 years): $XXX,XXX
-- Net profit/loss after 3 years: $XX,XXX or ($XX,XXX)
-- ROI: XX% over 3 years
-
-### 5-Year Projection (if program continues)
-- Year 4-5 enrollment assumptions
-- Reduced marketing costs, stable operations
-- 5-year cumulative net: $XXX,XXX
-- 5-year ROI: XX%
-
-### Assumptions & Sensitivities
-List all key assumptions:
-1. Enrollment ramp: Year 1 (XX), Year 2 (XX), Year 3 (XX)
-2. Tuition held constant at $X,XXX (no increases)
-3. Clinical sites provide placements at no cost
-4. Grant funding secured: $XX,XXX annually
-5. Instructor recruited at $XX,XXX loaded
-6. [Additional assumptions]
-
-**What-if scenarios:**
-- What if enrollment misses by 20%? → ROI drops to XX%
-- What if we can't secure grants? → Break-even extends XX months
-- What if clinical sites charge $X,XXX per student? → Annual cost increases $XX,XXX
-
-## 6. GRANT FUNDING & EXTERNAL REVENUE
-
-### Specific Grant Opportunities
-**Perkins V (Career and Technical Education):**
-- Eligibility: Yes (workforce credential program)
-- Estimated funding: $XX,XXX - $XX,XXX annually
-- Application timeline: Due annually in [month]
-- Success probability: Medium-High (based on institutional Perkins history)
-
-**WIOA (Workforce Innovation and Opportunity Act):**
-- Eligibility: Yes (eligible training provider list)
-- Per-student funding: $X,XXX - $X,XXX (covers tuition + fees)
-- Estimated students qualifying: XX-XX per year
-
-**State Workforce Development Grants:**
-[List specific state opportunities]
-
-**Employer Partnership Funding:**
-- Tuition reimbursement from healthcare employers (e.g., UnityPoint, Mercy)
-- Contract training revenue (customized cohorts for single employer)
-- Equipment donations (pharmacy software, practice supplies)
-
-### Grant Strategy & Impact on ROI
-- If $XX,XXX in grants secured: ROI improves from XX% to XX%
-- Grant funding should cover XX% of startup costs
-- Critical to apply for Perkins V in first year
-
-## 7. STUDENT FINANCIAL ANALYSIS
-
-### Total Cost of Attendance (Student Perspective)
-- Tuition: $X,XXX
-- Fees: $XXX
-- Books & supplies: $XXX
-- Clinical supplies (scrubs, name tag, supplies): $XXX
-- **Total:** $X,XXX
-
-### Financial Aid Availability
-- Pell Grant eligible? Yes/No
-- State grant programs: [List with amounts]
-- Institutional scholarships: $XXX - $X,XXX available
-- Employer tuition reimbursement: Common in healthcare
-
-### Student ROI Calculation
-- Total investment: $X,XXX (tuition + fees + books + opportunity cost)
-- Starting wage: $XX,XXX annually ($XX/hour × 2,080 hours)
-- Payback period: X.X years (assuming full-time employment)
-- 10-year earnings boost: $XXX,XXX (vs. no credential)
-- **Student ROI:** XXX% over 10 years
-
-### Affordability Comparison
-- Our program: $X,XXX
-- Competitor A (DMACC): $X,XXX
-- Competitor B (Hawkeye): $X,XXX
-- Online programs: $X,XXX - $X,XXX
-- **Our positioning:** [More/Less/Comparable] expensive, justified by [differentiators]
-
-## 8. FINANCIAL RISKS & MITIGATION
-
-### Risk 1: Enrollment Shortfall
-**Impact:** If Year 1 enrolls 10 vs. 15 students, revenue drops $XX,XXX and cumulative loss reaches ($XXX,XXX)
-**Mitigation:**
-- Pre-launch employer partnerships guaranteeing X enrollments
-- $XX,XXX contingency marketing budget for mid-year push
-- Part-time cohort option to capture working adults if full-time undersells
-
-### Risk 2: Clinical Site Costs
-**Impact:** If sites charge $X,XXX per student, annual costs increase $XX,XXX and break-even extends XX months
-**Mitigation:**
-- Secure signed MOUs with zero-cost guarantee before launch
-- Develop 10+ site relationships (redundancy if 2-3 drop out)
-- Negotiate multi-year commitments
-
-### Risk 3: Grant Funding Rejection
-**Impact:** Loss of $XX,XXX revenue, ROI drops from XX% to XX%
-**Mitigation:**
-- Apply for multiple grants (Perkins, WIOA, state workforce)
-- Employer partnerships to offset (contract training revenue)
-- Modest tuition increase ($X,XXX → $X,XXX) if grants unavailable
-
-### Risk 4: Instructor Recruitment/Retention Failure
-**Impact:** Cannot launch or must suspend program if instructor leaves
-**Mitigation:**
-- Early recruitment (6+ months before launch)
-- Competitive compensation ($XX,XXX at top of range)
-- Adjunct pool backup (3 part-time instructors can cover if lead departs)
-- Retention bonuses ($X,XXX after Year 2, $X,XXX after Year 3)
-
-### Risk 5: Market Saturation / Competition
-**Impact:** Enrollment stagnates at XX students vs. projected XX, revenue shortfall
-**Mitigation:**
-- Clear differentiation (evening options, Spanish-language, employer partnerships)
-- Geographic exclusivity within XX-mile radius
-- Pre-enrollment pipeline (high school CTE partnerships)
-
-SCORING: Rate financial viability 1-10.
-8-10 = Strong ROI, breaks even within 2 years, low risk
-5-7 = Moderate viability, breaks even within 3 years, manageable risk
-1-4 = Weak ROI, high startup costs relative to revenue, significant risk
-
-OUTPUT FORMAT (JSON):
-{
-  "score": 6,
-  "scoreRationale": "Brief explanation of financial viability score",
-  "startup_costs": {
-    "curriculum_development": 0,
-    "equipment_labs": 0,
-    "marketing_launch": 0,
-    "faculty_training": 0,
-    "accreditation_fees": 0,
-    "other": 0,
-    "total": 0
-  },
-  "annual_operating_costs": {
-    "faculty_salaries": 0,
-    "adjunct_instructors": 0,
-    "equipment_maintenance": 0,
-    "software_licenses": 0,
-    "marketing": 0,
-    "administrative_overhead": 0,
-    "total": 0
-  },
-  "revenue_projections": {
-    "year1": { "enrollment": 0, "tuition_per_student": 0, "total_revenue": 0 },
-    "year2": { "enrollment": 0, "tuition_per_student": 0, "total_revenue": 0 },
-    "year3": { "enrollment": 0, "tuition_per_student": 0, "total_revenue": 0 }
-  },
-  "break_even_analysis": {
-    "break_even_enrollment": 0,
-    "break_even_timeline": "X months/years"
-  },
-  "roi_analysis": {
-    "three_year_net": 0,
-    "roi_percentage": "X%",
-    "assumptions": ["Assumption 1", "Assumption 2"]
-  },
-  "funding_sources": ["Source 1", "Source 2"],
-  "risks": ["Risk 1", "Risk 2"],
-  "recommendations": ["Recommendation 1", "Recommendation 2"]
-}
-
-CRITICAL REQUIREMENTS:
-- Use realistic cost estimates for community college context
-- Base tuition on typical community college rates for the region
-- Consider both credit and noncredit pricing models
-- Include conservative and optimistic enrollment scenarios
-- Identify relevant grant opportunities (NSF, DOL, etc.)
-- Be honest about financial viability
-
-═══════════════════════════════════════════════════════════
-FINAL INSTRUCTION: 
-Your response must be ONLY the JSON object shown above, wrapped in \`\`\`json code blocks.
-NO preamble, NO explanations, NO questions. Just the JSON.
-
-If you ask ANY clarifying questions or say you cannot estimate, you have failed this engagement.
-═══════════════════════════════════════════════════════════
-
-Respond NOW with the JSON:`;
-
-    const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 4000,  // 4k ≈ 1,500 words — balanced depth vs API speed
+    // ── Step 1: Determine inputs ──────────────────────────────────────────────
+
+    // Parse tuition from string range or use mid
+    let tuition = 4_800;
+    if (project.estimated_tuition) {
+      const nums = project.estimated_tuition.replace(/[$,]/g, '').match(/\d+/g);
+      if (nums && nums.length >= 1) {
+        const vals = nums.map(Number);
+        tuition = vals.length === 1 ? vals[0] : Math.round((vals[0] + vals[vals.length - 1]) / 2);
+      }
+    }
+
+    const deliveryFormat = (project.delivery_format as 'in-person' | 'hybrid' | 'online') ?? 'hybrid';
+    const hasExistingLabSpace = project.has_existing_lab_space ?? false;
+    const cohortSize = project.target_cohort_size ?? 18;
+    const creditHours = project.program_credit_hours ?? 36;
+    const perkinsEligible = project.funding_sources?.includes('perkins_v') ?? true;
+
+    // Extract state FIPS from geographic area (look for Iowa)
+    let stateFips: string | undefined;
+    const geo = (project.geographic_area ?? '').toLowerCase();
+    if (geo.includes('iowa') || geo.includes(' ia') || geo.includes(', ia')) stateFips = '19';
+    else if (geo.includes('minnesota') || geo.includes(' mn')) stateFips = '27';
+    else if (geo.includes('illinois') || geo.includes(' il')) stateFips = '17';
+    else if (geo.includes('wisconsin') || geo.includes(' wi')) stateFips = '55';
+
+    const socMapping = mapProgramToInstructorSoc(project.program_name);
+
+    console.log(`[Financial Agent] Building model for "${project.program_name}"`);
+    console.log(`[Financial Agent] SOC: ${socMapping.soc} (${socMapping.label}), State FIPS: ${stateFips ?? 'national'}`);
+
+    // ── Step 2: Build deterministic financial model ───────────────────────────
+
+    const financialModel = await buildFinancialModelWithBLS(project.program_name, {
+      programName: project.program_name,
+      tuitionEstimate: tuition,
+      cohortSize,
+      creditHours,
+      hasExistingLabSpace,
+      perkinsEligible,
+      deliveryFormat,
+      stateFips,
     });
 
-    const data = extractJSON(content) as FinancialProjectionsData;
-    const markdown = formatFinancialAnalysis(data, project);
+    console.log(`[Financial Agent] Model complete — viability score: ${financialModel.viabilityScore}/10`);
+    console.log(`[Financial Agent] Year 1 net (base): $${financialModel.year1NetPosition.toLocaleString()}`);
+    console.log(`[Financial Agent] Break-even enrollment: ${financialModel.breakEvenEnrollment} students`);
 
+    // ── Step 3: Claude interprets the model (does NOT invent numbers) ─────────
+
+    const persona = await loadPersona('cfo');
+    const prompt = buildInterpretationPrompt(financialModel, project, persona);
+
+    const { content, tokensUsed } = await callClaude(prompt, {
+      maxTokens: 2000,
+      model: 'claude-sonnet-4-5',
+    });
+
+    let claudeOutput: any = {};
+    try {
+      claudeOutput = extractJSON(content);
+    } catch {
+      console.warn('[Financial Agent] Could not parse Claude JSON — using fallback narrative');
+      claudeOutput = {
+        scoreRationale: financialModel.viabilityRationale,
+        keyRisks: ['Enrollment shortfall risk if Year 1 falls below break-even threshold'],
+        mitigations: ['Secure employer pre-commitments before capital expenditure'],
+        recommendations: ['Validate enrollment demand before committing to lab buildout'],
+        funding_sources: ['Perkins V', 'WIOA'],
+      };
+    }
+
+    // ── Step 4: Build output ──────────────────────────────────────────────────
+
+    const base1 = financialModel.scenarios.base;
+    const base2 = financialModel.year2Base;
+    const base3 = financialModel.year3Base;
+
+    const threeYearNet = base1.netPosition + base2.netPosition + base3.netPosition;
+    const threeYearRevenue = base1.revenue.total + base2.revenue.total + base3.revenue.total;
+    const threeYearROI = threeYearRevenue > 0
+      ? `${((threeYearNet / threeYearRevenue) * 100).toFixed(1)}%`
+      : 'N/A';
+
+    const data: FinancialProjectionsData = {
+      score: financialModel.viabilityScore,
+      scoreRationale: claudeOutput.scoreRationale ?? financialModel.viabilityRationale,
+      financialModel,
+      keyRisks: Array.isArray(claudeOutput.keyRisks) ? claudeOutput.keyRisks : [],
+      mitigations: Array.isArray(claudeOutput.mitigations) ? claudeOutput.mitigations : [],
+      assumptions: financialModel.assumptions,
+
+      // Legacy fields for backward-compat
+      startup_costs: {
+        curriculum_development: 0,
+        equipment_labs: !hasExistingLabSpace ? 30_000 : 0,
+        marketing_launch: 3_000,
+        faculty_training: 0,
+        accreditation_fees: base1.expenses.regulatory,
+        other: 0,
+        total: (!hasExistingLabSpace ? 30_000 : 0) + 3_000 + base1.expenses.regulatory,
+      },
+      annual_operating_costs: {
+        faculty_salaries: 0,
+        adjunct_instructors: base1.expenses.instructorCost,
+        equipment_maintenance: base1.expenses.labSupplies,
+        software_licenses: 0,
+        marketing: base1.expenses.marketing,
+        administrative_overhead: base1.expenses.adminOverhead,
+        total: base1.expenses.total,
+      },
+      revenue_projections: {
+        year1: {
+          enrollment: base1.enrollment,
+          tuition_per_student: tuition,
+          total_revenue: base1.revenue.total,
+        },
+        year2: {
+          enrollment: base2.enrollment,
+          tuition_per_student: tuition,
+          total_revenue: base2.revenue.total,
+        },
+        year3: {
+          enrollment: base3.enrollment,
+          tuition_per_student: tuition,
+          total_revenue: base3.revenue.total,
+        },
+      },
+      break_even_analysis: {
+        break_even_enrollment: financialModel.breakEvenEnrollment,
+        break_even_timeline: `Year 1 at ${financialModel.breakEvenEnrollment} students (${((financialModel.breakEvenEnrollment / cohortSize) * 100).toFixed(0)}% of target cohort)`,
+      },
+      roi_analysis: {
+        three_year_net: threeYearNet,
+        roi_percentage: threeYearROI,
+        assumptions: financialModel.assumptions.slice(0, 6).map(a => `${a.item}: ${a.value}`),
+      },
+      funding_sources: Array.isArray(claudeOutput.funding_sources)
+        ? claudeOutput.funding_sources
+        : ['Perkins V', 'WIOA'],
+      risks: Array.isArray(claudeOutput.keyRisks) ? claudeOutput.keyRisks : [],
+      recommendations: Array.isArray(claudeOutput.recommendations) ? claudeOutput.recommendations : [],
+    };
+
+    const markdown = formatFinancialAnalysis(data, project);
     const duration = Date.now() - startTime;
+
     await supabase.from('agent_sessions').insert({
       project_id: projectId,
       agent_type: 'financial-analyst',
       persona: 'cfo',
-      prompt: prompt.substring(0, 5000),
-      response: content.substring(0, 10000),
+      prompt: prompt.substring(0, 5_000),
+      response: content.substring(0, 10_000),
       tokens_used: tokensUsed,
       duration_ms: duration,
       status: 'success',
@@ -452,81 +341,81 @@ Respond NOW with the JSON:`;
   }
 }
 
-function $(val: any): string {
+// ─── Markdown Formatter ──────────────────────────────────────────────────────
+
+function $(val: unknown): string {
   if (val == null) return 'N/A';
   if (typeof val === 'number') return val.toLocaleString();
   return String(val);
 }
-function $$(arr: any[]): any[] { return Array.isArray(arr) ? arr : []; }
 
 function formatFinancialAnalysis(data: FinancialProjectionsData, project: ValidationProject): string {
   if (!data) return `# Financial Analysis: ${project.program_name}\n\nFinancial data unavailable.`;
-  const sc = data.startup_costs || {} as any;
-  const oc = data.annual_operating_costs || {} as any;
-  const rp = data.revenue_projections || {} as any;
-  const be = data.break_even_analysis || {} as any;
-  const roi = data.roi_analysis || {} as any;
+
+  const m = data.financialModel;
+  const b1 = m?.scenarios?.base;
+  const b2 = m?.year2Base;
+  const b3 = m?.year3Base;
+  const p1 = m?.scenarios?.pessimistic;
+  const o1 = m?.scenarios?.optimistic;
+
+  const fmt = (n: number) => `$${Math.round(n).toLocaleString()}`;
+  const pct = (n: number) => `${(n * 100).toFixed(1)}%`;
 
   return `# Financial Analysis: ${project.program_name}
+**Viability Score: ${data.score}/10** (model-driven, not estimated)
 
-## Startup Costs
+## Year 1–3 P&L Projection (Base Scenario)
 
-| Category | Amount |
-|----------|--------|
-| Curriculum Development | $${$(sc.curriculum_development)} |
-| Equipment & Labs | $${$(sc.equipment_labs)} |
-| Marketing & Launch | $${$(sc.marketing_launch)} |
-| Faculty Training | $${$(sc.faculty_training)} |
-| Accreditation Fees | $${$(sc.accreditation_fees)} |
-| Other | $${$(sc.other)} |
-| **TOTAL** | **$${$(sc.total)}** |
+| Line Item | Year 1 | Year 2 | Year 3 |
+|-----------|--------|--------|--------|
+| **Enrollment** | ${b1?.enrollment ?? '—'} students | ${b2?.enrollment ?? '—'} students | ${b3?.enrollment ?? '—'} students |
+| Tuition Revenue | ${b1 ? fmt(b1.revenue.tuition) : '—'} | ${b2 ? fmt(b2.revenue.tuition) : '—'} | ${b3 ? fmt(b3.revenue.tuition) : '—'} |
+| Perkins V | ${b1 ? fmt(b1.revenue.perkinsV) : '—'} | ${b2 ? fmt(b2.revenue.perkinsV) : '—'} | ${b3 ? fmt(b3.revenue.perkinsV) : '—'} |
+| **Total Revenue** | **${b1 ? fmt(b1.revenue.total) : '—'}** | **${b2 ? fmt(b2.revenue.total) : '—'}** | **${b3 ? fmt(b3.revenue.total) : '—'}** |
+| Instructor Cost | ${b1 ? fmt(b1.expenses.instructorCost) : '—'} | ${b2 ? fmt(b2.expenses.instructorCost) : '—'} | ${b3 ? fmt(b3.expenses.instructorCost) : '—'} |
+| Lab Setup (one-time) | ${b1 ? fmt(b1.expenses.labSetup) : '—'} | $0 | $0 |
+| Lab Supplies | ${b1 ? fmt(b1.expenses.labSupplies) : '—'} | ${b2 ? fmt(b2.expenses.labSupplies) : '—'} | ${b3 ? fmt(b3.expenses.labSupplies) : '—'} |
+| Coordinator (0.25 FTE) | ${b1 ? fmt(b1.expenses.coordinatorCost) : '—'} | ${b2 ? fmt(b2.expenses.coordinatorCost) : '—'} | ${b3 ? fmt(b3.expenses.coordinatorCost) : '—'} |
+| Marketing | ${b1 ? fmt(b1.expenses.marketing) : '—'} | $0 | $0 |
+| Regulatory | ${b1 ? fmt(b1.expenses.regulatory) : '—'} | ${b2 ? fmt(b2.expenses.regulatory) : '—'} | ${b3 ? fmt(b3.expenses.regulatory) : '—'} |
+| Admin Overhead (15%) | ${b1 ? fmt(b1.expenses.adminOverhead) : '—'} | ${b2 ? fmt(b2.expenses.adminOverhead) : '—'} | ${b3 ? fmt(b3.expenses.adminOverhead) : '—'} |
+| **Total Expenses** | **${b1 ? fmt(b1.expenses.total) : '—'}** | **${b2 ? fmt(b2.expenses.total) : '—'}** | **${b3 ? fmt(b3.expenses.total) : '—'}** |
+| **Net Position** | **${b1 ? fmt(b1.netPosition) : '—'}** | **${b2 ? fmt(b2.netPosition) : '—'}** | **${b3 ? fmt(b3.netPosition) : '—'}** |
+| Margin | ${b1 ? pct(b1.margin) : '—'} | ${b2 ? pct(b2.margin) : '—'} | ${b3 ? pct(b3.margin) : '—'} |
 
-## Annual Operating Costs
+## Scenario Comparison — Year 1
 
-| Category | Amount |
-|----------|--------|
-| Faculty Salaries | $${$(oc.faculty_salaries)} |
-| Adjunct Instructors | $${$(oc.adjunct_instructors)} |
-| Equipment Maintenance | $${$(oc.equipment_maintenance)} |
-| Software Licenses | $${$(oc.software_licenses)} |
-| Marketing | $${$(oc.marketing)} |
-| Administrative Overhead | $${$(oc.administrative_overhead)} |
-| **TOTAL** | **$${$(oc.total)}** |
+| Scenario | Enrollment | Revenue | Expenses | Net |
+|----------|-----------|---------|----------|-----|
+| Pessimistic (60%) | ${p1?.enrollment ?? '—'} | ${p1 ? fmt(p1.revenue.total) : '—'} | ${p1 ? fmt(p1.expenses.total) : '—'} | ${p1 ? fmt(p1.netPosition) : '—'} |
+| Base (85%) | ${b1?.enrollment ?? '—'} | ${b1 ? fmt(b1.revenue.total) : '—'} | ${b1 ? fmt(b1.expenses.total) : '—'} | ${b1 ? fmt(b1.netPosition) : '—'} |
+| Optimistic (100%) | ${o1?.enrollment ?? '—'} | ${o1 ? fmt(o1.revenue.total) : '—'} | ${o1 ? fmt(o1.expenses.total) : '—'} | ${o1 ? fmt(o1.netPosition) : '—'} |
 
-## Revenue Projections
+**Break-Even:** ${m?.breakEvenEnrollment ?? '—'} students (${m ? ((m.breakEvenEnrollment / b1.enrollment) * 100).toFixed(0) : '—'}% of base enrollment)
 
-| Year | Enrollment | Tuition/Student | Total Revenue |
-|------|-----------|----------------|---------------|
-| Year 1 | ${$(rp.year1?.enrollment)} | $${$(rp.year1?.tuition_per_student)} | $${$(rp.year1?.total_revenue)} |
-| Year 2 | ${$(rp.year2?.enrollment)} | $${$(rp.year2?.tuition_per_student)} | $${$(rp.year2?.total_revenue)} |
-| Year 3 | ${$(rp.year3?.enrollment)} | $${$(rp.year3?.tuition_per_student)} | $${$(rp.year3?.total_revenue)} |
+**Perkins V Impact:** ${m?.perkinsImpact ?? 'N/A'}
 
-## Break-Even Analysis
+## Assumption Manifest
 
-- **Break-Even Enrollment:** ${$(be.break_even_enrollment)} students
-- **Break-Even Timeline:** ${$(be.break_even_timeline)}
+| Item | Value | Source |
+|------|-------|--------|
+${(m?.assumptions ?? []).map(a => `| ${a.item} | ${a.value} | ${a.source} |`).join('\n')}
 
-## ROI Analysis
+## Narrative
 
-- **3-Year Net:** $${$(roi.three_year_net)}
-- **ROI:** ${$(roi.roi_percentage)}
+${data.scoreRationale}
 
-**Key Assumptions:**
-${$$(roi.assumptions).map((a: string) => `- ${a}`).join('\n')}
+## Key Risks
+${(data.keyRisks ?? []).map(r => `- ${r}`).join('\n')}
 
-## Potential Funding Sources
+## Mitigations
+${(data.mitigations ?? []).map(r => `- ${r}`).join('\n')}
 
-${$$(data.funding_sources).map((source: string) => `- ${source}`).join('\n')}
-
-## Financial Risks
-
-${$$(data.risks).map((risk: string) => `- ${risk}`).join('\n')}
-
-## Financial Recommendations
-
-${$$(data.recommendations).map((rec: string, i: number) => `${i + 1}. ${rec}`).join('\n')}
+## Recommendations
+${(data.recommendations ?? []).map((r, i) => `${i + 1}. ${r}`).join('\n')}
 
 ---
-*These projections are estimates based on typical community college program economics.*
+*Financial model: BLS OES wage data · AAUP/CUPA-HR cost benchmarks · Iowa DE Perkins V allocations*
 `;
 }

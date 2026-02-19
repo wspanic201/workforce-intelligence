@@ -58,6 +58,11 @@ async function main() {
     onet_codes: '29-2052.00',
     stackable_credential: true,
     funding_sources: ['perkins_v', 'wioa', 'self_pay'],
+    // Financial model inputs (used by financial-analyst agent)
+    has_existing_lab_space: false,
+    target_cohort_size: 18,
+    program_credit_hours: 36,
+    instructor_type: 'adjunct', // 'adjunct' | 'full-time' | 'industry-expert'
   };
 
   // Import agents
