@@ -5,44 +5,22 @@ import Link from 'next/link';
 import { WavelengthMark } from './WavelengthLogo';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
-const PRODUCT_CATEGORIES = [
-  {
-    category: 'Market Research',
-    items: [
-      { label: 'Program Opportunity Scan', href: '/discover', tag: '$1,500', tagColor: 'text-purple-400 bg-purple-500/10' },
-    ],
-  },
-  {
-    category: 'Program Analysis',
-    items: [
-      { label: 'Pell Readiness Check', href: '/pell', tag: 'Free', tagColor: 'text-teal-400 bg-teal-500/10' },
-      { label: 'Program Gap Audit', href: '/compliance-gap', tag: '$295', tagColor: 'text-blue-400 bg-blue-500/10' },
-    ],
-  },
-  {
-    category: 'Program Development',
-    items: [
-      { label: 'Program Validation', href: '/validate', tag: '$2,000', tagColor: 'text-emerald-400 bg-emerald-500/10' },
-    ],
-  },
-  {
-    category: 'Grant Alignment',
-    items: [
-      { label: 'Grant Intelligence Scan', href: '/grants', tag: '$495', tagColor: 'text-green-400 bg-green-500/10' },
-    ],
-  },
-  {
-    category: 'Program Health',
-    items: [
-      { label: 'Curriculum Drift Analysis', href: '/drift', tag: 'new', tagColor: 'text-gradient-cosmic' },
-    ],
-  },
+const CORE = [
+  { label: 'Program Opportunity Scan', href: '/discover', price: '$1,500' },
+  { label: 'Program Validation',        href: '/validate', price: '$3,500' },
+];
+
+const ADDONS = [
+  { label: 'Pell Readiness Check',      href: '/pell',            price: 'Free'       },
+  { label: 'Program Gap Audit',         href: '/compliance-gap',  price: '$295'       },
+  { label: 'Grant Intelligence Scan',   href: '/grants',          price: '$495'       },
+  { label: 'Curriculum Drift Analysis', href: '/drift',           price: '$495/yr'    },
 ];
 
 export function NavBar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [productsOpen, setProductsOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -52,11 +30,10 @@ export function NavBar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
-        setProductsOpen(false);
+        setServicesOpen(false);
       }
     };
     document.addEventListener('click', handleClick);
@@ -66,18 +43,15 @@ export function NavBar() {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled || mobileOpen
-          ? 'backdrop-blur-xl border-b border-theme-subtle'
-          : 'bg-transparent'
+        scrolled || mobileOpen ? 'backdrop-blur-xl border-b border-theme-subtle' : 'bg-transparent'
       }`}
       style={scrolled || mobileOpen ? { backgroundColor: 'var(--nav-bg)' } : undefined}
     >
       <nav className="mx-auto max-w-[1200px] px-6">
         <div className="flex h-[72px] items-center justify-between">
-          <Link
-            href="/"
-            className="font-heading text-lg font-bold tracking-tight text-theme-primary hover:text-theme-secondary transition-colors"
-          >
+
+          {/* Logo */}
+          <Link href="/" className="font-heading text-lg font-bold tracking-tight text-theme-primary hover:text-theme-secondary transition-colors">
             <span className="inline-flex items-center gap-2" title="~∿ tuned in ∿~">
               <WavelengthMark className="w-6 h-6" />
               <span className="inline-flex flex-col items-start leading-none">
@@ -89,94 +63,83 @@ export function NavBar() {
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-8">
-            {/* Products dropdown */}
+
+            {/* Services dropdown */}
             <div ref={dropdownRef} className="relative">
               <button
-                onClick={() => setProductsOpen(!productsOpen)}
+                onClick={() => setServicesOpen(!servicesOpen)}
                 className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors inline-flex items-center gap-1"
               >
-                Products
+                Services
                 <svg
-                  className={`w-3.5 h-3.5 transition-transform duration-200 ${productsOpen ? 'rotate-180' : ''}`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
+                  className={`w-3.5 h-3.5 transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`}
+                  fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
 
-              {productsOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-80 rounded-xl bg-theme-nav backdrop-blur-xl border border-theme-subtle shadow-2xl shadow-black/40 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                  {PRODUCT_CATEGORIES.map((cat, catIdx) => (
-                    <div key={cat.category}>
-                      {catIdx > 0 && (
-                        <div className="mx-2 my-1 border-t border-theme-subtle" />
-                      )}
-                      <Link
-                        href={`/${cat.category.toLowerCase().replace(/\s+/g, '-')}`}
-                        onClick={() => setProductsOpen(false)}
-                        className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-theme-muted hover:text-theme-tertiary transition-colors px-4 pt-3 pb-1 w-full"
-                      >
-                        {cat.category}
-                        <svg className="w-2.5 h-2.5 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                        </svg>
-                      </Link>
-                      {cat.items.map((p) => (
-                        <Link
-                          key={p.href}
-                          href={p.href}
-                          onClick={() => setProductsOpen(false)}
-                          className="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-white/[0.05] transition-colors group mx-2"
-                        >
-                          <span className="text-sm text-theme-secondary group-hover:text-theme-primary transition-colors">
-                            {p.label}
-                          </span>
-                          {p.tagColor.includes('text-gradient-cosmic') ? (
-                            <span className="text-[10px] font-bold text-gradient-cosmic ml-1">{p.tag}</span>
-                          ) : (
-                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.tagColor}`}>
-                              {p.tag}
-                            </span>
-                          )}
-                        </Link>
-                      ))}
-                    </div>
+              {servicesOpen && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 rounded-xl bg-theme-nav backdrop-blur-xl border border-theme-subtle shadow-2xl shadow-black/40 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+
+                  {/* All Services link */}
+                  <Link
+                    href="/services"
+                    onClick={() => setServicesOpen(false)}
+                    className="flex items-center justify-between px-4 py-2.5 mx-2 rounded-lg hover:bg-white/[0.05] transition-colors group"
+                  >
+                    <span className="text-sm font-semibold text-gradient-cosmic">All Services</span>
+                    <svg className="w-3.5 h-3.5 text-theme-muted group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+
+                  <div className="mx-3 my-2 border-t border-theme-subtle" />
+
+                  {/* Core Lifecycle */}
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted px-4 pt-1 pb-1.5">Core Lifecycle</p>
+                  {CORE.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setServicesOpen(false)}
+                      className="flex items-center justify-between px-4 py-2.5 mx-2 rounded-lg hover:bg-white/[0.05] transition-colors group"
+                    >
+                      <span className="text-sm text-theme-secondary group-hover:text-theme-primary transition-colors">{item.label}</span>
+                      <span className="text-[10px] font-bold text-purple-400 ml-2">{item.price}</span>
+                    </Link>
                   ))}
+
+                  <div className="mx-3 my-2 border-t border-theme-subtle" />
+
+                  {/* Add-Ons */}
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted px-4 pt-1 pb-1.5">Add-Ons</p>
+                  {ADDONS.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setServicesOpen(false)}
+                      className="flex items-center justify-between px-4 py-2.5 mx-2 rounded-lg hover:bg-white/[0.05] transition-colors group"
+                    >
+                      <span className="text-sm text-theme-secondary group-hover:text-theme-primary transition-colors">{item.label}</span>
+                      <span className="text-[10px] font-bold text-teal-400 ml-2">{item.price}</span>
+                    </Link>
+                  ))}
+
                 </div>
               )}
             </div>
 
-            <Link
-              href="/services"
-              className="text-sm font-medium text-theme-secondary hover:text-theme-primary transition-colors"
-            >
-              Services
-            </Link>
-            <Link
-              href="/#how-it-works"
-              className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors"
-            >
+            <Link href="/#how-it-works" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors">
               How It Works
             </Link>
-            <Link
-              href="/report/demo"
-              className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors"
-            >
+            <Link href="/report/demo" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors">
               Sample Report
             </Link>
-            <Link
-              href="/blog"
-              className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors"
-            >
+            <Link href="/blog" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors">
               Blog
             </Link>
-            <Link
-              href="/signal"
-              className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors inline-flex items-center gap-1.5"
-            >
+            <Link href="/signal" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors inline-flex items-center gap-1.5">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
               The Signal
             </Link>
@@ -197,104 +160,64 @@ export function NavBar() {
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
-            <span
-              className={`w-6 h-[2px] bg-theme-text transition-all duration-300 ${
-                mobileOpen ? 'rotate-45 translate-y-[7px]' : ''
-              }`}
-            />
-            <span
-              className={`w-6 h-[2px] bg-theme-text transition-all duration-300 ${
-                mobileOpen ? 'opacity-0' : ''
-              }`}
-            />
-            <span
-              className={`w-6 h-[2px] bg-theme-text transition-all duration-300 ${
-                mobileOpen ? '-rotate-45 -translate-y-[7px]' : ''
-              }`}
-            />
+            <span className={`w-6 h-[2px] bg-theme-text transition-all duration-300 ${mobileOpen ? 'rotate-45 translate-y-[7px]' : ''}`} />
+            <span className={`w-6 h-[2px] bg-theme-text transition-all duration-300 ${mobileOpen ? 'opacity-0' : ''}`} />
+            <span className={`w-6 h-[2px] bg-theme-text transition-all duration-300 ${mobileOpen ? '-rotate-45 -translate-y-[7px]' : ''}`} />
           </button>
         </div>
 
         {/* Mobile menu */}
         {mobileOpen && (
           <div className="md:hidden pb-6 space-y-1 border-t border-theme-subtle pt-4 overflow-y-auto max-h-[calc(100vh-4rem)]">
-            {/* Products section — categorized */}
-            {PRODUCT_CATEGORIES.map((cat, catIdx) => (
-              <div key={cat.category}>
-                {catIdx > 0 && (
-                  <div className="border-t border-theme-subtle my-2" />
-                )}
-                <Link
-                  href={`/${cat.category.toLowerCase().replace(/\s+/g, '-')}`}
-                  onClick={() => setMobileOpen(false)}
-                  className="flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest text-theme-muted hover:text-theme-tertiary transition-colors px-2 pt-2 pb-1 w-full"
-                >
-                  {cat.category}
-                  <svg className="w-2.5 h-2.5 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-                  </svg>
-                </Link>
-                {cat.items.map((p) => (
-                  <Link
-                    key={p.href}
-                    href={p.href}
-                    className="flex items-center justify-between text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    <span>{p.label}</span>
-                    <span className="text-xs font-semibold text-theme-muted">{p.tag}</span>
-                  </Link>
-                ))}
-              </div>
+
+            <Link href="/services" onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 text-base font-semibold text-gradient-cosmic py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
+              All Services →
+            </Link>
+
+            <div className="border-t border-theme-subtle my-2" />
+            <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted px-2 pt-1 pb-0.5">Core Lifecycle</p>
+            {CORE.map((item) => (
+              <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-between text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
+                <span>{item.label}</span>
+                <span className="text-xs font-bold text-purple-400">{item.price}</span>
+              </Link>
+            ))}
+
+            <div className="border-t border-theme-subtle my-2" />
+            <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted px-2 pt-1 pb-0.5">Add-Ons</p>
+            {ADDONS.map((item) => (
+              <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-between text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
+                <span>{item.label}</span>
+                <span className="text-xs font-bold text-teal-400">{item.price}</span>
+              </Link>
             ))}
 
             <div className="border-t border-theme-subtle my-3" />
-
-            <Link
-              href="/services"
-              className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
-              onClick={() => setMobileOpen(false)}
-            >
-              Services
-            </Link>
-            <Link
-              href="/#how-it-works"
-              className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
-              onClick={() => setMobileOpen(false)}
-            >
+            <Link href="/#how-it-works" onClick={() => setMobileOpen(false)}
+              className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
               How It Works
             </Link>
-            <Link
-              href="/report/demo"
-              className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
-              onClick={() => setMobileOpen(false)}
-            >
+            <Link href="/report/demo" onClick={() => setMobileOpen(false)}
+              className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
               Sample Report
             </Link>
-            <Link
-              href="/blog"
-              className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
-              onClick={() => setMobileOpen(false)}
-            >
+            <Link href="/blog" onClick={() => setMobileOpen(false)}
+              className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
               Blog
             </Link>
-            <Link
-              href="/signal"
-              className="flex items-center gap-2 text-base font-medium text-teal-400 hover:text-teal-300 py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
-              onClick={() => setMobileOpen(false)}
-            >
+            <Link href="/signal" onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-2 text-base font-medium text-teal-400 hover:text-teal-300 py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
               <span className="inline-block w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
               The Signal — Free Newsletter
             </Link>
 
             <div className="pt-3 flex flex-col gap-3">
-              <div className="flex justify-center">
-                <ThemeToggle />
-              </div>
+              <div className="flex justify-center"><ThemeToggle /></div>
               <Link href="/pell" onClick={() => setMobileOpen(false)}>
-                <button className="btn-cosmic btn-cosmic-primary text-sm py-3 px-6 w-full">
-                  Get Started Free
-                </button>
+                <button className="btn-cosmic btn-cosmic-primary text-sm py-3 px-6 w-full">Get Started Free</button>
               </Link>
             </div>
           </div>
