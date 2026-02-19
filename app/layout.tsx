@@ -113,29 +113,37 @@ export default function RootLayout({
                 </p>
               </div>
 
-              {/* Products */}
+              {/* Services */}
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-4">Products</p>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-4">Services</p>
+                <p className="text-[9px] font-bold uppercase tracking-widest text-theme-muted mb-2 mt-3">Core Program Lifecycle</p>
+                <div className="space-y-2.5 mb-4">
+                  <Link href="/discover" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    <span>Program Opportunity Scan</span>
+                    <span className="text-purple-400/70 text-[10px] font-mono">$1,500</span>
+                  </Link>
+                  <Link href="/validate" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    <span>Program Validation</span>
+                    <span className="text-purple-400/70 text-[10px] font-mono">$3,500</span>
+                  </Link>
+                </div>
+                <p className="text-[9px] font-bold uppercase tracking-widest text-theme-muted mb-2">Add-Ons</p>
                 <div className="space-y-2.5">
-                  <Link href="/pell" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    Pell Readiness Check
-                    <span className="text-teal-400/60 text-[10px] ml-1.5">Free</span>
+                  <Link href="/pell" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    <span>Pell Readiness Check</span>
+                    <span className="text-teal-400/70 text-[10px] font-mono">Free</span>
                   </Link>
-                  <Link href="/compliance-gap" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    Compliance Gap Report
-                    <span className="text-blue-400/60 text-[10px] ml-1.5">$295</span>
+                  <Link href="/compliance-gap" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    <span>Program Gap Audit</span>
+                    <span className="text-teal-400/70 text-[10px] font-mono">$295</span>
                   </Link>
-                  <Link href="/grants" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    Grant Intelligence Scan
-                    <span className="text-green-400/60 text-[10px] ml-1.5">$495</span>
+                  <Link href="/grants" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    <span>Grant Intelligence Scan</span>
+                    <span className="text-teal-400/70 text-[10px] font-mono">$495</span>
                   </Link>
-                  <Link href="/discover" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    Market Scan
-                    <span className="text-purple-400/60 text-[10px] ml-1.5">$1,500</span>
-                  </Link>
-                  <Link href="/validate" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    Program Validation
-                    <span className="text-emerald-400/60 text-[10px] ml-1.5">$2,000</span>
+                  <Link href="/drift" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    <span>Curriculum Drift Analysis</span>
+                    <span className="text-teal-400/70 text-[10px] font-mono">$495/yr</span>
                   </Link>
                 </div>
               </div>
@@ -163,11 +171,14 @@ export default function RootLayout({
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-4">Get in Touch</p>
                 <div className="space-y-2.5">
-                  <a href="mailto:hello@withwavelength.com" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    hello@withwavelength.com
-                  </a>
+                  <Link href="/contact" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    Contact Us
+                  </Link>
                   <Link href="/pell" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
                     Start Free →
+                  </Link>
+                  <Link href="/signal" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    The Signal Newsletter
                   </Link>
                 </div>
               </div>
