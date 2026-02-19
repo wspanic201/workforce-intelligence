@@ -194,7 +194,7 @@ export default function ComplianceGapPage() {
       />
 
       {/* ═══════════════ HERO ═══════════════ */}
-      <section className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16">
+      <section className="relative min-h-[90vh] flex items-center justify-center pt-36 lg:pt-40 pb-16">
         <Stars count={140} />
         <Aurora className="opacity-75" />
         <Waveform className="opacity-50" />
@@ -361,7 +361,7 @@ export default function ComplianceGapPage() {
                     {SAMPLE_GAPS.map((gap, idx) => (
                       <tr
                         key={gap.program}
-                        className={`border-b border-white/5 hover:bg-white/[0.02] transition-colors ${idx === SAMPLE_GAPS.length - 1 ? 'border-b-0' : ''}`}
+                        className={`border-b border-theme-subtle hover:bg-white/[0.02] transition-colors ${idx === SAMPLE_GAPS.length - 1 ? 'border-b-0' : ''}`}
                       >
                         <td className="px-5 py-4">
                           <div className="font-medium text-theme-primary">{gap.program}</div>
@@ -452,7 +452,7 @@ export default function ComplianceGapPage() {
       <section className="relative py-16 md:py-20">
         <div className="max-w-[800px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-8">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-blue-300">Also in Program Analysis</span>
+            <span className="overline">Also in Program Analysis</span>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100}>
             <Link href="/pell" className="block card-cosmic rounded-2xl p-7 border-blue-500/20 hover:bg-white/[0.03] transition-colors group">
@@ -474,7 +474,7 @@ export default function ComplianceGapPage() {
       </section>
 
       {/* ═══════════════ FOOTER NOTE ═══════════════ */}
-      <footer className="py-10 px-6 text-center border-t border-white/5">
+      <footer className="py-10 px-6 text-center border-t border-theme-subtle">
         <p className="text-theme-secondary text-sm">
           Wavelength Workforce Intelligence ·{' '}
           <a
@@ -484,7 +484,7 @@ export default function ComplianceGapPage() {
             hello@withwavelength.com
           </a>
         </p>
-        <p className="mt-2 text-white/10 text-xs">
+        <p className="mt-2 text-theme-muted text-xs">
           Program Gap Audit reports are research deliverables based on publicly available regulatory data and do not constitute legal advice.
         </p>
       </footer>

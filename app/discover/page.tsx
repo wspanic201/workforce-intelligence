@@ -40,7 +40,7 @@ export default function DiscoverPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(discoverProductJsonLd) }}
       />
       {/* ===== HERO ===== */}
-      <section className="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16">
+      <section className="relative min-h-[70vh] flex items-center justify-center pt-36 lg:pt-40 pb-16">
         <Stars count={100} />
         <Aurora className="opacity-75" />
 
@@ -203,7 +203,7 @@ export default function DiscoverPage() {
                         </span>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0">
-                        <div className="w-14 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                        <div className="w-14 h-1.5 rounded-full bg-theme-base overflow-hidden">
                           <div
                             className="h-full rounded-full bg-gradient-to-r from-purple-500 to-blue-500"
                             style={{ width: `${(p.score / 10) * 100}%` }}
@@ -241,13 +241,13 @@ export default function DiscoverPage() {
                         </span>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0">
-                        <div className="w-14 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                        <div className="w-14 h-1.5 rounded-full bg-theme-base overflow-hidden">
                           <div
                             className="h-full rounded-full bg-gradient-to-r from-teal-500 to-emerald-400"
                             style={{ width: `${(p.score / 10) * 100}%` }}
                           />
                         </div>
-                        <span className="text-teal-300/70 text-sm font-mono w-7 text-right">{p.score}</span>
+                        <span className="text-theme-secondary text-sm font-mono w-7 text-right">{p.score}</span>
                       </div>
                     </div>
                   ))}
@@ -371,12 +371,7 @@ export default function DiscoverPage() {
             {/* Paid tier */}
             <AnimateOnScroll variant="scale" delay={200}>
               <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-purple-500/20 h-full flex flex-col relative">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-purple-500 to-blue-500 px-4 py-1 text-xs font-bold uppercase tracking-wider text-theme-primary shadow-lg shadow-purple-500/20">
-                    Founding Rate
-                  </span>
-                </div>
-                <div className="mt-3">
+                <div>
                   <p className="overline mb-4">PROGRAM OPPORTUNITY SCAN</p>
                   <p className="text-theme-secondary text-sm mb-5">
                     Full market intelligence — 25+ pages, 50+ sources, programs scored and ranked.
@@ -426,7 +421,7 @@ export default function DiscoverPage() {
       <section className="relative py-16 md:py-20">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-8">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-theme-muted">Where to go next</span>
+            <span className="overline">Where to go next</span>
           </AnimateOnScroll>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <AnimateOnScroll variant="fade-up" delay={100}>

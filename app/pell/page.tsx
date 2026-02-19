@@ -228,7 +228,7 @@ export default function PellPage() {
       />
 
       {/* ═══════════════ HERO ═══════════════ */}
-      <section className="relative min-h-[92vh] flex items-center justify-center pt-24 pb-20">
+      <section className="relative min-h-[92vh] flex items-center justify-center pt-36 lg:pt-40 pb-20">
         <Stars count={150} />
         <Aurora className="opacity-75" />
         <Waveform className="opacity-40" />
@@ -597,7 +597,7 @@ export default function PellPage() {
       <section className="relative py-16 md:py-20">
         <div className="max-w-[800px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-8">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-blue-300">Also in Program Analysis</span>
+            <span className="overline">Also in Program Analysis</span>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100}>
             <Link href="/compliance-gap" className="block card-cosmic rounded-2xl p-7 border-blue-500/20 hover:bg-white/[0.03] transition-colors group">
@@ -639,7 +639,7 @@ export default function PellPage() {
       </section>
 
       {/* ═══════════════ FOOTER ═══════════════ */}
-      <footer className="py-10 px-6 text-center border-t border-white/5">
+      <footer className="py-10 px-6 text-center border-t border-theme-subtle">
         <p className="text-theme-secondary text-sm">
           Wavelength Workforce Intelligence ·{' '}
           <a

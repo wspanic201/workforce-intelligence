@@ -27,7 +27,7 @@ export default function ValidatePage() {
     <div className="overflow-x-hidden bg-theme-page">
 
       {/* ===== HERO ===== */}
-      <section className="relative min-h-[75vh] flex items-center justify-center pt-24 pb-16 overflow-hidden">
+      <section className="relative min-h-[75vh] flex items-center justify-center pt-36 lg:pt-40 pb-16 overflow-hidden">
         <Stars count={100} />
         <Aurora className="opacity-75" />
         <Waveform className="opacity-40" />
@@ -361,7 +361,7 @@ export default function ValidatePage() {
       <section className="relative py-16 md:py-20">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-8">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-theme-muted">Where to go next</span>
+            <span className="overline">Where to go next</span>
           </AnimateOnScroll>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <AnimateOnScroll variant="fade-up" delay={100}>

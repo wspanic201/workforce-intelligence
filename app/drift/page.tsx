@@ -107,7 +107,7 @@ export default function DriftPage() {
       />
 
       {/* ═══════════════ HERO ═══════════════ */}
-      <section className="relative min-h-[92vh] flex items-center justify-center pt-24 pb-20">
+      <section className="relative min-h-[92vh] flex items-center justify-center pt-36 lg:pt-40 pb-20">
         <Stars count={150} />
         <Aurora className="opacity-75" />
         <Waveform className="opacity-40" />
@@ -329,7 +329,7 @@ export default function DriftPage() {
                 </div>
               </div>
 
-              <p className="text-white/75 leading-relaxed text-base">
+              <p className="text-theme-secondary leading-relaxed text-base">
                 The program covers core dispensing and compliance well. But employer postings have shifted: patient interaction, collaborative care, and pharmacy automation systems are now in the top 10 requirements — and none appear in the current curriculum objectives.
               </p>
 
@@ -419,7 +419,7 @@ export default function DriftPage() {
             <AnimateOnScroll variant="fade-up" delay={100}>
               <div className="card-cosmic rounded-2xl p-8 h-full flex flex-col">
                 <div className="mb-6">
-                  <p className="text-orange-300 text-[11px] font-bold uppercase tracking-widest mb-2">Essentials</p>
+                  <p className="overline mb-2">Essentials</p>
                   <div className="flex items-end gap-1 mb-1">
                     <span className="font-heading font-black text-6xl text-theme-primary">$1,200</span>
                     <span className="text-theme-tertiary text-sm mb-1">/program/year</span>
@@ -435,7 +435,7 @@ export default function DriftPage() {
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5">
                       <Check className="h-4 w-4 text-orange-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
-                      <span className="text-sm text-white/75">{item}</span>
+                      <span className="text-sm text-theme-secondary">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -450,13 +450,9 @@ export default function DriftPage() {
             {/* Tier 2 — Portfolio (Most Popular) */}
             <AnimateOnScroll variant="fade-up" delay={200}>
               <div className="card-cosmic rounded-2xl p-8 h-full flex flex-col border-orange-500/30 relative">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-4 py-1 text-xs font-bold uppercase tracking-wider text-theme-primary shadow-lg shadow-orange-500/20">
-                    Most Popular
-                  </span>
-                </div>
-                <div className="mb-6 mt-3">
-                  <p className="text-orange-300 text-[11px] font-bold uppercase tracking-widest mb-2">Portfolio</p>
+                <div className="mb-6 mt-1">
+                  <p className="overline mb-2">Most Popular</p>
+                  <p className="overline mb-2">Portfolio</p>
                   <div className="flex items-end gap-1 mb-1">
                     <span className="font-heading font-black text-4xl text-theme-primary">$4,800</span>
                     <span className="text-theme-tertiary text-sm mb-1">/year</span>
@@ -472,7 +468,7 @@ export default function DriftPage() {
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5">
                       <Check className="h-4 w-4 text-orange-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
-                      <span className="text-sm text-white/75">{item}</span>
+                      <span className="text-sm text-theme-secondary">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -488,7 +484,7 @@ export default function DriftPage() {
             <AnimateOnScroll variant="fade-up" delay={300}>
               <div className="card-cosmic rounded-2xl p-8 h-full flex flex-col">
                 <div className="mb-6">
-                  <p className="text-orange-300 text-[11px] font-bold uppercase tracking-widest mb-2">Enterprise</p>
+                  <p className="overline mb-2">Enterprise</p>
                   <div className="flex items-end gap-1 mb-1">
                     <span className="font-heading font-black text-4xl text-theme-primary">Custom</span>
                   </div>
@@ -503,7 +499,7 @@ export default function DriftPage() {
                   ].map((item) => (
                     <li key={item} className="flex items-start gap-2.5">
                       <Check className="h-4 w-4 text-orange-400 flex-shrink-0 mt-0.5" strokeWidth={2} />
-                      <span className="text-sm text-white/75">{item}</span>
+                      <span className="text-sm text-theme-secondary">{item}</span>
                     </li>
                   ))}
                 </ul>
@@ -518,7 +514,7 @@ export default function DriftPage() {
 
           <AnimateOnScroll variant="fade-up" delay={150}>
             <div className="mt-10 max-w-2xl mx-auto text-center">
-              <p className="text-white/55 text-sm leading-relaxed">
+              <p className="text-theme-tertiary text-sm leading-relaxed">
                 A single program coordinator spends 40–80 hours on a curriculum review cycle. Curriculum Drift Analysis replaces that with a quarterly automated scan — and gives you the documentation to prove alignment to accreditors, employers, and grant funders.
               </p>
             </div>
@@ -580,7 +576,7 @@ export default function DriftPage() {
       <section className="relative py-16 md:py-20">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-8">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-theme-muted">Looking to build new programs?</span>
+            <span className="overline">Looking to build new programs?</span>
           </AnimateOnScroll>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <AnimateOnScroll variant="fade-up" delay={100}>
@@ -612,7 +608,7 @@ export default function DriftPage() {
       </section>
 
       {/* ═══════════════ FOOTER ═══════════════ */}
-      <footer className="py-10 px-6 text-center border-t border-white/5">
+      <footer className="py-10 px-6 text-center border-t border-theme-subtle">
         <p className="text-theme-secondary text-sm">
           Wavelength Workforce Intelligence ·{' '}
           <a

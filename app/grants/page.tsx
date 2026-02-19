@@ -20,7 +20,7 @@ export default function GrantsPage() {
   return (
     <div className="overflow-x-hidden bg-theme-page">
       {/* ===== HERO ===== */}
-      <section className="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16">
+      <section className="relative min-h-[70vh] flex items-center justify-center pt-36 lg:pt-40 pb-16">
         <Stars count={100} />
         <Aurora className="opacity-75" />
 
@@ -268,7 +268,7 @@ export default function GrantsPage() {
                         </span>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0">
-                        <div className="w-14 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                        <div className="w-14 h-1.5 rounded-full bg-theme-base overflow-hidden">
                           <div
                             className="h-full rounded-full bg-gradient-to-r from-green-500 to-emerald-400"
                             style={{ width: `${(g.score / 10) * 100}%` }}
@@ -589,7 +589,7 @@ export default function GrantsPage() {
       <section className="relative py-16 md:py-20">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-8">
-            <span className="text-[10px] font-bold uppercase tracking-widest text-theme-muted">Where to go next</span>
+            <span className="overline">Where to go next</span>
           </AnimateOnScroll>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <AnimateOnScroll variant="fade-up" delay={100}>
