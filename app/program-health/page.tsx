@@ -38,7 +38,8 @@ export default function ProgramHealthPage() {
           <AnimateOnScroll variant="fade-up" delay={300}>
             <div className="flex flex-wrap justify-center gap-3 mt-8">
               {['Quarterly scans', 'From $1,200/yr', 'Accreditation-ready reports'].map(s => (
-                <span key={s} className="inline-flex items-center px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/30 text-sm text-orange-300 font-medium">
+                <span key={s} className="inline-flex items-center gap-1.5 text-xs font-medium text-theme-tertiary">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-400 shrink-0" />
                   {s}
                 </span>
               ))}
@@ -75,9 +76,10 @@ export default function ProgramHealthPage() {
         <div className="max-w-[800px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
             <div className="card-cosmic rounded-2xl p-8 md:p-10 border-orange-500/20">
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 mb-4">
-                <span className="text-orange-300 text-[10px] font-bold uppercase tracking-wider">From $1,200/yr</span>
-              </div>
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-theme-tertiary mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-400 shrink-0" />
+                From $1,200/yr
+              </span>
               <h3 className="font-heading font-bold text-theme-primary text-2xl mb-3">Curriculum Drift Analysis</h3>
               <p className="text-theme-secondary text-sm leading-relaxed mb-6">
                 Quarterly scans of live job postings against your curriculum. A Drift Score tells you exactly where programs are falling behind employer demand.

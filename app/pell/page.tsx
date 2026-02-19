@@ -245,12 +245,10 @@ export default function PellPage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={50} duration={800}>
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <Link
-                href="/program-analysis"
-                className="flex items-center justify-center gap-2 px-8 py-3 rounded-2xl bg-blue-500/10 border border-blue-500/30 text-blue-300 text-base font-bold tracking-wide hover:bg-blue-500/20 transition-colors w-full max-w-sm"
-              >
-                ← Program Analysis
+            <div className="mb-6">
+              <Link href="/program-analysis" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity group">
+                <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
+                Program Analysis
               </Link>
             </div>
           </AnimateOnScroll>

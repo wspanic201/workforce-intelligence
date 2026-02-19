@@ -31,12 +31,10 @@ export default function GrantsPage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={50} duration={800}>
-            <div className="flex items-center justify-center gap-3 mb-4 mt-4">
-              <Link
-                href="/grant-alignment"
-                className="flex items-center justify-center gap-2 px-8 py-3 rounded-2xl bg-green-500/10 border border-green-500/30 text-green-300 text-base font-bold tracking-wide hover:bg-green-500/20 transition-colors w-full max-w-sm"
-              >
-                ← Grant Alignment
+            <div className="mb-6 mt-4">
+              <Link href="/grant-alignment" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity group">
+                <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
+                Grant Alignment
               </Link>
             </div>
           </AnimateOnScroll>

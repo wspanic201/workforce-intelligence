@@ -85,7 +85,7 @@ export default function ProgramDevelopmentPage() {
         {/* Header */}
         <header className="mb-10">
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <span className="text-xs font-mono bg-blue-500/10 text-blue-300 px-3 py-1 rounded-full">
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-theme-tertiary"><span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
               Program Strategy
             </span>
             <span className="text-theme-muted text-sm">February 17, 2026</span>

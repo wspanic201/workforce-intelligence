@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { Check, Shield, ArrowRight, Clock, Zap, ChevronDown, ChevronUp, FileSearch, BarChart3, Radio, Mail } from 'lucide-react';
+import { Check, Shield, ArrowRight, Clock, Zap, ChevronDown, ChevronUp, FileSearch, BarChart3, Mail } from 'lucide-react';
 import {
   AnimateOnScroll,
   StaggerChildren,
@@ -357,10 +357,9 @@ function StaticHero() {
       <div className="relative z-10 max-w-[860px] mx-auto px-6 w-full text-center">
 
         {/* Descriptor */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-teal-500/30 bg-teal-500/10 mb-6">
-          <Radio className="h-3.5 w-3.5 text-teal-400" />
-          <span className="text-xs font-medium uppercase tracking-wider text-teal-300">Workforce Program Intelligence for Community Colleges</span>
-        </div>
+        <p className="label-brand mb-6">
+          <span className="text-gradient-cosmic">∿ ·</span> Workforce Program Intelligence for Community Colleges
+        </p>
 
         {/* Headline */}
         <h1
@@ -525,9 +524,10 @@ export default function HomePage() {
         <div className="max-w-[680px] mx-auto px-6">
           <div className="card-cosmic rounded-2xl p-8 md:p-10 border-teal-500/20">
             <div className="text-center mb-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20 mb-4">
-                <span className="text-teal-300 text-xs font-semibold uppercase tracking-wider">Free Download</span>
-              </div>
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-theme-tertiary mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-400 shrink-0" />
+                Free Download
+              </span>
               <h2 className="font-heading font-bold text-theme-primary text-2xl md:text-3xl mb-3">
                 5 Signs Your Program Portfolio Has Gaps
               </h2>
@@ -798,10 +798,10 @@ export default function HomePage() {
       <section className="relative py-20 md:py-24">
         <div className="max-w-[720px] mx-auto px-6">
           <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-blue-500/20">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 mb-5">
-              <Radio className="h-3.5 w-3.5 text-blue-400" />
-              <span className="text-blue-300 text-xs font-semibold uppercase tracking-wider">Free Newsletter</span>
-            </div>
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-theme-tertiary mb-5">
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-400 shrink-0" />
+              Free Newsletter
+            </span>
             <h2 className="font-heading font-bold text-theme-primary text-2xl md:text-3xl mb-3">
               The Signal <span className="text-theme-tertiary font-normal text-xl">by Wavelength</span>
             </h2>

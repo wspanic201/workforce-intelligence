@@ -90,7 +90,7 @@ export default function WorkforcePellEligibilityPage() {
         {/* Header */}
         <header className="mb-10">
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <span className="text-xs font-mono text-violet-400 border border-violet-400/30 px-3 py-1 rounded-full">
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-theme-tertiary"><span className="w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0" />
               Policy &amp; Compliance
             </span>
             <span className="text-theme-muted text-sm">January 10, 2026</span>

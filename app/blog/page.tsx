@@ -26,7 +26,7 @@ const posts = [
     category: "Labor Market Intelligence",
     accent: "from-teal-500/20 to-green-500/10",
     border: "border-teal-500/30",
-    tag: "bg-teal-500/10 text-teal-300",
+    dot: "bg-teal-400",
   },
   {
     slug: "ai-changing-job-requirements-curriculum-alignment",
@@ -38,7 +38,7 @@ const posts = [
     category: "Curriculum Strategy",
     accent: "from-amber-500/20 to-orange-500/10",
     border: "border-amber-500/30",
-    tag: "bg-amber-500/10 text-amber-300",
+    dot: "bg-amber-400",
   },
   {
     slug: "community-college-workforce-program-strategy-2026",
@@ -50,7 +50,7 @@ const posts = [
     category: "Program Strategy",
     accent: "from-blue-500/20 to-indigo-500/10",
     border: "border-blue-500/30",
-    tag: "bg-blue-500/10 text-blue-300",
+    dot: "bg-blue-400",
   },
   {
     slug: "workforce-pell-grant-eligibility",
@@ -62,7 +62,7 @@ const posts = [
     category: "Pell Readiness",
     accent: "from-purple-500/20 to-blue-500/10",
     border: "border-purple-500/30",
-    tag: "bg-purple-500/10 text-purple-300",
+    dot: "bg-violet-400",
   },
   {
     slug: "community-college-program-development",
@@ -74,7 +74,7 @@ const posts = [
     category: "Program Strategy",
     accent: "from-blue-500/20 to-teal-500/10",
     border: "border-blue-500/30",
-    tag: "bg-blue-500/10 text-blue-300",
+    dot: "bg-blue-400",
   },
 ];
 
@@ -111,7 +111,8 @@ export default function BlogIndexPage() {
               className={`group border ${post.border} rounded-xl p-8 hover:bg-white/[0.03] transition-colors bg-gradient-to-br ${post.accent}`}
             >
               <div className="flex flex-wrap items-center gap-3 mb-4">
-                <span className={`text-xs font-mono ${post.tag} px-3 py-1 rounded-full`}>
+                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-theme-tertiary">
+                  <span className={`w-1.5 h-1.5 rounded-full ${post.dot} shrink-0`} />
                   {post.category}
                 </span>
                 <span className="text-theme-muted text-sm">{post.date}</span>

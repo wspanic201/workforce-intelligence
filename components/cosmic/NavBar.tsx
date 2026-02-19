@@ -34,7 +34,7 @@ const PRODUCT_CATEGORIES = [
   {
     category: 'Program Health',
     items: [
-      { label: 'Curriculum Drift Analysis', href: '/drift', tag: 'New', tagColor: 'text-orange-400 bg-orange-500/10' },
+      { label: 'Curriculum Drift Analysis', href: '/drift', tag: 'new', tagColor: 'text-gradient-cosmic' },
     ],
   },
 ];
@@ -134,9 +134,13 @@ export function NavBar() {
                           <span className="text-sm text-theme-secondary group-hover:text-theme-primary transition-colors">
                             {p.label}
                           </span>
-                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.tagColor}`}>
-                            {p.tag}
-                          </span>
+                          {p.tagColor.includes('text-gradient-cosmic') ? (
+                            <span className="text-[10px] font-bold text-gradient-cosmic ml-1">{p.tag}</span>
+                          ) : (
+                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.tagColor}`}>
+                              {p.tag}
+                            </span>
+                          )}
                         </Link>
                       ))}
                     </div>
@@ -232,9 +236,13 @@ export function NavBar() {
                     onClick={() => setMobileOpen(false)}
                   >
                     <span>{p.label}</span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.tagColor}`}>
-                      {p.tag}
-                    </span>
+                    {p.tagColor.includes('text-gradient-cosmic') ? (
+                      <span className="text-[10px] font-bold text-gradient-cosmic ml-1">{p.tag}</span>
+                    ) : (
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.tagColor}`}>
+                        {p.tag}
+                      </span>
+                    )}
                   </Link>
                 ))}
               </div>
