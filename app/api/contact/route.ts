@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     // Notify Matt
     await resend.emails.send({
       from: 'Wavelength <hello@signal.withwavelength.com>',
-      to: 'mttmrphy@icloud.com',
+      to: 'hello@withwavelength.com',
       subject: `📬 Wavelength Contact: ${subject || 'General Inquiry'} — ${name}`,
       html: `
         <div style="font-family: -apple-system, sans-serif; max-width: 520px;">

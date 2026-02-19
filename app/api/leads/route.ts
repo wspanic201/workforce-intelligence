@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
       try {
         await resend.emails.send({
           from: 'Wavelength <hello@signal.withwavelength.com>',
-          to: 'mttmrphy@icloud.com',
+          to: 'hello@withwavelength.com',
           subject: `📋 Checklist Download: ${institution}`,
           html: `
             <div style="font-family: -apple-system, sans-serif; max-width: 500px;">
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
     try {
       await resend.emails.send({
         from: 'Wavelength <hello@signal.withwavelength.com>',
-        to: 'mttmrphy@icloud.com',
+        to: 'hello@withwavelength.com',
         subject: `🎯 New Pell Check Lead: ${institution} (${state})`,
         html: `
           <div style="font-family: -apple-system, sans-serif; max-width: 500px;">
