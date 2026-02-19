@@ -374,7 +374,13 @@ function computeViabilityScore(
   }
 
   const finalScore = Math.max(1, Math.min(10, score));
-  const rationale = notes.join('; ');
+
+  // Pre-curriculum caveat — score is indicative until Stage 3 seat-time breakdown is available
+  const caveat = `Indicative score (±1–2 pts pre-curriculum): instruction cost uses BLS benchmark ` +
+    `($${inputs.adjunctHourlyRate.toFixed(2)}/hr × ${inputs.creditHours} credits × 15 hrs/credit) ` +
+    `and will be recomputed from actual seat-time breakdown after curriculum design.`;
+
+  const rationale = notes.join('; ') + '. ' + caveat;
 
   return { score: finalScore, rationale };
 }

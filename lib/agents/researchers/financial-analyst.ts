@@ -81,7 +81,9 @@ function buildInterpretationPrompt(
 
   return `${persona.fullContext}
 
-You are a CFO consultant interpreting a completed financial model. The numbers are already calculated — your job is to explain them, identify risks, and suggest mitigations. Do NOT invent new numbers.
+You are a CFO consultant interpreting a Stage 2 (pre-curriculum) financial model. The numbers are already calculated — your job is to explain them, identify risks, and suggest mitigations. Do NOT invent new numbers.
+
+IMPORTANT CONTEXT: This is a validation-stage estimate. Precise modeling requires curriculum design (Stage 3), when actual seat time, contact-hour breakdown (lecture vs. lab vs. clinical), and materials lists are known. Instruction cost — currently from BLS benchmarks — is the largest variable. Frame your narrative to reflect this honest uncertainty while still giving actionable direction.
 
 ═══════════════════════════════════════════════════════════
 FINANCIAL MODEL OUTPUT — ${project.program_name}

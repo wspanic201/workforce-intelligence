@@ -806,17 +806,44 @@ export default function KirkwoodPharmTechValidationPage() {
                   <div className="px-5 pb-6 pt-2 space-y-5">
                     {d.name === 'Financial Viability' ? (
                       <>
-                        {/* Stage 2 disclaimer */}
-                        <p className="text-xs text-theme-muted italic border-l-2 border-theme-subtle pl-3">
-                          Financial projections at validation stage are based on industry benchmarks and program-type assumptions. Costs refine significantly after curriculum development, when total seat time, contact hour breakdown, and materials requirements are known.
-                        </p>
+                        {/* Stage 2 estimate callout */}
+                        <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 px-4 py-4">
+                          <div className="flex items-start gap-3">
+                            <span className="text-lg flex-shrink-0 leading-none mt-0.5">📐</span>
+                            <div>
+                              <p className="text-sm font-bold text-amber-700 dark:text-amber-400">
+                                Stage 2 Estimate — Pre-Curriculum Rough Model
+                              </p>
+                              <p className="text-xs text-theme-secondary leading-relaxed mt-1">
+                                Precise financial modeling is only possible after curriculum development, when total seat time,
+                                contact-hour breakdown (lecture vs. lab vs. clinical), and materials requirements are known.
+                                This model uses BLS benchmarks and peer-program data as proxies. Numbers shown are directionally
+                                correct but carry ±20–30% uncertainty until Stage 3 is complete.
+                              </p>
+                              <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                                <div className="rounded-lg bg-amber-500/10 border border-amber-500/20 px-3 py-2">
+                                  <p className="font-bold text-amber-700 dark:text-amber-400">Stage 2 · Now</p>
+                                  <p className="text-theme-secondary mt-0.5">Rough P&L from BLS benchmarks + peer cohort data. Answers: <em>Is this financially viable in principle?</em></p>
+                                </div>
+                                <div className="rounded-lg bg-purple-500/10 border border-purple-500/20 px-3 py-2">
+                                  <p className="font-bold text-purple-700 dark:text-purple-400">Stage 3 · Curriculum Design</p>
+                                  <p className="text-theme-secondary mt-0.5">Precise instruction cost from actual seat time, lab ratios, materials list, and vendor quotes replaces every benchmark.</p>
+                                </div>
+                                <div className="rounded-lg bg-teal-500/10 border border-teal-500/20 px-3 py-2">
+                                  <p className="font-bold text-teal-700 dark:text-teal-400">Program Launch</p>
+                                  <p className="text-theme-secondary mt-0.5">Real instructor contracts, space agreements, and enrollment actuals close the loop. Model becomes a budget.</p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
 
                         {/* Score badge */}
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20">
-                            🏦 Model-Driven Score: {pharmtechFinancialModel.viabilityScore}/10
+                            🏦 Indicative Score: {pharmtechFinancialModel.viabilityScore}/10
                           </span>
-                          <span className="text-xs text-theme-muted">BLS OES · AAUP/CUPA-HR · Iowa DE Perkins V</span>
+                          <span className="text-xs text-theme-muted">BLS OES · AAUP/CUPA-HR · Iowa DE Perkins V · ±1–2 pts pre-curriculum</span>
                         </div>
 
                         {/* Break-even callout */}
@@ -971,7 +998,8 @@ export default function KirkwoodPharmTechValidationPage() {
                                 <tr className="border-b border-theme-subtle bg-theme-surface/50">
                                   <th className="text-left px-3 py-2 text-theme-muted font-semibold">Item</th>
                                   <th className="text-right px-3 py-2 text-theme-muted font-semibold">Value</th>
-                                  <th className="text-left px-3 py-2 text-theme-muted font-semibold hidden sm:table-cell">Source</th>
+                                  <th className="text-left px-3 py-2 text-theme-muted font-semibold hidden md:table-cell">Source</th>
+                                  <th className="text-left px-3 py-2 text-purple-600 dark:text-purple-400 font-semibold hidden lg:table-cell">Refines at</th>
                                 </tr>
                               </thead>
                               <tbody className="divide-y divide-theme-subtle">
@@ -979,24 +1007,29 @@ export default function KirkwoodPharmTechValidationPage() {
                                   <tr key={a.item}>
                                     <td className="px-3 py-1.5 text-theme-secondary">{a.item}</td>
                                     <td className="px-3 py-1.5 text-right text-theme-primary font-mono text-[10px] whitespace-nowrap">{a.value}</td>
-                                    <td className="px-3 py-1.5 text-theme-muted text-[10px] hidden sm:table-cell">{a.source}</td>
+                                    <td className="px-3 py-1.5 text-theme-muted text-[10px] hidden md:table-cell">{a.source}</td>
+                                    <td className="px-3 py-1.5 text-purple-600 dark:text-purple-400 text-[10px] hidden lg:table-cell whitespace-nowrap">{a.refinesAt}</td>
                                   </tr>
                                 ))}
                               </tbody>
                             </table>
                           </div>
+                          <p className="text-[10px] text-theme-muted mt-1.5 italic">
+                            💡 <span className="text-purple-600 dark:text-purple-400 font-medium">Refines at</span> — shows when each benchmark is replaced by real data (visible on large screens).
+                          </p>
                         </div>
 
                         {/* Score rationale */}
                         <div className="rounded-xl bg-purple-500/5 border border-purple-500/20 px-4 py-3">
-                          <p className="text-xs font-semibold text-purple-700 dark:text-purple-400 mb-1">Score Rationale (Algorithmic)</p>
+                          <p className="text-xs font-semibold text-purple-700 dark:text-purple-400 mb-1">Score Rationale — Indicative, Pre-Curriculum</p>
                           <p className="text-xs text-theme-secondary leading-relaxed">
-                            Score of 8/10 driven by: Year 3 margin 69.7% ≥ 20% (+3 pts); Perkins V fully
-                            bridges Year 1 gap (+1 pt); Year 2 strongly positive at +$68,957 (+2 pts);
-                            Year 1 net positive — no loss (+1 pt); hybrid delivery (+1 pt). Break-even
-                            at 67% of target cohort falls just above the 60% threshold that would add
-                            2 more points. Enrollment below 12 students in Year 1 is the primary risk
-                            that could push score to 5–6.
+                            Indicative score of 8/10 (±1–2 pts pre-curriculum) driven by: Year 3 margin
+                            69.7% ≥ 20% (+3 pts); Perkins V fully bridges Year 1 gap (+1 pt); Year 2
+                            strongly positive at +$68,957 (+2 pts); Year 1 net positive (+1 pt); hybrid
+                            delivery (+1 pt). Break-even at 67% of target cohort falls just above the
+                            60% threshold that would add 2 more points. <strong>Score will re-run after Stage 3
+                            curriculum design</strong> — instruction cost is the largest variable and currently
+                            estimated from BLS benchmarks rather than actual seat-time breakdown.
                           </p>
                         </div>
                       </>
