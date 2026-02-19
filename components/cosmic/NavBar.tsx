@@ -130,9 +130,6 @@ export function NavBar() {
               )}
             </div>
 
-            <Link href="/#how-it-works" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors">
-              How It Works
-            </Link>
             <Link href="/samples" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors">
               Sample Reports
             </Link>
@@ -196,10 +193,6 @@ export function NavBar() {
             ))}
 
             <div className="border-t border-theme-subtle my-3" />
-            <Link href="/#how-it-works" onClick={() => setMobileOpen(false)}
-              className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
-              How It Works
-            </Link>
             <Link href="/samples" onClick={() => setMobileOpen(false)}
               className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
               Sample Reports
