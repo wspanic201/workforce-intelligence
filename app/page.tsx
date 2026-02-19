@@ -113,7 +113,7 @@ function StaticHero() {
           className="text-gradient-cosmic font-heading font-bold leading-[1.05]"
           style={{ fontSize: 'clamp(2.4rem, 5vw + 0.5rem, 4.2rem)' }}
         >
-          Program intelligence delivered in days, not months.
+          Workforce program intelligence delivered in days, not months.
         </h1>
 
         {/* Subhead */}
