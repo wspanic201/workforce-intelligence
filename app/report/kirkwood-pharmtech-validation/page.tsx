@@ -282,14 +282,16 @@ export default function KirkwoodPharmTechValidationPage() {
                       />
                     </div>
                   </div>
-                  <span className={`text-lg font-bold font-mono w-10 text-right ${scoreColor(d.score)}`}>
+                  <span className={`text-lg font-bold font-mono w-12 text-right ${scoreColor(d.score)}`}>
                     {d.score}
                   </span>
-                  <span
-                    className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full whitespace-nowrap ${statusBadge(d.status)}`}
-                  >
-                    {d.status}
-                  </span>
+                  <div className="w-28 flex justify-end">
+                    <span
+                      className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full whitespace-nowrap ${statusBadge(d.status)}`}
+                    >
+                      {d.status}
+                    </span>
+                  </div>
                 </div>
               ))}
 
@@ -307,12 +309,14 @@ export default function KirkwoodPharmTechValidationPage() {
                     />
                   </div>
                 </div>
-                <span className="text-xl font-bold font-mono w-10 text-right text-amber-600 dark:text-amber-400">
+                <span className="text-xl font-bold font-mono w-12 text-right text-amber-600 dark:text-amber-400">
                   7.0
                 </span>
-                <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full whitespace-nowrap bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
-                  CONDITIONAL GO
-                </span>
+                <div className="w-28 flex justify-end">
+                  <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full whitespace-nowrap bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
+                    CONDITIONAL GO
+                  </span>
+                </div>
               </div>
             </div>
           </AnimateOnScroll>
