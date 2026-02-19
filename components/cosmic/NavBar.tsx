@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { WavelengthMark } from './WavelengthLogo';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const PRODUCT_CATEGORIES = [
   {
@@ -171,6 +172,7 @@ export function NavBar() {
           </div>
 
           <div className="hidden md:flex items-center gap-3">
+            <ThemeToggle />
             <Link href="/pell">
               <button className="btn-cosmic btn-cosmic-primary text-sm py-2 px-6">
                 Get Started Free
@@ -269,7 +271,10 @@ export function NavBar() {
               The Signal — Free Newsletter
             </Link>
 
-            <div className="pt-3">
+            <div className="pt-3 flex flex-col gap-3">
+              <div className="flex justify-center">
+                <ThemeToggle />
+              </div>
               <Link href="/pell" onClick={() => setMobileOpen(false)}>
                 <button className="btn-cosmic btn-cosmic-primary text-sm py-3 px-6 w-full">
                   Get Started Free
