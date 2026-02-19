@@ -119,7 +119,7 @@ export default function WorkforcePellEligibilityPage() {
 
         {/* TOC */}
         <nav
-          className="bg-white/[0.03] border border-theme-subtle rounded-2xl p-6 mb-12"
+          className="bg-theme-surface border border-theme-subtle rounded-2xl p-6 mb-12"
           aria-label="Table of Contents"
         >
           <h2
@@ -168,8 +168,8 @@ export default function WorkforcePellEligibilityPage() {
             high-demand fields. For community colleges, this is a substantial shift in how
             workforce education can be funded.
           </p>
-          <div className="bg-white/[0.03] border-l-4 border-violet-500 p-5 rounded-r-xl mb-4">
-            <p className="text-white/90 font-medium">
+          <div className="bg-theme-surface border-l-4 border-violet-500 p-5 rounded-r-xl mb-4">
+            <p className="text-theme-secondary font-medium">
               What this means practically: Students in eligible short-term programs can
               now receive up to $2,500 in Pell funding per year — making workforce
               certificates financially accessible in a way they never were before.
@@ -226,7 +226,7 @@ export default function WorkforcePellEligibilityPage() {
             ].map((item) => (
               <div
                 key={item.criterion}
-                className="border border-theme-subtle rounded-xl p-5 bg-white/[0.02]"
+                className="border border-theme-subtle rounded-xl p-5 bg-theme-surface"
               >
                 <div className="flex gap-3">
                   <span className="text-teal-400 mt-0.5 shrink-0">✓</span>
@@ -370,7 +370,7 @@ export default function WorkforcePellEligibilityPage() {
             ].map((item) => (
               <div
                 key={item.req}
-                className="border border-theme-subtle rounded-xl p-5 bg-white/[0.02]"
+                className="border border-theme-subtle rounded-xl p-5 bg-theme-surface"
               >
                 <h3
                   className="text-theme-primary font-semibold mb-2 text-sm"

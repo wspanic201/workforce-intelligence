@@ -153,7 +153,7 @@ export default function BlogIndexPage() {
             </Link>
             <Link
               href="/discover"
-              className="border border-theme-strong text-theme-primary hover:border-white/40 px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="border border-theme-strong text-theme-primary hover:border-theme-strong px-6 py-3 rounded-lg font-semibold transition-colors"
             >
               Discover Programs
             </Link>

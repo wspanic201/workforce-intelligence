@@ -111,7 +111,7 @@ export default function ProgramDevelopmentPage() {
 
         {/* Table of Contents */}
         <nav
-          className="bg-white/[0.03] border border-theme-subtle rounded-xl p-6 mb-12"
+          className="bg-theme-surface border border-theme-subtle rounded-xl p-6 mb-12"
           aria-label="Table of Contents"
         >
           <h2 className="text-xs font-mono text-blue-400 uppercase tracking-widest mb-4">
@@ -172,7 +172,7 @@ export default function ProgramDevelopmentPage() {
             first step toward building something better.
           </p>
 
-          <h3 className="text-xl font-semibold mb-3 text-white/90">The Employer Survey Problem</h3>
+          <h3 className="text-xl font-semibold mb-3 text-theme-secondary">The Employer Survey Problem</h3>
           <p className="text-theme-tertiary leading-relaxed mb-4">
             Employer surveys consistently over-represent demand. When an HR director says "we
             could hire 30 people with these credentials," they're describing an aspirational
@@ -181,7 +181,7 @@ export default function ProgramDevelopmentPage() {
             Advisory board enthusiasm is meaningful context, not evidence.
           </p>
 
-          <h3 className="text-xl font-semibold mb-3 text-white/90">The Peer Institution Lag</h3>
+          <h3 className="text-xl font-semibold mb-3 text-theme-secondary">The Peer Institution Lag</h3>
           <p className="text-theme-tertiary leading-relaxed mb-4">
             Watching what programs peer institutions are launching and replicating them sounds
             rational. In practice, it produces a two- to three-year lag. By the time you've
@@ -190,7 +190,7 @@ export default function ProgramDevelopmentPage() {
             shifting. You're competing on their momentum, not yours.
           </p>
 
-          <h3 className="text-xl font-semibold mb-3 text-white/90">The Completion Assumption</h3>
+          <h3 className="text-xl font-semibold mb-3 text-theme-secondary">The Completion Assumption</h3>
           <p className="text-theme-tertiary leading-relaxed mb-4">
             Programs built around the assumption that enrolled students will complete at high
             rates often don't account for the specific barriers that affect their target population.
@@ -211,7 +211,7 @@ export default function ProgramDevelopmentPage() {
             you wouldn't have found through advisory board conversations alone.
           </p>
 
-          <h3 className="text-xl font-semibold mb-3 text-white/90">What to Look For</h3>
+          <h3 className="text-xl font-semibold mb-3 text-theme-secondary">What to Look For</h3>
           <p className="text-theme-tertiary leading-relaxed mb-4">
             Effective market scanning focuses on several overlapping data streams:
           </p>
@@ -253,7 +253,7 @@ export default function ProgramDevelopmentPage() {
             </li>
           </ul>
 
-          <h3 className="text-xl font-semibold mb-3 text-white/90">Defining Your Labor Market Region</h3>
+          <h3 className="text-xl font-semibold mb-3 text-theme-secondary">Defining Your Labor Market Region</h3>
           <p className="text-theme-tertiary leading-relaxed mb-4">
             Your labor market region is not your county. It's the geographic area within which
             your typical completer will plausibly seek employment — usually defined by commute
@@ -312,7 +312,7 @@ export default function ProgramDevelopmentPage() {
             ].map((block) => (
               <div key={block.title} className={`border ${block.color} rounded-xl p-5`}>
                 <p className={`font-semibold text-sm mb-3 ${block.labelColor}`}>{block.title}</p>
-                <ul className="space-y-1 text-white/55 text-sm">
+                <ul className="space-y-1 text-theme-tertiary text-sm">
                   {block.items.map((item) => (
                     <li key={item} className="flex gap-2">
                       <span className={`${block.labelColor} flex-shrink-0`}>·</span>
@@ -345,7 +345,7 @@ export default function ProgramDevelopmentPage() {
             three competing programs with strong completion rates is a different calculation.
           </p>
 
-          <h3 className="text-xl font-semibold mb-3 text-white/90">What to Map</h3>
+          <h3 className="text-xl font-semibold mb-3 text-theme-secondary">What to Map</h3>
           <ul className="space-y-3 text-theme-tertiary mb-6">
             <li className="flex gap-3">
               <span className="text-blue-400 mt-1 flex-shrink-0">→</span>
@@ -396,7 +396,7 @@ export default function ProgramDevelopmentPage() {
             into one creates programs that should have been built differently or not at all.
           </p>
 
-          <h3 className="text-xl font-semibold mb-3 text-white/90">Demand Validation</h3>
+          <h3 className="text-xl font-semibold mb-3 text-theme-secondary">Demand Validation</h3>
           <p className="text-theme-tertiary leading-relaxed mb-4">
             Demand validation means confirming, through direct employer contact, that your
             specific program concept — at the credential level and length you're considering —
@@ -416,7 +416,7 @@ export default function ProgramDevelopmentPage() {
             development.
           </p>
 
-          <h3 className="text-xl font-semibold mb-3 text-white/90">Student Pipeline Validation</h3>
+          <h3 className="text-xl font-semibold mb-3 text-theme-secondary">Student Pipeline Validation</h3>
           <p className="text-theme-tertiary leading-relaxed mb-4">
             Employer demand is necessary but not sufficient. You also need to confirm that your
             institution can actually reach and enroll the students who would benefit from this
@@ -484,7 +484,7 @@ export default function ProgramDevelopmentPage() {
             ].map((item, i) => (
               <div
                 key={i}
-                className="border border-theme-subtle rounded-xl p-5 bg-white/[0.02]"
+                className="border border-theme-subtle rounded-xl p-5 bg-theme-surface"
               >
                 <p className="text-theme-primary font-semibold mb-2 flex items-start gap-2">
                   <span className="text-teal-400 mt-0.5 flex-shrink-0">✓</span>
@@ -507,7 +507,7 @@ export default function ProgramDevelopmentPage() {
             programs that were strong candidates three years ago may be at risk today.
           </p>
 
-          <h3 className="text-xl font-semibold mb-3 text-white/90">Annual Program Review</h3>
+          <h3 className="text-xl font-semibold mb-3 text-theme-secondary">Annual Program Review</h3>
           <p className="text-theme-tertiary leading-relaxed mb-4">
             Each year, run every program in your short-term portfolio through a simplified version
             of the same framework you used to build it. Key questions:
@@ -537,7 +537,7 @@ export default function ProgramDevelopmentPage() {
             </li>
           </ul>
 
-          <h3 className="text-xl font-semibold mb-3 text-white/90">Sunsetting Programs</h3>
+          <h3 className="text-xl font-semibold mb-3 text-theme-secondary">Sunsetting Programs</h3>
           <p className="text-theme-tertiary leading-relaxed mb-4">
             Sunsetting is the part of portfolio management that most institutions avoid too long.
             Discontinued programs create operational complexity, consume faculty and administrative
@@ -604,7 +604,7 @@ export default function ProgramDevelopmentPage() {
                 className={`border ${tool.color} rounded-xl p-5 hover:opacity-90 transition-opacity block`}
               >
                 <p className={`font-semibold mb-2 ${tool.labelColor}`}>{tool.name}</p>
-                <p className="text-white/55 text-sm leading-relaxed">{tool.desc}</p>
+                <p className="text-theme-tertiary text-sm leading-relaxed">{tool.desc}</p>
               </Link>
             ))}
           </div>
@@ -616,7 +616,7 @@ export default function ProgramDevelopmentPage() {
           <div className="grid md:grid-cols-1 gap-4">
             <Link
               href="/blog/workforce-pell-grant-eligibility"
-              className="border border-theme-subtle rounded-xl p-5 hover:border-purple-500/30 transition-colors group bg-white/[0.02]"
+              className="border border-theme-subtle rounded-xl p-5 hover:border-purple-500/30 transition-colors group bg-theme-surface"
             >
               <p className="text-xs text-purple-400 font-mono mb-2">Pell Readiness</p>
               <h3 className="font-bold text-theme-secondary group-hover:text-theme-primary transition-colors">
@@ -631,7 +631,7 @@ export default function ProgramDevelopmentPage() {
           <h2 className="text-2xl font-bold mb-3 text-theme-primary">
             Start with Your Regional Market Scan
           </h2>
-          <p className="text-white/55 mb-6 max-w-xl mx-auto">
+          <p className="text-theme-tertiary mb-6 max-w-xl mx-auto">
             You've read the framework. Now apply it to your institution's specific region —
             with job posting data, wage information, and competitive analysis built in.
           </p>
