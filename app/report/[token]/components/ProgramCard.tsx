@@ -207,7 +207,7 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Score breakdown */}
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-white/40 mb-3 flex items-center gap-2">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-theme-muted mb-3 flex items-center gap-2">
                 <span className="inline-block w-4 h-px bg-white/20" />
                 Score Breakdown
               </h4>
@@ -216,7 +216,7 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
 
             {/* Key metrics */}
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-white/40 mb-3 flex items-center gap-2">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-theme-muted mb-3 flex items-center gap-2">
                 <span className="inline-block w-4 h-px bg-white/20" />
                 Key Metrics
               </h4>
@@ -231,8 +231,8 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
                   };
                   return (
                     <div key={key} className="flex justify-between text-xs gap-3">
-                      <span className="text-white/40">{labels[key] || key}</span>
-                      <span className="text-white/70 text-right">{val}</span>
+                      <span className="text-theme-muted">{labels[key] || key}</span>
+                      <span className="text-theme-secondary text-right">{val}</span>
                     </div>
                   );
                 })}
@@ -240,26 +240,26 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
                   <>
                     {blueOcean.medianWage && (
                       <div className="flex justify-between text-xs gap-3">
-                        <span className="text-white/40">Median Wage</span>
-                        <span className="text-white/70">{blueOcean.medianWage}</span>
+                        <span className="text-theme-muted">Median Wage</span>
+                        <span className="text-theme-secondary">{blueOcean.medianWage}</span>
                       </div>
                     )}
                     {blueOcean.estimatedDemand && (
                       <div className="flex justify-between text-xs gap-3">
-                        <span className="text-white/40">Demand Estimate</span>
-                        <span className="text-white/70">{blueOcean.estimatedDemand}</span>
+                        <span className="text-theme-muted">Demand Estimate</span>
+                        <span className="text-theme-secondary">{blueOcean.estimatedDemand}</span>
                       </div>
                     )}
                     {blueOcean.competitivePosition && (
                       <div className="flex justify-between text-xs gap-3">
-                        <span className="text-white/40">Market Position</span>
-                        <span className="text-white/70 capitalize">{blueOcean.competitivePosition.replace(/_/g, ' ')}</span>
+                        <span className="text-theme-muted">Market Position</span>
+                        <span className="text-theme-secondary capitalize">{blueOcean.competitivePosition.replace(/_/g, ' ')}</span>
                       </div>
                     )}
                     {blueOcean.firstMoverAdvantage && (
                       <div className="flex justify-between text-xs gap-3">
-                        <span className="text-white/40">First Mover</span>
-                        <span className="text-white/70">{blueOcean.firstMoverAdvantage}</span>
+                        <span className="text-theme-muted">First Mover</span>
+                        <span className="text-theme-secondary">{blueOcean.firstMoverAdvantage}</span>
                       </div>
                     )}
                   </>
@@ -270,28 +270,28 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
 
           {/* Program details (conventional) */}
           {conventional?.programSnapshot && (
-            <div className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-white/40 mb-3 flex items-center gap-1.5">
+            <div className="rounded-xl bg-white/[0.03] border border-theme-subtle p-4">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-theme-muted mb-3 flex items-center gap-1.5">
                 <Clock className="w-3.5 h-3.5" />
                 Program Structure
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                 {conventional.programSnapshot.estimatedDuration && (
                   <div>
-                    <span className="text-white/40">Duration: </span>
-                    <span className="text-white/70">{conventional.programSnapshot.estimatedDuration}</span>
+                    <span className="text-theme-muted">Duration: </span>
+                    <span className="text-theme-secondary">{conventional.programSnapshot.estimatedDuration}</span>
                   </div>
                 )}
                 {conventional.programSnapshot.deliveryFormat && (
                   <div>
-                    <span className="text-white/40">Format: </span>
-                    <span className="text-white/70">{conventional.programSnapshot.deliveryFormat}</span>
+                    <span className="text-theme-muted">Format: </span>
+                    <span className="text-theme-secondary">{conventional.programSnapshot.deliveryFormat}</span>
                   </div>
                 )}
                 {conventional.programSnapshot.targetAudience && (
                   <div className="col-span-full">
-                    <span className="text-white/40">Target Audience: </span>
-                    <span className="text-white/70">{conventional.programSnapshot.targetAudience}</span>
+                    <span className="text-theme-muted">Target Audience: </span>
+                    <span className="text-theme-secondary">{conventional.programSnapshot.targetAudience}</span>
                   </div>
                 )}
               </div>
@@ -316,13 +316,13 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
           {/* Barriers */}
           {barriers.length > 0 && (
             <div>
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-white/40 mb-3 flex items-center gap-2">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-theme-muted mb-3 flex items-center gap-2">
                 <AlertTriangle className="w-3.5 h-3.5" />
                 Barriers & Risks
               </h4>
               <ul className="space-y-1.5">
                 {barriers.map((b, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-white/60">
+                  <li key={i} className="flex items-start gap-2 text-sm text-theme-secondary">
                     <span className="w-1.5 h-1.5 rounded-full bg-amber-500/60 shrink-0 mt-1.5" />
                     {b}
                   </li>
@@ -340,25 +340,25 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
                   <h4 className="text-sm font-semibold text-violet-300 mb-2">
                     What Validation Would Confirm
                   </h4>
-                  <p className="text-xs text-white/50 mb-3">
+                  <p className="text-xs text-theme-tertiary mb-3">
                     These are the open questions that employer validation would answer — turning this discovery into a launch decision.
                   </p>
                   <ul className="space-y-2">
                     {validationItems.map((item, i) => (
-                      <li key={i} className="flex items-start gap-2 text-sm text-white/70 leading-relaxed">
+                      <li key={i} className="flex items-start gap-2 text-sm text-theme-secondary leading-relaxed">
                         <CheckCircle2 className="w-3.5 h-3.5 text-violet-400/60 shrink-0 mt-0.5" />
                         {item}
                       </li>
                     ))}
                   </ul>
-                  <div className="mt-4 pt-4 border-t border-white/[0.06]">
+                  <div className="mt-4 pt-4 border-t border-theme-subtle">
                     <a
                       href="/#pricing"
                       className="inline-flex items-center gap-2 text-sm font-semibold text-amber-400 hover:text-amber-300 transition-colors"
                     >
                       <span>Get Employer Validation →</span>
                     </a>
-                    <p className="text-xs text-white/30 mt-1">
+                    <p className="text-xs text-theme-muted mt-1">
                       Wavelength Validation Phase conducts deep employer outreach in your region
                     </p>
                   </div>

@@ -338,116 +338,71 @@ function FAQSection() {
 
 /* ───────────── Static Hero ───────────── */
 
-const PRODUCT_CARDS = [
-  { icon: '🎯', label: 'Pell Readiness Check', tag: 'Free', color: 'purple', href: '/pell', desc: 'Find out if your programs qualify for federal funding' },
-  { icon: '📋', label: 'Program Gap Audit', tag: '$295', color: 'blue', href: '/compliance-gap', desc: "See every compliance gap and what it's costing you" },
-  { icon: '📊', label: 'Program Opportunity Scan', tag: '$1,500', color: 'teal', href: '/discover', desc: 'Get 7–10 validated program opportunities, scored and ready to act on' },
-  { icon: '📡', label: 'Drift Monitor', tag: 'From $1,200/yr', color: 'orange', href: '/drift', desc: 'Keep existing programs aligned to employer demand' },
+const CATEGORY_CHIPS = [
+  { label: 'Market Research',      href: '/market-research',      color: 'text-violet-300 border-violet-500/30 bg-violet-500/10 hover:bg-violet-500/20' },
+  { label: 'Program Analysis',     href: '/program-analysis',     color: 'text-blue-300 border-blue-500/30 bg-blue-500/10 hover:bg-blue-500/20' },
+  { label: 'Program Development',  href: '/program-development',  color: 'text-emerald-300 border-emerald-500/30 bg-emerald-500/10 hover:bg-emerald-500/20' },
+  { label: 'Grant Alignment',      href: '/grant-alignment',      color: 'text-green-300 border-green-500/30 bg-green-500/10 hover:bg-green-500/20' },
+  { label: 'Program Health',       href: '/program-health',       color: 'text-orange-300 border-orange-500/30 bg-orange-500/10 hover:bg-orange-500/20' },
 ];
-
-const CARD_COLORS: Record<string, string> = {
-  purple: 'bg-purple-500/10 border-purple-500/20 text-purple-300',
-  blue:   'bg-blue-500/10 border-blue-500/20 text-blue-300',
-  teal:   'bg-teal-500/10 border-teal-500/20 text-teal-300',
-  orange: 'bg-orange-500/10 border-orange-500/20 text-orange-300',
-};
 
 function StaticHero() {
   return (
-    <section className="relative min-h-[90vh] lg:h-[90vh] lg:min-h-[700px] lg:max-h-[900px] flex items-center justify-center pt-36 lg:pt-40 pb-16 overflow-hidden">
+    <section className="relative min-h-[90vh] lg:min-h-[700px] flex items-center justify-center pt-36 lg:pt-40 pb-16 overflow-hidden">
       <Stars count={120} />
       <Aurora />
       <Waveform className="opacity-30" />
       <ParticleConstellation particleCount={30} connectionDistance={90} mouseRadius={120} speed={0.2} />
 
-      <div className="relative z-10 max-w-[1200px] mx-auto px-6 w-full">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+      <div className="relative z-10 max-w-[860px] mx-auto px-6 w-full text-center">
 
-          {/* Left: Brand statement + CTAs */}
-          <div className="flex-1 text-center lg:text-left">
-
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-teal-500/30 bg-teal-500/10 mb-6">
-              <Radio className="h-3.5 w-3.5 text-teal-400" />
-              <span className="text-xs font-medium uppercase tracking-wider text-teal-300">Workforce Program Intelligence</span>
-            </div>
-
-            <h1
-              className="text-gradient-cosmic font-heading font-bold leading-[1.05]"
-              style={{ fontSize: 'clamp(2.4rem, 5vw + 0.5rem, 4.2rem)' }}
-            >
-              Build the programs your region is asking for.
-            </h1>
-
-            <div className="mt-4 flex lg:justify-start justify-center">
-              <Equalizer bars={9} size="sm" muted />
-            </div>
-
-            <p className="mt-2 text-xs font-mono tracking-widest text-theme-muted uppercase lg:text-left text-center">
-              Community Colleges · Workforce Teams · Labor Market Data
-            </p>
-
-            <p className="mt-5 text-lg md:text-xl text-theme-secondary leading-relaxed max-w-xl">
-              Wavelength gives community college workforce teams the intelligence to find programs worth building, validate demand before you invest, secure available funding, and keep existing programs current — all from live labor market data.
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-5 lg:justify-start justify-center">
-              {[
-                { value: '50+', label: 'verified sources' },
-                { value: '7–10', label: 'program leads per scan' },
-                { value: '$0', label: 'to get started' },
-              ].map(({ value, label }) => (
-                <div key={label} className="text-center">
-                  <div className="font-heading font-bold text-2xl text-gradient-cosmic">{value}</div>
-                  <p className="text-theme-secondary text-xs mt-0.5 uppercase tracking-wider">{label}</p>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-8 flex flex-wrap gap-4 lg:justify-start justify-center">
-              <Link href="/pell">
-                <button className="btn-cosmic btn-cosmic-primary text-sm">
-                  Start Free →
-                </button>
-              </Link>
-              <Link href="/report/demo">
-                <button className="btn-cosmic btn-cosmic-ghost text-sm">
-                  View Sample Report
-                </button>
-              </Link>
-            </div>
-          </div>
-
-          {/* Right: Product card stack */}
-          <div className="w-full lg:w-auto lg:min-w-[420px] lg:max-w-[480px]">
-            <div className="space-y-3 w-full">
-              {PRODUCT_CARDS.map((item, idx) => (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  className="card-cosmic rounded-xl p-4 flex items-center gap-4 hover:border-theme-strong transition-all group block"
-                  style={{ animationDelay: `${idx * 150}ms` }}
-                >
-                  <span className="text-2xl">{item.icon}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-heading font-semibold text-theme-primary text-sm">{item.label}</h4>
-                      <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${CARD_COLORS[item.color]}`}>
-                        {item.tag}
-                      </span>
-                    </div>
-                    <p className="text-theme-tertiary text-xs mt-0.5">{item.desc}</p>
-                  </div>
-                  <ArrowRight className="h-4 w-4 text-theme-muted flex-shrink-0 group-hover:text-theme-tertiary transition-colors" />
-                </Link>
-              ))}
-              <div className="pt-2 flex items-center gap-2 justify-center">
-                <Equalizer bars={5} size="sm" muted />
-                <span className="text-theme-muted text-xs tracking-wider uppercase">Tuned to your market</span>
-                <Equalizer bars={5} size="sm" muted />
-              </div>
-            </div>
-          </div>
+        {/* Descriptor */}
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-teal-500/30 bg-teal-500/10 mb-6">
+          <Radio className="h-3.5 w-3.5 text-teal-400" />
+          <span className="text-xs font-medium uppercase tracking-wider text-teal-300">Workforce Program Intelligence for Community Colleges</span>
         </div>
+
+        {/* Headline */}
+        <h1
+          className="text-gradient-cosmic font-heading font-bold leading-[1.05]"
+          style={{ fontSize: 'clamp(2.4rem, 5vw + 0.5rem, 4.2rem)' }}
+        >
+          Your next program is already in demand. Wavelength finds it.
+        </h1>
+
+        {/* Subhead */}
+        <p className="mt-6 text-lg md:text-xl text-theme-secondary leading-relaxed max-w-2xl mx-auto">
+          Find programs worth building, validate demand, secure funding, and keep your curriculum current — backed by live labor market data.
+        </p>
+
+        {/* CTAs */}
+        <div className="mt-8 flex flex-wrap gap-4 justify-center">
+          <Link href="/pell">
+            <button className="btn-cosmic btn-cosmic-primary text-sm">
+              Start Free — Pell Check
+            </button>
+          </Link>
+          <Link href="#products">
+            <button className="btn-cosmic btn-cosmic-ghost text-sm">
+              Explore Products ↓
+            </button>
+          </Link>
+        </div>
+
+        {/* Category chips */}
+        <div className="mt-10 flex flex-wrap gap-3 justify-center">
+          {CATEGORY_CHIPS.map((chip) => (
+            <Link
+              key={chip.label}
+              href={chip.href}
+              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full border text-sm font-semibold transition-colors ${chip.color}`}
+            >
+              <span className="opacity-60">●</span>
+              {chip.label}
+            </Link>
+          ))}
+        </div>
+
       </div>
     </section>
   );

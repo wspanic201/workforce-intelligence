@@ -27,8 +27,8 @@ function StatCard({ label, value, icon: Icon, color = 'purple' }: {
       <div className={`inline-flex p-2 rounded-lg mb-3 ${colorMap[color]}`}>
         <Icon className={`w-4 h-4 ${colorMap[color].split(' ')[0]}`} />
       </div>
-      <div className="text-xl font-bold text-white">{value}</div>
-      <div className="text-xs text-white/40 mt-1">{label}</div>
+      <div className="text-xl font-bold text-theme-primary">{value}</div>
+      <div className="text-xs text-theme-muted mt-1">{label}</div>
     </div>
   );
 }
@@ -93,19 +93,19 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
       {/* Institution overview */}
       {institution && (
         <div className="card-cosmic rounded-2xl p-6">
-          <h3 className="text-base font-semibold text-white mb-4 flex items-center gap-2">
+          <h3 className="text-base font-semibold text-theme-primary mb-4 flex items-center gap-2">
             <GraduationCap className="w-4 h-4 text-violet-400" />
             Institution Profile
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <div className="text-xs text-white/40 mb-0.5">Name</div>
-              <div className="text-sm text-white/80">{institution.name}</div>
+              <div className="text-xs text-theme-muted mb-0.5">Name</div>
+              <div className="text-sm text-theme-secondary">{institution.name}</div>
             </div>
             {institution.city && (
               <div>
-                <div className="text-xs text-white/40 mb-0.5">Service Region</div>
-                <div className="text-sm text-white/80 flex items-center gap-1">
+                <div className="text-xs text-theme-muted mb-0.5">Service Region</div>
+                <div className="text-sm text-theme-secondary flex items-center gap-1">
                   <MapPin className="w-3 h-3 text-violet-400" />
                   {institution.city}, {institution.state}
                   {institution.serviceArea && ` (${institution.serviceArea})`}
@@ -116,23 +116,23 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
 
           {/* Demographics */}
           {Object.keys(demos).length > 0 && (
-            <div className="mt-5 pt-5 border-t border-white/[0.06]">
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-white/40 mb-3 flex items-center gap-2">
+            <div className="mt-5 pt-5 border-t border-theme-subtle">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-theme-muted mb-3 flex items-center gap-2">
                 <Users className="w-3.5 h-3.5" />
                 Regional Demographics
               </h4>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {Object.entries(demos).map(([county, info]) => (
-                  <div key={county} className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3">
-                    <div className="text-xs font-semibold text-white/60 mb-2">{county} County</div>
+                  <div key={county} className="rounded-xl bg-white/[0.03] border border-theme-subtle p-3">
+                    <div className="text-xs font-semibold text-theme-secondary mb-2">{county} County</div>
                     {info.population && (
-                      <div className="text-xs text-white/40">
-                        Population: <span className="text-white/60">{info.population}</span>
+                      <div className="text-xs text-theme-muted">
+                        Population: <span className="text-theme-secondary">{info.population}</span>
                       </div>
                     )}
                     {info.medianIncome && (
-                      <div className="text-xs text-white/40 mt-1">
-                        Median Income: <span className="text-white/60">{info.medianIncome}</span>
+                      <div className="text-xs text-theme-muted mt-1">
+                        Median Income: <span className="text-theme-secondary">{info.medianIncome}</span>
                       </div>
                     )}
                   </div>
@@ -143,13 +143,13 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
 
           {/* Strategic priorities */}
           {institution.strategicPriorities?.length && (
-            <div className="mt-5 pt-5 border-t border-white/[0.06]">
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-white/40 mb-3">
+            <div className="mt-5 pt-5 border-t border-theme-subtle">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-theme-muted mb-3">
                 Strategic Priorities
               </h4>
               <ul className="space-y-1.5">
                 {institution.strategicPriorities.slice(0, 4).map((p, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-white/60">
+                  <li key={i} className="flex items-start gap-2 text-sm text-theme-secondary">
                     <span className="w-1.5 h-1.5 rounded-full bg-violet-500/60 shrink-0 mt-1.5" />
                     {p}
                   </li>
@@ -160,13 +160,13 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
 
           {/* Recent news */}
           {recentNews.length > 0 && (
-            <div className="mt-5 pt-5 border-t border-white/[0.06]">
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-white/40 mb-3">
+            <div className="mt-5 pt-5 border-t border-theme-subtle">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-theme-muted mb-3">
                 Recent Developments
               </h4>
               <ul className="space-y-1.5">
                 {recentNews.slice(0, 4).map((n, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-white/60">
+                  <li key={i} className="flex items-start gap-2 text-sm text-theme-secondary">
                     <span className="text-teal-500 shrink-0 mt-0.5">→</span>
                     {n}
                   </li>
@@ -180,19 +180,19 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
       {/* Competitive landscape */}
       {providers.length > 0 && (
         <div className="card-cosmic rounded-2xl p-6">
-          <h3 className="text-base font-semibold text-white mb-4 flex items-center gap-2">
+          <h3 className="text-base font-semibold text-theme-primary mb-4 flex items-center gap-2">
             <Building2 className="w-4 h-4 text-violet-400" />
             Competitive Landscape
-            <span className="text-xs text-white/30 font-normal">{providers.length} providers mapped</span>
+            <span className="text-xs text-theme-muted font-normal">{providers.length} providers mapped</span>
           </h3>
           <div className="space-y-3">
             {providers.map((p, i) => (
-              <div key={i} className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-4">
+              <div key={i} className="rounded-xl bg-white/[0.03] border border-theme-subtle p-4">
                 <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
                   <div>
-                    <span className="text-sm font-medium text-white/80">{p.name}</span>
+                    <span className="text-sm font-medium text-theme-secondary">{p.name}</span>
                     {p.distance && (
-                      <span className="text-xs text-white/30 ml-2">{p.distance}</span>
+                      <span className="text-xs text-theme-muted ml-2">{p.distance}</span>
                     )}
                   </div>
                   <CompetitorBadge type={p.type} />
@@ -200,7 +200,7 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
                 {p.programs?.length && (
                   <div className="flex flex-wrap gap-1.5 mt-2">
                     {p.programs.slice(0, 4).map((prog, j) => (
-                      <span key={j} className="text-[11px] px-2 py-0.5 rounded-full bg-white/[0.05] text-white/40 border border-white/[0.06]">
+                      <span key={j} className="text-[11px] px-2 py-0.5 rounded-full bg-white/[0.05] text-theme-muted border border-theme-subtle">
                         {prog}
                       </span>
                     ))}
@@ -212,16 +212,16 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
 
           {/* Gaps / white space */}
           {gaps.length > 0 && (
-            <div className="mt-5 pt-5 border-t border-white/[0.06]">
+            <div className="mt-5 pt-5 border-t border-theme-subtle">
               <h4 className="text-xs font-semibold uppercase tracking-wider text-teal-400/70 mb-3">
                 Market Gaps (White Space)
               </h4>
               <ul className="space-y-3">
                 {gaps.map((g: any, i: number) => (
-                  <li key={i} className="rounded-xl bg-white/[0.03] border border-white/[0.06] p-3">
+                  <li key={i} className="rounded-xl bg-white/[0.03] border border-theme-subtle p-3">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-teal-400 shrink-0">◆</span>
-                      <span className="text-sm font-medium text-white/80">
+                      <span className="text-sm font-medium text-theme-secondary">
                         {typeof g === 'string' ? g : g.occupation || g.name || 'Opportunity'}
                       </span>
                       {g.socCode && (
@@ -240,7 +240,7 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
                       )}
                     </div>
                     {g.opportunity && (
-                      <p className="text-xs text-white/50 ml-6 leading-relaxed">{g.opportunity}</p>
+                      <p className="text-xs text-theme-tertiary ml-6 leading-relaxed">{g.opportunity}</p>
                     )}
                   </li>
                 ))}
