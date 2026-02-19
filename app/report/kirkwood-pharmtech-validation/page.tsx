@@ -9,12 +9,12 @@ import { PrintButton } from '@/components/ui/PrintButton';
 export const metadata: Metadata = {
   title: 'Program Validation — Kirkwood Community College | Wavelength Sample Report',
   description:
-    'Sample Program Validation report for Kirkwood Community College Pharmacy Technician Certificate. CONDITIONAL GO — 6.0/10 composite score with 7 specialist analyses.',
+    'Sample Program Validation report for Kirkwood Community College Pharmacy Technician Certificate. CONDITIONAL GO — 7.0/10 composite score with 7 specialist analyses.',
   alternates: { canonical: 'https://withwavelength.com/report/kirkwood-pharmtech-validation' },
   openGraph: {
     title: 'Program Validation — Kirkwood Community College Pharmacy Technician Certificate',
     description:
-      'CONDITIONAL GO: 6.0/10 composite. Full 7-dimension validation with specialist analyses, financial projections, and conditional recommendations.',
+      'CONDITIONAL GO: 7.0/10 composite. Full 7-dimension validation with real BLS data, live job market analysis, and conditional recommendations.',
     url: 'https://withwavelength.com/report/kirkwood-pharmtech-validation',
     type: 'article',
   },
@@ -45,111 +45,99 @@ function statusBadge(status: string) {
   return map[status] ?? 'bg-theme-surface text-theme-secondary border border-theme-subtle';
 }
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
+// ─── Data — sourced from live pipeline run 2026-02-19 ────────────────────────
 
 const dimensions = [
-  { name: 'Labor Market Demand', weight: 25, score: 3.0, status: 'CRITICAL FLAG' },
-  { name: 'Financial Viability', weight: 20, score: 6.0, status: 'CAUTION' },
+  { name: 'Labor Market Demand', weight: 25, score: 6.5, status: 'CAUTION' },
+  { name: 'Financial Viability', weight: 20, score: 7.0, status: 'PASS' },
   { name: 'Target Learner Demand', weight: 15, score: 7.2, status: 'PASS' },
-  { name: 'Employer Demand', weight: 15, score: 8.0, status: 'STRONG' },
+  { name: 'Employer Demand & Partnerships', weight: 15, score: 7.5, status: 'STRONG' },
   { name: 'Competitive Landscape', weight: 10, score: 6.0, status: 'CAUTION' },
-  { name: 'Institutional Fit', weight: 10, score: 7.8, status: 'PASS' },
-  { name: 'Regulatory & Compliance', weight: 5, score: 8.5, status: 'STRONG' },
+  { name: 'Institutional Fit & Capacity', weight: 10, score: 7.8, status: 'PASS' },
+  { name: 'Regulatory & Compliance', weight: 5, score: 8.0, status: 'STRONG' },
 ];
 
 const conditions = [
   {
     num: 1,
-    title: 'Clinical Site Partnership Validation',
-    deadline: '60-day deadline',
-    text: 'Secure signed Memorandums of Understanding (MOUs) with a minimum of 6 clinical rotation sites within the Cedar Rapids–Iowa City corridor. Sites must include at least 2 hospital pharmacies, 2 retail pharmacies, and 1 long-term care facility. Without confirmed clinical placements, the program cannot meet ASHP accreditation requirements or deliver the required experiential hours. No capital expenditure should be approved until all 6 MOUs are executed.',
+    title: 'Market Validation — Enrollment Intent Confirmation',
+    deadline: '90-day deadline · CRITICAL',
+    text: 'Conduct direct customer validation proving minimum 60 qualified prospects will commit to enrollment within 90 days of marketing launch at $4,800 tuition. Execute structured research including phone/online surveys with 75+ retail pharmacy workers, focus groups with 15–20 recent high school graduates exploring healthcare careers, and information sessions at Cedar Rapids and Iowa City public libraries. Success metric: minimum 60 interest forms or survey responses indicating "very likely" enrollment intent, converting to 15+ actual enrollments for Year 1 cohort (25% conversion rate).',
   },
   {
     num: 2,
-    title: 'Grant Funding Secured ($40K minimum)',
-    deadline: '$40,000 minimum',
-    text: 'Submit application to the Iowa Workforce Development Apprenticeship Innovation Grant by the next funding cycle. The $40K minimum covers first-cohort equipment, supplies, and adjunct faculty costs that the tuition model alone cannot support at initial enrollment levels. Alternative funding sources include Iowa Skilled Worker and Job Creation Fund and potential employer-sponsored training agreements with UnityPoint Health and Hy-Vee pharmacy operations.',
+    title: 'Clinical Site Partnerships — Guaranteed Rotation Capacity',
+    deadline: '120-day deadline · CRITICAL',
+    text: 'Secure signed MOUs with minimum six pharmacy clinical sites guaranteeing zero-cost placements for 36 students annually across diverse practice settings: two hospital inpatient pharmacies, two retail chains (CVS, Walgreens, Hy-Vee), one independent community pharmacy, and one specialty pharmacy. Each MOU must specify student capacity per rotation period, zero-cost agreement through Year 3, qualified preceptor availability, and preferential interview/hiring commitment for graduates. If fewer than six sites commit or capacity falls below 36 students annually, enrollment targets must be reduced to match confirmed capacity.',
   },
   {
     num: 3,
-    title: 'Market Demand Validation',
-    deadline: '30-day sprint',
-    text: 'Conduct a structured employer demand survey targeting a minimum of 10 pharmacy employers within a 60-mile radius of Cedar Rapids. Survey must capture: current pharmacy technician vacancies, projected hiring over 24 months, willingness to host clinical rotations, and interest in tuition reimbursement partnerships. The current labor market data gap is the single largest risk factor in this validation — this sprint closes that gap.',
-  },
-  {
-    num: 4,
-    title: 'Competitive Intelligence Deep Dive',
-    deadline: 'Before cohort planning',
-    text: 'Initiate direct conversations with program directors at DMACC (Des Moines) and Hawkeye Community College (Waterloo) to understand their enrollment trends, clinical site networks, and capacity constraints. Competitive intelligence from public sources suggests moderate saturation, but direct intel is required to identify differentiation opportunities — particularly around evening/weekend scheduling, employer partnerships, and stackable credentials.',
-  },
-  {
-    num: 5,
-    title: 'Pilot Cohort First',
-    deadline: 'One cohort before scaling',
-    text: 'Launch with a single pilot cohort of 12–15 students before committing to recurring program infrastructure. Pilot cohort validates clinical site capacity, faculty workload, equipment adequacy, and actual (not projected) completion rates. Scaling to 2+ cohorts per year should only occur after pilot cohort data confirms the financial model assumptions. This protects institutional resources and limits downside exposure.',
+    title: 'Anchor Employer Partnerships — Sponsored Cohort Commitments',
+    deadline: '120-day deadline · High Priority',
+    text: 'Formalize partnerships with minimum two anchor employers committing to sponsor employees or guarantee graduate interviews. Targets: (1) UnityPoint Health Cedar Rapids — sponsor 4–6 incumbent pharmacy clerks/aides in Year 1–2 cohorts via tuition reimbursement; (2) One retail chain (Hy-Vee, Walgreens, or CVS) — guaranteed interviews for all graduates meeting minimum 3.0 GPA. Success metric: two signed agreements with aggregate commitment of 8 sponsored students or interview slots, de-risking 27–53% of Year 1 enrollment before open marketing begins.',
   },
 ];
 
 const findings = [
   {
     num: 1,
-    title: 'Solid Employer Demand, Weak Labor Market Data',
-    text: 'Employer interviews and job posting analysis confirm consistent pharmacy technician hiring across the Cedar Rapids–Iowa City corridor. UnityPoint Health, Mercy Medical Center, Hy-Vee, and CVS all report ongoing recruitment challenges. However, Bureau of Labor Statistics data for the Cedar Rapids MSA shows flat-to-declining growth projections for pharmacy technicians (SOC 29-2052), and Iowa Workforce Development regional data contains significant gaps. The disconnect between employer-reported demand and published labor market data is the primary driver of the low Labor Market Demand score (3.0/10). This doesn\'t necessarily mean demand is weak — it means we can\'t verify it with public data, which is a diligence problem.',
+    title: 'Live Employer Demand Confirmed: 10 Active Openings from Major Regional Employers',
+    text: 'Google Jobs analysis (run February 19, 2026) identified 10 active pharmacy technician openings in the Cedar Rapids area from major employers: UnityPoint Health (3 openings), CVS Health entities (3 openings), Walgreens (2 openings), and specialty pharmacy operators (2 openings). This real-time data validates genuine employer hiring activity and provides a foundation for clinical partnership conversations. The employer demand dimension scored 7.5/10, reflecting strong multi-employer diversity with moderate concentration risk — UnityPoint Health accounts for 30% of identified postings.',
   },
   {
     num: 2,
-    title: 'Financial Viability Hinges on Unvalidated Clinical Site Assumption',
-    text: 'The 5-year financial model projects break-even by cohort 3 (month 18) with a steady-state margin of 22–28% by year 3. These projections assume zero cost for clinical rotation placements — a standard assumption for pharmacy technician programs, but one that has not been validated with local sites. If even 2 of 6 required clinical sites demand payment for preceptor time or administrative overhead, the margin drops to 8–12% and break-even extends to month 30+. The model is sound if the clinical site assumption holds. If it doesn\'t, the program becomes a marginal financial performer.',
+    title: 'BLS Data: 487,920 Pharmacy Technicians Nationally, Median $36,920',
+    text: 'Bureau of Labor Statistics data for SOC 29-2052 (Pharmacy Technicians, 2024) shows national employment of 487,920 with a median annual wage of $36,920. Iowa entry-level wages are estimated at $32,000–$36,000, advancing to $40,000–$60,000 with PTCB certification and specialty experience. This wage progression ($24,000–$28,000 for retail clerks to $32,000–$42,000 as certified pharmacy technicians) creates a compelling ROI narrative for the target learner segment — career changers and retail workers seeking healthcare entry points.',
   },
   {
     num: 3,
-    title: 'Crowded Competitive Market Requires Clear Differentiation',
-    text: 'Within a 90-mile radius, three institutions offer pharmacy technician programs: DMACC (Des Moines), Hawkeye Community College (Waterloo), and Indian Hills Community College (Ottumwa). Additionally, national online programs from Ashworth College and Penn Foster compete for the same learner demographic. Kirkwood\'s competitive advantage lies in geographic proximity (Cedar Rapids has no local provider), employer relationships, and potential evening/weekend scheduling. However, without deliberate differentiation in marketing and program design, enrollment could underperform projections.',
+    title: 'Financial Model Sound — Break-Even at Month 22, 23.4% Three-Year ROI',
+    text: 'Conservative financial projections show break-even in late Year 2 with 15 students per cohort. Net revenue over three years is estimated at $82,100 on $112,000 in startup costs (23.4% ROI). The primary risk is Year 1 enrollment: if the program enrolls 10 instead of 15 students, cumulative loss reaches $143,300 and break-even extends beyond Month 28. The model assumes zero-cost clinical placements — if sites charge $800–$1,200 per student (industry standard in capacity-constrained markets), annual costs increase $12,000–$18,000 and break-even extends 4–6 months.',
   },
   {
     num: 4,
-    title: 'Strong Institutional Fit with Moderate Capacity Constraints',
-    text: 'Kirkwood\'s existing Health Sciences division, established clinical partnerships, and workforce training infrastructure provide a strong foundation for a pharmacy technician program. The institution has experience launching similar allied health certificates and has administrative systems in place for clinical coordination. Capacity constraints are moderate: the program requires a dedicated pharmacy lab space (estimated $35K buildout), a licensed pharmacist as program director (CPhT or RPh), and adjunct faculty with pharmacy practice experience. These are manageable but represent real hiring and capital requirements.',
+    title: 'Competitive Market Requires Clear Differentiation — DMACC is Closest Competitor',
+    text: 'DMACC operates 45 miles away in Ankeny with $3,500–$4,000 tuition (potentially 17–20% cheaper than Kirkwood\'s projected $4,800), multiple campus locations, and established brand recognition. Hawkeye Community College (Waterloo) and Indian Hills (Ottumwa) operate 90–110 miles away. Online programs Penn Foster ($1,079) and Ashworth College ($899–$1,200) provide self-paced alternatives at 75–80% lower cost. Kirkwood\'s defensible advantage is geographic proximity to Cedar Rapids, but it must be reinforced with deliberate differentiators: evening cohorts for incumbent workers, Spanish-language track, and named employer partnerships.',
   },
   {
     num: 5,
-    title: 'Regulatory Environment Clear but Accreditation Timeline Constraining',
-    text: 'Iowa Board of Pharmacy requirements for pharmacy technician education are well-defined, and Kirkwood\'s institutional accreditation through HLC provides a solid foundation. ASHP/ACPE programmatic accreditation is achievable but requires 18–24 months from application to approval, meaning the first cohort would launch under "candidate" status. This is standard practice but creates a marketing challenge — prospective students may prefer ASHP-accredited programs. The regulatory path is clear; the timeline is the constraint.',
+    title: 'Strong Regulatory Alignment — Perkins V + WIOA Eligibility Clear',
+    text: 'The Pharmacy Technician Certificate aligns with CIP code 51.0805 and qualifies for Perkins V funding ($18,000–$28,000 annually), WIOA ETPL eligibility, and straightforward Iowa Board of Pharmacy registration (6–9 month timeline). PTCB certification exam pass rate is the key accreditation quality indicator. HLC compliance is managed as a non-substantive change. Regulatory dimension scored 8/10 — the strongest across all seven analyses. Grant funding availability meaningfully de-risks the Year 1 cash flow gap.',
   },
 ];
 
 const dimensionDeepDives = [
   {
     name: 'Labor Market Demand',
-    score: 3.0,
+    score: 6.5,
     weight: '25%',
-    status: 'CRITICAL FLAG',
-    dotColor: 'bg-rose-500',
-    rationale: 'Bureau of Labor Statistics projects 5% growth for pharmacy technicians nationally (2022–2032), roughly average for all occupations. However, Cedar Rapids MSA-specific data from Iowa Workforce Development shows flat employment projections and limited posted openings. The disconnect between national trends and local data creates a critical information gap. O*NET data confirms stable but not growing demand. The 3.0 score reflects not necessarily weak demand, but unacceptably weak evidence of demand. The override rule was triggered because any dimension scoring below 4.0 with 20%+ weight requires explicit conditions before program approval. Recommendation: conduct the 30-day employer demand sprint to generate primary data that either confirms or contradicts published statistics.',
+    status: 'CAUTION',
+    dotColor: 'bg-amber-500',
+    rationale: 'Moderate demand with 10 current openings from major healthcare employers confirmed via live Google Jobs analysis. BLS data for SOC 29-2052 shows national employment of 487,920 and median wage of $36,920, with Iowa regional wages in the $32,000–$60,000 range. However, the pipeline flagged that some O*NET competency data returned anomalous technical skills (AWS, React) suggesting data retrieval issues — the analyst appropriately disregarded those entries and relied on standard pharmacy technician competency profiles. Score of 6.5 reflects genuine hiring activity tempered by wage compression and uncertainty around Cedar Rapids MSA-specific growth projections versus national trends.',
   },
   {
     name: 'Financial Viability',
-    score: 6.0,
+    score: 7.0,
     weight: '20%',
-    status: 'CAUTION',
+    status: 'PASS',
     dotColor: 'bg-amber-500',
-    rationale: 'The tuition-based revenue model projects $2,800–3,200 per student for a 16-week certificate program. At 15 students per cohort and 2 cohorts per year, annual revenue reaches $84K–96K by year 2. Operating costs (faculty, supplies, lab maintenance, clinical coordination) are estimated at $65K–75K annually at steady state. The model works at scale but is fragile in year 1 when fixed costs are front-loaded against a single pilot cohort. The $40K grant funding condition exists specifically to bridge this gap. The zero-cost clinical site assumption is the model\'s single point of failure — if sites charge $2K–5K per rotation slot, the math changes materially.',
+    rationale: 'Solid financial viability with manageable risk. Program breaks even in late Year 2 with conservative enrollment of 15 students per cohort. Perkins V funding ($18,000–$28,000 annually) and WIOA eligibility provide meaningful grant de-risking for the Year 1 cash gap. Healthcare workforce demand is strong across Iowa\'s healthcare corridor, and established Kirkwood clinical partnerships reduce site-acquisition costs. Primary risk is Year 1 enrollment — if it falls below 12 students, break-even extends 6–8 months. Lab equipment investment ($75,000–$125,000) is significant but one-time. Recommendation: phased launch with employer pre-commitments to de-risk enrollment before capital expenditure.',
   },
   {
     name: 'Target Learner Demand',
     score: 7.2,
     weight: '15%',
     status: 'PASS',
-    dotColor: 'bg-teal-500',
-    rationale: 'Cedar Rapids lacks a local pharmacy technician program, forcing interested learners to commute to Waterloo (Hawkeye, 65 miles) or Des Moines (DMACC, 130 miles) or pursue online alternatives. Geographic search analysis shows consistent interest in "pharmacy technician program near me" and "pharmacy tech certification Iowa" from the Cedar Rapids–Iowa City area. Kirkwood\'s existing health sciences student pipeline and community awareness provide built-in enrollment channels. The 7.2 score reflects solid learner interest tempered by the availability of low-cost online alternatives that could capture price-sensitive learners.',
+    dotColor: 'bg-amber-500',
+    rationale: 'Moderate-to-strong learner demand based on: combined service area population of approximately 300,000 (Linn and Johnson counties) with demonstrated healthcare pathway interest; strong career-change motivation driven by stable employment and clear wage progression ($30,000–$40,000 entry from retail clerk wages); target demographics align well with community college mission (working adults, career changers, recent high school graduates); manageable barriers through hybrid delivery. Peer benchmarks from DMACC (18–22 per cohort), Hawkeye (15–18), and Scott Community College (14–20) validate realistic enrollment projections of 16 per cohort scaling to 36 annually by Year 3. Score held below 8.0 due to tuition cost barriers for lower-income segments, competition from incumbent employer-sponsored training (Walgreens/CVS), and need for sustained marketing investment.',
   },
   {
-    name: 'Employer Demand',
-    score: 8.0,
+    name: 'Employer Demand & Partnerships',
+    score: 7.5,
     weight: '15%',
     status: 'STRONG',
     dotColor: 'bg-teal-500',
-    rationale: 'Direct employer signals are the strongest dimension in this validation. UnityPoint Health–St. Luke\'s Hospital, Mercy Medical Center, and the University of Iowa Hospitals (Iowa City) all maintain recurring pharmacy technician job postings. Retail pharmacy employers (Hy-Vee, CVS, Walgreens) have multiple Cedar Rapids locations with consistent technician turnover. Indeed and LinkedIn job posting analysis shows 15–25 active pharmacy technician postings within 30 miles of Cedar Rapids at any given time. Employer willingness to participate in clinical rotations and potential tuition reimbursement partnerships further strengthen this dimension.',
+    rationale: 'Strong multi-employer demand confirmed with live Google Jobs data: UnityPoint Health (3 openings), CVS Health entities (3 openings), Walgreens (2 openings), and specialty operators (2 openings) — 10 active openings total as of February 19, 2026. Employer mix spans hospital systems, retail pharmacy chains, and specialty settings, which reduces single-sector concentration risk. UnityPoint Health\'s 30% share of identified postings creates moderate dependency that is mitigated by retail chain breadth. Employer investment willingness is high: tuition reimbursement programs exist at UnityPoint and major retail chains, internship capacity is estimated at 30–40 placements annually, and guest instructor availability is strong. SerpAPI location fix applied this run — Cedar Rapids, Iowa query returned valid results vs. prior 400 error.',
   },
   {
     name: 'Competitive Landscape',
@@ -157,23 +145,23 @@ const dimensionDeepDives = [
     weight: '10%',
     status: 'CAUTION',
     dotColor: 'bg-amber-500',
-    rationale: 'The competitive environment is moderately crowded. DMACC and Hawkeye both offer established pharmacy technician programs with ASHP accreditation and clinical site networks. Indian Hills serves southern Iowa but could capture some eastern Iowa learners. Online programs (Ashworth, Penn Foster) offer lower price points ($800–1,500 vs. Kirkwood\'s projected $2,800–3,200). Kirkwood\'s advantages: only local option in Cedar Rapids, institutional reputation, potential employer partnerships, and evening/weekend scheduling flexibility. The 6.0 score reflects a viable competitive position that requires deliberate differentiation to succeed.',
+    rationale: 'Moderate competition in Iowa market with several established programs. DMACC (Ankeny, 45 miles) is the primary in-state competitor with lower tuition ($3,500–$4,000 vs. projected $4,800), established ASHP accreditation, and multiple campus locations. Hawkeye Community College (Waterloo, 65 miles) and Indian Hills Community College (Ottumwa, 100+ miles) serve adjacent markets. Online programs Penn Foster ($1,079) and Ashworth College ($899–$1,200) compete aggressively on price for self-directed learners. Kirkwood\'s competitive advantages: geographic proximity as the only Cedar Rapids option, institutional employer relationships, evening/weekend scheduling potential, and Spanish-language track opportunity. Differentiation must be deliberate — geographic convenience alone is insufficient.',
   },
   {
-    name: 'Institutional Fit',
+    name: 'Institutional Fit & Capacity',
     score: 7.8,
     weight: '10%',
     status: 'PASS',
     dotColor: 'bg-teal-500',
-    rationale: 'Kirkwood\'s Health Sciences division has successfully launched and operates multiple allied health certificate programs (CNA, Medical Assistant, Phlebotomy). Administrative infrastructure for clinical coordination, student tracking, and employer partnerships exists and is proven. The pharmacy technician program fits naturally within this division and can leverage existing enrollment marketing, student support services, and clinical site relationships. Capacity constraints (dedicated lab space, specialized faculty) are real but manageable. The 7.8 score reflects strong institutional alignment with moderate resource requirements.',
+    rationale: 'Kirkwood demonstrates strong institutional capacity for pharmacy technician program implementation. Existing Health Sciences division provides organizational knowledge from nursing, medical assisting, and phlebotomy programs. Clinical partnership infrastructure, student support systems, and employer relationships built over four decades provide structural advantages. Dedicated pharmacy lab setup requires capital investment ($75,000–$125,000), and recruiting licensed pharmacy technicians with teaching credentials is a moderate challenge in Iowa\'s competitive market. Iowa Board of Pharmacy registration requires a 6–9 month lead time — this must begin immediately if conditions are met. Hybrid delivery infrastructure is adequate. Score of 7.8 reflects strong foundation with manageable implementation hurdles.',
   },
   {
     name: 'Regulatory & Compliance',
-    score: 8.5,
+    score: 8.0,
     weight: '5%',
     status: 'STRONG',
     dotColor: 'bg-teal-500',
-    rationale: 'Iowa Board of Pharmacy regulations for pharmacy technician education are well-documented and stable. Kirkwood\'s HLC institutional accreditation is current and in good standing. ASHP/ACPE programmatic accreditation requirements are clear, and Kirkwood\'s existing accreditation infrastructure can support the application process. Workforce Pell eligibility (effective July 1, 2026) is achievable if the program meets clock-hour and credential requirements — which the proposed program design satisfies. The 8.5 score reflects a clear regulatory path with a manageable but non-trivial accreditation timeline.',
+    rationale: 'Strongest dimension in the validation. Clear pathways through Iowa Board of Pharmacy registration requirements, Perkins V eligibility under CIP 51.0805, WIOA ETPL eligibility given healthcare workforce demand, and PTCB certification pathway as the industry-standard credential. HLC compliance managed as a non-substantive change for CE certificate. Primary timeline risk is clinical site coordination — executed MOUs must precede Iowa Board registration to demonstrate placement capacity. Perkins V funding ($18,000–$28,000 annually) is highly probable given Kirkwood\'s track record with workforce certificates. ASHP programmatic accreditation is achievable within 18–24 months of launch.',
   },
 ];
 
@@ -182,6 +170,13 @@ const dimensionDeepDives = [
 export default function KirkwoodPharmTechValidationPage() {
   return (
     <div className="overflow-x-hidden bg-theme-page">
+      {/* ===== DISCLAIMER BANNER ===== */}
+      <div className="w-full bg-amber-500/10 border-b border-amber-500/20 py-2 px-4 text-center">
+        <p className="text-xs text-amber-700 dark:text-amber-400 font-semibold">
+          📋 Sample Report for demonstration purposes — data sourced from live pipeline run February 19, 2026
+        </p>
+      </div>
+
       {/* ===== A. HERO ===== */}
       <section className="relative min-h-[55vh] flex items-center justify-center pt-36 lg:pt-40 pb-16">
         <Stars count={100} />
@@ -214,7 +209,7 @@ export default function KirkwoodPharmTechValidationPage() {
                 CONDITIONAL GO
               </p>
               <p className="text-sm text-theme-secondary mt-1">
-                6.0 / 10 composite · 7 specialist analyses · Medium confidence
+                7.0 / 10 composite · 7 specialist analyses · Medium confidence
               </p>
             </div>
           </AnimateOnScroll>
@@ -226,13 +221,13 @@ export default function KirkwoodPharmTechValidationPage() {
                 7 Analysts
               </span>
               <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
-                6.0 Composite
+                7.0 Composite
               </span>
               <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20">
-                8.0 Employer Demand
+                10 Live Job Openings
               </span>
-              <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20">
-                3.0 Labor Market ⚠
+              <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20">
+                $36,920 Median Wage
               </span>
             </div>
           </AnimateOnScroll>
@@ -245,8 +240,9 @@ export default function KirkwoodPharmTechValidationPage() {
 
           <AnimateOnScroll variant="fade-up" delay={600} duration={800}>
             <p className="mt-6 text-xs text-theme-muted max-w-lg mx-auto">
-              This is a sample report created for demonstration purposes. All data, analyses, and
-              recommendations are illustrative of Wavelength&apos;s Program Validation methodology.
+              This is a sample report created for demonstration purposes. All analyses reflect
+              real Wavelength pipeline output from a live run on February 19, 2026. BLS and
+              Google Jobs data are live at time of pipeline execution.
             </p>
           </AnimateOnScroll>
         </div>
@@ -307,12 +303,12 @@ export default function KirkwoodPharmTechValidationPage() {
                   <div className="h-1.5 rounded-full bg-theme-surface overflow-hidden">
                     <div
                       className="h-full rounded-full bg-amber-500"
-                      style={{ width: '60%' }}
+                      style={{ width: '70%' }}
                     />
                   </div>
                 </div>
                 <span className="text-xl font-bold font-mono w-10 text-right text-amber-600 dark:text-amber-400">
-                  6.0
+                  7.0
                 </span>
                 <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full whitespace-nowrap bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
                   CONDITIONAL GO
@@ -321,13 +317,12 @@ export default function KirkwoodPharmTechValidationPage() {
             </div>
           </AnimateOnScroll>
 
-          {/* Override callout */}
+          {/* Data sources callout */}
           <AnimateOnScroll variant="fade-up" delay={200}>
-            <div className="mt-6 card-cosmic rounded-xl p-5 border-amber-500/30 bg-amber-500/5">
+            <div className="mt-6 card-cosmic rounded-xl p-5 border-teal-500/30 bg-teal-500/5">
               <p className="text-sm text-theme-primary leading-relaxed">
-                <span className="font-bold">⚠️ Override Applied:</span> Labor Market Demand scored
-                3/10 — critical data gaps identified. Override applied: program requires market
-                validation before capital commitment.
+                <span className="font-bold">📡 Live Data:</span> BLS SOC 29-2052 — 487,920 employed nationally, median $36,920 (2024).
+                Google Jobs: 10 active Cedar Rapids openings — UnityPoint Health (3), CVS Health (3), Walgreens (2), specialty (2).
               </p>
             </div>
           </AnimateOnScroll>
@@ -343,7 +338,7 @@ export default function KirkwoodPharmTechValidationPage() {
               className="font-heading font-bold text-theme-primary mt-4"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              Strategically sound. Operationally precarious.
+              Strategically sound. Operationally demanding.
             </h2>
           </AnimateOnScroll>
 
@@ -351,43 +346,38 @@ export default function KirkwoodPharmTechValidationPage() {
             <div className="card-cosmic rounded-2xl p-6">
               <p className="text-theme-secondary leading-relaxed">
                 The Pharmacy Technician Certificate presents a strategically sound but operationally
-                precarious opportunity for Kirkwood Community College. Cedar Rapids is the largest
-                metro in Iowa without a local pharmacy technician training program, creating genuine
-                geographic demand. Employer signals are strong: UnityPoint Health, Mercy Medical
-                Center, Hy-Vee, and CVS all maintain active pharmacy technician job postings, and
-                initial employer conversations indicate willingness to support clinical rotations and
-                hiring pipelines. The program aligns with Kirkwood&apos;s existing Health Sciences
-                division, leverages proven administrative infrastructure, and fits within the
-                institution&apos;s workforce development mission. At a composite score of 6.0/10, this
-                program is viable — but it is not a slam dunk.
+                demanding opportunity for Kirkwood Community College. Live employer data confirms
+                genuine hiring activity: 10 active postings from UnityPoint Health (3), CVS Health
+                entities (3), Walgreens (2), and specialty pharmacies (2) as of February 19, 2026.
+                The target population of approximately 8,500 potential learners — retail workers
+                earning $24,000–$28,000 seeking entry into pharmacy at $32,000–$42,000, recent high
+                school graduates exploring allied health, and career changers aged 25–45 — aligns
+                squarely with Kirkwood&apos;s mission. Regulatory alignment scores 8/10: Perkins V
+                (CIP 51.0805), WIOA ETPL eligibility, and Iowa Board of Pharmacy registration are
+                all clear pathways. At a composite score of 7.0/10, this program is viable.
               </p>
             </div>
             <div className="card-cosmic rounded-2xl p-6">
               <p className="text-theme-secondary leading-relaxed">
-                However, critical execution risks threaten viability. The business model assumes
-                zero-cost clinical placements at a minimum of 6 sites — an assumption that has not
-                been validated with a single local pharmacy or hospital. If clinical sites demand
-                compensation for preceptor time, the financial model degrades from a healthy 22–28%
-                margin to a precarious 8–12% margin, pushing break-even from month 18 to month 30 or
-                beyond. The competitive landscape is more crowded than initial assessment suggested:
-                DMACC, Hawkeye, Indian Hills, and multiple national online programs all compete for the
-                same learner demographic. Kirkwood&apos;s geographic advantage is real but insufficient
-                without deliberate differentiation in scheduling, employer partnerships, and credential
-                stacking.
+                Financial projections show break-even at Month 22 with conservative enrollment
+                of 15 students per cohort — $82,100 net revenue over three years on $112,000 in
+                startup costs (23.4% ROI). Peer community college benchmarks validate these
+                enrollment assumptions: DMACC runs 18–22 per cohort, Hawkeye 15–18, Scott Community
+                College 14–20. Institutional fit scores 7.8/10, reflecting Kirkwood&apos;s established
+                Health Sciences division, proven clinical partnership infrastructure from nursing and
+                medical assisting programs, and four decades of employer relationships in the
+                Cedar Rapids–Iowa City corridor. The program can succeed — the infrastructure exists.
               </p>
             </div>
             <div className="card-cosmic rounded-2xl p-6">
               <p className="text-theme-secondary leading-relaxed">
-                The labor market data gap is alarming. While employers report hiring demand, published
-                BLS and Iowa Workforce Development data for the Cedar Rapids MSA shows flat-to-declining
-                pharmacy technician employment projections. This could mean the published data is
-                lagging reality — or it could mean employer-reported demand is inflated by normal
-                turnover rather than genuine growth. We don&apos;t know, and that&apos;s the problem.
-                A program launch decision involving $35K+ in lab buildout, faculty recruitment, and
-                ASHP accreditation fees deserves better evidence than &ldquo;employers say they&apos;re
-                hiring.&rdquo; This isn&apos;t acceptable diligence for a program launch decision. The
-                five conditions attached to this CONDITIONAL GO exist specifically to close these gaps
-                before irreversible commitments are made.
+                However, three critical execution gaps create unacceptable risk without resolution.
+                First, enrollment demand is entirely unvalidated — no primary research confirms
+                willingness to pay $4,800. Second, clinical site capacity is assumed, not contracted
+                — the financial model depends on zero-cost placements with no executed MOUs. Third,
+                competitive differentiation is weak against DMACC ($3,500–$4,000 tuition), Hawkeye,
+                and online programs at $899–$1,079. The three conditions attached to this CONDITIONAL
+                GO exist specifically to close these gaps before committing capital.
               </p>
             </div>
           </StaggerChildren>
@@ -403,7 +393,7 @@ export default function KirkwoodPharmTechValidationPage() {
               className="font-heading font-bold text-theme-primary mt-4"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              This program can proceed — with five non-negotiable conditions.
+              This program can proceed — with three non-negotiable conditions.
             </h2>
           </AnimateOnScroll>
 
@@ -457,187 +447,145 @@ export default function KirkwoodPharmTechValidationPage() {
         </div>
       </section>
 
-      {/* ===== F. SPECIALIST PERSPECTIVES ===== */}
+      {/* ===== F. TIGER TEAM PERSPECTIVES ===== */}
       <section className="relative py-16 md:py-24">
         <div className="max-w-[960px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
-            <span className="overline">Specialist Perspectives</span>
+            <span className="overline">Tiger Team Synthesis</span>
             <h2
               className="font-heading font-bold text-theme-primary mt-4"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              Three independent analysts. Three honest assessments.
+              Three independent lenses. One honest verdict.
             </h2>
             <p className="mt-3 text-theme-secondary text-lg">
-              Each specialist runs independent analysis — no consensus bias.
+              The tiger team stress-tested every assumption from the seven-agent analysis.
             </p>
           </AnimateOnScroll>
 
           <StaggerChildren stagger={100} variant="fade-up" className="mt-10 space-y-8">
-            {/* Card 1 — Marcus Chen */}
+            {/* Card 1 — The strategic case */}
             <div className="card-cosmic rounded-2xl p-8">
               <div className="flex flex-wrap items-center gap-3 mb-6">
-                <h3 className="font-heading font-bold text-theme-primary text-xl">Marcus Chen</h3>
-                <span className="text-sm text-theme-muted">Product Manager</span>
-                <span className="ml-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
-                  CONDITIONAL PASS · 6.5/10
+                <h3 className="font-heading font-bold text-theme-primary text-xl">The Strategic Case</h3>
+                <span className="text-sm text-theme-muted">Why this program warrants CONDITIONAL GO</span>
+                <span className="ml-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20">
+                  PROCEED · 7.0/10
                 </span>
               </div>
 
               <div className="space-y-4 text-sm text-theme-secondary leading-relaxed">
                 <div>
-                  <p className="font-bold text-theme-primary mb-1">What Works</p>
+                  <p className="font-bold text-theme-primary mb-1">Documented Employer Hiring Activity</p>
                   <p>
-                    The geographic gap is real and defensible — Cedar Rapids genuinely lacks a local
-                    pharmacy tech program, and that matters for a learner demographic that skews toward
-                    working adults who can&apos;t commute 65+ miles. Kirkwood&apos;s Health Sciences
-                    infrastructure is proven, and the employer signals I&apos;m seeing (UnityPoint, Mercy,
-                    Hy-Vee) are credible. The program design — 16 weeks, stackable into a health sciences
-                    pathway — fits the market. This is a program that makes strategic sense.
+                    Live Google Jobs data from February 19, 2026 confirms 10 active pharmacy technician
+                    openings in Cedar Rapids from UnityPoint Health, CVS Health, Walgreens, and specialty
+                    operators. This is not anecdotal employer enthusiasm — it is documented, current, and
+                    multi-employer. The hiring activity spans hospital systems and retail chains, which
+                    reduces the concentration risk inherent in programs tied to a single healthcare network.
                   </p>
                 </div>
                 <div>
-                  <p className="font-bold text-theme-primary mb-1">What Concerns Me</p>
+                  <p className="font-bold text-theme-primary mb-1">Regulatory and Funding Runway is Clear</p>
                   <p>
-                    The labor market data gap is a problem I can&apos;t ignore. I&apos;ve seen programs
-                    launch on employer enthusiasm alone, and when the actual enrollment numbers come in,
-                    they&apos;re 40–60% below projections because the market was smaller than anecdotal
-                    evidence suggested. The competitive landscape is also more crowded than I&apos;d like —
-                    DMACC and Hawkeye are established, and online programs are eating into the
-                    price-sensitive segment. The clinical site assumption is a single point of failure that
-                    could unravel the entire financial model.
+                    Perkins V eligibility under CIP 51.0805, WIOA ETPL qualification, and Iowa Board of
+                    Pharmacy registration are well-defined pathways. The $18,000–$28,000 in annual Perkins
+                    funding meaningfully bridges the Year 1 cash gap in the financial model. Kirkwood&apos;s
+                    track record with workforce certificates strengthens the grant application case.
                   </p>
                 </div>
                 <div className="border-l-2 border-purple-500/30 pl-4 italic text-theme-tertiary">
-                  <p className="font-bold text-theme-primary not-italic mb-1">My Recommendation</p>
+                  <p className="font-bold text-theme-primary not-italic mb-1">The Bottom Line</p>
                   <p>
-                    Proceed with the pilot cohort approach, but do not commit capital to lab buildout
-                    until the 30-day employer demand sprint and clinical site MOUs are complete. If
-                    both conditions are met, this becomes a 7.5+ program. If either fails, downgrade
-                    to NO-GO.
+                    This is a program that can work. Kirkwood has the infrastructure, the employer
+                    relationships, and the regulatory alignment. The question is not whether the program
+                    is viable — it is whether leadership will do the validation work before spending
+                    capital. If the three conditions are met, this becomes a strong GO. If they are
+                    skipped, the financial model collapses on unvalidated assumptions.
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Card 2 — Marcus Reinholt */}
+            {/* Card 2 — The financial risk */}
             <div className="card-cosmic rounded-2xl p-8">
               <div className="flex flex-wrap items-center gap-3 mb-6">
-                <h3 className="font-heading font-bold text-theme-primary text-xl">Marcus Reinholt</h3>
-                <span className="text-sm text-theme-muted">CFO</span>
+                <h3 className="font-heading font-bold text-theme-primary text-xl">The Financial Risk</h3>
+                <span className="text-sm text-theme-muted">Where the model breaks down</span>
                 <span className="ml-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
-                  YELLOW LIGHT · 5.5/10
+                  YELLOW LIGHT · 7/10
                 </span>
               </div>
 
               <div className="space-y-4 text-sm text-theme-secondary leading-relaxed">
                 <div>
-                  <p className="font-bold text-theme-primary mb-1">Numbers That Work</p>
+                  <p className="font-bold text-theme-primary mb-1">Numbers That Work at Steady State</p>
                   <p>
-                    At steady state (2 cohorts/year, 15 students each), the program generates $84K–96K
-                    in annual tuition revenue against $65K–75K in operating costs. That&apos;s a 22–28%
-                    margin — respectable for a certificate program and competitive with Kirkwood&apos;s
-                    existing allied health portfolio. The stackable credential pathway creates upsell
-                    potential that could add 15–20% revenue from continuing students. If everything
-                    works as modeled, this is a solid program financially.
+                    At 15 students per cohort and two cohorts annually by Year 3, the program generates
+                    $82,100 net revenue at 23.4% ROI. Break-even arrives at Month 22. Perkins V grants
+                    bridge the Year 1 gap. This is a financially sound program — at steady state and
+                    with zero-cost clinical placements.
                   </p>
                 </div>
                 <div>
-                  <p className="font-bold text-theme-primary mb-1">Numbers That Terrify Me</p>
+                  <p className="font-bold text-theme-primary mb-1">The Single Point of Failure</p>
                   <p>
-                    The $35K lab buildout is a sunk cost before the first student enrolls. Faculty
-                    recruitment for a licensed pharmacist program director will cost $55K–65K annually —
-                    and that position must be filled 6+ months before launch for ASHP accreditation
-                    purposes. If clinical sites demand even modest compensation ($2K–5K per rotation
-                    slot), the margin drops to 8–12% and break-even extends from month 18 to month 30+.
-                    The year 1 cash flow is negative under every scenario — the question is how negative
-                    and for how long.
+                    If enrollment lands at 10 instead of 15 students in Year 1, cumulative loss reaches
+                    $143,300 and break-even extends past Month 28 — likely triggering board review. If
+                    clinical sites charge $800–$1,200 per student (standard in saturated markets), annual
+                    costs increase $12,000–$18,000. Both of these scenarios are plausible without
+                    pre-launch validation.
                   </p>
                 </div>
                 <div>
-                  <p className="font-bold text-theme-primary mb-1">What I Need Before Approving</p>
-                  <ul className="mt-2 space-y-1.5 list-none">
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-600 dark:text-amber-400">☐</span>
-                      Written confirmation from 4+ clinical sites that rotations are zero-cost
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-600 dark:text-amber-400">☐</span>
-                      Grant funding commitment of $40K+ to bridge year 1 cash gap
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-600 dark:text-amber-400">☐</span>
-                      Employer demand survey showing 10+ employers with active hiring needs
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-600 dark:text-amber-400">☐</span>
-                      Competitive pricing analysis vs. DMACC, Hawkeye, and online alternatives
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-600 dark:text-amber-400">☐</span>
-                      Pilot cohort agreement limiting institutional exposure to one cohort before scaling
-                    </li>
+                  <p className="font-bold text-theme-primary mb-1">What Finance Needs Before Approving Capital</p>
+                  <ul className="mt-1.5 list-disc list-inside space-y-1 text-theme-secondary">
+                    <li>Written zero-cost confirmation from 6+ clinical sites</li>
+                    <li>Perkins V application submitted and preliminary feedback received</li>
+                    <li>Employer pre-commitments for minimum 8 sponsored Year 1 seats</li>
+                    <li>Information session data showing 60+ qualified prospects in pipeline</li>
                   </ul>
                 </div>
-                <div className="border-l-2 border-purple-500/30 pl-4 italic text-theme-tertiary">
-                  <p className="font-bold text-theme-primary not-italic mb-1">My Recommendation</p>
-                  <p>
-                    I won&apos;t approve capital expenditure until the clinical site and grant funding
-                    conditions are met. The financial model is viable but fragile — one broken assumption
-                    turns this from a contributor into a drag on division resources. Pilot first, validate
-                    assumptions, then scale. This is a yellow light, not a green one.
-                  </p>
-                </div>
               </div>
             </div>
 
-            {/* Card 3 — Valentina Rojas-Medina */}
+            {/* Card 3 — The market reality */}
             <div className="card-cosmic rounded-2xl p-8">
               <div className="flex flex-wrap items-center gap-3 mb-6">
-                <h3 className="font-heading font-bold text-theme-primary text-xl">
-                  Valentina Rojas-Medina
-                </h3>
-                <span className="text-sm text-theme-muted">CMO</span>
-                <span className="ml-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20">
-                  CAUTIOUS OPTIMISM · 6.5/10
+                <h3 className="font-heading font-bold text-theme-primary text-xl">The Market Reality</h3>
+                <span className="text-sm text-theme-muted">Competitive positioning in a crowded field</span>
+                <span className="ml-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
+                  CAUTIOUS · 6/10
                 </span>
               </div>
 
               <div className="space-y-4 text-sm text-theme-secondary leading-relaxed">
                 <div>
-                  <p className="font-bold text-theme-primary mb-1">What&apos;s Working</p>
+                  <p className="font-bold text-theme-primary mb-1">Geographic Advantage is Real</p>
                   <p>
-                    The &ldquo;only local option&rdquo; positioning is powerful — it&apos;s the kind of
-                    message that writes its own marketing. &ldquo;Why drive to Des Moines when you can
-                    train in Cedar Rapids?&rdquo; Geographic convenience combined with Kirkwood&apos;s
-                    brand equity in the corridor gives us a strong enrollment marketing foundation.
-                    Employer partnerships (if secured) create co-marketing opportunities: &ldquo;Train
-                    here, get hired there&rdquo; with named employers is the most effective enrollment
-                    driver in workforce education. The health sciences pipeline gives us a warm audience
-                    of students already considering allied health careers.
+                    DMACC (45 miles), Hawkeye (65 miles), and Indian Hills (100+ miles) all require
+                    significant commutes for Cedar Rapids-area learners. Kirkwood&apos;s &ldquo;only local
+                    option&rdquo; positioning is legitimate and powerful for the working-adult demographic
+                    that skews toward this certificate. Geographic convenience is the primary defensible moat.
                   </p>
                 </div>
                 <div>
-                  <p className="font-bold text-theme-primary mb-1">What&apos;s Working Against Us</p>
+                  <p className="font-bold text-theme-primary mb-1">Price Competition is Severe</p>
                   <p>
-                    Online programs are the invisible competitor. Penn Foster and Ashworth offer pharmacy
-                    tech certificates for $800–1,500 — less than half our projected price point. Our
-                    value proposition must be clear and aggressive: hands-on clinical experience, employer
-                    connections, ASHP accreditation pathway, and local support services that online
-                    programs can&apos;t match. Without that differentiation, we lose the price-sensitive
-                    segment entirely. The ASHP &ldquo;candidate&rdquo; status in year 1 is also a
-                    marketing headwind — prospective students may not understand the difference between
-                    candidate and accredited status, and competitors will exploit that ambiguity.
+                    DMACC charges $3,500–$4,000 (vs. Kirkwood&apos;s projected $4,800 — 20% premium).
+                    Penn Foster and Ashworth offer self-paced online options at $899–$1,079 (78–81% cheaper).
+                    Kirkwood&apos;s value proposition must be brutally explicit: hands-on clinical experience
+                    with named employer partners, PTCB pass rate guarantees, and local placement support
+                    that online programs cannot replicate.
                   </p>
                 </div>
                 <div className="border-l-2 border-purple-500/30 pl-4 italic text-theme-tertiary">
-                  <p className="font-bold text-theme-primary not-italic mb-1">My Recommendation</p>
+                  <p className="font-bold text-theme-primary not-italic mb-1">The Marketing Imperative</p>
                   <p>
-                    Invest in the employer partnership narrative before launch — it&apos;s our strongest
-                    differentiator and our best enrollment driver. Build the marketing around named
-                    employers and guaranteed clinical placements, not around the credential alone. If we
-                    can secure 3+ employer co-marketing commitments, I&apos;m confident we hit enrollment
-                    targets. Without them, I&apos;d budget for 60% of projected enrollment in year 1.
+                    Employer partnership branding is the strongest enrollment driver in workforce education.
+                    &ldquo;Train at Kirkwood, get hired at UnityPoint&rdquo; converts better than any
+                    credential-first messaging. Build marketing around named employer partners and
+                    clinical placement guarantees before launch — not after.
                   </p>
                 </div>
               </div>
@@ -664,7 +612,7 @@ export default function KirkwoodPharmTechValidationPage() {
             <div className="card-cosmic p-7 rounded-2xl">
               <div className="flex flex-wrap items-center gap-3 mb-4">
                 <h3 className="font-heading font-bold text-theme-primary text-lg">
-                  Clinical Site Capacity Failure
+                  Enrollment Shortfall — Unvalidated Demand
                 </h3>
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20">
                   CRITICAL
@@ -672,22 +620,24 @@ export default function KirkwoodPharmTechValidationPage() {
               </div>
               <div className="space-y-3 text-sm text-theme-secondary leading-relaxed">
                 <p>
-                  <span className="font-bold text-theme-primary">Impact:</span> Program cannot launch
-                  or maintain ASHP accreditation without minimum 6 clinical rotation sites. Loss of
-                  clinical capacity mid-cohort would force program suspension and student displacement.
+                  <span className="font-bold text-theme-primary">Impact:</span> If Year 1 enrollment
+                  is 10 instead of 15 students, cumulative loss reaches $143,300 and break-even extends
+                  past Month 28. Below 12 students, the program becomes a persistent drag on division
+                  resources with no path to profitability at current cost structure.
                 </p>
                 <p>
-                  <span className="font-bold text-theme-primary">Likelihood:</span> Medium-High. Clinical
-                  site availability has not been validated, and competing programs at DMACC and Hawkeye
-                  may already consume available capacity at regional pharmacies.
+                  <span className="font-bold text-theme-primary">Likelihood:</span> Medium. Zero primary
+                  research has validated willingness to pay $4,800 among the target demographic. Competing
+                  programs at DMACC and online providers ($899–$4,000) create real price sensitivity.
+                  Employer-sponsored training at CVS and Walgreens captures some of the incumbent worker segment.
                 </p>
                 <div>
                   <span className="font-bold text-theme-primary">Mitigation:</span>
                   <ul className="mt-1.5 list-disc list-inside space-y-1 text-theme-secondary">
-                    <li>Execute 60-day clinical site validation sprint with MOUs from 6+ sites</li>
-                    <li>Diversify site types: hospital, retail, long-term care, specialty pharmacy</li>
-                    <li>Establish backup relationships with 2–3 additional sites beyond the minimum 6</li>
-                    <li>Negotiate multi-year agreements to prevent year-over-year capacity loss</li>
+                    <li>Execute 90-day market validation sprint before capital commitment</li>
+                    <li>Set minimum enrollment threshold (12 students) as launch/defer trigger</li>
+                    <li>Secure 8+ employer-sponsored seats before open marketing begins</li>
+                    <li>Develop evening cohort and Spanish-language track to reach underserved segments</li>
                   </ul>
                 </div>
               </div>
@@ -697,7 +647,7 @@ export default function KirkwoodPharmTechValidationPage() {
             <div className="card-cosmic p-7 rounded-2xl">
               <div className="flex flex-wrap items-center gap-3 mb-4">
                 <h3 className="font-heading font-bold text-theme-primary text-lg">
-                  Market Saturation and Enrollment Shortfall
+                  Clinical Site Capacity Failure
                 </h3>
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
                   HIGH
@@ -705,22 +655,24 @@ export default function KirkwoodPharmTechValidationPage() {
               </div>
               <div className="space-y-3 text-sm text-theme-secondary leading-relaxed">
                 <p>
-                  <span className="font-bold text-theme-primary">Impact:</span> Enrollment below 10
-                  students per cohort breaks the financial model. Below 8, the program operates at a
-                  loss and becomes a drag on division resources.
+                  <span className="font-bold text-theme-primary">Impact:</span> The entire financial
+                  model assumes zero-cost clinical placements. If sites charge $800–$1,200 per student,
+                  annual costs increase $12,000–$18,000 and break-even extends 4–6 months. If capacity
+                  is capped at 8–10 students (competing demand from nursing and medical assisting
+                  programs), the program becomes financially unviable.
                 </p>
                 <p>
-                  <span className="font-bold text-theme-primary">Likelihood:</span> Medium. Three
-                  in-state competitors and multiple online programs create a crowded market. Published
-                  labor market data does not support strong growth projections for the Cedar Rapids MSA.
+                  <span className="font-bold text-theme-primary">Likelihood:</span> Medium-High.
+                  No MOUs have been executed. Clinical sites serving competing programs at DMACC and
+                  Hawkeye may already be capacity-constrained.
                 </p>
                 <div>
                   <span className="font-bold text-theme-primary">Mitigation:</span>
                   <ul className="mt-1.5 list-disc list-inside space-y-1 text-theme-secondary">
-                    <li>Complete 30-day employer demand validation to confirm market size</li>
-                    <li>Secure employer co-marketing commitments with named hiring partners</li>
-                    <li>Differentiate on scheduling (evening/weekend), employer partnerships, and local convenience</li>
-                    <li>Set minimum enrollment threshold (10 students) as launch/cancel trigger</li>
+                    <li>Execute 120-day clinical site validation with signed MOUs from 6+ sites</li>
+                    <li>Diversify across hospital, retail, long-term care, and specialty settings</li>
+                    <li>Negotiate multi-year agreements locking in zero-cost terms through Year 3</li>
+                    <li>Establish backup relationships with 2–3 additional sites beyond minimum</li>
                   </ul>
                 </div>
               </div>
@@ -730,7 +682,7 @@ export default function KirkwoodPharmTechValidationPage() {
             <div className="card-cosmic p-7 rounded-2xl">
               <div className="flex flex-wrap items-center gap-3 mb-4">
                 <h3 className="font-heading font-bold text-theme-primary text-lg">
-                  Faculty Recruitment and Retention Failure
+                  Competitive Erosion — Price and Brand
                 </h3>
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/20">
                   MEDIUM
@@ -738,23 +690,23 @@ export default function KirkwoodPharmTechValidationPage() {
               </div>
               <div className="space-y-3 text-sm text-theme-secondary leading-relaxed">
                 <p>
-                  <span className="font-bold text-theme-primary">Impact:</span> ASHP accreditation
-                  requires a licensed pharmacist as program director. Inability to recruit or retain
-                  qualified faculty delays launch and jeopardizes accreditation.
+                  <span className="font-bold text-theme-primary">Impact:</span> DMACC&apos;s lower
+                  tuition ($3,500–$4,000), established ASHP accreditation, and regional brand
+                  recognition could capture market share — particularly from price-sensitive learners
+                  willing to commute. Online programs at $899–$1,079 compete for self-directed learners.
                 </p>
                 <p>
-                  <span className="font-bold text-theme-primary">Likelihood:</span> Medium-Low.
-                  Pharmacist salaries in clinical/retail settings ($120K–140K) exceed typical community
-                  college program director compensation ($55K–65K). Recruitment may require creative
-                  compensation structures.
+                  <span className="font-bold text-theme-primary">Likelihood:</span> Medium-Low if
+                  Kirkwood executes on employer partnerships. High if program launches without named
+                  employer co-marketing or clinical placement guarantees.
                 </p>
                 <div>
                   <span className="font-bold text-theme-primary">Mitigation:</span>
                   <ul className="mt-1.5 list-disc list-inside space-y-1 text-theme-secondary">
-                    <li>Target recently retired pharmacists or those seeking career transition to education</li>
-                    <li>Offer hybrid compensation: base salary + per-cohort stipends + benefits package</li>
-                    <li>Explore shared faculty arrangements with University of Iowa College of Pharmacy</li>
-                    <li>Build adjunct faculty pool from local practicing pharmacists for specialized topics</li>
+                    <li>Build marketing around named employer partners and guaranteed clinical placements</li>
+                    <li>Develop evening/weekend scheduling as primary differentiator for working adults</li>
+                    <li>Explore Spanish-language track to reach underserved market segment</li>
+                    <li>Pursue ASHP accreditation candidacy in Year 1 to signal program quality</li>
                   </ul>
                 </div>
               </div>
@@ -819,23 +771,23 @@ export default function KirkwoodPharmTechValidationPage() {
             {[
               {
                 title: 'Multi-Agent Analysis',
-                text: '7 specialist AI agents — each analyzing independently from a different professional lens (product, finance, marketing, labor economics, competitive strategy, regulatory, institutional fit).',
+                text: '7 specialist AI agents run in parallel — Labor Market, Financial Viability, Learner Demand, Employer Demand, Competitive Landscape, Institutional Fit, and Regulatory Compliance. Each agent analyzes independently using its own professional lens and real-time data.',
+              },
+              {
+                title: 'Live Data Sources',
+                text: 'Bureau of Labor Statistics API (SOC 29-2052, 2024 vintage), Google Jobs via SerpAPI (10 live postings captured February 19, 2026), O*NET competency profiles, Perkins V and WIOA eligibility frameworks, and Iowa Board of Pharmacy registration requirements.',
               },
               {
                 title: 'Weighted Scoring',
-                text: 'Evidence-based scoring across 7 dimensions with predetermined weights reflecting real-world decision priorities. Labor market demand carries 25% weight; regulatory carries 5%.',
+                text: 'Evidence-based scoring across 7 dimensions with predetermined weights reflecting real-world decision priorities. Labor market demand carries 25% weight; regulatory carries 5%. Composite score is a weighted average — no single dimension dominates.',
               },
               {
-                title: 'Override Rules',
-                text: 'Automatic safety checks for critical failures. Any dimension scoring below 4.0 with 20%+ weight triggers a mandatory override — converting GO to CONDITIONAL GO with specific remediation requirements.',
-              },
-              {
-                title: 'Real Data Sources',
-                text: 'BLS Occupational Employment Statistics, O*NET occupational profiles, SerpAPI competitive intelligence, state labor market information (Iowa Workforce Development), competitor program catalogs, and employer job posting analysis.',
+                title: 'Tiger Team Synthesis',
+                text: 'After 7 agents complete, a tiger team synthesizes all findings into the executive recommendation, identifies critical execution risks, and writes specific, measurable conditions for approval. This is the adversarial layer — it challenges optimistic assumptions.',
               },
               {
                 title: 'Conservative Methodology',
-                text: 'All estimates favor caution. Revenue projections use low-end enrollment assumptions. Cost estimates include contingency buffers. Growth projections use BLS baseline, not optimistic scenarios.',
+                text: 'All estimates favor caution. Revenue projections use low-end enrollment assumptions (15 students vs. peer median of 18). Cost estimates include contingency buffers. Growth projections use BLS baseline, not optimistic scenarios. Community colleges operate on thin margins — the model must work at minimum viable enrollment.',
               },
             ].map((phase) => (
               <div key={phase.title} className="card-cosmic p-4 rounded-xl">
@@ -847,7 +799,7 @@ export default function KirkwoodPharmTechValidationPage() {
 
           <AnimateOnScroll variant="fade-up" delay={300}>
             <p className="mt-8 text-center text-sm text-theme-muted font-mono">
-              7 agents · 25% labor market weight · 7-day delivery
+              7 agents · 204 seconds · BLS + Google Jobs live data · February 19, 2026
             </p>
           </AnimateOnScroll>
         </div>
@@ -868,10 +820,10 @@ export default function KirkwoodPharmTechValidationPage() {
               Get a GO / NO-GO on your program idea.
             </h2>
             <p className="mt-4 text-theme-secondary text-lg leading-relaxed">
-              This validation was conducted for Kirkwood Community College&apos;s Pharmacy Technician
-              program. Your Program Validation delivers the same 7-specialist analysis, financial
-              projections, and conditional recommendations — tailored to your institution, your
-              region, and your program.
+              This validation was produced by a live run of Wavelength&apos;s 7-stage Program Validator
+              pipeline on February 19, 2026 — real BLS data, real employer job postings, real
+              financial projections. Your Program Validation delivers the same depth, tailored to
+              your institution, your region, and your program.
             </p>
             <p className="mt-4 font-mono text-gradient-cosmic font-bold text-lg">
               $3,500 · Delivered within 5 business days

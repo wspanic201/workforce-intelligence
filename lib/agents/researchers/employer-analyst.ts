@@ -60,7 +60,9 @@ export async function runEmployerDemand(
     // Fetch real Google Jobs data to identify actual employers hiring
     const targetOccupation = (project as any).target_occupation || 
       project.program_name.replace(/\s*(certificate|diploma|degree|program|associate|bachelor|training|course)/gi, '').trim();
-    const location = (project as any).geographic_area || 'United States';
+    let rawLocation = (project as any).geographic_area || 'United States';
+    // Simplify complex location strings to "City, State" for SerpAPI compatibility
+    const location = rawLocation.replace(/\s+and\s+\w[\w\s]+,/i, ',').replace(/\s*\(.*?\)/g, '').trim();
     
     let jobsData = null;
     let employerList: Array<{ name: string; openings: number }> = [];
