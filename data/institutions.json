@@ -1,5 +1,59 @@
 [
   {
+    "unitid": 491464,
+    "name": "ABC Adult School",
+    "city": "Cerritos",
+    "state": "CA"
+  },
+  {
+    "unitid": 214023,
+    "name": "ASPIRA City College",
+    "city": "Philadelphia",
+    "state": "PA"
+  },
+  {
+    "unitid": 457989,
+    "name": "Academy for Careers and Technology",
+    "city": "Mullins",
+    "state": "SC"
+  },
+  {
+    "unitid": 412173,
+    "name": "Academy for Nursing and Health Occupations",
+    "city": "West Palm Beach",
+    "state": "FL"
+  },
+  {
+    "unitid": 237729,
+    "name": "Academy of Careers and Technology",
+    "city": "Beckley",
+    "state": "WV"
+  },
+  {
+    "unitid": 482185,
+    "name": "Academy of Interactive Entertainment",
+    "city": "Seattle",
+    "state": "WA"
+  },
+  {
+    "unitid": 487658,
+    "name": "Academy of Interactive Entertainment",
+    "city": "Lafayette",
+    "state": "LA"
+  },
+  {
+    "unitid": 203030,
+    "name": "Adult and Community Education-Hudson",
+    "city": "Columbus",
+    "state": "OH"
+  },
+  {
+    "unitid": 183983,
+    "name": "Adult and Continuing Education-BCTS",
+    "city": "Hackensack",
+    "state": "NJ"
+  },
+  {
     "unitid": 217615,
     "name": "Aiken Technical College",
     "city": "Graniteville",
@@ -10,6 +64,24 @@
     "name": "Alamance Community College",
     "city": "Graham",
     "state": "NC"
+  },
+  {
+    "unitid": 442523,
+    "name": "Alaska Christian College",
+    "city": "Soldotna",
+    "state": "AK"
+  },
+  {
+    "unitid": 102711,
+    "name": "Alaska Vocational Technical Center",
+    "city": "Seward",
+    "state": "AK"
+  },
+  {
+    "unitid": 418038,
+    "name": "Albany BOCES-Adult Practical Nursing Program",
+    "city": "Albany",
+    "state": "NY"
   },
   {
     "unitid": 138682,
@@ -42,6 +114,18 @@
     "state": "KS"
   },
   {
+    "unitid": 445461,
+    "name": "Altierus Career College-Bissonnet",
+    "city": "Houston",
+    "state": "TX"
+  },
+  {
+    "unitid": 443748,
+    "name": "Altierus Career College-Norcross",
+    "city": "Norcross",
+    "state": "GA"
+  },
+  {
     "unitid": 222567,
     "name": "Alvin Community College",
     "city": "Alvin",
@@ -52,6 +136,24 @@
     "name": "Amarillo College",
     "city": "Amarillo",
     "state": "TX"
+  },
+  {
+    "unitid": 188687,
+    "name": "American Academy McAllister Institute of Funeral Service",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
+    "unitid": 108852,
+    "name": "American Academy of Dramatic Arts-Los Angeles",
+    "city": "Los Angeles",
+    "state": "CA"
+  },
+  {
+    "unitid": 188678,
+    "name": "American Academy of Dramatic Arts-New York",
+    "city": "New York",
+    "state": "NY"
   },
   {
     "unitid": 109208,
@@ -82,6 +184,24 @@
     "name": "Anoka-Ramsey Community College",
     "city": "Coon Rapids",
     "state": "MN"
+  },
+  {
+    "unitid": 485342,
+    "name": "Aparicio-Levy Technical College",
+    "city": "Tampa",
+    "state": "FL"
+  },
+  {
+    "unitid": 201034,
+    "name": "Apollo Career Center",
+    "city": "Lima",
+    "state": "OH"
+  },
+  {
+    "unitid": 417716,
+    "name": "Applied Technology Services",
+    "city": "Sunset Hills",
+    "state": "MO"
   },
   {
     "unitid": 104160,
@@ -126,6 +246,12 @@
     "state": "AR"
   },
   {
+    "unitid": 188915,
+    "name": "Arnot Ogden Medical Center",
+    "city": "Elmira",
+    "state": "NY"
+  },
+  {
     "unitid": 197887,
     "name": "Asheville-Buncombe Technical Community College",
     "city": "Asheville",
@@ -138,10 +264,34 @@
     "state": "KY"
   },
   {
+    "unitid": 201098,
+    "name": "Ashland County-West Holmes Career Center",
+    "city": "Ashland",
+    "state": "OH"
+  },
+  {
+    "unitid": 201131,
+    "name": "Ashtabula County Technical and Career Campus",
+    "city": "Jefferson",
+    "state": "OH"
+  },
+  {
     "unitid": 128577,
     "name": "Asnuntuck Community College",
     "city": "Enfield",
     "state": "CT"
+  },
+  {
+    "unitid": 164535,
+    "name": "Assabet Valley Regional Technical School",
+    "city": "Marlborough",
+    "state": "MA"
+  },
+  {
+    "unitid": 183600,
+    "name": "Assumption College for Sisters",
+    "city": "Denville",
+    "state": "NJ"
   },
   {
     "unitid": 246813,
@@ -168,6 +318,12 @@
     "state": "FL"
   },
   {
+    "unitid": 201159,
+    "name": "Auburn Career Center",
+    "city": "Concord Twp",
+    "state": "OH"
+  },
+  {
     "unitid": 138956,
     "name": "Augusta Technical College",
     "city": "Augusta",
@@ -180,10 +336,34 @@
     "state": "OK"
   },
   {
+    "unitid": 219170,
+    "name": "Avera McKennan Hospital School of Radiologic Technology",
+    "city": "Sioux Falls",
+    "state": "SD"
+  },
+  {
+    "unitid": 219338,
+    "name": "Avera Sacred Heart Hospital",
+    "city": "Yankton",
+    "state": "SD"
+  },
+  {
+    "unitid": 417105,
+    "name": "Baldwin Park Adult & Community Education",
+    "city": "Baldwin Park",
+    "state": "CA"
+  },
+  {
     "unitid": 161864,
     "name": "Baltimore City Community College",
     "city": "Baltimore",
     "state": "MD"
+  },
+  {
+    "unitid": 106546,
+    "name": "Baptist Health College Little Rock",
+    "city": "Little Rock",
+    "state": "AR"
   },
   {
     "unitid": 109907,
@@ -210,6 +390,12 @@
     "state": "LA"
   },
   {
+    "unitid": 158325,
+    "name": "Baton Rouge General Medical Center School of Nursing & School of Radiologic Technology",
+    "city": "Baton Rouge",
+    "state": "LA"
+  },
+  {
     "unitid": 168883,
     "name": "Bay de Noc Community College",
     "city": "Escanaba",
@@ -222,10 +408,28 @@
     "state": "NC"
   },
   {
+    "unitid": 449357,
+    "name": "Beaumont Adult School",
+    "city": "Beaumont",
+    "state": "CA"
+  },
+  {
+    "unitid": 190956,
+    "name": "Belanger School of Nursing",
+    "city": "Schenectady",
+    "state": "NY"
+  },
+  {
     "unitid": 201283,
     "name": "Belmont College",
     "city": "St Clairsville",
     "state": "OH"
+  },
+  {
+    "unitid": 237172,
+    "name": "Ben Franklin Career Center",
+    "city": "Dunbar",
+    "state": "WV"
   },
   {
     "unitid": 183743,
@@ -240,6 +444,12 @@
     "state": "CA"
   },
   {
+    "unitid": 481021,
+    "name": "Berks Career & Technology Center",
+    "city": "Leesport",
+    "state": "PA"
+  },
+  {
     "unitid": 164775,
     "name": "Berkshire Community College",
     "city": "Pittsfield",
@@ -250,6 +460,12 @@
     "name": "Bevill State Community College",
     "city": "Jasper",
     "state": "AL"
+  },
+  {
+    "unitid": 137856,
+    "name": "Big Bend Technical College",
+    "city": "Perry",
+    "state": "FL"
   },
   {
     "unitid": 157553,
@@ -282,6 +498,12 @@
     "state": "WI"
   },
   {
+    "unitid": 457615,
+    "name": "Blackstone Valley Vocational Regional School District",
+    "city": "Upton",
+    "state": "MA"
+  },
+  {
     "unitid": 198011,
     "name": "Bladen Community College",
     "city": "Dublin",
@@ -294,16 +516,16 @@
     "state": "TX"
   },
   {
+    "unitid": 243799,
+    "name": "Blue Hills Regional Technical School",
+    "city": "Canton",
+    "state": "MA"
+  },
+  {
     "unitid": 208275,
     "name": "Blue Mountain Community College",
     "city": "Pendleton",
     "state": "OR"
-  },
-  {
-    "unitid": 446774,
-    "name": "Blue Ridge Community and Technical College",
-    "city": "Martinsburg",
-    "state": "WV"
   },
   {
     "unitid": 198039,
@@ -318,10 +540,28 @@
     "state": "VA"
   },
   {
+    "unitid": 446774,
+    "name": "Blue Ridge Community and Technical College",
+    "city": "Martinsburg",
+    "state": "WV"
+  },
+  {
     "unitid": 156392,
     "name": "Bluegrass Community and Technical College",
     "city": "Lexington",
     "state": "KY"
+  },
+  {
+    "unitid": 491446,
+    "name": "Bnos Zion Of Bobov Seminary",
+    "city": "Brooklyn",
+    "state": "NY"
+  },
+  {
+    "unitid": 233480,
+    "name": "Bon Secours St Mary's Hospital School of Medical Imaging",
+    "city": "Richmond",
+    "state": "VA"
   },
   {
     "unitid": 498386,
@@ -342,6 +582,12 @@
     "state": "WV"
   },
   {
+    "unitid": 230010,
+    "name": "Bridgerland Technical College",
+    "city": "Logan",
+    "state": "UT"
+  },
+  {
     "unitid": 232450,
     "name": "Brightpoint Community College",
     "city": "Chester",
@@ -354,16 +600,46 @@
     "state": "MA"
   },
   {
+    "unitid": 431187,
+    "name": "Bristol Technical Education Center",
+    "city": "Bristol",
+    "state": "CT"
+  },
+  {
     "unitid": 183859,
     "name": "Brookdale Community College",
     "city": "Lincroft",
     "state": "NJ"
   },
   {
+    "unitid": 418010,
+    "name": "Broome Delaware Tioga BOCES-Practical Nursing Program",
+    "city": "Endicott",
+    "state": "NY"
+  },
+  {
+    "unitid": 375568,
+    "name": "Brown & Clermont Adult Career Campuses",
+    "city": "Bethel",
+    "state": "OH"
+  },
+  {
     "unitid": 198084,
     "name": "Brunswick Community College",
     "city": "Bolivia",
     "state": "NC"
+  },
+  {
+    "unitid": 201478,
+    "name": "Buckeye Hills Career Center",
+    "city": "Rio Grande",
+    "state": "OH"
+  },
+  {
+    "unitid": 383312,
+    "name": "Buckeye Joint Vocational School",
+    "city": "New Philadelphia",
+    "state": "OH"
   },
   {
     "unitid": 211307,
@@ -378,6 +654,12 @@
     "state": "MA"
   },
   {
+    "unitid": 496645,
+    "name": "Burlington County Institute of Technology-Adult Education",
+    "city": "Westampton",
+    "state": "NJ"
+  },
+  {
     "unitid": 154800,
     "name": "Butler Community College",
     "city": "El Dorado",
@@ -390,16 +672,100 @@
     "state": "PA"
   },
   {
+    "unitid": 201496,
+    "name": "Butler Technology and Career Development Schools",
+    "city": "Monroe",
+    "state": "OH"
+  },
+  {
     "unitid": 110246,
     "name": "Butte College",
     "city": "Oroville",
     "state": "CA"
   },
   {
+    "unitid": 487773,
+    "name": "Butte County Regional Occupational Program",
+    "city": "Chico",
+    "state": "CA"
+  },
+  {
+    "unitid": 487968,
+    "name": "CAAN Academy of Nursing",
+    "city": "Matteson",
+    "state": "IL"
+  },
+  {
+    "unitid": 417248,
+    "name": "CT Aerotech",
+    "city": "Hartford",
+    "state": "CT"
+  },
+  {
+    "unitid": 190521,
+    "name": "CUNY Borough of Manhattan Community College",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
+    "unitid": 190530,
+    "name": "CUNY Bronx Community College",
+    "city": "Bronx",
+    "state": "NY"
+  },
+  {
+    "unitid": 190585,
+    "name": "CUNY Hostos Community College",
+    "city": "Bronx",
+    "state": "NY"
+  },
+  {
+    "unitid": 190619,
+    "name": "CUNY Kingsborough Community College",
+    "city": "Brooklyn",
+    "state": "NY"
+  },
+  {
+    "unitid": 190628,
+    "name": "CUNY LaGuardia Community College",
+    "city": "Long Island City",
+    "state": "NY"
+  },
+  {
+    "unitid": 190673,
+    "name": "CUNY Queensborough Community College",
+    "city": "Bayside",
+    "state": "NY"
+  },
+  {
+    "unitid": 475565,
+    "name": "CUNY Stella and Charles Guttman Community College",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
+    "unitid": 190707,
+    "name": "CVPH Medical Center School of Radiologic Technology",
+    "city": "Plattsburgh",
+    "state": "NY"
+  },
+  {
+    "unitid": 237242,
+    "name": "Cabell County Career Technology Center",
+    "city": "Huntington",
+    "state": "WV"
+  },
+  {
     "unitid": 110334,
     "name": "Cabrillo College",
     "city": "Aptos",
     "state": "CA"
+  },
+  {
+    "unitid": 364946,
+    "name": "Caddo Kiowa Technology Center",
+    "city": "Fort Cobb",
+    "state": "OK"
   },
   {
     "unitid": 198118,
@@ -438,10 +804,22 @@
     "state": "ND"
   },
   {
+    "unitid": 201539,
+    "name": "Canton City Schools Adult Career and Technical Education",
+    "city": "Canton",
+    "state": "OH"
+  },
+  {
     "unitid": 165194,
     "name": "Cape Cod Community College",
     "city": "West Barnstable",
     "state": "MA"
+  },
+  {
+    "unitid": 431558,
+    "name": "Cape Coral Technical College",
+    "city": "Cape Coral",
+    "state": "FL"
   },
   {
     "unitid": 198154,
@@ -454,6 +832,42 @@
     "name": "Cape Girardeau Career and Technology Center",
     "city": "Cape Girardeau",
     "state": "MO"
+  },
+  {
+    "unitid": 367972,
+    "name": "Capital Area Career Center",
+    "city": "Springfield",
+    "state": "IL"
+  },
+  {
+    "unitid": 186423,
+    "name": "Capital Health School of Nursing",
+    "city": "Trenton",
+    "state": "NJ"
+  },
+  {
+    "unitid": 186405,
+    "name": "Capital Health School of Radiologic Technology",
+    "city": "Trenton",
+    "state": "NJ"
+  },
+  {
+    "unitid": 417442,
+    "name": "Career Center of Southern Illinois",
+    "city": "Red Bud",
+    "state": "IL"
+  },
+  {
+    "unitid": 246071,
+    "name": "Career Technology Center of Lackawanna County",
+    "city": "Scranton",
+    "state": "PA"
+  },
+  {
+    "unitid": 418205,
+    "name": "Career and Technology Education Centers of Licking County",
+    "city": "Newark",
+    "state": "OH"
   },
   {
     "unitid": 206923,
@@ -480,6 +894,12 @@
     "state": "NC"
   },
   {
+    "unitid": 481049,
+    "name": "Carthage R9 School District-Carthage Technical Center",
+    "city": "Carthage",
+    "state": "MO"
+  },
+  {
     "unitid": 430795,
     "name": "Carver Career Center",
     "city": "Charleston",
@@ -492,10 +912,22 @@
     "state": "WY"
   },
   {
+    "unitid": 417682,
+    "name": "Cass Career Center",
+    "city": "Harrisonville",
+    "state": "MO"
+  },
+  {
     "unitid": 198233,
     "name": "Catawba Valley Community College",
     "city": "Hickory",
     "state": "NC"
+  },
+  {
+    "unitid": 417983,
+    "name": "Cattaraugus Allegany BOCES-Practical Nursing Program",
+    "city": "Olean",
+    "state": "NY"
   },
   {
     "unitid": 189839,
@@ -504,10 +936,22 @@
     "state": "NY"
   },
   {
+    "unitid": 430883,
+    "name": "Cayuga Onondaga BOCES-Practical Nursing Program",
+    "city": "Auburn",
+    "state": "NY"
+  },
+  {
     "unitid": 162104,
     "name": "Cecil College",
     "city": "North East",
     "state": "MD"
+  },
+  {
+    "unitid": 364964,
+    "name": "Center for Instruction, Technology & Innovation",
+    "city": "Mexico",
+    "state": "NY"
   },
   {
     "unitid": 100760,
@@ -588,6 +1032,24 @@
     "state": "NC"
   },
   {
+    "unitid": 231688,
+    "name": "Central School of Practical Nursing",
+    "city": "Norfolk",
+    "state": "VA"
+  },
+  {
+    "unitid": 406422,
+    "name": "Central Susquehanna Intermediate Unit LPN Career",
+    "city": "Milton",
+    "state": "PA"
+  },
+  {
+    "unitid": 246017,
+    "name": "Central Technology Center",
+    "city": "Drumright",
+    "state": "OK"
+  },
+  {
     "unitid": 223816,
     "name": "Central Texas College",
     "city": "Killeen",
@@ -636,6 +1098,30 @@
     "state": "AZ"
   },
   {
+    "unitid": 123493,
+    "name": "Charles A Jones Career and Education Center",
+    "city": "Sacramento",
+    "state": "CA"
+  },
+  {
+    "unitid": 419095,
+    "name": "Charles H McCann Technical School",
+    "city": "North Adams",
+    "state": "MA"
+  },
+  {
+    "unitid": 132976,
+    "name": "Charlotte Technical College",
+    "city": "Port Charlotte",
+    "state": "FL"
+  },
+  {
+    "unitid": 201751,
+    "name": "Chatfield College",
+    "city": "Saint Martin",
+    "state": "OH"
+  },
+  {
     "unitid": 140331,
     "name": "Chattahoochee Technical College",
     "city": "Marietta",
@@ -660,6 +1146,12 @@
     "state": "MD"
   },
   {
+    "unitid": 418427,
+    "name": "Chester County Intermediate Unit",
+    "city": "Downingtown",
+    "state": "PA"
+  },
+  {
     "unitid": 180160,
     "name": "Chief Dull Knife College",
     "city": "Lame Deer",
@@ -672,10 +1164,34 @@
     "state": "WI"
   },
   {
+    "unitid": 375656,
+    "name": "Chisholm Trail Technology Center",
+    "city": "Omega",
+    "state": "OK"
+  },
+  {
+    "unitid": 201803,
+    "name": "Choffin Career  and Technical Center",
+    "city": "Youngstown",
+    "state": "OH"
+  },
+  {
+    "unitid": 190008,
+    "name": "Circle in the Square Theatre School",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
     "unitid": 223898,
     "name": "Cisco College",
     "city": "Cisco",
     "state": "TX"
+  },
+  {
+    "unitid": 211635,
+    "name": "Citizens School of Nursing",
+    "city": "Tarentum",
+    "state": "PA"
   },
   {
     "unitid": 112172,
@@ -744,10 +1260,28 @@
     "state": "TX"
   },
   {
+    "unitid": 450401,
+    "name": "Clary Sage College",
+    "city": "Tulsa",
+    "state": "OK"
+  },
+  {
     "unitid": 208415,
     "name": "Clatsop Community College",
     "city": "Astoria",
     "state": "OR"
+  },
+  {
+    "unitid": 430908,
+    "name": "Clearfield County Career and Technology Center",
+    "city": "Clearfield",
+    "state": "PA"
+  },
+  {
+    "unitid": 411754,
+    "name": "Cleveland Clinic Health System-School of Diagnostic Imaging",
+    "city": "Euclid",
+    "state": "OH"
   },
   {
     "unitid": 198321,
@@ -768,10 +1302,28 @@
     "state": "NY"
   },
   {
+    "unitid": 417868,
+    "name": "Clinton Essex Warren Washington BOCES",
+    "city": "Plattsburgh",
+    "state": "NY"
+  },
+  {
+    "unitid": 260336,
+    "name": "Clinton Technical School",
+    "city": "Clinton",
+    "state": "MO"
+  },
+  {
     "unitid": 154907,
     "name": "Cloud County Community College",
     "city": "Concordia",
     "state": "KS"
+  },
+  {
+    "unitid": 112367,
+    "name": "Clovis Adult Education",
+    "city": "Clovis",
+    "state": "CA"
   },
   {
     "unitid": 187639,
@@ -834,6 +1386,12 @@
     "state": "AZ"
   },
   {
+    "unitid": 190071,
+    "name": "Cochran School of Nursing",
+    "city": "Yonkers",
+    "state": "NY"
+  },
+  {
     "unitid": 404426,
     "name": "Coconino Community College",
     "city": "Flagstaff",
@@ -894,6 +1452,12 @@
     "state": "MD"
   },
   {
+    "unitid": 455114,
+    "name": "College of Western Idaho",
+    "city": "Nampa",
+    "state": "ID"
+  },
+  {
     "unitid": 197814,
     "name": "College of the Albemarle",
     "city": "Elizabeth City",
@@ -936,12 +1500,6 @@
     "state": "CA"
   },
   {
-    "unitid": 455114,
-    "name": "College of Western Idaho",
-    "city": "Nampa",
-    "state": "ID"
-  },
-  {
     "unitid": 203614,
     "name": "Collins Career Technical Center",
     "city": "Chesapeake",
@@ -978,6 +1536,12 @@
     "state": "NY"
   },
   {
+    "unitid": 202152,
+    "name": "Columbiana County Career and Technical Center",
+    "city": "Lisbon",
+    "state": "OH"
+  },
+  {
     "unitid": 202222,
     "name": "Columbus State Community College",
     "city": "Columbus",
@@ -990,10 +1554,34 @@
     "state": "GA"
   },
   {
+    "unitid": 366261,
+    "name": "Commonwealth Institute of Funeral Service",
+    "city": "Houston",
+    "state": "TX"
+  },
+  {
+    "unitid": 212975,
+    "name": "Commonwealth Technical Institute",
+    "city": "Johnstown",
+    "state": "PA"
+  },
+  {
     "unitid": 498012,
     "name": "Commonwealth of Puerto Rico Department of Education-PRAMI",
     "city": "Fajardo",
     "state": "PR"
+  },
+  {
+    "unitid": 439570,
+    "name": "Community Care College",
+    "city": "Tulsa",
+    "state": "OK"
+  },
+  {
+    "unitid": 446163,
+    "name": "Community Christian College",
+    "city": "Redlands",
+    "state": "CA"
   },
   {
     "unitid": 210605,
@@ -1116,6 +1704,12 @@
     "state": "NJ"
   },
   {
+    "unitid": 226675,
+    "name": "Covenant School of Nursing and Allied Health",
+    "city": "Lubbock",
+    "state": "TX"
+  },
+  {
     "unitid": 154952,
     "name": "Cowley County Community College",
     "city": "Arkansas City",
@@ -1134,16 +1728,16 @@
     "state": "NC"
   },
   {
+    "unitid": 419484,
+    "name": "Crawford County Career and Technical Center Practical Nursing Program",
+    "city": "Meadville",
+    "state": "PA"
+  },
+  {
     "unitid": 177135,
     "name": "Crowder College",
     "city": "Neosho",
     "state": "MO"
-  },
-  {
-    "unitid": 417248,
-    "name": "CT Aerotech",
-    "city": "Hartford",
-    "state": "CT"
   },
   {
     "unitid": 113193,
@@ -1152,46 +1746,10 @@
     "state": "CA"
   },
   {
-    "unitid": 190521,
-    "name": "CUNY Borough of Manhattan Community College",
-    "city": "New York",
-    "state": "NY"
-  },
-  {
-    "unitid": 190530,
-    "name": "CUNY Bronx Community College",
-    "city": "Bronx",
-    "state": "NY"
-  },
-  {
-    "unitid": 190585,
-    "name": "CUNY Hostos Community College",
-    "city": "Bronx",
-    "state": "NY"
-  },
-  {
-    "unitid": 190619,
-    "name": "CUNY Kingsborough Community College",
-    "city": "Brooklyn",
-    "state": "NY"
-  },
-  {
-    "unitid": 190628,
-    "name": "CUNY LaGuardia Community College",
-    "city": "Long Island City",
-    "state": "NY"
-  },
-  {
-    "unitid": 190673,
-    "name": "CUNY Queensborough Community College",
-    "city": "Bayside",
-    "state": "NY"
-  },
-  {
-    "unitid": 475565,
-    "name": "CUNY Stella and Charles Guttman Community College",
-    "city": "New York",
-    "state": "NY"
+    "unitid": 446206,
+    "name": "Culpeper Cosmetology Training Center",
+    "city": "Culpeper",
+    "state": "VA"
   },
   {
     "unitid": 202356,
@@ -1200,10 +1758,22 @@
     "state": "OH"
   },
   {
+    "unitid": 204981,
+    "name": "Cuyahoga Valley Career Center",
+    "city": "Brecksville",
+    "state": "OH"
+  },
+  {
     "unitid": 113218,
     "name": "Cuyamaca College",
     "city": "El Cajon",
     "state": "CA"
+  },
+  {
+    "unitid": 461306,
+    "name": "D A Dorsey Technical College",
+    "city": "Miami",
+    "state": "FL"
   },
   {
     "unitid": 200314,
@@ -1216,6 +1786,12 @@
     "name": "Dakota County Technical College",
     "city": "Rosemount",
     "state": "MN"
+  },
+  {
+    "unitid": 224271,
+    "name": "Dallas Institute of Funeral Service",
+    "city": "Dallas",
+    "state": "TX"
   },
   {
     "unitid": 144564,
@@ -1236,6 +1812,12 @@
     "state": "NC"
   },
   {
+    "unitid": 230162,
+    "name": "Davis Technical College",
+    "city": "Kaysville",
+    "state": "UT"
+  },
+  {
     "unitid": 180151,
     "name": "Dawson Community College",
     "city": "Glendive",
@@ -1248,9 +1830,27 @@
     "state": "CA"
   },
   {
+    "unitid": 406361,
+    "name": "Delaware Chenango Madison Otsego BOCES-Practical Nursing Program",
+    "city": "Norwich",
+    "state": "NY"
+  },
+  {
+    "unitid": 432524,
+    "name": "Delaware College of Art and Design",
+    "city": "Wilmington",
+    "state": "DE"
+  },
+  {
     "unitid": 211927,
     "name": "Delaware County Community College",
     "city": "Media",
+    "state": "PA"
+  },
+  {
+    "unitid": 430971,
+    "name": "Delaware County Technical School-Practical Nursing Program",
+    "city": "Broomall",
     "state": "PA"
   },
   {
@@ -1272,6 +1872,12 @@
     "state": "SC"
   },
   {
+    "unitid": 494463,
+    "name": "Derech Hachaim Seminary",
+    "city": "Monroe",
+    "state": "NY"
+  },
+  {
     "unitid": 153214,
     "name": "Des Moines Area Community College",
     "city": "Ankeny",
@@ -1282,6 +1888,24 @@
     "name": "Diablo Valley College",
     "city": "Pleasant Hill",
     "state": "CA"
+  },
+  {
+    "unitid": 490498,
+    "name": "Digital Media Institute",
+    "city": "Shreveport",
+    "state": "LA"
+  },
+  {
+    "unitid": 165608,
+    "name": "Diman Regional Technical Institute",
+    "city": "Fall River",
+    "state": "MA"
+  },
+  {
+    "unitid": 451583,
+    "name": "Dixie Technical College",
+    "city": "Saint George",
+    "state": "UT"
   },
   {
     "unitid": 154998,
@@ -1302,6 +1926,12 @@
     "state": "NC"
   },
   {
+    "unitid": 431105,
+    "name": "Dutchess BOCES-Practical Nursing Program",
+    "city": "Poughkeepsie",
+    "state": "NY"
+  },
+  {
     "unitid": 190840,
     "name": "Dutchess Community College",
     "city": "Poughkeepsie",
@@ -1312,6 +1942,12 @@
     "name": "Dyersburg State Community College",
     "city": "Dyersburg",
     "state": "TN"
+  },
+  {
+    "unitid": 202657,
+    "name": "EHOVE Career Center",
+    "city": "Milan",
+    "state": "OH"
   },
   {
     "unitid": 106883,
@@ -1344,10 +1980,22 @@
     "state": "MS"
   },
   {
+    "unitid": 441210,
+    "name": "East Valley Institute of Technology",
+    "city": "Mesa",
+    "state": "AZ"
+  },
+  {
     "unitid": 104577,
     "name": "Eastern Arizona College",
     "city": "Thatcher",
     "state": "AZ"
+  },
+  {
+    "unitid": 375966,
+    "name": "Eastern Center for Arts and Technology",
+    "city": "Willow Grove",
+    "state": "PA"
   },
   {
     "unitid": 203331,
@@ -1380,6 +2028,12 @@
     "state": "NM"
   },
   {
+    "unitid": 418348,
+    "name": "Eastern Oklahoma County Technology Center",
+    "city": "Choctaw",
+    "state": "OK"
+  },
+  {
     "unitid": 207050,
     "name": "Eastern Oklahoma State College",
     "city": "Wilburton",
@@ -1392,6 +2046,24 @@
     "state": "VA"
   },
   {
+    "unitid": 418065,
+    "name": "Eastern Suffolk BOCES",
+    "city": "Sayville",
+    "state": "NY"
+  },
+  {
+    "unitid": 486877,
+    "name": "Eastern Suffolk BOCES",
+    "city": "Riverhead",
+    "state": "NY"
+  },
+  {
+    "unitid": 486886,
+    "name": "Eastern Suffolk BOCES",
+    "city": "Oakdale",
+    "state": "NY"
+  },
+  {
     "unitid": 438708,
     "name": "Eastern West Virginia Community and Technical College",
     "city": "Moorefield",
@@ -1402,6 +2074,12 @@
     "name": "Eastern Wyoming College",
     "city": "Torrington",
     "state": "WY"
+  },
+  {
+    "unitid": 407461,
+    "name": "Eastland-Fairfield Career and Technical Schools",
+    "city": "Groveport",
+    "state": "OH"
   },
   {
     "unitid": 198491,
@@ -1446,10 +2124,46 @@
     "state": "IA"
   },
   {
+    "unitid": 490346,
+    "name": "Elyon College",
+    "city": "Brooklyn",
+    "state": "NY"
+  },
+  {
+    "unitid": 457378,
+    "name": "Emerald Coast Technical College",
+    "city": "DeFuniak Springs",
+    "state": "FL"
+  },
+  {
+    "unitid": 127158,
+    "name": "Emily Griffith Technical College",
+    "city": "Denver",
+    "state": "CO"
+  },
+  {
+    "unitid": 487092,
+    "name": "Emory University-Oxford College",
+    "city": "Oxford",
+    "state": "GA"
+  },
+  {
     "unitid": 101143,
     "name": "Enterprise State Community College",
     "city": "Enterprise",
     "state": "AL"
+  },
+  {
+    "unitid": 439622,
+    "name": "Erie 1 BOCES",
+    "city": "West Seneca",
+    "state": "NY"
+  },
+  {
+    "unitid": 383525,
+    "name": "Erie 2 Chautauqua Cattaraugus BOCES-Practical Nursing Program",
+    "city": "Angola",
+    "state": "NY"
   },
   {
     "unitid": 191083,
@@ -1462,6 +2176,12 @@
     "name": "Erwin Technical College",
     "city": "Tampa",
     "state": "FL"
+  },
+  {
+    "unitid": 492306,
+    "name": "Escondido Adult School",
+    "city": "Escondido",
+    "state": "CA"
   },
   {
     "unitid": 452106,
@@ -1482,10 +2202,28 @@
     "state": "AZ"
   },
   {
+    "unitid": 477233,
+    "name": "Evangel University-James River Assembly of God Church",
+    "city": "Ozark",
+    "state": "MO"
+  },
+  {
     "unitid": 114266,
     "name": "Evergreen Valley College",
     "city": "San Jose",
     "state": "CA"
+  },
+  {
+    "unitid": 248624,
+    "name": "Fayette County Career & Technical Institute Practical Nursing Program",
+    "city": "Uniontown",
+    "state": "PA"
+  },
+  {
+    "unitid": 413176,
+    "name": "Fayette Institute of Technology",
+    "city": "Oak Hill",
+    "state": "WV"
   },
   {
     "unitid": 198534,
@@ -1498,6 +2236,24 @@
     "name": "Finger Lakes Community College",
     "city": "Canandaigua",
     "state": "NY"
+  },
+  {
+    "unitid": 475422,
+    "name": "Finger Lakes Health College of Nursing & Health Sciences",
+    "city": "Geneva",
+    "state": "NY"
+  },
+  {
+    "unitid": 205090,
+    "name": "Firelands Regional Medical Center School of Nursing",
+    "city": "Sandusky",
+    "state": "OH"
+  },
+  {
+    "unitid": 137023,
+    "name": "First Coast Technical College",
+    "city": "Saint Augustine",
+    "state": "FL"
   },
   {
     "unitid": 461245,
@@ -1530,6 +2286,18 @@
     "state": "SC"
   },
   {
+    "unitid": 138284,
+    "name": "Florida Panhandle Technical College",
+    "city": "Chipley",
+    "state": "FL"
+  },
+  {
+    "unitid": 457350,
+    "name": "Florida School of Traditional Midwifery",
+    "city": "Gainesville",
+    "state": "FL"
+  },
+  {
     "unitid": 444219,
     "name": "Folsom Lake College",
     "city": "Folsom",
@@ -1560,16 +2328,46 @@
     "state": "KS"
   },
   {
+    "unitid": 457873,
+    "name": "Four County Career Center",
+    "city": "Archbold",
+    "state": "OH"
+  },
+  {
+    "unitid": 177436,
+    "name": "Four Rivers Career Center",
+    "city": "Washington",
+    "state": "MO"
+  },
+  {
     "unitid": 238722,
     "name": "Fox Valley Technical College",
     "city": "Appleton",
     "state": "WI"
   },
   {
+    "unitid": 245999,
+    "name": "Francis Tuttle Technology Center",
+    "city": "Oklahoma City",
+    "state": "OK"
+  },
+  {
     "unitid": 224891,
     "name": "Frank Phillips College",
     "city": "Borger",
     "state": "TX"
+  },
+  {
+    "unitid": 248633,
+    "name": "Franklin County Career and Technology Center",
+    "city": "Chambersburg",
+    "state": "PA"
+  },
+  {
+    "unitid": 409120,
+    "name": "Franklin Technology Center Adult Education",
+    "city": "Joplin",
+    "state": "MO"
   },
   {
     "unitid": 459329,
@@ -1620,6 +2418,12 @@
     "state": "AL"
   },
   {
+    "unitid": 490090,
+    "name": "Gadsden Technical College",
+    "city": "Quincy",
+    "state": "FL"
+  },
+  {
     "unitid": 155104,
     "name": "Garden City Community College",
     "city": "Garden City",
@@ -1636,6 +2440,12 @@
     "name": "Gaston College",
     "city": "Dallas",
     "state": "NC"
+  },
+  {
+    "unitid": 246895,
+    "name": "GateWay Community College-Central City",
+    "city": "Phoenix",
+    "state": "AZ"
   },
   {
     "unitid": 157438,
@@ -1656,8 +2466,26 @@
     "state": "CA"
   },
   {
+    "unitid": 460385,
+    "name": "Geisinger-Lewistown Hospital School of Nursing",
+    "city": "Lewistown",
+    "state": "PA"
+  },
+  {
+    "unitid": 146816,
+    "name": "Generations College",
+    "city": "Chicago",
+    "state": "IL"
+  },
+  {
     "unitid": 191339,
     "name": "Genesee Community College",
+    "city": "Batavia",
+    "state": "NY"
+  },
+  {
+    "unitid": 431196,
+    "name": "Genesee Valley BOCES-Practical Nursing Program",
     "city": "Batavia",
     "state": "NY"
   },
@@ -1683,6 +2511,12 @@
     "unitid": 134291,
     "name": "George Stone Technical College",
     "city": "Pensacola",
+    "state": "FL"
+  },
+  {
+    "unitid": 134307,
+    "name": "George T Baker Aviation Technical College",
+    "city": "Miami",
     "state": "FL"
   },
   {
@@ -1746,10 +2580,22 @@
     "state": "GA"
   },
   {
+    "unitid": 145354,
+    "name": "Graham Hospital School of Nursing",
+    "city": "Canton",
+    "state": "IL"
+  },
+  {
     "unitid": 170055,
     "name": "Grand Rapids Community College",
     "city": "Grand Rapids",
     "state": "MI"
+  },
+  {
+    "unitid": 176983,
+    "name": "Grand River Technical School",
+    "city": "Chillicothe",
+    "state": "MO"
   },
   {
     "unitid": 183150,
@@ -1762,6 +2608,54 @@
     "name": "Great Falls College Montana State University",
     "city": "Great Falls",
     "state": "MT"
+  },
+  {
+    "unitid": 202949,
+    "name": "Great Oaks Career Campuses",
+    "city": "Cincinnati",
+    "state": "OH"
+  },
+  {
+    "unitid": 364548,
+    "name": "Great Plains Technology Center",
+    "city": "Lawton",
+    "state": "OK"
+  },
+  {
+    "unitid": 383367,
+    "name": "Greater Altoona Career & Technology Center",
+    "city": "Altoona",
+    "state": "PA"
+  },
+  {
+    "unitid": 418454,
+    "name": "Greater Johnstown Career and Technology Center",
+    "city": "Johnstown",
+    "state": "PA"
+  },
+  {
+    "unitid": 382416,
+    "name": "Greater Lowell Technical School",
+    "city": "Tyngsboro",
+    "state": "MA"
+  },
+  {
+    "unitid": 428019,
+    "name": "Green Country Technology Center",
+    "city": "Okmulgee",
+    "state": "OK"
+  },
+  {
+    "unitid": 365240,
+    "name": "Greene County Career Center",
+    "city": "Xenia",
+    "state": "OH"
+  },
+  {
+    "unitid": 260363,
+    "name": "Greene County Career and Technology Center",
+    "city": "Waynesburg",
+    "state": "PA"
   },
   {
     "unitid": 165981,
@@ -1782,6 +2676,12 @@
     "state": "NC"
   },
   {
+    "unitid": 139995,
+    "name": "Gupton Jones College of Funeral Service",
+    "city": "Decatur",
+    "state": "GA"
+  },
+  {
     "unitid": 140012,
     "name": "Gwinnett Technical College",
     "city": "Lawrenceville",
@@ -1800,6 +2700,12 @@
     "state": "FL"
   },
   {
+    "unitid": 383084,
+    "name": "Hacienda La Puente Adult Education",
+    "city": "La Puente",
+    "state": "CA"
+  },
+  {
     "unitid": 162690,
     "name": "Hagerstown Community College",
     "city": "Hagerstown",
@@ -1810,6 +2716,18 @@
     "name": "Halifax Community College",
     "city": "Weldon",
     "state": "NC"
+  },
+  {
+    "unitid": 202985,
+    "name": "Hannah E Mullins School of Practical Nursing",
+    "city": "Salem",
+    "state": "OH"
+  },
+  {
+    "unitid": 212869,
+    "name": "Harcum College",
+    "city": "Bryn Mawr",
+    "state": "PA"
   },
   {
     "unitid": 162706,
@@ -1836,6 +2754,12 @@
     "state": "HI"
   },
   {
+    "unitid": 497657,
+    "name": "Hawaii Tokai International College",
+    "city": "Kapolei",
+    "state": "HI"
+  },
+  {
     "unitid": 153445,
     "name": "Hawkeye Community College",
     "city": "Waterloo",
@@ -1854,6 +2778,12 @@
     "state": "KY"
   },
   {
+    "unitid": 418612,
+    "name": "Hazleton Area Career Center",
+    "city": "Hazle TWP.",
+    "state": "PA"
+  },
+  {
     "unitid": 384342,
     "name": "Heartland Community College",
     "city": "Normal",
@@ -1864,6 +2794,12 @@
     "name": "Helena College University of Montana",
     "city": "Helena",
     "state": "MT"
+  },
+  {
+    "unitid": 481155,
+    "name": "Helms College",
+    "city": "Augusta",
+    "state": "GA"
   },
   {
     "unitid": 156851,
@@ -1878,10 +2814,28 @@
     "state": "MN"
   },
   {
+    "unitid": 431266,
+    "name": "Henrico County-Saint Marys Hospital School of Practical Nursing",
+    "city": "Richmond",
+    "state": "VA"
+  },
+  {
+    "unitid": 431275,
+    "name": "Herkimer County BOCES-Practical Nursing Program",
+    "city": "Herkimer",
+    "state": "NY"
+  },
+  {
     "unitid": 191612,
     "name": "Herkimer County Community College",
     "city": "Herkimer",
     "state": "NY"
+  },
+  {
+    "unitid": 208053,
+    "name": "High Plains Technology Center",
+    "city": "Woodward",
+    "state": "OK"
   },
   {
     "unitid": 145521,
@@ -1924,6 +2878,12 @@
     "name": "Holmes Community College",
     "city": "Goodman",
     "state": "MS"
+  },
+  {
+    "unitid": 184968,
+    "name": "Holy Name Medical Center-Sister Claire Tynan School of Nursing",
+    "city": "Englewood Cliffs",
+    "state": "NJ"
   },
   {
     "unitid": 166133,
@@ -1974,10 +2934,28 @@
     "state": "NY"
   },
   {
+    "unitid": 237437,
+    "name": "Huntington Junior College",
+    "city": "Huntington",
+    "state": "WV"
+  },
+  {
     "unitid": 155195,
     "name": "Hutchinson Community College",
     "city": "Hutchinson",
     "state": "KS"
+  },
+  {
+    "unitid": 491659,
+    "name": "ICOHS College",
+    "city": "San Diego",
+    "state": "CA"
+  },
+  {
+    "unitid": 437237,
+    "name": "IYRS School of Technology & Trades",
+    "city": "Newport",
+    "state": "RI"
   },
   {
     "unitid": 145682,
@@ -2020,6 +2998,12 @@
     "name": "Indian Hills Community College",
     "city": "Ottumwa",
     "state": "IA"
+  },
+  {
+    "unitid": 418560,
+    "name": "Indiana County Technology Center",
+    "city": "Indiana",
+    "state": "PA"
   },
   {
     "unitid": 242556,
@@ -2088,6 +3072,12 @@
     "state": "IN"
   },
   {
+    "unitid": 101471,
+    "name": "J F Ingram State Technical College",
+    "city": "Deatsville",
+    "state": "AL"
+  },
+  {
     "unitid": 232414,
     "name": "J Sargeant Reynolds Community College",
     "city": "Richmond",
@@ -2100,10 +3090,28 @@
     "state": "AL"
   },
   {
+    "unitid": 185679,
+    "name": "JFK Muhlenberg Harold B. and Dorothy A. Snyder Schools",
+    "city": "Plainfield",
+    "state": "NJ"
+  },
+  {
     "unitid": 220400,
     "name": "Jackson State Community College",
     "city": "Jackson",
     "state": "TN"
+  },
+  {
+    "unitid": 225876,
+    "name": "Jacksonville College-Main Campus",
+    "city": "Jacksonville",
+    "state": "TX"
+  },
+  {
+    "unitid": 237473,
+    "name": "James Rumsey Technical Institute",
+    "city": "Martinsburg",
+    "state": "WV"
   },
   {
     "unitid": 198729,
@@ -2124,22 +3132,46 @@
     "state": "MO"
   },
   {
-    "unitid": 156921,
-    "name": "Jefferson Community and Technical College",
-    "city": "Louisville",
-    "state": "KY"
-  },
-  {
     "unitid": 192022,
     "name": "Jefferson Community College",
     "city": "Watertown",
     "state": "NY"
   },
   {
+    "unitid": 156921,
+    "name": "Jefferson Community and Technical College",
+    "city": "Louisville",
+    "state": "KY"
+  },
+  {
+    "unitid": 418445,
+    "name": "Jefferson County Dubois Area Vocational Technical Practical Nursing Program",
+    "city": "Reynoldsville",
+    "state": "PA"
+  },
+  {
+    "unitid": 417886,
+    "name": "Jefferson Lewis BOCES-Practical Nursing Program",
+    "city": "Watertown",
+    "state": "NY"
+  },
+  {
+    "unitid": 107123,
+    "name": "Jefferson Regional School of Nursing",
+    "city": "Pine Bluff",
+    "state": "AR"
+  },
+  {
     "unitid": 101505,
     "name": "Jefferson State Community College",
     "city": "Birmingham",
     "state": "AL"
+  },
+  {
+    "unitid": 220464,
+    "name": "John A Gupton College",
+    "city": "Nashville",
+    "state": "TN"
   },
   {
     "unitid": 146205,
@@ -2154,10 +3186,22 @@
     "state": "AL"
   },
   {
+    "unitid": 446349,
+    "name": "John D Rockefeller IV Career Center",
+    "city": "New Cumberland",
+    "state": "WV"
+  },
+  {
     "unitid": 146278,
     "name": "John Wood Community College",
     "city": "Quincy",
     "state": "IL"
+  },
+  {
+    "unitid": 213233,
+    "name": "Johnson College",
+    "city": "Scranton",
+    "state": "PA"
   },
   {
     "unitid": 155210,
@@ -2182,6 +3226,18 @@
     "name": "Jones County Junior College",
     "city": "Ellisville",
     "state": "MS"
+  },
+  {
+    "unitid": 487311,
+    "name": "Jones Technical Institute",
+    "city": "Jacksonville",
+    "state": "FL"
+  },
+  {
+    "unitid": 215479,
+    "name": "Joseph F McCloskey School of Nursing",
+    "city": "Pottsville",
+    "state": "PA"
   },
   {
     "unitid": 170541,
@@ -2238,10 +3294,22 @@
     "state": "MI"
   },
   {
+    "unitid": 375726,
+    "name": "Kiamichi Technology Center-McAlester",
+    "city": "McAlester",
+    "state": "OK"
+  },
+  {
     "unitid": 226019,
     "name": "Kilgore College",
     "city": "Kilgore",
     "state": "TX"
+  },
+  {
+    "unitid": 417628,
+    "name": "Kirksville Area Technical Center",
+    "city": "Kirksville",
+    "state": "MO"
   },
   {
     "unitid": 153737,
@@ -2266,6 +3334,12 @@
     "name": "Klamath Community College",
     "city": "Klamath Falls",
     "state": "OR"
+  },
+  {
+    "unitid": 375373,
+    "name": "Knox County Career Center",
+    "city": "Mount Vernon",
+    "state": "OH"
   },
   {
     "unitid": 155450,
@@ -2308,6 +3382,12 @@
     "name": "Lake Tahoe Community College",
     "city": "South Lake Tahoe",
     "state": "CA"
+  },
+  {
+    "unitid": 135179,
+    "name": "Lake Technical College",
+    "city": "Eustis",
+    "state": "FL"
   },
   {
     "unitid": 203599,
@@ -2400,10 +3480,22 @@
     "state": "VA"
   },
   {
+    "unitid": 166407,
+    "name": "Lawrence Memorial Hospital School of Nursing",
+    "city": "Medford",
+    "state": "MA"
+  },
+  {
     "unitid": 101569,
     "name": "Lawson State Community College",
     "city": "Birmingham",
     "state": "AL"
+  },
+  {
+    "unitid": 418542,
+    "name": "Lebanon County Area Vocational Technical School",
+    "city": "Lebanon",
+    "state": "PA"
   },
   {
     "unitid": 226204,
@@ -2430,10 +3522,22 @@
     "state": "PA"
   },
   {
+    "unitid": 498739,
+    "name": "Lehigh Career & Technical Institute",
+    "city": "Schnecksville",
+    "state": "PA"
+  },
+  {
     "unitid": 448594,
     "name": "Lemoore College",
     "city": "Lemoore",
     "state": "CA"
+  },
+  {
+    "unitid": 418515,
+    "name": "Lenape Technical School Practical Nursing Program",
+    "city": "Ford City",
+    "state": "PA"
   },
   {
     "unitid": 198817,
@@ -2446,6 +3550,12 @@
     "name": "Lewis and Clark Community College",
     "city": "Godfrey",
     "state": "IL"
+  },
+  {
+    "unitid": 177931,
+    "name": "Lex La-Ray Technical Center",
+    "city": "Lexington",
+    "state": "MO"
   },
   {
     "unitid": 146685,
@@ -2484,10 +3594,28 @@
     "state": "NE"
   },
   {
+    "unitid": 135276,
+    "name": "Lively Technical College",
+    "city": "Tallahassee",
+    "state": "FL"
+  },
+  {
     "unitid": 117645,
     "name": "Long Beach City College",
     "city": "Long Beach",
     "state": "CA"
+  },
+  {
+    "unitid": 409591,
+    "name": "Lorain County Joint Vocational School District",
+    "city": "Oberlin",
+    "state": "OH"
+  },
+  {
+    "unitid": 133155,
+    "name": "Lorenzo Walker Technical College",
+    "city": "Naples",
+    "state": "FL"
   },
   {
     "unitid": 117788,
@@ -2544,6 +3672,12 @@
     "state": "CA"
   },
   {
+    "unitid": 198871,
+    "name": "Louisburg College",
+    "city": "Louisburg",
+    "state": "NC"
+  },
+  {
     "unitid": 483212,
     "name": "Louisiana Delta Community College",
     "city": "Monroe",
@@ -2574,6 +3708,18 @@
     "state": "PA"
   },
   {
+    "unitid": 441414,
+    "name": "M-DCPS The English Center",
+    "city": "Miami",
+    "state": "FL"
+  },
+  {
+    "unitid": 374592,
+    "name": "MCVSD",
+    "city": "Freehold",
+    "state": "NJ"
+  },
+  {
     "unitid": 170790,
     "name": "Macomb Community College",
     "city": "Warren",
@@ -2592,10 +3738,22 @@
     "state": "OH"
   },
   {
+    "unitid": 379621,
+    "name": "Madison Oneida BOCES-Practical Nursing Program",
+    "city": "Verona",
+    "state": "NY"
+  },
+  {
     "unitid": 157304,
     "name": "Madisonville Community College",
     "city": "Madisonville",
     "state": "KY"
+  },
+  {
+    "unitid": 407489,
+    "name": "Mahoning County Career and Technical Center",
+    "city": "Canfield",
+    "state": "OH"
   },
   {
     "unitid": 135407,
@@ -2620,6 +3778,12 @@
     "name": "Manhattan Area Technical College",
     "city": "Manhattan",
     "state": "KS"
+  },
+  {
+    "unitid": 420981,
+    "name": "Manhattan School of Computer Technology",
+    "city": "Brooklyn",
+    "state": "NY"
   },
   {
     "unitid": 101648,
@@ -2688,6 +3852,18 @@
     "state": "TX"
   },
   {
+    "unitid": 203942,
+    "name": "Medina County Career Center",
+    "city": "Medina",
+    "state": "OH"
+  },
+  {
+    "unitid": 192970,
+    "name": "Memorial Hospital School of Radiation Therapy Technology",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
     "unitid": 118684,
     "name": "Mendocino College",
     "city": "Ukiah",
@@ -2698,6 +3874,12 @@
     "name": "Merced College",
     "city": "Merced",
     "state": "CA"
+  },
+  {
+    "unitid": 366632,
+    "name": "Mercer County Career Center",
+    "city": "Mercer",
+    "state": "PA"
   },
   {
     "unitid": 185509,
@@ -2712,6 +3894,12 @@
     "state": "WV"
   },
   {
+    "unitid": 366571,
+    "name": "Mercy-St Luke's School of Radiologic Technology",
+    "city": "Cedar Rapids",
+    "state": "IA"
+  },
+  {
     "unitid": 175935,
     "name": "Meridian Community College",
     "city": "Meridian",
@@ -2722,6 +3910,12 @@
     "name": "Meridian Technology Center",
     "city": "Stillwater",
     "state": "OK"
+  },
+  {
+    "unitid": 427308,
+    "name": "Merkaz Bnos-Business School",
+    "city": "Brooklyn",
+    "state": "NY"
   },
   {
     "unitid": 118772,
@@ -2740,6 +3934,12 @@
     "name": "Mesalands Community College",
     "city": "Tucumcari",
     "state": "NM"
+  },
+  {
+    "unitid": 490489,
+    "name": "Metro Detroit Barber College",
+    "city": "Detroit",
+    "state": "MI"
   },
   {
     "unitid": 363165,
@@ -2766,10 +3966,40 @@
     "state": "FL"
   },
   {
+    "unitid": 204158,
+    "name": "Miami Valley Career Technology Center",
+    "city": "Englewood",
+    "state": "OH"
+  },
+  {
+    "unitid": 172422,
+    "name": "Michigan Career and Technical Institute",
+    "city": "Plainwell",
+    "state": "MI"
+  },
+  {
     "unitid": 171155,
     "name": "Mid Michigan College",
     "city": "Harrison",
     "state": "MI"
+  },
+  {
+    "unitid": 418320,
+    "name": "Mid-America Technology Center",
+    "city": "Wayne",
+    "state": "OK"
+  },
+  {
+    "unitid": 431017,
+    "name": "Mid-Del Technology Center",
+    "city": "Midwest City",
+    "state": "OK"
+  },
+  {
+    "unitid": 389860,
+    "name": "Mid-EastCTC-Adult Education",
+    "city": "Zanesville",
+    "state": "OH"
   },
   {
     "unitid": 181312,
@@ -2808,6 +4038,12 @@
     "state": "SC"
   },
   {
+    "unitid": 418481,
+    "name": "Mifflin County Academy of Science and Technology",
+    "city": "Lewistown",
+    "state": "PA"
+  },
+  {
     "unitid": 180373,
     "name": "Miles Community College",
     "city": "Miles City",
@@ -2824,6 +4060,18 @@
     "name": "Mineral Area College",
     "city": "Park Hills",
     "state": "MO"
+  },
+  {
+    "unitid": 368647,
+    "name": "Mineral County Vocational Technical Center",
+    "city": "Keyser",
+    "state": "WV"
+  },
+  {
+    "unitid": 486202,
+    "name": "Mingo Extended Learning Center",
+    "city": "Delbarton",
+    "state": "WV"
   },
   {
     "unitid": 174136,
@@ -2910,6 +4158,18 @@
     "state": "NY"
   },
   {
+    "unitid": 237561,
+    "name": "Monongalia County Technical Education Center",
+    "city": "Morgantown",
+    "state": "WV"
+  },
+  {
+    "unitid": 451459,
+    "name": "Monroe 2 Orleans BOCES-Center for Workforce Development",
+    "city": "Spencerport",
+    "state": "NY"
+  },
+  {
     "unitid": 193326,
     "name": "Monroe Community College",
     "city": "Rochester",
@@ -2926,6 +4186,12 @@
     "name": "Montcalm Community College",
     "city": "Sidney",
     "state": "MI"
+  },
+  {
+    "unitid": 193380,
+    "name": "Montefiore School of Nursing",
+    "city": "Mount Vernon",
+    "state": "NY"
   },
   {
     "unitid": 119067,
@@ -2950,6 +4216,12 @@
     "name": "Montgomery County Community College",
     "city": "Blue Bell",
     "state": "PA"
+  },
+  {
+    "unitid": 433040,
+    "name": "Monty Tech",
+    "city": "Fitchburg",
+    "state": "MA"
   },
   {
     "unitid": 248606,
@@ -2980,6 +4252,18 @@
     "name": "Moreno Valley College",
     "city": "Moreno Valley",
     "state": "CA"
+  },
+  {
+    "unitid": 365763,
+    "name": "Morris County Vocational School District",
+    "city": "Denville",
+    "state": "NJ"
+  },
+  {
+    "unitid": 147396,
+    "name": "Morrison Institute of Technology",
+    "city": "Morrison",
+    "state": "IL"
   },
   {
     "unitid": 147411,
@@ -3018,6 +4302,12 @@
     "state": "VA"
   },
   {
+    "unitid": 448248,
+    "name": "Mountainland Technical College",
+    "city": "Lehi",
+    "state": "UT"
+  },
+  {
     "unitid": 444954,
     "name": "Mountwest Community and Technical College",
     "city": "Huntington",
@@ -3036,6 +4326,12 @@
     "state": "CA"
   },
   {
+    "unitid": 382258,
+    "name": "Mt. Diablo Adult Education-Mt. Diablo USD",
+    "city": "Concord",
+    "state": "CA"
+  },
+  {
     "unitid": 207236,
     "name": "Murray State College",
     "city": "Tishomingo",
@@ -3046,6 +4342,12 @@
     "name": "Muskegon Community College",
     "city": "Muskegon",
     "state": "MI"
+  },
+  {
+    "unitid": 183099,
+    "name": "NHTI-Concord's Community College",
+    "city": "Concord",
+    "state": "NH"
   },
   {
     "unitid": 119331,
@@ -3078,6 +4380,12 @@
     "state": "NY"
   },
   {
+    "unitid": 131830,
+    "name": "National Conservatory of Dramatic Arts",
+    "city": "Washington",
+    "state": "DC"
+  },
+  {
     "unitid": 106980,
     "name": "National Park College",
     "city": "Hot Springs",
@@ -3094,6 +4402,12 @@
     "name": "Nebraska College of Technical Agriculture",
     "city": "Curtis",
     "state": "NE"
+  },
+  {
+    "unitid": 193609,
+    "name": "Neighborhood Playhouse School of the Theater",
+    "city": "New York City",
+    "state": "NY"
   },
   {
     "unitid": 155566,
@@ -3132,22 +4446,22 @@
     "state": "NM"
   },
   {
-    "unitid": 447582,
-    "name": "New River Community and Technical College",
-    "city": "Beaver",
-    "state": "WV"
-  },
-  {
     "unitid": 232867,
     "name": "New River Community College",
     "city": "Dublin",
     "state": "VA"
   },
   {
-    "unitid": 183099,
-    "name": "NHTI-Concord's Community College",
-    "city": "Concord",
-    "state": "NH"
+    "unitid": 447582,
+    "name": "New River Community and Technical College",
+    "city": "Beaver",
+    "state": "WV"
+  },
+  {
+    "unitid": 493798,
+    "name": "New York Seminary",
+    "city": "Brooklyn",
+    "state": "NY"
   },
   {
     "unitid": 193946,
@@ -3178,6 +4492,12 @@
     "name": "North Arkansas College",
     "city": "Harrison",
     "state": "AR"
+  },
+  {
+    "unitid": 167297,
+    "name": "North Bennet Street School",
+    "city": "Boston",
+    "state": "MA"
   },
   {
     "unitid": 155593,
@@ -3216,6 +4536,12 @@
     "state": "ND"
   },
   {
+    "unitid": 132675,
+    "name": "North Florida Technical College",
+    "city": "Starke",
+    "state": "FL"
+  },
+  {
     "unitid": 140678,
     "name": "North Georgia Technical College",
     "city": "Clarkesville",
@@ -3244,6 +4570,12 @@
     "name": "North Shore Community College",
     "city": "Danvers",
     "state": "MA"
+  },
+  {
+    "unitid": 367459,
+    "name": "NorthWest Arkansas Community College",
+    "city": "Bentonville",
+    "state": "AR"
   },
   {
     "unitid": 214379,
@@ -3294,6 +4626,12 @@
     "state": "TN"
   },
   {
+    "unitid": 461087,
+    "name": "Northeast Technology Center",
+    "city": "Pryor",
+    "state": "OK"
+  },
+  {
     "unitid": 227225,
     "name": "Northeast Texas Community College",
     "city": "Mount Pleasant",
@@ -3324,6 +4662,12 @@
     "state": "SC"
   },
   {
+    "unitid": 418223,
+    "name": "Northern Career Institute",
+    "city": "Eastlake",
+    "state": "OH"
+  },
+  {
     "unitid": 167376,
     "name": "Northern Essex Community College",
     "city": "Haverhill",
@@ -3345,6 +4689,12 @@
     "unitid": 494959,
     "name": "Northern Pennsylvania Regional College",
     "city": "Warren",
+    "state": "PA"
+  },
+  {
+    "unitid": 418588,
+    "name": "Northern Tier Career Center",
+    "city": "Towanda",
     "state": "PA"
   },
   {
@@ -3378,12 +4728,6 @@
     "state": "LA"
   },
   {
-    "unitid": 367459,
-    "name": "NorthWest Arkansas Community College",
-    "city": "Bentonville",
-    "state": "AR"
-  },
-  {
     "unitid": 154129,
     "name": "Northwest Iowa Community College",
     "city": "Sheldon",
@@ -3408,6 +4752,12 @@
     "state": "MS"
   },
   {
+    "unitid": 458140,
+    "name": "Northwest School of Wooden Boat Building",
+    "city": "Port Hadlock",
+    "state": "WA"
+  },
+  {
     "unitid": 101736,
     "name": "Northwest Shoals Community College",
     "city": "Muscle Shoals",
@@ -3424,6 +4774,18 @@
     "name": "Northwest Technical College",
     "city": "Bemidji",
     "state": "MN"
+  },
+  {
+    "unitid": 107488,
+    "name": "Northwest Technical Institute",
+    "city": "Springdale",
+    "state": "AR"
+  },
+  {
+    "unitid": 366623,
+    "name": "Northwest Technology Center-Alva",
+    "city": "Alva",
+    "state": "OK"
   },
   {
     "unitid": 420398,
@@ -3468,16 +4830,40 @@
     "state": "NJ"
   },
   {
+    "unitid": 431716,
+    "name": "Ocean County Vocational-Technical School",
+    "city": "Toms River",
+    "state": "NJ"
+  },
+  {
     "unitid": 420431,
     "name": "Oconee Fall Line Technical College",
     "city": "Sandersville",
     "state": "GA"
   },
   {
+    "unitid": 230490,
+    "name": "Ogden-Weber Technical College",
+    "city": "Ogden",
+    "state": "UT"
+  },
+  {
     "unitid": 366465,
     "name": "Ogeechee Technical College",
     "city": "Statesboro",
     "state": "GA"
+  },
+  {
+    "unitid": 493646,
+    "name": "Ohel Margulia Seminary",
+    "city": "Monsey",
+    "state": "NY"
+  },
+  {
+    "unitid": 483647,
+    "name": "Ohio Institute of Allied Health",
+    "city": "Huber Heights",
+    "state": "OH"
   },
   {
     "unitid": 204662,
@@ -3492,9 +4878,21 @@
     "state": "CA"
   },
   {
+    "unitid": 433068,
+    "name": "Okaloosa Technical College",
+    "city": "Fort Walton Beach",
+    "state": "FL"
+  },
+  {
     "unitid": 207449,
     "name": "Oklahoma City Community College",
     "city": "Oklahoma City",
+    "state": "OK"
+  },
+  {
+    "unitid": 469629,
+    "name": "Oklahoma Technical College",
+    "city": "Tulsa",
     "state": "OK"
   },
   {
@@ -3510,6 +4908,12 @@
     "state": "NY"
   },
   {
+    "unitid": 440730,
+    "name": "Onondaga Cortland Madison BOCES",
+    "city": "Liverpool",
+    "state": "NY"
+  },
+  {
     "unitid": 120342,
     "name": "Orange Coast College",
     "city": "Costa Mesa",
@@ -3520,6 +4924,12 @@
     "name": "Orange County Community College",
     "city": "Middletown",
     "state": "NY"
+  },
+  {
+    "unitid": 136303,
+    "name": "Orange Technical College",
+    "city": "Orlando",
+    "state": "FL"
   },
   {
     "unitid": 138488,
@@ -3540,6 +4950,12 @@
     "state": "FL"
   },
   {
+    "unitid": 417992,
+    "name": "Orange Ulster BOCES-Practical Nursing Program",
+    "city": "Newburgh",
+    "state": "NY"
+  },
+  {
     "unitid": 218487,
     "name": "Orangeburg Calhoun Technical College",
     "city": "Orangeburg",
@@ -3552,10 +4968,28 @@
     "state": "OR"
   },
   {
+    "unitid": 441593,
+    "name": "Orleans Niagara BOCES-Practical Nursing Program",
+    "city": "Lockport",
+    "state": "NY"
+  },
+  {
+    "unitid": 427991,
+    "name": "Osceola Technical College",
+    "city": "Kissimmee",
+    "state": "FL"
+  },
+  {
     "unitid": 127778,
     "name": "Otero College",
     "city": "La Junta",
     "state": "CO"
+  },
+  {
+    "unitid": 194259,
+    "name": "Otsego Area BOCES-Practical Nursing Program",
+    "city": "Oneonta",
+    "state": "NY"
   },
   {
     "unitid": 204945,
@@ -3580,6 +5014,12 @@
     "name": "Ozarka College",
     "city": "Melbourne",
     "state": "AR"
+  },
+  {
+    "unitid": 495147,
+    "name": "Pacific Northwest Christian College",
+    "city": "Kennewick",
+    "state": "WA"
   },
   {
     "unitid": 243647,
@@ -3672,6 +5112,18 @@
     "state": "PA"
   },
   {
+    "unitid": 418199,
+    "name": "Penta County Joint Vocational School",
+    "city": "Perrysburg",
+    "state": "OH"
+  },
+  {
+    "unitid": 236212,
+    "name": "Perry Technical Institute",
+    "city": "Yakima",
+    "state": "WA"
+  },
+  {
     "unitid": 107619,
     "name": "Phillips Community College of the University of Arkansas",
     "city": "Helena",
@@ -3682,6 +5134,12 @@
     "name": "Phoenix College",
     "city": "Phoenix",
     "state": "AZ"
+  },
+  {
+    "unitid": 407513,
+    "name": "Pickaway Ross Joint Vocational School District",
+    "city": "Chillicothe",
+    "state": "OH"
   },
   {
     "unitid": 128151,
@@ -3714,6 +5172,18 @@
     "state": "WV"
   },
   {
+    "unitid": 409537,
+    "name": "Pike County Joint Vocational School District",
+    "city": "Piketon",
+    "state": "OH"
+  },
+  {
+    "unitid": 261773,
+    "name": "Pike-Lincoln Technical Center",
+    "city": "Eolia",
+    "state": "MO"
+  },
+  {
     "unitid": 105525,
     "name": "Pima Community College",
     "city": "Tucson",
@@ -3738,10 +5208,76 @@
     "state": "FL"
   },
   {
+    "unitid": 407522,
+    "name": "Pioneer Career and Technology Center",
+    "city": "Shelby",
+    "state": "OH"
+  },
+  {
+    "unitid": 364627,
+    "name": "Pioneer Technology Center",
+    "city": "Ponca City",
+    "state": "OK"
+  },
+  {
     "unitid": 199333,
     "name": "Pitt Community College",
     "city": "Winterville",
     "state": "NC"
+  },
+  {
+    "unitid": 215381,
+    "name": "Pittsburgh Institute of Aeronautics",
+    "city": "West Mifflin",
+    "state": "PA"
+  },
+  {
+    "unitid": 215390,
+    "name": "Pittsburgh Institute of Mortuary Science Inc",
+    "city": "Pittsburgh",
+    "state": "PA"
+  },
+  {
+    "unitid": 390905,
+    "name": "Polaris Career Center",
+    "city": "Middleburg Heights",
+    "state": "OH"
+  },
+  {
+    "unitid": 491473,
+    "name": "Polytech Adult Education",
+    "city": "Woodside",
+    "state": "DE"
+  },
+  {
+    "unitid": 190451,
+    "name": "Pomeroy College of Nursing at Crouse Hospital",
+    "city": "East Syracuse",
+    "state": "NY"
+  },
+  {
+    "unitid": 372082,
+    "name": "Pomona Unified School District Adult and Career Education",
+    "city": "Pomona",
+    "state": "CA"
+  },
+  {
+    "unitid": 206905,
+    "name": "Pontotoc Technology Center",
+    "city": "Ada",
+    "state": "OK"
+  },
+  {
+    "unitid": 178828,
+    "name": "Poplar Bluff Technical Career Center",
+    "city": "Poplar Bluff",
+    "state": "MO"
+  },
+  {
+    "unitid": 364636,
+    "name": "Portage Lakes Career Center",
+    "city": "Uniontown",
+    "state": "OH"
   },
   {
     "unitid": 121363,
@@ -3750,10 +5286,22 @@
     "state": "CA"
   },
   {
+    "unitid": 457925,
+    "name": "Portland Actors Conservatory",
+    "city": "Portland",
+    "state": "OR"
+  },
+  {
     "unitid": 209746,
     "name": "Portland Community College",
     "city": "Portland",
     "state": "OR"
+  },
+  {
+    "unitid": 492315,
+    "name": "Poway Adult School",
+    "city": "Poway",
+    "state": "CA"
   },
   {
     "unitid": 148007,
@@ -3774,6 +5322,12 @@
     "state": "MD"
   },
   {
+    "unitid": 419420,
+    "name": "Putnam Career and Technical Center",
+    "city": "Eleanor",
+    "state": "WV"
+  },
+  {
     "unitid": 130217,
     "name": "Quinebaug Valley Community College",
     "city": "Danielson",
@@ -3792,10 +5346,22 @@
     "state": "FL"
   },
   {
+    "unitid": 237491,
+    "name": "Ralph R Willis Career and Technical Center",
+    "city": "Stollings",
+    "state": "WV"
+  },
+  {
     "unitid": 199421,
     "name": "Randolph Community College",
     "city": "Asheboro",
     "state": "NC"
+  },
+  {
+    "unitid": 486406,
+    "name": "Randolph Technical Center",
+    "city": "Elkins",
+    "state": "WV"
   },
   {
     "unitid": 227687,
@@ -3822,10 +5388,22 @@
     "state": "PA"
   },
   {
+    "unitid": 215594,
+    "name": "Reading Hospital School of Health Sciences",
+    "city": "Reading",
+    "state": "PA"
+  },
+  {
     "unitid": 491844,
     "name": "Red Lake Nation College",
     "city": "Red Lake",
     "state": "MN"
+  },
+  {
+    "unitid": 250993,
+    "name": "Red River Technology Center",
+    "city": "Duncan",
+    "state": "OK"
   },
   {
     "unitid": 207069,
@@ -3844,6 +5422,60 @@
     "name": "Reid State Technical College",
     "city": "Evergreen",
     "state": "AL"
+  },
+  {
+    "unitid": 440271,
+    "name": "Remington College-Baton Rouge Campus",
+    "city": "Baton Rouge",
+    "state": "LA"
+  },
+  {
+    "unitid": 375416,
+    "name": "Remington College-Cleveland Campus",
+    "city": "Cleveland",
+    "state": "OH"
+  },
+  {
+    "unitid": 377111,
+    "name": "Remington College-Fort Worth Campus",
+    "city": "North Richland Hills",
+    "state": "TX"
+  },
+  {
+    "unitid": 451857,
+    "name": "Remington College-Houston Southeast Campus",
+    "city": "League City",
+    "state": "TX"
+  },
+  {
+    "unitid": 160524,
+    "name": "Remington College-Lafayette Campus",
+    "city": "Lafayette",
+    "state": "LA"
+  },
+  {
+    "unitid": 412599,
+    "name": "Remington College-Memphis Campus",
+    "city": "Memphis",
+    "state": "TN"
+  },
+  {
+    "unitid": 366535,
+    "name": "Remington College-Mobile Campus",
+    "city": "Mobile",
+    "state": "AL"
+  },
+  {
+    "unitid": 445249,
+    "name": "Remington College-Nashville Campus",
+    "city": "Nashville",
+    "state": "TN"
+  },
+  {
+    "unitid": 445203,
+    "name": "Remington College-North Houston Campus",
+    "city": "Houston",
+    "state": "TX"
   },
   {
     "unitid": 148256,
@@ -3868,6 +5500,12 @@
     "name": "Richmond Community College",
     "city": "Hamlet",
     "state": "NC"
+  },
+  {
+    "unitid": 136765,
+    "name": "Ridge Technical College",
+    "city": "Winter Haven",
+    "state": "FL"
   },
   {
     "unitid": 175236,
@@ -3902,6 +5540,12 @@
   {
     "unitid": 121901,
     "name": "Riverside City College",
+    "city": "Riverside",
+    "state": "CA"
+  },
+  {
+    "unitid": 481191,
+    "name": "Riverside County Office of Education-School of Career Education",
     "city": "Riverside",
     "state": "CA"
   },
@@ -3960,6 +5604,12 @@
     "state": "NY"
   },
   {
+    "unitid": 418083,
+    "name": "Rockland County BOCES-Practical Nursing Program",
+    "city": "West Nyack",
+    "state": "NY"
+  },
+  {
     "unitid": 209940,
     "name": "Rogue Community College",
     "city": "Grants Pass",
@@ -3970,6 +5620,18 @@
     "name": "Rose State College",
     "city": "Midwest City",
     "state": "OK"
+  },
+  {
+    "unitid": 439899,
+    "name": "Rosedale Bible College",
+    "city": "Irwin",
+    "state": "OH"
+  },
+  {
+    "unitid": 215682,
+    "name": "Rosedale Technical College",
+    "city": "Pittsburgh",
+    "state": "PA"
   },
   {
     "unitid": 183877,
@@ -4002,6 +5664,42 @@
     "state": "MA"
   },
   {
+    "unitid": 449506,
+    "name": "SABER College",
+    "city": "Miami",
+    "state": "FL"
+  },
+  {
+    "unitid": 160579,
+    "name": "SOWELA Technical Community College",
+    "city": "Lake Charles",
+    "state": "LA"
+  },
+  {
+    "unitid": 188438,
+    "name": "SUNY Adirondack",
+    "city": "Queensbury",
+    "state": "NY"
+  },
+  {
+    "unitid": 189547,
+    "name": "SUNY Broome Community College",
+    "city": "Binghamton",
+    "state": "NY"
+  },
+  {
+    "unitid": 190442,
+    "name": "SUNY Corning Community College",
+    "city": "Corning",
+    "state": "NY"
+  },
+  {
+    "unitid": 197294,
+    "name": "SUNY Westchester Community College",
+    "city": "Valhalla",
+    "state": "NY"
+  },
+  {
     "unitid": 122180,
     "name": "Sacramento City College",
     "city": "Sacramento",
@@ -4018,6 +5716,18 @@
     "name": "Saginaw Chippewa Tribal College",
     "city": "Mount Pleasant",
     "state": "MI"
+  },
+  {
+    "unitid": 195702,
+    "name": "Saint Elizabeth College of Nursing",
+    "city": "Utica",
+    "state": "NY"
+  },
+  {
+    "unitid": 152497,
+    "name": "Saint Elizabeth School of Nursing",
+    "city": "Lafayette",
+    "state": "IN"
   },
   {
     "unitid": 175041,
@@ -4038,10 +5748,22 @@
     "state": "KS"
   },
   {
+    "unitid": 417646,
+    "name": "Saline County Career Center",
+    "city": "Marshall",
+    "state": "MO"
+  },
+  {
     "unitid": 230746,
     "name": "Salt Lake Community College",
     "city": "Salt Lake City",
     "state": "UT"
+  },
+  {
+    "unitid": 195289,
+    "name": "Samaritan Hospital School of Nursing",
+    "city": "Troy",
+    "state": "NY"
   },
   {
     "unitid": 199625,
@@ -4092,6 +5814,18 @@
     "state": "NC"
   },
   {
+    "unitid": 383330,
+    "name": "Sandusky Career Center",
+    "city": "Sandusky",
+    "state": "OH"
+  },
+  {
+    "unitid": 219392,
+    "name": "Sanford Medical Center",
+    "city": "Sioux Falls",
+    "state": "SD"
+  },
+  {
     "unitid": 122889,
     "name": "Santa Barbara City College",
     "city": "Santa Barbara",
@@ -4134,10 +5868,52 @@
     "state": "NY"
   },
   {
+    "unitid": 480727,
+    "name": "School of Missionary Aviation Technology",
+    "city": "Ionia",
+    "state": "MI"
+  },
+  {
+    "unitid": 392354,
+    "name": "School of Professional Horticulture, New York Botanical Garden",
+    "city": "Bronx",
+    "state": "NY"
+  },
+  {
+    "unitid": 406325,
+    "name": "Schuyler Steuben Chemung Tioga Allegany BOCES",
+    "city": "Elmira",
+    "state": "NY"
+  },
+  {
+    "unitid": 215886,
+    "name": "Schuylkill Technology Center",
+    "city": "Frackville",
+    "state": "PA"
+  },
+  {
+    "unitid": 407577,
+    "name": "Scioto County Career Technical Center",
+    "city": "Lucasville",
+    "state": "OH"
+  },
+  {
     "unitid": 105747,
     "name": "Scottsdale Community College",
     "city": "Scottsdale",
     "state": "AZ"
+  },
+  {
+    "unitid": 386153,
+    "name": "Seminar L'moros Bais Yaakov",
+    "city": "Brooklyn",
+    "state": "NY"
+  },
+  {
+    "unitid": 491817,
+    "name": "Seminary Bnos Chaim",
+    "city": "Lakewood",
+    "state": "NJ"
   },
   {
     "unitid": 207740,
@@ -4158,10 +5934,22 @@
     "state": "IL"
   },
   {
+    "unitid": 412535,
+    "name": "Shawsheen Valley School of Practical Nursing",
+    "city": "Billerica",
+    "state": "MA"
+  },
+  {
     "unitid": 102067,
     "name": "Shelton State Community College",
     "city": "Tuscaloosa",
     "state": "AL"
+  },
+  {
+    "unitid": 481137,
+    "name": "Shepherds College",
+    "city": "Union Grove",
+    "state": "WI"
   },
   {
     "unitid": 137245,
@@ -4176,10 +5964,22 @@
     "state": "WA"
   },
   {
+    "unitid": 107840,
+    "name": "Shorter College",
+    "city": "N Little Rock",
+    "state": "AR"
+  },
+  {
     "unitid": 123341,
     "name": "Sierra College",
     "city": "Rocklin",
     "state": "CA"
+  },
+  {
+    "unitid": 165060,
+    "name": "Signature Healthcare Brockton Hospital School of Nursing",
+    "city": "Brockton",
+    "state": "MA"
   },
   {
     "unitid": 102076,
@@ -4194,6 +5994,12 @@
     "state": "KY"
   },
   {
+    "unitid": 457943,
+    "name": "Somerset County Technology Center",
+    "city": "Somerset",
+    "state": "PA"
+  },
+  {
     "unitid": 107974,
     "name": "South Arkansas College",
     "city": "El Dorado",
@@ -4204,6 +6010,12 @@
     "name": "South Central College",
     "city": "North Mankato",
     "state": "MN"
+  },
+  {
+    "unitid": 488891,
+    "name": "South Dade Technical College-South Dade Skills Center Campus",
+    "city": "HOMESTEAD",
+    "state": "FL"
   },
   {
     "unitid": 141006,
@@ -4308,6 +6120,12 @@
     "state": "GA"
   },
   {
+    "unitid": 167871,
+    "name": "Southeastern Technical Institute",
+    "city": "South Easton",
+    "state": "MA"
+  },
+  {
     "unitid": 107992,
     "name": "Southern Arkansas University Tech",
     "city": "Camden",
@@ -4324,6 +6142,18 @@
     "name": "Southern Maine Community College",
     "city": "South Portland",
     "state": "ME"
+  },
+  {
+    "unitid": 417637,
+    "name": "Southern Missouri Technical Institute",
+    "city": "West Plains",
+    "state": "MO"
+  },
+  {
+    "unitid": 365198,
+    "name": "Southern Oklahoma Technology Center",
+    "city": "Ardmore",
+    "state": "OK"
   },
   {
     "unitid": 487162,
@@ -4356,6 +6186,18 @@
     "state": "WV"
   },
   {
+    "unitid": 457624,
+    "name": "Southern Worcester County Regional Vocational School District",
+    "city": "Charlton",
+    "state": "MA"
+  },
+  {
+    "unitid": 233082,
+    "name": "Southside College of Health Sciences",
+    "city": "Colonial Heights",
+    "state": "VA"
+  },
+  {
     "unitid": 233639,
     "name": "Southside Virginia Community College",
     "city": "Alberta",
@@ -4372,6 +6214,18 @@
     "name": "Southwest Mississippi Community College",
     "city": "Summit",
     "state": "MS"
+  },
+  {
+    "unitid": 449816,
+    "name": "Southwest Technical College",
+    "city": "Cedar City",
+    "state": "UT"
+  },
+  {
+    "unitid": 368364,
+    "name": "Southwest Technology Center",
+    "city": "Altus",
+    "state": "OK"
   },
   {
     "unitid": 221485,
@@ -4440,12 +6294,6 @@
     "state": "OR"
   },
   {
-    "unitid": 160579,
-    "name": "SOWELA Technical Community College",
-    "city": "Lake Charles",
-    "state": "LA"
-  },
-  {
     "unitid": 218830,
     "name": "Spartanburg Community College",
     "city": "Spartanburg",
@@ -4482,10 +6330,28 @@
     "state": "MN"
   },
   {
+    "unitid": 183248,
+    "name": "St Joseph School of Nursing",
+    "city": "Nashua",
+    "state": "NH"
+  },
+  {
     "unitid": 227854,
     "name": "St Philip's College",
     "city": "San Antonio",
     "state": "TX"
+  },
+  {
+    "unitid": 195191,
+    "name": "St. Joseph's College of Nursing",
+    "city": "Syracuse",
+    "state": "NY"
+  },
+  {
+    "unitid": 192961,
+    "name": "St. Peter's Hospital College of Nursing",
+    "city": "Albany",
+    "state": "NY"
   },
   {
     "unitid": 199740,
@@ -4518,6 +6384,12 @@
     "state": "CT"
   },
   {
+    "unitid": 485856,
+    "name": "Studio Incamminati",
+    "city": "Philadelphia",
+    "state": "PA"
+  },
+  {
     "unitid": 366395,
     "name": "Suffolk County Community College",
     "city": "Selden",
@@ -4536,34 +6408,16 @@
     "state": "FL"
   },
   {
-    "unitid": 188438,
-    "name": "SUNY Adirondack",
-    "city": "Queensbury",
-    "state": "NY"
-  },
-  {
-    "unitid": 189547,
-    "name": "SUNY Broome Community College",
-    "city": "Binghamton",
-    "state": "NY"
-  },
-  {
-    "unitid": 190442,
-    "name": "SUNY Corning Community College",
-    "city": "Corning",
-    "state": "NY"
-  },
-  {
-    "unitid": 197294,
-    "name": "SUNY Westchester Community College",
-    "city": "Valhalla",
-    "state": "NY"
-  },
-  {
     "unitid": 199768,
     "name": "Surry Community College",
     "city": "Dobson",
     "state": "NC"
+  },
+  {
+    "unitid": 441672,
+    "name": "Susquehanna County Career and Technology Center",
+    "city": "Springville",
+    "state": "PA"
   },
   {
     "unitid": 247603,
@@ -4588,6 +6442,12 @@
     "name": "Technical College of the Lowcountry",
     "city": "Beaufort",
     "state": "SC"
+  },
+  {
+    "unitid": 126915,
+    "name": "Technical College of the Rockies",
+    "city": "Delta",
+    "state": "CO"
   },
   {
     "unitid": 228608,
@@ -4776,6 +6636,30 @@
     "state": "PA"
   },
   {
+    "unitid": 188669,
+    "name": "The Ailey School",
+    "city": "New York",
+    "state": "NY"
+  },
+  {
+    "unitid": 437732,
+    "name": "The Chicago School-College of Nursing",
+    "city": "Richardson",
+    "state": "TX"
+  },
+  {
+    "unitid": 161208,
+    "name": "The Landing School",
+    "city": "Arundel",
+    "state": "ME"
+  },
+  {
+    "unitid": 171012,
+    "name": "The Michigan Barber School",
+    "city": "Detroit",
+    "state": "MI"
+  },
+  {
     "unitid": 179645,
     "name": "Three Rivers College",
     "city": "Poplar Bluff",
@@ -4812,10 +6696,34 @@
     "state": "OH"
   },
   {
+    "unitid": 137865,
+    "name": "Tom P. Haney Technical College",
+    "city": "Panama City",
+    "state": "FL"
+  },
+  {
     "unitid": 196565,
     "name": "Tompkins Cortland Community College",
     "city": "Dryden",
     "state": "NY"
+  },
+  {
+    "unitid": 475723,
+    "name": "Tooele Technical College",
+    "city": "Tooele",
+    "state": "UT"
+  },
+  {
+    "unitid": 135522,
+    "name": "Traviss Technical College",
+    "city": "Lakeland",
+    "state": "FL"
+  },
+  {
+    "unitid": 486150,
+    "name": "Treasure Coast Technical College",
+    "city": "Vero Beach",
+    "state": "FL"
   },
   {
     "unitid": 210234,
@@ -4824,10 +6732,22 @@
     "state": "OR"
   },
   {
+    "unitid": 459408,
+    "name": "Tri County Regional Vocational Technical High School",
+    "city": "Franklin",
+    "state": "MA"
+  },
+  {
     "unitid": 484233,
     "name": "Tri-Community Adult Education",
     "city": "Covina",
     "state": "CA"
+  },
+  {
+    "unitid": 206172,
+    "name": "Tri-County Adult Career Center",
+    "city": "Nelsonville",
+    "state": "OH"
   },
   {
     "unitid": 199795,
@@ -4842,16 +6762,34 @@
     "state": "SC"
   },
   {
+    "unitid": 206181,
+    "name": "Tri-Rivers Career Center",
+    "city": "Marion",
+    "state": "OH"
+  },
+  {
     "unitid": 218894,
     "name": "Trident Technical College",
     "city": "Charleston",
     "state": "SC"
   },
   {
+    "unitid": 204893,
+    "name": "Trinity Health System School of Nursing",
+    "city": "Steubenville",
+    "state": "OH"
+  },
+  {
     "unitid": 149532,
     "name": "Triton College",
     "city": "River Grove",
     "state": "IL"
+  },
+  {
+    "unitid": 407595,
+    "name": "Trumbull Career & Technical Center",
+    "city": "Warren",
+    "state": "OH"
   },
   {
     "unitid": 207935,
@@ -4872,16 +6810,76 @@
     "state": "NJ"
   },
   {
+    "unitid": 213163,
+    "name": "UPMC Jameson School of Nursing",
+    "city": "New Castle",
+    "state": "PA"
+  },
+  {
+    "unitid": 431600,
+    "name": "UPMC Mercy School of Nursing",
+    "city": "Pittsburgh",
+    "state": "PA"
+  },
+  {
+    "unitid": 215974,
+    "name": "UPMC Shadyside School of Nursing",
+    "city": "Pittsburgh",
+    "state": "PA"
+  },
+  {
+    "unitid": 213622,
+    "name": "UPMC St. Margaret School of Nursing",
+    "city": "Pittsburgh",
+    "state": "PA"
+  },
+  {
+    "unitid": 230676,
+    "name": "Uintah Basin Technical College",
+    "city": "Roosevelt",
+    "state": "UT"
+  },
+  {
+    "unitid": 481182,
+    "name": "Ukiah Adult School",
+    "city": "Ukiah",
+    "state": "CA"
+  },
+  {
     "unitid": 196699,
     "name": "Ulster County Community College",
     "city": "Stone Ridge",
     "state": "NY"
   },
   {
+    "unitid": 441371,
+    "name": "Ultimate Medical Academy",
+    "city": "Clearwater",
+    "state": "FL"
+  },
+  {
     "unitid": 210270,
     "name": "Umpqua Community College",
     "city": "Roseburg",
     "state": "OR"
+  },
+  {
+    "unitid": 417831,
+    "name": "Union County Vocational Technical School",
+    "city": "Scotch Plains",
+    "state": "NJ"
+  },
+  {
+    "unitid": 419031,
+    "name": "United Technical Center",
+    "city": "Clarksburg",
+    "state": "WV"
+  },
+  {
+    "unitid": 153542,
+    "name": "UnityPoint Health-Des Moines School of Radiologic Technology",
+    "city": "Des Moines",
+    "state": "IA"
   },
   {
     "unitid": 200846,
@@ -4974,10 +6972,64 @@
     "state": "SC"
   },
   {
+    "unitid": 373711,
+    "name": "Upper Cape Cod Regional Technical School",
+    "city": "Bourne",
+    "state": "MA"
+  },
+  {
+    "unitid": 206321,
+    "name": "Upper Valley Career Center",
+    "city": "Piqua",
+    "state": "OH"
+  },
+  {
+    "unitid": 429128,
+    "name": "Urban College of Boston",
+    "city": "Boston",
+    "state": "MA"
+  },
+  {
+    "unitid": 216551,
+    "name": "Valley Forge Military College",
+    "city": "Wayne",
+    "state": "PA"
+  },
+  {
     "unitid": 199838,
     "name": "Vance-Granville Community College",
     "city": "Henderson",
     "state": "NC"
+  },
+  {
+    "unitid": 421717,
+    "name": "Vanguard-Sentinel Adult Career and Technology Center",
+    "city": "Fremont",
+    "state": "OH"
+  },
+  {
+    "unitid": 418278,
+    "name": "Vantage Career Center",
+    "city": "Van Wert",
+    "state": "OH"
+  },
+  {
+    "unitid": 417910,
+    "name": "Veeb Nassau County School of Practical Nursing",
+    "city": "Hicksville",
+    "state": "NY"
+  },
+  {
+    "unitid": 418524,
+    "name": "Venango County Area Vocational Technical School",
+    "city": "Oil City",
+    "state": "PA"
+  },
+  {
+    "unitid": 417123,
+    "name": "Ventura Adult and Continuing Education",
+    "city": "Ventura",
+    "state": "CA"
   },
   {
     "unitid": 125028,
@@ -5004,6 +7056,12 @@
     "state": "TX"
   },
   {
+    "unitid": 377485,
+    "name": "Virginia Beach City Public Schools School of Practical Nursing",
+    "city": "Virginia Beach",
+    "state": "VA"
+  },
+  {
     "unitid": 233903,
     "name": "Virginia Highlands Community College",
     "city": "Abingdon",
@@ -5020,6 +7078,12 @@
     "name": "Virginia Western Community College",
     "city": "Roanoke",
     "state": "VA"
+  },
+  {
+    "unitid": 492324,
+    "name": "Vista Adult School",
+    "city": "Vista",
+    "state": "CA"
   },
   {
     "unitid": 222053,
@@ -5046,16 +7110,52 @@
     "state": "TN"
   },
   {
+    "unitid": 407832,
+    "name": "Warren County Career Center",
+    "city": "Lebanon",
+    "state": "OH"
+  },
+  {
     "unitid": 245625,
     "name": "Warren County Community College",
     "city": "Washington",
     "state": "NJ"
   },
   {
+    "unitid": 417655,
+    "name": "Warrensburg Area Career Center",
+    "city": "Warrensburg",
+    "state": "MO"
+  },
+  {
+    "unitid": 155423,
+    "name": "Washburn Institute of Technology",
+    "city": "Topeka",
+    "state": "KS"
+  },
+  {
+    "unitid": 418250,
+    "name": "Washington County Career Center-Adult Technical Training",
+    "city": "Marietta",
+    "state": "OH"
+  },
+  {
     "unitid": 161581,
     "name": "Washington County Community College",
     "city": "Calais",
     "state": "ME"
+  },
+  {
+    "unitid": 216630,
+    "name": "Washington Health System School of Nursing",
+    "city": "Washington",
+    "state": "PA"
+  },
+  {
+    "unitid": 418029,
+    "name": "Washington Saratoga Warren Hamilton Essex BOCES-Practical Nursing Program",
+    "city": "Hudson Falls",
+    "state": "NY"
   },
   {
     "unitid": 172617,
@@ -5088,6 +7188,30 @@
     "state": "MI"
   },
   {
+    "unitid": 433138,
+    "name": "Wayne County Schools Career Center",
+    "city": "Smithville",
+    "state": "OH"
+  },
+  {
+    "unitid": 418001,
+    "name": "Wayne Finger Lakes BOCES-Practical Nursing Program",
+    "city": "Newark",
+    "state": "NY"
+  },
+  {
+    "unitid": 365505,
+    "name": "Waynesville Career Center",
+    "city": "Waynesville",
+    "state": "MO"
+  },
+  {
+    "unitid": 418357,
+    "name": "Wes Watkins Technology Center",
+    "city": "Wetumka",
+    "state": "OK"
+  },
+  {
     "unitid": 139278,
     "name": "West Georgia Technical College",
     "city": "Waco",
@@ -5116,6 +7240,12 @@
     "name": "West Virginia Northern Community College",
     "city": "Wheeling",
     "state": "WV"
+  },
+  {
+    "unitid": 368407,
+    "name": "Western Area Career & Technology Center",
+    "city": "Canonsburg",
+    "state": "PA"
   },
   {
     "unitid": 219480,
@@ -5148,6 +7278,12 @@
     "state": "OK"
   },
   {
+    "unitid": 216773,
+    "name": "Western Pennsylvania Hospital School of Nursing",
+    "city": "Pittsburgh",
+    "state": "PA"
+  },
+  {
     "unitid": 199908,
     "name": "Western Piedmont Community College",
     "city": "Morganton",
@@ -5164,6 +7300,12 @@
     "name": "Western Technical College",
     "city": "La Crosse",
     "state": "WI"
+  },
+  {
+    "unitid": 418302,
+    "name": "Western Technology Center",
+    "city": "Burns Flat",
+    "state": "OK"
   },
   {
     "unitid": 229832,
@@ -5184,6 +7326,12 @@
     "state": "TX"
   },
   {
+    "unitid": 434751,
+    "name": "White Earth Tribal and Community College",
+    "city": "Mahnomen",
+    "state": "MN"
+  },
+  {
     "unitid": 183105,
     "name": "White Mountains Community College",
     "city": "Berlin",
@@ -5200,6 +7348,18 @@
     "name": "Wilkes Community College",
     "city": "Wilkesboro",
     "state": "NC"
+  },
+  {
+    "unitid": 365383,
+    "name": "Wilkes-Barre Area Career and Technical Center Practical Nursing",
+    "city": "Wilkes Barre",
+    "state": "PA"
+  },
+  {
+    "unitid": 222105,
+    "name": "William R Moore College of Technology",
+    "city": "Memphis",
+    "state": "TN"
   },
   {
     "unitid": 149842,
@@ -5220,6 +7380,12 @@
     "state": "SC"
   },
   {
+    "unitid": 216940,
+    "name": "Williamson College of the Trades",
+    "city": "Media",
+    "state": "PA"
+  },
+  {
     "unitid": 200341,
     "name": "Williston State College",
     "city": "Williston",
@@ -5230,6 +7396,12 @@
     "name": "Wilson Community College",
     "city": "Wilson",
     "state": "NC"
+  },
+  {
+    "unitid": 491783,
+    "name": "Wilton Simpson Technical College",
+    "city": "Brooksville",
+    "state": "FL"
   },
   {
     "unitid": 141990,
@@ -5250,6 +7422,12 @@
     "state": "FL"
   },
   {
+    "unitid": 238096,
+    "name": "Wood County Technical Center-Practical Nursing",
+    "city": "Parkersburg",
+    "state": "WV"
+  },
+  {
     "unitid": 455512,
     "name": "Woodland Community College",
     "city": "Woodland",
@@ -5260,6 +7438,12 @@
     "name": "Wor-Wic Community College",
     "city": "Salisbury",
     "state": "MD"
+  },
+  {
+    "unitid": 197531,
+    "name": "Word of Life Bible Institute",
+    "city": "Pottersville",
+    "state": "NY"
   },
   {
     "unitid": 234377,
@@ -5274,10 +7458,22 @@
     "state": "ME"
   },
   {
+    "unitid": 418409,
+    "name": "York County School of Technology-Adult & Continuing Education",
+    "city": "York",
+    "state": "PA"
+  },
+  {
     "unitid": 218991,
     "name": "York Technical College",
     "city": "Rock Hill",
     "state": "SC"
+  },
+  {
+    "unitid": 493619,
+    "name": "Young Americans College of the Performing Arts",
+    "city": "Corona",
+    "state": "CA"
   },
   {
     "unitid": 126119,
