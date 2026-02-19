@@ -12,11 +12,10 @@ import {
   Telescope,
   Waves,
 } from 'lucide-react';
-import { ScoreGauge, ScoreBreakdown } from './ScoreBar';
+import { ScoreArc, CompactScoreBar } from './ScoreBar';
 import { EvidenceTrail } from './EvidenceTrail';
 import type { ScoredOpportunity, BlueOceanOpportunity } from '../types';
 
-// Tier styles
 const TIER_CONFIG: Record<string, { label: string; badge: string; icon: React.ComponentType<{className?: string}> }> = {
   quick_win: {
     label: 'Quick Win',
@@ -40,7 +39,6 @@ const TIER_CONFIG: Record<string, { label: string; badge: string; icon: React.Co
   },
 };
 
-// Discovery method labels
 const DISCOVERY_LABELS: Record<string, string> = {
   economic_development: 'Economic Development Intel',
   labor_market: 'Labor Market Analysis',
@@ -79,6 +77,13 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
   const validationItems = program.whatValidationWouldConfirm || [];
   const barriers = conventional?.barriers || [];
 
+  // Score dimensions
+  const demandEvidence = isBO ? (scores as any).demand ?? (scores as any).demandEvidence ?? 0 : (scores as any).demandEvidence ?? 0;
+  const competitiveGap = isBO ? (scores as any).competition ?? (scores as any).competitiveGap ?? 0 : (scores as any).competitiveGap ?? 0;
+  const revenueViability = isBO ? (scores as any).revenue ?? (scores as any).revenueViability ?? 0 : (scores as any).revenueViability ?? 0;
+  const wageOutcomes = isBO ? (scores as any).wages ?? (scores as any).wageOutcomes ?? 0 : (scores as any).wageOutcomes ?? 0;
+  const launchSpeed = isBO ? (scores as any).speed ?? (scores as any).launchSpeed ?? 0 : (scores as any).launchSpeed ?? 0;
+
   return (
     <div
       id={`program-${rank}`}
@@ -86,77 +91,63 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
         isBO ? 'border-teal-500/20' : ''
       }`}
     >
-      {/* Blue Ocean accent stripe */}
       {isBO && (
         <div className="h-0.5 w-full bg-gradient-to-r from-teal-600 via-teal-400 to-cyan-400" />
       )}
 
-      {/* Header — always visible */}
+      {/* Header — rank + title + tier left, arc + chevron right */}
       <button
         onClick={() => setExpanded(!expanded)}
         aria-expanded={expanded}
         aria-controls={cardId}
-        className="w-full text-left p-6 flex items-start gap-4 group"
+        className="w-full text-left p-6 flex items-center gap-4 group"
       >
-        {/* Rank + Gauge */}
-        <div className="flex flex-col items-center gap-1 shrink-0">
-          <ScoreGauge score={composite} isBlueOcean={isBO} size="md" />
-          <span className="text-xs text-theme-muted tabular-nums">#{rank}</span>
-        </div>
-
-        {/* Title + meta */}
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-center gap-2 mb-1">
-            <h3 className="text-lg font-semibold text-theme-primary leading-tight group-hover:text-gradient-cosmic transition-all">
-              {title}
-            </h3>
-            <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${tierConfig.badge}`}>
-              <TierIcon className="w-3 h-3" />
-              {tierConfig.label}
-            </span>
-            {isBO && (
-              <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/25 shrink-0">
-                ◆ Hidden Opportunity
+        {/* Left: rank + title + tier */}
+        <div className="flex items-center gap-3 flex-1 min-w-0">
+          <span className="text-lg font-bold text-theme-muted tabular-nums shrink-0">#{rank}</span>
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <h3 className="text-base font-semibold text-theme-primary leading-tight group-hover:text-violet-300 transition-colors truncate">
+                {title}
+              </h3>
+              <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${tierConfig.badge}`}>
+                <TierIcon className="w-3 h-3" />
+                {tierConfig.label}
               </span>
-            )}
-          </div>
-
-          {/* Quick stats row */}
-          <div className="flex flex-wrap gap-3 mt-2">
-            {isBO && blueOcean?.medianWage && (
-              <span className="text-xs text-theme-tertiary">
-                💰 <span className="text-theme-secondary">{blueOcean.medianWage}</span> median wage
-              </span>
-            )}
-            {!isBO && conventional?.keyMetrics?.medianHourlyWage && (
-              <span className="text-xs text-theme-tertiary">
-                💰 <span className="text-theme-secondary">{conventional.keyMetrics.medianHourlyWage}</span>/hr
-              </span>
-            )}
-            {!isBO && conventional?.keyMetrics?.regionalAnnualOpenings && (
-              <span className="text-xs text-theme-tertiary">
-                📍 <span className="text-theme-secondary">{conventional.keyMetrics.regionalAnnualOpenings}</span> openings/yr
-              </span>
-            )}
-            {isBO && blueOcean?.estimatedDemand && (
-              <span className="text-xs text-theme-tertiary">
-                📍 <span className="text-theme-secondary">{blueOcean.estimatedDemand}</span>
-              </span>
-            )}
-            {isBO && blueOcean?.discoveryMethod && (
-              <span className="text-xs text-teal-400/70">
-                🔭 {DISCOVERY_LABELS[blueOcean.discoveryMethod] || blueOcean.discoveryMethod}
-              </span>
-            )}
+              {isBO && (
+                <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-teal-500/15 text-teal-300 border border-teal-500/25 shrink-0">
+                  ◆ Hidden
+                </span>
+              )}
+            </div>
+            {/* Quick stats */}
+            <div className="flex flex-wrap gap-3 mt-1">
+              {isBO && blueOcean?.medianWage && (
+                <span className="text-xs text-theme-tertiary">💰 <span className="text-theme-secondary">{blueOcean.medianWage}</span></span>
+              )}
+              {!isBO && conventional?.keyMetrics?.medianHourlyWage && (
+                <span className="text-xs text-theme-tertiary">💰 <span className="text-theme-secondary">{conventional.keyMetrics.medianHourlyWage}</span>/hr</span>
+              )}
+              {!isBO && conventional?.keyMetrics?.regionalAnnualOpenings && (
+                <span className="text-xs text-theme-tertiary">📍 <span className="text-theme-secondary">{conventional.keyMetrics.regionalAnnualOpenings}</span> openings/yr</span>
+              )}
+              {isBO && blueOcean?.estimatedDemand && (
+                <span className="text-xs text-theme-tertiary">📍 <span className="text-theme-secondary">{blueOcean.estimatedDemand}</span></span>
+              )}
+              {isBO && blueOcean?.discoveryMethod && (
+                <span className="text-xs text-teal-400/70">🔭 {DISCOVERY_LABELS[blueOcean.discoveryMethod] || blueOcean.discoveryMethod}</span>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Expand chevron */}
-        <ChevronDown
-          className={`w-5 h-5 shrink-0 text-theme-muted transition-transform duration-300 mt-1 ${
-            expanded ? 'rotate-180' : ''
-          }`}
-        />
+        {/* Right: arc gauge + chevron */}
+        <div className="flex items-center gap-3 shrink-0">
+          <ScoreArc score={composite} size={48} />
+          <ChevronDown
+            className={`w-5 h-5 text-theme-muted transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`}
+          />
+        </div>
       </button>
 
       {/* Expandable body */}
@@ -168,7 +159,6 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
       >
         <div className="px-6 pb-6 space-y-6 border-t border-theme-subtle pt-5">
 
-          {/* Description */}
           <p className="text-sm text-theme-secondary leading-relaxed">{description}</p>
 
           {/* Blue Ocean callouts */}
@@ -179,9 +169,7 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
                   <div className="flex items-start gap-2">
                     <Waves className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-xs font-semibold text-teal-400 uppercase tracking-wider mb-1">
-                        Why This Is Non-Obvious
-                      </p>
+                      <p className="text-xs font-semibold text-teal-400 uppercase tracking-wider mb-1">Why This Is Non-Obvious</p>
                       <p className="text-sm text-theme-secondary leading-relaxed">{blueOcean.whyNonObvious}</p>
                     </div>
                   </div>
@@ -192,9 +180,7 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
                   <div className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-violet-400 shrink-0 mt-0.5" />
                     <div>
-                      <p className="text-xs font-semibold text-violet-400 uppercase tracking-wider mb-1">
-                        First-Mover Advantage
-                      </p>
+                      <p className="text-xs font-semibold text-violet-400 uppercase tracking-wider mb-1">First-Mover Advantage</p>
                       <p className="text-sm text-theme-secondary leading-relaxed">{blueOcean.whyDefensible}</p>
                     </div>
                   </div>
@@ -203,18 +189,22 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
             </div>
           )}
 
-          {/* Score breakdown + metrics */}
+          {/* Score dimensions — 2-col grid + key metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Score breakdown */}
             <div>
               <h4 className="text-xs font-semibold uppercase tracking-wider text-theme-muted mb-3 flex items-center gap-2">
                 <span className="inline-block w-4 h-px bg-white/20" />
                 Score Breakdown
               </h4>
-              <ScoreBreakdown scores={scores} isBlueOcean={isBO} />
+              <div className="grid grid-cols-2 gap-x-4 gap-y-2">
+                <CompactScoreBar label="Demand Evidence" score={demandEvidence} />
+                <CompactScoreBar label="Competitive Gap" score={competitiveGap} />
+                <CompactScoreBar label="Revenue Viability" score={revenueViability} />
+                <CompactScoreBar label="Wage Outcomes" score={wageOutcomes} />
+                <CompactScoreBar label="Launch Speed" score={launchSpeed} />
+              </div>
             </div>
 
-            {/* Key metrics */}
             <div>
               <h4 className="text-xs font-semibold uppercase tracking-wider text-theme-muted mb-3 flex items-center gap-2">
                 <span className="inline-block w-4 h-px bg-white/20" />
@@ -268,7 +258,7 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
             </div>
           </div>
 
-          {/* Program details (conventional) */}
+          {/* Program structure (conventional) */}
           {conventional?.programSnapshot && (
             <div className="rounded-xl bg-white/[0.03] border border-theme-subtle p-4">
               <h4 className="text-xs font-semibold uppercase tracking-wider text-theme-muted mb-3 flex items-center gap-1.5">
@@ -310,10 +300,8 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
             </div>
           )}
 
-          {/* Evidence trail */}
           <EvidenceTrail evidence={evidence} />
 
-          {/* Barriers */}
           {barriers.length > 0 && (
             <div>
               <h4 className="text-xs font-semibold uppercase tracking-wider text-theme-muted mb-3 flex items-center gap-2">
@@ -331,15 +319,12 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
             </div>
           )}
 
-          {/* What Validation Would Confirm — CTA hook */}
           {validationItems.length > 0 && (
             <div className="rounded-xl bg-gradient-to-br from-violet-900/20 to-blue-900/10 border border-violet-500/20 p-5">
               <div className="flex items-start gap-3">
                 <GraduationCap className="w-5 h-5 text-violet-400 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-sm font-semibold text-violet-300 mb-2">
-                    What Validation Would Confirm
-                  </h4>
+                  <h4 className="text-sm font-semibold text-violet-300 mb-2">What Validation Would Confirm</h4>
                   <p className="text-xs text-theme-tertiary mb-3">
                     These are the open questions that employer validation would answer — turning this discovery into a launch decision.
                   </p>
@@ -352,15 +337,10 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
                     ))}
                   </ul>
                   <div className="mt-4 pt-4 border-t border-theme-subtle">
-                    <a
-                      href="/#pricing"
-                      className="inline-flex items-center gap-2 text-sm font-semibold text-amber-400 hover:text-amber-300 transition-colors"
-                    >
+                    <a href="/#pricing" className="inline-flex items-center gap-2 text-sm font-semibold text-amber-400 hover:text-amber-300 transition-colors">
                       <span>Get Employer Validation →</span>
                     </a>
-                    <p className="text-xs text-theme-muted mt-1">
-                      Wavelength Validation Phase conducts deep employer outreach in your region
-                    </p>
+                    <p className="text-xs text-theme-muted mt-1">Wavelength Validation Phase conducts deep employer outreach in your region</p>
                   </div>
                 </div>
               </div>

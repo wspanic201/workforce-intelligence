@@ -20,7 +20,7 @@ import {
 import { Aurora } from '@/components/cosmic/Aurora';
 import { Stars } from '@/components/cosmic/Stars';
 import { ProgramCard } from './ProgramCard';
-import { ScoreGauge, OverviewBar } from './ScoreBar';
+import { ScoreArc, CompactScoreBar, TIER_STYLES } from './ScoreBar';
 import { AuditTrail } from './AuditTrail';
 import { RegionalSummary } from './RegionalSummary';
 import type { ReportData, AnyProgram, ScoredOpportunity, BlueOceanOpportunity } from '../types';
@@ -35,7 +35,7 @@ const TABS: { id: Tab; label: string; icon: React.ComponentType<{ className?: st
   { id: 'citations', label: 'Audit Trail', icon: FileText },
 ];
 
-// ─── Markdown to plain text (first section only) ────────────
+// ─── Extract executive summary ──────────────────────────────
 function extractExecutiveSummary(markdown: string): string {
   const lines = markdown.split('\n');
   const startIdx = lines.findIndex((l) => l.toLowerCase().includes('executive summary'));
@@ -43,7 +43,6 @@ function extractExecutiveSummary(markdown: string): string {
   const bodyLines: string[] = [];
   for (let i = startIdx + 1; i < lines.length; i++) {
     const line = lines[i];
-    // Stop at next major section
     if (line.startsWith('## ') && i > startIdx + 1) break;
     if (line.startsWith('---') && i > startIdx + 5) break;
     bodyLines.push(line);
@@ -51,54 +50,43 @@ function extractExecutiveSummary(markdown: string): string {
   return bodyLines.join('\n').trim();
 }
 
-// ─── Simple markdown renderer (no library) ──────────────────
-function SimpleMarkdown({ text }: { text: string }) {
-  const lines = text.split('\n');
-  return (
-    <div className="space-y-3 text-sm text-theme-secondary leading-relaxed">
-      {lines.map((line, i) => {
-        if (!line.trim()) return <div key={i} className="h-1" />;
-        if (line.startsWith('### '))
-          return <h3 key={i} className="text-base font-semibold text-theme-secondary mt-4">{line.slice(4)}</h3>;
-        if (line.startsWith('## '))
-          return <h2 key={i} className="text-lg font-semibold text-theme-primary mt-5">{line.slice(3)}</h2>;
-        if (line.startsWith('# '))
-          return <h1 key={i} className="text-xl font-bold text-theme-primary mt-6">{line.slice(2)}</h1>;
-        if (line.startsWith('- ') || line.startsWith('* '))
-          return <li key={i} className="ml-4 list-disc text-theme-secondary">{line.slice(2)}</li>;
-        if (line.startsWith('**') && line.endsWith('**'))
-          return <p key={i} className="font-semibold text-theme-secondary">{line.slice(2, -2)}</p>;
-        // Bold inline
-        const parts = line.split(/(\*\*[^*]+\*\*)/g);
-        return (
-          <p key={i}>
-            {parts.map((p, j) =>
-              p.startsWith('**') && p.endsWith('**') ? (
-                <strong key={j} className="font-semibold text-theme-secondary">{p.slice(2, -2)}</strong>
-              ) : (
-                <span key={j}>{p}</span>
-              )
-            )}
-          </p>
-        );
-      })}
-    </div>
-  );
-}
+// ─── Executive Summary Component ─────────────────────────────
+function ExecutiveSummary({ text }: { text: string }) {
+  // Split into sentences, extract first 2-3 as pull quote
+  const cleaned = text.replace(/^#+\s+.*/gm, '').replace(/\n{3,}/g, '\n\n').trim();
+  const sentences = cleaned.match(/[^.!?]+[.!?]+/g) || [cleaned];
+  const pullQuote = sentences.slice(0, 3).join(' ').trim();
+  const rest = sentences.slice(3).join(' ').trim();
 
-// ─── Stat chip ───────────────────────────────────────────────
-function StatChip({ label, value, icon: Icon }: {
-  label: string;
-  value: string | number;
-  icon: React.ComponentType<{ className?: string }>;
-}) {
+  // Parse remaining text into paragraphs with bold handling
+  function renderText(t: string) {
+    const parts = t.split(/(\*\*[^*]+\*\*)/g);
+    return parts.map((p, j) =>
+      p.startsWith('**') && p.endsWith('**') ? (
+        <strong key={j} className="font-semibold text-theme-secondary">{p.slice(2, -2)}</strong>
+      ) : (
+        <span key={j}>{p}</span>
+      )
+    );
+  }
+
   return (
-    <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-theme-card border border-theme-subtle">
-      <Icon className="w-4 h-4 text-violet-400 shrink-0" />
-      <div>
-        <div className="text-base font-bold text-theme-primary tabular-nums">{value}</div>
-        <div className="text-[11px] text-theme-muted leading-none mt-0.5">{label}</div>
+    <div className="space-y-6">
+      {/* Pull quote callout */}
+      <div className="relative pl-5 border-l-2 border-violet-500/40">
+        <p className="text-base text-theme-secondary leading-relaxed italic">
+          {renderText(pullQuote)}
+        </p>
       </div>
+
+      {/* Remaining content */}
+      {rest && (
+        <div className="space-y-3 text-sm text-theme-secondary leading-relaxed">
+          {rest.split('\n\n').filter(Boolean).map((para, i) => (
+            <p key={i}>{renderText(para)}</p>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -119,7 +107,6 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
   const scored: ScoredOpportunity[] = structuredData?.scoredOpportunities?.scoredOpportunities || [];
   const blueOcean: BlueOceanOpportunity[] = structuredData?.blueOceanResults?.hiddenOpportunities || [];
 
-  // Combine all programs for unified list
   const allPrograms: AnyProgram[] = [
     ...scored.map((p): ScoredOpportunity => p),
     ...blueOcean.map((p, i): BlueOceanOpportunity => ({
@@ -129,7 +116,6 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
     })),
   ];
 
-  // Sort by composite score for overview bars
   const sortedForOverview = [...allPrograms].sort((a, b) => {
     const scoreA = a.scores.composite ?? Object.values(a.scores).reduce((s, v) => s + (v as number), 0) / Math.max(1, Object.keys(a.scores).length);
     const scoreB = b.scores.composite ?? Object.values(b.scores).reduce((s, v) => s + (v as number), 0) / Math.max(1, Object.keys(b.scores).length);
@@ -140,47 +126,40 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
     setActiveTab('programs');
     setTimeout(() => {
       const el = document.getElementById(`program-${rank}`);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
   }, []);
 
   const institutionName = institution?.name || 'Institution';
-  const region = institution?.city
-    ? `${institution.city}, ${institution.state}`
-    : '';
+  const region = institution?.city ? `${institution.city}, ${institution.state}` : '';
   const generatedDate = brief?.generatedAt
-    ? new Date(brief.generatedAt).toLocaleDateString('en-US', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      })
+    ? new Date(brief.generatedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     : reportConfig?.generatedAt
-    ? new Date(reportConfig.generatedAt).toLocaleDateString('en-US', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      })
+    ? new Date(reportConfig.generatedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     : '';
 
   const execSummary = extractExecutiveSummary(brief?.markdown || '');
+
+  // Stats data
+  const stats = [
+    { value: brief?.programCount || allPrograms.length, label: 'Opportunities Found' },
+    { value: metadata?.totalSearches || '—', label: 'Sources Searched' },
+    { value: structuredData?.competitiveLandscape?.providers?.length || '—', label: 'Competitors Mapped' },
+    { value: blueOcean.length, label: 'Blue Ocean Programs' },
+  ];
 
   return (
     <div className="min-h-screen bg-theme-page text-theme-primary">
 
       {/* ═══ HERO HEADER ═══════════════════════════════════════ */}
       <header className="relative overflow-hidden pt-24 pb-16 px-6">
-        {/* Background effects */}
         <div className="absolute inset-0 pointer-events-none">
           <Stars />
           <Aurora />
-          {/* Bottom fade */}
           <div className="absolute bottom-0 left-0 right-0 h-32" style={{ background: 'linear-gradient(to top, var(--bg-page), transparent)' }} />
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto">
-          {/* Breadcrumb */}
           <div className="flex items-center gap-1.5 text-xs text-theme-muted mb-6">
             <a href="/" className="hover:text-theme-tertiary transition-colors">Wavelength</a>
             <ChevronRight className="w-3 h-3" />
@@ -189,49 +168,26 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
             <span className="text-theme-tertiary">{token}</span>
           </div>
 
-          {/* Institution name */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-theme-primary mb-2 leading-tight">
             {institutionName}
           </h1>
           {region && (
-            <p className="text-lg text-theme-tertiary mb-6 flex items-center gap-1.5">
+            <p className="text-lg text-theme-tertiary mb-8 flex items-center gap-1.5">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-teal-400" />
               {region} — Program Discovery Analysis
             </p>
           )}
 
-          {/* Stats row */}
-          <div className="flex flex-wrap gap-2.5 mb-8">
-            <StatChip
-              icon={Sparkles}
-              value={brief?.programCount || allPrograms.length}
-              label="Opportunities Found"
-            />
-            <StatChip
-              icon={Search}
-              value={metadata?.totalSearches || '—'}
-              label="Data Sources Searched"
-            />
-            <StatChip
-              icon={Building2}
-              value={structuredData?.competitiveLandscape?.providers?.length || '—'}
-              label="Competitors Mapped"
-            />
-            <StatChip
-              icon={Waves}
-              value={blueOcean.length}
-              label="Blue Ocean Programs"
-            />
-            {metadata?.durationSeconds && (
-              <StatChip
-                icon={Clock}
-                value={`${Math.round(metadata.durationSeconds / 60)}m`}
-                label="Analysis Duration"
-              />
-            )}
+          {/* Stats row — clean dividers */}
+          <div className="flex items-center divide-x divide-theme-subtle mb-8">
+            {stats.map((stat, i) => (
+              <div key={i} className="px-6 first:pl-0 last:pr-0">
+                <div className="text-2xl font-bold text-theme-primary tabular-nums">{stat.value}</div>
+                <div className="text-xs text-theme-muted mt-0.5">{stat.label}</div>
+              </div>
+            ))}
           </div>
 
-          {/* Generated date */}
           {generatedDate && (
             <p className="text-xs text-theme-muted">
               Generated {generatedDate} · Powered by Wavelength
@@ -243,7 +199,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
       {/* ═══ STICKY TAB NAV ════════════════════════════════════ */}
       <div className="sticky top-0 z-40 backdrop-blur-xl border-b border-theme-subtle" style={{ backgroundColor: 'color-mix(in srgb, var(--bg-page) 95%, transparent)' }}>
         <div className="max-w-5xl mx-auto px-6">
-          <nav className="flex gap-1 overflow-x-auto scrollbar-hide py-1" aria-label="Report sections">
+          <nav className="flex gap-1 overflow-x-auto scrollbar-hide" aria-label="Report sections">
             {TABS.map((tab) => {
               const Icon = tab.icon;
               const active = activeTab === tab.id;
@@ -251,10 +207,10 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-200 ${
+                  className={`flex items-center gap-2 px-4 py-3 text-sm font-medium whitespace-nowrap transition-all duration-200 border-b-2 ${
                     active
-                      ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30'
-                      : 'text-theme-muted hover:text-theme-secondary hover:bg-white/[0.04]'
+                      ? 'border-violet-400 text-violet-300'
+                      : 'border-transparent text-theme-muted hover:text-theme-secondary'
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
@@ -279,12 +235,14 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
                 <BookOpen className="w-4 h-4 text-violet-400" />
                 <h2 className="text-lg font-semibold text-theme-primary">Executive Summary</h2>
               </div>
-              <div className="card-cosmic rounded-2xl p-6">
-                <SimpleMarkdown text={execSummary} />
+              <div className="card-cosmic rounded-2xl p-6 md:p-8">
+                <ExecutiveSummary text={execSummary} />
               </div>
             </section>
 
-            {/* Program score overview */}
+            <hr className="border-theme-subtle my-8" />
+
+            {/* Program ranking grid */}
             <section>
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
@@ -299,51 +257,84 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
                 </button>
               </div>
 
-              <div className="card-cosmic rounded-2xl p-4">
-                {/* Legend */}
-                <div className="flex flex-wrap gap-3 mb-4 px-3">
-                  {[
-                    { key: 'quick_win', label: 'Quick Win', style: 'bg-emerald-500/20 text-emerald-400' },
-                    { key: 'strategic_build', label: 'Strategic Build', style: 'bg-amber-500/20 text-amber-400' },
-                    { key: 'emerging', label: 'Emerging', style: 'bg-violet-500/20 text-violet-400' },
-                    { key: 'blue_ocean', label: 'Blue Ocean', style: 'bg-teal-500/20 text-teal-400' },
-                  ].map((l) => (
-                    <span key={l.key} className={`text-[11px] px-2 py-1 rounded-full font-medium ${l.style}`}>
-                      {l.label}
-                    </span>
-                  ))}
-                </div>
+              {/* Legend */}
+              <div className="flex flex-wrap gap-3 mb-5">
+                {Object.entries(TIER_STYLES).map(([key, { label, badge }]) => (
+                  <span key={key} className={`text-[11px] px-2 py-1 rounded-full font-medium ${badge}`}>
+                    {label}
+                  </span>
+                ))}
+              </div>
 
-                <div className="space-y-1">
-                  {sortedForOverview.map((prog, i) => {
-                    const isBO = 'isBlueOcean' in prog && prog.isBlueOcean === true;
-                    const title = (prog as { programTitle: string }).programTitle;
-                    const tier = isBO ? 'blue_ocean' : ((prog as ScoredOpportunity).tier || 'emerging');
-                    const composite = prog.scores.composite ?? (
-                      Object.values(prog.scores).reduce((a, b) => a + (b as number), 0) /
-                      Math.max(1, Object.keys(prog.scores).length)
-                    );
-                    return (
-                      <OverviewBar
-                        key={i}
-                        programName={title}
-                        score={composite}
-                        category={tier}
-                        isBlueOcean={isBO}
-                        rank={i + 1}
-                        onClick={() => {
-                          setActiveTab('programs');
-                          setTimeout(() => {
-                            const el = document.getElementById(`program-${i + 1}`);
-                            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                          }, 100);
-                        }}
-                      />
-                    );
-                  })}
-                </div>
+              {/* 2-col program card grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {sortedForOverview.map((prog, i) => {
+                  const isBO = 'isBlueOcean' in prog && prog.isBlueOcean === true;
+                  const title = (prog as { programTitle: string }).programTitle;
+                  const tier = isBO ? 'blue_ocean' : ((prog as ScoredOpportunity).tier || 'emerging');
+                  const tierKey = tier.toLowerCase().replace(' ', '_');
+                  const tierStyle = TIER_STYLES[tierKey] || TIER_STYLES['emerging'];
+                  const scores = prog.scores;
+                  const composite = scores.composite ?? (
+                    Object.values(scores).reduce((a, b) => a + (b as number), 0) /
+                    Math.max(1, Object.keys(scores).length)
+                  );
+
+                  const demandEvidence = isBO ? (scores as any).demand ?? (scores as any).demandEvidence ?? 0 : (scores as any).demandEvidence ?? 0;
+                  const competitiveGap = isBO ? (scores as any).competition ?? (scores as any).competitiveGap ?? 0 : (scores as any).competitiveGap ?? 0;
+                  const revenueViability = isBO ? (scores as any).revenue ?? (scores as any).revenueViability ?? 0 : (scores as any).revenueViability ?? 0;
+                  const wageOutcomes = isBO ? (scores as any).wages ?? (scores as any).wageOutcomes ?? 0 : (scores as any).wageOutcomes ?? 0;
+                  const launchSpeed = isBO ? (scores as any).speed ?? (scores as any).launchSpeed ?? 0 : (scores as any).launchSpeed ?? 0;
+
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => {
+                        setActiveTab('programs');
+                        setTimeout(() => {
+                          const el = document.getElementById(`program-${i + 1}`);
+                          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }, 100);
+                      }}
+                      className="card-cosmic rounded-2xl p-6 text-left hover:bg-white/[0.02] transition-colors cursor-pointer group relative"
+                    >
+                      {/* Rank number */}
+                      <span className="absolute top-4 left-5 text-3xl font-bold text-theme-muted opacity-20 tabular-nums">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+
+                      <div className="flex items-start gap-4 ml-8">
+                        {/* Arc gauge */}
+                        <div className="shrink-0">
+                          <ScoreArc score={composite} size={64} />
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          {/* Title + tier */}
+                          <h3 className="text-sm font-semibold text-theme-primary truncate group-hover:text-violet-300 transition-colors">
+                            {title}
+                          </h3>
+                          <span className={`inline-block text-[10px] font-semibold px-1.5 py-0.5 rounded-full mt-1 ${tierStyle.badge}`}>
+                            {tierStyle.label}
+                          </span>
+
+                          {/* 5 dimension bars in 2-col grid */}
+                          <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 mt-3">
+                            <CompactScoreBar label="Demand" score={demandEvidence} />
+                            <CompactScoreBar label="Competition" score={competitiveGap} />
+                            <CompactScoreBar label="Revenue" score={revenueViability} />
+                            <CompactScoreBar label="Wages" score={wageOutcomes} />
+                            <CompactScoreBar label="Speed" score={launchSpeed} />
+                          </div>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
             </section>
+
+            <hr className="border-theme-subtle my-8" />
 
             {/* Top 3 teaser */}
             <section>
@@ -384,7 +375,6 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
               </div>
             </div>
 
-            {/* Conventional programs */}
             {scored.length > 0 && (
               <div>
                 <div className="flex items-center gap-2 mb-4">
@@ -401,7 +391,6 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
               </div>
             )}
 
-            {/* Blue Ocean programs */}
             {blueOcean.length > 0 && (
               <div className="mt-8">
                 <div className="flex items-center gap-3 mb-4">
@@ -467,7 +456,6 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
       <footer className="border-t border-theme-subtle mt-16 bg-theme-page">
         <div className="max-w-5xl mx-auto px-6 py-12">
 
-          {/* CTA band */}
           <div className="card-cosmic rounded-2xl p-8 mb-10 text-center relative overflow-hidden">
             <div className="aurora opacity-50 pointer-events-none" aria-hidden="true">
               <div className="aurora-blob aurora-blob-1" />
@@ -483,50 +471,30 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
               <p className="text-theme-secondary text-sm max-w-lg mx-auto mb-6 leading-relaxed">
                 Wavelength Validation Phase conducts deep employer outreach and market validation in your region to confirm demand before you commit budget to a new program.
               </p>
-              <a
-                href="/#pricing"
-                className="btn-cosmic btn-cosmic-primary inline-flex items-center gap-2"
-              >
+              <a href="/#pricing" className="btn-cosmic btn-cosmic-primary inline-flex items-center gap-2">
                 <Users className="w-4 h-4" />
                 Get Employer Validation
               </a>
             </div>
           </div>
 
-          {/* Download + links */}
           <div className="flex flex-col sm:flex-row justify-between items-start gap-6">
             <div>
               <p className="text-sm font-semibold text-theme-primary mb-1">Download Options</p>
               <div className="flex gap-3 mt-2">
-                <a
-                  href={`/api/report/${token}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs text-theme-tertiary hover:text-theme-secondary transition-colors"
-                >
-                  <Database className="w-3.5 h-3.5" />
-                  Raw JSON
-                  <ExternalLink className="w-3 h-3" />
+                <a href={`/api/report/${token}`} target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-xs text-theme-tertiary hover:text-theme-secondary transition-colors">
+                  <Database className="w-3.5 h-3.5" /> Raw JSON <ExternalLink className="w-3 h-3" />
                 </a>
-                <a
-                  href="#"
-                  className="inline-flex items-center gap-1.5 text-xs text-theme-tertiary hover:text-theme-secondary transition-colors"
-                >
-                  <Download className="w-3.5 h-3.5" />
-                  Download PDF
+                <a href="#" className="inline-flex items-center gap-1.5 text-xs text-theme-tertiary hover:text-theme-secondary transition-colors">
+                  <Download className="w-3.5 h-3.5" /> Download PDF
                 </a>
               </div>
             </div>
-
             <div className="text-right">
               <p className="text-sm font-bold text-theme-primary">Wavelength</p>
-              <p className="text-xs text-theme-muted mt-1">
-                Program intelligence for community colleges
-              </p>
-              <a
-                href="/"
-                className="text-xs text-violet-400 hover:text-violet-300 transition-colors mt-1 inline-block"
-              >
+              <p className="text-xs text-theme-muted mt-1">Program intelligence for community colleges</p>
+              <a href="/" className="text-xs text-violet-400 hover:text-violet-300 transition-colors mt-1 inline-block">
                 withwavelength.com →
               </a>
             </div>

@@ -9,26 +9,11 @@ interface RegionalSummaryProps {
   demandSignals: DemandSignals;
 }
 
-function StatCard({ label, value, icon: Icon, color = 'purple' }: {
-  label: string;
-  value: string | number;
-  icon: React.ComponentType<{className?: string}>;
-  color?: 'purple' | 'teal' | 'blue' | 'amber' | 'green';
-}) {
-  const colorMap = {
-    purple: 'text-violet-400 bg-violet-500/10',
-    teal: 'text-teal-400 bg-teal-500/10',
-    blue: 'text-blue-400 bg-blue-500/10',
-    amber: 'text-amber-400 bg-amber-500/10',
-    green: 'text-emerald-400 bg-emerald-500/10',
-  };
+function BigStat({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="card-cosmic rounded-xl p-4">
-      <div className={`inline-flex p-2 rounded-lg mb-3 ${colorMap[color]}`}>
-        <Icon className={`w-4 h-4 ${colorMap[color].split(' ')[0]}`} />
-      </div>
-      <div className="text-xl font-bold text-theme-primary">{value}</div>
-      <div className="text-xs text-theme-muted mt-1">{label}</div>
+    <div className="text-center">
+      <div className="text-2xl font-bold text-theme-primary tabular-nums">{value}</div>
+      <div className="text-xs text-theme-muted mt-0.5">{label}</div>
     </div>
   );
 }
@@ -62,37 +47,19 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
   return (
     <div className="space-y-8">
 
-      {/* Overview stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        <StatCard
-          label="Active Competitors"
-          value={providers.length}
-          icon={Building2}
-          color="purple"
-        />
-        <StatCard
-          label="Market Gaps Identified"
-          value={gaps.length || competitiveLandscape?.whiteSpaceCount || '—'}
-          icon={TrendingUp}
-          color="teal"
-        />
-        <StatCard
-          label="Demand Signals"
-          value={demandSignals?.signals?.length || 0}
-          icon={Briefcase}
-          color="blue"
-        />
-        <StatCard
-          label="Existing Programs"
-          value={currentPrograms.length}
-          icon={GraduationCap}
-          color="amber"
-        />
+      {/* Overview stats — large numbers with dividers */}
+      <div className="flex items-center justify-around divide-x divide-theme-subtle py-4">
+        <BigStat label="Active Competitors" value={providers.length} />
+        <BigStat label="Market Gaps" value={gaps.length || competitiveLandscape?.whiteSpaceCount || '—'} />
+        <BigStat label="Demand Signals" value={demandSignals?.signals?.length || 0} />
+        <BigStat label="Existing Programs" value={currentPrograms.length} />
       </div>
+
+      <hr className="border-theme-subtle" />
 
       {/* Institution overview */}
       {institution && (
-        <div className="card-cosmic rounded-2xl p-6">
+        <div className="card-cosmic rounded-2xl p-6 md:p-8">
           <h3 className="text-base font-semibold text-theme-primary mb-4 flex items-center gap-2">
             <GraduationCap className="w-4 h-4 text-violet-400" />
             Institution Profile
@@ -179,7 +146,7 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
 
       {/* Competitive landscape */}
       {providers.length > 0 && (
-        <div className="card-cosmic rounded-2xl p-6">
+        <div className="card-cosmic rounded-2xl p-6 md:p-8">
           <h3 className="text-base font-semibold text-theme-primary mb-4 flex items-center gap-2">
             <Building2 className="w-4 h-4 text-violet-400" />
             Competitive Landscape
@@ -210,7 +177,6 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
             ))}
           </div>
 
-          {/* Gaps / white space */}
           {gaps.length > 0 && (
             <div className="mt-5 pt-5 border-t border-theme-subtle">
               <h4 className="text-xs font-semibold uppercase tracking-wider text-teal-400/70 mb-3">
@@ -250,19 +216,23 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
         </div>
       )}
 
-      {/* Demand signals */}
+      <hr className="border-theme-subtle" />
+
+      {/* Demand signals — top industries + trending certs */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Top industries */}
         {topIndustries.length > 0 && (
-          <div className="card-cosmic rounded-2xl p-6">
+          <div className="card-cosmic rounded-2xl p-6 md:p-8">
             <h3 className="text-base font-semibold text-theme-primary mb-4 flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-teal-400" />
               Top Industries
             </h3>
-            <div className="space-y-3">
+            <ul className="space-y-2.5">
               {topIndustries.map((ind, i) => (
-                <div key={i} className="flex items-center justify-between text-sm">
-                  <span className="text-theme-secondary">{ind.industry}</span>
+                <li key={i} className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-teal-400/60 shrink-0" />
+                    <span className="text-theme-secondary">{ind.industry}</span>
+                  </div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-theme-muted">{ind.signalCount} signals</span>
                     <span className={`text-[11px] px-2 py-0.5 rounded-full border ${
@@ -275,15 +245,14 @@ export function RegionalSummary({ regionalIntelligence, competitiveLandscape, de
                       {ind.averageStrength}
                     </span>
                   </div>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         )}
 
-        {/* Trending certifications */}
         {trendingCerts.length > 0 && (
-          <div className="card-cosmic rounded-2xl p-6">
+          <div className="card-cosmic rounded-2xl p-6 md:p-8">
             <h3 className="text-base font-semibold text-theme-primary mb-4 flex items-center gap-2">
               <Briefcase className="w-4 h-4 text-blue-400" />
               Trending Certifications

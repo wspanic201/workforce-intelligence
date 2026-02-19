@@ -2,8 +2,32 @@
 
 import type { ProgramScores } from '../types';
 
+// ─── Score Arc Gauge (SVG) ───────────────────────────────────
+export function ScoreArc({ score, size = 64 }: { score: number; size?: number }) {
+  const pct = score / 10;
+  const r = (size / 2) - 6;
+  const circ = 2 * Math.PI * r;
+  const strokeDasharray = `${pct * circ * 0.75} ${circ}`;
+  const color = score >= 7.5 ? '#10b981' : score >= 5.5 ? '#f59e0b' : '#f43f5e';
+  return (
+    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke="currentColor" strokeWidth="4" className="text-theme-muted opacity-20"
+        strokeDasharray={`${circ * 0.75} ${circ}`}
+        strokeDashoffset={`${-circ * 0.125}`}
+        strokeLinecap="round" />
+      <circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth="4"
+        strokeDasharray={strokeDasharray}
+        strokeDashoffset={`${-circ * 0.125}`}
+        strokeLinecap="round"
+        style={{ transition: 'stroke-dasharray 1s ease-out' }} />
+      <text x={size/2} y={size/2 + 5} textAnchor="middle" fontSize={size <= 48 ? 11 : 14} fontWeight="bold" fill={color}>{score.toFixed(1)}</text>
+    </svg>
+  );
+}
+
+// ─── Score Bar ───────────────────────────────────────────────
 interface ScoreBarProps {
-  score: number; // 0-10
+  score: number;
   label?: string;
   color?: 'purple' | 'blue' | 'teal' | 'amber' | 'green';
   size?: 'sm' | 'md' | 'lg';
@@ -75,7 +99,24 @@ export function ScoreBar({
   );
 }
 
-// Composite score circle gauge
+// ─── Compact Score Bar (for overview grid cards) ─────────────
+export function CompactScoreBar({ label, score }: { label: string; score: number }) {
+  const pct = Math.min(100, Math.max(0, (score / 10) * 100));
+  const color = score >= 7.5 ? 'from-emerald-600 to-emerald-400' : score >= 5.5 ? 'from-amber-600 to-amber-400' : 'from-rose-600 to-rose-400';
+  return (
+    <div>
+      <div className="flex justify-between mb-0.5">
+        <span className="text-[11px] text-theme-muted">{label}</span>
+        <span className="text-[11px] font-semibold text-theme-tertiary tabular-nums">{score.toFixed(1)}</span>
+      </div>
+      <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+        <div className={`h-full rounded-full bg-gradient-to-r ${color} transition-all duration-700`} style={{ width: `${pct}%` }} />
+      </div>
+    </div>
+  );
+}
+
+// Composite score circle gauge (legacy — kept for compatibility)
 interface ScoreGaugeProps {
   score: number;
   isBlueOcean?: boolean;
@@ -108,46 +149,25 @@ export function ScoreGauge({ score, isBlueOcean = false, size = 'md' }: ScoreGau
         height={svgSize}
         style={{ filter: color.shadow, transform: 'rotate(-90deg)' }}
       >
-        {/* Track */}
-        <circle
-          cx={svgSize / 2}
-          cy={svgSize / 2}
-          r={radius}
-          fill="none"
-          stroke="rgba(255,255,255,0.08)"
-          strokeWidth={stroke}
-        />
-        {/* Progress */}
-        <circle
-          cx={svgSize / 2}
-          cy={svgSize / 2}
-          r={radius}
-          fill="none"
-          stroke={color.stroke}
-          strokeWidth={stroke}
-          strokeLinecap="round"
-          strokeDasharray={circumference}
-          strokeDashoffset={dashOffset}
-          style={{ transition: 'stroke-dashoffset 1s cubic-bezier(0.22, 1, 0.36, 1)' }}
-        />
+        <circle cx={svgSize / 2} cy={svgSize / 2} r={radius} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth={stroke} />
+        <circle cx={svgSize / 2} cy={svgSize / 2} r={radius} fill="none" stroke={color.stroke} strokeWidth={stroke} strokeLinecap="round"
+          strokeDasharray={circumference} strokeDashoffset={dashOffset}
+          style={{ transition: 'stroke-dashoffset 1s cubic-bezier(0.22, 1, 0.36, 1)' }} />
       </svg>
       <div className="absolute inset-0 flex items-center justify-center">
-        <span className={`font-bold tabular-nums ${textSize} ${color.text}`}>
-          {score.toFixed(1)}
-        </span>
+        <span className={`font-bold tabular-nums ${textSize} ${color.text}`}>{score.toFixed(1)}</span>
       </div>
     </div>
   );
 }
 
-// Score breakdown spider/bar chart
+// Score breakdown bars
 interface ScoreBreakdownProps {
   scores: ProgramScores;
   isBlueOcean?: boolean;
 }
 
 export function ScoreBreakdown({ scores, isBlueOcean = false }: ScoreBreakdownProps) {
-  // Normalize to a consistent label/value set
   const dimensions = isBlueOcean
     ? [
         { label: 'Demand', value: scores.demand ?? scores.demandEvidence ?? 0, color: 'blue' as const },
@@ -167,97 +187,16 @@ export function ScoreBreakdown({ scores, isBlueOcean = false }: ScoreBreakdownPr
   return (
     <div className="space-y-2">
       {dimensions.map((dim) => (
-        <ScoreBar
-          key={dim.label}
-          score={dim.value}
-          label={dim.label}
-          color={dim.color}
-          size="sm"
-        />
+        <ScoreBar key={dim.label} score={dim.value} label={dim.label} color={dim.color} size="sm" />
       ))}
     </div>
   );
 }
 
-// Horizontal bar for overview chart
-interface OverviewBarProps {
-  programName: string;
-  score: number;
-  category: string;
-  isBlueOcean?: boolean;
-  rank: number;
-  onClick?: () => void;
-}
-
-const CATEGORY_STYLES: Record<string, { label: string; badge: string; bar: string }> = {
-  quick_win: {
-    label: 'Quick Win',
-    badge: 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30',
-    bar: 'from-emerald-600 to-emerald-400',
-  },
-  strategic_build: {
-    label: 'Strategic Build',
-    badge: 'bg-amber-500/20 text-amber-400 border border-amber-500/30',
-    bar: 'from-amber-600 to-amber-400',
-  },
-  emerging: {
-    label: 'Emerging',
-    badge: 'bg-violet-500/20 text-violet-400 border border-violet-500/30',
-    bar: 'from-violet-600 to-violet-400',
-  },
-  blue_ocean: {
-    label: 'Blue Ocean',
-    badge: 'bg-teal-500/20 text-teal-400 border border-teal-500/30',
-    bar: 'from-teal-600 to-teal-400',
-  },
+// ─── Tier badge styles (shared) ──────────────────────────────
+export const TIER_STYLES: Record<string, { label: string; badge: string }> = {
+  quick_win: { label: 'Quick Win', badge: 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' },
+  strategic_build: { label: 'Strategic Build', badge: 'bg-amber-500/20 text-amber-400 border border-amber-500/30' },
+  emerging: { label: 'Emerging', badge: 'bg-violet-500/20 text-violet-400 border border-violet-500/30' },
+  blue_ocean: { label: 'Blue Ocean', badge: 'bg-teal-500/20 text-teal-400 border border-teal-500/30' },
 };
-
-export function OverviewBar({
-  programName,
-  score,
-  category,
-  isBlueOcean = false,
-  rank,
-  onClick,
-}: OverviewBarProps) {
-  const key = isBlueOcean ? 'blue_ocean' : (category || 'emerging').toLowerCase().replace(' ', '_');
-  const style = CATEGORY_STYLES[key] || CATEGORY_STYLES['emerging'];
-  const pct = Math.min(100, Math.max(0, (score / 10) * 100));
-
-  return (
-    <button
-      onClick={onClick}
-      className="w-full text-left group hover:bg-white/[0.02] rounded-lg px-3 py-2.5 transition-colors duration-150 cursor-pointer"
-    >
-      <div className="flex items-center gap-3">
-        <span className="text-xs text-theme-muted w-5 text-right shrink-0">#{rank}</span>
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 mb-1.5">
-            <span className="text-sm font-medium text-theme-secondary truncate group-hover:text-theme-primary transition-colors">
-              {programName}
-            </span>
-            <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full shrink-0 ${style.badge}`}>
-              {style.label}
-            </span>
-            {isBlueOcean && (
-              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30 shrink-0">
-                ◆ Hidden
-              </span>
-            )}
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="flex-1 h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
-              <div
-                className={`h-full rounded-full bg-gradient-to-r ${style.bar} transition-all duration-700`}
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-            <span className="text-xs font-bold tabular-nums text-theme-tertiary w-8 text-right">
-              {score.toFixed(1)}
-            </span>
-          </div>
-        </div>
-      </div>
-    </button>
-  );
-}
