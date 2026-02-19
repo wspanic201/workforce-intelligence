@@ -401,7 +401,7 @@ function StaticHero() {
           </Link>
           <Link href="#products">
             <button className="btn-cosmic btn-cosmic-ghost text-sm">
-              Explore Products ↓
+              Explore Services ↓
             </button>
           </Link>
         </div>
