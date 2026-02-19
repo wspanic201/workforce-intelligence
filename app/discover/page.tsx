@@ -377,13 +377,13 @@ export default function DiscoverPage() {
                   </span>
                 </div>
                 <div className="mt-3">
-                  <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Program Opportunity Scan</h3>
+                  <p className="overline mb-4">PROGRAM OPPORTUNITY SCAN</p>
                   <p className="text-theme-secondary text-sm mb-5">
                     Full market intelligence — 25+ pages, 50+ sources, programs scored and ranked.
                   </p>
 
                   <div className="mb-1">
-                    <span className="font-heading font-bold text-4xl text-theme-primary">$1,500</span>
+                    <span className="font-heading font-black text-6xl text-theme-primary">$1,500</span>
                     <span className="text-theme-secondary text-sm ml-2 line-through">$3,500</span>
                   </div>
                   <p className="text-theme-secondary text-xs mb-2">Founding rate — first 5 institutions</p>

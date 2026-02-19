@@ -511,7 +511,7 @@ export default function PellPage() {
         <div className="max-w-[680px] mx-auto text-center">
           <AnimateOnScroll variant="scale">
             <div className="card-cosmic rounded-2xl p-10 border border-violet-500/20">
-              <SectionLabel>PRICING</SectionLabel>
+              <SectionLabel>PELL READINESS CHECK</SectionLabel>
 
               <div className="flex items-end justify-center gap-2 mt-5 mb-2">
                 <span className="text-6xl font-heading font-black text-theme-primary">$0</span>

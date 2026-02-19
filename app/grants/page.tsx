@@ -335,7 +335,6 @@ export default function GrantsPage() {
       <section className="relative py-20 md:py-28" id="pricing">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
-            <span className="overline">Pricing</span>
             <h2
               className="font-heading font-bold text-theme-primary mt-4"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
@@ -352,13 +351,13 @@ export default function GrantsPage() {
             <AnimateOnScroll variant="scale" delay={100}>
               <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-green-500/20 h-full flex flex-col relative">
                 <div>
-                  <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Grant Intelligence Scan</h3>
+                  <p className="overline mb-4">GRANT INTELLIGENCE SCAN</p>
                   <p className="text-theme-secondary text-sm mb-5">
                     30+ grants scanned, scored, and ranked for your institution.
                   </p>
 
                   <div className="mb-1">
-                    <span className="font-heading font-bold text-4xl text-theme-primary">$495</span>
+                    <span className="font-heading font-black text-6xl text-theme-primary">$495</span>
                     <span className="text-theme-secondary text-sm ml-2 line-through">$995</span>
                   </div>
                   <p className="text-theme-secondary text-xs mb-5">Founding rate — limited availability</p>
@@ -407,7 +406,7 @@ export default function GrantsPage() {
                 </p>
 
                 <div className="mb-5">
-                  <span className="font-heading font-bold text-4xl text-theme-primary">$995</span>
+                  <span className="font-heading font-black text-6xl text-theme-primary">$995</span>
                 </div>
 
                 <ul className="text-left max-w-xs mx-auto space-y-3 mb-7 flex-1">

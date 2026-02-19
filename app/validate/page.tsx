@@ -296,11 +296,6 @@ export default function ValidatePage() {
       <section className="relative py-20 md:py-28" id="pricing">
         <div className="max-w-[700px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-12">
-            <div className="flex items-center justify-center gap-3 mb-4">
-              <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/60" />
-              <span className="overline">Pricing</span>
-              <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-purple-500/60" />
-            </div>
             <h2
               className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
@@ -314,13 +309,14 @@ export default function ValidatePage() {
 
           <AnimateOnScroll variant="scale" delay={100}>
             <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center">
+              <p className="overline mb-4">ONE-TIME VALIDATION</p>
               <p className="label-brand mb-6 text-center">
                 <span className="text-gradient-cosmic">∿ ·</span> Founding rate — limited availability
               </p>
 
               <div className="mb-6">
                 <div className="flex items-baseline justify-center gap-3">
-                  <span className="font-heading font-bold text-4xl text-theme-primary">$2,000</span>
+                  <span className="font-heading font-black text-6xl text-theme-primary">$2,000</span>
                   <span className="text-theme-secondary text-sm line-through">$5,500</span>
                 </div>
                 <p className="text-theme-secondary text-sm mt-2">

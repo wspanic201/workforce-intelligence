@@ -403,7 +403,7 @@ export default function DriftPage() {
         <div className="max-w-[1100px] mx-auto">
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-4">
-              <SectionLabel>Pricing</SectionLabel>
+              <SectionLabel>Annual Subscription</SectionLabel>
               <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary mt-4">
                 Straightforward, subscription-based
               </h2>
@@ -421,7 +421,7 @@ export default function DriftPage() {
                 <div className="mb-6">
                   <p className="text-orange-300 text-[11px] font-bold uppercase tracking-widest mb-2">Essentials</p>
                   <div className="flex items-end gap-1 mb-1">
-                    <span className="font-heading font-black text-4xl text-theme-primary">$1,200</span>
+                    <span className="font-heading font-black text-6xl text-theme-primary">$1,200</span>
                     <span className="text-theme-tertiary text-sm mb-1">/program/year</span>
                   </div>
                   <p className="text-theme-tertiary text-xs">One program, fully monitored</p>

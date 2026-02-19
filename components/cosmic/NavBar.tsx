@@ -211,7 +211,7 @@ export function NavBar() {
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="md:hidden pb-6 space-y-1 border-t border-theme-subtle pt-4">
+          <div className="md:hidden pb-6 space-y-1 border-t border-theme-subtle pt-4 overflow-y-auto max-h-[calc(100vh-4rem)]">
             {/* Products section — categorized */}
             {PRODUCT_CATEGORIES.map((cat, catIdx) => (
               <div key={cat.category}>
