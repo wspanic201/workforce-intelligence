@@ -711,7 +711,7 @@ export default function HomePage() {
 
       {/* Equalizer divider — replaces wave after hero */}
       <div className="py-6 flex justify-center">
-        <EqualizerWide bars={60} height={36} />
+        <EqualizerWide bars={60} height={36} muted />
       </div>
 
       {/* ===== FIND YOUR PATH — CATEGORY GRID ===== */}

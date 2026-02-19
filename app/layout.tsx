@@ -58,9 +58,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Theme init — runs before React hydrates to prevent flash */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('wl-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}`,
+          }}
+        />
+      </head>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased bg-[#050510] text-[#e2e8f0]`}
+        className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}
+        style={{ backgroundColor: 'var(--bg-page)', color: 'var(--text-primary)' }}
       >
         <script
           type="application/ld+json"
