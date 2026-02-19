@@ -150,6 +150,12 @@ export function NavBar() {
             </div>
 
             <Link
+              href="/services"
+              className="text-sm font-medium text-theme-secondary hover:text-theme-primary transition-colors"
+            >
+              Services
+            </Link>
+            <Link
               href="/#how-it-works"
               className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors"
             >
@@ -244,6 +250,13 @@ export function NavBar() {
 
             <div className="border-t border-theme-subtle my-3" />
 
+            <Link
+              href="/services"
+              className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
+              onClick={() => setMobileOpen(false)}
+            >
+              Services
+            </Link>
             <Link
               href="/#how-it-works"
               className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
