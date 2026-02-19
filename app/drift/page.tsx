@@ -126,7 +126,7 @@ export default function DriftPage() {
             <div className="flex items-center justify-center gap-3 mb-4">
               <Link
                 href="/program-health"
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 text-orange-300 text-xs font-semibold uppercase tracking-wider hover:bg-orange-500/20 transition-colors"
+                className="flex items-center justify-center gap-2 px-8 py-3 rounded-2xl bg-orange-500/10 border border-orange-500/30 text-orange-300 text-base font-bold tracking-wide hover:bg-orange-500/20 transition-colors w-full max-w-sm"
               >
                 ← Program Health
               </Link>

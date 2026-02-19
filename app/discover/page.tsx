@@ -53,7 +53,7 @@ export default function DiscoverPage() {
             <div className="flex items-center justify-center gap-3 mb-4 mt-4">
               <Link
                 href="/market-research"
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 text-violet-300 text-xs font-semibold uppercase tracking-wider hover:bg-violet-500/20 transition-colors"
+                className="flex items-center justify-center gap-2 px-8 py-3 rounded-2xl bg-violet-500/10 border border-violet-500/30 text-violet-300 text-base font-bold tracking-wide hover:bg-violet-500/20 transition-colors w-full max-w-sm"
               >
                 ← Market Research
               </Link>

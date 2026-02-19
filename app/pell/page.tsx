@@ -248,7 +248,7 @@ export default function PellPage() {
             <div className="flex items-center justify-center gap-3 mb-4">
               <Link
                 href="/program-analysis"
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-300 text-xs font-semibold uppercase tracking-wider hover:bg-blue-500/20 transition-colors"
+                className="flex items-center justify-center gap-2 px-8 py-3 rounded-2xl bg-blue-500/10 border border-blue-500/30 text-blue-300 text-base font-bold tracking-wide hover:bg-blue-500/20 transition-colors w-full max-w-sm"
               >
                 ← Program Analysis
               </Link>

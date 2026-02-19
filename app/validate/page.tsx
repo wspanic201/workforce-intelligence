@@ -46,7 +46,7 @@ export default function ValidatePage() {
             <div className="flex items-center justify-center gap-3 mb-4">
               <Link
                 href="/program-development"
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-xs font-semibold uppercase tracking-wider hover:bg-emerald-500/20 transition-colors"
+                className="flex items-center justify-center gap-2 px-8 py-3 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-base font-bold tracking-wide hover:bg-emerald-500/20 transition-colors w-full max-w-sm"
               >
                 ← Program Development
               </Link>

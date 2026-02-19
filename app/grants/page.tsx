@@ -34,7 +34,7 @@ export default function GrantsPage() {
             <div className="flex items-center justify-center gap-3 mb-4 mt-4">
               <Link
                 href="/grant-alignment"
-                className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/30 text-green-300 text-xs font-semibold uppercase tracking-wider hover:bg-green-500/20 transition-colors"
+                className="flex items-center justify-center gap-2 px-8 py-3 rounded-2xl bg-green-500/10 border border-green-500/30 text-green-300 text-base font-bold tracking-wide hover:bg-green-500/20 transition-colors w-full max-w-sm"
               >
                 ← Grant Alignment
               </Link>
