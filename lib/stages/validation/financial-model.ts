@@ -4,6 +4,9 @@
  * Builds a data-driven P&L model for community college workforce programs.
  * All cost benchmarks are sourced from public data (cited inline).
  * Claude's role: interpret these numbers — NOT invent them.
+ *
+ * CE (Continuing Education) model — uses seat hours, not credit hours.
+ * CE programs are non-credit; no credit-hour conversion needed.
  */
 
 import { getBLSData, getBLSStateData } from '@/lib/apis/bls';
@@ -12,13 +15,10 @@ import { getBLSData, getBLSStateData } from '@/lib/apis/bls';
 // Source: AAUP, CUPA-HR, and community college budget reports
 
 const COMMUNITY_COLLEGE_COST_BENCHMARKS = {
-  // Credit hours per instructor per course (typical CE certificate)
-  contactHoursPerCredit: 15,
-
-  // Adjunct per-credit-hour: BLS gives annual salary for FT faculty;
-  // adjunct per-credit-hour ≈ annual / 750 (standard CC conversion factor)
-  // Source: CUPA-HR Adjunct Pay Survey
-  adjunctPerCreditHourFromAnnual: (annualSalary: number) => annualSalary / 750,
+  // CE programs use seat hours (contact hours) directly — no credit conversion.
+  // Instructor cost = totalSeatHours × perHourRate × sectionsPerYear
+  // Source: Iowa Board of Pharmacy minimum training hour requirements;
+  //         ASHP/ACPE accredited pharmacy tech program standards
 
   // Lab/clinical setup — one-time capital, range
   // Source: PTCB, ASHP program standards; health program setup averages
@@ -153,15 +153,18 @@ export async function fetchAdjunctHourlyRate(
 
 export interface FinancialModelInputs {
   programName: string;
-  tuitionEstimate: number;       // per student, per cohort
-  cohortSize: number;            // target first-year cohort
-  creditHours: number;           // total program credit hours
-  adjunctHourlyRate: number;     // from BLS lookup
+  tuitionEstimate: number;          // per student, per cohort
+  cohortSize: number;               // target first-year cohort
+  // CE programs use seat hours (contact hours) — no credit-hour conversion
+  totalSeatHours: number;           // total program contact hours (from state board reqs or competitor programs)
+  totalSeatHoursSource: string;     // e.g. "Iowa Board of Pharmacy minimum requirement" or "DMACC program schedule"
+  sectionsPerYear: number;          // how many times the program runs per year (default 2)
+  adjunctHourlyRate: number;        // from BLS lookup
   adjunctHourlyRateSource: string;
   hasExistingLabSpace: boolean;
   perkinsEligible: boolean;
   deliveryFormat: 'in-person' | 'hybrid' | 'online';
-  stateFips?: string;            // for state-specific BLS lookup
+  stateFips?: string;               // for state-specific BLS lookup
   // Optional client overrides
   clientAdjunctRate?: number;
   clientCohortSize?: number;
@@ -230,8 +233,10 @@ function computeYearProjection(
   const totalRevenue = tuitionRevenue + perkinsRevenue;
 
   // Expenses
+  // CE model: instructor cost = totalSeatHours × hourlyRate × sectionsPerYear
+  // No credit-hour conversion — CE programs use seat hours directly
   const instructorCost = Math.round(
-    inputs.creditHours * bm.contactHoursPerCredit * effectiveRate
+    inputs.totalSeatHours * effectiveRate * inputs.sectionsPerYear
   );
   const labSetup = year === 1 && !inputs.hasExistingLabSpace
     ? bm.labSetupCost.mid
@@ -279,7 +284,8 @@ function computeBreakEvenEnrollment(
   const effectiveRate = inputs.clientAdjunctRate ?? inputs.adjunctHourlyRate;
 
   // Fixed costs (Year 1, not enrollment-dependent)
-  const instructorCost = inputs.creditHours * bm.contactHoursPerCredit * effectiveRate;
+  // CE model: instructor cost = totalSeatHours × hourlyRate × sectionsPerYear
+  const instructorCost = inputs.totalSeatHours * effectiveRate * inputs.sectionsPerYear;
   const labSetup = !inputs.hasExistingLabSpace ? bm.labSetupCost.mid : 0;
   const coordinatorCost = bm.coordinatorFTEPortion * bm.coordinatorAnnualSalary;
   const marketing = bm.marketingYear1;
@@ -377,7 +383,7 @@ function computeViabilityScore(
 
   // Pre-curriculum caveat — score is indicative until Stage 3 seat-time breakdown is available
   const caveat = `Indicative score (±1–2 pts pre-curriculum): instruction cost uses BLS benchmark ` +
-    `($${inputs.adjunctHourlyRate.toFixed(2)}/hr × ${inputs.creditHours} credits × 15 hrs/credit) ` +
+    `($${inputs.adjunctHourlyRate.toFixed(2)}/hr × ${inputs.totalSeatHours} seat hrs × ${inputs.sectionsPerYear} sections/yr) ` +
     `and will be recomputed from actual seat-time breakdown after curriculum design.`;
 
   const rationale = notes.join('; ') + '. ' + caveat;
@@ -388,8 +394,10 @@ function computeViabilityScore(
 // ─── Main Entry Point ────────────────────────────────────────────────────────
 
 /**
- * Build a complete financial P&L model for a community college program.
+ * Build a complete financial P&L model for a community college CE program.
  * Returns structured output for both display tables and Claude interpretation.
+ *
+ * CE programs use seat hours (contact hours) — no credit hour conversion.
  */
 export function buildFinancialModel(inputs: FinancialModelInputs): FinancialModelOutput {
   const targetCohort = inputs.clientCohortSize ?? inputs.cohortSize;
@@ -415,30 +423,39 @@ export function buildFinancialModel(inputs: FinancialModelInputs): FinancialMode
   const perkinsAmount = inputs.perkinsEligible
     ? Math.round((COMMUNITY_COLLEGE_COST_BENCHMARKS.perkinsV.low + COMMUNITY_COLLEGE_COST_BENCHMARKS.perkinsV.high) / 2)
     : 0;
-  const year1GapWithoutPerkins = Math.max(0, -(baseY1.netPosition - perkinsAmount));
+  const year1NetWithoutPerkins = baseY1.netPosition - perkinsAmount;
+  const year1GapWithoutPerkins = Math.max(0, -year1NetWithoutPerkins);
   const perkinsImpact = inputs.perkinsEligible
-    ? `Perkins V funding ($${perkinsAmount.toLocaleString()}/yr) converts Year 1 from a ` +
-      `${year1GapWithoutPerkins === 0 ? 'breakeven' : `-$${year1GapWithoutPerkins.toLocaleString()} loss`} ` +
-      `to a +$${baseY1.netPosition.toLocaleString()} surplus at base enrollment`
+    ? (year1GapWithoutPerkins > 0
+        ? `Perkins V funding ($${perkinsAmount.toLocaleString()}/yr) converts Year 1 from a ` +
+          `-$${year1GapWithoutPerkins.toLocaleString()} loss ` +
+          `to a +$${baseY1.netPosition.toLocaleString()} surplus at base enrollment`
+        : `Perkins V funding ($${perkinsAmount.toLocaleString()}/yr) boosts Year 1 from ` +
+          `+$${year1NetWithoutPerkins.toLocaleString()} to +$${baseY1.netPosition.toLocaleString()} at base enrollment`)
     : 'Program is not Perkins V eligible — no grant offset applied';
 
   // Assumption manifest
   const adjRate = inputs.clientAdjunctRate ?? inputs.adjunctHourlyRate;
   const assumptions: Array<{ item: string; value: string; source: string }> = [
     {
-      item: 'Adjunct Hourly Rate',
+      item: 'Instructor Rate ($/hr)',
       value: `$${adjRate.toFixed(2)}/hr`,
       source: inputs.adjunctHourlyRateSource,
     },
     {
-      item: 'Contact Hours per Credit',
-      value: `${COMMUNITY_COLLEGE_COST_BENCHMARKS.contactHoursPerCredit} hrs`,
-      source: 'AAUP community college faculty workload standards',
+      item: 'Total Seat Hours',
+      value: `${inputs.totalSeatHours} hrs`,
+      source: inputs.totalSeatHoursSource,
     },
     {
-      item: 'Total Program Credit Hours',
-      value: `${inputs.creditHours} credits`,
-      source: 'Program design specification',
+      item: 'Sections per Year',
+      value: `${inputs.sectionsPerYear} sections`,
+      source: 'CE program scheduling — fall + spring cohorts',
+    },
+    {
+      item: 'Instructor Cost (annual)',
+      value: `$${Math.round(adjRate * inputs.totalSeatHours * inputs.sectionsPerYear).toLocaleString()} (${inputs.totalSeatHours} hrs × $${adjRate.toFixed(0)}/hr × ${inputs.sectionsPerYear} sections)`,
+      source: 'Seat-hour model — BLS OES rate × actual contact hours × sections run per year',
     },
     {
       item: 'Target Cohort Size',
@@ -448,7 +465,7 @@ export function buildFinancialModel(inputs: FinancialModelInputs): FinancialMode
     {
       item: 'Tuition (per student)',
       value: `$${inputs.tuitionEstimate.toLocaleString()}`,
-      source: 'Iowa community college market rate analysis',
+      source: 'Iowa community college CE market rate analysis',
     },
     {
       item: 'Lab Setup Cost (mid estimate)',

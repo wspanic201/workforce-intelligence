@@ -1,6 +1,109 @@
 import { callClaude, extractJSON } from '@/lib/ai/anthropic';
 import { ValidationProject } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
+import { searchWeb } from '@/lib/apis/web-research';
+
+// ─── Competitor Pricing Types ─────────────────────────────────────────────────
+
+export interface CompetitorPricingResult {
+  comps: Array<{ institution: string; price: number; seatHours?: number; url: string }>;
+  marketMedian: number;
+  marketLow: number;
+  marketHigh: number;
+  source: string;
+}
+
+// ─── Competitor Pricing Lookup via Web Search ─────────────────────────────────
+
+/**
+ * Fetch real competitor program pricing via web search (SerpAPI).
+ * Parses dollar amounts and seat hour counts from search snippets.
+ * Used to ground the financial model tuition in market reality.
+ */
+export async function fetchCompetitorPricing(
+  programName: string,
+  location: string
+): Promise<CompetitorPricingResult> {
+  const state = location.includes('Iowa') ? 'Iowa' : location.split(',').pop()?.trim() ?? location;
+
+  const queries = [
+    `"${programName} program" cost tuition ${state} community college`,
+    `${programName} certificate tuition price ${state} 2024 2025`,
+    `${programName} certificate hours ${state}`,
+  ];
+
+  const allSnippets: string[] = [];
+  const allUrls: string[] = [];
+
+  for (const query of queries) {
+    try {
+      const result = await searchWeb(query, { num: 5 });
+      for (const r of result.results) {
+        if (r.snippet) allSnippets.push(`${r.title}: ${r.snippet}`);
+        if (r.url) allUrls.push(r.url);
+      }
+    } catch (err) {
+      console.warn(`[CompetitorPricing] Search failed for "${query}": ${err}`);
+    }
+  }
+
+  // Parse dollar amounts from snippets
+  const priceMatches: number[] = [];
+  const dollarRegex = /\$[\d,]+(?:\.\d{2})?(?:\s*(?:–|-|to)\s*\$[\d,]+(?:\.\d{2})?)?/gi;
+  const priceRangeRegex = /\$([\d,]+)\s*(?:–|-|to)\s*\$([\d,]+)/i;
+  const singlePriceRegex = /\$([\d,]+)/;
+
+  for (const snippet of allSnippets) {
+    const rangeMatch = snippet.match(priceRangeRegex);
+    if (rangeMatch) {
+      const low = parseInt(rangeMatch[1].replace(/,/g, ''));
+      const high = parseInt(rangeMatch[2].replace(/,/g, ''));
+      // Filter to plausible program tuition range ($500–$15,000)
+      if (low >= 500 && low <= 15_000) priceMatches.push(low);
+      if (high >= 500 && high <= 15_000) priceMatches.push(high);
+    } else {
+      const singleMatch = snippet.match(singlePriceRegex);
+      if (singleMatch) {
+        const price = parseInt(singleMatch[1].replace(/,/g, ''));
+        if (price >= 500 && price <= 15_000) priceMatches.push(price);
+      }
+    }
+  }
+
+  // Parse seat hour counts from snippets
+  const hourMatches: number[] = [];
+  const hourRegex = /(\d+)\s*(?:contact\s+)?(?:seat\s+)?hours?/gi;
+  for (const snippet of allSnippets) {
+    const match = hourRegex.exec(snippet);
+    if (match) {
+      const hrs = parseInt(match[1]);
+      if (hrs >= 40 && hrs <= 1000) hourMatches.push(hrs);
+    }
+  }
+
+  // Build comp data from unique prices
+  const uniquePrices = [...new Set(priceMatches)].sort((a, b) => a - b);
+  const comps: CompetitorPricingResult['comps'] = uniquePrices.slice(0, 5).map((price, i) => ({
+    institution: `Market competitor ${i + 1}`,
+    price,
+    seatHours: hourMatches[i],
+    url: allUrls[i] ?? '',
+  }));
+
+  const marketLow = uniquePrices.length > 0 ? uniquePrices[0] : 3_500;
+  const marketHigh = uniquePrices.length > 0 ? uniquePrices[uniquePrices.length - 1] : 6_000;
+  const marketMedian = uniquePrices.length > 0
+    ? uniquePrices[Math.floor(uniquePrices.length / 2)]
+    : Math.round((marketLow + marketHigh) / 2);
+
+  return {
+    comps,
+    marketMedian,
+    marketLow,
+    marketHigh,
+    source: `Web search: "${programName}" pricing in ${state} (${queries.length} queries, ${priceMatches.length} prices found)`,
+  };
+}
 
 export interface CompetitorProgram {
   institution: string;

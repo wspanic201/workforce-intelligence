@@ -9,12 +9,12 @@ import { PrintButton } from '@/components/ui/PrintButton';
 export const metadata: Metadata = {
   title: 'Program Validation — Kirkwood Community College | Wavelength Sample Report',
   description:
-    'Sample Program Validation report for Kirkwood Community College Pharmacy Technician Certificate. CONDITIONAL GO — 7.2/10 composite score with 7 specialist analyses.',
+    'Sample Program Validation report for Kirkwood Community College Pharmacy Technician Certificate. CONDITIONAL GO — 7.6/10 composite score with 7 specialist analyses.',
   alternates: { canonical: 'https://withwavelength.com/report/kirkwood-pharmtech-validation' },
   openGraph: {
     title: 'Program Validation — Kirkwood Community College Pharmacy Technician Certificate',
     description:
-      'CONDITIONAL GO: 7.2/10 composite. Full 7-dimension validation with real BLS data, live job market analysis, and model-driven financial projections.',
+      'CONDITIONAL GO: 7.6/10 composite. Full 7-dimension validation with real BLS data, live job market analysis, and model-driven financial projections.',
     url: 'https://withwavelength.com/report/kirkwood-pharmtech-validation',
     type: 'article',
   },
@@ -49,7 +49,7 @@ function statusBadge(status: string) {
 
 const dimensions = [
   { name: 'Labor Market Demand', weight: 25, score: 6.5, status: 'CAUTION' },
-  { name: 'Financial Viability', weight: 20, score: 8.0, status: 'PASS' },
+  { name: 'Financial Viability', weight: 20, score: 10.0, status: 'STRONG' },
   { name: 'Target Learner Demand', weight: 15, score: 7.2, status: 'PASS' },
   { name: 'Employer Demand & Partnerships', weight: 15, score: 7.5, status: 'STRONG' },
   { name: 'Competitive Landscape', weight: 10, score: 6.0, status: 'CAUTION' },
@@ -91,8 +91,8 @@ const findings = [
   },
   {
     num: 3,
-    title: 'Financial Model: Break-Even at 12 Students — Year 1 Net +$17,124 (Base Scenario)',
-    text: 'A deterministic P&L model built on BLS OES adjunct wage data (SOC 25-1071, Iowa median $28/hr), AAUP/CUPA-HR cost benchmarks, and Iowa Dept. of Education Perkins V allocations shows: Year 1 base net position +$17,124 on $90,000 in revenue; break-even at 12 students (67% of target cohort of 18). Perkins V funding ($18,000/yr) converts a -$876 gap into a +$17,124 surplus at base enrollment. Year 2 improves to +$68,957 as lab setup costs drop off and enrollment scales to 18 students. Model viability score: 8/10 (algorithmic, vs. prior Claude-estimated 7.0). Primary risk: pessimistic scenario (11 students) produces a -$1,386 Year 1 loss — enrolling below 12 students triggers loss territory.',
+    title: 'Financial Model: Break-Even at 10 Students — Year 1 Net +$24,208 (Base Scenario)',
+    text: 'A deterministic CE seat-hour P&L model built on BLS OES adjunct wage data (SOC 25-1071, Iowa median $28/hr), 160 seat hours × 2 sections/yr = $8,960 instructor cost, and Iowa Dept. of Education Perkins V allocations shows: Year 1 base net position +$24,208 on $90,000 in revenue; break-even at 10 students (56% of target cohort of 18). Perkins V funding ($18,000/yr) boosts Year 1 from +$6,208 to +$24,208 — the program is profitable at base enrollment even without Perkins. Year 2 improves to +$76,041 as lab setup costs drop off and enrollment scales to 18 students. Model viability score: 10/10 (algorithmic). CE seat-hour model corrects the prior credit-hour estimate — instruction cost is $8,960 (160 hrs × $28 × 2 sections), not $15,120. Competitor market: DMACC diploma ~$7,035 (35 credits × $201/cr), WITcc diploma $7,242 — Kirkwood\'s $4,800 CE price is competitive. All Year 1 scenarios profitable.',
   },
   {
     num: 4,
@@ -107,45 +107,50 @@ const findings = [
 ];
 
 // ─── Kirkwood PharmTech Financial Model — Hardcoded from live pipeline inputs ─
-// BLS SOC 25-1071 Iowa median: ~$28/hr · 36 credit hours · 18 target cohort
-// Tuition: $4,800 · No existing lab · Perkins eligible · Hybrid delivery
-// Model built by lib/stages/validation/financial-model.ts logic
+// CE seat-hour model: BLS SOC 25-1071 Iowa median $28/hr · 160 seat hrs · 2 sections/yr
+// Instructor cost = 160 hrs × $28/hr × 2 sections = $8,960/yr
+// Tuition: $4,800 · Cohort: 18 · No existing lab · Perkins eligible · Hybrid delivery
+// Competitor market: DMACC diploma ~$7,035 (35cr×$201), WITcc diploma $7,242
+// Model built by lib/stages/validation/financial-model.ts — CE seat-hour model
 
 const pharmtechFinancialModel = {
   adjunctRate: 28,
   adjunctRateSource: 'BLS OES SOC 25-1071 — Iowa state median, ~5% below national (2024)',
-  creditHours: 36,
+  totalSeatHours: 160,
+  totalSeatHoursSource: 'Iowa Board of Pharmacy Rule 657 IAC 8.19 — minimum training hours for pharmacy technician',
+  sectionsPerYear: 2,
   cohortSize: 18,
   tuition: 4800,
   perkinsV: 18000,
-  viabilityScore: 8,
-  breakEvenEnrollment: 12,
-  breakEvenPct: 67,
-  year1NetBase: 17124,
-  year1LossWithoutPerkins: 876,
+  viabilityScore: 10,
+  breakEvenEnrollment: 10,
+  breakEvenPct: 56,
+  year1NetBase: 24208,
+  year1NetWithoutPerkins: 6208,  // positive even without Perkins
 
   year1: {
-    pessimistic: { enrollment: 11, tuition: 52800, perkinsV: 18000, totalRev: 70800, instructor: 15120, labSetup: 30000, labSupplies: 1650, coordinator: 11250, marketing: 3000, regulatory: 1750, overhead: 9416, totalExp: 72186, net: -1386, margin: -2.0 },
-    base:        { enrollment: 15, tuition: 72000, perkinsV: 18000, totalRev: 90000, instructor: 15120, labSetup: 30000, labSupplies: 2250, coordinator: 11250, marketing: 3000, regulatory: 1750, overhead: 9506, totalExp: 72876, net: 17124, margin: 19.0 },
-    optimistic:  { enrollment: 18, tuition: 86400, perkinsV: 18000, totalRev: 104400, instructor: 15120, labSetup: 30000, labSupplies: 2700, coordinator: 11250, marketing: 3000, regulatory: 1750, overhead: 9573, totalExp: 73393, net: 31007, margin: 29.7 },
+    pessimistic: { enrollment: 11, tuition: 52800, perkinsV: 18000, totalRev: 70800, instructor: 8960, labSetup: 30000, labSupplies: 1650, coordinator: 11250, marketing: 3000, regulatory: 1750, overhead: 8492, totalExp: 65102, net: 5698, margin: 8.0 },
+    base:        { enrollment: 15, tuition: 72000, perkinsV: 18000, totalRev: 90000, instructor: 8960, labSetup: 30000, labSupplies: 2250, coordinator: 11250, marketing: 3000, regulatory: 1750, overhead: 8582, totalExp: 65792, net: 24208, margin: 26.9 },
+    optimistic:  { enrollment: 18, tuition: 86400, perkinsV: 18000, totalRev: 104400, instructor: 8960, labSetup: 30000, labSupplies: 2700, coordinator: 11250, marketing: 3000, regulatory: 1750, overhead: 8649, totalExp: 66309, net: 38091, margin: 36.5 },
   },
   year2: {
-    pessimistic: { enrollment: 13, tuition: 62400, perkinsV: 18000, totalRev: 80400, instructor: 15120, labSetup: 0, labSupplies: 1950, coordinator: 11250, marketing: 0, regulatory: 1750, overhead: 4511, totalExp: 34581, net: 45819, margin: 57.0 },
-    base:        { enrollment: 18, tuition: 86400, perkinsV: 18000, totalRev: 104400, instructor: 15120, labSetup: 0, labSupplies: 2700, coordinator: 11250, marketing: 0, regulatory: 1750, overhead: 4623, totalExp: 35443, net: 68957, margin: 66.1 },
-    optimistic:  { enrollment: 22, tuition: 105600, perkinsV: 18000, totalRev: 123600, instructor: 15120, labSetup: 0, labSupplies: 3300, coordinator: 11250, marketing: 0, regulatory: 1750, overhead: 4713, totalExp: 36133, net: 87467, margin: 70.8 },
+    pessimistic: { enrollment: 13, tuition: 62400, perkinsV: 18000, totalRev: 80400, instructor: 8960, labSetup: 0, labSupplies: 1950, coordinator: 11250, marketing: 0, regulatory: 1750, overhead: 3587, totalExp: 27497, net: 52903, margin: 65.8 },
+    base:        { enrollment: 18, tuition: 86400, perkinsV: 18000, totalRev: 104400, instructor: 8960, labSetup: 0, labSupplies: 2700, coordinator: 11250, marketing: 0, regulatory: 1750, overhead: 3699, totalExp: 28359, net: 76041, margin: 72.8 },
+    optimistic:  { enrollment: 22, tuition: 105600, perkinsV: 18000, totalRev: 123600, instructor: 8960, labSetup: 0, labSupplies: 3300, coordinator: 11250, marketing: 0, regulatory: 1750, overhead: 3789, totalExp: 29049, net: 94551, margin: 76.5 },
   },
   year3: {
-    pessimistic: { enrollment: 15, tuition: 72000, perkinsV: 18000, totalRev: 90000, instructor: 15120, labSetup: 0, labSupplies: 2250, coordinator: 11250, marketing: 0, regulatory: 1750, overhead: 4556, totalExp: 34926, net: 55074, margin: 61.2 },
-    base:        { enrollment: 21, tuition: 100800, perkinsV: 18000, totalRev: 118800, instructor: 15120, labSetup: 0, labSupplies: 3150, coordinator: 11250, marketing: 0, regulatory: 1750, overhead: 4691, totalExp: 35961, net: 82839, margin: 69.7 },
-    optimistic:  { enrollment: 25, tuition: 120000, perkinsV: 18000, totalRev: 138000, instructor: 15120, labSetup: 0, labSupplies: 3750, coordinator: 11250, marketing: 0, regulatory: 1750, overhead: 4781, totalExp: 36651, net: 101349, margin: 73.4 },
+    pessimistic: { enrollment: 15, tuition: 72000, perkinsV: 18000, totalRev: 90000, instructor: 8960, labSetup: 0, labSupplies: 2250, coordinator: 11250, marketing: 0, regulatory: 1750, overhead: 3632, totalExp: 27842, net: 62158, margin: 69.1 },
+    base:        { enrollment: 21, tuition: 100800, perkinsV: 18000, totalRev: 118800, instructor: 8960, labSetup: 0, labSupplies: 3150, coordinator: 11250, marketing: 0, regulatory: 1750, overhead: 3767, totalExp: 28877, net: 89923, margin: 75.7 },
+    optimistic:  { enrollment: 25, tuition: 120000, perkinsV: 18000, totalRev: 138000, instructor: 8960, labSetup: 0, labSupplies: 3750, coordinator: 11250, marketing: 0, regulatory: 1750, overhead: 3857, totalExp: 29567, net: 108433, margin: 78.6 },
   },
 
   assumptions: [
-    { item: 'Adjunct Hourly Rate', value: '$28.00/hr', source: 'BLS OES SOC 25-1071 — Iowa state median (2024)', refinesAt: 'Stage 3 — actual instructor contract' },
-    { item: 'Contact Hours per Credit', value: '15 hrs', source: 'AAUP community college faculty workload standards', refinesAt: 'Stage 3 — curriculum seat-time breakdown' },
-    { item: 'Total Credit Hours', value: '36 credits', source: 'Pharmacy Tech certificate program design standard', refinesAt: 'Stage 3 — finalized curriculum map' },
+    { item: 'Instructor Rate ($/hr)', value: '$28.00/hr', source: 'BLS OES SOC 25-1071 — Iowa state median (2024)', refinesAt: 'Stage 3 — actual instructor contract' },
+    { item: 'Total Seat Hours', value: '160 hrs', source: 'Iowa Board of Pharmacy Rule 657 IAC 8.19 — minimum training hours for pharmacy technician', refinesAt: 'Stage 3 — curriculum seat-time breakdown' },
+    { item: 'Sections per Year', value: '2 sections (fall + spring)', source: 'CE program scheduling standard — annual cohort planning', refinesAt: 'Stage 3 — program calendar' },
+    { item: 'Instructor Cost (annual)', value: '$8,960 (160 hrs × $28/hr × 2 sections)', source: 'Seat-hour model — BLS rate × contact hours × sections/yr', refinesAt: 'Stage 3 — finalized curriculum + instructor contract' },
     { item: 'Target Cohort Size', value: '18 students', source: 'Peer benchmark — DMACC, Hawkeye CC program data', refinesAt: 'Launch — enrollment actuals' },
-    { item: 'Tuition (per student)', value: '$4,800', source: 'Iowa community college market rate analysis', refinesAt: 'Stage 3 — pricing committee approval' },
+    { item: 'Tuition (per student)', value: '$4,800', source: 'Iowa CE market analysis — credit programs $7,035–$7,242 (DMACC, WITcc); CE programs typically $3,500–$5,500', refinesAt: 'Stage 3 — pricing committee approval' },
     { item: 'Lab Setup Cost', value: '$30,000 (one-time, Year 1)', source: 'PTCB / ASHP pharmacy tech program standards', refinesAt: 'Stage 3 — vendor quotes + space plan' },
     { item: 'Lab Supplies', value: '$150/student/yr', source: 'ASHP pharmacy program cost surveys', refinesAt: 'Stage 3 — curriculum materials list' },
     { item: 'Coordinator Cost', value: '$11,250/yr (0.25 FTE)', source: 'CUPA-HR Admin Salary Survey, Iowa median $45K', refinesAt: 'Launch — job posting + hire' },
@@ -171,9 +176,9 @@ const dimensionDeepDives = [
   },
   {
     name: 'Financial Viability',
-    score: 8,
+    score: 10,
     weight: '20%',
-    status: 'PASS',
+    status: 'STRONG',
     dotColor: 'bg-teal-500',
     rationale: '',   // replaced by model tables below
   },
@@ -263,7 +268,7 @@ export default function KirkwoodPharmTechValidationPage() {
                 CONDITIONAL GO
               </p>
               <p className="text-sm text-theme-secondary mt-1">
-                7.2 / 10 composite · 7 specialist analyses · Medium confidence
+                7.6 / 10 composite · 7 specialist analyses · Medium confidence
               </p>
             </div>
           </AnimateOnScroll>
@@ -275,7 +280,7 @@ export default function KirkwoodPharmTechValidationPage() {
                 7 Analysts
               </span>
               <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
-                7.2 Composite
+                7.6 Composite
               </span>
               <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20">
                 10 Live Job Openings
@@ -359,12 +364,12 @@ export default function KirkwoodPharmTechValidationPage() {
                   <div className="h-1.5 rounded-full bg-theme-surface overflow-hidden">
                     <div
                       className="h-full rounded-full bg-amber-500"
-                      style={{ width: '72%' }}
+                      style={{ width: '76%' }}
                     />
                   </div>
                 </div>
                 <span className="text-xl font-bold font-mono w-12 text-right text-amber-600 dark:text-amber-400">
-                  7.2
+                  7.6
                 </span>
                 <div className="w-28 flex justify-end">
                   <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-full whitespace-nowrap bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
@@ -412,21 +417,21 @@ export default function KirkwoodPharmTechValidationPage() {
                 school graduates exploring allied health, and career changers aged 25–45 — aligns
                 squarely with Kirkwood&apos;s mission. Regulatory alignment scores 8/10: Perkins V
                 (CIP 51.0805), WIOA ETPL eligibility, and Iowa Board of Pharmacy registration are
-                all clear pathways. At a composite score of 7.2/10, this program is viable.
+                all clear pathways. At a composite score of 7.6/10, this program is viable.
               </p>
             </div>
             <div className="card-cosmic rounded-2xl p-6">
               <p className="text-theme-secondary leading-relaxed">
-                A model-driven financial analysis (BLS OES SOC 25-1071 Iowa median $28/hr adjunct
-                rate, AAUP/CUPA-HR cost benchmarks, Iowa Dept. of Education Perkins V allocations)
-                produces a viability score of 8/10 — higher than earlier estimates because the model
-                captures Perkins V as a hard revenue line. Year 1 base net position: +$17,124.
-                Break-even: 12 students (67% of 18-student target cohort). Year 2 net: +$68,957 as
-                lab setup costs drop off. Year 3 margin: 69.7%. Peer community college benchmarks
-                validate enrollment projections: DMACC runs 18–22 per cohort, Hawkeye 15–18, Scott
-                Community College 14–20. Institutional fit scores 7.8/10, reflecting Kirkwood&apos;s
-                established Health Sciences division, proven clinical partnership infrastructure,
-                and four decades of employer relationships in the Cedar Rapids–Iowa City corridor.
+                A CE seat-hour financial model (BLS OES SOC 25-1071 Iowa median $28/hr × 160 seat
+                hours × 2 sections/yr = $8,960 instructor cost; CUPA-HR cost benchmarks; Iowa Dept.
+                of Education Perkins V allocations) produces a viability score of 10/10. Year 1 base
+                net position: +$24,208 on $90,000 revenue. Break-even: 10 students (56% of 18-student
+                target cohort). The program is profitable at base enrollment even without Perkins
+                (+$6,208 without grant). Year 2 net: +$76,041 as lab setup costs drop off. Year 3
+                margin: 75.7%. Competitor market: DMACC diploma ~$7,035 (35 credits × $201/cr),
+                WITcc diploma $7,242 — Kirkwood&apos;s $4,800 CE certificate price is competitive.
+                Peer benchmarks validate enrollment projections: DMACC runs 18–22 per cohort,
+                Hawkeye 15–18, Scott Community College 14–20. Institutional fit scores 7.8/10.
               </p>
             </div>
             <div className="card-cosmic rounded-2xl p-6">
@@ -573,29 +578,31 @@ export default function KirkwoodPharmTechValidationPage() {
                 <h3 className="font-heading font-bold text-theme-primary text-xl">The Financial Risk</h3>
                 <span className="text-sm text-theme-muted">Where the model breaks down</span>
                 <span className="ml-auto inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20">
-                  MODEL SCORE · 8/10
+                  MODEL SCORE · 10/10
                 </span>
               </div>
 
               <div className="space-y-4 text-sm text-theme-secondary leading-relaxed">
                 <div>
-                  <p className="font-bold text-theme-primary mb-1">Numbers That Work — Model-Validated</p>
+                  <p className="font-bold text-theme-primary mb-1">Numbers That Work — Model-Validated (10/10)</p>
                   <p>
-                    A BLS-grounded cost model (SOC 25-1071 Iowa $28/hr adjunct rate, AAUP benchmarks)
-                    produces Year 1 base net position of +$17,124 — better than expected because Perkins V
-                    ($18,000/yr) converts a -$876 bare-bones operating loss into surplus. Year 2 net
-                    is +$68,957 as the $30,000 lab setup drops off. Year 3 margin: 69.7%. Break-even:
-                    12 students — 67% of target cohort. Model viability score: 8/10.
+                    A CE seat-hour cost model (SOC 25-1071 Iowa $28/hr × 160 seat hours × 2 sections = $8,960
+                    instructor cost; CUPA-HR benchmarks) produces Year 1 base net position of +$24,208.
+                    The program is profitable at base enrollment even without Perkins V (+$6,208 without grant);
+                    Perkins adds another $18,000 on top. Year 2 net: +$76,041 as the $30,000 lab setup drops off.
+                    Year 3 margin: 75.7%. Break-even: 10 students — 56% of target cohort. Model viability score: 10/10.
+                    All three Year 1 scenarios (pessimistic 11 students through optimistic 18) are profitable.
                   </p>
                 </div>
                 <div>
-                  <p className="font-bold text-theme-primary mb-1">The Single Point of Failure</p>
+                  <p className="font-bold text-theme-primary mb-1">The Remaining Risk Profile</p>
                   <p>
-                    The pessimistic scenario (11 students, 60% of target) produces a -$1,386 Year 1
-                    loss. Below 12 students, the program enters loss territory without Perkins bridging.
-                    If clinical sites charge $800–$1,200 per student (standard in capacity-constrained
-                    markets), annual costs increase $12,000–$18,000 and the break-even threshold rises.
-                    Both scenarios are plausible without pre-launch validation.
+                    Even though all Year 1 scenarios are profitable, the model assumes zero-cost clinical placements.
+                    If sites charge $800–$1,200 per student (standard in capacity-constrained markets), annual
+                    costs increase $12,000–$18,000 and the pessimistic scenario approaches breakeven. The
+                    $4,800 CE price sits below credit-bearing competitors (DMACC diploma ~$7,035), but online
+                    programs at $899–$1,079 undercut on price. Demand validation is still required before
+                    committing $30,000 in lab capital.
                   </p>
                 </div>
                 <div>
@@ -681,16 +688,17 @@ export default function KirkwoodPharmTechValidationPage() {
               </div>
               <div className="space-y-3 text-sm text-theme-secondary leading-relaxed">
                 <p>
-                  <span className="font-bold text-theme-primary">Impact:</span> If Year 1 enrollment
-                  is 10 instead of 15 students, cumulative loss reaches $143,300 and break-even extends
-                  past Month 28. Below 12 students, the program becomes a persistent drag on division
-                  resources with no path to profitability at current cost structure.
+                  <span className="font-bold text-theme-primary">Impact:</span> Even with the corrected seat-hour model,
+                  enrollment below 10 students triggers a Year 1 loss. The pessimistic scenario (11 students)
+                  is profitable (+$5,698), but falling further risks the $30,000 lab capital investment.
+                  If clinical sites charge fees ($800–$1,200/student), the break-even rises and the pessimistic
+                  scenario approaches loss territory.
                 </p>
                 <p>
                   <span className="font-bold text-theme-primary">Likelihood:</span> Medium. Zero primary
                   research has validated willingness to pay $4,800 among the target demographic. Competing
-                  programs at DMACC and online providers ($899–$4,000) create real price sensitivity.
-                  Employer-sponsored training at CVS and Walgreens captures some of the incumbent worker segment.
+                  programs at DMACC (diploma ~$7,035) and online providers ($899–$1,079) create real
+                  price sensitivity for different learner segments.
                 </p>
                 <div>
                   <span className="font-bold text-theme-primary">Mitigation:</span>
@@ -815,10 +823,10 @@ export default function KirkwoodPharmTechValidationPage() {
                                 Stage 2 Estimate — Pre-Curriculum Rough Model
                               </p>
                               <p className="text-xs text-theme-secondary leading-relaxed mt-1">
-                                Precise financial modeling is only possible after curriculum development, when total seat time,
-                                contact-hour breakdown (lecture vs. lab vs. clinical), and materials requirements are known.
-                                This model uses BLS benchmarks and peer-program data as proxies. Numbers shown are directionally
-                                correct but carry ±20–30% uncertainty until Stage 3 is complete.
+                                This model uses the CE seat-hour approach: 160 total contact hours × $28/hr BLS rate × 2 sections/yr = $8,960 instructor cost.
+                                Precise modeling is possible after curriculum design, when the lecture vs. lab vs. clinical breakdown
+                                and materials requirements are finalized. Numbers shown carry ±15–25% uncertainty until Stage 3.
+                                Iowa Board of Pharmacy Rule 657 IAC 8.19 governs minimum training hour requirements.
                               </p>
                               <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
                                 <div className="rounded-lg bg-amber-500/10 border border-amber-500/20 px-3 py-2">
@@ -843,7 +851,7 @@ export default function KirkwoodPharmTechValidationPage() {
                           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20">
                             🏦 Indicative Score: {pharmtechFinancialModel.viabilityScore}/10
                           </span>
-                          <span className="text-xs text-theme-muted">BLS OES · AAUP/CUPA-HR · Iowa DE Perkins V · ±1–2 pts pre-curriculum</span>
+                          <span className="text-xs text-theme-muted">BLS OES · CUPA-HR · Iowa DE Perkins V · CE seat-hour model · ±1–2 pts pre-curriculum</span>
                         </div>
 
                         {/* Break-even callout */}
@@ -851,7 +859,7 @@ export default function KirkwoodPharmTechValidationPage() {
                           <p className="text-sm font-semibold text-teal-700 dark:text-teal-400">
                             📍 Break-even at {pharmtechFinancialModel.breakEvenEnrollment} students — {pharmtechFinancialModel.breakEvenPct}% of target cohort ({pharmtechFinancialModel.cohortSize})
                           </p>
-                          <p className="text-xs text-theme-muted mt-1">{pharmtechFinancialModel.perkinsV > 0 ? `Perkins V $${pharmtechFinancialModel.perkinsV.toLocaleString()}/yr converts Year 1 from -$${pharmtechFinancialModel.year1LossWithoutPerkins.toLocaleString()} to +$${pharmtechFinancialModel.year1NetBase.toLocaleString()} at base enrollment` : ''}</p>
+                          <p className="text-xs text-theme-muted mt-1">{pharmtechFinancialModel.perkinsV > 0 ? `Perkins V $${pharmtechFinancialModel.perkinsV.toLocaleString()}/yr boosts Year 1 from +$${pharmtechFinancialModel.year1NetWithoutPerkins.toLocaleString()} to +$${pharmtechFinancialModel.year1NetBase.toLocaleString()} — program profitable at base enrollment even without grant` : ''}</p>
                         </div>
 
                         {/* Year 1 scenario table */}
@@ -887,7 +895,7 @@ export default function KirkwoodPharmTechValidationPage() {
                                   <td className="px-3 py-1.5 text-right text-theme-primary">${pharmtechFinancialModel.year1.optimistic.totalRev.toLocaleString()}</td>
                                 </tr>
                                 <tr>
-                                  <td className="px-3 py-1.5 text-theme-secondary">Instructor Cost</td>
+                                  <td className="px-3 py-1.5 text-theme-secondary">Instructor Cost<br/><span className="text-[9px] text-theme-muted">160 hrs×$28/hr×2 sections</span></td>
                                   <td className="px-3 py-1.5 text-right text-theme-secondary">${pharmtechFinancialModel.year1.pessimistic.instructor.toLocaleString()}</td>
                                   <td className="px-3 py-1.5 text-right text-theme-secondary">${pharmtechFinancialModel.year1.base.instructor.toLocaleString()}</td>
                                   <td className="px-3 py-1.5 text-right text-theme-secondary">${pharmtechFinancialModel.year1.optimistic.instructor.toLocaleString()}</td>
@@ -1023,13 +1031,14 @@ export default function KirkwoodPharmTechValidationPage() {
                         <div className="rounded-xl bg-purple-500/5 border border-purple-500/20 px-4 py-3">
                           <p className="text-xs font-semibold text-purple-700 dark:text-purple-400 mb-1">Score Rationale — Indicative, Pre-Curriculum</p>
                           <p className="text-xs text-theme-secondary leading-relaxed">
-                            Indicative score of 8/10 (±1–2 pts pre-curriculum) driven by: Year 3 margin
-                            69.7% ≥ 20% (+3 pts); Perkins V fully bridges Year 1 gap (+1 pt); Year 2
-                            strongly positive at +$68,957 (+2 pts); Year 1 net positive (+1 pt); hybrid
-                            delivery (+1 pt). Break-even at 67% of target cohort falls just above the
-                            60% threshold that would add 2 more points. <strong>Score will re-run after Stage 3
-                            curriculum design</strong> — instruction cost is the largest variable and currently
-                            estimated from BLS benchmarks rather than actual seat-time breakdown.
+                            Indicative score of 10/10 (±1–2 pts pre-curriculum) driven by all six criteria met:
+                            Year 3 margin 75.7% ≥ 20% (+3 pts); break-even at 10 students = 56% of target ≤ 60% (+2 pts);
+                            Perkins V $18,000 enhances an already-positive Year 1 (+1 pt); Year 2 strongly
+                            positive at +$76,041 (+2 pts); Year 1 base net +$24,208 — profitable even without
+                            Perkins (+1 pt); hybrid delivery (+1 pt). All six criteria pass under the CE
+                            seat-hour model. <strong>Score will re-run after Stage 3 curriculum design</strong> — instructor
+                            cost currently uses 160 seat hrs × $28/hr × 2 sections; actual seat-time
+                            breakdown from curriculum design replaces this benchmark.
                           </p>
                         </div>
                       </>

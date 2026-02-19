@@ -159,8 +159,21 @@ export async function runFinancialAnalysis(
     estimated_tuition?: string;
     has_existing_lab_space?: boolean;
     target_cohort_size?: number;
+    // CE model — seat hours replace credit hours
+    total_seat_hours?: number;
+    total_seat_hours_source?: string;
+    sections_per_year?: number;
+    // Legacy field kept for fallback
     program_credit_hours?: number;
     funding_sources?: string[];
+    // Optional: competitor pricing from competitive analysis agent
+    competitor_pricing?: {
+      marketMedian: number;
+      marketLow: number;
+      marketHigh: number;
+      source?: string;
+      comps?: Array<{ institution: string; price: number; seatHours?: number; url: string }>;
+    };
   }
 ): Promise<{ data: FinancialProjectionsData; markdown: string }> {
   const startTime = Date.now();
@@ -182,8 +195,19 @@ export async function runFinancialAnalysis(
     const deliveryFormat = (project.delivery_format as 'in-person' | 'hybrid' | 'online') ?? 'hybrid';
     const hasExistingLabSpace = project.has_existing_lab_space ?? false;
     const cohortSize = project.target_cohort_size ?? 18;
-    const creditHours = project.program_credit_hours ?? 36;
+    // CE programs use seat hours (contact hours) — not credit hours
+    const totalSeatHours = project.total_seat_hours ?? project.program_credit_hours ?? 160;
+    const totalSeatHoursSource = project.total_seat_hours_source ?? 'Iowa Board of Pharmacy minimum training hours for pharmacy technician programs';
+    const sectionsPerYear = project.sections_per_year ?? 2;
     const perkinsEligible = project.funding_sources?.includes('perkins_v') ?? true;
+
+    // Use competitor pricing if available (passed from orchestrator after competitive agent runs)
+    let tuitionSource = 'Iowa community college CE market rate analysis';
+    if (project.competitor_pricing?.marketMedian) {
+      tuition = project.competitor_pricing.marketMedian;
+      tuitionSource = `Competitor market rate (median from ${project.competitor_pricing.source ?? 'web search'})`;
+      console.log(`[Financial Agent] Using competitor market median tuition: $${tuition} (${tuitionSource})`);
+    }
 
     // Extract state FIPS from geographic area (look for Iowa)
     let stateFips: string | undefined;
@@ -204,7 +228,10 @@ export async function runFinancialAnalysis(
       programName: project.program_name,
       tuitionEstimate: tuition,
       cohortSize,
-      creditHours,
+      // CE model: seat hours, not credit hours
+      totalSeatHours,
+      totalSeatHoursSource,
+      sectionsPerYear,
       hasExistingLabSpace,
       perkinsEligible,
       deliveryFormat,

@@ -59,9 +59,12 @@ async function main() {
     stackable_credential: true,
     funding_sources: ['perkins_v', 'wioa', 'self_pay'],
     // Financial model inputs (used by financial-analyst agent)
+    // CE model: seat hours (contact hours), not credit hours
     has_existing_lab_space: false,
     target_cohort_size: 18,
-    program_credit_hours: 36,
+    total_seat_hours: 160,  // Iowa Board of Pharmacy minimum training hours for pharmacy technician programs
+    total_seat_hours_source: 'Iowa Board of Pharmacy Rule 657 IAC 8.19 — minimum training hours for pharmacy technician',
+    sections_per_year: 2,
     instructor_type: 'adjunct', // 'adjunct' | 'full-time' | 'industry-expert'
   };
 
