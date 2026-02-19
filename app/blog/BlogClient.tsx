@@ -82,7 +82,7 @@ export default function BlogClient({ posts }: { posts: Post[] }) {
                   "text-sm px-4 py-2 rounded-lg border transition-colors cursor-pointer",
                   activeFilter === "All"
                     ? "bg-theme-card border-theme-strong text-theme-primary font-semibold"
-                    : "bg-transparent border-theme-subtle text-theme-tertiary hover:text-theme-secondary hover:border-theme-base",
+                    : "bg-theme-surface border-theme-base text-theme-tertiary hover:text-theme-secondary hover:border-theme-strong hover:bg-theme-card",
                 ].join(" ")}
               >
                 All ({posts.length})
@@ -96,7 +96,7 @@ export default function BlogClient({ posts }: { posts: Post[] }) {
                     "text-sm px-4 py-2 rounded-lg border transition-colors cursor-pointer",
                     activeFilter === cat
                       ? "bg-theme-card border-theme-strong text-theme-primary font-semibold"
-                      : "bg-transparent border-theme-subtle text-theme-tertiary hover:text-theme-secondary hover:border-theme-base",
+                      : "bg-theme-surface border-theme-base text-theme-tertiary hover:text-theme-secondary hover:border-theme-strong hover:bg-theme-card",
                   ].join(" ")}
                 >
                   {cat} ({countFor(cat)})
