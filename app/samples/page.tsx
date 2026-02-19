@@ -32,7 +32,7 @@ const services = [
       'Gives your CE leadership a prioritized shortlist to act on — scored against real data, not gut feel.',
     cta: {
       label: 'View Sample Report',
-      href: '/report/demo',
+      href: '/report/wake-tech-program-opportunity-scan',
       primary: true,
     },
   },

@@ -1,7 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  async redirects() {
+    return [
+      {
+        source: '/report/demo',
+        destination: '/report/wake-tech-program-opportunity-scan',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
