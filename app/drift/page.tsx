@@ -93,8 +93,7 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
   );
 }
 
-const FREE_SCAN_MAILTO =
-  'mailto:hello@withwavelength.com?subject=Drift%20Monitor%20Free%20Scan&body=Program%20name%3A%20%0ATarget%20occupation%3A%20%0AInstitution%3A%20';
+const FREE_SCAN_MAILTO = '/contact';
 
 // ── Page ──
 
@@ -145,11 +144,11 @@ export default function DriftPage() {
 
           <AnimateOnScroll variant="fade-up" delay={340} duration={800}>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <a href={FREE_SCAN_MAILTO}>
+              <Link href={FREE_SCAN_MAILTO}>
                 <button className="btn-cosmic btn-cosmic-primary text-base px-8 py-4">
                   Run a Free Drift Scan →
                 </button>
-              </a>
+              </Link>
               <a href="#example">
                 <button className="btn-cosmic btn-cosmic-ghost text-base px-8 py-4">
                   See a Sample Score →
@@ -509,11 +508,11 @@ export default function DriftPage() {
                     </li>
                   ))}
                 </ul>
-                <a href={FREE_SCAN_MAILTO} className="block">
+                <Link href={FREE_SCAN_MAILTO} className="block">
                   <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
                     Get Started →
                   </button>
-                </a>
+                </Link>
               </div>
             </AnimateOnScroll>
 
@@ -542,11 +541,11 @@ export default function DriftPage() {
                     </li>
                   ))}
                 </ul>
-                <a href="mailto:hello@withwavelength.com?subject=Drift%20Monitor%20Portfolio%20Order&body=Institution%3A%20%0APrograms%20to%20monitor%3A%20" className="block">
+                <Link href="/contact" className="block">
                   <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
                     Order Portfolio →
                   </button>
-                </a>
+                </Link>
               </div>
             </AnimateOnScroll>
 
@@ -573,11 +572,11 @@ export default function DriftPage() {
                     </li>
                   ))}
                 </ul>
-                <a href="mailto:hello@withwavelength.com?subject=Drift%20Monitor%20Enterprise&body=Institution%3A%20%0AProgram%20count%3A%20" className="block">
+                <Link href="/contact" className="block">
                   <button className="btn-cosmic btn-cosmic-ghost w-full text-sm">
                     Contact Us →
                   </button>
-                </a>
+                </Link>
               </div>
             </AnimateOnScroll>
           </div>
@@ -630,11 +629,11 @@ export default function DriftPage() {
             <p className="text-theme-secondary text-lg leading-relaxed mb-8 max-w-xl mx-auto">
               Run a free drift scan on one of your existing programs. See your score. No sales call required.
             </p>
-            <a href={FREE_SCAN_MAILTO}>
+            <Link href={FREE_SCAN_MAILTO}>
               <button className="btn-cosmic btn-cosmic-primary text-base px-10 py-4">
                 Run a Free Drift Scan →
               </button>
-            </a>
+            </Link>
             <p className="mt-6 text-theme-muted text-sm">
               One program, one scan, zero commitment. If the score is green, great — you&apos;ll know. If it&apos;s not, you&apos;ll know that too.
             </p>
@@ -681,12 +680,12 @@ export default function DriftPage() {
       <footer className="py-10 px-6 text-center border-t border-theme-subtle">
         <p className="text-theme-secondary text-sm">
           Wavelength Workforce Intelligence ·{' '}
-          <a
-            href="mailto:hello@withwavelength.com"
+          <Link
+            href="/contact"
             className="hover:text-theme-secondary transition-colors"
           >
-            hello@withwavelength.com
-          </a>
+            Contact Us
+          </Link>
         </p>
         <p className="mt-2 text-theme-muted text-xs">
           Curriculum Drift Analysis reports are research deliverables based on live job posting analysis. They do not constitute legal or accreditation advice.

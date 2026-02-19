@@ -143,12 +143,12 @@ export default function MarketResearchPage() {
             <h2 className="font-heading font-bold text-theme-primary text-2xl md:text-3xl mb-6">
               Ready to discover what your region needs?
             </h2>
-            <a href="mailto:hello@withwavelength.com?subject=Program%20Opportunity%20Scan&body=College%20name%3A%20%0ACity%2C%20State%3A%20">
+            <Link href="/contact">
               <button className="btn-cosmic btn-cosmic-primary text-sm">
                 Run a Program Opportunity Scan
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
-            </a>
+            </Link>
             <div className="mt-4">
               <Link href="/pell" className="text-sm text-theme-tertiary hover:text-theme-secondary transition-colors">
                 Start free — Pell Readiness Check →

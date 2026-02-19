@@ -56,7 +56,7 @@ const services = [
       'Replaces months of internal research with a single authoritative decision document — ready to present to your board or cabinet.',
     cta: {
       label: 'Request Sample PDF',
-      href: 'mailto:hello@withwavelength.com?subject=Sample%20Validation%20Report%20Request',
+      href: '/contact',
       primary: false,
     },
   },
@@ -101,7 +101,7 @@ const services = [
       'A snapshot of where your catalog has fallen behind regional demand — and the highest-value gaps worth filling first.',
     cta: {
       label: 'Request Sample PDF',
-      href: 'mailto:hello@withwavelength.com?subject=Sample%20Program%20Gap%20Audit%20Request',
+      href: '/contact',
       primary: false,
     },
   },
@@ -124,7 +124,7 @@ const services = [
       'Stops you from chasing grants you won\u2019t win and surfaces the ones your programs are actually built for.',
     cta: {
       label: 'Request Sample PDF',
-      href: 'mailto:hello@withwavelength.com?subject=Sample%20Grant%20Intelligence%20Report%20Request',
+      href: '/contact',
       primary: false,
     },
   },
@@ -147,7 +147,7 @@ const services = [
       'Catches curriculum drift before it shows up in placement rates — giving faculty and curriculum staff a specific, evidence-based update agenda.',
     cta: {
       label: 'Request Sample PDF',
-      href: 'mailto:hello@withwavelength.com?subject=Sample%20Curriculum%20Drift%20Report%20Request',
+      href: '/contact',
       primary: false,
     },
   },
@@ -246,25 +246,14 @@ export default function SamplesPage() {
 
                 {/* CTA */}
                 <div className="mt-auto pt-1">
-                  {svc.cta.href.startsWith('mailto:') ? (
-                    <a href={svc.cta.href}>
-                      <button
-                        className={`btn-cosmic ${svc.cta.primary ? 'btn-cosmic-primary' : 'btn-cosmic-ghost'} text-sm w-full sm:w-auto`}
-                      >
-                        {svc.cta.label}
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </button>
-                    </a>
-                  ) : (
-                    <Link href={svc.cta.href}>
-                      <button
-                        className={`btn-cosmic ${svc.cta.primary ? 'btn-cosmic-primary' : 'btn-cosmic-ghost'} text-sm w-full sm:w-auto`}
-                      >
-                        {svc.cta.label}
-                        <ArrowRight className="ml-2 h-4 w-4" />
-                      </button>
-                    </Link>
-                  )}
+                  <Link href={svc.cta.href}>
+                    <button
+                      className={`btn-cosmic ${svc.cta.primary ? 'btn-cosmic-primary' : 'btn-cosmic-ghost'} text-sm w-full sm:w-auto`}
+                    >
+                      {svc.cta.label}
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </button>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -294,11 +283,11 @@ export default function SamplesPage() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>
-              <a href="mailto:hello@withwavelength.com?subject=Wavelength%20Sample%20Report%20Question">
+              <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-ghost text-sm py-3 px-7">
                   Ask a Question
                 </button>
-              </a>
+              </Link>
             </div>
           </AnimateOnScroll>
         </div>

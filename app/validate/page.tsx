@@ -70,12 +70,12 @@ export default function ValidatePage() {
 
           <AnimateOnScroll variant="fade-up" delay={350} duration={800}>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="mailto:hello@withwavelength.com?subject=Program%20Validation%20Inquiry&body=College%20name%3A%20%0AProgram%20of%20interest%3A%20%0ACity%2C%20State%3A%20">
+              <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary">
                   Start Validation
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
-              </a>
+              </Link>
               <Link href="/discover">
                 <button className="btn-cosmic btn-cosmic-ghost">
                   Start with a Market Scan First
@@ -363,15 +363,19 @@ export default function ValidatePage() {
                 ))}
               </ul>
 
-              <a href="mailto:hello@withwavelength.com?subject=Program%20Validation%20Inquiry&body=College%20name%3A%20%0AProgram%20of%20interest%3A%20%0ACity%2C%20State%3A%20%0AAny%20additional%20context%3A%20">
+              <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary w-full sm:w-auto">
                   Start Your Validation
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
-              </a>
+              </Link>
 
               <p className="text-theme-secondary text-xs mt-4">
-                Email us at hello@withwavelength.com — we&apos;ll follow up within 48 hours.
+                Questions?{' '}
+                <Link href="/contact" className="underline underline-offset-2 hover:text-theme-primary transition-colors">
+                  Contact us
+                </Link>{' '}
+                — we&apos;ll follow up within 48 hours.
               </p>
             </div>
           </AnimateOnScroll>

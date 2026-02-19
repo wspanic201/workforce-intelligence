@@ -226,12 +226,12 @@ export default function ComplianceGapPage() {
 
           <AnimateOnScroll variant="fade-up" delay={300} duration={800}>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="mailto:hello@withwavelength.com?subject=Compliance Gap Report Request">
+              <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary">
                   Get My Gap Report — $295
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
-              </a>
+              </Link>
               <a href="#sample">
                 <button className="btn-cosmic btn-cosmic-ghost">
                   See Sample Findings
@@ -430,15 +430,12 @@ export default function ComplianceGapPage() {
                 ))}
               </div>
 
-              <a
-                href="mailto:hello@withwavelength.com?subject=Compliance Gap Report — $295&body=Institution Name:%0AState:%0ACity (optional):%0AWebsite (optional):%0A%0AI'd like to order a Compliance Gap Report."
-                className="block"
-              >
+              <Link href="/contact" className="block">
                 <button className="btn-cosmic btn-cosmic-primary w-full text-base py-4">
                   <Mail className="mr-2 h-4 w-4" />
-                  Order Your Report — hello@withwavelength.com
+                  Order Your Report
                 </button>
-              </a>
+              </Link>
 
               <p className="mt-5 text-theme-muted text-xs">
                 Email us your institution name + state. We'll invoice and deliver your report.
@@ -477,12 +474,12 @@ export default function ComplianceGapPage() {
       <footer className="py-10 px-6 text-center border-t border-theme-subtle">
         <p className="text-theme-secondary text-sm">
           Wavelength Workforce Intelligence ·{' '}
-          <a
-            href="mailto:hello@withwavelength.com"
+          <Link
+            href="/contact"
             className="hover:text-theme-secondary transition-colors"
           >
-            hello@withwavelength.com
-          </a>
+            Contact Us
+          </Link>
         </p>
         <p className="mt-2 text-theme-muted text-xs">
           Program Gap Audit reports are research deliverables based on publicly available regulatory data and do not constitute legal advice.

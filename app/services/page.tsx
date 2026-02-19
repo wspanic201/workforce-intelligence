@@ -441,11 +441,11 @@ export default function ServicesPage() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>
-              <a href="mailto:hello@withwavelength.com?subject=Services%20Question">
+              <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-ghost">
                   Talk to Us First
                 </button>
-              </a>
+              </Link>
             </div>
           </AnimateOnScroll>
         </div>

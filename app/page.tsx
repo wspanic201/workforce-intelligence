@@ -874,24 +874,24 @@ export default function HomePage() {
                   Get Your Free Pell Readiness Check
                 </button>
               </a>
-              <a href="mailto:hello@withwavelength.com?subject=Market%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20">
+              <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-ghost text-base px-8 py-4">
                   Order a Program Opportunity Scan
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </button>
-              </a>
+              </Link>
             </div>
             <p className="mt-8 text-xs font-mono text-theme-muted tracking-widest uppercase">
               Wavelength · Workforce Program Intelligence · withwavelength.com
             </p>
             <p className="mt-6 text-sm text-theme-secondary">
               Questions?{' '}
-              <a
-                href="mailto:hello@withwavelength.com"
+              <Link
+                href="/contact"
                 className="text-theme-secondary hover:text-theme-secondary underline underline-offset-4 transition-colors"
               >
-                hello@withwavelength.com
-              </a>
+                Contact Us
+              </Link>
             </p>
           </AnimateOnScroll>
         </div>

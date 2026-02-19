@@ -267,12 +267,12 @@ export default function PellPage() {
 
           <AnimateOnScroll variant="fade-up" delay={340} duration={800}>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="mailto:hello@withwavelength.com?subject=Pell%20Readiness%20Check">
+              <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary text-base px-8 py-4">
                   <Mail className="mr-2 h-4 w-4" />
                   Get Your Free Check
                 </button>
-              </a>
+              </Link>
               <Link href="/report/demo">
                 <button className="btn-cosmic btn-cosmic-ghost text-base px-8 py-4">
                   View Sample Report
@@ -604,15 +604,12 @@ export default function PellPage() {
                 ))}
               </div>
 
-              <a
-                href="mailto:hello@withwavelength.com?subject=Pell%20Readiness%20Check&body=Institution%20Name%3A%0AState%3A%0AWebsite%20(optional)%3A%0A%0AI'd%20like%20a%20free%20Pell%20Readiness%20Check."
-                className="block"
-              >
+              <Link href="/contact" className="block">
                 <button className="btn-cosmic btn-cosmic-primary w-full text-base py-4">
                   <Mail className="mr-2 h-4 w-4" />
-                  Get Your Free Check — hello@withwavelength.com
+                  Get Your Free Check
                 </button>
-              </a>
+              </Link>
 
               <p className="mt-5 text-theme-muted text-xs">
                 Email us your institution name and state. We handle the rest.
@@ -700,12 +697,12 @@ export default function PellPage() {
           <h2 className="font-heading text-2xl md:text-3xl font-bold text-theme-primary mb-6">
             Get your free Pell Readiness Check today.
           </h2>
-          <a href="mailto:hello@withwavelength.com?subject=Pell%20Readiness%20Check">
+          <Link href="/contact">
             <button className="btn-cosmic btn-cosmic-primary text-base px-10 py-4">
               <Mail className="mr-2 h-4 w-4" />
-              hello@withwavelength.com
+              Get Your Free Check
             </button>
-          </a>
+          </Link>
           <p className="mt-5 text-theme-muted text-sm">
             No login. No sales call. Just data.
           </p>
@@ -716,12 +713,12 @@ export default function PellPage() {
       <footer className="py-10 px-6 text-center border-t border-theme-subtle">
         <p className="text-theme-secondary text-sm">
           Wavelength Workforce Intelligence ·{' '}
-          <a
-            href="mailto:hello@withwavelength.com"
+          <Link
+            href="/contact"
             className="hover:text-theme-secondary transition-colors"
           >
-            hello@withwavelength.com
-          </a>
+            Contact Us
+          </Link>
         </p>
         <p className="mt-2 text-theme-muted text-xs">
           Pell Readiness Check is a research deliverable based on publicly available federal and state regulatory data. It does not constitute legal or compliance advice.

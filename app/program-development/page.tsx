@@ -144,12 +144,12 @@ export default function ProgramDevelopmentPage() {
             <h2 className="font-heading font-bold text-theme-primary text-2xl md:text-3xl mb-6">
               Have a program idea? Let&apos;s validate it.
             </h2>
-            <a href="mailto:hello@withwavelength.com?subject=Program%20Validation&body=College%20name%3A%20%0AProgram%20idea%3A%20%0ACity%2C%20State%3A%20">
+            <Link href="/contact">
               <button className="btn-cosmic btn-cosmic-primary text-sm">
                 Order Program Validation — $2,000
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
-            </a>
+            </Link>
             <div className="mt-4">
               <Link href="/market-research" className="text-sm text-theme-tertiary hover:text-theme-secondary transition-colors">
                 Start with a Program Opportunity Scan first →

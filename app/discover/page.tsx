@@ -84,12 +84,12 @@ export default function DiscoverPage() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </a>
-              <a href="mailto:hello@withwavelength.com?subject=Market%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AAny%20focus%20areas%3A%20">
+              <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary">
                   Order a Program Opportunity Scan — $1,500
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
-              </a>
+              </Link>
             </div>
             <p className="mt-4 text-sm text-theme-secondary">
               Not sure yet?{' '}
@@ -401,12 +401,12 @@ export default function DiscoverPage() {
                     ))}
                   </ul>
 
-                  <a href="mailto:hello@withwavelength.com?subject=Market%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AAny%20focus%20areas%3A%20">
+                  <Link href="/contact">
                     <button className="btn-cosmic btn-cosmic-primary w-full sm:w-auto">
                       Order Program Opportunity Scan
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </button>
-                  </a>
+                  </Link>
                   <p className="text-theme-secondary text-xs mt-3">
                     We&apos;ll follow up within 48 hours.
                   </p>

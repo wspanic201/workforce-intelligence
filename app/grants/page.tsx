@@ -58,12 +58,12 @@ export default function GrantsPage() {
 
           <AnimateOnScroll variant="fade-up" delay={350} duration={800}>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="mailto:hello@withwavelength.com?subject=Grant%20Intelligence%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AProgram%20focus%20areas%3A%20">
+              <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary">
                   Order Grant Intelligence Scan — $495
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
-              </a>
+              </Link>
               <a href="#how-it-works">
                 <button className="btn-cosmic btn-cosmic-ghost">
                   See How It Works
@@ -380,12 +380,12 @@ export default function GrantsPage() {
                     ))}
                   </ul>
 
-                  <a href="mailto:hello@withwavelength.com?subject=Grant%20Intelligence%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AProgram%20focus%20areas%3A%20">
+                  <Link href="/contact">
                     <button className="btn-cosmic btn-cosmic-primary w-full sm:w-auto">
                       Order Grant Intelligence Scan
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </button>
-                  </a>
+                  </Link>
                   <p className="text-theme-secondary text-xs mt-3">
                     We&apos;ll follow up within 48 hours.
                   </p>
@@ -423,12 +423,12 @@ export default function GrantsPage() {
                   ))}
                 </ul>
 
-                <a href="mailto:hello@withwavelength.com?subject=Grant%20Intelligence%20Scan%20Inquiry">
+                <Link href="/contact">
                   <button className="btn-cosmic btn-cosmic-ghost w-full sm:w-auto">
                     Get Notified When Available
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </button>
-                </a>
+                </Link>
                 <p className="text-theme-muted text-xs mt-3">
                   Lock in the founding rate now — $495
                 </p>
@@ -481,12 +481,12 @@ export default function GrantsPage() {
                   </li>
                 ))}
               </ul>
-              <a href="mailto:hello@withwavelength.com?subject=Grant%20Application%20Package%20Inquiry">
+              <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-ghost text-sm w-full">
                   Ask About Grant Writing
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
-              </a>
+              </Link>
             </div>
 
             {/* Grant Monitoring Retainer */}
@@ -513,12 +513,12 @@ export default function GrantsPage() {
                   </li>
                 ))}
               </ul>
-              <a href="mailto:hello@withwavelength.com?subject=Grant%20Monitoring%20Retainer%20Inquiry">
+              <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-ghost text-sm w-full">
                   Ask About Monitoring
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
-              </a>
+              </Link>
             </div>
           </StaggerChildren>
         </div>
@@ -635,12 +635,12 @@ export default function GrantsPage() {
               30+ grants scanned. Your best opportunities ranked. A clear action plan in one week.
             </p>
             <div className="mt-8">
-              <a href="mailto:hello@withwavelength.com?subject=Grant%20Intelligence%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AProgram%20focus%20areas%3A%20">
+              <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary text-base py-3 px-8">
                   Order Grant Intelligence Scan — $495
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </button>
-              </a>
+              </Link>
             </div>
             <p className="mt-4 text-sm text-theme-muted">
               Founding rate. We&apos;ll reach out within 48 hours to kick things off.
