@@ -361,17 +361,38 @@ function StaticHero() {
           <span className="text-gradient-cosmic">∿ ·</span> Workforce Program Intelligence for Community Colleges
         </p>
 
-        {/* Headline */}
+        {/*
+          ════════════════════════════════════════════════════
+          HERO COPY VARIANTS — 2026-02-19
+          Implement: Variant A (speed/efficiency angle)
+          Others are commented out below for reference.
+          ════════════════════════════════════════════════════
+
+          ── Variant B: Specificity ("not dashboards, scored programs") ──
+          <h1 ...>Not dashboards. Specific, scored programs worth building.</h1>
+          <p ...>Every report delivers 7–10 vetted opportunities — each scored
+          across demand, competition, revenue, and Pell readiness. Skip the raw
+          data.</p>
+
+          ── Variant C: Outcomes / action ("build the right programs") ──
+          <h1 ...>Build the programs your region is asking for.</h1>
+          <p ...>Wavelength surfaces, validates, and scores workforce program
+          opportunities for your institution — ready to present, fund, and
+          build.</p>
+          ════════════════════════════════════════════════════
+        */}
+
+        {/* Variant A — Speed / efficiency ("days not months") */}
         <h1
           className="text-gradient-cosmic font-heading font-bold leading-[1.05]"
           style={{ fontSize: 'clamp(2.4rem, 5vw + 0.5rem, 4.2rem)' }}
         >
-          Your next program is already in demand. Wavelength finds it.
+          Program intelligence delivered in days, not months.
         </h1>
 
         {/* Subhead */}
         <p className="mt-6 text-lg md:text-xl text-theme-secondary leading-relaxed max-w-2xl mx-auto">
-          Find programs worth building, validate demand, secure funding, and keep your curriculum current — backed by live labor market data.
+          A professional report with 7–10 scored program leads for your region — ready in under a week, priced for dean approval.
         </p>
 
         {/* CTAs */}
