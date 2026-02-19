@@ -141,22 +141,22 @@ const pharmtechFinancialModel = {
   },
 
   assumptions: [
-    { item: 'Adjunct Hourly Rate', value: '$28.00/hr', source: 'BLS OES SOC 25-1071 — Iowa state median (2024)' },
-    { item: 'Contact Hours per Credit', value: '15 hrs', source: 'AAUP community college faculty workload standards' },
-    { item: 'Total Credit Hours', value: '36 credits', source: 'Pharmacy Tech certificate program design standard' },
-    { item: 'Target Cohort Size', value: '18 students', source: 'Peer benchmark — DMACC, Hawkeye CC program data' },
-    { item: 'Tuition (per student)', value: '$4,800', source: 'Iowa community college market rate analysis' },
-    { item: 'Lab Setup Cost', value: '$30,000 (one-time, Year 1)', source: 'PTCB / ASHP pharmacy tech program standards' },
-    { item: 'Lab Supplies', value: '$150/student/yr', source: 'ASHP pharmacy program cost surveys' },
-    { item: 'Coordinator Cost', value: '$11,250/yr (0.25 FTE)', source: 'CUPA-HR Admin Salary Survey, Iowa median $45K' },
-    { item: 'Marketing (Year 1)', value: '$3,000', source: 'CC enrollment management benchmarks' },
-    { item: 'Regulatory Fees', value: '$1,750 (midpoint)', source: 'Iowa Board of Pharmacy, PTCB program standards' },
-    { item: 'Admin Overhead', value: '15% of direct costs', source: 'NACUBO continuing education overhead benchmarks' },
-    { item: 'Perkins V Award', value: '$18,000/yr (midpoint $8K–$28K)', source: 'Iowa Dept. of Education Perkins V state allocations' },
-    { item: 'Enrollment Scenarios', value: 'Pessimistic 60% · Base 85% · Optimistic 100%', source: 'CC program launch benchmark (Year 1 ramp standard)' },
-    { item: 'Year 2 Growth', value: '+20% vs. Year 1', source: 'Peer program trajectory (DMACC, Hawkeye)' },
-    { item: 'Year 3 Growth', value: '+15% vs. Year 2', source: 'Peer program trajectory (DMACC, Hawkeye)' },
-    { item: 'Existing Lab Space', value: 'No — $30,000 Year 1 capital setup', source: 'Client project input' },
+    { item: 'Adjunct Hourly Rate', value: '$28.00/hr', source: 'BLS OES SOC 25-1071 — Iowa state median (2024)', refinesAt: 'Stage 3 — actual instructor contract' },
+    { item: 'Contact Hours per Credit', value: '15 hrs', source: 'AAUP community college faculty workload standards', refinesAt: 'Stage 3 — curriculum seat-time breakdown' },
+    { item: 'Total Credit Hours', value: '36 credits', source: 'Pharmacy Tech certificate program design standard', refinesAt: 'Stage 3 — finalized curriculum map' },
+    { item: 'Target Cohort Size', value: '18 students', source: 'Peer benchmark — DMACC, Hawkeye CC program data', refinesAt: 'Launch — enrollment actuals' },
+    { item: 'Tuition (per student)', value: '$4,800', source: 'Iowa community college market rate analysis', refinesAt: 'Stage 3 — pricing committee approval' },
+    { item: 'Lab Setup Cost', value: '$30,000 (one-time, Year 1)', source: 'PTCB / ASHP pharmacy tech program standards', refinesAt: 'Stage 3 — vendor quotes + space plan' },
+    { item: 'Lab Supplies', value: '$150/student/yr', source: 'ASHP pharmacy program cost surveys', refinesAt: 'Stage 3 — curriculum materials list' },
+    { item: 'Coordinator Cost', value: '$11,250/yr (0.25 FTE)', source: 'CUPA-HR Admin Salary Survey, Iowa median $45K', refinesAt: 'Launch — job posting + hire' },
+    { item: 'Marketing (Year 1)', value: '$3,000', source: 'CC enrollment management benchmarks', refinesAt: 'Launch — campaign plan' },
+    { item: 'Regulatory Fees', value: '$1,750 (midpoint)', source: 'Iowa Board of Pharmacy, PTCB program standards', refinesAt: 'Stage 3 — actual application fees' },
+    { item: 'Admin Overhead', value: '15% of direct costs', source: 'NACUBO continuing education overhead benchmarks', refinesAt: 'Launch — institutional budget process' },
+    { item: 'Perkins V Award', value: '$18,000/yr (midpoint $8K–$28K)', source: 'Iowa Dept. of Education Perkins V state allocations', refinesAt: 'Stage 3 — grant application award' },
+    { item: 'Enrollment Scenarios', value: 'Pessimistic 60% · Base 85% · Optimistic 100%', source: 'CC program launch benchmark (Year 1 ramp standard)', refinesAt: 'Launch — demand validation sprint' },
+    { item: 'Year 2 Growth', value: '+20% vs. Year 1', source: 'Peer program trajectory (DMACC, Hawkeye)', refinesAt: 'Year 2 — actual cohort data' },
+    { item: 'Year 3 Growth', value: '+15% vs. Year 2', source: 'Peer program trajectory (DMACC, Hawkeye)', refinesAt: 'Year 3 — actual cohort data' },
+    { item: 'Existing Lab Space', value: 'No — $30,000 Year 1 capital setup', source: 'Client project input', refinesAt: 'Stage 3 — facilities assessment' },
   ],
 };
 
@@ -806,6 +806,11 @@ export default function KirkwoodPharmTechValidationPage() {
                   <div className="px-5 pb-6 pt-2 space-y-5">
                     {d.name === 'Financial Viability' ? (
                       <>
+                        {/* Stage 2 disclaimer */}
+                        <p className="text-xs text-theme-muted italic border-l-2 border-theme-subtle pl-3">
+                          Financial projections at validation stage are based on industry benchmarks and program-type assumptions. Costs refine significantly after curriculum development, when total seat time, contact hour breakdown, and materials requirements are known.
+                        </p>
+
                         {/* Score badge */}
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20">
