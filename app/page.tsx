@@ -392,7 +392,7 @@ function StaticHero() {
 
         {/* Subhead */}
         <p className="mt-6 text-lg md:text-xl text-theme-secondary leading-relaxed max-w-2xl mx-auto">
-          A professional report with 7–10 scored program leads for your region — ready in under a week, priced for dean approval.
+          A professional report with 7–10 scored program leads for your region — ready in under a week, eligible for Perkins V and WIOA funding.
         </p>
 
         {/* CTAs */}
