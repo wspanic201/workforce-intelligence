@@ -236,13 +236,7 @@ export function NavBar() {
                     onClick={() => setMobileOpen(false)}
                   >
                     <span>{p.label}</span>
-                    {p.tagColor.includes('text-gradient-cosmic') ? (
-                      <span className="text-[10px] font-bold text-gradient-cosmic ml-1">{p.tag}</span>
-                    ) : (
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.tagColor}`}>
-                        {p.tag}
-                      </span>
-                    )}
+                    <span className="text-xs font-semibold text-theme-muted">{p.tag}</span>
                   </Link>
                 ))}
               </div>
