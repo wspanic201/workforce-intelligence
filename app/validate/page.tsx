@@ -86,78 +86,6 @@ export default function ValidatePage() {
         </div>
       </section>
 
-      {/* ===== WHAT YOU GET ===== */}
-      <section className="relative py-20 md:py-28">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up" className="text-center mb-4">
-            <div className="flex items-center justify-center gap-3">
-              <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/60" />
-              <span className="overline">What You Get</span>
-              <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-purple-500/60" />
-            </div>
-          </AnimateOnScroll>
-          <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-16">
-            <h2
-              className="font-heading font-bold text-theme-primary"
-              style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
-            >
-              Seven deliverables. One comprehensive answer.
-            </h2>
-            <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
-              Validation goes far deeper than Market Scan surface signals — every analysis is verified against primary data, comparable programs, and employer reality.
-            </p>
-          </AnimateOnScroll>
-
-          <StaggerChildren stagger={100} variant="fade-up" className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                icon: TrendingUp,
-                title: 'Deep Market Validation',
-                desc: 'Beyond Discovery surface signals. Demand verified with primary employer data, salary benchmarks validated against BLS, hiring pipeline depth confirmed.',
-              },
-              {
-                icon: DollarSign,
-                title: 'Financial Projections',
-                desc: 'Full 5-year financial model: enrollment projections, tuition revenue, cost analysis, break-even timeline, and ROI — based on comparable program data, not guesses.',
-              },
-              {
-                icon: Building2,
-                title: 'Employer Demand Verification',
-                desc: "The actual employer landscape: who's hiring, how many open positions, growth trajectory, and which employers will partner on work-based learning.",
-              },
-              {
-                icon: Scale,
-                title: 'Regulatory Analysis',
-                desc: 'State approval requirements, accreditation considerations, licensing and certification alignment, and Workforce Pell eligibility scoring.',
-              },
-              {
-                icon: Swords,
-                title: 'Competitive Deep-Dive',
-                desc: "Beyond listing competitors. Analyzes their enrollment trends, program strengths and weaknesses, tuition pricing, and where they're vulnerable.",
-              },
-              {
-                icon: Map,
-                title: 'Implementation Roadmap',
-                desc: 'Timeline from approval to first cohort. Faculty requirements, equipment and space needs, partnership opportunities, and marketing budget.',
-              },
-              {
-                icon: Flag,
-                title: 'GO / NO-GO Recommendation',
-                desc: 'A clear, evidence-based recommendation. Not hedging — a definitive answer backed by seven independent specialist analyses.',
-              },
-            ].map(({ icon: Icon, title, desc }) => (
-              <div key={title} className="card-cosmic rounded-xl p-6">
-                <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center mb-4">
-                  <Icon className="h-5 w-5 text-purple-400" />
-                </div>
-                <h3 className="font-heading font-semibold text-theme-primary mb-2">{title}</h3>
-                <p className="text-theme-secondary text-sm leading-relaxed">{desc}</p>
-              </div>
-            ))}
-          </StaggerChildren>
-        </div>
-      </section>
-
       {/* ===== HOW IT WORKS ===== */}
       <section className="relative py-20 md:py-28" id="how-it-works">
         <div className="max-w-[900px] mx-auto px-6">
@@ -218,8 +146,8 @@ export default function ValidatePage() {
                 },
                 {
                   icon: BookOpen,
-                  role: 'Curriculum Designer',
-                  desc: 'Scopes the implementation: what faculty, equipment, and space this program requires — and a realistic timeline from approval to first cohort.',
+                  role: 'Implementation Analyst',
+                  desc: 'Scopes what the program actually requires to launch: faculty, equipment, space, timeline from approval to first cohort, and realistic startup costs.',
                 },
               ].map(({ icon: Icon, role, desc }, i) => (
                 <div key={role} className="flex gap-5 p-5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-theme-strong transition-colors">
@@ -488,62 +416,6 @@ export default function ValidatePage() {
               </Link>
             </AnimateOnScroll>
           </div>
-        </div>
-      </section>
-
-      {/* ===== AFTER VALIDATION ===== */}
-      <section className="relative py-20 md:py-28">
-        <div className="max-w-[800px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up" className="text-center mb-12">
-            <h2
-              className="font-heading font-bold text-theme-primary"
-              style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
-            >
-              After Validation
-            </h2>
-            <p className="text-theme-secondary mt-3">
-              A GO recommendation means you&apos;re cleared to build. The next stages take you from validated concept to fully operational program.
-            </p>
-          </AnimateOnScroll>
-
-          <StaggerChildren stagger={100} variant="fade-up" className="space-y-4">
-            {[
-              {
-                stage: '3',
-                name: 'Curriculum Design & Development',
-                desc: 'Competency mapping, course architecture, and learning outcomes built from real occupation data and employer input.',
-              },
-              {
-                stage: '4',
-                name: 'Pathway Development',
-                desc: 'Stackable credential design, articulation agreements, and career pathway mapping for maximum student outcomes.',
-              },
-              {
-                stage: '5–8',
-                name: 'Content → Launch → Quality Control',
-                desc: 'Course content creation, marketing strategy, launch readiness review, and ongoing outcomes tracking.',
-              },
-            ].map(({ stage, name, desc }) => (
-              <div key={stage} className="flex gap-4 p-5 rounded-xl bg-white/[0.02] border border-white/[0.04]">
-                <div className="w-10 h-10 rounded-lg bg-white/[0.05] flex items-center justify-center flex-shrink-0">
-                  <span className="font-mono text-sm text-theme-secondary">{stage}</span>
-                </div>
-                <div>
-                  <h3 className="font-heading font-semibold text-theme-primary text-sm">{name}</h3>
-                  <p className="text-theme-secondary text-sm mt-1">{desc}</p>
-                </div>
-              </div>
-            ))}
-          </StaggerChildren>
-
-          <AnimateOnScroll variant="fade-up" delay={300} className="text-center mt-10">
-            <Link href="/#how-it-works">
-              <button className="btn-cosmic btn-cosmic-ghost text-sm">
-                See the Full Lifecycle
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </button>
-            </Link>
-          </AnimateOnScroll>
         </div>
       </section>
 
