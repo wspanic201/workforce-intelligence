@@ -410,6 +410,7 @@ const BADGE_COLORS: Record<string, string> = {
   purple: 'bg-purple-500/10 border-purple-500/20 text-purple-300',
   blue: 'bg-blue-500/10 border-blue-500/20 text-blue-300',
   emerald: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-300',
+  orange: 'bg-orange-500/10 border-orange-500/20 text-orange-300',
 };
 
 const DOT_COLORS: Record<string, string> = {
@@ -528,6 +529,7 @@ function HeroCarousel() {
                   { icon: '🎯', label: 'Pell Readiness Check', tag: 'Free', color: 'purple', desc: 'Find out if your programs qualify for federal funding' },
                   { icon: '📋', label: 'Compliance Gap Report', tag: '$295', color: 'blue', desc: 'See every compliance gap and what it\'s costing you' },
                   { icon: '📊', label: 'Market Scan', tag: '$1,500', color: 'teal', desc: 'Get 7–10 validated program opportunities, scored and ready to act on' },
+                  { icon: '📡', label: 'Drift Monitor', tag: 'From $1,200/yr', color: 'orange', desc: 'Keep existing programs aligned to employer demand' },
                 ].map((item, idx) => (
                   <div
                     key={item.label}
@@ -912,6 +914,49 @@ export default function HomePage() {
             </AnimateOnScroll>
 
           </div>
+
+          {/* Drift Monitor — Program Health row */}
+          <AnimateOnScroll variant="fade-up" delay={400} className="mt-8 max-w-5xl mx-auto">
+            <div className="relative card-cosmic rounded-2xl p-7 border-orange-500/20">
+              <div className="absolute -top-3 left-8">
+                <span className="inline-flex items-center rounded-full bg-orange-500/10 border border-orange-500/30 px-4 py-1 text-xs font-bold uppercase tracking-wider text-orange-300">
+                  Program Health &amp; Maintenance
+                </span>
+              </div>
+              <div className="flex flex-col md:flex-row items-start md:items-center gap-6 mt-2">
+                <div className="flex-1">
+                  <div className="flex items-center gap-3 mb-2">
+                    <h3 className="font-heading font-bold text-white text-xl">Drift Monitor</h3>
+                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-300">From $1,200/yr</span>
+                  </div>
+                  <p className="text-white/70 text-sm leading-relaxed max-w-2xl">
+                    Already have programs? Keep them current. We run quarterly scans of live job postings against your curriculum and deliver a Drift Score — so you know exactly which programs are falling behind employer demand before your placement numbers do.
+                  </p>
+                  <div className="flex flex-wrap gap-4 mt-4">
+                    {['Quarterly curriculum scans', 'Drift Score + gap analysis', 'Accreditation-ready reports', 'Perkins V / WIOA eligible'].map(f => (
+                      <span key={f} className="flex items-center gap-1.5 text-xs text-white/60">
+                        <Check className="h-3 w-3 text-orange-400" />{f}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2 flex-shrink-0 w-full md:w-auto">
+                  <Link href="/drift">
+                    <button className="btn-cosmic btn-cosmic-primary w-full md:w-auto text-sm whitespace-nowrap">
+                      Learn More
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </button>
+                  </Link>
+                  <a href="mailto:hello@withwavelength.com?subject=Drift%20Monitor%20Free%20Scan&body=Program%20name%3A%20%0ATarget%20occupation%3A%20%0AInstitution%3A%20">
+                    <button className="btn-cosmic btn-cosmic-ghost w-full md:w-auto text-sm whitespace-nowrap">
+                      Run a Free Scan
+                    </button>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </AnimateOnScroll>
+
         </div>
       </section>
 

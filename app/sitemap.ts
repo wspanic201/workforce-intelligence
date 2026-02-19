@@ -37,6 +37,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${siteUrl}/drift`,
+      lastModified: new Date("2026-02-19"),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    },
+    {
       url: `${siteUrl}/methodology`,
       lastModified: now,
       changeFrequency: "monthly",

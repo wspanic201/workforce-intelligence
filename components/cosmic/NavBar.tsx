@@ -10,6 +10,7 @@ const PRODUCTS = [
   { label: 'Grant Intelligence Scan', href: '/grants', tag: '$495', tagColor: 'text-green-400 bg-green-500/10' },
   { label: 'Market Scan', href: '/discover', tag: '$1,500', tagColor: 'text-purple-400 bg-purple-500/10' },
   { label: 'Program Validation', href: '/validate', tag: '$2,000', tagColor: 'text-emerald-400 bg-emerald-500/10' },
+  { label: 'Drift Monitor', href: '/drift', tag: 'New', tagColor: 'text-orange-400 bg-orange-500/10' },
 ];
 
 export function NavBar() {
