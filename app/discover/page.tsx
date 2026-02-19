@@ -376,7 +376,8 @@ export default function DiscoverPage() {
                     <span className="font-heading font-bold text-4xl text-white">$1,500</span>
                     <span className="text-white/80 text-sm ml-2 line-through">$3,500</span>
                   </div>
-                  <p className="text-white/80 text-xs mb-5">Founding rate — first 5 institutions</p>
+                  <p className="text-white/80 text-xs mb-2">Founding rate — first 5 institutions</p>
+                  <p className="text-white/60 text-xs mb-5">Eligible for Perkins V, WIOA, and state workforce grant funding</p>
 
                   <ul className="text-left max-w-xs mx-auto space-y-3 mb-7 flex-1">
                     {[

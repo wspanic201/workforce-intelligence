@@ -194,7 +194,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'What is the Compliance Gap Report?',
-    a: 'The Compliance Gap Report shows every state-mandated or regionally critical program your institution isn\'t currently offering — along with estimated enrollment demand and revenue potential for each gap. It\'s a fast, affordable way to find programs you should already be running.',
+    a: 'The Compliance Gap Report shows every state-mandated or regionally critical program your institution isn\'t currently offering — along with estimated enrollment demand and revenue potential for each gap. It replaces weeks of manual research with a 25+ page intelligence report your team can act on immediately.',
   },
   {
     q: 'How is this different from standard labor market reports?',
@@ -203,6 +203,10 @@ const FAQ_ITEMS = [
   {
     q: 'How long does a Market Scan take?',
     a: 'Approximately one week from the time we receive your intake form. Rush delivery is available for an additional fee. The Pell Readiness Check is faster — typically 2–3 business days.',
+  },
+  {
+    q: 'Can this be funded through grants?',
+    a: 'Yes. Workforce intelligence and curriculum alignment tools are eligible expenses under Perkins V, WIOA Title I, and most state workforce development grant programs. Many institutions fund these projects through existing professional development or program development line items. We can provide documentation to support your grant reporting.',
   },
 ];
 
@@ -793,6 +797,7 @@ export default function HomePage() {
                     <span className="text-white/80 text-sm ml-2 line-through">$3,500</span>
                   </div>
                   <p className="text-xs text-white/80 mb-2">Founding rate — first 5 institutions</p>
+                  <p className="text-xs text-white/60 mb-2">Eligible for Perkins V, WIOA, and state workforce development funding</p>
                   <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-6">
                     <Clock className="h-3 w-3 text-purple-400" />
                     <span className="text-purple-300 text-[10px] font-bold uppercase tracking-wider">Delivered in 5–7 business days</span>
