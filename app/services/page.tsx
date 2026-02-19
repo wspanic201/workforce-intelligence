@@ -257,7 +257,7 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* ===== CORE LIFECYCLE ===== */}
+      {/* ===== CORE PROGRAM LIFECYCLE ===== */}
       <section className="relative py-20 md:py-28" id="lifecycle">
         <div className="max-w-[860px] mx-auto px-6">
 

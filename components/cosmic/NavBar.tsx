@@ -96,8 +96,8 @@ export function NavBar() {
 
                   <div className="mx-3 my-2 border-t border-theme-subtle" />
 
-                  {/* Core Lifecycle */}
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted px-4 pt-1 pb-1.5">Core Lifecycle</p>
+                  {/* Core Program Lifecycle */}
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted px-4 pt-1 pb-1.5">Core Program Lifecycle</p>
                   {CORE.map((item) => (
                     <Link
                       key={item.href}
@@ -176,7 +176,7 @@ export function NavBar() {
             </Link>
 
             <div className="border-t border-theme-subtle my-2" />
-            <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted px-2 pt-1 pb-0.5">Core Lifecycle</p>
+            <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted px-2 pt-1 pb-0.5">Core Program Lifecycle</p>
             {CORE.map((item) => (
               <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-between text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
