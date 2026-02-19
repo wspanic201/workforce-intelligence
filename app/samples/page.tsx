@@ -31,7 +31,7 @@ const services = [
     value:
       'Gives your CE leadership a prioritized shortlist to act on — scored against real data, not gut feel.',
     cta: {
-      label: 'View Live Demo',
+      label: 'View Sample Report',
       href: '/report/demo',
       primary: true,
     },
