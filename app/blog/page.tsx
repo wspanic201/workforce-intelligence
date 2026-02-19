@@ -17,6 +17,42 @@ export const metadata: Metadata = {
 
 const posts = [
   {
+    slug: "lightcast-fault-lines-workforce-gap-2026",
+    title: "Lightcast Just Called It: The Labor Shortage Is Permanent. Here's What That Means for Your Programs.",
+    excerpt:
+      "Lightcast's 2026 'Fault Lines' report documents a structural credential gap — 66% of job postings require credentials, but only 31% of workers have them. For community colleges, this is less a warning and more a mandate. Here's how to position your programs to win in a scarcity environment.",
+    date: "February 19, 2026",
+    readTime: "7 min read",
+    category: "Labor Market Intelligence",
+    accent: "from-teal-500/20 to-green-500/10",
+    border: "border-teal-500/30",
+    tag: "bg-teal-500/10 text-teal-300",
+  },
+  {
+    slug: "ai-changing-job-requirements-curriculum-alignment",
+    title: "AI Is Rewriting Job Requirements Faster Than Colleges Can Update Curriculum",
+    excerpt:
+      "Burning Glass Institute research shows AI is causing employers to rapidly redesign roles — displacing old skills and adding new ones at a pace that traditional 3–5 year curriculum review cycles can't match. Most institutions won't discover the misalignment until placement rates start dropping.",
+    date: "February 19, 2026",
+    readTime: "6 min read",
+    category: "Curriculum Strategy",
+    accent: "from-amber-500/20 to-orange-500/10",
+    border: "border-amber-500/30",
+    tag: "bg-amber-500/10 text-amber-300",
+  },
+  {
+    slug: "community-college-workforce-program-strategy-2026",
+    title: "Building the Right Programs in 2026: A Data-Driven Guide for Community College Leaders",
+    excerpt:
+      "2.1M unfilled manufacturing jobs by 2030. 3.5M cybersecurity vacancies globally. Workforce Pell launching July 1, 2026. The market conditions are unusually clear — but acting on them requires more than instinct. Here's the decision framework for getting it right.",
+    date: "February 19, 2026",
+    readTime: "9 min read",
+    category: "Program Strategy",
+    accent: "from-blue-500/20 to-indigo-500/10",
+    border: "border-blue-500/30",
+    tag: "bg-blue-500/10 text-blue-300",
+  },
+  {
     slug: "workforce-pell-grant-eligibility",
     title: "Workforce Pell Grant Eligibility: What Community Colleges Need to Know Before July 2026",
     excerpt:
