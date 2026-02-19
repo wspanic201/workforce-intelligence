@@ -64,7 +64,7 @@ const services = [
     id: 'pell-readiness',
     name: 'Pell Readiness Check',
     price: 'Free',
-    liveDemo: false,
+    liveDemo: true,
     format: 'PDF report — delivered by email within 48 hours',
     formatDot: 'bg-teal-400',
     whatsInside: [
@@ -78,9 +78,9 @@ const services = [
     value:
       'Know exactly where each program stands before July 1, 2026 — and what to fix to maximize your Pell-eligible catalog.',
     cta: {
-      label: 'Get Yours Free',
-      href: '/pell',
-      primary: false,
+      label: 'View Sample Report',
+      href: '/report/pell-demo',
+      primary: true,
     },
   },
   {
