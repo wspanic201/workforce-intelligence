@@ -139,6 +139,124 @@ export default function ServicesPage() {
         </div>
       </section>
 
+      {/* ===== CLIENT JOURNEY ===== */}
+      <section className="relative py-20 md:py-28">
+        <div className="max-w-[900px] mx-auto px-6">
+
+          <AnimateOnScroll variant="fade-up" className="text-center mb-4">
+            <div className="flex items-center justify-center gap-3">
+              <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/60" />
+              <span className="overline">How It Works</span>
+              <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-purple-500/60" />
+            </div>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-14">
+            <h2
+              className="font-heading font-bold text-theme-primary"
+              style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
+            >
+              From &ldquo;what should we build?&rdquo; to a program that runs.
+            </h2>
+            <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
+              Most institutions start at Stage 1. Each stage hands off directly to the next — no lost context, no starting over.
+            </p>
+          </AnimateOnScroll>
+
+          <StaggerChildren stagger={100} variant="fade-up" className="space-y-6">
+
+            {/* Step 1 */}
+            <div className="grid md:grid-cols-[120px_1fr] gap-6 items-start">
+              <div className="text-center md:text-right pt-1">
+                <span className="font-mono text-xs text-theme-muted tracking-widest uppercase">Stage 1</span>
+                <div className="font-mono font-bold text-gradient-cosmic text-sm mt-0.5">$1,500</div>
+              </div>
+              <div className="card-cosmic rounded-2xl p-6">
+                <h3 className="font-heading font-semibold text-theme-primary text-base mb-2">
+                  Discover which programs your region actually needs
+                </h3>
+                <p className="text-theme-secondary text-sm leading-relaxed">
+                  We scan regional employer demand, BLS labor data, job posting trends, and competitor catalogs to surface the 7–10 programs with the strongest case for your institution. You receive a professional brief — scored, ranked, ready to present.
+                </p>
+                <p className="text-theme-muted text-xs mt-3 italic">
+                  Typical outcome: a ranked shortlist of opportunities your leadership can act on immediately.
+                </p>
+              </div>
+            </div>
+
+            {/* Arrow connector */}
+            <div className="flex items-center justify-center md:pl-[144px]">
+              <div className="flex flex-col items-center gap-1 text-theme-muted">
+                <div className="w-px h-4 bg-gradient-to-b from-purple-500/40 to-blue-500/30" />
+                <span className="text-xs font-mono text-theme-muted tracking-widest">You pick one</span>
+                <div className="w-px h-4 bg-gradient-to-b from-blue-500/30 to-teal-500/20" />
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="grid md:grid-cols-[120px_1fr] gap-6 items-start">
+              <div className="text-center md:text-right pt-1">
+                <span className="font-mono text-xs text-theme-muted tracking-widest uppercase">Stage 2</span>
+                <div className="font-mono font-bold text-gradient-cosmic text-sm mt-0.5">$3,500</div>
+              </div>
+              <div className="card-cosmic rounded-2xl p-6">
+                <h3 className="font-heading font-semibold text-theme-primary text-base mb-2">
+                  Validate it — before you hire faculty or write a course
+                </h3>
+                <p className="text-theme-secondary text-sm leading-relaxed">
+                  Seven specialist analysts — market, financial, employer, regulatory, competitive, institutional fit, implementation — each run independent analyses on your chosen program. You get a 5-year financial model, a competitive positioning assessment, and a definitive GO&nbsp;/&nbsp;NO-GO recommendation. Not a maybe.
+                </p>
+                <p className="text-theme-muted text-xs mt-3 italic">
+                  Typical outcome: a board-ready validation report and a clear decision to proceed — or redirect resources to a better opportunity.
+                </p>
+              </div>
+            </div>
+
+            {/* Arrow connector */}
+            <div className="flex items-center justify-center md:pl-[144px]">
+              <div className="flex flex-col items-center gap-1 text-theme-muted">
+                <div className="w-px h-4 bg-gradient-to-b from-blue-500/30 to-teal-500/20" />
+                <span className="text-xs font-mono text-theme-muted tracking-widest">You get a GO</span>
+                <div className="w-px h-4 bg-gradient-to-b from-teal-500/20 to-transparent" />
+              </div>
+            </div>
+
+            {/* Step 3 */}
+            <div className="grid md:grid-cols-[120px_1fr] gap-6 items-start opacity-65">
+              <div className="text-center md:text-right pt-1">
+                <span className="font-mono text-xs text-theme-muted tracking-widest uppercase">Stage 3</span>
+                <div className="font-mono text-xs text-theme-muted mt-0.5 tracking-widest">Coming Soon</div>
+              </div>
+              <div className="rounded-2xl p-6 border border-theme-subtle bg-white/[0.015]">
+                <h3 className="font-heading font-semibold text-theme-tertiary text-base mb-2">
+                  Build the curriculum from validated data
+                </h3>
+                <p className="text-theme-muted text-sm leading-relaxed">
+                  Competency maps, course architecture, learning outcomes, and assessment frameworks — derived from O*NET task data, employer input gathered during validation, and accreditor requirements. No starting from scratch.
+                </p>
+              </div>
+            </div>
+
+            {/* Step 4+ */}
+            <div className="grid md:grid-cols-[120px_1fr] gap-6 items-start opacity-45">
+              <div className="text-center md:text-right pt-1">
+                <span className="font-mono text-xs text-theme-muted tracking-widest uppercase">Stages 4–8</span>
+                <div className="font-mono text-xs text-theme-muted mt-0.5 tracking-widest">Coming Soon</div>
+              </div>
+              <div className="rounded-2xl p-6 border border-theme-subtle bg-white/[0.01]">
+                <h3 className="font-heading font-semibold text-theme-muted text-base mb-2">
+                  Pathway design, launch, and ongoing quality control
+                </h3>
+                <p className="text-theme-muted text-sm leading-relaxed">
+                  Stackable credential architecture, articulation agreements, content production, marketing strategy, enrollment operations, and outcomes tracking — closing the loop back to your next discovery cycle.
+                </p>
+              </div>
+            </div>
+
+          </StaggerChildren>
+        </div>
+      </section>
+
       {/* ===== CORE LIFECYCLE ===== */}
       <section className="relative py-20 md:py-28" id="lifecycle">
         <div className="max-w-[860px] mx-auto px-6">
