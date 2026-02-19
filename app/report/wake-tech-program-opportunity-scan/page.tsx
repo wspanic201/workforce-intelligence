@@ -4,6 +4,7 @@ import { ArrowRight } from 'lucide-react';
 import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
 import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
+import { PrintButton } from '@/components/ui/PrintButton';
 
 export const metadata: Metadata = {
   title: 'Program Opportunity Scan — Wake Technical Community College | Wavelength Sample Report',
@@ -728,6 +729,12 @@ export default function DemoReportPage() {
             <p className="mt-6 text-xs text-theme-muted max-w-xl mx-auto leading-relaxed">
               This is a real Program Opportunity Scan conducted for Wake Technical Community College. All data and recommendations are based on actual labor market research, employer intelligence, and competitive analysis.
             </p>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll variant="fade-up" delay={380} duration={800}>
+            <div className="mt-5 flex justify-center">
+              <PrintButton label="Download PDF" />
+            </div>
           </AnimateOnScroll>
         </div>
       </section>

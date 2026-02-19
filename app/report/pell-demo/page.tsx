@@ -4,6 +4,7 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
 import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
+import { PrintButton } from '@/components/ui/PrintButton';
 
 export const metadata: Metadata = {
   title: 'Pell Readiness Check — Pima Community College | Wavelength Sample Report',
@@ -474,6 +475,12 @@ export default function PellDemoPage() {
             <p className="mt-6 text-xs text-theme-muted max-w-xl mx-auto leading-relaxed">
               This is a sample report. All data reflects real federal criteria and BLS wage data for illustrative purposes.
             </p>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll variant="fade-up" delay={380} duration={800}>
+            <div className="mt-5 flex justify-center">
+              <PrintButton label="Download PDF" />
+            </div>
           </AnimateOnScroll>
         </div>
       </section>

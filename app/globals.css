@@ -892,3 +892,98 @@
 [data-theme="light"] .gradient-fade-top::before {
   background: linear-gradient(to top, transparent, var(--bg-page));
 }
+
+/* ─── Print / PDF styles ─────────────────────────────────────────────────── */
+@media print {
+  /* Page setup */
+  @page {
+    size: A4;
+    margin: 18mm 16mm 18mm 16mm;
+  }
+
+  /* Base reset */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #1a1a2e !important;
+    font-size: 11pt;
+  }
+
+  /* Hide non-content elements */
+  nav,
+  footer,
+  .print\:hidden,
+  canvas,
+  [class*="Aurora"],
+  [class*="Stars"],
+  [class*="Particle"],
+  [class*="particle"] {
+    display: none !important;
+  }
+
+  /* Remove hero min-height so it doesn't waste a whole page */
+  section:first-of-type {
+    min-height: unset !important;
+    padding-top: 24pt !important;
+    padding-bottom: 16pt !important;
+  }
+
+  /* Clean up card backgrounds */
+  .card-cosmic,
+  [class*="card-cosmic"] {
+    background: #f8f9ff !important;
+    border: 1px solid #dde1f0 !important;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  /* Typography */
+  h1 { font-size: 22pt !important; }
+  h2 { font-size: 16pt !important; page-break-after: avoid; }
+  h3 { font-size: 13pt !important; page-break-after: avoid; }
+
+  /* Gradient text — fallback to solid for print */
+  .text-gradient-cosmic,
+  [class*="text-gradient"] {
+    background: none !important;
+    -webkit-background-clip: unset !important;
+    -webkit-text-fill-color: #4c1d95 !important;
+    color: #4c1d95 !important;
+  }
+
+  /* Score bars — keep gradient using background-color fallback */
+  [class*="bg-gradient"] {
+    background: #6d28d9 !important;
+  }
+
+  /* Page breaks */
+  .page-break-before { page-break-before: always !important; }
+  section { page-break-inside: avoid; }
+
+  /* Links — show URL in appendix */
+  .print-show-url a::after {
+    content: " (" attr(href) ")";
+    font-size: 8pt;
+    color: #666;
+  }
+
+  /* Stat pills */
+  [class*="rounded-full"] {
+    border: 1px solid #dde1f0 !important;
+    background: #f0f2ff !important;
+  }
+
+  /* Table borders */
+  table { border-collapse: collapse !important; width: 100% !important; }
+  th, td {
+    border: 1px solid #dde1f0 !important;
+    padding: 6pt 8pt !important;
+  }
+
+  /* Overline text */
+  .overline { color: #6d28d9 !important; }
+}
