@@ -55,26 +55,26 @@ function extractExecutiveSummary(markdown: string): string {
 function SimpleMarkdown({ text }: { text: string }) {
   const lines = text.split('\n');
   return (
-    <div className="space-y-3 text-sm text-white/70 leading-relaxed">
+    <div className="space-y-3 text-sm text-theme-secondary leading-relaxed">
       {lines.map((line, i) => {
         if (!line.trim()) return <div key={i} className="h-1" />;
         if (line.startsWith('### '))
-          return <h3 key={i} className="text-base font-semibold text-white/90 mt-4">{line.slice(4)}</h3>;
+          return <h3 key={i} className="text-base font-semibold text-theme-secondary mt-4">{line.slice(4)}</h3>;
         if (line.startsWith('## '))
-          return <h2 key={i} className="text-lg font-semibold text-white mt-5">{line.slice(3)}</h2>;
+          return <h2 key={i} className="text-lg font-semibold text-theme-primary mt-5">{line.slice(3)}</h2>;
         if (line.startsWith('# '))
-          return <h1 key={i} className="text-xl font-bold text-white mt-6">{line.slice(2)}</h1>;
+          return <h1 key={i} className="text-xl font-bold text-theme-primary mt-6">{line.slice(2)}</h1>;
         if (line.startsWith('- ') || line.startsWith('* '))
-          return <li key={i} className="ml-4 list-disc text-white/65">{line.slice(2)}</li>;
+          return <li key={i} className="ml-4 list-disc text-theme-secondary">{line.slice(2)}</li>;
         if (line.startsWith('**') && line.endsWith('**'))
-          return <p key={i} className="font-semibold text-white/80">{line.slice(2, -2)}</p>;
+          return <p key={i} className="font-semibold text-theme-secondary">{line.slice(2, -2)}</p>;
         // Bold inline
         const parts = line.split(/(\*\*[^*]+\*\*)/g);
         return (
           <p key={i}>
             {parts.map((p, j) =>
               p.startsWith('**') && p.endsWith('**') ? (
-                <strong key={j} className="font-semibold text-white/85">{p.slice(2, -2)}</strong>
+                <strong key={j} className="font-semibold text-theme-secondary">{p.slice(2, -2)}</strong>
               ) : (
                 <span key={j}>{p}</span>
               )
@@ -93,11 +93,11 @@ function StatChip({ label, value, icon: Icon }: {
   icon: React.ComponentType<{ className?: string }>;
 }) {
   return (
-    <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-white/[0.06] border border-white/[0.08]">
+    <div className="flex items-center gap-2.5 px-4 py-2.5 rounded-xl bg-theme-card border border-theme-subtle">
       <Icon className="w-4 h-4 text-violet-400 shrink-0" />
       <div>
-        <div className="text-base font-bold text-white tabular-nums">{value}</div>
-        <div className="text-[11px] text-white/45 leading-none mt-0.5">{label}</div>
+        <div className="text-base font-bold text-theme-primary tabular-nums">{value}</div>
+        <div className="text-[11px] text-theme-muted leading-none mt-0.5">{label}</div>
       </div>
     </div>
   );
@@ -167,54 +167,34 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
   const execSummary = extractExecutiveSummary(brief?.markdown || '');
 
   return (
-    <div className="min-h-screen bg-[#050510] text-[#e2e8f0]">
-
-      {/* ═══ SITE NAV ═══════════════════════════════════════ */}
-      <nav className="sticky top-0 z-50 bg-[#050510]/90 backdrop-blur-md border-b border-white/[0.06]">
-        <div className="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
-          <a href="/" className="flex items-center gap-1.5 group">
-            <span className="text-teal-400 font-bold text-lg">∿</span>
-            <span className="font-heading font-bold text-white text-sm group-hover:text-teal-300 transition-colors">Wavelength</span>
-          </a>
-          <div className="flex items-center gap-5 text-sm">
-            <a href="/" className="text-white/50 hover:text-white transition-colors hidden sm:inline">Home</a>
-            <a href="/discover" className="text-white/50 hover:text-white transition-colors hidden sm:inline">Market Scan</a>
-            <a href="/compliance-gap" className="text-white/50 hover:text-white transition-colors hidden sm:inline">Compliance</a>
-            <a href="/pell" className="text-white/50 hover:text-white transition-colors hidden sm:inline">Pell Check</a>
-            <a href="/blog" className="text-white/50 hover:text-white transition-colors hidden sm:inline">Blog</a>
-            <a href="/#products" className="bg-gradient-to-r from-purple-600 to-teal-500 text-white px-4 py-1.5 rounded-full text-xs font-semibold hover:opacity-90 transition-opacity">
-              Get Started
-            </a>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-theme-page text-theme-primary">
 
       {/* ═══ HERO HEADER ═══════════════════════════════════════ */}
-      <header className="relative overflow-hidden pt-12 pb-16 px-6">
+      <header className="relative overflow-hidden pt-6 pb-16 px-6">
         {/* Background effects */}
         <div className="absolute inset-0 pointer-events-none">
           <Stars />
           <Aurora />
           {/* Bottom fade */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#050510] to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-32" style={{ background: 'linear-gradient(to top, var(--bg-page), transparent)' }} />
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto">
           {/* Breadcrumb */}
-          <div className="flex items-center gap-1.5 text-xs text-white/30 mb-6">
-            <a href="/" className="hover:text-white/50 transition-colors">Wavelength</a>
+          <div className="flex items-center gap-1.5 text-xs text-theme-muted mb-6">
+            <a href="/" className="hover:text-theme-tertiary transition-colors">Wavelength</a>
             <ChevronRight className="w-3 h-3" />
             <span>Program Market Scan</span>
             <ChevronRight className="w-3 h-3" />
-            <span className="text-white/50">{token}</span>
+            <span className="text-theme-tertiary">{token}</span>
           </div>
 
           {/* Institution name */}
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2 leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-theme-primary mb-2 leading-tight">
             {institutionName}
           </h1>
           {region && (
-            <p className="text-lg text-white/50 mb-6 flex items-center gap-1.5">
+            <p className="text-lg text-theme-tertiary mb-6 flex items-center gap-1.5">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-teal-400" />
               {region} — Program Discovery Analysis
             </p>
@@ -253,7 +233,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
 
           {/* Generated date */}
           {generatedDate && (
-            <p className="text-xs text-white/25">
+            <p className="text-xs text-theme-muted">
               Generated {generatedDate} · Powered by Wavelength
             </p>
           )}
@@ -261,7 +241,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
       </header>
 
       {/* ═══ STICKY TAB NAV ════════════════════════════════════ */}
-      <div className="sticky top-0 z-40 bg-[#050510]/90 backdrop-blur-xl border-b border-white/[0.06]">
+      <div className="sticky top-0 z-40 backdrop-blur-xl border-b border-theme-subtle" style={{ backgroundColor: 'color-mix(in srgb, var(--bg-page) 95%, transparent)' }}>
         <div className="max-w-5xl mx-auto px-6">
           <nav className="flex gap-1 overflow-x-auto scrollbar-hide py-1" aria-label="Report sections">
             {TABS.map((tab) => {
@@ -274,7 +254,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
                   className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium whitespace-nowrap transition-all duration-200 ${
                     active
                       ? 'bg-violet-500/20 text-violet-300 border border-violet-500/30'
-                      : 'text-white/40 hover:text-white/70 hover:bg-white/[0.04]'
+                      : 'text-theme-muted hover:text-theme-secondary hover:bg-white/[0.04]'
                   }`}
                 >
                   <Icon className="w-3.5 h-3.5" />
@@ -297,7 +277,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
             <section>
               <div className="flex items-center gap-2 mb-4">
                 <BookOpen className="w-4 h-4 text-violet-400" />
-                <h2 className="text-lg font-semibold text-white">Executive Summary</h2>
+                <h2 className="text-lg font-semibold text-theme-primary">Executive Summary</h2>
               </div>
               <div className="card-cosmic rounded-2xl p-6">
                 <SimpleMarkdown text={execSummary} />
@@ -309,7 +289,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <BarChart2 className="w-4 h-4 text-violet-400" />
-                  <h2 className="text-lg font-semibold text-white">All Programs at a Glance</h2>
+                  <h2 className="text-lg font-semibold text-theme-primary">All Programs at a Glance</h2>
                 </div>
                 <button
                   onClick={() => setActiveTab('programs')}
@@ -369,7 +349,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
             <section>
               <div className="flex items-center gap-2 mb-4">
                 <Sparkles className="w-4 h-4 text-amber-400" />
-                <h2 className="text-lg font-semibold text-white">Top Recommendations</h2>
+                <h2 className="text-lg font-semibold text-theme-primary">Top Recommendations</h2>
               </div>
               <div className="space-y-4">
                 {allPrograms.slice(0, 3).map((prog, i) => (
@@ -396,10 +376,10 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
           <div className="space-y-6 animate-fade-up" ref={programsSectionRef}>
             <div className="flex items-center justify-between mb-2">
               <div>
-                <h2 className="text-xl font-bold text-white">All Programs</h2>
-                <p className="text-sm text-white/40 mt-1">
+                <h2 className="text-xl font-bold text-theme-primary">All Programs</h2>
+                <p className="text-sm text-theme-muted mt-1">
                   {scored.length} conventional + {blueOcean.length} blue ocean ={' '}
-                  <strong className="text-white/60">{allPrograms.length} total</strong>
+                  <strong className="text-theme-secondary">{allPrograms.length} total</strong>
                 </p>
               </div>
             </div>
@@ -408,7 +388,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
             {scored.length > 0 && (
               <div>
                 <div className="flex items-center gap-2 mb-4">
-                  <span className="text-xs font-semibold uppercase tracking-wider text-white/40">
+                  <span className="text-xs font-semibold uppercase tracking-wider text-theme-muted">
                     Conventional Opportunities ({scored.length})
                   </span>
                   <div className="flex-1 h-px bg-white/[0.06]" />
@@ -433,7 +413,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
                   </div>
                   <div className="flex-1 h-px bg-teal-500/20" />
                 </div>
-                <p className="text-sm text-white/50 mb-4 italic">
+                <p className="text-sm text-theme-tertiary mb-4 italic">
                   {structuredData.blueOceanResults?.keyInsight || 'Opportunities discovered through non-obvious pattern matching — not in standard labor market data.'}
                 </p>
                 <div className="space-y-4">
@@ -455,8 +435,8 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
         {activeTab === 'regional' && ri && (
           <div className="animate-fade-up">
             <div className="mb-6">
-              <h2 className="text-xl font-bold text-white">Regional Intelligence</h2>
-              <p className="text-sm text-white/40 mt-1">
+              <h2 className="text-xl font-bold text-theme-primary">Regional Intelligence</h2>
+              <p className="text-sm text-theme-muted mt-1">
                 Market context and competitive landscape for {institutionName}
               </p>
             </div>
@@ -472,8 +452,8 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
         {activeTab === 'citations' && (
           <div className="animate-fade-up">
             <div className="mb-6">
-              <h2 className="text-xl font-bold text-white">Audit Trail</h2>
-              <p className="text-sm text-white/40 mt-1">
+              <h2 className="text-xl font-bold text-theme-primary">Audit Trail</h2>
+              <p className="text-sm text-theme-muted mt-1">
                 Every data point, signal, and source behind this analysis
               </p>
             </div>
@@ -484,7 +464,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
       </main>
 
       {/* ═══ FOOTER ════════════════════════════════════════════ */}
-      <footer className="border-t border-white/[0.06] mt-16 bg-[#050510]">
+      <footer className="border-t border-theme-subtle mt-16 bg-theme-page">
         <div className="max-w-5xl mx-auto px-6 py-12">
 
           {/* CTA band */}
@@ -497,10 +477,10 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
               <p className="text-xs font-semibold uppercase tracking-wider text-teal-400 mb-2">
                 Next Steps
               </p>
-              <h3 className="text-2xl font-bold text-white mb-3">
+              <h3 className="text-2xl font-bold text-theme-primary mb-3">
                 Want to validate these findings?
               </h3>
-              <p className="text-white/60 text-sm max-w-lg mx-auto mb-6 leading-relaxed">
+              <p className="text-theme-secondary text-sm max-w-lg mx-auto mb-6 leading-relaxed">
                 Wavelength Validation Phase conducts deep employer outreach and market validation in your region to confirm demand before you commit budget to a new program.
               </p>
               <a
@@ -516,13 +496,13 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
           {/* Download + links */}
           <div className="flex flex-col sm:flex-row justify-between items-start gap-6">
             <div>
-              <p className="text-sm font-semibold text-white mb-1">Download Options</p>
+              <p className="text-sm font-semibold text-theme-primary mb-1">Download Options</p>
               <div className="flex gap-3 mt-2">
                 <a
                   href={`/api/report/${token}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-xs text-white/50 hover:text-white/80 transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs text-theme-tertiary hover:text-theme-secondary transition-colors"
                 >
                   <Database className="w-3.5 h-3.5" />
                   Raw JSON
@@ -530,7 +510,7 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
                 </a>
                 <a
                   href="#"
-                  className="inline-flex items-center gap-1.5 text-xs text-white/50 hover:text-white/80 transition-colors"
+                  className="inline-flex items-center gap-1.5 text-xs text-theme-tertiary hover:text-theme-secondary transition-colors"
                 >
                   <Download className="w-3.5 h-3.5" />
                   Download PDF
@@ -539,8 +519,8 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
             </div>
 
             <div className="text-right">
-              <p className="text-sm font-bold text-white">Wavelength</p>
-              <p className="text-xs text-white/30 mt-1">
+              <p className="text-sm font-bold text-theme-primary">Wavelength</p>
+              <p className="text-xs text-theme-muted mt-1">
                 Program intelligence for community colleges
               </p>
               <a
@@ -552,12 +532,12 @@ export function ReportViewer({ data, token }: ReportViewerProps) {
             </div>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row justify-between items-center gap-3">
-            <p className="text-xs text-white/20">
+          <div className="mt-8 pt-6 border-t border-theme-subtle flex flex-col sm:flex-row justify-between items-center gap-3">
+            <p className="text-xs text-theme-muted">
               © {new Date().getFullYear()} Wavelength. Confidential — for {institutionName} use only.
             </p>
-            <p className="text-xs text-white/20">
-              Report token: <code className="font-mono text-white/30">{token}</code>
+            <p className="text-xs text-theme-muted">
+              Report token: <code className="font-mono text-theme-muted">{token}</code>
             </p>
           </div>
         </div>

@@ -101,13 +101,13 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
         {/* Rank + Gauge */}
         <div className="flex flex-col items-center gap-1 shrink-0">
           <ScoreGauge score={composite} isBlueOcean={isBO} size="md" />
-          <span className="text-xs text-white/25 tabular-nums">#{rank}</span>
+          <span className="text-xs text-theme-muted tabular-nums">#{rank}</span>
         </div>
 
         {/* Title + meta */}
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-1">
-            <h3 className="text-lg font-semibold text-white leading-tight group-hover:text-gradient-cosmic transition-all">
+            <h3 className="text-lg font-semibold text-theme-primary leading-tight group-hover:text-gradient-cosmic transition-all">
               {title}
             </h3>
             <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${tierConfig.badge}`}>
@@ -124,23 +124,23 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
           {/* Quick stats row */}
           <div className="flex flex-wrap gap-3 mt-2">
             {isBO && blueOcean?.medianWage && (
-              <span className="text-xs text-white/50">
-                💰 <span className="text-white/70">{blueOcean.medianWage}</span> median wage
+              <span className="text-xs text-theme-tertiary">
+                💰 <span className="text-theme-secondary">{blueOcean.medianWage}</span> median wage
               </span>
             )}
             {!isBO && conventional?.keyMetrics?.medianHourlyWage && (
-              <span className="text-xs text-white/50">
-                💰 <span className="text-white/70">{conventional.keyMetrics.medianHourlyWage}</span>/hr
+              <span className="text-xs text-theme-tertiary">
+                💰 <span className="text-theme-secondary">{conventional.keyMetrics.medianHourlyWage}</span>/hr
               </span>
             )}
             {!isBO && conventional?.keyMetrics?.regionalAnnualOpenings && (
-              <span className="text-xs text-white/50">
-                📍 <span className="text-white/70">{conventional.keyMetrics.regionalAnnualOpenings}</span> openings/yr
+              <span className="text-xs text-theme-tertiary">
+                📍 <span className="text-theme-secondary">{conventional.keyMetrics.regionalAnnualOpenings}</span> openings/yr
               </span>
             )}
             {isBO && blueOcean?.estimatedDemand && (
-              <span className="text-xs text-white/50">
-                📍 <span className="text-white/70">{blueOcean.estimatedDemand}</span>
+              <span className="text-xs text-theme-tertiary">
+                📍 <span className="text-theme-secondary">{blueOcean.estimatedDemand}</span>
               </span>
             )}
             {isBO && blueOcean?.discoveryMethod && (
@@ -153,7 +153,7 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
 
         {/* Expand chevron */}
         <ChevronDown
-          className={`w-5 h-5 shrink-0 text-white/30 transition-transform duration-300 mt-1 ${
+          className={`w-5 h-5 shrink-0 text-theme-muted transition-transform duration-300 mt-1 ${
             expanded ? 'rotate-180' : ''
           }`}
         />
@@ -166,10 +166,10 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
           expanded ? 'max-h-[9999px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
-        <div className="px-6 pb-6 space-y-6 border-t border-white/[0.06] pt-5">
+        <div className="px-6 pb-6 space-y-6 border-t border-theme-subtle pt-5">
 
           {/* Description */}
-          <p className="text-sm text-white/70 leading-relaxed">{description}</p>
+          <p className="text-sm text-theme-secondary leading-relaxed">{description}</p>
 
           {/* Blue Ocean callouts */}
           {isBO && blueOcean && (
@@ -182,7 +182,7 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
                       <p className="text-xs font-semibold text-teal-400 uppercase tracking-wider mb-1">
                         Why This Is Non-Obvious
                       </p>
-                      <p className="text-sm text-white/70 leading-relaxed">{blueOcean.whyNonObvious}</p>
+                      <p className="text-sm text-theme-secondary leading-relaxed">{blueOcean.whyNonObvious}</p>
                     </div>
                   </div>
                 </div>
@@ -195,7 +195,7 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
                       <p className="text-xs font-semibold text-violet-400 uppercase tracking-wider mb-1">
                         First-Mover Advantage
                       </p>
-                      <p className="text-sm text-white/70 leading-relaxed">{blueOcean.whyDefensible}</p>
+                      <p className="text-sm text-theme-secondary leading-relaxed">{blueOcean.whyDefensible}</p>
                     </div>
                   </div>
                 </div>

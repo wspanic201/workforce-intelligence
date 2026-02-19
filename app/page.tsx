@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Check, Shield, ArrowRight, Clock, Zap, ChevronDown, ChevronUp, FileSearch, BarChart3, Radio, Mail } from 'lucide-react';
 import {
   AnimateOnScroll,
@@ -336,119 +336,23 @@ function FAQSection() {
   );
 }
 
-/* ───────────── Hero Carousel ───────────── */
+/* ───────────── Static Hero ───────────── */
 
-const HERO_SLIDES = [
-  {
-    id: 'main',
-    badge: null,
-    headline: 'Your next high-demand program exists. Wavelength finds it.',
-    subtitle: 'Wavelength is the workforce program intelligence platform for community colleges — find programs worth building, validate demand, secure funding, and keep your curriculum current. All from live labor market data.',
-    stats: [
-      { value: '7–10', label: 'vetted program leads' },
-      { value: '50+', label: 'verified sources' },
-      { value: '$0', label: 'to get started' },
-    ],
-    cta: { text: 'See Our Products ↓', href: '#products' },
-    ctaSecondary: { text: 'View Sample Report', href: '/report/demo' },
-    icon: <Radio className="h-3.5 w-3.5 text-teal-400" />,
-    badgeColor: 'teal',
-    showForm: false,
-  },
-  {
-    id: 'pell',
-    badge: 'July 1, 2026 Deadline',
-    headline: 'The deadline is July 1. Which of your programs make the cut?',
-    subtitle: 'Short-term programs between 150–599 hours qualify for Pell for the first time. Your competitors are already checking. Get your free readiness check — before the window closes.',
-    stats: [
-      { value: '50+', label: 'verified sources' },
-      { value: 'Free', label: 'readiness check' },
-      { value: '48h', label: 'turnaround' },
-    ],
-    cta: null,
-    ctaSecondary: null,
-    icon: <Clock className="h-3.5 w-3.5 text-purple-400" />,
-    badgeColor: 'purple',
-    showForm: true,
-  },
-  {
-    id: 'compliance',
-    badge: '$295 · Instant ROI',
-    headline: 'You\'re likely missing programs your state requires. We\'ll show you exactly which ones.',
-    subtitle: 'Every state mandates specific training programs — CNA, CDL, pharmacy tech, and more. We cross-reference your catalog against state codes and tell you what\'s missing, with dollar figures attached.',
-    stats: [
-      { value: '$295', label: 'one-time' },
-      { value: '21+', label: 'gap categories' },
-      { value: '$4.2M', label: 'avg opportunity' },
-    ],
-    cta: { text: 'Learn More →', href: '/compliance-gap' },
-    ctaSecondary: { text: 'Order Now', href: 'mailto:hello@withwavelength.com?subject=Compliance%20Gap%20Report' },
-    icon: <FileSearch className="h-3.5 w-3.5 text-blue-400" />,
-    badgeColor: 'blue',
-    showForm: false,
-  },
-  {
-    id: 'market-scan',
-    badge: 'Founding Rate · $1,500',
-    headline: 'Find the programs your region is ready to fund.',
-    subtitle: '7–10 validated program opportunities for your region — each backed by employer demand data, scored across five dimensions, and ready to act on. Stop guessing. Start building.',
-    stats: [
-      { value: '7–10', label: 'vetted program leads' },
-      { value: '50+', label: 'verified sources' },
-      { value: '25+', label: 'page report' },
-    ],
-    cta: { text: 'Learn More →', href: '/discover' },
-    ctaSecondary: { text: 'Order a Program Opportunity Scan', href: 'mailto:hello@withwavelength.com?subject=Market%20Scan%20Order' },
-    icon: <BarChart3 className="h-3.5 w-3.5 text-emerald-400" />,
-    badgeColor: 'emerald',
-    showForm: false,
-  },
+const PRODUCT_CARDS = [
+  { icon: '🎯', label: 'Pell Readiness Check', tag: 'Free', color: 'purple', href: '/pell', desc: 'Find out if your programs qualify for federal funding' },
+  { icon: '📋', label: 'Program Gap Audit', tag: '$295', color: 'blue', href: '/compliance-gap', desc: "See every compliance gap and what it's costing you" },
+  { icon: '📊', label: 'Program Opportunity Scan', tag: '$1,500', color: 'teal', href: '/discover', desc: 'Get 7–10 validated program opportunities, scored and ready to act on' },
+  { icon: '📡', label: 'Drift Monitor', tag: 'From $1,200/yr', color: 'orange', href: '/drift', desc: 'Keep existing programs aligned to employer demand' },
 ];
 
-const BADGE_COLORS: Record<string, string> = {
-  teal: 'bg-teal-500/10 border-teal-500/20 text-teal-300',
+const CARD_COLORS: Record<string, string> = {
   purple: 'bg-purple-500/10 border-purple-500/20 text-purple-300',
-  blue: 'bg-blue-500/10 border-blue-500/20 text-blue-300',
-  emerald: 'bg-emerald-500/10 border-emerald-500/20 text-emerald-300',
+  blue:   'bg-blue-500/10 border-blue-500/20 text-blue-300',
+  teal:   'bg-teal-500/10 border-teal-500/20 text-teal-300',
   orange: 'bg-orange-500/10 border-orange-500/20 text-orange-300',
 };
 
-const DOT_COLORS: Record<string, string> = {
-  teal: 'bg-teal-400',
-  purple: 'bg-purple-400',
-  blue: 'bg-blue-400',
-  emerald: 'bg-emerald-400',
-};
-
-function HeroCarousel() {
-  const [current, setCurrent] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [paused, setPaused] = useState(false);
-
-  const goTo = useCallback((index: number) => {
-    if (index === current || isTransitioning) return;
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setCurrent(index);
-      setTimeout(() => setIsTransitioning(false), 30);
-    }, 350);
-  }, [current, isTransitioning]);
-
-  // Auto-rotate every 12 seconds — pauses when user is interacting with form
-  useEffect(() => {
-    if (paused) return;
-    const timer = setInterval(() => {
-      setIsTransitioning(true);
-      setTimeout(() => {
-        setCurrent(prev => (prev + 1) % HERO_SLIDES.length);
-        setTimeout(() => setIsTransitioning(false), 30);
-      }, 350);
-    }, 12000);
-    return () => clearInterval(timer);
-  }, [paused]);
-
-  const slide = HERO_SLIDES[current];
-
+function StaticHero() {
   return (
     <section className="relative min-h-[90vh] lg:h-[90vh] lg:min-h-[700px] lg:max-h-[900px] flex items-center justify-center pt-36 lg:pt-40 pb-16 overflow-hidden">
       <Stars count={120} />
@@ -459,24 +363,19 @@ function HeroCarousel() {
       <div className="relative z-10 max-w-[1200px] mx-auto px-6 w-full">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
 
-          {/* Left: Content */}
-          <div
-            className={`flex-1 text-center lg:text-left transition-all duration-300 ease-out min-h-[320px] ${
-              isTransitioning ? 'opacity-0 translate-y-3' : 'opacity-100 translate-y-0'
-            }`}
-          >
-            {slide.badge && (
-              <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border mb-6 ${BADGE_COLORS[slide.badgeColor]}`}>
-                {slide.icon}
-                <span className="text-xs font-medium uppercase tracking-wider">{slide.badge}</span>
-              </div>
-            )}
+          {/* Left: Brand statement + CTAs */}
+          <div className="flex-1 text-center lg:text-left">
+
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-teal-500/30 bg-teal-500/10 mb-6">
+              <Radio className="h-3.5 w-3.5 text-teal-400" />
+              <span className="text-xs font-medium uppercase tracking-wider text-teal-300">Workforce Program Intelligence</span>
+            </div>
 
             <h1
               className="text-gradient-cosmic font-heading font-bold leading-[1.05]"
-              style={{ fontSize: 'clamp(2.2rem, 5vw + 0.5rem, 4rem)' }}
+              style={{ fontSize: 'clamp(2.4rem, 5vw + 0.5rem, 4.2rem)' }}
             >
-              {slide.headline}
+              Build the programs your region is asking for.
             </h1>
 
             <div className="mt-4 flex lg:justify-start justify-center">
@@ -484,15 +383,19 @@ function HeroCarousel() {
             </div>
 
             <p className="mt-2 text-xs font-mono tracking-widest text-theme-muted uppercase lg:text-left text-center">
-              Workforce Program Intelligence · Community Colleges
+              Community Colleges · Workforce Teams · Labor Market Data
             </p>
 
-            <p className="mt-4 text-lg md:text-xl text-theme-secondary leading-relaxed max-w-xl">
-              {slide.subtitle}
+            <p className="mt-5 text-lg md:text-xl text-theme-secondary leading-relaxed max-w-xl">
+              Wavelength gives community college workforce teams the intelligence to find programs worth building, validate demand before you invest, secure available funding, and keep existing programs current — all from live labor market data.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-5 lg:justify-start justify-center">
-              {slide.stats.map(({ value, label }) => (
+              {[
+                { value: '50+', label: 'verified sources' },
+                { value: '7–10', label: 'program leads per scan' },
+                { value: '$0', label: 'to get started' },
+              ].map(({ value, label }) => (
                 <div key={label} className="text-center">
                   <div className="font-heading font-bold text-2xl text-gradient-cosmic">{value}</div>
                   <p className="text-theme-secondary text-xs mt-0.5 uppercase tracking-wider">{label}</p>
@@ -500,204 +403,52 @@ function HeroCarousel() {
               ))}
             </div>
 
-            {slide.cta && (
-              <div className="mt-8 flex flex-wrap gap-4 lg:justify-start justify-center">
-                <Link href={slide.cta.href}>
-                  <button className="btn-cosmic btn-cosmic-primary text-sm">
-                    {slide.cta.text}
-                  </button>
+            <div className="mt-8 flex flex-wrap gap-4 lg:justify-start justify-center">
+              <Link href="/pell">
+                <button className="btn-cosmic btn-cosmic-primary text-sm">
+                  Start Free →
+                </button>
+              </Link>
+              <Link href="/report/demo">
+                <button className="btn-cosmic btn-cosmic-ghost text-sm">
+                  View Sample Report
+                </button>
+              </Link>
+            </div>
+          </div>
+
+          {/* Right: Product card stack */}
+          <div className="w-full lg:w-auto lg:min-w-[420px] lg:max-w-[480px]">
+            <div className="space-y-3 w-full">
+              {PRODUCT_CARDS.map((item, idx) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="card-cosmic rounded-xl p-4 flex items-center gap-4 hover:border-theme-strong transition-all group block"
+                  style={{ animationDelay: `${idx * 150}ms` }}
+                >
+                  <span className="text-2xl">{item.icon}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <h4 className="font-heading font-semibold text-theme-primary text-sm">{item.label}</h4>
+                      <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${CARD_COLORS[item.color]}`}>
+                        {item.tag}
+                      </span>
+                    </div>
+                    <p className="text-theme-tertiary text-xs mt-0.5">{item.desc}</p>
+                  </div>
+                  <ArrowRight className="h-4 w-4 text-theme-muted flex-shrink-0 group-hover:text-theme-tertiary transition-colors" />
                 </Link>
-                {slide.ctaSecondary && (
-                  <Link href={slide.ctaSecondary.href}>
-                    <button className="btn-cosmic btn-cosmic-ghost text-sm">
-                      {slide.ctaSecondary.text}
-                    </button>
-                  </Link>
-                )}
+              ))}
+              <div className="pt-2 flex items-center gap-2 justify-center">
+                <Equalizer bars={5} size="sm" muted />
+                <span className="text-theme-muted text-xs tracking-wider uppercase">Tuned to your market</span>
+                <Equalizer bars={5} size="sm" muted />
               </div>
-            )}
-          </div>
-
-          {/* Right: Form or visual card */}
-          <div
-            className={`w-full lg:w-auto lg:min-w-[420px] lg:max-w-[480px] lg:min-h-[350px] flex items-center transition-all duration-300 ease-out ${
-              isTransitioning ? 'opacity-0 translate-y-3' : 'opacity-100 translate-y-0'
-            }`}
-          >
-            {slide.showForm ? (
-              <PellForm onFocus={() => setPaused(true)} onBlur={() => setPaused(false)} />
-            ) : slide.id === 'main' ? (
-              /* ── Overview: Stacked product preview cards ── */
-              <div className="space-y-3 w-full">
-                {[
-                  { icon: '🎯', label: 'Pell Readiness Check', tag: 'Free', color: 'purple', desc: 'Find out if your programs qualify for federal funding' },
-                  { icon: '📋', label: 'Program Gap Audit', tag: '$295', color: 'blue', desc: 'See every compliance gap and what it\'s costing you' },
-                  { icon: '📊', label: 'Program Opportunity Scan', tag: '$1,500', color: 'teal', desc: 'Get 7–10 validated program opportunities, scored and ready to act on' },
-                  { icon: '📡', label: 'Drift Monitor', tag: 'From $1,200/yr', color: 'orange', desc: 'Keep existing programs aligned to employer demand' },
-                ].map((item, idx) => (
-                  <div
-                    key={item.label}
-                    className="card-cosmic rounded-xl p-4 flex items-center gap-4 hover:border-theme-strong transition-all cursor-default"
-                    style={{ animationDelay: `${idx * 150}ms` }}
-                  >
-                    <span className="text-2xl">{item.icon}</span>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h4 className="font-heading font-semibold text-theme-primary text-sm">{item.label}</h4>
-                        <span className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${BADGE_COLORS[item.color]}`}>
-                          {item.tag}
-                        </span>
-                      </div>
-                      <p className="text-theme-tertiary text-xs mt-0.5">{item.desc}</p>
-                    </div>
-                    <ArrowRight className="h-4 w-4 text-theme-muted flex-shrink-0" />
-                  </div>
-                ))}
-                <div className="pt-2 flex items-center gap-2 justify-center">
-                  <Equalizer bars={5} size="sm" muted />
-                  <span className="text-theme-muted text-xs tracking-wider uppercase">Tuned to your market</span>
-                  <Equalizer bars={5} size="sm" muted />
-                </div>
-              </div>
-            ) : slide.id === 'compliance' ? (
-              /* ── Compliance: Mock gap findings table ── */
-              <div className="card-cosmic rounded-2xl p-6 w-full">
-                <div className="flex items-center gap-2 mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                    <FileSearch className="h-4 w-4 text-blue-400" />
-                  </div>
-                  <h4 className="font-heading font-semibold text-theme-primary text-sm">Sample Gap Findings</h4>
-                </div>
-                <div className="space-y-2">
-                  {[
-                    { program: 'CNA / Nurse Aide', status: 'Missing', revenue: '$420K', urgency: 'high' },
-                    { program: 'CDL Class A', status: 'Missing', revenue: '$890K', urgency: 'high' },
-                    { program: 'Pharmacy Technician', status: 'Partial', revenue: '$310K', urgency: 'med' },
-                    { program: 'HVAC Technician', status: 'Missing', revenue: '$560K', urgency: 'high' },
-                    { program: 'Cosmetology', status: 'Offered', revenue: '—', urgency: 'ok' },
-                  ].map((row) => (
-                    <div key={row.program} className="flex items-center gap-3 py-2 px-3 rounded-lg bg-white/[0.03] text-xs">
-                      <span className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                        row.urgency === 'high' ? 'bg-red-400' : row.urgency === 'med' ? 'bg-yellow-400' : 'bg-green-400'
-                      }`} />
-                      <span className="text-theme-secondary flex-1 font-medium">{row.program}</span>
-                      <span className={`font-medium ${
-                        row.status === 'Missing' ? 'text-red-400' : row.status === 'Partial' ? 'text-yellow-400' : 'text-green-400'
-                      }`}>{row.status}</span>
-                      <span className="text-theme-tertiary w-14 text-right">{row.revenue}</span>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-4 pt-3 border-t border-theme-base flex items-center justify-between">
-                  <span className="text-theme-muted text-xs">Total uncaptured revenue</span>
-                  <span className="text-blue-400 font-heading font-bold text-sm">$2.18M</span>
-                </div>
-              </div>
-            ) : (
-              /* ── Market Scan: Mock research pipeline ── */
-              <div className="card-cosmic rounded-2xl p-6 w-full">
-                <div className="flex items-center gap-2 mb-5">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                    <BarChart3 className="h-4 w-4 text-emerald-400" />
-                  </div>
-                  <h4 className="font-heading font-semibold text-theme-primary text-sm">6-Phase Research Pipeline</h4>
-                </div>
-                <div className="space-y-3">
-                  {[
-                    { phase: 'Regional Intelligence', pct: 100 },
-                    { phase: 'Demand Signals', pct: 100 },
-                    { phase: 'Competitive Landscape', pct: 100 },
-                    { phase: 'Opportunity Scoring', pct: 85 },
-                    { phase: 'Blue Ocean Scanner', pct: 60 },
-                    { phase: 'Report Synthesis', pct: 20 },
-                  ].map((step, idx) => (
-                    <div key={step.phase} className="space-y-1">
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-theme-secondary">{idx + 1}. {step.phase}</span>
-                        <span className={`font-medium ${step.pct === 100 ? 'text-emerald-400' : 'text-theme-tertiary'}`}>
-                          {step.pct === 100 ? '✓' : `${step.pct}%`}
-                        </span>
-                      </div>
-                      <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
-                        <div
-                          className="h-full rounded-full transition-all duration-1000"
-                          style={{
-                            width: `${step.pct}%`,
-                            background: step.pct === 100
-                              ? 'linear-gradient(90deg, #14b8a6, #10b981)'
-                              : 'linear-gradient(90deg, #3b82f6, #14b8a6)',
-                            animation: `barGrow 1.5s ease-out ${idx * 0.2}s both`,
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-4 pt-3 border-t border-theme-base flex items-center justify-between">
-                  <span className="text-theme-muted text-xs">Estimated completion</span>
-                  <span className="text-emerald-400 font-heading font-bold text-sm flex items-center gap-1.5">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
-                    </span>
-                    Running...
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Navigation dots */}
-        <div className="flex items-center justify-center lg:justify-start gap-3 mt-12">
-          {HERO_SLIDES.map((s, i) => (
-            <button
-              key={s.id}
-              onClick={() => goTo(i)}
-              className={`group relative flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 cursor-pointer ${
-                i === current
-                  ? `${BADGE_COLORS[s.badgeColor]} border`
-                  : 'bg-white/5 border border-theme-base hover:border-theme-strong'
-              }`}
-            >
-              <span className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                i === current ? DOT_COLORS[s.badgeColor] : 'bg-white/30 group-hover:bg-white/50'
-              }`} />
-              <span className={`text-[10px] font-medium uppercase tracking-wider transition-colors ${
-                i === current ? '' : 'text-theme-muted group-hover:text-theme-tertiary'
-              }`}>
-                {s.id === 'main' && 'Overview'}
-                {s.id === 'pell' && 'Pell Check'}
-                {s.id === 'compliance' && 'Compliance'}
-                {s.id === 'market-scan' && 'Opportunity Scan'}
-              </span>
-            </button>
-          ))}
-        </div>
-
-        {/* Progress bar */}
-        <div className="mt-4 max-w-md lg:mx-0 mx-auto">
-          <div className="h-[2px] bg-white/10 rounded-full overflow-hidden">
-            <div
-              key={current}
-              className={`h-full ${DOT_COLORS[HERO_SLIDES[current].badgeColor]} rounded-full`}
-              style={{
-                animation: 'heroProgress 8s linear',
-              }}
-            />
+            </div>
           </div>
         </div>
       </div>
-
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes heroProgress {
-          from { width: 0%; }
-          to { width: 100%; }
-        }
-        @keyframes barGrow {
-          from { width: 0%; }
-        }
-      `}} />
     </section>
   );
 }
@@ -706,8 +457,8 @@ export default function HomePage() {
   return (
     <div className="overflow-x-hidden bg-theme-page">
 
-      {/* ===== HERO CAROUSEL ===== */}
-      <HeroCarousel />
+      {/* ===== HERO ===== */}
+      <StaticHero />
 
       {/* Equalizer divider — replaces wave after hero */}
       <div className="py-6 flex justify-center">
