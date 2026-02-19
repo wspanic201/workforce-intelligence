@@ -498,20 +498,19 @@ export default function HomePage() {
               },
             ].map((cat, i) => (
               <AnimateOnScroll key={cat.category} variant="fade-up" delay={100 * i} className={i === 4 ? 'md:col-span-2 md:max-w-[calc(50%-0.5rem)] md:mx-auto' : ''}>
-                <Link href={cat.href} className={`block card-cosmic rounded-2xl p-7 ${cat.border} h-full group hover:bg-white/[0.03] transition-colors`}>
-                  <div className={`inline-flex items-center gap-2 px-2.5 py-1 rounded-full ${cat.bg} border ${cat.border} mb-4`}>
-                    <span className={`${cat.text} text-[10px] font-bold uppercase tracking-wider`}>{cat.category}</span>
-                  </div>
+                <Link href={cat.href} className="block card-cosmic rounded-2xl p-7 h-full group hover:bg-white/[0.03] transition-colors">
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-3">{cat.category}</p>
                   <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">{cat.headline}</h3>
                   <p className="text-theme-secondary text-sm leading-relaxed mb-5">{cat.pain}</p>
-                  <div className="flex flex-wrap gap-2 mb-5">
+                  <div className="space-y-2 mb-5">
                     {cat.products.map(p => (
-                      <span key={p.name} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.05] border border-theme-subtle text-xs text-theme-secondary">
-                        {p.name} <span className={`${cat.text} font-semibold`}>{p.price}</span>
-                      </span>
+                      <div key={p.name} className="flex items-center justify-between gap-4">
+                        <span className="text-sm text-theme-secondary">{p.name}</span>
+                        <span className="text-sm font-bold text-theme-primary whitespace-nowrap">{p.price}</span>
+                      </div>
                     ))}
                   </div>
-                  <span className={`inline-flex items-center gap-1 text-sm font-semibold ${cat.text} group-hover:gap-2 transition-all`}>
+                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-theme-tertiary group-hover:text-theme-primary group-hover:gap-2 transition-all">
                     Go <ArrowRight className="h-4 w-4" />
                   </span>
                 </Link>
