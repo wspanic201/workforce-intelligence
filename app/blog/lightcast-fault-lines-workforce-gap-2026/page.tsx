@@ -95,6 +95,14 @@ export default function LightcastFaultLinesPage() {
         {/* Cosmic accent bar */}
         <div className="h-1 w-full rounded-full bg-gradient-to-r from-violet-500 via-blue-500 to-teal-500 mb-10" />
 
+        {/* Back link */}
+        <Link
+          href="/blog"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity mb-6"
+        >
+          ← Back to Blog
+        </Link>
+
         {/* Header */}
         <header className="mb-10">
           <div className="flex flex-wrap items-center gap-3 mb-4">

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import BlogClient from "./BlogClient";
 
 export const metadata: Metadata = {
   title: "Workforce Intelligence Blog | Wavelength",
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
 };
 
-const posts = [
+export const posts = [
   {
     slug: "lightcast-fault-lines-workforce-gap-2026",
     title: "Lightcast Just Called It: The Labor Shortage Is Permanent. Here's What That Means for Your Programs.",
@@ -24,8 +24,6 @@ const posts = [
     date: "February 19, 2026",
     readTime: "7 min read",
     category: "Labor Market Intelligence",
-    accent: "from-teal-500/20 to-green-500/10",
-    border: "border-teal-500/30",
     dot: "bg-teal-400",
   },
   {
@@ -36,8 +34,6 @@ const posts = [
     date: "February 19, 2026",
     readTime: "6 min read",
     category: "Curriculum Strategy",
-    accent: "from-amber-500/20 to-orange-500/10",
-    border: "border-amber-500/30",
     dot: "bg-amber-400",
   },
   {
@@ -48,8 +44,6 @@ const posts = [
     date: "February 19, 2026",
     readTime: "9 min read",
     category: "Program Strategy",
-    accent: "from-blue-500/20 to-indigo-500/10",
-    border: "border-blue-500/30",
     dot: "bg-blue-400",
   },
   {
@@ -60,8 +54,6 @@ const posts = [
     date: "February 10, 2026",
     readTime: "8 min read",
     category: "Pell Readiness",
-    accent: "from-purple-500/20 to-blue-500/10",
-    border: "border-purple-500/30",
     dot: "bg-violet-400",
   },
   {
@@ -72,94 +64,10 @@ const posts = [
     date: "February 17, 2026",
     readTime: "8 min read",
     category: "Program Strategy",
-    accent: "from-blue-500/20 to-teal-500/10",
-    border: "border-blue-500/30",
     dot: "bg-blue-400",
   },
 ];
 
 export default function BlogIndexPage() {
-  return (
-    <div className="overflow-x-hidden bg-theme-page">
-      {/* Hero */}
-      <section className="pt-36 lg:pt-40 pb-16 px-4 border-b border-theme-subtle relative overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-teal-500/10 pointer-events-none" />
-        <div className="max-w-5xl mx-auto relative">
-          <span className="text-xs font-mono tracking-widest uppercase bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent">
-            The Wavelength Blog
-          </span>
-          <h1 className="mt-3 font-bold leading-tight text-theme-primary" style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)" }}>
-            Intelligence for{" "}
-            <span className="bg-gradient-to-r from-purple-400 via-blue-400 to-teal-400 bg-clip-text text-transparent">
-              Higher Ed Leaders
-            </span>
-          </h1>
-          <p className="mt-4 text-theme-tertiary text-lg max-w-2xl">
-            Practical guides on Workforce Pell, compliance strategy, and program development.
-            No fluff — just frameworks that hold up under scrutiny.
-          </p>
-        </div>
-      </section>
-
-      {/* Posts */}
-      <section className="py-12 px-4">
-        <div className="max-w-5xl mx-auto grid gap-8">
-          {posts.map((post) => (
-            <article
-              key={post.slug}
-              className="group card-cosmic rounded-xl p-8 hover:border-theme-strong transition-colors"
-            >
-              <div className="flex flex-wrap items-center gap-3 mb-4">
-                <span className="inline-flex items-center gap-1.5 text-xs font-medium text-theme-tertiary">
-                  <span className={`w-1.5 h-1.5 rounded-full ${post.dot} shrink-0`} />
-                  {post.category}
-                </span>
-                <span className="text-theme-muted text-sm">{post.date}</span>
-                <span className="text-theme-muted text-sm">·</span>
-                <span className="text-theme-muted text-sm">{post.readTime}</span>
-              </div>
-              <h2 className="text-xl md:text-2xl font-bold mb-3 group-hover:text-theme-primary transition-colors text-theme-primary">
-                <Link href={`/blog/${post.slug}`}>{post.title}</Link>
-              </h2>
-              <p className="text-theme-tertiary leading-relaxed mb-5">{post.excerpt}</p>
-              <Link
-                href={`/blog/${post.slug}`}
-                className="text-sm font-semibold bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent hover:from-purple-300 hover:to-teal-300 transition-all"
-              >
-                Read article →
-              </Link>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-16 px-4 border-t border-theme-subtle">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-theme-primary">
-            Ready to Check Your Pell Readiness?
-          </h2>
-          <p className="text-theme-tertiary mb-8">
-            The July 2026 deadline doesn't move. Get a free Pell Readiness Check and know
-            exactly where your programs stand.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/pell"
-              className="btn-cosmic btn-cosmic-primary"
-            >
-              Free Pell Readiness Check
-            </Link>
-            <Link
-              href="/discover"
-              className="btn-cosmic btn-cosmic-ghost"
-            >
-              Discover Programs
-            </Link>
-          </div>
-        </div>
-      </section>
-    </div>
-  );
+  return <BlogClient posts={posts} />;
 }

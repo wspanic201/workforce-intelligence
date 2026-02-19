@@ -82,6 +82,17 @@ export default function ProgramDevelopmentPage() {
       />
 
       <article className="max-w-4xl mx-auto px-4 pt-36 lg:pt-40 pb-16">
+        {/* Cosmic accent bar */}
+        <div className="h-1 w-full rounded-full bg-gradient-to-r from-violet-500 via-blue-500 to-teal-500 mb-10" />
+
+        {/* Back link */}
+        <Link
+          href="/blog"
+          className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity mb-6"
+        >
+          ← Back to Blog
+        </Link>
+
         {/* Header */}
         <header className="mb-10">
           <div className="flex flex-wrap items-center gap-3 mb-4">
