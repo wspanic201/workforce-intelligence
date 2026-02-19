@@ -260,6 +260,76 @@ export default function DriftPage() {
 
       <WaveDivider />
 
+      {/* ═══════════════ WHAT YOU RECEIVE ═══════════════ */}
+      <section className="relative py-16 px-6">
+        <div className="max-w-[760px] mx-auto">
+          <AnimateOnScroll variant="fade-up">
+            <div className="text-center mb-10">
+              <SectionLabel>What You Receive</SectionLabel>
+            </div>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll variant="fade-up" delay={100}>
+            <div className="card-cosmic rounded-2xl p-8 space-y-5">
+              {[
+                {
+                  icon: (
+                    <svg viewBox="0 0 20 20" fill="none" className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" aria-hidden="true">
+                      <path d="M4 4h8l4 4v8H4V4z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+                      <path d="M12 4v4h4" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+                      <path d="M7 11h6M7 14h4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                    </svg>
+                  ),
+                  label: 'Quarterly PDF report',
+                  detail: 'Emailed directly to your inbox each quarter',
+                },
+                {
+                  icon: (
+                    <svg viewBox="0 0 20 20" fill="none" className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" aria-hidden="true">
+                      <circle cx="10" cy="10" r="7.5" stroke="currentColor" strokeWidth="1.5"/>
+                      <path d="M10 6v4l2.5 2.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  ),
+                  label: 'Executive summary',
+                  detail: 'Top 3 drift findings surfaced for quick leadership review',
+                },
+                {
+                  icon: (
+                    <svg viewBox="0 0 20 20" fill="none" className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" aria-hidden="true">
+                      <rect x="2.5" y="2.5" width="15" height="15" rx="2" stroke="currentColor" strokeWidth="1.5"/>
+                      <path d="M6 7h8M6 10.5h8M6 14h5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                    </svg>
+                  ),
+                  label: 'Recommended curriculum updates by module',
+                  detail: 'Specific, actionable changes — not vague suggestions',
+                },
+                {
+                  icon: (
+                    <svg viewBox="0 0 20 20" fill="none" className="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5" aria-hidden="true">
+                      <path d="M3 5h14M3 10h14M3 15h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                      <circle cx="15.5" cy="14.5" r="3" stroke="currentColor" strokeWidth="1.5"/>
+                      <path d="M15.5 13.5v1l.75.75" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  ),
+                  label: 'Optional 30-min walkthrough call',
+                  detail: 'Review findings with your analyst before acting on them',
+                },
+              ].map((item) => (
+                <div key={item.label} className="flex items-start gap-4">
+                  {item.icon}
+                  <div>
+                    <p className="text-sm font-semibold text-theme-primary">{item.label}</p>
+                    <p className="text-sm text-theme-secondary leading-relaxed">{item.detail}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </AnimateOnScroll>
+        </div>
+      </section>
+
+      <WaveDivider />
+
       {/* ═══════════════ DRIFT SCORE ═══════════════ */}
       <section id="example" className="relative py-20 px-6">
         <div className="max-w-[1100px] mx-auto">
