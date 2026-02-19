@@ -197,7 +197,8 @@ export default function DiscoverPage() {
                     <div key={p.name} className="flex items-center justify-between py-2.5 px-4 rounded-lg bg-white/[0.02]">
                       <div className="flex items-center gap-3 flex-wrap">
                         <span className="text-theme-secondary text-sm">{p.name}</span>
-                        <span className="text-[10px] font-medium uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/[0.05] text-theme-secondary">
+                        <span className="inline-flex items-center gap-1 text-[10px] font-medium text-theme-muted">
+                          <span className="w-1 h-1 rounded-full bg-current opacity-50" />
                           {p.tag}
                         </span>
                       </div>
@@ -234,7 +235,8 @@ export default function DiscoverPage() {
                     <div key={p.name} className="flex items-center justify-between py-2.5 px-4 rounded-lg bg-teal-500/[0.03] border border-teal-500/[0.08]">
                       <div className="flex items-center gap-3 flex-wrap">
                         <span className="text-theme-secondary text-sm">{p.name}</span>
-                        <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-cosmic-teal/20 text-teal-300 border border-teal-500/20">
+                        <span className="inline-flex items-center gap-1 text-[10px] font-medium text-theme-muted">
+                          <span className="w-1 h-1 rounded-full bg-current opacity-50" />
                           Blue Ocean
                         </span>
                       </div>
@@ -329,10 +331,9 @@ export default function DiscoverPage() {
             {/* Free tier */}
             <AnimateOnScroll variant="scale" delay={100}>
               <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-teal-500/20 h-full flex flex-col">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 mb-5 mx-auto">
-                  <Sparkles className="h-3.5 w-3.5 text-teal-400" />
-                  <span className="text-teal-300 text-xs font-medium">Free — No Credit Card</span>
-                </div>
+                <p className="label-brand mb-5 text-center">
+                  <span className="text-gradient-cosmic">∿ ·</span> Free — No Credit Card
+                </p>
 
                 <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Pell Readiness Check</h3>
                 <p className="text-theme-secondary text-sm mb-5">
@@ -432,7 +433,7 @@ export default function DiscoverPage() {
               <Link href="/program-development" className="block card-cosmic rounded-2xl p-7 border-emerald-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="font-heading font-bold text-theme-primary text-lg">Program Validation</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">$2,000</span>
+                  <span className="text-xs font-semibold text-theme-muted">$2,000</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Validate a specific program idea with a full financial model, competitive analysis, and Go/No-Go recommendation.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-300 group-hover:gap-2 transition-all">
@@ -444,7 +445,7 @@ export default function DiscoverPage() {
               <Link href="/grant-alignment" className="block card-cosmic rounded-2xl p-7 border-green-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="font-heading font-bold text-theme-primary text-lg">Grant Intelligence Scan</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-300">$495</span>
+                  <span className="text-xs font-semibold text-theme-muted">$495</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Find and prioritize the grants your programs qualify for — scored, ranked, and ready to pursue.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-green-300 group-hover:gap-2 transition-all">

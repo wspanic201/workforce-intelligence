@@ -9,7 +9,6 @@ import {
   BarChart3,
   Calendar,
   Search,
-  Zap,
   TrendingUp,
   Award,
 } from 'lucide-react';
@@ -263,7 +262,8 @@ export default function GrantsPage() {
                     <div key={g.name} className={`flex items-center justify-between py-2.5 px-4 rounded-lg ${g.bg} border`}>
                       <div className="flex items-center gap-3 flex-wrap">
                         <span className="text-theme-secondary text-sm">{g.name}</span>
-                        <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/[0.05] ${g.color}`}>
+                        <span className="inline-flex items-center gap-1 text-[10px] font-medium text-theme-muted">
+                          <span className="w-1 h-1 rounded-full bg-current opacity-50" />
                           {g.tag}
                         </span>
                       </div>
@@ -351,12 +351,7 @@ export default function GrantsPage() {
             {/* Founding tier */}
             <AnimateOnScroll variant="scale" delay={100}>
               <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-green-500/20 h-full flex flex-col relative">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="inline-flex items-center rounded-full bg-gradient-to-r from-green-500 to-emerald-500 px-4 py-1 text-xs font-bold uppercase tracking-wider text-theme-primary shadow-lg shadow-green-500/20">
-                    Founding Rate
-                  </span>
-                </div>
-                <div className="mt-3">
+                <div>
                   <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Grant Intelligence Scan</h3>
                   <p className="text-theme-secondary text-sm mb-5">
                     30+ grants scanned, scored, and ranked for your institution.
@@ -402,10 +397,9 @@ export default function GrantsPage() {
             {/* Standard tier */}
             <AnimateOnScroll variant="scale" delay={200}>
               <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-theme-base h-full flex flex-col">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/[0.06] border border-theme-base mb-5 mx-auto">
-                  <Zap className="h-3.5 w-3.5 text-theme-muted" />
-                  <span className="text-theme-tertiary text-xs font-medium">Standard Pricing</span>
-                </div>
+                <p className="label-brand mb-5 text-center">
+                  <span className="text-gradient-cosmic">∿ ·</span> Standard Pricing
+                </p>
 
                 <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Grant Intelligence Scan</h3>
                 <p className="text-theme-secondary text-sm mb-5">
@@ -578,7 +572,10 @@ export default function GrantsPage() {
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <h3 className="font-heading font-semibold text-theme-primary text-sm group-hover:text-theme-primary transition-colors">{name}</h3>
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/[0.05] text-theme-tertiary">{tag}</span>
+                      <span className="inline-flex items-center gap-1 text-[10px] font-medium text-theme-muted">
+                        <span className="w-1 h-1 rounded-full bg-current opacity-50" />
+                        {tag}
+                      </span>
                     </div>
                     <p className="text-theme-secondary text-sm">{desc}</p>
                   </div>
@@ -600,7 +597,7 @@ export default function GrantsPage() {
               <Link href="/market-research" className="block card-cosmic rounded-2xl p-7 border-violet-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="font-heading font-bold text-theme-primary text-lg">Program Opportunity Scan</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300">$1,500</span>
+                  <span className="text-xs font-semibold text-theme-muted">$1,500</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Discover 7–10 validated program opportunities for your region — scored, ranked, and backed by real employer demand.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-violet-300 group-hover:gap-2 transition-all">
@@ -612,7 +609,7 @@ export default function GrantsPage() {
               <Link href="/program-development" className="block card-cosmic rounded-2xl p-7 border-emerald-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="font-heading font-bold text-theme-primary text-lg">Program Validation</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300">$2,000</span>
+                  <span className="text-xs font-semibold text-theme-muted">$2,000</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Validate a specific program idea with a full financial model, competitive analysis, and Go/No-Go recommendation.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-300 group-hover:gap-2 transition-all">

@@ -16,7 +16,6 @@ import {
   Scale,
   BookOpen,
   Users,
-  Sparkles,
 } from 'lucide-react';
 import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
 import { Stars } from '@/components/cosmic/Stars';
@@ -315,10 +314,9 @@ export default function ValidatePage() {
 
           <AnimateOnScroll variant="scale" delay={100}>
             <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 mb-6">
-                <Sparkles className="h-3.5 w-3.5 text-teal-400" />
-                <span className="text-teal-300 text-xs font-medium">Founding rate — limited availability</span>
-              </div>
+              <p className="label-brand mb-6 text-center">
+                <span className="text-gradient-cosmic">∿ ·</span> Founding rate — limited availability
+              </p>
 
               <div className="mb-6">
                 <div className="flex items-baseline justify-center gap-3">
@@ -374,7 +372,7 @@ export default function ValidatePage() {
               <Link href="/market-research" className="block card-cosmic rounded-2xl p-7 border-violet-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="font-heading font-bold text-theme-primary text-lg">Program Opportunity Scan</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300">$1,500</span>
+                  <span className="text-xs font-semibold text-theme-muted">$1,500</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Discover 7–10 validated program opportunities for your region — scored, ranked, and backed by real employer demand.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-violet-300 group-hover:gap-2 transition-all">
@@ -386,7 +384,7 @@ export default function ValidatePage() {
               <Link href="/grant-alignment" className="block card-cosmic rounded-2xl p-7 border-green-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="font-heading font-bold text-theme-primary text-lg">Grant Intelligence Scan</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20 text-green-300">$495</span>
+                  <span className="text-xs font-semibold text-theme-muted">$495</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Find and prioritize the grants your programs qualify for — scored, ranked, and ready to pursue.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-green-300 group-hover:gap-2 transition-all">

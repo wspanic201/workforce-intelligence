@@ -460,7 +460,7 @@ export default function ComplianceGapPage() {
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <h3 className="font-heading font-bold text-theme-primary text-lg">Pell Readiness Check</h3>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-300">Free</span>
+                    <span className="text-xs font-semibold text-theme-muted">Free</span>
                   </div>
                   <p className="text-theme-secondary text-sm">Find out which of your programs qualify for Workforce Pell — and which need adjustments before the July 1 deadline.</p>
                 </div>

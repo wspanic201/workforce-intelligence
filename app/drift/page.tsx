@@ -114,12 +114,9 @@ export default function DriftPage() {
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={600}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-orange-500/30 bg-orange-500/10 mb-6">
-              <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
-              <span className="text-orange-300 text-sm font-medium tracking-wide uppercase text-xs">
-                Program Health &amp; Maintenance
-              </span>
-            </div>
+            <p className="label-brand mb-5 text-center">
+              <span className="text-gradient-cosmic">∿ ·</span> Program Health &amp; Maintenance
+            </p>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={50} duration={800}>
@@ -325,7 +322,8 @@ export default function DriftPage() {
                   <h3 className="font-heading font-bold text-theme-primary text-lg">
                     Pharmacy Technician Certificate — Drift Score: 60 / Moderate
                   </h3>
-                  <span className="inline-flex items-center gap-1.5 mt-1 px-2 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/20 text-[10px] font-bold uppercase tracking-wider text-orange-300">
+                  <span className="inline-flex items-center gap-1 text-[10px] font-medium text-theme-muted mt-1">
+                    <span className="w-1 h-1 rounded-full bg-current opacity-50" />
                     🟠 Moderate Drift
                   </span>
                 </div>
@@ -409,11 +407,9 @@ export default function DriftPage() {
               <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary mt-4">
                 Straightforward, subscription-based
               </h2>
-              <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-green-500/30 bg-green-500/10">
-                <span className="text-green-300 text-sm">
-                  💰 Eligible for Perkins V, WIOA Title I, and state workforce development grant funding.
-                </span>
-              </div>
+              <p className="mt-4 text-sm text-theme-muted">
+                💰 Eligible for Perkins V, WIOA Title I, and state workforce development grant funding.
+              </p>
             </div>
           </AnimateOnScroll>
 
@@ -591,7 +587,7 @@ export default function DriftPage() {
               <Link href="/market-research" className="block card-cosmic rounded-2xl p-7 border-violet-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="font-heading font-bold text-theme-primary text-lg">Market Research</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-violet-500/10 border border-violet-500/20 text-violet-300">From $1,500</span>
+                  <span className="text-xs font-semibold text-theme-muted">From $1,500</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Discover what programs your region needs — backed by 50+ live data sources and real employer demand signals.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-violet-300 group-hover:gap-2 transition-all">
@@ -603,7 +599,7 @@ export default function DriftPage() {
               <Link href="/program-analysis" className="block card-cosmic rounded-2xl p-7 border-blue-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="font-heading font-bold text-theme-primary text-lg">Program Analysis</h3>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300">Free + $295</span>
+                  <span className="text-xs font-semibold text-theme-muted">Free + $295</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Audit your existing portfolio for Workforce Pell eligibility and state compliance gaps you may be missing.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-blue-300 group-hover:gap-2 transition-all">

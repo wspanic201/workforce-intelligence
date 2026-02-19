@@ -234,14 +234,11 @@ export default function PellPage() {
         <Waveform className="opacity-40" />
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
-          {/* Urgency badge */}
+          {/* Urgency overline */}
           <AnimateOnScroll variant="fade-up" duration={600}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-amber-500/30 bg-amber-500/10 mb-6">
-              <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-              <span className="text-amber-300 text-sm font-medium tracking-wide">
-                July 1, 2026 — Workforce Pell launches
-              </span>
-            </div>
+            <p className="label-brand mb-5 text-center">
+              <span className="text-gradient-cosmic">∿ ·</span> July 1, 2026 — Workforce Pell launches
+            </p>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={50} duration={800}>
@@ -608,7 +605,7 @@ export default function PellPage() {
                 <div>
                   <div className="flex items-center gap-3 mb-2">
                     <h3 className="font-heading font-bold text-theme-primary text-lg">Program Gap Audit</h3>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-300">$295</span>
+                    <span className="text-xs font-semibold text-theme-muted">$295</span>
                   </div>
                   <p className="text-theme-secondary text-sm">Find every state-mandated program your institution isn&apos;t offering — with revenue estimates for each gap.</p>
                 </div>
