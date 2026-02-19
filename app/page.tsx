@@ -179,7 +179,82 @@ function PellForm({ onFocus, onBlur }: { onFocus?: () => void; onBlur?: () => vo
   );
 }
 
+function LeadMagnetForm() {
+  const [email, setEmail] = useState('');
+  const [institution, setInstitution] = useState('');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('submitting');
+    try {
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, institution, source: 'lead-magnet-checklist', name: '' }),
+      });
+      if (res.ok) setStatus('success');
+      else setStatus('error');
+    } catch {
+      setStatus('error');
+    }
+  };
+
+  if (status === 'success') {
+    return (
+      <div className="text-center py-4">
+        <div className="w-10 h-10 rounded-full bg-teal-500/20 flex items-center justify-center mx-auto mb-3">
+          <Check className="h-5 w-5 text-teal-400" />
+        </div>
+        <p className="text-white font-semibold mb-1">Check your inbox</p>
+        <p className="text-white/60 text-sm">Your checklist is on its way.</p>
+      </div>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <div className="flex flex-col sm:flex-row gap-3">
+        <input
+          type="email"
+          required
+          placeholder="your@college.edu"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          className="flex-1 bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-teal-500/50 transition-colors"
+        />
+        <input
+          type="text"
+          required
+          placeholder="Institution name"
+          value={institution}
+          onChange={e => setInstitution(e.target.value)}
+          className="flex-1 bg-white/[0.05] border border-white/[0.15] rounded-lg px-4 py-2.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-teal-500/50 transition-colors"
+        />
+      </div>
+      {status === 'error' && <p className="text-xs text-red-400">Something went wrong — please try again.</p>}
+      <button
+        type="submit"
+        disabled={status === 'submitting'}
+        className="btn-cosmic btn-cosmic-primary w-full text-sm disabled:opacity-50"
+      >
+        {status === 'submitting' ? 'Sending\u2026' : (
+          <>
+            Send Me the Checklist
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </>
+        )}
+      </button>
+      <p className="text-white/40 text-xs text-center">No spam. Unsubscribe anytime.</p>
+    </form>
+  );
+}
+
 const FAQ_ITEMS = [
+  {
+    q: 'Is Wavelength right for my institution?',
+    a: 'If you\'re a community college or technical college with a continuing education or workforce division, yes. We work with institutions that want to make smarter decisions about which programs to build — using real labor market data instead of intuition or outdated surveys. If you\'re a VP of Academic Affairs, Workforce Development Director, or Dean-level leader asking \'what should we build next?\' — this was built for you.',
+  },
   {
     q: 'What is the Workforce Pell Grant?',
     a: 'Starting July 1, 2026, short-term programs between 150 and 599 clock hours become eligible for federal Pell Grant funding for the first time. This opens significant new enrollment and revenue opportunities for community colleges that have qualifying programs in place.',
@@ -189,12 +264,12 @@ const FAQ_ITEMS = [
     a: 'We assess your current program portfolio against the Workforce Pell eligibility criteria — clock hours, credential type, and labor market alignment requirements. You\'ll receive a clear breakdown of which programs likely qualify, which need adjustments, and where the biggest opportunities are.',
   },
   {
-    q: 'What is a Market Scan?',
-    a: 'A Market Scan delivers 7–10 vetted, data-backed new program leads for your region — each scored across five dimensions. The 25+ page report includes regional labor market intelligence, employer demand verification, competitive landscape mapping, Blue Ocean opportunity scoring, and Workforce Pell readiness — all from 50+ verified sources.',
+    q: 'What do I get in a Program Opportunity Scan (Market Scan)?',
+    a: 'A Program Opportunity Scan delivers 7–10 validated program opportunities for your region — each scored across five dimensions. The 25+ page report includes regional labor market intelligence, employer demand verification, competitive landscape mapping, Blue Ocean opportunity scoring, and Workforce Pell readiness — all from 50+ verified sources.',
   },
   {
     q: 'What is the Compliance Gap Report?',
-    a: 'The Compliance Gap Report shows every state-mandated or regionally critical program your institution isn\'t currently offering — along with estimated enrollment demand and revenue potential for each gap. It replaces weeks of manual research with a 25+ page intelligence report your team can act on immediately.',
+    a: 'The Compliance Gap Report shows every state-mandated program your institution isn\'t currently offering — along with estimated enrollment demand and revenue potential for each gap. It replaces weeks of manual research with a 25+ page intelligence report your team can act on immediately.',
   },
   {
     q: 'How is this different from standard labor market reports?',
@@ -267,8 +342,8 @@ const HERO_SLIDES = [
   {
     id: 'main',
     badge: null,
-    headline: 'Build the programs your community actually needs.',
-    subtitle: 'Wavelength delivers 7–10 vetted, data-backed new program leads — so you can invest in programs that fill real workforce gaps, create careers, and strengthen your institution.',
+    headline: 'Your next high-demand program exists. Wavelength finds it.',
+    subtitle: 'Community colleges that build the right programs — at the right time — earn more, retain more, and serve their communities better. Wavelength surfaces the opportunities your region is ready for, backed by real labor market data.',
     stats: [
       { value: '7–10', label: 'vetted program leads' },
       { value: '50+', label: 'verified sources' },
@@ -283,8 +358,8 @@ const HERO_SLIDES = [
   {
     id: 'pell',
     badge: 'July 1, 2026 Deadline',
-    headline: 'Is your institution Workforce Pell ready?',
-    subtitle: 'Starting July 1, 2026, short-term programs qualify for federal Pell Grants for the first time. Find out which of your programs are eligible — for free — before your competitors get there first.',
+    headline: 'The deadline is July 1. Which of your programs make the cut?',
+    subtitle: 'Short-term programs between 150–599 hours qualify for Pell for the first time. Your competitors are already checking. Get your free readiness check — before the window closes.',
     stats: [
       { value: '50+', label: 'verified sources' },
       { value: 'Free', label: 'readiness check' },
@@ -299,8 +374,8 @@ const HERO_SLIDES = [
   {
     id: 'compliance',
     badge: '$295 · Instant ROI',
-    headline: 'What mandated programs are you missing?',
-    subtitle: 'Every state requires specific training programs — CNA, cosmetology, CDL, pharmacy tech, and more. We cross-reference your catalog against state regulatory codes and show you exactly what you\'re not offering — and what it\'s worth.',
+    headline: 'You\'re likely missing programs your state requires. We\'ll show you exactly which ones.',
+    subtitle: 'Every state mandates specific training programs — CNA, CDL, pharmacy tech, and more. We cross-reference your catalog against state codes and tell you what\'s missing, with dollar figures attached.',
     stats: [
       { value: '$295', label: 'one-time' },
       { value: '21+', label: 'gap categories' },
@@ -315,8 +390,8 @@ const HERO_SLIDES = [
   {
     id: 'market-scan',
     badge: 'Founding Rate · $1,500',
-    headline: 'Know exactly what to build next.',
-    subtitle: '7–10 vetted new program opportunities for your region — each backed by real employer demand and scored across five dimensions. Build with confidence, not guesswork.',
+    headline: 'Find the programs your region is ready to fund.',
+    subtitle: '7–10 validated program opportunities for your region — each backed by employer demand data, scored across five dimensions, and ready to act on. Stop guessing. Start building.',
     stats: [
       { value: '7–10', label: 'vetted program leads' },
       { value: '50+', label: 'verified sources' },
@@ -450,9 +525,9 @@ function HeroCarousel() {
               /* ── Overview: Stacked product preview cards ── */
               <div className="space-y-3 w-full">
                 {[
-                  { icon: '🎯', label: 'Pell Readiness Check', tag: 'Free', color: 'purple', desc: 'Know if your programs qualify' },
-                  { icon: '📋', label: 'Compliance Gap Report', tag: '$295', color: 'blue', desc: '21+ regulatory categories scanned' },
-                  { icon: '📊', label: 'Market Scan', tag: '$1,500', color: 'teal', desc: '7–10 vetted new program leads' },
+                  { icon: '🎯', label: 'Pell Readiness Check', tag: 'Free', color: 'purple', desc: 'Find out if your programs qualify for federal funding' },
+                  { icon: '📋', label: 'Compliance Gap Report', tag: '$295', color: 'blue', desc: 'See every compliance gap and what it\'s costing you' },
+                  { icon: '📊', label: 'Market Scan', tag: '$1,500', color: 'teal', desc: 'Get 7–10 validated program opportunities, scored and ready to act on' },
                 ].map((item, idx) => (
                   <div
                     key={item.label}
@@ -588,7 +663,7 @@ function HeroCarousel() {
                 {s.id === 'main' && 'Overview'}
                 {s.id === 'pell' && 'Pell Check'}
                 {s.id === 'compliance' && 'Compliance'}
-                {s.id === 'market-scan' && 'Market Scan'}
+                {s.id === 'market-scan' && 'Opportunity Scan'}
               </span>
             </button>
           ))}
@@ -653,7 +728,7 @@ export default function HomePage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
             <p className="text-white/70 text-lg max-w-2xl mx-auto">
-              Each product delivers standalone value. Each one feeds the next.
+              Start with what you&apos;re missing. Prove what you should build. Then build it right.
             </p>
           </AnimateOnScroll>
 
@@ -667,7 +742,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="font-heading font-bold text-white text-xl mb-2">Pell Readiness Check</h3>
                 <p className="text-white/70 text-sm leading-relaxed mb-6">
-                  Find out if your programs qualify before July 1 — before your competitors do.
+                  We review your full program catalog and tell you exactly which programs qualify for Workforce Pell — and which ones need adjustments before the July 1 deadline.
                 </p>
                 <div className="mb-2">
                   <span className="font-heading font-bold text-4xl text-gradient-cosmic">$0</span>
@@ -725,7 +800,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="font-heading font-bold text-white text-xl mb-2">Compliance Gap Report</h3>
                 <p className="text-white/70 text-sm leading-relaxed mb-6">
-                  Every state requires specific training programs. We show you which ones you&apos;re not offering — and what they&apos;re worth.
+                  We find every state-mandated program your institution isn&apos;t offering — and attach a revenue estimate to each gap. The average institution is leaving $2M+ on the table.
                 </p>
                 <div className="mb-2">
                   <span className="font-heading font-bold text-4xl text-gradient-cosmic">$295</span>
@@ -790,7 +865,7 @@ export default function HomePage() {
                   </div>
                   <h3 className="font-heading font-bold text-white text-xl mb-2">Market Scan</h3>
                   <p className="text-white/70 text-sm leading-relaxed mb-6">
-                    7–10 vetted, data-backed new program leads for your region — scored, ranked, and ready to act on. 25+ pages backed by 50+ verified sources.
+                    We research your regional labor market across 50+ sources and deliver 7–10 validated program opportunities — each scored, ranked, and backed by real employer demand. Build with confidence, not guesswork.
                   </p>
                   <div className="mb-1">
                     <span className="font-heading font-bold text-4xl text-gradient-cosmic">$1,500</span>
@@ -804,7 +879,7 @@ export default function HomePage() {
                   </div>
                   <ul className="space-y-2.5 mb-7">
                     {[
-                      '7–10 vetted new program leads for your region',
+                      '7–10 validated program opportunities for your region',
                       'Each program scored, ranked & categorized',
                       'Regional labor market intelligence',
                       'Employer demand verification',
@@ -840,6 +915,26 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== MID-FUNNEL LEAD MAGNET ===== */}
+      <section className="relative py-14 md:py-20">
+        <div className="max-w-[680px] mx-auto px-6">
+          <div className="card-cosmic rounded-2xl p-8 md:p-10 border-teal-500/20">
+            <div className="text-center mb-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/20 mb-4">
+                <span className="text-teal-300 text-xs font-semibold uppercase tracking-wider">Free Download</span>
+              </div>
+              <h2 className="font-heading font-bold text-white text-2xl md:text-3xl mb-3">
+                5 Signs Your Program Portfolio Has Gaps
+              </h2>
+              <p className="text-white/60 text-sm leading-relaxed max-w-md mx-auto">
+                A quick self-assessment for workforce leaders. See which gaps are costing your institution enrollment — and what to do about them.
+              </p>
+            </div>
+            <LeadMagnetForm />
+          </div>
+        </div>
+      </section>
+
       <WaveDivider />
 
       {/* ===== HOW IT WORKS ===== */}
@@ -857,7 +952,7 @@ export default function HomePage() {
               className="font-heading font-bold text-white"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              From question to program plan.
+              From signal to program plan.
             </h2>
           </AnimateOnScroll>
 
@@ -901,6 +996,56 @@ export default function HomePage() {
               </div>
             ))}
           </StaggerChildren>
+        </div>
+      </section>
+
+      <WaveDivider />
+
+      {/* ===== SOCIAL PROOF ===== */}
+      <section className="relative py-16 md:py-24" id="proof">
+        <div className="max-w-[900px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up" className="text-center mb-12">
+            <span className="overline inline-flex items-center gap-3">
+              <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/50" />
+              In The Field
+              <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-teal-500/50" />
+            </span>
+            <h2 className="font-heading font-bold text-white mt-4" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
+              Built by someone who&apos;s been in the room.
+            </h2>
+            <p className="text-white/60 text-base max-w-xl mx-auto mt-4 leading-relaxed">
+              Wavelength was built by a 15-year community college workforce development professional who ran into the same wall every institution does: too many requests, too little data, and no good way to know which programs were actually worth building.
+            </p>
+          </AnimateOnScroll>
+
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { value: '15+', label: 'Years in workforce development', sub: 'Direct institutional experience' },
+              { value: '50+', label: 'Live data sources per scan', sub: 'Not just O*NET and Lightcast' },
+              { value: '$0', label: 'To get started', sub: 'Free Pell check, no strings attached' },
+            ].map(({ value, label, sub }) => (
+              <AnimateOnScroll key={label} variant="fade-up">
+                <div className="card-cosmic rounded-xl p-6 text-center">
+                  <div className="font-heading font-bold text-3xl text-gradient-cosmic mb-1">{value}</div>
+                  <div className="text-white font-medium text-sm mb-1">{label}</div>
+                  <div className="text-white/40 text-xs">{sub}</div>
+                </div>
+              </AnimateOnScroll>
+            ))}
+          </div>
+
+          <AnimateOnScroll variant="fade-up" delay={200} className="mt-10">
+            <div className="card-cosmic rounded-2xl p-8 border-purple-500/20 relative">
+              <div className="absolute top-6 left-8 text-purple-400/30 font-serif text-6xl leading-none select-none">&ldquo;</div>
+              <blockquote className="relative z-10 text-white/80 text-lg leading-relaxed italic pt-4 text-center max-w-2xl mx-auto">
+                &ldquo;The programs we were offering looked fine on paper. What we didn&apos;t know was how many we were missing — and what each one was worth. That&apos;s the gap this fills.&rdquo;
+              </blockquote>
+              <div className="mt-6 text-center">
+                <div className="text-white font-semibold text-sm">Workforce Development Leader</div>
+                <div className="text-white/40 text-xs mt-1">Midwest Community College</div>
+              </div>
+            </div>
+          </AnimateOnScroll>
         </div>
       </section>
 
@@ -1091,7 +1236,7 @@ export default function HomePage() {
             >
               Your community needs programs you haven&apos;t built yet.
               <br className="hidden sm:block" />
-              <span className="text-gradient-cosmic">Let&apos;s find them.</span>
+              <span className="text-gradient-cosmic">Let&apos;s get on the same wavelength.</span>
             </h2>
           </AnimateOnScroll>
 

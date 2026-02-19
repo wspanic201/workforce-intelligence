@@ -21,7 +21,7 @@ const spaceGrotesk = Space_Grotesk({
 export const metadata: Metadata = {
   title: "Wavelength — Workforce Pell Readiness & Market Intelligence for Community Colleges",
   description:
-    "Is your institution Workforce Pell ready? Get a free Pell Readiness Check, Compliance Gap Report, or full Market Scan — data-driven program intelligence for community colleges.",
+    "How community colleges identify which workforce programs to build. Free Pell readiness check, compliance gap audit, and data-backed program opportunity scans for CE and workforce teams.",
   metadataBase: new URL("https://withwavelength.com"),
   alternates: {
     canonical: "/",
