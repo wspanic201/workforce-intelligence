@@ -21,7 +21,7 @@ const services = [
     format: 'Interactive web report + PDF download',
     formatDot: 'bg-purple-400',
     whatsInside: [
-      '7\u201310 scored, ranked program opportunities for your region',
+      '7–10 scored, ranked program opportunities for your region',
       'Demand score, competitive gap score, revenue viability, wage outcomes, launch speed',
       'Regional labor market summary (employment, wage data, growth trends)',
       "Employer landscape (who\u2019s hiring, how many openings, top employers)",
@@ -29,7 +29,7 @@ const services = [
       'Full methodology and data sources audit trail',
     ],
     value:
-      'Gives your CE leadership a prioritized shortlist to act on \u2014 scored against real data, not gut feel.',
+      'Gives your CE leadership a prioritized shortlist to act on — scored against real data, not gut feel.',
     cta: {
       label: 'View Live Demo',
       href: '/report/demo',
@@ -41,7 +41,7 @@ const services = [
     name: 'Program Validation',
     price: '$3,500',
     liveDemo: false,
-    format: 'PDF report \u2014 delivered by email within 5 business days',
+    format: 'PDF report — delivered by email within 5 business days',
     formatDot: 'bg-blue-400',
     whatsInside: [
       'GO / NO-GO recommendation with full rationale',
@@ -53,7 +53,7 @@ const services = [
       '7 independent specialist analyses, cross-checked',
     ],
     value:
-      'Replaces months of internal research with a single authoritative decision document \u2014 ready to present to your board or cabinet.',
+      'Replaces months of internal research with a single authoritative decision document — ready to present to your board or cabinet.',
     cta: {
       label: 'Request Sample PDF',
       href: 'mailto:hello@withwavelength.com?subject=Sample%20Validation%20Report%20Request',
@@ -65,10 +65,10 @@ const services = [
     name: 'Pell Readiness Check',
     price: 'Free',
     liveDemo: false,
-    format: 'PDF report \u2014 delivered by email within 48 hours',
+    format: 'PDF report — delivered by email within 48 hours',
     formatDot: 'bg-teal-400',
     whatsInside: [
-      'Eligibility score for each program assessed (0\u2013100)',
+      'Eligibility score for each program assessed (0–100)',
       'Federal criteria analysis (clock hours, credential type, SOC alignment)',
       'State-specific requirements (Iowa ICSPS, reporting codes, approval status)',
       'Completion rate benchmarking',
@@ -76,7 +76,7 @@ const services = [
       'Prioritized action items to achieve/maintain eligibility',
     ],
     value:
-      'Know exactly where each program stands before July 1, 2026 \u2014 and what to fix to maximize your Pell-eligible catalog.',
+      'Know exactly where each program stands before July 1, 2026 — and what to fix to maximize your Pell-eligible catalog.',
     cta: {
       label: 'Get Yours Free',
       href: '/pell',
@@ -88,7 +88,7 @@ const services = [
     name: 'Program Gap Audit',
     price: '$295',
     liveDemo: false,
-    format: 'PDF report \u2014 delivered by email within 48 hours',
+    format: 'PDF report — delivered by email within 48 hours',
     formatDot: 'bg-orange-400',
     whatsInside: [
       'Current catalog scan against regional employer demand',
@@ -98,7 +98,7 @@ const services = [
       "Competitor comparison (what nearby institutions offer that you\u2019re not)",
     ],
     value:
-      'A snapshot of where your catalog has fallen behind regional demand \u2014 and the highest-value gaps worth filling first.',
+      'A snapshot of where your catalog has fallen behind regional demand — and the highest-value gaps worth filling first.',
     cta: {
       label: 'Request Sample PDF',
       href: 'mailto:hello@withwavelength.com?subject=Sample%20Program%20Gap%20Audit%20Request',
@@ -110,7 +110,7 @@ const services = [
     name: 'Grant Intelligence Scan',
     price: '$495',
     liveDemo: false,
-    format: 'PDF report \u2014 delivered by email within 3\u20135 business days',
+    format: 'PDF report — delivered by email within 3–5 business days',
     formatDot: 'bg-green-400',
     whatsInside: [
       '30+ federal, state, and foundation grants scanned',
@@ -118,7 +118,7 @@ const services = [
       'Award range and deadline for each opportunity',
       'Alignment analysis (which programs qualify, which do not)',
       'Past award data (who received it, award amounts, institution profiles)',
-      'Prioritized pursuit list \u2014 ranked by eligibility match + award size',
+      'Prioritized pursuit list — ranked by eligibility match + award size',
     ],
     value:
       'Stops you from chasing grants you won\u2019t win and surfaces the ones your programs are actually built for.',
@@ -133,10 +133,10 @@ const services = [
     name: 'Curriculum Drift Analysis',
     price: 'from $495/yr',
     liveDemo: false,
-    format: 'PDF report \u2014 delivered by email quarterly',
+    format: 'PDF report — delivered by email quarterly',
     formatDot: 'bg-pink-400',
     whatsInside: [
-      'Drift score by program (0\u2013100; higher = more drift)',
+      'Drift score by program (0–100; higher = more drift)',
       'Section-by-section comparison: current content vs. current O*NET task data',
       'New employer-required skills not in current curriculum',
       'Skills/topics in curriculum no longer reflected in job postings',
@@ -144,7 +144,7 @@ const services = [
       'Recommended curriculum update priority list',
     ],
     value:
-      'Catches curriculum drift before it shows up in placement rates \u2014 giving faculty and curriculum staff a specific, evidence-based update agenda.',
+      'Catches curriculum drift before it shows up in placement rates — giving faculty and curriculum staff a specific, evidence-based update agenda.',
     cta: {
       label: 'Request Sample PDF',
       href: 'mailto:hello@withwavelength.com?subject=Sample%20Curriculum%20Drift%20Report%20Request',
@@ -284,13 +284,13 @@ export default function SamplesPage() {
               Start with the scan that fits your timeline.
             </h2>
             <p className="mt-4 text-theme-tertiary text-lg leading-relaxed">
-              Every report is built for your institution \u2014 no templates, no filler.
+              Every report is built for your institution — no templates, no filler.
               Questions before ordering? We respond within 24 hours.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/pell">
                 <button className="btn-cosmic btn-cosmic-primary text-sm py-3 px-7">
-                  Get Started Free \u2014 Pell Readiness Check
+                  Get Started Free — Pell Readiness Check
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>
