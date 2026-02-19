@@ -16,6 +16,24 @@ export const metadata: Metadata = {
       "Workforce Pell Grant eligibility, July 2026 deadline, and how community colleges should prepare.",
     url: "https://withwavelength.com/blog/workforce-pell-grant-eligibility",
     type: "article",
+    publishedTime: "2026-01-10T00:00:00Z",
+    authors: ["Wavelength"],
+    section: "Policy & Compliance",
+    images: [
+      {
+        url: "https://withwavelength.com/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "Workforce Pell Grant Eligibility: What Community Colleges Need to Know in 2026",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Workforce Pell Grant Eligibility: What Community Colleges Need to Know in 2026",
+    description:
+      "Workforce Pell Grant eligibility, July 2026 deadline, and how community colleges should prepare.",
+    images: ["https://withwavelength.com/og-default.png"],
   },
 };
 
@@ -27,14 +45,30 @@ const articleJsonLd = {
   description:
     "Guide to Workforce Pell Grant eligibility, July 2026 deadline, and community college preparation steps.",
   url: "https://withwavelength.com/blog/workforce-pell-grant-eligibility",
-  author: { "@type": "Organization", name: "Wavelength" },
+  datePublished: "2026-01-10",
+  dateModified: "2026-01-10",
+  author: { "@type": "Organization", name: "Wavelength", url: "https://withwavelength.com" },
   publisher: {
     "@type": "Organization",
     name: "Wavelength",
     url: "https://withwavelength.com",
+    logo: { "@type": "ImageObject", url: "https://withwavelength.com/og-default.png" },
   },
-  datePublished: "2026-01-10",
-  dateModified: "2026-01-10",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://withwavelength.com/blog/workforce-pell-grant-eligibility",
+  },
+  image: "https://withwavelength.com/og-default.png",
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://withwavelength.com" },
+    { "@type": "ListItem", position: 2, name: "Blog", item: "https://withwavelength.com/blog" },
+    { "@type": "ListItem", position: 3, name: "Workforce Pell Grant Eligibility", item: "https://withwavelength.com/blog/workforce-pell-grant-eligibility" },
+  ],
 };
 
 export default function WorkforcePellEligibilityPage() {
@@ -43,6 +77,10 @@ export default function WorkforcePellEligibilityPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <article className="max-w-4xl mx-auto px-4 py-12">

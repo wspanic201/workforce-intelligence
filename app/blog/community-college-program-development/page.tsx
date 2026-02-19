@@ -14,12 +14,24 @@ export const metadata: Metadata = {
       "A rigorous framework for building community college programs grounded in regional demand, not intuition. Covers market scanning, validation, competitive analysis, and launch criteria.",
     url: "https://withwavelength.com/blog/community-college-program-development",
     type: "article",
+    publishedTime: "2026-02-17T00:00:00Z",
+    authors: ["Wavelength"],
+    section: "Program Strategy",
+    images: [
+      {
+        url: "https://withwavelength.com/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "Data-Driven Program Development for Community Colleges: A Practical Framework",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Data-Driven Community College Program Development",
     description:
       "Stop building programs on intuition. This framework uses labor market signals to build programs that enroll, complete, and place.",
+    images: ["https://withwavelength.com/og-default.png"],
   },
 };
 
@@ -31,17 +43,30 @@ const articleJsonLd = {
   description:
     "How to use labor market data and regional demand signals to build community college programs that enroll well, complete well, and place students into jobs.",
   url: "https://withwavelength.com/blog/community-college-program-development",
-  author: {
-    "@type": "Organization",
-    name: "Wavelength",
-  },
+  datePublished: "2026-02-17",
+  dateModified: "2026-02-17",
+  author: { "@type": "Organization", name: "Wavelength", url: "https://withwavelength.com" },
   publisher: {
     "@type": "Organization",
     name: "Wavelength",
     url: "https://withwavelength.com",
+    logo: { "@type": "ImageObject", url: "https://withwavelength.com/og-default.png" },
   },
-  datePublished: "2026-02-17",
-  dateModified: "2026-02-17",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://withwavelength.com/blog/community-college-program-development",
+  },
+  image: "https://withwavelength.com/og-default.png",
+};
+
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://withwavelength.com" },
+    { "@type": "ListItem", position: 2, name: "Blog", item: "https://withwavelength.com/blog" },
+    { "@type": "ListItem", position: 3, name: "Community College Program Development", item: "https://withwavelength.com/blog/community-college-program-development" },
+  ],
 };
 
 export default function ProgramDevelopmentPage() {
@@ -50,6 +75,10 @@ export default function ProgramDevelopmentPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <article className="max-w-4xl mx-auto px-4 py-12">

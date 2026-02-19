@@ -187,3 +187,47 @@ export type StageCitationInsert = {
   agent_name?: string | null;
   program_title?: string | null;
 };
+
+
+// ── Drift Monitor Types ──
+
+export interface DriftProgram {
+  id: string;
+  institution_name: string;
+  contact_email: string | null;
+  program_name: string;
+  occupation_title: string;
+  soc_code: string | null;
+  curriculum_description: string;
+  last_curriculum_update: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DriftProgramInsert {
+  institution_name: string;
+  contact_email?: string;
+  program_name: string;
+  occupation_title: string;
+  soc_code?: string;
+  curriculum_description: string;
+  last_curriculum_update?: string;
+}
+
+export interface DriftScan {
+  id: string;
+  program_id: string;
+  scanned_at: string;
+  postings_analyzed: number | null;
+  employer_skills: Record<string, unknown>[] | null;
+  covered_skills: string[] | null;
+  gap_skills: string[] | null;
+  stale_skills: string[] | null;
+  drift_score: number | null;
+  drift_level: 'aligned' | 'minor' | 'moderate' | 'significant' | 'critical' | null;
+  drift_delta: number | null;
+  narrative: string | null;
+  recommendations: string[] | null;
+  report_html: string | null;
+  report_pdf_path: string | null;
+}

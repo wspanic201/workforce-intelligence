@@ -16,6 +16,24 @@ export const metadata: Metadata = {
       "Lightcast's 2026 Fault Lines report warns that labor scarcity is structural, not cyclical. 66% of jobs require degrees, 31% of workers have them.",
     url: "https://withwavelength.com/blog/lightcast-fault-lines-workforce-gap-2026",
     type: "article",
+    publishedTime: "2026-02-19T00:00:00Z",
+    authors: ["Wavelength"],
+    section: "Labor Market Intelligence",
+    images: [
+      {
+        url: "https://withwavelength.com/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "Lightcast's 'Fault Lines' Report: What It Means for Community College Program Strategy",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Lightcast's 'Fault Lines' Report: What It Means for Community College Program Strategy",
+    description:
+      "Lightcast's 2026 Fault Lines report warns that labor scarcity is structural, not cyclical. 66% of jobs require degrees, 31% of workers have them.",
+    images: ["https://withwavelength.com/og-default.png"],
   },
 };
 
@@ -27,14 +45,20 @@ const articleJsonLd = {
   description:
     "Lightcast's 2026 Fault Lines report warns that labor scarcity is structural, not cyclical. 66% of jobs require post-secondary credentials, but only 31% of workers have them.",
   url: "https://withwavelength.com/blog/lightcast-fault-lines-workforce-gap-2026",
-  author: { "@type": "Organization", name: "Wavelength" },
+  datePublished: "2026-02-19",
+  dateModified: "2026-02-19",
+  author: { "@type": "Organization", name: "Wavelength", url: "https://withwavelength.com" },
   publisher: {
     "@type": "Organization",
     name: "Wavelength",
     url: "https://withwavelength.com",
+    logo: { "@type": "ImageObject", url: "https://withwavelength.com/og-default.png" },
   },
-  datePublished: "2026-02-19",
-  dateModified: "2026-02-19",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://withwavelength.com/blog/lightcast-fault-lines-workforce-gap-2026",
+  },
+  image: "https://withwavelength.com/og-default.png",
   keywords: [
     "Lightcast Fault Lines",
     "labor shortage",
@@ -45,12 +69,26 @@ const articleJsonLd = {
   ],
 };
 
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://withwavelength.com" },
+    { "@type": "ListItem", position: 2, name: "Blog", item: "https://withwavelength.com/blog" },
+    { "@type": "ListItem", position: 3, name: "Lightcast Fault Lines Report 2026", item: "https://withwavelength.com/blog/lightcast-fault-lines-workforce-gap-2026" },
+  ],
+};
+
 export default function LightcastFaultLinesPage() {
   return (
     <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <article className="max-w-4xl mx-auto px-4 py-12">

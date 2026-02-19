@@ -16,6 +16,24 @@ export const metadata: Metadata = {
       "Burning Glass Institute research shows AI is causing employers to rapidly redesign roles. For community colleges, curriculum drift is an existential risk.",
     url: "https://withwavelength.com/blog/ai-changing-job-requirements-curriculum-alignment",
     type: "article",
+    publishedTime: "2026-02-19T00:00:00Z",
+    authors: ["Wavelength"],
+    section: "Curriculum Strategy",
+    images: [
+      {
+        url: "https://withwavelength.com/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "AI Is Rewriting Job Requirements Faster Than Colleges Can Update Curriculum",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Is Rewriting Job Requirements Faster Than Colleges Can Update Curriculum",
+    description:
+      "Burning Glass Institute research shows AI is causing employers to rapidly redesign roles. For community colleges, curriculum drift is an existential risk.",
+    images: ["https://withwavelength.com/og-default.png"],
   },
 };
 
@@ -27,14 +45,20 @@ const articleJsonLd = {
   description:
     "Burning Glass Institute research documents how AI is reshaping occupational skill requirements faster than traditional curriculum review cycles can keep pace. Community colleges risk curriculum drift without a systematic monitoring approach.",
   url: "https://withwavelength.com/blog/ai-changing-job-requirements-curriculum-alignment",
-  author: { "@type": "Organization", name: "Wavelength" },
+  datePublished: "2026-02-19",
+  dateModified: "2026-02-19",
+  author: { "@type": "Organization", name: "Wavelength", url: "https://withwavelength.com" },
   publisher: {
     "@type": "Organization",
     name: "Wavelength",
     url: "https://withwavelength.com",
+    logo: { "@type": "ImageObject", url: "https://withwavelength.com/og-default.png" },
   },
-  datePublished: "2026-02-19",
-  dateModified: "2026-02-19",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://withwavelength.com/blog/ai-changing-job-requirements-curriculum-alignment",
+  },
+  image: "https://withwavelength.com/og-default.png",
   keywords: [
     "AI curriculum alignment",
     "job requirements AI",
@@ -46,12 +70,26 @@ const articleJsonLd = {
   ],
 };
 
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://withwavelength.com" },
+    { "@type": "ListItem", position: 2, name: "Blog", item: "https://withwavelength.com/blog" },
+    { "@type": "ListItem", position: 3, name: "AI Changing Job Requirements & Curriculum Alignment", item: "https://withwavelength.com/blog/ai-changing-job-requirements-curriculum-alignment" },
+  ],
+};
+
 export default function AiCurriculumAlignmentPage() {
   return (
     <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <article className="max-w-4xl mx-auto px-4 py-12">

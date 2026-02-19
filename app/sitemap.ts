@@ -47,7 +47,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteUrl}/blog`,
       lastModified: now,
       changeFrequency: "weekly",
-      priority: 0.8,
+      priority: 0.85,
     },
     // Blog posts
     {
@@ -60,6 +60,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteUrl}/blog/community-college-program-development`,
       lastModified: now,
       changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/blog/lightcast-fault-lines-workforce-gap-2026`,
+      lastModified: new Date("2026-02-19"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/blog/ai-changing-job-requirements-curriculum-alignment`,
+      lastModified: new Date("2026-02-19"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/blog/community-college-workforce-program-strategy-2026`,
+      lastModified: new Date("2026-02-19"),
+      changeFrequency: "monthly" as const,
       priority: 0.7,
     },
   ];

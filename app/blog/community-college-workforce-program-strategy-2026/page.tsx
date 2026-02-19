@@ -16,6 +16,24 @@ export const metadata: Metadata = {
       "A data-driven framework for community college program strategy in 2026 — with real labor market data, a decision checklist, and the Workforce Pell timing window.",
     url: "https://withwavelength.com/blog/community-college-workforce-program-strategy-2026",
     type: "article",
+    publishedTime: "2026-02-19T00:00:00Z",
+    authors: ["Wavelength"],
+    section: "Program Strategy",
+    images: [
+      {
+        url: "https://withwavelength.com/og-default.png",
+        width: 1200,
+        height: 630,
+        alt: "Building the Right Programs in 2026: A Data-Driven Guide for Community College Leaders",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Building the Right Programs in 2026: A Data-Driven Guide for Community College Leaders",
+    description:
+      "A data-driven framework for community college program strategy in 2026 — with real labor market data, a decision checklist, and the Workforce Pell timing window.",
+    images: ["https://withwavelength.com/og-default.png"],
   },
 };
 
@@ -27,14 +45,20 @@ const articleJsonLd = {
   description:
     "With labor scarcity structural and the Workforce Pell deadline approaching, community colleges have a rare window. This guide covers the four highest-demand sectors, a 7-point decision framework, and the timing window for Workforce Pell eligibility.",
   url: "https://withwavelength.com/blog/community-college-workforce-program-strategy-2026",
-  author: { "@type": "Organization", name: "Wavelength" },
+  datePublished: "2026-02-19",
+  dateModified: "2026-02-19",
+  author: { "@type": "Organization", name: "Wavelength", url: "https://withwavelength.com" },
   publisher: {
     "@type": "Organization",
     name: "Wavelength",
     url: "https://withwavelength.com",
+    logo: { "@type": "ImageObject", url: "https://withwavelength.com/og-default.png" },
   },
-  datePublished: "2026-02-19",
-  dateModified: "2026-02-19",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://withwavelength.com/blog/community-college-workforce-program-strategy-2026",
+  },
+  image: "https://withwavelength.com/og-default.png",
   keywords: [
     "community college program strategy 2026",
     "workforce program development",
@@ -48,12 +72,26 @@ const articleJsonLd = {
   ],
 };
 
+const breadcrumbJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: "https://withwavelength.com" },
+    { "@type": "ListItem", position: 2, name: "Blog", item: "https://withwavelength.com/blog" },
+    { "@type": "ListItem", position: 3, name: "Community College Workforce Program Strategy 2026", item: "https://withwavelength.com/blog/community-college-workforce-program-strategy-2026" },
+  ],
+};
+
 export default function ProgramStrategy2026Page() {
   return (
     <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
       <article className="max-w-4xl mx-auto px-4 py-12">
