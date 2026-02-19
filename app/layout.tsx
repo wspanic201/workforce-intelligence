@@ -152,7 +152,7 @@ export default function RootLayout({
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-4">Resources</p>
                 <div className="space-y-2.5">
-                  <Link href="/report/demo" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                  <Link href="/samples" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
                     Sample Report
                   </Link>
                   <Link href="/blog" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
