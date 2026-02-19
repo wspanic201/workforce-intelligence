@@ -16,8 +16,8 @@ export default function MarketResearchPage() {
     <div className="overflow-x-hidden bg-[#050510]">
       {/* ===== HERO ===== */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16">
-        <Stars count={200} />
-        <Aurora />
+        <Stars count={100} />
+        <Aurora className="opacity-75" />
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up">
             <span className="overline">Market Research</span>
@@ -31,7 +31,7 @@ export default function MarketResearchPage() {
             </h1>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200}>
-            <p className="text-white/70 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
+            <p className="text-white/80 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
               Stop relying on advisory board gut feelings and outdated LMI reports. Wavelength surfaces live demand signals — employer postings, economic shifts, competitive gaps — and turns them into program opportunities you can act on.
             </p>
           </AnimateOnScroll>
@@ -63,7 +63,7 @@ export default function MarketResearchPage() {
             ].map(({ role, pain }) => (
               <div key={role} className="card-cosmic rounded-2xl p-6 border-violet-500/20">
                 <h3 className="font-heading font-semibold text-violet-300 text-sm uppercase tracking-wider mb-3">{role}</h3>
-                <p className="text-white/70 text-sm leading-relaxed">{pain}</p>
+                <p className="text-white/80 text-sm leading-relaxed">{pain}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -79,7 +79,7 @@ export default function MarketResearchPage() {
                 <span className="text-violet-300 text-[10px] font-bold uppercase tracking-wider">$1,500</span>
               </div>
               <h3 className="font-heading font-bold text-white text-2xl mb-3">Program Opportunity Scan</h3>
-              <p className="text-white/70 text-sm leading-relaxed mb-6">
+              <p className="text-white/80 text-sm leading-relaxed mb-6">
                 We research your regional labor market across 50+ sources and deliver 7–10 validated program opportunities — each scored, ranked, and backed by real employer demand.
               </p>
               <ul className="space-y-2.5 mb-8">
@@ -116,7 +116,7 @@ export default function MarketResearchPage() {
             <h2 className="font-heading font-bold text-white" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
               How it connects
             </h2>
-            <p className="text-white/70 mt-4 max-w-2xl mx-auto">
+            <p className="text-white/80 mt-4 max-w-2xl mx-auto">
               Market Research is the starting point. Once you know what to build, Program Validation confirms the demand is deep enough to justify investment. Grant Alignment finds the funding to build it.
             </p>
           </AnimateOnScroll>

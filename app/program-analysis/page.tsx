@@ -16,8 +16,8 @@ export default function ProgramAnalysisPage() {
     <div className="overflow-x-hidden bg-[#050510]">
       {/* ===== HERO ===== */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16">
-        <Stars count={200} />
-        <Aurora />
+        <Stars count={100} />
+        <Aurora className="opacity-75" />
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up">
             <span className="overline">Program Analysis</span>
@@ -31,7 +31,7 @@ export default function ProgramAnalysisPage() {
             </h1>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200}>
-            <p className="text-white/70 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
+            <p className="text-white/80 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
               Two tools. One clear picture. Pell Readiness Check tells you which programs qualify for federal funding starting July 1, 2026. Program Gap Audit shows you every state-mandated program you&apos;re not offering — and what each one is worth.
             </p>
           </AnimateOnScroll>
@@ -63,7 +63,7 @@ export default function ProgramAnalysisPage() {
             ].map(({ role, pain }) => (
               <div key={role} className="card-cosmic rounded-2xl p-6 border-blue-500/20">
                 <h3 className="font-heading font-semibold text-blue-300 text-sm uppercase tracking-wider mb-3">{role}</h3>
-                <p className="text-white/70 text-sm leading-relaxed">{pain}</p>
+                <p className="text-white/80 text-sm leading-relaxed">{pain}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -80,7 +80,7 @@ export default function ProgramAnalysisPage() {
                   <span className="text-teal-300 text-[10px] font-bold uppercase tracking-wider">Free</span>
                 </div>
                 <h3 className="font-heading font-bold text-white text-xl mb-3">Pell Readiness Check</h3>
-                <p className="text-white/70 text-sm leading-relaxed mb-6">
+                <p className="text-white/80 text-sm leading-relaxed mb-6">
                   Full catalog review against federal and state Workforce Pell criteria. Know which programs qualify before the July 1 deadline.
                 </p>
                 <ul className="space-y-2.5 mb-8">
@@ -112,7 +112,7 @@ export default function ProgramAnalysisPage() {
                   <span className="text-blue-300 text-[10px] font-bold uppercase tracking-wider">$295</span>
                 </div>
                 <h3 className="font-heading font-bold text-white text-xl mb-3">Program Gap Audit</h3>
-                <p className="text-white/70 text-sm leading-relaxed mb-6">
+                <p className="text-white/80 text-sm leading-relaxed mb-6">
                   Every state-mandated program you&apos;re not offering — with revenue estimates and statutory citations.
                 </p>
                 <ul className="space-y-2.5 mb-8">
@@ -149,7 +149,7 @@ export default function ProgramAnalysisPage() {
             <h2 className="font-heading font-bold text-white" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
               How it connects
             </h2>
-            <p className="text-white/70 mt-4 max-w-2xl mx-auto">
+            <p className="text-white/80 mt-4 max-w-2xl mx-auto">
               Program Analysis tells you what you have and what you&apos;re missing. Market Research shows you what new programs your region is ready for. Grant Alignment finds funding to build what you discover.
             </p>
           </AnimateOnScroll>

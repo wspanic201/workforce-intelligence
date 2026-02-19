@@ -16,8 +16,8 @@ export default function ProgramHealthPage() {
     <div className="overflow-x-hidden bg-[#050510]">
       {/* ===== HERO ===== */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16">
-        <Stars count={200} />
-        <Aurora />
+        <Stars count={100} />
+        <Aurora className="opacity-75" />
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up">
             <span className="overline">Program Health</span>
@@ -31,7 +31,7 @@ export default function ProgramHealthPage() {
             </h1>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200}>
-            <p className="text-white/70 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
+            <p className="text-white/80 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
               Employer skill requirements shift every 12–18 months. Most curriculum review cycles run every 3–5 years. Drift Monitor bridges that gap — quarterly scans, live job posting analysis, and a Drift Score that tells you exactly where your programs are falling behind.
             </p>
           </AnimateOnScroll>
@@ -63,7 +63,7 @@ export default function ProgramHealthPage() {
             ].map(({ role, pain }) => (
               <div key={role} className="card-cosmic rounded-2xl p-6 border-orange-500/20">
                 <h3 className="font-heading font-semibold text-orange-300 text-sm uppercase tracking-wider mb-3">{role}</h3>
-                <p className="text-white/70 text-sm leading-relaxed">{pain}</p>
+                <p className="text-white/80 text-sm leading-relaxed">{pain}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -79,7 +79,7 @@ export default function ProgramHealthPage() {
                 <span className="text-orange-300 text-[10px] font-bold uppercase tracking-wider">From $1,200/yr</span>
               </div>
               <h3 className="font-heading font-bold text-white text-2xl mb-3">Drift Monitor</h3>
-              <p className="text-white/70 text-sm leading-relaxed mb-6">
+              <p className="text-white/80 text-sm leading-relaxed mb-6">
                 Quarterly scans of live job postings against your curriculum. A Drift Score tells you exactly where programs are falling behind employer demand.
               </p>
               <ul className="space-y-2.5 mb-8">
@@ -115,7 +115,7 @@ export default function ProgramHealthPage() {
             <h2 className="font-heading font-bold text-white" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
               How it connects
             </h2>
-            <p className="text-white/70 mt-4 max-w-2xl mx-auto">
+            <p className="text-white/80 mt-4 max-w-2xl mx-auto">
               Program Health is the ongoing layer. Market Research finds the right programs to build. Program Validation confirms demand. Drift Monitor keeps them aligned once they&apos;re live.
             </p>
           </AnimateOnScroll>

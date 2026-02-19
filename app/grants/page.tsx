@@ -22,8 +22,8 @@ export default function GrantsPage() {
     <div className="overflow-x-hidden bg-[#050510]">
       {/* ===== HERO ===== */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16">
-        <Stars count={200} />
-        <Aurora />
+        <Stars count={100} />
+        <Aurora className="opacity-75" />
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={800}>
@@ -619,7 +619,7 @@ export default function GrantsPage() {
       <section className="relative py-20 md:py-28">
         <div className="max-w-[700px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up">
-            <Stars count={60} />
+            <Stars count={30} />
             <h2
               className="font-heading font-bold text-white"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}

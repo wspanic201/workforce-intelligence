@@ -16,8 +16,8 @@ export default function GrantAlignmentPage() {
     <div className="overflow-x-hidden bg-[#050510]">
       {/* ===== HERO ===== */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16">
-        <Stars count={200} />
-        <Aurora />
+        <Stars count={100} />
+        <Aurora className="opacity-75" />
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up">
             <span className="overline">Grant Alignment</span>
@@ -31,7 +31,7 @@ export default function GrantAlignmentPage() {
             </h1>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200}>
-            <p className="text-white/70 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
+            <p className="text-white/80 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
               Most institutions pursue fewer than a third of the grants they&apos;re eligible for. Not because the funding isn&apos;t there — because finding, evaluating, and prioritizing 30+ opportunities takes research capacity most teams don&apos;t have. We do it for you in a week.
             </p>
           </AnimateOnScroll>
@@ -63,7 +63,7 @@ export default function GrantAlignmentPage() {
             ].map(({ role, pain }) => (
               <div key={role} className="card-cosmic rounded-2xl p-6 border-green-500/20">
                 <h3 className="font-heading font-semibold text-green-300 text-sm uppercase tracking-wider mb-3">{role}</h3>
-                <p className="text-white/70 text-sm leading-relaxed">{pain}</p>
+                <p className="text-white/80 text-sm leading-relaxed">{pain}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -79,7 +79,7 @@ export default function GrantAlignmentPage() {
                 <span className="text-green-300 text-[10px] font-bold uppercase tracking-wider">$495</span>
               </div>
               <h3 className="font-heading font-bold text-white text-2xl mb-3">Grant Intelligence Scan</h3>
-              <p className="text-white/70 text-sm leading-relaxed mb-6">
+              <p className="text-white/80 text-sm leading-relaxed mb-6">
                 We scan 30+ federal and foundation grants, score each against your institution profile, and deliver a ranked, prioritized report — ready to act on.
               </p>
               <ul className="space-y-2.5 mb-6">
@@ -99,7 +99,7 @@ export default function GrantAlignmentPage() {
                   </li>
                 ))}
               </ul>
-              <p className="text-xs text-white/50 mb-6 italic">
+              <p className="text-xs text-white/65 mb-6 italic">
                 Many institutions fund the Grant Intelligence Scan itself through Perkins V or institutional effectiveness line items.
               </p>
               <Link href="/grants">
@@ -120,7 +120,7 @@ export default function GrantAlignmentPage() {
             <h2 className="font-heading font-bold text-white" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
               How it connects
             </h2>
-            <p className="text-white/70 mt-4 max-w-2xl mx-auto">
+            <p className="text-white/80 mt-4 max-w-2xl mx-auto">
               Grant Alignment works best after Market Research or Program Analysis — once you know what you&apos;re building, we find the funding to build it. Perkins V, WIOA Title I, and state workforce development grants are all eligible for program intelligence tools like Wavelength&apos;s full product suite.
             </p>
           </AnimateOnScroll>

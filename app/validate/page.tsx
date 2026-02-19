@@ -29,8 +29,8 @@ export default function ValidatePage() {
 
       {/* ===== HERO ===== */}
       <section className="relative min-h-[75vh] flex items-center justify-center pt-24 pb-16 overflow-hidden">
-        <Stars count={200} />
-        <Aurora />
+        <Stars count={100} />
+        <Aurora className="opacity-75" />
         <Waveform className="opacity-40" />
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">

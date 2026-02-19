@@ -108,8 +108,8 @@ export default function DriftPage() {
 
       {/* ═══════════════ HERO ═══════════════ */}
       <section className="relative min-h-[92vh] flex items-center justify-center pt-24 pb-20">
-        <Stars count={300} />
-        <Aurora />
+        <Stars count={150} />
+        <Aurora className="opacity-75" />
         <Waveform className="opacity-40" />
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
@@ -391,7 +391,7 @@ export default function DriftPage() {
 
       {/* ═══════════════ PRICING ═══════════════ */}
       <section className="relative py-24 px-6">
-        <Stars count={120} />
+        <Stars count={60} />
 
         <div className="max-w-[1100px] mx-auto">
           <AnimateOnScroll variant="fade-up">
@@ -545,7 +545,7 @@ export default function DriftPage() {
 
       {/* ═══════════════ CLOSING CTA ═══════════════ */}
       <section className="relative py-24 px-6 text-center">
-        <Stars count={100} />
+        <Stars count={50} />
 
         <AnimateOnScroll variant="fade-up">
           <div className="max-w-[680px] mx-auto">

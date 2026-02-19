@@ -195,8 +195,8 @@ export default function ComplianceGapPage() {
 
       {/* ═══════════════ HERO ═══════════════ */}
       <section className="relative min-h-[90vh] flex items-center justify-center pt-24 pb-16">
-        <Stars count={280} />
-        <Aurora />
+        <Stars count={140} />
+        <Aurora className="opacity-75" />
         <Waveform className="opacity-50" />
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
@@ -393,7 +393,7 @@ export default function ComplianceGapPage() {
 
       {/* ═══════════════ PRICING / CTA ═══════════════ */}
       <section className="relative py-24 px-6">
-        <Stars count={120} />
+        <Stars count={60} />
 
         <div className="max-w-[680px] mx-auto text-center">
           <AnimateOnScroll variant="scale">

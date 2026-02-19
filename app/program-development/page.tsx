@@ -16,8 +16,8 @@ export default function ProgramDevelopmentPage() {
     <div className="overflow-x-hidden bg-[#050510]">
       {/* ===== HERO ===== */}
       <section className="relative min-h-[70vh] flex items-center justify-center pt-24 pb-16">
-        <Stars count={200} />
-        <Aurora />
+        <Stars count={100} />
+        <Aurora className="opacity-75" />
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up">
             <span className="overline">Program Development</span>
@@ -31,7 +31,7 @@ export default function ProgramDevelopmentPage() {
             </h1>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200}>
-            <p className="text-white/70 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
+            <p className="text-white/80 text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
               A Market Scan tells you what to build. Program Validation tells you whether a specific idea is worth the investment — with a full financial model, competitive analysis, and accreditation pathway mapped out before you write a single course objective.
             </p>
           </AnimateOnScroll>
@@ -63,7 +63,7 @@ export default function ProgramDevelopmentPage() {
             ].map(({ role, pain }) => (
               <div key={role} className="card-cosmic rounded-2xl p-6 border-emerald-500/20">
                 <h3 className="font-heading font-semibold text-emerald-300 text-sm uppercase tracking-wider mb-3">{role}</h3>
-                <p className="text-white/70 text-sm leading-relaxed">{pain}</p>
+                <p className="text-white/80 text-sm leading-relaxed">{pain}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -79,7 +79,7 @@ export default function ProgramDevelopmentPage() {
                 <span className="text-emerald-300 text-[10px] font-bold uppercase tracking-wider">$2,000</span>
               </div>
               <h3 className="font-heading font-bold text-white text-2xl mb-3">Program Validation</h3>
-              <p className="text-white/70 text-sm leading-relaxed mb-6">
+              <p className="text-white/80 text-sm leading-relaxed mb-6">
                 Full feasibility analysis for a specific program idea — market validation, financial model, competitive intelligence, and a Go/No-Go recommendation.
               </p>
               <ul className="space-y-2.5 mb-8">
@@ -117,7 +117,7 @@ export default function ProgramDevelopmentPage() {
             <h2 className="font-heading font-bold text-white" style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}>
               How it connects
             </h2>
-            <p className="text-white/70 mt-4 max-w-2xl mx-auto">
+            <p className="text-white/80 mt-4 max-w-2xl mx-auto">
               Program Validation is most powerful when it follows Market Research. A Program Opportunity Scan identifies what your region needs — Validation confirms that one specific program is worth building. After validation, Grant Alignment finds funding.
             </p>
           </AnimateOnScroll>

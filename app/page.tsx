@@ -324,7 +324,7 @@ function FAQSection() {
                 </button>
                 {open === i && (
                   <div className="px-5 pb-5">
-                    <p className="text-white/70 text-sm leading-relaxed">{item.a}</p>
+                    <p className="text-white/80 text-sm leading-relaxed">{item.a}</p>
                   </div>
                 )}
               </div>
@@ -451,10 +451,10 @@ function HeroCarousel() {
 
   return (
     <section className="relative min-h-[90vh] lg:h-[90vh] lg:min-h-[700px] lg:max-h-[900px] flex items-center justify-center pt-36 lg:pt-40 pb-16 overflow-hidden">
-      <Stars count={250} />
+      <Stars count={120} />
       <Aurora />
-      <Waveform className="opacity-60" />
-      <ParticleConstellation particleCount={70} connectionDistance={130} mouseRadius={180} speed={0.25} />
+      <Waveform className="opacity-30" />
+      <ParticleConstellation particleCount={30} connectionDistance={90} mouseRadius={120} speed={0.2} />
 
       <div className="relative z-10 max-w-[1200px] mx-auto px-6 w-full">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
@@ -715,7 +715,7 @@ export default function HomePage() {
       </div>
 
       {/* ===== FIND YOUR PATH — CATEGORY GRID ===== */}
-      <section className="relative py-20 md:py-32" id="products">
+      <section className="relative py-24 md:py-36" id="products">
         <div className="max-w-[1200px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-4">
             <span className="overline inline-flex items-center gap-3">
@@ -733,7 +733,7 @@ export default function HomePage() {
             </h2>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
-            <p className="text-white/70 text-lg max-w-2xl mx-auto">
+            <p className="text-white/80 text-lg max-w-2xl mx-auto">
               Wavelength has five product categories. Pick the one that matches what you&apos;re trying to do — and go straight to the right product.
             </p>
           </AnimateOnScroll>
@@ -797,7 +797,7 @@ export default function HomePage() {
                     <span className={`${cat.text} text-[10px] font-bold uppercase tracking-wider`}>{cat.category}</span>
                   </div>
                   <h3 className="font-heading font-bold text-white text-xl mb-2">{cat.headline}</h3>
-                  <p className="text-white/70 text-sm leading-relaxed mb-5">{cat.pain}</p>
+                  <p className="text-white/80 text-sm leading-relaxed mb-5">{cat.pain}</p>
                   <div className="flex flex-wrap gap-2 mb-5">
                     {cat.products.map(p => (
                       <span key={p.name} className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/[0.05] border border-white/[0.08] text-xs text-white/80">
@@ -838,7 +838,7 @@ export default function HomePage() {
       <WaveDivider />
 
       {/* ===== HOW IT WORKS ===== */}
-      <section className="relative py-20 md:py-32" id="how-it-works">
+      <section className="relative py-24 md:py-36" id="how-it-works">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-4">
             <span className="overline inline-flex items-center gap-3">
@@ -885,7 +885,7 @@ export default function HomePage() {
                   </span>
                 </div>
                 <h3 className="font-heading font-bold text-white text-xl mb-3">{title}</h3>
-                <p className="text-white/50 text-sm leading-relaxed max-w-[280px] mx-auto">{desc}</p>
+                <p className="text-white/65 text-sm leading-relaxed max-w-[280px] mx-auto">{desc}</p>
 
                 {/* Connector line between steps (desktop only) */}
                 {i < 2 && (
@@ -952,7 +952,7 @@ export default function HomePage() {
       <WaveDivider />
 
       {/* ===== WHAT'S IN A MARKET SCAN ===== */}
-      <section className="relative py-20 md:py-32" id="market-scan">
+      <section className="relative py-24 md:py-36" id="market-scan">
         <div className="max-w-[1200px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up" className="text-center mb-4">
             <span className="overline inline-flex items-center gap-3">
@@ -970,7 +970,7 @@ export default function HomePage() {
             </h2>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} className="text-center mb-16">
-            <p className="text-white/70 text-lg max-w-2xl mx-auto">
+            <p className="text-white/80 text-lg max-w-2xl mx-auto">
               Every program lead backed by real workforce demand. Every opportunity scored so you know exactly where to invest.
             </p>
           </AnimateOnScroll>
@@ -1011,7 +1011,7 @@ export default function HomePage() {
               <div key={num} className="card-cosmic rounded-xl p-6">
                 <div className="font-mono text-xs text-white/25 tracking-widest mb-3">{num}</div>
                 <h3 className="font-heading font-semibold text-white mb-2">{title}</h3>
-                <p className="text-white/70 text-sm leading-relaxed">{desc}</p>
+                <p className="text-white/80 text-sm leading-relaxed">{desc}</p>
               </div>
             ))}
           </StaggerChildren>
@@ -1090,7 +1090,7 @@ export default function HomePage() {
 
 
       {/* ===== THE SIGNAL NEWSLETTER STRIP ===== */}
-      <section className="relative py-16 md:py-20">
+      <section className="relative py-20 md:py-24">
         <div className="max-w-[720px] mx-auto px-6">
           <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-blue-500/20">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 mb-5">
@@ -1125,8 +1125,8 @@ export default function HomePage() {
       {/* ===== FINAL CTA ===== */}
       <section className="relative py-24 md:py-40 overflow-hidden">
         <Aurora />
-        <Stars count={100} />
-        <Waveform className="opacity-40" />
+        <Stars count={60} />
+        <Waveform className="opacity-20" />
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up">
