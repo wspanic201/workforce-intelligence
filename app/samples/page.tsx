@@ -40,7 +40,7 @@ const services = [
     id: 'program-validation',
     name: 'Program Validation',
     price: '$3,500',
-    liveDemo: false,
+    liveDemo: true,
     format: 'PDF report — delivered by email within 5 business days',
     formatDot: 'bg-blue-400',
     whatsInside: [
@@ -55,9 +55,9 @@ const services = [
     value:
       'Replaces months of internal research with a single authoritative decision document — ready to present to your board or cabinet.',
     cta: {
-      label: 'Request Sample PDF',
-      href: '/contact',
-      primary: false,
+      label: 'View Sample Report',
+      href: '/report/kirkwood-pharmtech-validation',
+      primary: true,
     },
   },
   {
