@@ -143,7 +143,7 @@ export function generateDriftReportHTML(
 <body>
 
 <div class="cover">
-  <div class="cover-brand">Wavelength · Program Drift Monitor</div>
+  <div class="cover-brand">Wavelength · Program Curriculum Drift Analysis</div>
   <div class="cover-title">Program Drift Alert</div>
   <div class="cover-subtitle">${program.programName} · ${program.institutionName}</div>
   <div class="cover-meta">Occupation: ${program.occupationTitle} ${program.socCode ? `(SOC ${program.socCode})` : ''} · Scanned ${new Date(scan.scannedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} · ${scan.postingsAnalyzed} job postings analyzed</div>
@@ -195,7 +195,7 @@ export function generateDriftReportHTML(
   </ul>
 
   <div class="footer">
-    <span>Wavelength Program Drift Monitor · withwavelength.com</span>
+    <span>Wavelength Program Curriculum Drift Analysis · withwavelength.com</span>
     <span>Confidential — Prepared for ${program.institutionName}</span>
   </div>
 

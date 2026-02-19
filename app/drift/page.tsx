@@ -9,12 +9,12 @@ import { DriftFAQ } from './DriftFAQ';
 // ── Metadata ──
 
 export const metadata = {
-  title: 'Drift Monitor — Quarterly Curriculum Alignment Scans | Wavelength',
+  title: 'Curriculum Drift Analysis — Quarterly Curriculum Alignment Scans | Wavelength',
   description:
     'Find out if your workforce programs are still aligned to employer demand. Quarterly drift scans compare your curriculum against live job postings and deliver a scored gap report.',
   alternates: { canonical: 'https://withwavelength.com/drift' },
   openGraph: {
-    title: 'Drift Monitor — Keep Your Programs Aligned to the Job Market',
+    title: 'Curriculum Drift Analysis — Keep Your Programs Aligned to the Job Market',
     description:
       'Quarterly curriculum drift scans for community college workforce programs. Drift Score, gap analysis, and curriculum recommendations — delivered every quarter.',
     url: 'https://withwavelength.com/drift',
@@ -22,7 +22,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Drift Monitor by Wavelength',
+    title: 'Curriculum Drift Analysis by Wavelength',
     description:
       'Quarterly curriculum alignment scans. Know if your programs are drifting from employer demand before your placement numbers tell you.',
   },
@@ -33,7 +33,7 @@ export const metadata = {
 const driftProductJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Product',
-  name: 'Drift Monitor',
+  name: 'Curriculum Drift Analysis',
   description:
     'Quarterly curriculum alignment scans that compare your program content against live employer job postings. Catch curriculum drift before it affects student placement rates.',
   url: 'https://withwavelength.com/drift',
@@ -144,7 +144,7 @@ export default function DriftPage() {
 
           <AnimateOnScroll variant="fade-up" delay={220} duration={800}>
             <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed">
-              Drift Monitor tracks what employers are actually hiring for — and tells you exactly where your programs are falling behind.
+              Curriculum Drift Analysis tracks what employers are actually hiring for — and tells you exactly where your programs are falling behind.
             </p>
           </AnimateOnScroll>
 
@@ -237,7 +237,7 @@ export default function DriftPage() {
               {
                 step: '02',
                 title: 'We scan the market',
-                desc: 'Drift Monitor analyzes 30–50 current job postings for your occupation. It extracts the top skills, certifications, and competencies employers are requiring right now.',
+                desc: 'Curriculum Drift Analysis analyzes 30–50 current job postings for your occupation. It extracts the top skills, certifications, and competencies employers are requiring right now.',
               },
               {
                 step: '03',
@@ -525,7 +525,7 @@ export default function DriftPage() {
           <AnimateOnScroll variant="fade-up" delay={150}>
             <div className="mt-10 max-w-2xl mx-auto text-center">
               <p className="text-white/55 text-sm leading-relaxed">
-                A single program coordinator spends 40–80 hours on a curriculum review cycle. Drift Monitor replaces that with a quarterly automated scan — and gives you the documentation to prove alignment to accreditors, employers, and grant funders.
+                A single program coordinator spends 40–80 hours on a curriculum review cycle. Curriculum Drift Analysis replaces that with a quarterly automated scan — and gives you the documentation to prove alignment to accreditors, employers, and grant funders.
               </p>
             </div>
           </AnimateOnScroll>
@@ -629,7 +629,7 @@ export default function DriftPage() {
           </a>
         </p>
         <p className="mt-2 text-theme-muted text-xs">
-          Drift Monitor reports are research deliverables based on live job posting analysis. They do not constitute legal or accreditation advice.
+          Curriculum Drift Analysis reports are research deliverables based on live job posting analysis. They do not constitute legal or accreditation advice.
         </p>
       </footer>
     </div>

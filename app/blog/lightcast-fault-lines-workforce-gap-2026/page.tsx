@@ -335,7 +335,7 @@ export default function LightcastFaultLinesPage() {
           </h2>
           <p className="text-theme-tertiary mb-6 max-w-xl mx-auto">
             When labor markets shift this fast, curriculum falls behind before anyone
-            notices. Wavelength Drift Monitor runs quarterly scans of your existing
+            notices. Wavelength Curriculum Drift Analysis runs quarterly scans of your existing
             programs against live employer demand — and tells you exactly where the gaps
             are.
           </p>
@@ -343,7 +343,7 @@ export default function LightcastFaultLinesPage() {
             href="https://withwavelength.com/drift"
             className="inline-block bg-gradient-to-r from-violet-600 to-teal-600 hover:from-violet-500 hover:to-teal-500 text-theme-primary px-6 py-3 rounded-xl font-semibold transition-all"
           >
-            Learn About Drift Monitor →
+            Learn About Curriculum Drift Analysis →
           </Link>
         </div>
       </article>

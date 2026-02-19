@@ -189,7 +189,7 @@ export type StageCitationInsert = {
 };
 
 
-// ── Drift Monitor Types ──
+// ── Curriculum Drift Analysis Types ──
 
 export interface DriftProgram {
   id: string;

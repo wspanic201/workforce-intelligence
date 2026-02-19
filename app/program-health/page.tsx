@@ -6,7 +6,7 @@ import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
 
 export const metadata: Metadata = {
-  title: 'Program Health & Curriculum Alignment | Wavelength Drift Monitor',
+  title: 'Program Health & Curriculum Alignment | Wavelength Curriculum Drift Analysis',
   description: 'Keep existing workforce programs aligned to employer demand. Quarterly drift scans compare your curriculum against live job postings and deliver a Drift Score — by Wavelength, the workforce program intelligence platform for community colleges.',
   alternates: { canonical: 'https://withwavelength.com/program-health' },
 };
@@ -32,7 +32,7 @@ export default function ProgramHealthPage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200}>
             <p className="text-theme-secondary text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
-              Employer skill requirements shift every 12–18 months. Most curriculum review cycles run every 3–5 years. Drift Monitor bridges that gap — quarterly scans, live job posting analysis, and a Drift Score that tells you exactly where your programs are falling behind.
+              Employer skill requirements shift every 12–18 months. Most curriculum review cycles run every 3–5 years. Curriculum Drift Analysis bridges that gap — quarterly scans, live job posting analysis, and a Drift Score that tells you exactly where your programs are falling behind.
             </p>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={300}>
@@ -78,7 +78,7 @@ export default function ProgramHealthPage() {
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 mb-4">
                 <span className="text-orange-300 text-[10px] font-bold uppercase tracking-wider">From $1,200/yr</span>
               </div>
-              <h3 className="font-heading font-bold text-theme-primary text-2xl mb-3">Drift Monitor</h3>
+              <h3 className="font-heading font-bold text-theme-primary text-2xl mb-3">Curriculum Drift Analysis</h3>
               <p className="text-theme-secondary text-sm leading-relaxed mb-6">
                 Quarterly scans of live job postings against your curriculum. A Drift Score tells you exactly where programs are falling behind employer demand.
               </p>
@@ -99,7 +99,7 @@ export default function ProgramHealthPage() {
               </ul>
               <Link href="/drift">
                 <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
-                  See Full Drift Monitor Details & Pricing
+                  See Full Curriculum Drift Analysis Details & Pricing
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>
@@ -116,7 +116,7 @@ export default function ProgramHealthPage() {
               How it connects
             </h2>
             <p className="text-theme-secondary mt-4 max-w-2xl mx-auto">
-              Program Health is the ongoing layer. Market Research finds the right programs to build. Program Validation confirms demand. Drift Monitor keeps them aligned once they&apos;re live.
+              Program Health is the ongoing layer. Market Research finds the right programs to build. Program Validation confirms demand. Curriculum Drift Analysis keeps them aligned once they&apos;re live.
             </p>
           </AnimateOnScroll>
           <StaggerChildren stagger={100} variant="fade-up" className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -150,7 +150,7 @@ export default function ProgramHealthPage() {
             </Link>
             <div className="mt-4">
               <Link href="/drift" className="text-sm text-theme-tertiary hover:text-theme-secondary transition-colors">
-                See the full Drift Monitor page →
+                See the full Curriculum Drift Analysis page →
               </Link>
             </div>
           </AnimateOnScroll>

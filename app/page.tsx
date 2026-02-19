@@ -490,7 +490,7 @@ export default function HomePage() {
                 category: 'Program Health',
                 headline: 'Worried your programs are falling behind?',
                 pain: 'Employer requirements shift faster than curriculum review cycles. Know exactly where your programs are drifting — every quarter.',
-                products: [{ name: 'Drift Monitor', price: 'from $1,200/yr' }],
+                products: [{ name: 'Curriculum Drift Analysis', price: 'from $1,200/yr' }],
                 href: '/program-health',
                 border: 'border-orange-500/30',
                 text: 'text-orange-300',

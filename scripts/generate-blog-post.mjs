@@ -73,7 +73,7 @@ Wavelength's products:
 - Compliance Gap Report (/compliance-gap) — $295, program portfolio gaps
 - Market Scan (/discover) — $1,500, 7-10 vetted new program opportunities
 - Program Validation (/validate) — validate a specific program concept
-- Drift Monitor (/drift) — quarterly curriculum alignment scans
+- Curriculum Drift Analysis (/drift) — quarterly curriculum alignment scans
 
 Audience: VPs of Academic Affairs, Workforce Development Directors, Department Chairs, Dean-level leaders at community colleges.
 

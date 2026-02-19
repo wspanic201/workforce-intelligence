@@ -7,7 +7,7 @@ import { AnimateOnScroll } from '@/components/motion';
 const FAQ_ITEMS = [
   {
     q: 'How is this different from Lightcast or O*NET data I already have?',
-    a: "Those are static datasets. Drift Monitor uses live job postings — what employers are hiring for right now in your specific occupation — and runs the comparison automatically. You don't need an analyst to do anything.",
+    a: "Those are static datasets. Curriculum Drift Analysis uses live job postings — what employers are hiring for right now in your specific occupation — and runs the comparison automatically. You don't need an analyst to do anything.",
   },
   {
     q: 'How do I submit my curriculum?',
@@ -19,7 +19,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Can this help with accreditation?',
-    a: 'Yes. Drift Monitor reports are formatted to document employer alignment — a common requirement for HLC, SACSCOC, and program-specific accreditors. Many institutions use them as supporting evidence in self-studies.',
+    a: 'Yes. Curriculum Drift Analysis reports are formatted to document employer alignment — a common requirement for HLC, SACSCOC, and program-specific accreditors. Many institutions use them as supporting evidence in self-studies.',
   },
   {
     q: 'Can this be funded through grants?',
@@ -27,7 +27,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "Is this related to Wavelength's Discovery or Market Scan products?",
-    a: "No — Drift Monitor is a standalone product. Discovery and Market Scan help you find and validate programs to build. Drift Monitor helps you keep existing programs current. Different buyers, different use cases, same mission.",
+    a: "No — Curriculum Drift Analysis is a standalone product. Discovery and Market Scan help you find and validate programs to build. Curriculum Drift Analysis helps you keep existing programs current. Different buyers, different use cases, same mission.",
   },
 ];
 

@@ -34,7 +34,7 @@ const PRODUCT_CATEGORIES = [
   {
     category: 'Program Health',
     items: [
-      { label: 'Drift Monitor', href: '/drift', tag: 'New', tagColor: 'text-orange-400 bg-orange-500/10' },
+      { label: 'Curriculum Drift Analysis', href: '/drift', tag: 'New', tagColor: 'text-orange-400 bg-orange-500/10' },
     ],
   },
 ];

@@ -296,7 +296,7 @@ export default function AiCurriculumAlignmentPage() {
             Know before your students do.
           </h2>
           <p className="text-theme-tertiary mb-6 max-w-xl mx-auto">
-            Wavelength Drift Monitor analyzes live job postings for your programs&apos; target
+            Wavelength Curriculum Drift Analysis analyzes live job postings for your programs&apos; target
             occupations every quarter — and tells you exactly which skills employers want
             that your curriculum isn&apos;t covering. Run a free baseline scan for one program.
           </p>
