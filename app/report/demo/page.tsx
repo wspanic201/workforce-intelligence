@@ -645,7 +645,7 @@ export default function ScanDemoPage() {
             <div className="mt-8 p-5 rounded-xl border border-theme-subtle bg-theme-surface">
               <p className="text-sm text-theme-muted leading-relaxed">
                 All 8 programs are detailed above. Stages 3–8 (curriculum design, pathway mapping, employer partnerships, and launch) are available through{' '}
-                <strong className="text-theme-secondary font-semibold">Wavelength&apos;s Core Program Lifecycle</strong>.
+                <strong className="text-theme-secondary font-semibold">Wavelength&apos;s Core Program Intelligence Services</strong>.
               </p>
             </div>
           </AnimateOnScroll>

@@ -288,7 +288,7 @@ export default function HomePage() {
           <AnimateOnScroll variant="fade-up" className="text-center mb-4">
             <div className="flex items-center justify-center gap-3">
               <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/60" />
-              <span className="overline">Core Program Lifecycle</span>
+              <span className="overline">Core Program Intelligence Services</span>
               <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-purple-500/60" />
             </div>
           </AnimateOnScroll>

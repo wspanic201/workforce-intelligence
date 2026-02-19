@@ -116,7 +116,7 @@ export default function RootLayout({
               {/* Services */}
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-4">Services</p>
-                <p className="text-[9px] font-bold uppercase tracking-widest text-theme-muted mb-2 mt-3">Core Program Lifecycle</p>
+                <p className="text-[9px] font-bold uppercase tracking-widest text-theme-muted mb-2 mt-3">Core Program Intelligence Services</p>
                 <div className="space-y-2.5 mb-4">
                   <Link href="/discover" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
                     <span>Program Opportunity Scan</span>
