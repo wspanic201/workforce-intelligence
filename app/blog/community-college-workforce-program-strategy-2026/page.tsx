@@ -84,7 +84,7 @@ const breadcrumbJsonLd = {
 
 export default function ProgramStrategy2026Page() {
   return (
-    <div>
+    <div className="overflow-x-hidden bg-theme-page">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
@@ -94,7 +94,7 @@ export default function ProgramStrategy2026Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
 
-      <article className="max-w-4xl mx-auto px-4 py-12">
+      <article className="max-w-4xl mx-auto px-4 pt-36 lg:pt-40 pb-16">
         {/* Cosmic accent bar */}
         <div className="h-1 w-full rounded-full bg-gradient-to-r from-violet-500 via-blue-500 to-teal-500 mb-10" />
 

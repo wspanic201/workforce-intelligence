@@ -80,11 +80,11 @@ const posts = [
 
 export default function BlogIndexPage() {
   return (
-    <div>
+    <div className="overflow-x-hidden bg-theme-page">
       {/* Hero */}
-      <section className="py-16 px-4 border-b border-theme-subtle relative overflow-hidden">
+      <section className="pt-36 lg:pt-40 pb-16 px-4 border-b border-theme-subtle relative overflow-hidden">
         {/* Background glow */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-transparent to-teal-900/20 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-teal-500/10 pointer-events-none" />
         <div className="max-w-5xl mx-auto relative">
           <span className="text-xs font-mono tracking-widest uppercase bg-gradient-to-r from-purple-400 to-teal-400 bg-clip-text text-transparent">
             The Wavelength Blog
@@ -108,7 +108,7 @@ export default function BlogIndexPage() {
           {posts.map((post) => (
             <article
               key={post.slug}
-              className={`group border ${post.border} rounded-xl p-8 hover:bg-white/[0.03] transition-colors bg-gradient-to-br ${post.accent}`}
+              className="group card-cosmic rounded-xl p-8 hover:border-theme-strong transition-colors"
             >
               <div className="flex flex-wrap items-center gap-3 mb-4">
                 <span className="inline-flex items-center gap-1.5 text-xs font-medium text-theme-tertiary">
@@ -147,13 +147,13 @@ export default function BlogIndexPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/pell"
-              className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-theme-primary px-6 py-3 rounded-lg font-semibold transition-all"
+              className="btn-cosmic btn-cosmic-primary"
             >
               Free Pell Readiness Check
             </Link>
             <Link
               href="/discover"
-              className="border border-theme-strong text-theme-primary hover:border-theme-strong px-6 py-3 rounded-lg font-semibold transition-colors"
+              className="btn-cosmic btn-cosmic-ghost"
             >
               Discover Programs
             </Link>
