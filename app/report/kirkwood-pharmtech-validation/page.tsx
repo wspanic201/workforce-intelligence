@@ -736,17 +736,15 @@ export default function KirkwoodPharmTechValidationPage() {
             <div className="mt-10 card-cosmic rounded-2xl overflow-hidden divide-y divide-theme-subtle">
               {dimensionDeepDives.map((d) => (
                 <details key={d.name} className="group">
-                  <summary className="flex items-center justify-between cursor-pointer py-4 px-5 hover:bg-white/[0.03] transition-colors">
-                    <div className="flex items-center gap-3">
+                  <summary className="flex items-center gap-4 cursor-pointer py-4 px-5 hover:bg-white/[0.03] transition-colors">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
                       <span className={`w-2 h-2 rounded-full ${d.dotColor} flex-shrink-0`} />
                       <span className="font-semibold text-theme-primary text-sm">{d.name}</span>
                     </div>
-                    <div className="flex items-center gap-3">
-                      <span className="text-xs text-theme-muted">{d.weight}</span>
-                      <span className={`font-mono font-bold text-sm ${scoreColor(d.score)}`}>
-                        {d.score}
-                      </span>
-                    </div>
+                    <span className="text-xs text-theme-muted w-16 text-right flex-shrink-0">{d.weight}</span>
+                    <span className={`font-mono font-bold text-sm w-10 text-right flex-shrink-0 ${scoreColor(d.score)}`}>
+                      {d.score}
+                    </span>
                   </summary>
                   <div className="px-5 pb-5 pt-1">
                     <p className="text-sm text-theme-secondary leading-relaxed">{d.rationale}</p>
