@@ -4,13 +4,38 @@ import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { WavelengthMark } from './WavelengthLogo';
 
-const PRODUCTS = [
-  { label: 'Pell Readiness Check', href: '/pell', tag: 'Free', tagColor: 'text-teal-400 bg-teal-500/10' },
-  { label: 'Compliance Gap Report', href: '/compliance-gap', tag: '$295', tagColor: 'text-blue-400 bg-blue-500/10' },
-  { label: 'Grant Intelligence Scan', href: '/grants', tag: '$495', tagColor: 'text-green-400 bg-green-500/10' },
-  { label: 'Market Scan', href: '/discover', tag: '$1,500', tagColor: 'text-purple-400 bg-purple-500/10' },
-  { label: 'Program Validation', href: '/validate', tag: '$2,000', tagColor: 'text-emerald-400 bg-emerald-500/10' },
-  { label: 'Drift Monitor', href: '/drift', tag: 'New', tagColor: 'text-orange-400 bg-orange-500/10' },
+const PRODUCT_CATEGORIES = [
+  {
+    category: 'Market Research',
+    items: [
+      { label: 'Program Opportunity Scan', href: '/discover', tag: '$1,500', tagColor: 'text-purple-400 bg-purple-500/10' },
+    ],
+  },
+  {
+    category: 'Program Analysis',
+    items: [
+      { label: 'Pell Readiness Check', href: '/pell', tag: 'Free', tagColor: 'text-teal-400 bg-teal-500/10' },
+      { label: 'Program Gap Audit', href: '/compliance-gap', tag: '$295', tagColor: 'text-blue-400 bg-blue-500/10' },
+    ],
+  },
+  {
+    category: 'Program Development',
+    items: [
+      { label: 'Program Validation', href: '/validate', tag: '$2,000', tagColor: 'text-emerald-400 bg-emerald-500/10' },
+    ],
+  },
+  {
+    category: 'Grant Alignment',
+    items: [
+      { label: 'Grant Intelligence Scan', href: '/grants', tag: '$495', tagColor: 'text-green-400 bg-green-500/10' },
+    ],
+  },
+  {
+    category: 'Program Health',
+    items: [
+      { label: 'Drift Monitor', href: '/drift', tag: 'New', tagColor: 'text-orange-400 bg-orange-500/10' },
+    ],
+  },
 ];
 
 export function NavBar() {
@@ -78,21 +103,31 @@ export function NavBar() {
               </button>
 
               {productsOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 rounded-xl bg-[#0a0f1a]/98 backdrop-blur-xl border border-white/[0.08] shadow-2xl shadow-black/40 p-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                  {PRODUCTS.map((p) => (
-                    <Link
-                      key={p.href}
-                      href={p.href}
-                      onClick={() => setProductsOpen(false)}
-                      className="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-white/[0.05] transition-colors group"
-                    >
-                      <span className="text-sm text-white/70 group-hover:text-white transition-colors">
-                        {p.label}
-                      </span>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.tagColor}`}>
-                        {p.tag}
-                      </span>
-                    </Link>
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-80 rounded-xl bg-[#0a0f1a]/98 backdrop-blur-xl border border-white/[0.08] shadow-2xl shadow-black/40 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                  {PRODUCT_CATEGORIES.map((cat, catIdx) => (
+                    <div key={cat.category}>
+                      {catIdx > 0 && (
+                        <div className="mx-2 my-1 border-t border-white/[0.06]" />
+                      )}
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-white/25 px-4 pt-3 pb-1">
+                        {cat.category}
+                      </p>
+                      {cat.items.map((p) => (
+                        <Link
+                          key={p.href}
+                          href={p.href}
+                          onClick={() => setProductsOpen(false)}
+                          className="flex items-center justify-between px-4 py-3 rounded-lg hover:bg-white/[0.05] transition-colors group mx-2"
+                        >
+                          <span className="text-sm text-white/70 group-hover:text-white transition-colors">
+                            {p.label}
+                          </span>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.tagColor}`}>
+                            {p.tag}
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
                   ))}
                 </div>
               )}
@@ -160,22 +195,29 @@ export function NavBar() {
         {/* Mobile menu */}
         {mobileOpen && (
           <div className="md:hidden pb-6 space-y-1 border-t border-white/[0.08] pt-4">
-            {/* Products section */}
-            <p className="text-[10px] font-bold uppercase tracking-widest text-white/25 px-2 pt-2 pb-1">
-              Products
-            </p>
-            {PRODUCTS.map((p) => (
-              <Link
-                key={p.href}
-                href={p.href}
-                className="flex items-center justify-between text-base font-medium text-white/80 hover:text-white py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
-                onClick={() => setMobileOpen(false)}
-              >
-                <span>{p.label}</span>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.tagColor}`}>
-                  {p.tag}
-                </span>
-              </Link>
+            {/* Products section — categorized */}
+            {PRODUCT_CATEGORIES.map((cat, catIdx) => (
+              <div key={cat.category}>
+                {catIdx > 0 && (
+                  <div className="border-t border-white/[0.06] my-2" />
+                )}
+                <p className="text-[10px] font-bold uppercase tracking-widest text-white/25 px-2 pt-2 pb-1">
+                  {cat.category}
+                </p>
+                {cat.items.map((p) => (
+                  <Link
+                    key={p.href}
+                    href={p.href}
+                    className="flex items-center justify-between text-base font-medium text-white/80 hover:text-white py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    <span>{p.label}</span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${p.tagColor}`}>
+                      {p.tag}
+                    </span>
+                  </Link>
+                ))}
+              </div>
             ))}
 
             <div className="border-t border-white/[0.06] my-3" />

@@ -161,7 +161,7 @@ const HOW_IT_WORKS = [
     step: '03',
     title: 'Get Your Gap Report',
     description:
-      'Within 24 hours, you receive a complete Compliance Gap Report — every mandate you\'re missing, sized by revenue, cited to the statute.',
+      'Within 24 hours, you receive a complete Program Gap Audit — every mandate you\'re missing, sized by revenue, cited to the statute.',
   },
 ];
 
@@ -170,7 +170,7 @@ const HOW_IT_WORKS = [
 const complianceProductJsonLd = {
   "@context": "https://schema.org",
   "@type": "Product",
-  name: "Compliance Gap Report",
+  name: "Program Gap Audit",
   description:
     "Find every state-mandated training program your institution does not offer — sized by revenue potential and cited to the statute.",
   url: "https://withwavelength.com/compliance-gap",
@@ -404,7 +404,7 @@ export default function ComplianceGapPage() {
                 <span className="text-white/70 mb-3 text-lg">one-time</span>
               </div>
               <p className="text-white/70 text-sm mb-8">
-                Full Compliance Gap Report · State-specific · No subscription
+                Full Program Gap Audit · State-specific · No subscription
               </p>
 
               <div className="space-y-3 mb-10 text-left max-w-sm mx-auto">
@@ -453,7 +453,7 @@ export default function ComplianceGapPage() {
           </a>
         </p>
         <p className="mt-2 text-white/10 text-xs">
-          Compliance Gap Reports are research deliverables based on publicly available regulatory data and do not constitute legal advice.
+          Program Gap Audit reports are research deliverables based on publicly available regulatory data and do not constitute legal advice.
         </p>
       </footer>
     </div>

@@ -264,19 +264,19 @@ const FAQ_ITEMS = [
     a: 'We assess your current program portfolio against the Workforce Pell eligibility criteria — clock hours, credential type, and labor market alignment requirements. You\'ll receive a clear breakdown of which programs likely qualify, which need adjustments, and where the biggest opportunities are.',
   },
   {
-    q: 'What do I get in a Program Opportunity Scan (Market Scan)?',
+    q: 'What do I get in a Program Opportunity Scan?',
     a: 'A Program Opportunity Scan delivers 7–10 validated program opportunities for your region — each scored across five dimensions. The 25+ page report includes regional labor market intelligence, employer demand verification, competitive landscape mapping, Blue Ocean opportunity scoring, and Workforce Pell readiness — all from 50+ verified sources.',
   },
   {
-    q: 'What is the Compliance Gap Report?',
-    a: 'The Compliance Gap Report shows every state-mandated program your institution isn\'t currently offering — along with estimated enrollment demand and revenue potential for each gap. It replaces weeks of manual research with a 25+ page intelligence report your team can act on immediately.',
+    q: 'What is the Program Gap Audit?',
+    a: 'The Program Gap Audit shows every state-mandated program your institution isn\'t currently offering — along with estimated enrollment demand and revenue potential for each gap. It replaces weeks of manual research with a 25+ page intelligence report your team can act on immediately.',
   },
   {
     q: 'How is this different from standard labor market reports?',
     a: 'Standard LMI tools (O*NET, Lightcast) only surface occupations already cataloged by the government. Our analysis draws from 50+ live sources — employer job postings, economic development announcements, industry supply chain signals — to surface demand before it shows up in any database.',
   },
   {
-    q: 'How long does a Market Scan take?',
+    q: 'How long does a Program Opportunity Scan take?',
     a: 'Approximately one week from the time we receive your intake form. Rush delivery is available for an additional fee. The Pell Readiness Check is faster — typically 2–3 business days.',
   },
   {
@@ -398,7 +398,7 @@ const HERO_SLIDES = [
       { value: '25+', label: 'page report' },
     ],
     cta: { text: 'Learn More →', href: '/discover' },
-    ctaSecondary: { text: 'Order a Market Scan', href: 'mailto:hello@withwavelength.com?subject=Market%20Scan%20Order' },
+    ctaSecondary: { text: 'Order a Program Opportunity Scan', href: 'mailto:hello@withwavelength.com?subject=Market%20Scan%20Order' },
     icon: <BarChart3 className="h-3.5 w-3.5 text-emerald-400" />,
     badgeColor: 'emerald',
     showForm: false,
@@ -527,8 +527,8 @@ function HeroCarousel() {
               <div className="space-y-3 w-full">
                 {[
                   { icon: '🎯', label: 'Pell Readiness Check', tag: 'Free', color: 'purple', desc: 'Find out if your programs qualify for federal funding' },
-                  { icon: '📋', label: 'Compliance Gap Report', tag: '$295', color: 'blue', desc: 'See every compliance gap and what it\'s costing you' },
-                  { icon: '📊', label: 'Market Scan', tag: '$1,500', color: 'teal', desc: 'Get 7–10 validated program opportunities, scored and ready to act on' },
+                  { icon: '📋', label: 'Program Gap Audit', tag: '$295', color: 'blue', desc: 'See every compliance gap and what it\'s costing you' },
+                  { icon: '📊', label: 'Program Opportunity Scan', tag: '$1,500', color: 'teal', desc: 'Get 7–10 validated program opportunities, scored and ready to act on' },
                   { icon: '📡', label: 'Drift Monitor', tag: 'From $1,200/yr', color: 'orange', desc: 'Keep existing programs aligned to employer demand' },
                 ].map((item, idx) => (
                   <div
@@ -800,7 +800,7 @@ export default function HomePage() {
                 <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 mb-4">
                   <span className="text-blue-300 text-[10px] font-bold uppercase tracking-wider">$295</span>
                 </div>
-                <h3 className="font-heading font-bold text-white text-xl mb-2">Compliance Gap Report</h3>
+                <h3 className="font-heading font-bold text-white text-xl mb-2">Program Gap Audit</h3>
                 <p className="text-white/70 text-sm leading-relaxed mb-6">
                   We find every state-mandated program your institution isn&apos;t offering — and attach a revenue estimate to each gap. The average institution is leaving $2M+ on the table.
                 </p>
@@ -865,7 +865,7 @@ export default function HomePage() {
                   <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-4">
                     <span className="text-purple-300 text-[10px] font-bold uppercase tracking-wider">Founding Rate</span>
                   </div>
-                  <h3 className="font-heading font-bold text-white text-xl mb-2">Market Scan</h3>
+                  <h3 className="font-heading font-bold text-white text-xl mb-2">Program Opportunity Scan</h3>
                   <p className="text-white/70 text-sm leading-relaxed mb-6">
                     We research your regional labor market across 50+ sources and deliver 7–10 validated program opportunities — each scored, ranked, and backed by real employer demand. Build with confidence, not guesswork.
                   </p>
@@ -899,7 +899,7 @@ export default function HomePage() {
                   </ul>
                   <a href="mailto:hello@withwavelength.com?subject=Market%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AAny%20focus%20areas%3A%20">
                     <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
-                      Order Market Scan
+                      Order Program Opportunity Scan
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </button>
                   </a>
@@ -1102,7 +1102,7 @@ export default function HomePage() {
           <AnimateOnScroll variant="fade-up" className="text-center mb-4">
             <span className="overline inline-flex items-center gap-3">
               <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/50" />
-              What&apos;s in a Market Scan
+              What&apos;s in a Program Opportunity Scan
               <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-teal-500/50" />
             </span>
           </AnimateOnScroll>
@@ -1149,7 +1149,7 @@ export default function HomePage() {
               },
               {
                 num: '06',
-                title: 'The Market Scan Report',
+                title: 'The Program Opportunity Scan Report',
                 desc: '7–10 vetted program leads in a 25+ page report — scored, ranked, with evidence trails, grant alignment, Pell readiness, and specific next steps.',
               },
             ].map(({ num, title, desc }) => (
@@ -1168,7 +1168,7 @@ export default function HomePage() {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div>
                     <p className="text-xs font-medium uppercase tracking-widest text-white/70 mb-1">
-                      Market Scan
+                      Program Opportunity Scan
                     </p>
                     <p className="font-heading font-semibold text-white text-xl">
                       Wake Technical Community College
@@ -1295,7 +1295,7 @@ export default function HomePage() {
               </a>
               <a href="mailto:hello@withwavelength.com?subject=Market%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20">
                 <button className="btn-cosmic btn-cosmic-ghost text-base px-8 py-4">
-                  Order a Market Scan
+                  Order a Program Opportunity Scan
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </button>
               </a>

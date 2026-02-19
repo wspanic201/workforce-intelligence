@@ -548,7 +548,7 @@ export default function GrantsPage() {
               },
               {
                 stage: '→',
-                name: 'Market Scan',
+                name: 'Program Opportunity Scan',
                 href: '/discover',
                 desc: '25+ page market intelligence report — scored program opportunities, employer demand signals, and grant alignment. Identifies the programs worth funding.',
                 tag: '$1,500',

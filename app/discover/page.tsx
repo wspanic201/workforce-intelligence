@@ -18,7 +18,7 @@ import { Aurora } from '@/components/cosmic/Aurora';
 const discoverProductJsonLd = {
   "@context": "https://schema.org",
   "@type": "Product",
-  name: "Market Scan",
+  name: "Program Opportunity Scan",
   description:
     "Full market intelligence before you build a new program — 25+ pages of scored opportunities, employer demand signals, competitive gaps, and grant alignment for community colleges.",
   url: "https://withwavelength.com/discover",
@@ -54,7 +54,7 @@ export default function DiscoverPage() {
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl mt-4"
               style={{ fontSize: 'clamp(2.5rem, 5vw + 0.5rem, 4.5rem)' }}
             >
-              Market Scan
+              Program Opportunity Scan
             </h1>
           </AnimateOnScroll>
 
@@ -77,7 +77,7 @@ export default function DiscoverPage() {
               </a>
               <a href="mailto:hello@withwavelength.com?subject=Market%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AAny%20focus%20areas%3A%20">
                 <button className="btn-cosmic btn-cosmic-primary">
-                  Order a Market Scan — $1,500
+                  Order a Program Opportunity Scan — $1,500
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </a>
@@ -103,7 +103,7 @@ export default function DiscoverPage() {
               className="font-heading font-bold text-white"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              Six phases of research. One comprehensive Market Scan.
+              Six phases of research. One comprehensive Program Opportunity Scan.
             </h2>
           </AnimateOnScroll>
 
@@ -136,7 +136,7 @@ export default function DiscoverPage() {
               },
               {
                 icon: FileText,
-                title: 'The Market Scan Report',
+                title: 'The Program Opportunity Scan Report',
                 desc: '25+ page report with scored programs, evidence trails, grant alignment, barriers, Workforce Pell readiness scores, and specific next steps.',
               },
             ].map(({ icon: Icon, title, desc }) => (
@@ -312,7 +312,7 @@ export default function DiscoverPage() {
               Start free. Go deeper when you&apos;re ready.
             </h2>
             <p className="text-white/70 mt-3 max-w-xl mx-auto">
-              The Pell Readiness Check is free and gets you started in 60 seconds. When you&apos;re ready for full market intelligence, a Market Scan is the next step.
+              The Pell Readiness Check is free and gets you started in 60 seconds. When you&apos;re ready for full market intelligence, a Program Opportunity Scan is the next step.
             </p>
           </AnimateOnScroll>
 
@@ -367,7 +367,7 @@ export default function DiscoverPage() {
                   </span>
                 </div>
                 <div className="mt-3">
-                  <h3 className="font-heading font-bold text-white text-xl mb-2">Market Scan</h3>
+                  <h3 className="font-heading font-bold text-white text-xl mb-2">Program Opportunity Scan</h3>
                   <p className="text-white/70 text-sm mb-5">
                     Full market intelligence — 25+ pages, 50+ sources, programs scored and ranked.
                   </p>
@@ -381,7 +381,7 @@ export default function DiscoverPage() {
 
                   <ul className="text-left max-w-xs mx-auto space-y-3 mb-7 flex-1">
                     {[
-                      'Full 25+ page Market Scan',
+                      'Full 25+ page Program Opportunity Scan',
                       'Conventional + Blue Ocean opportunities',
                       '50+ sources cited & verified',
                       'Scored & ranked program recommendations',
@@ -398,7 +398,7 @@ export default function DiscoverPage() {
 
                   <a href="mailto:hello@withwavelength.com?subject=Market%20Scan%20Order&body=College%20name%3A%20%0ACity%2C%20State%3A%20%0AAny%20focus%20areas%3A%20">
                     <button className="btn-cosmic btn-cosmic-primary w-full sm:w-auto">
-                      Order Market Scan
+                      Order Program Opportunity Scan
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </button>
                   </a>
@@ -420,10 +420,10 @@ export default function DiscoverPage() {
               className="font-heading font-bold text-white"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              After Your Market Scan
+              After Your Program Opportunity Scan
             </h2>
             <p className="text-white/70 mt-3">
-              Your Market Scan identifies the opportunities. The next stages help you act on them.
+              Your Program Opportunity Scan identifies the opportunities. The next stages help you act on them.
             </p>
           </AnimateOnScroll>
 
