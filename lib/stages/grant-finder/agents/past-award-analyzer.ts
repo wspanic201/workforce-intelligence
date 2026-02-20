@@ -48,28 +48,38 @@ export async function analyzePastAwards(grants: GrantDetails[]): Promise<PastAwa
 
   const awards: PastAwardData[] = [];
 
-  // Process grants in batches to avoid rate-limit hammering
-  for (let i = 0; i < grants.length; i++) {
-    const grant = grants[i];
-    console.log(`[Past Award Analyzer] [${i + 1}/${grants.length}] Researching: ${grant.title || grant.id}`);
+  // Process grants in parallel batches of 5
+  const CONCURRENCY = 5;
+  for (let i = 0; i < grants.length; i += CONCURRENCY) {
+    const batch = grants.slice(i, i + CONCURRENCY);
+    console.log(`[Past Award Analyzer] Batch ${Math.floor(i / CONCURRENCY) + 1}/${Math.ceil(grants.length / CONCURRENCY)} (${batch.length} grants)...`);
 
-    try {
-      const awardData = await analyzeOneGrant(grant);
-      searchesUsed += awardData._searchesUsed || 0;
-      awards.push(awardData);
-    } catch (err) {
-      console.warn(`[Past Award Analyzer] Failed for grant ${grant.id}: ${err instanceof Error ? err.message : String(err)}`);
-      // Add a placeholder so downstream agents still have a record
-      awards.push({
-        grantId: grant.id,
-        grantTitle: grant.title,
-        grantNumber: grant.number,
-        pastRecipients: [],
-        avgAwardAmount: grant.awardCeiling || null,
-        successRate: null,
-        competitiveInsights: 'No past award data found — new program or limited public records.',
-        rawSearchResults: '',
-      });
+    const results = await Promise.allSettled(
+      batch.map(async (grant) => {
+        console.log(`[Past Award Analyzer] Researching: ${grant.title?.slice(0, 50) || grant.id}`);
+        return analyzeOneGrant(grant);
+      })
+    );
+
+    for (let j = 0; j < results.length; j++) {
+      const result = results[j];
+      const grant = batch[j];
+      if (result.status === 'fulfilled') {
+        searchesUsed += result.value._searchesUsed || 0;
+        awards.push(result.value);
+      } else {
+        console.warn(`[Past Award Analyzer] Failed for grant ${grant.id}: ${result.reason?.message || result.reason}`);
+        awards.push({
+          grantId: grant.id,
+          grantTitle: grant.title,
+          grantNumber: grant.number,
+          pastRecipients: [],
+          avgAwardAmount: grant.awardCeiling || null,
+          successRate: null,
+          competitiveInsights: 'No past award data found — new program or limited public records.',
+          rawSearchResults: '',
+        });
+      }
     }
   }
 

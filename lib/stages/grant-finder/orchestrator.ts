@@ -154,10 +154,10 @@ export async function runGrantFinder(
   }
 
   // ── Agent 2: Past Award Analyzer ──
-  // Limit to top 20 grants for past award research (time/cost constraint)
+  // Limit to top 10 grants for past award research (time/cost constraint)
   let pastAwardOutput = null;
   try {
-    const grantsForAnalysis = scanOutput.grants.slice(0, 20);
+    const grantsForAnalysis = scanOutput.grants.slice(0, 10);
     progress(2, 'Past Award Analyzer', 'starting',
       `Researching past awards for ${grantsForAnalysis.length} grants...`);
     const phaseStart = Date.now();

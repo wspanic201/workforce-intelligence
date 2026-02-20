@@ -99,20 +99,26 @@ export async function matchGrants(
 
   const scoredGrants: ScoredGrant[] = [];
 
-  // Process in batches of 5 to avoid overloading Claude
-  const BATCH_SIZE = 5;
-  for (let i = 0; i < grants.length; i += BATCH_SIZE) {
-    const batch = grants.slice(i, i + BATCH_SIZE);
-    console.log(`[Grant Matcher] Scoring batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(grants.length / BATCH_SIZE)}...`);
+  // Process in parallel batches of 5 (concurrent Claude calls)
+  const CONCURRENCY = 5;
+  for (let i = 0; i < grants.length; i += CONCURRENCY) {
+    const batch = grants.slice(i, i + CONCURRENCY);
+    console.log(`[Grant Matcher] Scoring batch ${Math.floor(i / CONCURRENCY) + 1}/${Math.ceil(grants.length / CONCURRENCY)} (${batch.length} grants)...`);
 
-    for (const grant of batch) {
-      try {
+    const results = await Promise.allSettled(
+      batch.map(async (grant) => {
         const pastAward = pastAwardMap.get(grant.id);
-        const scored = await scoreOneGrant(grant, pastAward, profile);
-        scoredGrants.push(scored);
-      } catch (err) {
-        console.warn(`[Grant Matcher] Failed to score grant ${grant.id}: ${err instanceof Error ? err.message : String(err)}`);
-        // Add with minimum scores rather than skipping
+        return scoreOneGrant(grant, pastAward, profile);
+      })
+    );
+
+    for (let j = 0; j < results.length; j++) {
+      const result = results[j];
+      const grant = batch[j];
+      if (result.status === 'fulfilled') {
+        scoredGrants.push(result.value);
+      } else {
+        console.warn(`[Grant Matcher] Failed to score grant ${grant.id}: ${result.reason?.message || result.reason}`);
         scoredGrants.push({
           ...grant,
           scores: {

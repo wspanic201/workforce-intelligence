@@ -85,48 +85,61 @@ export async function scanGrants(input: GrantScanInput): Promise<GrantScanOutput
 
   console.log(`[Grant Scanner] ${eligibleGrants.length} grants pass eligibility filter`);
 
-  // ── 4. Fetch details for top grants (up to 30) ──
-  const topGrants = eligibleGrants.slice(0, 30);
+  // ── 4. Fetch details for top grants (up to 20) ──
+  const topGrants = eligibleGrants.slice(0, 20);
   const detailedGrants: GrantDetails[] = [];
 
-  console.log(`[Grant Scanner] Fetching details for ${topGrants.length} grants...`);
-  for (const grant of topGrants) {
-    if (!grant.id) continue;
-    try {
-      const details = await fetchGrantDetails(grant.id);
-      if (details) {
-        // Merge summary fields in case detail page didn't parse them
-        detailedGrants.push({
-          ...grant,
-          ...details,
-          // Preserve summary data if detail scrape missed it
-          title: details.title || grant.title,
-          agency: details.agency || grant.agency,
-          agencyCode: details.agencyCode || grant.agencyCode,
-          closeDate: details.closeDate || grant.closeDate,
-          openDate: details.openDate || grant.openDate,
-          oppStatus: details.oppStatus || grant.oppStatus,
-          cfdaList: details.cfdaList?.length ? details.cfdaList : grant.cfdaList,
-          awardFloor: grant.awardFloor ?? details.awardFloor,
-          awardCeiling: grant.awardCeiling ?? details.awardCeiling,
-        });
+  console.log(`[Grant Scanner] Fetching details for ${topGrants.length} grants (5 concurrent)...`);
+  
+  // Fetch grant details in parallel batches of 5
+  const DETAIL_CONCURRENCY = 5;
+  for (let i = 0; i < topGrants.length; i += DETAIL_CONCURRENCY) {
+    const batch = topGrants.slice(i, i + DETAIL_CONCURRENCY).filter(g => g.id);
+    
+    const results = await Promise.allSettled(
+      batch.map(async (grant) => {
+        const details = await fetchGrantDetails(grant.id);
+        return { grant, details };
+      })
+    );
+
+    for (const result of results) {
+      searchesUsed++;
+      if (result.status === 'fulfilled') {
+        const { grant, details } = result.value;
+        if (details) {
+          detailedGrants.push({
+            ...grant,
+            ...details,
+            title: details.title || grant.title,
+            agency: details.agency || grant.agency,
+            agencyCode: details.agencyCode || grant.agencyCode,
+            closeDate: details.closeDate || grant.closeDate,
+            openDate: details.openDate || grant.openDate,
+            oppStatus: details.oppStatus || grant.oppStatus,
+            cfdaList: details.cfdaList?.length ? details.cfdaList : grant.cfdaList,
+            awardFloor: grant.awardFloor ?? details.awardFloor,
+            awardCeiling: grant.awardCeiling ?? details.awardCeiling,
+          });
+        } else {
+          detailedGrants.push({
+            ...grant,
+            pageUrl: `https://www.grants.gov/search-results-detail/${grant.id}`,
+            fetchedAt: new Date().toISOString(),
+          });
+        }
       } else {
-        // Fall back to summary data without full details
-        detailedGrants.push({
-          ...grant,
-          pageUrl: `https://www.grants.gov/search-results-detail/${grant.id}`,
-          fetchedAt: new Date().toISOString(),
-        });
+        const grant = batch[results.indexOf(result)];
+        console.warn(`[Grant Scanner] Failed to fetch details for grant ${grant?.id}: ${result.reason?.message || result.reason}`);
+        if (grant) {
+          detailedGrants.push({
+            ...grant,
+            pageUrl: `https://www.grants.gov/search-results-detail/${grant.id}`,
+            fetchedAt: new Date().toISOString(),
+          });
+        }
       }
-    } catch (err) {
-      console.warn(`[Grant Scanner] Failed to fetch details for grant ${grant.id}: ${err instanceof Error ? err.message : String(err)}`);
-      detailedGrants.push({
-        ...grant,
-        pageUrl: `https://www.grants.gov/search-results-detail/${grant.id}`,
-        fetchedAt: new Date().toISOString(),
-      });
     }
-    searchesUsed++;
   }
 
   // ── 5. Web searches for foundation/state/NSF grants ──

@@ -65,37 +65,49 @@ export async function analyzeRequirements(
   const requirements: GrantRequirements[] = [];
   let grantsFailed = 0;
 
-  for (let i = 0; i < grantsToAnalyze.length; i++) {
-    const grant = grantsToAnalyze[i];
-    console.log(`[Requirements Analyzer] [${i + 1}/${grantsToAnalyze.length}] ${grant.title || grant.id}`);
+  // Process in parallel batches of 4 (balance speed vs memory on 8GB machines)
+  const CONCURRENCY = 4;
+  for (let i = 0; i < grantsToAnalyze.length; i += CONCURRENCY) {
+    const batch = grantsToAnalyze.slice(i, i + CONCURRENCY);
+    console.log(`[Requirements Analyzer] Batch ${Math.floor(i / CONCURRENCY) + 1}/${Math.ceil(grantsToAnalyze.length / CONCURRENCY)} (${batch.length} grants)...`);
 
-    try {
-      const req = await analyzeOneGrant(grant);
-      requirements.push(req);
-      // Brief pause between grants to let Node GC reclaim memory (prevents OOM on 8GB machines)
-      if (i < grantsToAnalyze.length - 1) {
-        await new Promise(r => setTimeout(r, 500));
+    const results = await Promise.allSettled(
+      batch.map(async (grant) => {
+        console.log(`[Requirements Analyzer] Analyzing: ${grant.title?.slice(0, 50) || grant.id}`);
+        return analyzeOneGrant(grant);
+      })
+    );
+
+    for (let j = 0; j < results.length; j++) {
+      const result = results[j];
+      const grant = batch[j];
+      if (result.status === 'fulfilled') {
+        requirements.push(result.value);
+      } else {
+        console.warn(`[Requirements Analyzer] Failed for ${grant.id}: ${result.reason?.message || result.reason}`);
+        grantsFailed++;
+        requirements.push({
+          grantId: grant.id,
+          grantTitle: grant.title,
+          grantNumber: grant.number,
+          narrativeSections: ['Project narrative', 'Evaluation plan', 'Budget narrative'],
+          dataRequirements: ['Institutional data', 'Labor market analysis'],
+          lettersOfSupport: ['Employer partners', 'Community stakeholders'],
+          budgetRequirements: 'Standard federal budget format required. See FOA for details.',
+          matchRequirements: 'See grant details for matching requirements.',
+          effortLevel: 'medium',
+          estimatedHours: '30-50 hours',
+          effortRationale: 'Standard federal grant application. Exact requirements unavailable — estimated based on agency type.',
+          applicationDeadline: grant.closeDate || 'See grants.gov for deadline',
+          pageUrl: grant.pageUrl || `https://www.grants.gov/search-results-detail/${grant.id}`,
+          analysisNotes: 'Requirements analysis unavailable — visit grants.gov for official details.',
+        });
       }
-    } catch (err) {
-      console.warn(`[Requirements Analyzer] Failed for ${grant.id}: ${err instanceof Error ? err.message : String(err)}`);
-      grantsFailed++;
-      // Add a placeholder
-      requirements.push({
-        grantId: grant.id,
-        grantTitle: grant.title,
-        grantNumber: grant.number,
-        narrativeSections: ['Project narrative', 'Evaluation plan', 'Budget narrative'],
-        dataRequirements: ['Institutional data', 'Labor market analysis'],
-        lettersOfSupport: ['Employer partners', 'Community stakeholders'],
-        budgetRequirements: 'Standard federal budget format required. See FOA for details.',
-        matchRequirements: 'See grant details for matching requirements.',
-        effortLevel: 'medium',
-        estimatedHours: '30-50 hours',
-        effortRationale: 'Standard federal grant application. Exact requirements unavailable — estimated based on agency type.',
-        applicationDeadline: grant.closeDate || 'See grants.gov for deadline',
-        pageUrl: grant.pageUrl || `https://www.grants.gov/search-results-detail/${grant.id}`,
-        analysisNotes: 'Requirements analysis unavailable — visit grants.gov for official details.',
-      });
+    }
+
+    // Brief pause between batches to let GC reclaim memory
+    if (i + CONCURRENCY < grantsToAnalyze.length) {
+      await new Promise(r => setTimeout(r, 300));
     }
   }
 
