@@ -6,6 +6,7 @@ import { NavBar } from "@/components/cosmic/NavBar";
 import { WavelengthMark } from "@/components/cosmic/WavelengthLogo";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { FooterNewsletter } from "@/components/FooterNewsletter";
+import { PublicChrome } from "@/components/PublicChrome";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -95,11 +96,14 @@ export default function RootLayout({
         />
 
         <ThemeProvider>
-        <NavBar />
+        <PublicChrome>
+          <NavBar />
+        </PublicChrome>
 
         <main>{children}</main>
 
         {/* Footer */}
+        <PublicChrome>
         <footer className="border-t border-theme-subtle bg-theme-page">
           <div className="mx-auto max-w-[1200px] px-6 py-12">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
@@ -205,6 +209,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
+        </PublicChrome>
         </ThemeProvider>
       </body>
     </html>

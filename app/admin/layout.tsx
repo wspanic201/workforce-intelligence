@@ -1,21 +1,22 @@
 /**
  * Admin dashboard layout
- * Shared navigation and layout for all /admin routes
+ * Matches Wavelength brand — light admin variant with cosmic accents
  */
 
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { verifyAdminSession, destroyAdminSession } from '@/lib/auth/admin';
+import { WavelengthMark } from '@/components/cosmic/WavelengthLogo';
+import { AdminNav } from './AdminNav';
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // Verify authentication (redirect handled by middleware, but double-check)
   const isAuthenticated = await verifyAdminSession();
-  
-  // Skip layout for login page
+
+  // Login page gets its own layout
   if (!isAuthenticated) {
     return <>{children}</>;
   }
@@ -27,43 +28,55 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div
+      className="min-h-screen"
+      data-theme="light"
+      style={{
+        backgroundColor: '#f8fafc',
+        color: '#0f172a',
+        // Override cosmic dark theme vars for admin
+        // @ts-ignore
+        '--bg-page': '#f8fafc',
+        '--text-primary': '#0f172a',
+        '--text-secondary': '#334155',
+        '--text-tertiary': '#64748b',
+        '--text-muted': '#94a3b8',
+        '--border-subtle': '#e2e8f0',
+        '--nav-bg': 'rgba(255,255,255,0.95)',
+      } as React.CSSProperties}
+    >
       {/* Top Navigation */}
-      <nav className="bg-white border-b border-gray-200">
+      <nav className="sticky top-0 z-50 backdrop-blur-xl border-b" style={{ backgroundColor: 'rgba(255,255,255,0.92)', borderColor: '#e2e8f0' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              {/* Logo */}
-              <Link href="/admin" className="flex items-center">
-                <span className="text-xl font-bold text-gray-900">
+          <div className="flex items-center justify-between h-16">
+            {/* Left: Logo + Nav */}
+            <div className="flex items-center gap-8">
+              <Link href="/admin" className="flex items-center gap-2.5">
+                <WavelengthMark className="w-6 h-6" />
+                <span className="font-heading font-bold text-lg tracking-tight text-gradient-cosmic">
                   Wavelength
                 </span>
-                <span className="ml-2 text-sm text-gray-500">Admin</span>
+                <span className="text-xs font-medium text-slate-400 border border-slate-200 rounded-full px-2 py-0.5">
+                  Admin
+                </span>
               </Link>
 
-              {/* Navigation Links */}
-              <div className="hidden sm:ml-10 sm:flex sm:space-x-8">
-                <NavLink href="/admin" exact>Dashboard</NavLink>
-                <NavLink href="/admin/signal">The Signal</NavLink>
-                <NavLink href="/admin/reports">Reports</NavLink>
-                <NavLink href="/admin/chat">Chat</NavLink>
-                <NavLink href="/admin/config">Config</NavLink>
-              </div>
+              <AdminNav />
             </div>
 
-            {/* Right side */}
-            <div className="flex items-center space-x-4">
+            {/* Right: Actions */}
+            <div className="flex items-center gap-4">
               <Link
                 href="/"
                 target="_blank"
-                className="text-sm text-gray-600 hover:text-gray-900"
+                className="text-sm text-slate-500 hover:text-slate-900 transition-colors"
               >
-                View Site
+                View Site ↗
               </Link>
               <form action={handleLogout}>
                 <button
                   type="submit"
-                  className="text-sm text-gray-600 hover:text-gray-900"
+                  className="text-sm text-slate-500 hover:text-red-600 transition-colors"
                 >
                   Logout
                 </button>
@@ -78,19 +91,5 @@ export default async function AdminLayout({
         {children}
       </main>
     </div>
-  );
-}
-
-// Navigation link component with active state
-function NavLink({ href, exact = false, children }: { href: string; exact?: boolean; children: React.ReactNode }) {
-  // Note: We'll need to use client-side logic for active state
-  // For now, keeping it simple
-  return (
-    <Link
-      href={href}
-      className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:text-gray-900 hover:border-gray-300"
-    >
-      {children}
-    </Link>
   );
 }

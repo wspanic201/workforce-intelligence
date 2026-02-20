@@ -1,6 +1,6 @@
 /**
  * Admin Dashboard Home
- * System overview and quick stats
+ * System overview with Wavelength brand styling
  */
 
 import Link from 'next/link';
@@ -9,7 +9,6 @@ import { checkSendHealth } from '@/lib/signal/send-tracker';
 import { checkNewsSourcesHealth } from '@/lib/signal/news-sources';
 
 export default async function AdminDashboardPage() {
-  // Fetch dashboard data
   const [reportStats, signalHealth, newsHealth] = await Promise.all([
     getReportStats(),
     checkSendHealth().catch(() => null),
@@ -20,18 +19,19 @@ export default async function AdminDashboardPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-1">Wavelength platform overview</p>
+        <h1 className="text-2xl font-heading font-bold text-slate-900">Dashboard</h1>
+        <p className="text-slate-500 mt-1 text-sm">Wavelength platform overview</p>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         <StatCard
           title="Reports This Week"
           value={reportStats.thisWeek}
           subtitle={`${reportStats.total} total`}
           href="/admin/reports"
-          status="good"
+          accent="purple"
+          icon="📊"
         />
         
         <StatCard
@@ -39,7 +39,8 @@ export default async function AdminDashboardPage() {
           value={signalHealth?.healthy ? 'Healthy' : 'Issues'}
           subtitle={signalHealth ? `${signalHealth.daysSinceSuccess.toFixed(1)}d since last send` : 'Loading...'}
           href="/admin/signal"
-          status={signalHealth?.healthy ? 'good' : 'warning'}
+          accent={signalHealth?.healthy ? 'teal' : 'amber'}
+          icon="📧"
         />
 
         <StatCard
@@ -47,7 +48,8 @@ export default async function AdminDashboardPage() {
           value={getHealthySourcesCount(newsHealth)}
           subtitle="sources available"
           href="/admin/signal"
-          status={newsHealth?.brave || newsHealth?.newsapi || newsHealth?.googleRss ? 'good' : 'error'}
+          accent={newsHealth?.brave || newsHealth?.newsapi || newsHealth?.googleRss ? 'blue' : 'red'}
+          icon="📡"
         />
 
         <StatCard
@@ -55,13 +57,14 @@ export default async function AdminDashboardPage() {
           value={0}
           subtitle="awaiting generation"
           href="/admin/reports"
-          status="neutral"
+          accent="slate"
+          icon="📋"
         />
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+        <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-5">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <QuickAction
             title="Send Newsletter"
@@ -85,20 +88,20 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Recent Activity */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h2>
-        <div className="space-y-3">
+      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+        <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-5">Recent Activity</h2>
+        <div className="space-y-1">
           {reportStats.recent.map((report: any) => (
-            <div key={report.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+            <div key={report.id} className="flex items-center justify-between py-3 px-3 rounded-lg hover:bg-slate-50 transition-colors">
               <div>
-                <p className="text-sm font-medium text-gray-900">{report.program_name || 'Untitled Report'}</p>
-                <p className="text-xs text-gray-500">{new Date(report.created_at).toLocaleDateString()}</p>
+                <p className="text-sm font-medium text-slate-900">{report.program_name || 'Untitled Report'}</p>
+                <p className="text-xs text-slate-400 mt-0.5">{new Date(report.created_at).toLocaleDateString()}</p>
               </div>
-              <span className="text-xs text-gray-500">{report.status}</span>
+              <span className="text-xs font-mono text-slate-400 bg-slate-50 px-2 py-1 rounded">{report.status}</span>
             </div>
           ))}
           {reportStats.recent.length === 0 && (
-            <p className="text-sm text-gray-500">No recent reports</p>
+            <p className="text-sm text-slate-400 py-4 text-center">No recent reports</p>
           )}
         </div>
       </div>
@@ -106,33 +109,45 @@ export default async function AdminDashboardPage() {
   );
 }
 
-// Helper components
-function StatCard({ 
-  title, 
-  value, 
-  subtitle, 
-  href, 
-  status 
-}: { 
-  title: string; 
-  value: string | number; 
-  subtitle: string; 
+// ── Components ──────────────────────────────────────────────────────────────
+
+function StatCard({
+  title,
+  value,
+  subtitle,
+  href,
+  accent,
+  icon,
+}: {
+  title: string;
+  value: string | number;
+  subtitle: string;
   href: string;
-  status: 'good' | 'warning' | 'error' | 'neutral';
+  accent: 'purple' | 'blue' | 'teal' | 'amber' | 'red' | 'slate';
+  icon: string;
 }) {
-  const statusColors = {
-    good: 'border-green-500',
-    warning: 'border-yellow-500',
-    error: 'border-red-500',
-    neutral: 'border-gray-300',
+  const gradients: Record<string, string> = {
+    purple: 'from-purple-500 to-blue-500',
+    blue: 'from-blue-500 to-cyan-500',
+    teal: 'from-teal-500 to-emerald-500',
+    amber: 'from-amber-500 to-orange-500',
+    red: 'from-red-500 to-rose-500',
+    slate: 'from-slate-400 to-slate-500',
   };
 
   return (
     <Link href={href}>
-      <div className={`bg-white rounded-lg shadow p-6 border-l-4 ${statusColors[status]} hover:shadow-lg transition-shadow`}>
-        <p className="text-sm font-medium text-gray-600">{title}</p>
-        <p className="text-2xl font-bold text-gray-900 mt-2">{value}</p>
-        <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
+      <div className="group relative bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200 overflow-hidden">
+        {/* Accent gradient bar */}
+        <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${gradients[accent]}`} />
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">{title}</p>
+            <p className="text-2xl font-heading font-bold text-slate-900 mt-2">{value}</p>
+            <p className="text-xs text-slate-400 mt-1">{subtitle}</p>
+          </div>
+          <span className="text-2xl opacity-60 group-hover:opacity-100 transition-opacity">{icon}</span>
+        </div>
       </div>
     </Link>
   );
@@ -141,35 +156,33 @@ function StatCard({
 function QuickAction({ title, description, href, icon }: { title: string; description: string; href: string; icon: string }) {
   return (
     <Link href={href}>
-      <div className="border border-gray-200 rounded-lg p-4 hover:border-purple-500 hover:shadow transition-all">
-        <div className="text-2xl mb-2">{icon}</div>
-        <h3 className="font-semibold text-gray-900">{title}</h3>
-        <p className="text-sm text-gray-600 mt-1">{description}</p>
+      <div className="group border border-slate-200 rounded-xl p-5 hover:border-purple-300 hover:shadow-md transition-all duration-200 bg-white">
+        <div className="text-2xl mb-3">{icon}</div>
+        <h3 className="font-heading font-semibold text-slate-900 group-hover:text-purple-700 transition-colors">{title}</h3>
+        <p className="text-sm text-slate-500 mt-1">{description}</p>
       </div>
     </Link>
   );
 }
 
-// Data fetching helpers
+// ── Data Fetching ───────────────────────────────────────────────────────────
+
 async function getReportStats() {
   try {
     const supabase = getSupabaseServerClient();
-    
-    // Get total count
+
     const { count: total } = await supabase
       .from('validation_projects')
       .select('*', { count: 'exact', head: true });
 
-    // Get this week's count
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-    
+
     const { count: thisWeek } = await supabase
       .from('validation_projects')
       .select('*', { count: 'exact', head: true })
       .gte('created_at', oneWeekAgo.toISOString());
 
-    // Get recent reports
     const { data: recent } = await supabase
       .from('validation_projects')
       .select('id, program_name, status, created_at')
