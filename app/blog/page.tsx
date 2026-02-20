@@ -17,6 +17,16 @@ export const metadata: Metadata = {
 
 export const posts = [
   {
+    slug: "dol-65-million-workforce-pell-grants-community-colleges-2026",
+    title: "$65M in DOL Grants for Workforce Pell: What Community Colleges Need to Know",
+    excerpt:
+      "The U.S. Department of Labor just opened $65 million in funding for community college short-term training programs. Here's what your institution needs to do to compete—and win.",
+    date: "February 20, 2026",
+    readTime: "7 min read",
+    category: "Workforce Intelligence",
+    dot: "bg-teal-400",
+  },
+  {
     slug: "lightcast-fault-lines-workforce-gap-2026",
     title: "Lightcast Just Called It: The Labor Shortage Is Permanent. Here's What That Means for Your Programs.",
     excerpt:

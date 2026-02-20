@@ -116,5 +116,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     },
+    {
+      url: `${siteUrl}/blog/dol-65-million-workforce-pell-grants-community-colleges-2026`,
+      lastModified: new Date("2026-02-20"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+
   ];
 }
