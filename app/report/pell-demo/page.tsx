@@ -234,42 +234,42 @@ interface GapOpportunity {
 
 const gapOpportunities: GapOpportunity[] = [
   {
+    name: 'Phlebotomy Technician',
+    soc: '31-9097',
+    medianWage: 37540,
+    suggestedHours: '180 hours (9 weeks)',
+    priority: 'high',
+    demand: 'Healthcare sector dominates Tucson hiring; 27,123 projected jobs statewide through 2026. Existing Medical Lab Technician program provides faculty expertise and clinical partnerships.',
+    pellEligible: true,
+    opportunityScore: 9.2,
+  },
+  {
     name: 'Cybersecurity Support Technician',
     soc: '15-1212',
     medianWage: 92160,
-    suggestedHours: '320 hours (16 weeks)',
+    suggestedHours: '360 hours (12 weeks)',
     priority: 'high',
-    demand: 'Tucson defense and tech sectors driving demand; Davis-Monthan AFB, Raytheon, UA partnerships',
-    pellEligible: true,
-    opportunityScore: 9.5,
-  },
-  {
-    name: 'Data Analytics Support Specialist',
-    soc: '15-2051',
-    medianWage: 82630,
-    suggestedHours: '300 hours (15 weeks)',
-    priority: 'high',
-    demand: 'Healthcare, government, and tech sectors seeking data-literate workforce; 15% projected growth',
-    pellEligible: true,
-    opportunityScore: 9.3,
-  },
-  {
-    name: 'Electronics Technician',
-    soc: '49-2094',
-    medianWage: 67550,
-    suggestedHours: '400 hours (20 weeks)',
-    priority: 'high',
-    demand: 'Manufacturing and defense electronics repair; aligned with Raytheon/semiconductor expansion',
+    demand: 'Fastest-growing IT sector; federal/defense presence in Arizona. Davis-Monthan AFB, Raytheon partnerships. +33% projected growth (2022–2032).',
     pellEligible: true,
     opportunityScore: 9.1,
+  },
+  {
+    name: 'Sterile Processing Technician',
+    soc: '31-9093',
+    medianWage: 38910,
+    suggestedHours: '240 hours (12 weeks)',
+    priority: 'high',
+    demand: 'Hospital and surgical center growth; mandated credential with guaranteed employer demand. Limited competition in region.',
+    pellEligible: true,
+    opportunityScore: 9.0,
   },
   {
     name: 'Electrician Helper/Apprentice',
     soc: '47-2111',
     medianWage: 48820,
-    suggestedHours: '400 hours (20 weeks)',
+    suggestedHours: '300 hours (12 weeks)',
     priority: 'high',
-    demand: 'Construction boom in Pima County; residential and commercial electrical demand outpacing labor supply',
+    demand: 'Construction boom in Pima County; residential and commercial electrical demand outpacing labor supply.',
     pellEligible: true,
     opportunityScore: 8.8,
   },
@@ -277,21 +277,21 @@ const gapOpportunities: GapOpportunity[] = [
     name: 'Plumbing Helper/Apprentice',
     soc: '47-2152',
     medianWage: 48860,
-    suggestedHours: '350 hours (18 weeks)',
+    suggestedHours: '300 hours (12 weeks)',
     priority: 'high',
-    demand: 'Aging infrastructure replacement driving sustained demand; limited existing training pipeline',
+    demand: 'Aging infrastructure replacement driving sustained demand; limited existing training pipeline.',
     pellEligible: true,
     opportunityScore: 8.7,
   },
   {
-    name: 'Sterile Processing Technician',
-    soc: '31-9093',
-    medianWage: 38910,
-    suggestedHours: '200 hours (10 weeks)',
+    name: 'Data Analytics Support Specialist',
+    soc: '15-2051',
+    medianWage: 82630,
+    suggestedHours: '360 hours (12 weeks)',
     priority: 'high',
-    demand: 'Hospital and surgical center growth; mandated credential with guaranteed employer demand',
+    demand: 'Healthcare, government, and tech sectors seeking data-literate workforce; 15% projected growth.',
     pellEligible: true,
-    opportunityScore: 8.5,
+    opportunityScore: 8.6,
   },
 ];
 
@@ -607,7 +607,7 @@ export default function PellDemoPage() {
               Pima Community College&apos;s 39 existing programs already meet the 600+ clock hour threshold for traditional Pell eligibility — a strong foundation. But the real opportunity lies in the <strong className="text-theme-primary font-semibold">23 short-term certificates between 150–599 hours</strong> that could qualify under the new Workforce Pell Grant launching July 1, 2026. Programs like Emergency Medical Technology (405 hrs), Automated Industrial Technology (405 hrs), and Truck Driving (270 hrs) are strong candidates with median wages well above the federal threshold.
             </p>
             <p className="mt-4 text-base text-theme-secondary leading-relaxed">
-              Our gap analysis identified <strong className="text-theme-primary font-semibold">12 high-priority program opportunities</strong> — including Cybersecurity Support ($92,160 median wage), Data Analytics ($82,630), and Electronics Technician ($67,550) — where Tucson employer demand outstrips the current training supply. Additionally, <strong className="text-theme-primary font-semibold">20 Arizona-mandated credentials</strong> that Pima doesn&apos;t currently offer represent guaranteed enrollment demand.
+              Our gap analysis identified <strong className="text-theme-primary font-semibold">12 high-priority program opportunities</strong> — including Phlebotomy Technician ($37,540 median, fastest path to healthcare), Cybersecurity Support ($92,160), and Data Analytics ($82,630) — where Tucson employer demand outstrips the current training supply. Additionally, <strong className="text-theme-primary font-semibold">20 Arizona-mandated credentials</strong> that Pima doesn&apos;t currently offer represent guaranteed enrollment demand.
             </p>
           </AnimateOnScroll>
         </div>
@@ -659,7 +659,7 @@ export default function PellDemoPage() {
                 <span className="text-sm font-bold text-theme-primary">Other</span>
               </div>
               <p className="text-4xl font-mono font-bold text-theme-muted">2</p>
-              <p className="mt-2 text-sm text-theme-secondary">Programs requiring further review — unclear clock hours or classification pending.</p>
+              <p className="mt-2 text-sm text-theme-secondary">1 program exceeds typical certificate length, 1 with unclear clock hours or classification pending.</p>
             </div>
           </StaggerChildren>
         </div>
@@ -763,7 +763,7 @@ export default function PellDemoPage() {
               12 programs Tucson needs but Pima doesn&apos;t offer.
             </h2>
             <p className="mt-3 text-base text-theme-secondary">
-              Top 6 gap opportunities ranked by regional demand, wage outcomes, and Pell eligibility potential.
+              Top 6 of 12 gap opportunities ranked by opportunity score — combining regional demand, wage outcomes, and Pell eligibility potential.
             </p>
           </AnimateOnScroll>
 
@@ -883,7 +883,7 @@ export default function PellDemoPage() {
                   </span>
                 </div>
                 <p className="mt-2 text-sm text-theme-secondary leading-relaxed">
-                  Cybersecurity ($92K median wage), Data Analytics ($83K), and Electronics Technician ($68K)
+                  Phlebotomy Tech (180 hrs, fast healthcare entry), Cybersecurity ($92K median wage), and Data Analytics ($83K)
                   represent massive unmet demand in Tucson. These programs could launch as Workforce Pell-eligible
                   from day one, capturing students who currently have no financial aid pathway to these careers.
                 </p>
