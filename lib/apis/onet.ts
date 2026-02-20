@@ -66,23 +66,16 @@ export interface OnetOccupationProfile {
 // Configuration
 // =============================================================================
 
-const ONET_BASE_URL = 'https://services.onetcenter.org/ws';
-
-function getBasicAuthHeader(): string {
-  // O*NET Web Services uses Basic auth. The ONET_API_KEY in env is the password;
-  // username defaults to the API key itself (O*NET issues combined credentials).
-  // Fall back to demo account if nothing configured.
-  const username = process.env.ONET_USERNAME || process.env.ONET_API_KEY || 'demo_user';
-  const password = process.env.ONET_API_PASSWORD || process.env.ONET_API_KEY || 'demo_pass';
-  const encoded = typeof Buffer !== 'undefined'
-    ? Buffer.from(`${username}:${password}`).toString('base64')
-    : btoa(`${username}:${password}`);
-  return `Basic ${encoded}`;
-}
+// O*NET API v2 — uses X-API-Key header, NOT Basic auth
+const ONET_BASE_URL = 'https://api-v2.onetcenter.org';
 
 function getHeaders(): Record<string, string> {
+  const apiKey = process.env.ONET_API_KEY;
+  if (!apiKey) {
+    console.warn('[O*NET] ONET_API_KEY not set — O*NET features will be skipped');
+  }
   return {
-    Authorization: getBasicAuthHeader(),
+    ...(apiKey ? { 'X-API-Key': apiKey } : {}),
     Accept: 'application/json',
     'User-Agent': 'Wavelength-WorkforceIntelligence/1.0',
   };
