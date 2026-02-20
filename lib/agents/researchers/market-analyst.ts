@@ -289,6 +289,18 @@ Cover these sections using the REAL data above:
 5. **Competitive Programs** — competing programs in region, market saturation ratio
 6. **Recommendations** — 5-7 specific, actionable recommendations
 
+CRITICAL: Contextualize demand with macro drivers when relevant. Don't just say "demand is up 15%" — explain WHY:
+- **Reshoring/Nearshoring:** Manufacturing returning from China/Mexico → domestic production labor needs
+- **Immigration Policy:** Restricted immigration → structural labor shortages in traditionally immigrant-heavy occupations
+- **Federal Spending:** Infrastructure bills, CHIPS Act, IRA → construction, semiconductor, clean energy jobs
+- **Workforce Pell Expansion:** Federal policy shift making short-term credentials financially accessible
+- **Regulatory Changes:** New licensing requirements, scope of practice expansions
+
+Example (Good): "Pharmacy tech demand is up 18% — driven by nationwide pharmacy staffing crisis compounded by immigration restrictions that previously filled these roles with H-1B visa holders."
+Example (Bad): "Pharmacy tech demand is strong and growing."
+
+Make it strategic, not just descriptive. Connect local data to national/policy trends.
+
 Rules:
 - Cite specific numbers from the data above (not vague claims)
 - Label estimates clearly: "ESTIMATE: [reasoning]"

@@ -163,6 +163,39 @@ export default function HomePage() {
       {/* ===== HERO ===== */}
       <StaticHero />
 
+      {/* ===== IOWA ROI ANNOUNCEMENT BANNER ===== */}
+      <section className="relative py-6 border-y border-teal-500/20 bg-gradient-to-r from-teal-50/50 to-blue-50/50">
+        <div className="max-w-[1000px] mx-auto px-6">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-teal-700 bg-teal-100 px-2 py-0.5 rounded">
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                  </svg>
+                  Iowa Community Colleges
+                </span>
+              </div>
+              <p className="text-sm text-gray-700">
+                <strong className="font-semibold">New state ROI reporting requirements coming.</strong> Wavelength provides the workforce intelligence and outcome projections you need to comply — backed by BLS wage data and labor market analytics.
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              <Link href="/pell">
+                <button className="btn-cosmic btn-cosmic-primary text-sm py-2 px-5 whitespace-nowrap">
+                  Start Free Check
+                </button>
+              </Link>
+              <Link href="/contact">
+                <button className="btn-cosmic btn-cosmic-ghost text-sm py-2 px-5 whitespace-nowrap">
+                  Learn More
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ===== CLIENT JOURNEY ===== */}
       <section className="relative py-20 md:py-28" id="services">
         <div className="max-w-[900px] mx-auto px-6">
