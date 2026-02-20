@@ -223,7 +223,7 @@ Return ONLY valid JSON:
     { "programTitle": "Another Program", "compositeScore": 5.1, "tier": "emerging", "included": false }
   ]
 }`,
-    { maxTokens: 12000, temperature: 0.4 }
+    { maxTokens: 8000, temperature: 0.4 }
   );
 
   // Parse the scored opportunities

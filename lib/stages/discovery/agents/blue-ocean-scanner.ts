@@ -183,9 +183,17 @@ export async function scanBlueOcean(
   // ── Final Synthesis: Claude creative analysis ──
   console.log('[Phase 6] Synthesizing all findings into top hidden opportunities...');
 
+  // Cap each strategy's findings to prevent prompt bloat (34K+ chars causes timeouts)
+  const MAX_CHARS_PER_STRATEGY = 3000;
   const allFindings = strategyResults
-    .map(s => `### ${s.strategy} (${s.searchCount} searches)\n${s.rawFindings}`)
+    .map(s => {
+      const findings = s.rawFindings.length > MAX_CHARS_PER_STRATEGY
+        ? s.rawFindings.slice(0, MAX_CHARS_PER_STRATEGY) + '\n[...truncated for length]'
+        : s.rawFindings;
+      return `### ${s.strategy} (${s.searchCount} searches)\n${findings}`;
+    })
     .join('\n\n');
+  console.log(`[Phase 6] Synthesis prompt size: ${allFindings.length} chars (${strategyResults.length} strategies)`);
 
   const categoryConstraint = getCategoryConstraint(category);
 
@@ -264,7 +272,7 @@ CRITICAL:
 - Every evidence point MUST come from the search findings above — do NOT fabricate
 - Think CREATIVELY but stay GROUNDED in data
 - Prefer white_space opportunities where no local provider exists`,
-    { maxTokens: 8000, temperature: 0.6 }
+    { maxTokens: 4000, temperature: 0.6 }
   );
 
   // Parse synthesis
