@@ -29,14 +29,12 @@ export async function generatePDFBuffer(
 
     let executablePath: string;
     let args: string[] = [];
-    let headless: boolean | 'shell' = true;
 
     if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
       // Serverless environment
       const chromium = (await import('@sparticuz/chromium')).default;
       executablePath = await chromium.executablePath();
       args = chromium.args;
-      headless = chromium.headless;
     } else {
       // Local development
       executablePath = '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
@@ -45,7 +43,7 @@ export async function generatePDFBuffer(
     browser = await puppeteer.launch({
       args,
       executablePath,
-      headless,
+      headless: true,
     });
 
     const page = await browser.newPage();

@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyAdminSession } from '@/lib/auth/admin';
+import { requireAdmin } from '@/lib/admin/auth';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { generatePDFBuffer } from '@/lib/pdf/generate-pdf-serverless';
 
@@ -14,20 +14,19 @@ export const maxDuration = 60;
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  // Auth check
-  const isAdmin = await verifyAdminSession();
-  if (!isAdmin) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const unauthorized = await requireAdmin();
+  if (unauthorized) return unauthorized;
+
+  const { id } = await params;
 
   try {
     const supabase = getSupabaseServerClient();
     const { data: order, error } = await supabase
       .from('orders')
       .select('id, report_markdown, institution_data, service_tier, program_name, contact_name, institution_name, created_at')
-      .eq('id', params.id)
+      .eq('id', id)
       .single();
 
     if (error || !order) {
@@ -66,9 +65,9 @@ export async function GET(
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
-    const filename = `wavelength-${slug}-${reportType}-${order.id.slice(0, 8)}.pdf`;
+    const filename = `wavelength-${slug}-${reportType}-${id.slice(0, 8)}.pdf`;
 
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(new Uint8Array(pdfBuffer), {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${filename}"`,
