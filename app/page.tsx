@@ -105,7 +105,7 @@ function StaticHero() {
 
         {/* Descriptor */}
         <p className="label-brand mb-6">
-          <span className="text-gradient-cosmic">∿ ·</span> Workforce Program Intelligence for Community Colleges
+          Workforce Program Intelligence for Community Colleges
         </p>
 
         {/* Variant A — Speed / efficiency ("days not months") */}
