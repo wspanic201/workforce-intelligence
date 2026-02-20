@@ -7,7 +7,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 
 const SERVICES = [
   { label: 'Discovery Scan',      tagline: 'What should we build?',        href: '/discover',       price: '$1,500' },
-  { label: 'Category Deep Dive',  tagline: "What's working in [area]?",    href: '/category',       price: '$795'   },
+  { label: 'Category Deep Dive',  tagline: 'Deep scan for a specific program area',  href: '/category',       price: '$795'   },
   { label: 'Program Validation',  tagline: 'Should we build this?',        href: '/validate',       price: '$3,500' },
 ];
 
