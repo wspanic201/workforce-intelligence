@@ -148,7 +148,7 @@ export default function RootLayout({
                   </Link>
                   <Link href="/drift" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
                     <span>Curriculum Drift Analysis</span>
-                    <span className="text-teal-400/70 text-[10px] font-mono">$495/yr</span>
+                    <span className="text-teal-400/70 text-[10px] font-mono">$495</span>
                   </Link>
                 </div>
               </div>

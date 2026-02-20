@@ -127,7 +127,7 @@ const SERVICES: Service[] = [
   {
     name: 'Curriculum Drift Analysis',
     slug: 'drift',
-    price: '$495/yr',
+    price: '$495',
     priceNote: 'per program',
     description: 'Annual review that flags where course content has fallen behind employer expectations and industry standards.',
     turnaround: '5–7 business days',

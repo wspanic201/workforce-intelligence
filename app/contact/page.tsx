@@ -194,7 +194,7 @@ export default function ContactPage() {
                     { label: 'Program Opportunity Scan', href: '/discover', price: '$1,500' },
                     { label: 'Program Validation', href: '/validate', price: '$3,500' },
                     { label: 'Grant Intelligence Scan', href: '/grants', price: '$495' },
-                    { label: 'Curriculum Drift Analysis', href: '/drift', price: '$495/yr' },
+                    { label: 'Curriculum Drift Analysis', href: '/drift', price: '$495' },
                   ].map((s) => (
                     <Link key={s.href} href={s.href} className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors group">
                       <span className="group-hover:text-gradient-cosmic transition-colors">{s.label}</span>

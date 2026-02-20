@@ -90,7 +90,7 @@ export default function TermsPage() {
             <section className="mb-10">
               <h2 className="font-heading font-semibold text-theme-primary text-2xl mb-4">Payment Terms</h2>
               <p className="text-theme-secondary leading-relaxed mb-4">
-                All services are billed as one-time payments unless otherwise specified (e.g., annual subscriptions for Curriculum Drift Analysis). Pricing is listed on our website at{' '}
+                All services are billed as one-time payments unless otherwise specified (e.g., recurring engagements). Pricing is listed on our website at{' '}
                 <Link href="/" className="text-purple-400 hover:text-purple-300 transition-colors">
                   withwavelength.com
                 </Link>.

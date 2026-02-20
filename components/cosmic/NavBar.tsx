@@ -14,7 +14,7 @@ const ADDONS = [
   { label: 'Pell Readiness Check',      href: '/pell',            price: 'Free'       },
   { label: 'Program Gap Audit',         href: '/compliance-gap',  price: '$295'       },
   { label: 'Grant Intelligence Scan',   href: '/grants',          price: '$495'       },
-  { label: 'Curriculum Drift Analysis', href: '/drift',           price: '$495/yr'    },
+  { label: 'Curriculum Drift Analysis', href: '/drift',           price: '$495'    },
 ];
 
 export function NavBar() {
