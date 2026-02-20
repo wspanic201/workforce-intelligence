@@ -5,15 +5,16 @@ import Link from 'next/link';
 import { WavelengthMark } from './WavelengthLogo';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
-const CORE = [
-  { label: 'Program Opportunity Scan', href: '/discover', price: '$1,500' },
-  { label: 'Program Validation',        href: '/validate', price: '$3,500' },
+const SERVICES = [
+  { label: 'Discovery Scan',      tagline: 'What should we build?',        href: '/discover',       price: '$1,500' },
+  { label: 'Category Deep Dive',  tagline: "What's working in [area]?",    href: '/category',       price: '$795'   },
+  { label: 'Program Validation',  tagline: 'Should we build this?',        href: '/validate',       price: '$3,500' },
 ];
 
 const ADDONS = [
-  { label: 'Pell Readiness Check',      href: '/pell',            price: 'Free'       },
-  { label: 'Program Gap Audit',         href: '/compliance-gap',  price: '$295'       },
-  { label: 'Grant Intelligence Scan',   href: '/grants',          price: '$495'       },
+  { label: 'Pell Readiness Check',      href: '/pell',            price: 'Free'    },
+  { label: 'Program Gap Audit',         href: '/compliance-gap',  price: '$295'    },
+  { label: 'Grant Intelligence Scan',   href: '/grants',          price: '$495'    },
   { label: 'Curriculum Drift Analysis', href: '/drift',           price: '$495'    },
 ];
 
@@ -96,17 +97,19 @@ export function NavBar() {
 
                   <div className="mx-3 my-2 border-t border-theme-subtle" />
 
-                  {/* Core Program Intelligence Services */}
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted px-4 pt-1 pb-1.5">Core Program Intelligence Services</p>
-                  {CORE.map((item) => (
+                  {/* Main services with question-based taglines */}
+                  {SERVICES.map((item) => (
                     <Link
                       key={item.href}
                       href={item.href}
                       onClick={() => setServicesOpen(false)}
-                      className="flex items-center justify-between px-4 py-2.5 mx-2 rounded-lg hover:bg-white/[0.05] transition-colors group"
+                      className="flex items-center justify-between px-4 py-3 mx-2 rounded-lg hover:bg-white/[0.05] transition-colors group"
                     >
-                      <span className="text-sm text-theme-secondary group-hover:text-theme-primary transition-colors">{item.label}</span>
-                      <span className="text-xs font-mono font-semibold text-purple-600 ml-3">{item.price}</span>
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-theme-secondary group-hover:text-theme-primary transition-colors">{item.label}</span>
+                        <span className="text-[11px] text-theme-muted italic">{item.tagline}</span>
+                      </div>
+                      <span className="text-xs font-mono font-semibold text-purple-600 ml-3 flex-shrink-0">{item.price}</span>
                     </Link>
                   ))}
 
@@ -119,9 +122,9 @@ export function NavBar() {
                       key={item.href}
                       href={item.href}
                       onClick={() => setServicesOpen(false)}
-                      className="flex items-center justify-between px-4 py-2.5 mx-2 rounded-lg hover:bg-white/[0.05] transition-colors group"
+                      className="flex items-center justify-between px-4 py-2 mx-2 rounded-lg hover:bg-white/[0.05] transition-colors group"
                     >
-                      <span className="text-sm text-theme-secondary group-hover:text-theme-primary transition-colors">{item.label}</span>
+                      <span className="text-[13px] text-theme-secondary group-hover:text-theme-primary transition-colors">{item.label}</span>
                       <span className="text-xs font-mono font-semibold text-teal-600 ml-3">{item.price}</span>
                     </Link>
                   ))}
@@ -173,12 +176,14 @@ export function NavBar() {
             </Link>
 
             <div className="border-t border-theme-subtle my-2" />
-            <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted px-2 pt-1 pb-0.5">Core Program Intelligence Services</p>
-            {CORE.map((item) => (
+            {SERVICES.map((item) => (
               <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-between text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
-                <span>{item.label}</span>
-                <span className="text-sm font-mono font-semibold text-purple-600">{item.price}</span>
+                className="flex items-center justify-between py-2.5 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
+                <div className="flex flex-col">
+                  <span className="text-base font-medium text-theme-secondary">{item.label}</span>
+                  <span className="text-xs text-theme-muted italic">{item.tagline}</span>
+                </div>
+                <span className="text-sm font-mono font-semibold text-purple-600 ml-3 flex-shrink-0">{item.price}</span>
               </Link>
             ))}
 
