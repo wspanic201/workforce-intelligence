@@ -112,7 +112,7 @@ Return JSON array in this exact format:
 Return ONLY valid JSON. Classify ALL ${programSubset.length} programs.`;
 
   const result = await callClaude(classificationPrompt, {
-    maxTokens: 8000,
+    maxTokens: 16000,
     temperature: 0.1,
   });
 

@@ -169,7 +169,7 @@ Return JSON:
 Return ONLY valid JSON. Score ALL ${scorablePrograms.length} programs.`;
 
   const result = await callClaude(scoringPrompt, {
-    maxTokens: 8000,
+    maxTokens: 16000,
     temperature: 0.2,
   });
 

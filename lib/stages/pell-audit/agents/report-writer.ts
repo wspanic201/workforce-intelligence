@@ -180,7 +180,7 @@ WRITING RULES:
 Write the COMPLETE report. All 6 sections. In markdown format.`;
 
   const result = await callClaude(reportPrompt, {
-    maxTokens: 8000,
+    maxTokens: 32000,
     temperature: 0.3,
   });
 

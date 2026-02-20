@@ -16,6 +16,7 @@
  */
 
 import { callClaude, extractJSON } from '@/lib/ai/anthropic';
+import { fetchCompetitorPricing } from '@/lib/agents/researchers/competitor-analyst';
 import type {
   CatalogScanOutput,
   RegulatoryScanOutput,
@@ -116,6 +117,35 @@ function estimateRevenue(mandate: MandatedProgram): {
   return { cohortSize, tuitionPerStudent, annualRevenue, confidence, rationale };
 }
 
+/**
+ * Market-rate revenue estimation — uses real competitor pricing from web search.
+ */
+function estimateRevenueWithMarketRate(mandate: MandatedProgram, marketTuition: number): {
+  cohortSize: number;
+  tuitionPerStudent: number;
+  annualRevenue: number;
+  confidence: 'high' | 'medium' | 'low';
+  rationale: string;
+} {
+  const cohortByDemand: Record<'high' | 'medium' | 'low', number> = {
+    high: 60, medium: 30, low: 15,
+  };
+  const cohortSize = cohortByDemand[mandate.demandLevel];
+  const cohortMultiplier = mandate.demandLevel === 'high' ? 3 : mandate.demandLevel === 'medium' ? 2 : 1;
+  const annualRevenue = cohortSize * cohortMultiplier * marketTuition;
+
+  return {
+    cohortSize,
+    tuitionPerStudent: marketTuition,
+    annualRevenue,
+    confidence: 'medium',
+    rationale:
+      `${cohortSize} students/cohort × ${cohortMultiplier} cohort(s)/year × ` +
+      `$${marketTuition.toLocaleString()} tuition (market rate) = ` +
+      `$${annualRevenue.toLocaleString()}/year`,
+  };
+}
+
 // ── Opportunity Scoring ──
 
 function scoreOpportunity(mandate: MandatedProgram, revenueEstimate: number): number {
@@ -178,9 +208,39 @@ export async function analyzeGapsAndWriteReport(
     `[${ts()}][Gap Report Writer] Found ${gapMandates.length} gaps, ${offeredMandates.length} already offered`,
   );
 
-  // ── Step 2: Size revenue for each gap ──
+  // ── Step 2: Size revenue for each gap (market-rate for top gaps) ──
+  console.log(
+    `[${ts()}][Gap Report Writer] Sizing revenue for ${gapMandates.length} gaps (market-rate lookup for top 8)...`,
+  );
+
+  // Fetch real market pricing for top gaps by demand level
+  const sortedByDemand = [...gapMandates].sort((a, b) => {
+    const order = { high: 0, medium: 1, low: 2 };
+    return order[a.demandLevel] - order[b.demandLevel];
+  });
+  const marketPriceCache = new Map<string, number>();
+  for (const mandate of sortedByDemand.slice(0, 8)) {
+    try {
+      const location = city ? `${city}, ${state}` : state;
+      const pricing = await fetchCompetitorPricing(mandate.occupation, location);
+      if (pricing.marketMedian > 0) {
+        marketPriceCache.set(mandate.occupation, pricing.marketMedian);
+        console.log(
+          `[${ts()}][Gap Report Writer] Market price for ${mandate.occupation}: $${pricing.marketMedian} (range $${pricing.marketLow}-$${pricing.marketHigh})`,
+        );
+      }
+    } catch {
+      // Fall back to formula
+    }
+    await new Promise(r => setTimeout(r, 400));
+  }
+
   const gaps: GapItem[] = gapMandates.map(mandate => {
-    const rev = estimateRevenue(mandate);
+    // Use market price if available, otherwise fall back to formula
+    const marketPrice = marketPriceCache.get(mandate.occupation);
+    const rev = marketPrice
+      ? estimateRevenueWithMarketRate(mandate, marketPrice)
+      : estimateRevenue(mandate);
     const score = scoreOpportunity(mandate, rev.annualRevenue);
     const tier: 'high' | 'medium' | 'low' =
       score >= 7 ? 'high' : score >= 5 ? 'medium' : 'low';
@@ -190,7 +250,7 @@ export async function analyzeGapsAndWriteReport(
       estimatedAnnualCohortSize: rev.cohortSize,
       estimatedTuitionPerStudent: rev.tuitionPerStudent,
       estimatedAnnualRevenue: rev.annualRevenue,
-      revenueConfidence: rev.confidence,
+      revenueConfidence: marketPrice ? 'medium' as const : rev.confidence,
       revenueRationale: rev.rationale,
       opportunityScore: score,
       priorityTier: tier,

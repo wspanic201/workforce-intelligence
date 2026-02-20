@@ -5,8 +5,10 @@ export interface DriftProgram {
   programName: string;
   occupationTitle: string;
   socCode?: string;
-  curriculumDescription: string; // bullet points of what they teach
+  curriculumDescription: string; // bullet points of what they teach (can be auto-scraped)
   lastCurriculumUpdate?: string; // date as string
+  collegeUrl?: string; // institution website URL (used for auto-scraping curriculum)
+  state?: string; // state for regional context
 }
 
 export interface EmployerSkill {

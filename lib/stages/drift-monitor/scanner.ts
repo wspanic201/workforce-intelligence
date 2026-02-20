@@ -19,12 +19,16 @@ export async function scanJobPostings(
   const queries = [
     `"${occupationTitle}" job requirements skills`,
     `${occupationTitle} hiring qualifications`,
+    `${occupationTitle} job description responsibilities`,
+    `"${occupationTitle}" required certifications experience`,
+    `${occupationTitle} entry level requirements 2025 2026`,
     ...(socCode ? [`${occupationTitle} ${socCode} job posting`] : []),
+    ...(options.location ? [`${occupationTitle} jobs ${options.location}`] : []),
   ];
 
   const allPostings: RawPosting[] = [];
 
-  for (const query of queries.slice(0, 2)) {
+  for (const query of queries.slice(0, 6)) {
     try {
       const results = await searchJobs(query, options.location || 'United States');
       allPostings.push(...results.jobs.map(j => ({

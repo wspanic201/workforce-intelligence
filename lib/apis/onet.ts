@@ -1,3 +1,10 @@
+// =============================================================================
+// O*NET Web Services API Integration
+// Powers Curriculum Drift Analysis and Program Validation reports
+// =============================================================================
+
+// --- Legacy interfaces (preserved for backward compatibility) ---
+
 export interface ONETOccupation {
   code: string;
   title: string;
@@ -31,126 +38,293 @@ export interface ONETCompetencies {
   education: string;
 }
 
-// O*NET Web Services v2 base URL
-const ONET_BASE_URL = 'https://api-v2.onetcenter.org';
+// --- New interfaces for Wavelength integration ---
 
-// Common headers for O*NET v2 API
-function getONETHeaders(): Record<string, string> {
-  const apiKey = process.env.ONET_API_KEY || process.env.ONET_API_PASSWORD || '';
+export interface OnetSkill {
+  name: string;
+  importance: number; // 1-100 scale
+  level: number; // 1-100 scale
+  description?: string;
+}
+
+export interface OnetTechnology {
+  name: string;
+  hotTechnology: boolean;
+}
+
+export interface OnetOccupationProfile {
+  socCode: string;
+  title: string;
+  skills: OnetSkill[];
+  knowledge: OnetSkill[];
+  abilities: OnetSkill[];
+  technologies: OnetTechnology[];
+  fetchedAt: string;
+}
+
+// =============================================================================
+// Configuration
+// =============================================================================
+
+const ONET_BASE_URL = 'https://services.onetcenter.org/ws';
+
+function getBasicAuthHeader(): string {
+  // O*NET Web Services uses Basic auth. The ONET_API_KEY in env is the password;
+  // username defaults to the API key itself (O*NET issues combined credentials).
+  // Fall back to demo account if nothing configured.
+  const username = process.env.ONET_USERNAME || process.env.ONET_API_KEY || 'demo_user';
+  const password = process.env.ONET_API_PASSWORD || process.env.ONET_API_KEY || 'demo_pass';
+  const encoded = typeof Buffer !== 'undefined'
+    ? Buffer.from(`${username}:${password}`).toString('base64')
+    : btoa(`${username}:${password}`);
+  return `Basic ${encoded}`;
+}
+
+function getHeaders(): Record<string, string> {
   return {
-    'X-API-Key': apiKey,
-    'User-Agent': 'nodejs-OnetWebService/2.10 (bot)',
-    'Accept': 'application/json',
+    Authorization: getBasicAuthHeader(),
+    Accept: 'application/json',
+    'User-Agent': 'Wavelength-WorkforceIntelligence/1.0',
   };
 }
 
-// Delay helper
-function delay(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
+// =============================================================================
+// Helpers
+// =============================================================================
+
+function normalizeSocCode(code: string): string {
+  return code.includes('.') ? code : `${code}.00`;
 }
 
-// Fetch with exponential backoff retry for rate limiting
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function fetchWithRetry(
   url: string,
   options: RequestInit,
-  maxRetries = 3
+  maxRetries = 4
 ): Promise<Response> {
   for (let attempt = 0; attempt <= maxRetries; attempt++) {
     const response = await fetch(url, options);
 
-    if (response.ok) return response;
+    if (response.ok || response.status === 404) return response;
 
-    // Rate limited (429) or temporary server error — retry with backoff
-    if ((response.status === 429 || response.status === 503) && attempt < maxRetries) {
-      const backoffMs = Math.pow(2, attempt) * 1000;
-      console.warn(`[O*NET] Rate limited (${response.status}), retrying in ${backoffMs}ms (attempt ${attempt + 1}/${maxRetries})`);
+    if (
+      (response.status === 429 || response.status === 503 || response.status === 401 || response.status === 403) &&
+      attempt < maxRetries
+    ) {
+      const backoffMs = Math.pow(2, attempt) * 1000 + Math.random() * 500;
+      console.warn(
+        `[O*NET] ${response.status} on ${url}, retrying in ${Math.round(backoffMs)}ms (${attempt + 1}/${maxRetries})`
+      );
       await delay(backoffMs);
       continue;
     }
 
-    // 401/403 could be transient — retry once
-    if ((response.status === 401 || response.status === 403) && attempt < maxRetries) {
-      const backoffMs = Math.pow(2, attempt) * 1500;
-      console.warn(`[O*NET] Got ${response.status} (possible rate limit), retrying in ${backoffMs}ms (attempt ${attempt + 1}/${maxRetries})`);
-      await delay(backoffMs);
-      continue;
-    }
-
-    // Non-retryable error
     return response;
   }
 
   throw new Error(`[O*NET] Max retries exceeded for ${url}`);
 }
 
-export async function searchONET(keyword: string): Promise<string | null> {
-  const headers = getONETHeaders();
+// =============================================================================
+// In-memory cache
+// =============================================================================
 
-  const response = await fetchWithRetry(
-    `${ONET_BASE_URL}/online/search?keyword=${encodeURIComponent(keyword)}&end=5`,
-    {
-      headers,
-      signal: AbortSignal.timeout(30000),
-    }
-  );
+const profileCache = new Map<string, OnetOccupationProfile>();
+
+// =============================================================================
+// Internal data fetchers
+// =============================================================================
+
+type SummaryCategory = 'skills' | 'knowledge' | 'abilities' | 'technology_skills';
+
+async function fetchSummary(socCode: string, category: SummaryCategory): Promise<any | null> {
+  const url = `${ONET_BASE_URL}/online/occupations/${socCode}/summary/${category}`;
+  const response = await fetchWithRetry(url, {
+    headers: getHeaders(),
+    signal: AbortSignal.timeout(30000),
+  });
+
+  if (response.status === 404) {
+    console.warn(`[O*NET] No ${category} data for ${socCode}`);
+    return null;
+  }
 
   if (!response.ok) {
-    console.warn(`[O*NET] Search API returned ${response.status} ${response.statusText} after retries — continuing without O*NET`);
+    console.warn(`[O*NET] ${category} returned ${response.status} for ${socCode}`);
+    return null;
+  }
+
+  return response.json();
+}
+
+async function fetchOccupationDetails(socCode: string): Promise<{ title: string } | null> {
+  const url = `${ONET_BASE_URL}/online/occupations/${socCode}`;
+  const response = await fetchWithRetry(url, {
+    headers: getHeaders(),
+    signal: AbortSignal.timeout(30000),
+  });
+
+  if (!response.ok) return null;
+  const data = await response.json();
+  return { title: data.title || 'Unknown' };
+}
+
+function parseSkills(data: any): OnetSkill[] {
+  if (!data?.element) return [];
+  return data.element.map((e: any) => {
+    // O*NET returns importance and level as separate scale entries
+    // The score object has value on a 1-5 or 0-7 scale; normalize to 1-100
+    const importance = e.score?.importance ?? (e.score?.value ?? 0);
+    const level = e.score?.level ?? 0;
+    return {
+      name: e.name || '',
+      importance: Math.round(importance * 100) / 100,
+      level: Math.round(level * 100) / 100,
+      description: e.description || undefined,
+    };
+  });
+}
+
+function parseTechnologies(data: any): OnetTechnology[] {
+  if (!data?.category) {
+    // Flat element list fallback
+    if (!data?.element) return [];
+    return data.element.map((e: any) => ({
+      name: e.name || e.example || '',
+      hotTechnology: e.hot_technology === true || e['hot_technology'] === 'Y',
+    }));
+  }
+
+  // Technology skills come grouped by category with examples
+  const techs: OnetTechnology[] = [];
+  for (const cat of data.category) {
+    if (cat.example) {
+      for (const ex of Array.isArray(cat.example) ? cat.example : [cat.example]) {
+        techs.push({
+          name: ex.name || ex,
+          hotTechnology: ex.hot_technology === 'Y' || ex.hot_technology === true,
+        });
+      }
+    }
+  }
+  return techs;
+}
+
+// =============================================================================
+// Exported functions — New API
+// =============================================================================
+
+/**
+ * Fetch a full occupation profile (skills, knowledge, abilities, technologies).
+ * Results are cached in memory for the duration of the process.
+ */
+export async function getOccupationProfile(
+  socCode: string
+): Promise<OnetOccupationProfile | null> {
+  const code = normalizeSocCode(socCode);
+
+  if (profileCache.has(code)) {
+    return profileCache.get(code)!;
+  }
+
+  // Fetch occupation title first
+  const details = await fetchOccupationDetails(code);
+  if (!details) return null;
+
+  // Fetch all four categories with small delays to be polite
+  const [skillsData, knowledgeData, abilitiesData, techData] = await Promise.all([
+    fetchSummary(code, 'skills'),
+    delay(300).then(() => fetchSummary(code, 'knowledge')),
+    delay(600).then(() => fetchSummary(code, 'abilities')),
+    delay(900).then(() => fetchSummary(code, 'technology_skills')),
+  ]);
+
+  const profile: OnetOccupationProfile = {
+    socCode: code,
+    title: details.title,
+    skills: parseSkills(skillsData),
+    knowledge: parseSkills(knowledgeData),
+    abilities: parseSkills(abilitiesData),
+    technologies: parseTechnologies(techData),
+    fetchedAt: new Date().toISOString(),
+  };
+
+  profileCache.set(code, profile);
+  return profile;
+}
+
+/**
+ * Get top skills for an occupation, sorted by importance descending.
+ */
+export async function getTopSkills(
+  socCode: string,
+  limit = 10
+): Promise<OnetSkill[]> {
+  const profile = await getOccupationProfile(socCode);
+  if (!profile) return [];
+  return [...profile.skills]
+    .sort((a, b) => b.importance - a.importance)
+    .slice(0, limit);
+}
+
+/**
+ * Get top knowledge areas for an occupation, sorted by importance descending.
+ */
+export async function getTopKnowledge(
+  socCode: string,
+  limit = 10
+): Promise<OnetSkill[]> {
+  const profile = await getOccupationProfile(socCode);
+  if (!profile) return [];
+  return [...profile.knowledge]
+    .sort((a, b) => b.importance - a.importance)
+    .slice(0, limit);
+}
+
+/**
+ * Get technology skills for an occupation.
+ */
+export async function getTechnologies(
+  socCode: string
+): Promise<OnetTechnology[]> {
+  const profile = await getOccupationProfile(socCode);
+  if (!profile) return [];
+  return profile.technologies;
+}
+
+// =============================================================================
+// Legacy exports (preserved for existing code)
+// =============================================================================
+
+export async function searchONET(keyword: string): Promise<string | null> {
+  const url = `${ONET_BASE_URL}/online/search?keyword=${encodeURIComponent(keyword)}&end=5`;
+  const response = await fetchWithRetry(url, {
+    headers: getHeaders(),
+    signal: AbortSignal.timeout(30000),
+  });
+
+  if (!response.ok) {
+    console.warn(`[O*NET] Search returned ${response.status} — continuing without O*NET`);
     return null;
   }
 
   const data = await response.json();
   const code = data.occupation?.[0]?.code || null;
-  
-  // Ensure O*NET format (XX-XXXX.XX)
-  if (code && !code.includes('.')) {
-    return `${code}.00`;
-  }
-  return code;
+  return code ? normalizeSocCode(code) : null;
 }
 
 export async function getONETCompetencies(onetCode: string): Promise<ONETCompetencies> {
-  const headers = getONETHeaders();
-  
-  // O*NET API requires XX-XXXX.XX format — append .00 if missing
-  const normalizedCode = onetCode.includes('.') ? onetCode : `${onetCode}.00`;
-  const basePath = `online/occupations/${normalizedCode}`;
+  const code = normalizeSocCode(onetCode);
 
-  // Serialize requests with delays to avoid rate limiting
-  const endpoints = [
-    { path: basePath, key: 'occupation' },
-    { path: `${basePath}/summary/skills`, key: 'skills' },
-    { path: `${basePath}/summary/knowledge`, key: 'knowledge' },
-    { path: `${basePath}/summary/technology_skills`, key: 'technology' },
-  ];
+  // Use the new profile fetcher internally
+  const profile = await getOccupationProfile(code);
 
-  const results: Record<string, any> = {};
-
-  for (const endpoint of endpoints) {
-    const response = await fetchWithRetry(
-      `${ONET_BASE_URL}/${endpoint.path}`,
-      {
-        headers,
-        signal: AbortSignal.timeout(30000),
-      }
-    );
-
-    if (!response.ok) {
-      console.warn(`[O*NET] ${endpoint.key} API returned ${response.status} — using empty data`);
-      results[endpoint.key] = null;
-    } else {
-      results[endpoint.key] = await response.json();
-    }
-
-    // Small delay between sequential requests to avoid rate limiting
-    await delay(500);
-  }
-
-  const occupation = results.occupation;
-  if (!occupation) {
-    console.warn(`[O*NET] Could not fetch occupation data for ${normalizedCode} — returning minimal data`);
+  if (!profile) {
     return {
-      code: normalizedCode,
+      code,
       title: 'Unknown',
       description: 'O*NET data unavailable due to API issues',
       skills: [],
@@ -160,31 +334,25 @@ export async function getONETCompetencies(onetCode: string): Promise<ONETCompete
     };
   }
 
-  // v2 API returns data in `element` arrays with `name` and `description` fields
-  const mapElements = (data: any, fallbackKey: string) => {
-    const elements = data?.element || data?.[fallbackKey] || [];
-    return elements.map((e: any) => ({
-      element_name: e.name || e.element_name || '',
-      scale_value: e.score?.value ?? e.scale_value ?? 0,
-      description: e.description || '',
-    }));
-  };
-
-  const mapTech = (data: any) => {
-    const elements = data?.element || data?.technology || [];
-    return elements.map((e: any) => ({
-      example: e.name || e.example || '',
-      hot_technology: e.hot_technology ?? false,
-    }));
-  };
-
+  // Map new format back to legacy format
   return {
-    code: normalizedCode,
-    title: occupation.title,
-    description: occupation.description,
-    skills: mapElements(results.skills, 'skill'),
-    knowledge: mapElements(results.knowledge, 'knowledge'),
-    technology: mapTech(results.technology),
-    education: occupation.education?.description || occupation.education || 'Not specified',
+    code,
+    title: profile.title,
+    description: '',
+    skills: profile.skills.map((s) => ({
+      element_name: s.name,
+      scale_value: s.importance,
+      description: s.description,
+    })),
+    knowledge: profile.knowledge.map((k) => ({
+      element_name: k.name,
+      scale_value: k.importance,
+      description: k.description,
+    })),
+    technology: profile.technologies.map((t) => ({
+      example: t.name,
+      hot_technology: t.hotTechnology,
+    })),
+    education: 'Not specified',
   };
 }

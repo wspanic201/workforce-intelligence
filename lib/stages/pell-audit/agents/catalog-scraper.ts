@@ -104,7 +104,7 @@ export async function scrapeCatalog(
   
   const pageContents: Array<{ url: string; text: string }> = [];
   let fetchCount = 0;
-  const maxPages = 15;
+  const maxPages = 25;
 
   for (const url of programUrls) {
     if (fetchCount >= maxPages) break;

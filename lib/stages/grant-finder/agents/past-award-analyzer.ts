@@ -31,6 +31,7 @@ export interface PastRecipient {
   year: string;
   amount: string;
   description: string;
+  verified: boolean; // true if found in a verifiable source URL, false if inferred
 }
 
 export interface PastAwardOutput {
@@ -139,7 +140,8 @@ Extract past award intelligence. Return a JSON object with this exact structure:
       "institution": "Name of recipient institution",
       "year": "Award year (e.g. 2024)",
       "amount": "Award amount as string (e.g. '$250,000')",
-      "description": "Brief description of what was funded"
+      "description": "Brief description of what was funded",
+      "verified": true
     }
   ],
   "avgAwardAmount": 250000,
@@ -152,6 +154,7 @@ Rules:
 - If no recipients found, return empty array
 - avgAwardAmount should be a number (no currency symbols), or null if unknown
 - Do not fabricate data — if uncertain, omit it
+- Set "verified": true ONLY if the recipient is explicitly named in a search result with a .gov or .edu URL. Otherwise set false.
 - competitiveInsights should be actionable for a grant writer
 
 Return only valid JSON.`;
