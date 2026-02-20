@@ -7,6 +7,11 @@
  *
  * CE (Continuing Education) model — uses seat hours, not credit hours.
  * CE programs are non-credit; no credit-hour conversion needed.
+ *
+ * TODO: Add program type routing for licensure vs continuing ed:
+ * - Initial Licensure: High tuition ($8K+), long program (1000+ hours), lower volume
+ * - Continuing Ed/CEU: Low cost ($150-300), short program (6-20 hours), high volume
+ * Pass RegulatoryComplianceData.programType to route to appropriate financial model.
  */
 
 import { getBLSData, getBLSStateData } from '@/lib/apis/bls';

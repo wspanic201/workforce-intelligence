@@ -6,6 +6,27 @@ import { PROGRAM_VALIDATOR_SYSTEM_PROMPT } from '@/lib/prompts/program-validator
 export interface RegulatoryComplianceData {
   score: number;
   scoreRationale: string;
+  programType: 'initial_licensure' | 'continuing_education' | 'non_licensed' | 'unclear';
+  programTypeRationale: string;
+  licensure: {
+    isLicensedOccupation: boolean;
+    initialLicensure?: {
+      requiredHours: number;
+      stateBoard: string;
+      examRequired: boolean;
+      examName?: string;
+      practicalHoursRequired: boolean;
+      tuitionRange: string;
+      stateLawReference: string; // Must cite specific statute/rule
+    };
+    continuingEducation?: {
+      renewalCycle: string; // e.g., "every 2 years"
+      requiredHours: number;
+      approvedTopics: string[];
+      typicalCost: string;
+      stateLawReference: string; // Must cite specific statute/rule
+    };
+  };
   stateApproval: {
     required: boolean;
     agency: string;
@@ -80,13 +101,39 @@ ${project.constraints ? `- Constraints: ${project.constraints}` : ''}
 ${(project as any).funding_sources ? `- Funding Sources: ${(project as any).funding_sources}` : ''}
 ${(project as any).stackable_credential ? `- Stackable Intent: Yes` : ''}
 
+CRITICAL INSTRUCTION — LICENSURE VS. CONTINUING EDUCATION:
+For licensed occupations, you MUST distinguish between:
+1. **Initial Licensure Programs** — Full training to obtain a new license (e.g., 1600-hour cosmetology program)
+2. **Continuing Education/Re-Licensure** — Short courses to maintain an existing license (e.g., 6-hour CEU for license renewal)
+
+These are fundamentally different programs with different:
+- Scope (hundreds vs. single-digit hours)
+- Tuition ($8,000+ vs. $150)
+- Target market (new entrants vs. licensed professionals)
+- Financial models (high tuition/low volume vs. low cost/high volume)
+
+Determine which type applies to this program and structure your analysis accordingly.
+
+DATA SOURCE REQUIREMENTS:
+- ALL licensure data MUST come from official state sources:
+  - State licensing board websites (.gov domains)
+  - State statutes/administrative code (cite specific statute numbers)
+  - State department of professional regulation
+- Do NOT use third-party training provider websites, random blogs, or unofficial sources
+- If you cannot find official state code, state "Unable to locate official state requirement" rather than guessing
+- Cite the specific statute/rule number for all licensure requirements
+
 ANALYSIS REQUIRED:
-1. State approval requirements
-2. Perkins V alignment — eligible CIP codes, funding potential
-3. WIOA alignment — ETPL eligibility
-4. Industry certification mapping (top 2-3 certifications)
-5. Accreditor expectations
-6. Key compliance milestones (top 3-5)
+1. Program type classification (initial licensure vs. continuing ed vs. non-licensed)
+2. If licensed occupation:
+   a. Initial licensure requirements (hours, exams, state board approval, state law reference)
+   b. Continuing education requirements (renewal cycle, required hours, state law reference)
+3. State approval requirements
+4. Perkins V alignment — eligible CIP codes, funding potential
+5. WIOA alignment — ETPL eligibility
+6. Industry certification mapping (top 2-3 certifications)
+7. Accreditor expectations
+8. Key compliance milestones (top 3-5)
 
 SCORING: 8-10 = strong alignment, minimal hurdles; 5-7 = moderate; 1-4 = weak alignment, complex approval
 
@@ -95,6 +142,27 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Kee
 {
   "score": <1-10>,
   "scoreRationale": "Brief explanation",
+  "programType": "initial_licensure|continuing_education|non_licensed|unclear",
+  "programTypeRationale": "1-2 sentence explanation of classification",
+  "licensure": {
+    "isLicensedOccupation": true|false,
+    "initialLicensure": {
+      "requiredHours": 1600,
+      "stateBoard": "State Board name",
+      "examRequired": true,
+      "examName": "Exam name",
+      "practicalHoursRequired": true,
+      "tuitionRange": "$8,000-$12,000",
+      "stateLawReference": "Iowa Code §147.2 or Iowa Admin Code 645-XX.X"
+    },
+    "continuingEducation": {
+      "renewalCycle": "every 2 years",
+      "requiredHours": 6,
+      "approvedTopics": ["Topic 1", "Topic 2"],
+      "typicalCost": "$150-200 per renewal",
+      "stateLawReference": "Iowa Code §147.10 or Iowa Admin Code 645-XX.X"
+    }
+  },
   "stateApproval": {
     "required": true,
     "agency": "Agency name",
@@ -136,8 +204,10 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Kee
   "complianceTimeline": [
     { "milestone": "Milestone 1", "estimatedDate": "Month Year", "dependency": "Dependency" }
   ],
-  "dataSources": ["Source 1"]
-}`;
+  "dataSources": ["Source 1 - must be .gov or official state source"]
+}
+
+NOTE: For licensure fields, only populate initialLicensure OR continuingEducation based on what this program actually is. Include stateLawReference with specific statute/rule citations.`;
 
     const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 12000 });
     const data = extractJSON(content) as RegulatoryComplianceData;
@@ -180,11 +250,44 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Kee
 }
 
 function formatRegulatory(data: RegulatoryComplianceData, project: ValidationProject): string {
+  let licensureSection = '';
+  
+  if (data.licensure.isLicensedOccupation) {
+    licensureSection = `\n## Program Type Classification
+**Type:** ${data.programType.replace(/_/g, ' ').toUpperCase()}
+**Rationale:** ${data.programTypeRationale}
+
+`;
+    
+    if (data.licensure.initialLicensure) {
+      licensureSection += `### Initial Licensure Requirements
+- **Required Hours:** ${data.licensure.initialLicensure.requiredHours}
+- **State Board:** ${data.licensure.initialLicensure.stateBoard}
+- **Exam Required:** ${data.licensure.initialLicensure.examRequired ? `Yes — ${data.licensure.initialLicensure.examName}` : 'No'}
+- **Practical Hours:** ${data.licensure.initialLicensure.practicalHoursRequired ? 'Yes' : 'No'}
+- **Typical Tuition:** ${data.licensure.initialLicensure.tuitionRange}
+- **State Law:** ${data.licensure.initialLicensure.stateLawReference}
+
+`;
+    }
+    
+    if (data.licensure.continuingEducation) {
+      licensureSection += `### Continuing Education Requirements (Re-Licensure)
+- **Renewal Cycle:** ${data.licensure.continuingEducation.renewalCycle}
+- **Required Hours:** ${data.licensure.continuingEducation.requiredHours} hours
+- **Approved Topics:** ${data.licensure.continuingEducation.approvedTopics.join(', ')}
+- **Typical Cost:** ${data.licensure.continuingEducation.typicalCost}
+- **State Law:** ${data.licensure.continuingEducation.stateLawReference}
+
+`;
+    }
+  }
+
   return `# Regulatory & Compliance Analysis: ${project.program_name}
 
 ## Dimension Score: ${data.score}/10
 **Rationale:** ${data.scoreRationale}
-
+${licensureSection}
 ## State Approval
 - **Required:** ${data.stateApproval.required ? 'Yes' : 'No'}
 - **Agency:** ${data.stateApproval.agency}
