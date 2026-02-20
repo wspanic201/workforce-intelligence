@@ -130,15 +130,18 @@ export function NavBar() {
               )}
             </div>
 
+            <Link href="/pricing" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors">
+              Pricing
+            </Link>
             <Link href="/samples" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors">
               Sample Reports
             </Link>
             <Link href="/blog" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors">
               Blog
             </Link>
-            <Link href="/signal" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors inline-flex items-center gap-1.5">
+            <Link href="/blog#tune-in" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors inline-flex items-center gap-1.5">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-              The Signal
+              Tune In
             </Link>
           </div>
 
@@ -193,6 +196,10 @@ export function NavBar() {
             ))}
 
             <div className="border-t border-theme-subtle my-3" />
+            <Link href="/pricing" onClick={() => setMobileOpen(false)}
+              className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
+              Pricing
+            </Link>
             <Link href="/samples" onClick={() => setMobileOpen(false)}
               className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
               Sample Reports
@@ -201,10 +208,10 @@ export function NavBar() {
               className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
               Blog
             </Link>
-            <Link href="/signal" onClick={() => setMobileOpen(false)}
+            <Link href="/blog#tune-in" onClick={() => setMobileOpen(false)}
               className="flex items-center gap-2 text-base font-medium text-teal-400 hover:text-teal-300 py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
               <span className="inline-block w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
-              The Signal — Free Newsletter
+              Tune In — Free Newsletter
             </Link>
 
             <div className="pt-3 flex flex-col gap-3">
