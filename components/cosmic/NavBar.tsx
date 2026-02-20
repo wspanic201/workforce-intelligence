@@ -106,7 +106,7 @@ export function NavBar() {
                       className="flex items-center justify-between px-4 py-2.5 mx-2 rounded-lg hover:bg-white/[0.05] transition-colors group"
                     >
                       <span className="text-sm text-theme-secondary group-hover:text-theme-primary transition-colors">{item.label}</span>
-                      <span className="text-[10px] font-bold text-purple-400 ml-2">{item.price}</span>
+                      <span className="text-[10px] font-bold text-purple-600 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded-md ml-2">{item.price}</span>
                     </Link>
                   ))}
 
@@ -122,7 +122,7 @@ export function NavBar() {
                       className="flex items-center justify-between px-4 py-2.5 mx-2 rounded-lg hover:bg-white/[0.05] transition-colors group"
                     >
                       <span className="text-sm text-theme-secondary group-hover:text-theme-primary transition-colors">{item.label}</span>
-                      <span className="text-[10px] font-bold text-teal-400 ml-2">{item.price}</span>
+                      <span className="text-[10px] font-bold text-teal-700 bg-teal-50 border border-teal-200 px-2 py-0.5 rounded-md ml-2">{item.price}</span>
                     </Link>
                   ))}
 
@@ -178,7 +178,7 @@ export function NavBar() {
               <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-between text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
                 <span>{item.label}</span>
-                <span className="text-xs font-bold text-purple-400">{item.price}</span>
+                <span className="text-xs font-bold text-purple-600 bg-purple-50 border border-purple-200 px-2.5 py-1 rounded-md">{item.price}</span>
               </Link>
             ))}
 
@@ -188,7 +188,7 @@ export function NavBar() {
               <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                 className="flex items-center justify-between text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
                 <span>{item.label}</span>
-                <span className="text-xs font-bold text-teal-400">{item.price}</span>
+                <span className="text-xs font-bold text-teal-700 bg-teal-50 border border-teal-200 px-2.5 py-1 rounded-md">{item.price}</span>
               </Link>
             ))}
 
