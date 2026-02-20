@@ -180,7 +180,7 @@ export default function HomePage() {
               className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              From &ldquo;what should we build?&rdquo; to a program that runs.
+              We help you close the gap — from identifying what your market needs to launching the program that fills it.
             </h2>
             <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
               Most institutions start at Stage 1. Each stage hands off directly to the next — no lost context, no starting over.
