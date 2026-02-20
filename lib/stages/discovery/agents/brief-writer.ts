@@ -151,7 +151,7 @@ ${category ? `- This is a focused Category Deep Dive, examining all ${category}-
 TONE: Confident consulting language. Lead with the most compelling finding. Authoritative, specific, no hedging.
 
 FORMAT: 
-Paragraph 1: Methodology and scope — reference "Wavelength" as the intelligence platform${category ? ` and explain this is a focused category analysis of ${category}` : ''} (2-3 sentences)
+Paragraph 1: Methodology and scope — reference "Wavelength's PRISM Intelligence Engine" as the analysis platform${category ? ` and explain this is a focused category analysis of ${category}` : ''} (2-3 sentences)
 Paragraph 2: The single most important finding — lead with the strongest opportunity
 Paragraph 3: Summary numbers and what they mean
 Paragraph 4: Clear call to action recommending Stage 2 validation on top programs
@@ -441,7 +441,7 @@ ${validationBullets || '- Full validation recommended in Stage 2'}`;
 
   return `## HIDDEN OPPORTUNITIES — Blue Ocean Analysis
 
-> **Methodology:** The Blue Ocean Scanner goes beyond conventional workforce analysis. While Phases 1-4 identify the obvious opportunities every competitor will find, this analysis uses six creative research strategies to uncover non-obvious, surprising, but defensible program opportunities. These are the gaps between traditional program categories — the training needs that don't show up in standard analyses but represent significant first-mover advantages.
+> **Methodology:** The Blue Ocean Scanner goes beyond conventional workforce analysis. While PRISM's core pipeline (Regional Pulse → Demand Radar → Competitive Terrain → Composite Scoring) identifies the opportunities every competitor will find, this module uses six proprietary research strategies to uncover non-obvious, defensible program opportunities — the gaps between traditional program categories that represent significant first-mover advantages.
 
 **Key Insight:** ${blueOcean.keyInsight}
 
@@ -641,18 +641,18 @@ ${matrixRows}
 
 ${sourceList}
 
-### Methodology Notes
+### Methodology — PRISM Intelligence Engine
 
-This Program Market Scan was generated using Wavelength multi-phase analysis:
+This report was produced by **PRISM** (Program Research & Intelligence Scoring Model), Wavelength's proprietary analysis engine. PRISM executes a structured, multi-phase intelligence pipeline:
 
-1. **Regional Intelligence** — Institutional profiling, employer mapping, economic trend analysis
-2. **Demand Signal Detection** — Job posting analysis, BLS employment data, employer expansion signals, grant opportunities
-3. **Competitive Landscape** — Provider mapping, program cataloging, white space identification
-4. **Opportunity Scoring** — Weighted composite scoring (Demand 30%, Competition 25%, Revenue 20%, Wages 15%, Speed 10%)
-5. **Blue Ocean Scanner** — Creative opportunity hunting across 6 strategies: employer pain points, supply chain decomposition, peer comparison, economic development signals, orphan occupations, and skill cluster analysis
+1. **Regional Pulse** — Institutional profiling, employer mapping via BLS QCEW census data, economic trend analysis, and U.S. Census demographic modeling
+2. **Demand Radar** — Real-time job posting analysis, BLS employment projections, employer expansion signal detection, and grant opportunity scanning
+3. **Competitive Terrain** — Educational provider mapping, program cataloging, gap analysis, and white space identification
+4. **Composite Scoring Model** — Weighted opportunity scoring across five dimensions: Demand (30%), Competition (25%), Revenue Viability (20%), Wage Outcomes (15%), and Launch Speed (10%)
+5. **Blue Ocean Scanner** — Non-obvious opportunity detection across six proprietary strategies: employer pain point analysis, supply chain decomposition, peer institution comparison, economic development signals, orphan occupation identification, and skill cluster analysis
 
-**Total research queries executed:** ${totalSearches}  
-**Data sources consulted:** ${dataSources.length}
+**Research queries executed:** ${totalSearches}  
+**Authoritative data sources consulted:** ${dataSources.length}
 
 ### Limitations
 
