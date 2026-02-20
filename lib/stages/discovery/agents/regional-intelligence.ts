@@ -56,6 +56,7 @@ export interface RegionalIntelligenceOutput {
   majorEconomicEvents: string[];       // plant openings, federal investments, etc.
   censusDemographics: RegionalDemographics | null;  // real ACS data when available
   censusSummary: string | null;         // formatted for agent context
+  qcewContext: string;                  // BLS QCEW employment data, pre-formatted
   dataSources: Array<{ url: string; title: string; description: string }>;
   searchesExecuted: number;
 }
@@ -230,6 +231,39 @@ If data isn't clear, provide best available estimate with "approximately" qualif
     } catch {}
   }
 
+  // ── Step 3b: BLS QCEW Employment Data (Authoritative) ──
+  let qcewContext = '';
+  try {
+    const { fetchCountyEmployment, formatQCEWForPrompt } = await import('../../../integrations/qcew');
+    
+    if (censusDemographics && censusDemographics.counties.length > 0) {
+      console.log('[Phase 1] Step 3b: Fetching BLS QCEW employment data...');
+      const qcewProfiles = [];
+      
+      for (const county of censusDemographics.counties) {
+        const fullFips = `${county.stateFips}${county.countyFips}`;
+        console.log(`[QCEW] ${county.countyName} (FIPS: ${fullFips})`);
+        const profile = await fetchCountyEmployment(fullFips);
+        if (profile) {
+          qcewProfiles.push(profile);
+          dataSources.push({
+            url: `https://data.bls.gov/cew/data/api/${profile.year}/${profile.quarter}/area/${fullFips}.csv`,
+            title: `BLS QCEW Q${profile.quarter} ${profile.year} — ${county.countyName}`,
+            description: `${profile.totalEmployment.toLocaleString()} total employment, ${profile.sectors.length} industry sectors`,
+          });
+        }
+      }
+      
+      if (qcewProfiles.length > 0) {
+        qcewContext = qcewProfiles.map(p => formatQCEWForPrompt(p)).join('\n\n');
+        const totalEmp = qcewProfiles.reduce((s, p) => s + p.totalEmployment, 0);
+        console.log(`[Phase 1] QCEW data: ${totalEmp.toLocaleString()} total employment across ${qcewProfiles.length} counties`);
+      }
+    }
+  } catch (err) {
+    console.warn('[Phase 1] QCEW fetch failed, continuing with web search only:', err);
+  }
+
   // ── Step 4: Top employers ──
   console.log('[Phase 1] Step 4: Identifying top employers...');
 
@@ -260,32 +294,37 @@ If data isn't clear, provide best available estimate with "approximately" qualif
   const employerExtract = await callClaude(
     `You are identifying the top 15-20 employers in the ${serviceAreaCounties}, ${collegeState} region.
 
-Extract employer information from these web pages. For each employer, provide name, industry, and estimated local employment size.
+You have TWO data sources:
+1. **BLS QCEW data (AUTHORITATIVE)** — official government employment counts by industry. Use this to understand the REAL employment landscape.
+2. **Web search results** — use these to identify SPECIFIC employer names within each industry.
 
-IMPORTANT: Include ALL major employers regardless of industry. Large manufacturers, defense contractors, healthcare systems, tech companies, food producers — they ALL employ business professionals (HR, finance, management, accounting, training). Do not filter by industry.
-
+${qcewContext ? `## AUTHORITATIVE EMPLOYMENT DATA (BLS QCEW)\n${qcewContext}\n\n` : ''}## WEB SEARCH RESULTS (for employer names)
 WEB CONTENT:
-${employerPageTexts.join('\n\n---\n\n').slice(0, 12000)}
+${employerPageTexts.join('\n\n---\n\n').slice(0, 10000)}
 
 SEARCH SNIPPETS:
 ${employerResults.flatMap(r => r.results).map(r => `- ${r.title}: ${r.snippet}`).join('\n').slice(0, 3000)}
 
-Return ONLY valid JSON — an array of the top 15-20 employers:
+## YOUR TASK
+Cross-reference the QCEW industry data with web search results to build the definitive employer list. The QCEW data tells you which industries dominate (e.g., if Computer & Electronic Products shows 8,500+ jobs, there MUST be major manufacturers like Collins Aerospace or similar). The web results help you name specific companies.
+
+Return ONLY valid JSON — no markdown fences — an array of the top 15-20 employers:
 [
   {
     "name": "Company Name",
     "industry": "Healthcare / Manufacturing / etc.",
+    "naicsCode": "334 or 62 — matching NAICS code from QCEW data",
     "estimatedLocalEmployment": "2,500+" or "500-1,000",
     "hiringSignals": "brief note on recent hiring, growth, or relevance",
-    "source": "source URL or 'regional employer list'"
+    "source": "source URL or 'BLS QCEW + regional employer list'"
   }
 ]
 
-IMPORTANT:
-- Only include employers actually in or near the service area
-- Prioritize employers that would hire community college graduates
-- Include mix of industries (healthcare, manufacturing, tech, government, education, etc.)
-- Do NOT fabricate employer names — only include those found in the web content`,
+CRITICAL RULES:
+- The employer list MUST reflect the QCEW industry employment data. If Manufacturing is the #1 sector, manufacturing employers MUST dominate the list.
+- Include ALL major employers regardless of industry — they all hire business, HR, finance, and management professionals.
+- Do NOT fabricate employer names — only include those found in the web content or that you can confidently associate with the QCEW industry data.
+- Prioritize employers with 500+ local employees.`,
     { maxTokens: 4000, temperature: 0.3 }
   );
 
@@ -382,6 +421,7 @@ Return ONLY valid JSON:
     majorEconomicEvents: econData.majorEconomicEvents || [],
     censusDemographics,
     censusSummary,
+    qcewContext,
     dataSources,
     searchesExecuted: searchCount,
   };
