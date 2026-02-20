@@ -31,13 +31,18 @@ export async function writeDiscoveryBrief(
   demandSignals: DemandSignalOutput,
   competitiveLandscape: CompetitiveLandscapeOutput,
   scoredOpportunities: OpportunityScorerOutput,
-  blueOceanResults?: BlueOceanScannerOutput | null
+  blueOceanResults?: BlueOceanScannerOutput | null,
+  category?: string
 ): Promise<DiscoveryBrief> {
   const { institution, topEmployers, economicTrends } = regionalIntel;
   const opps = scoredOpportunities.scoredOpportunities;
   const grants = demandSignals.grantOpportunities || [];
 
-  console.log(`[Phase 5: Brief Writer] Generating Market Scan for ${institution.name}`);
+  const reportTitle = category
+    ? `${category.toUpperCase()} — CATEGORY DEEP DIVE`
+    : 'PROGRAM DISCOVERY BRIEF';
+
+  console.log(`[Phase 5: Brief Writer] Generating ${category ? 'Category Deep Dive' : 'Market Scan'} for ${institution.name}`);
 
   // ── Build grant alignment map (program → matching grants) ──
   const grantMap = buildGrantAlignmentMap(opps, grants, blueOceanResults?.hiddenOpportunities || []);
@@ -46,10 +51,10 @@ export async function writeDiscoveryBrief(
   const sections: string[] = [];
 
   // Header
-  sections.push(buildHeader(institution));
+  sections.push(buildHeader(institution, category));
 
   // Executive Summary (use Claude for the narrative)
-  const execSummary = await writeExecutiveSummary(institution, opps, demandSignals, competitiveLandscape);
+  const execSummary = await writeExecutiveSummary(institution, opps, demandSignals, competitiveLandscape, category);
   sections.push(execSummary);
 
   // Regional Snapshot
@@ -99,44 +104,54 @@ export async function writeDiscoveryBrief(
 
 // ── Section Builders ──
 
-function buildHeader(institution: RegionalIntelligenceOutput['institution']): string {
+function buildHeader(institution: RegionalIntelligenceOutput['institution'], category?: string): string {
   const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  const title = category
+    ? `# ${category.toUpperCase()} — CATEGORY DEEP DIVE`
+    : '# PROGRAM DISCOVERY BRIEF';
   
-  return `# PROGRAM DISCOVERY BRIEF
+  return `${title}
 
 **Prepared for:** ${institution.name}  
 **Service Region:** ${institution.serviceArea}, ${institution.state}  
+${category ? `**Category Focus:** ${category}  \n` : ''}
 **Date:** ${date}  
-**Prepared by:** WorkforceOS`;
+**Prepared by:** Wavelength`;
 }
 
 async function writeExecutiveSummary(
   institution: RegionalIntelligenceOutput['institution'],
   opps: ScoredOpportunity[],
   demandSignals: DemandSignalOutput,
-  competitiveLandscape: CompetitiveLandscapeOutput
+  competitiveLandscape: CompetitiveLandscapeOutput,
+  category?: string
 ): Promise<string> {
   const quickWins = opps.filter(o => o.tier === 'quick_win');
   const topOpp = opps[0];
 
-  const { content } = await callClaude(
-    `Write a compelling executive summary (3-4 paragraphs) for a Program Market Scan.
+  const reportType = category
+    ? `a ${category} Category Deep Dive`
+    : 'a Program Market Scan';
 
-CRITICAL BRANDING RULE: You are writing as "WorkforceOS". Use "WorkforceOS" when referring to the company that conducted this analysis. Do NOT use any other company name (e.g., Gray Associates, Hanover Research, EAB, etc.). Do NOT invent or substitute any third-party brand names.
+  const { content } = await callClaude(
+    `Write a compelling executive summary (3-4 paragraphs) for ${reportType}.
+
+CRITICAL BRANDING RULE: You are writing as "Wavelength". Use "Wavelength" when referring to the company that conducted this analysis. Do NOT use any other company name (e.g., Gray Associates, Hanover Research, EAB, etc.). Do NOT invent or substitute any third-party brand names.
 
 FACTS TO WEAVE IN:
 - Institution: ${institution.name} in ${institution.serviceArea}, ${institution.state}
-- We identified ${opps.length} high-potential program opportunities
+- We identified ${opps.length} high-potential program opportunities${category ? ` in the ${category} category` : ''}
 - ${competitiveLandscape.whiteSpaceCount} opportunities are in complete white space (no local competitor)
 - ${quickWins.length} are Quick Wins launchable in 3-6 months
 - Top opportunity: ${topOpp?.programTitle} (score: ${topOpp?.scores.composite}/10)
 - Total demand signals detected: ${demandSignals.signals.length}
 - Top industries: ${demandSignals.topIndustries.slice(0, 3).map(i => i.industry).join(', ')}
+${category ? `- This is a focused Category Deep Dive, examining all ${category}-related program opportunities in depth` : ''}
 
 TONE: Confident consulting language. Lead with the most compelling finding. Authoritative, specific, no hedging.
 
 FORMAT: 
-Paragraph 1: Methodology and scope — reference "WorkforceOS" as the analysis platform (2-3 sentences)
+Paragraph 1: Methodology and scope — reference "Wavelength" as the intelligence platform${category ? ` and explain this is a focused category analysis of ${category}` : ''} (2-3 sentences)
 Paragraph 2: The single most important finding — lead with the strongest opportunity
 Paragraph 3: Summary numbers and what they mean
 Paragraph 4: Clear call to action recommending Stage 2 validation on top programs
@@ -362,7 +377,7 @@ We recommend the following for immediate Program Validation:
 
 ${topPrograms.map((p, i) => `   ${i + 1}. **${p.programTitle}** (${p.scores.composite}/10 — ${p.tier.replace(/_/g, ' ')})`).join('\n')}
 
-**3. Engage WorkforceOS Program Validation**  
+**3. Engage Wavelength Program Validation**  
 Program Validation will confirm employer demand, model enrollment and revenue, conduct detailed feasibility analysis, and deliver a go/no-go recommendation with full supporting data. This is the critical step before committing development resources.
 
 ${quickWins.length > 0 ? `**4. Consider fast-tracking Quick Wins**  
@@ -631,7 +646,7 @@ ${sourceList}
 
 ### Methodology Notes
 
-This Program Market Scan was generated using WorkforceOS multi-phase analysis:
+This Program Market Scan was generated using Wavelength multi-phase analysis:
 
 1. **Regional Intelligence** — Institutional profiling, employer mapping, economic trend analysis
 2. **Demand Signal Detection** — Job posting analysis, BLS employment data, employer expansion signals, grant opportunities

@@ -13,6 +13,7 @@ import { callClaude } from '@/lib/ai/anthropic';
 import { getRegionalDemographics, formatDemographicsForAgent } from '@/lib/apis/census';
 import type { RegionalDemographics } from '@/lib/apis/census';
 import type { ServiceRegion } from '../orchestrator';
+import { getCategoryConstraint, getCategorySearchTerms } from '../category-constraint';
 
 // ── Types ──
 
@@ -64,7 +65,8 @@ export interface RegionalIntelligenceOutput {
 export async function gatherRegionalIntelligence(
   collegeName: string,
   region: ServiceRegion,
-  focusAreas?: string
+  focusAreas?: string,
+  category?: string
 ): Promise<RegionalIntelligenceOutput> {
   const collegeCity = region.primaryCity;
   const collegeState = region.state;
@@ -92,7 +94,11 @@ export async function gatherRegionalIntelligence(
   }
 
   // Search for current programs / course catalog
-  const programSearch = await searchWeb(`${collegeName} programs certificates workforce training catalog`);
+  const categoryTerms = getCategorySearchTerms(category);
+  const programSearchQuery = category
+    ? `${collegeName} ${categoryTerms} programs certificates continuing education`
+    : `${collegeName} programs certificates workforce training catalog`;
+  const programSearch = await searchWeb(programSearchQuery);
   searchCount++;
   const programPages: string[] = [];
   for (const r of programSearch.results.slice(0, 2)) {
@@ -123,14 +129,15 @@ export async function gatherRegionalIntelligence(
   // ── Step 2: Use Claude to extract structured data from raw web content ──
   console.log('[Phase 1] Extracting institution profile from web data...');
   
+  const categoryConstraintPrompt = getCategoryConstraint(category);
   const institutionExtract = await callClaude(
-    `You are analyzing web content about ${collegeName} in ${collegeCity}, ${collegeState}.
+    `${categoryConstraintPrompt}You are analyzing web content about ${collegeName} in ${collegeCity}, ${collegeState}.
 
 Extract the following from the web data below. If something isn't available, say "Not found in available data."
 
-1. CURRENT PROGRAMS: List all continuing education, workforce training, CTE, and certificate programs you can identify. Be thorough.
-2. STRATEGIC PRIORITIES: Any stated goals, focus areas, or strategic themes.
-3. RECENT NEWS: Any notable announcements, new programs, expansions, partnerships.
+1. CURRENT PROGRAMS: List all ${category ? `${category}-related` : 'continuing education, workforce training, CTE, and certificate'} programs you can identify. Be thorough.
+2. STRATEGIC PRIORITIES: Any stated goals, focus areas, or strategic themes${category ? ` relevant to ${category}` : ''}.
+3. RECENT NEWS: Any notable announcements, new programs, expansions, partnerships${category ? ` in the ${category} space` : ''}.
 
 COLLEGE HOMEPAGE CONTENT:
 ${collegePageText.slice(0, 4000)}
@@ -227,10 +234,15 @@ If data isn't clear, provide best available estimate with "approximately" qualif
   console.log('[Phase 1] Step 4: Identifying top employers...');
 
   // Fan employer searches across all cities in the service region
-  const employerQueries = [
-    `${serviceAreaCounties} ${collegeState} largest employers`,
-    ...allCities.map(city => `${city} ${collegeState} top employers major companies`),
-  ];
+  const employerQueries = category
+    ? [
+        `${serviceAreaCounties} ${collegeState} ${categoryTerms} employers companies`,
+        ...allCities.map(city => `${city} ${collegeState} ${categoryTerms} companies hiring`),
+      ]
+    : [
+        `${serviceAreaCounties} ${collegeState} largest employers`,
+        ...allCities.map(city => `${city} ${collegeState} top employers major companies`),
+      ];
   // Cap at 5 queries to manage API costs
   const cappedEmployerQueries = employerQueries.slice(0, 5);
 
@@ -249,9 +261,9 @@ If data isn't clear, provide best available estimate with "approximately" qualif
   }
 
   const employerExtract = await callClaude(
-    `You are identifying the top 15-20 employers in the ${serviceAreaCounties}, ${collegeState} region.
+    `${categoryConstraintPrompt}You are identifying the top 15-20 employers in the ${serviceAreaCounties}, ${collegeState} region${category ? ` that are relevant to the "${category}" workforce category` : ''}.
 
-Extract employer information from these web pages. For each employer, provide name, industry, and estimated local employment size.
+Extract employer information from these web pages. For each employer, provide name, industry, and estimated local employment size.${category ? `\n\nFocus on employers whose workforce needs align with ${category} — companies that hire people with business, management, finance, HR, marketing, accounting, or professional development credentials.` : ''}
 
 WEB CONTENT:
 ${employerPageTexts.join('\n\n---\n\n').slice(0, 12000)}

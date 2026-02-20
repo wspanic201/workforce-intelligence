@@ -41,6 +41,12 @@ export interface DiscoveryInput {
   serviceRegion?: ServiceRegion;
   focusAreas?: string;
   additionalContext?: string;
+  /**
+   * Category constraint for focused scans.
+   * When set, ALL phases constrain research/scoring/recommendations 
+   * to programs within this category. e.g. "Business & Professional Development"
+   */
+  category?: string;
 }
 
 /** Normalize legacy single-city input to ServiceRegion */
@@ -112,10 +118,13 @@ export async function runDiscovery(
   };
 
   console.log('═══════════════════════════════════════════════════');
-  console.log(`  WORKFORCEOS DISCOVERY PIPELINE`);
+  console.log(`  WAVELENGTH DISCOVERY PIPELINE`);
   console.log(`  ${input.collegeName} — ${region.metroArea}`);
   console.log(`  Cities: ${allCities.join(', ')}`);
   console.log(`  Counties: ${region.counties}`);
+  if (input.category) {
+    console.log(`  📌 CATEGORY FOCUS: ${input.category}`);
+  }
   console.log('═══════════════════════════════════════════════════');
 
   // ── Phase 1: Regional Intelligence ──
@@ -126,7 +135,8 @@ export async function runDiscovery(
     regionalIntel = await gatherRegionalIntelligence(
       input.collegeName,
       region,
-      input.focusAreas
+      input.focusAreas,
+      input.category
     );
 
     phaseTiming['phase1_regional'] = Math.round((Date.now() - phaseStart) / 1000);
@@ -146,7 +156,7 @@ export async function runDiscovery(
     progress(2, 'Demand Signals', 'starting', 'Analyzing job postings, BLS data, employer signals, grants');
     const phaseStart = Date.now();
 
-    demandSignals = await detectDemandSignals(regionalIntel, region);
+    demandSignals = await detectDemandSignals(regionalIntel, region, input.category);
 
     phaseTiming['phase2_demand'] = Math.round((Date.now() - phaseStart) / 1000);
     progress(2, 'Demand Signals', 'complete',
@@ -165,7 +175,7 @@ export async function runDiscovery(
     progress(3, 'Competitive Landscape', 'starting', 'Mapping educational providers and program gaps');
     const phaseStart = Date.now();
 
-    competitiveLandscape = await scanCompetitiveLandscape(regionalIntel, demandSignals, region);
+    competitiveLandscape = await scanCompetitiveLandscape(regionalIntel, demandSignals, region, input.category);
 
     phaseTiming['phase3_competitive'] = Math.round((Date.now() - phaseStart) / 1000);
     progress(3, 'Competitive Landscape', 'complete',
@@ -186,7 +196,8 @@ export async function runDiscovery(
     scoredOpportunities = await scoreOpportunities(
       regionalIntel,
       demandSignals,
-      competitiveLandscape || { region: '', providers: [], gaps: [], whiteSpaceCount: 0, saturatedCount: 0, searchesExecuted: 0 }
+      competitiveLandscape || { region: '', providers: [], gaps: [], whiteSpaceCount: 0, saturatedCount: 0, searchesExecuted: 0 },
+      input.category
     );
 
     phaseTiming['phase4_scoring'] = Math.round((Date.now() - phaseStart) / 1000);
@@ -213,7 +224,8 @@ export async function runDiscovery(
       demandSignals,
       competitiveLandscape || { region: '', providers: [], gaps: [], whiteSpaceCount: 0, saturatedCount: 0, searchesExecuted: 0 },
       scoredOpportunities,
-      region
+      region,
+      input.category
     );
 
     phaseTiming['phase5_blue_ocean'] = Math.round((Date.now() - phaseStart) / 1000);
@@ -238,7 +250,8 @@ export async function runDiscovery(
       demandSignals,
       competitiveLandscape || { region: '', providers: [], gaps: [], whiteSpaceCount: 0, saturatedCount: 0, searchesExecuted: 0 },
       scoredOpportunities,
-      blueOceanResults
+      blueOceanResults,
+      input.category
     );
 
     phaseTiming['phase6_brief'] = Math.round((Date.now() - phaseStart) / 1000);

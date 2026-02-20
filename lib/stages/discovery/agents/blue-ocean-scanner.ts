@@ -23,6 +23,7 @@ import type { DemandSignalOutput } from './demand-signals';
 import type { CompetitiveLandscapeOutput } from './competitive-landscape';
 import type { OpportunityScorerOutput } from './opportunity-scorer';
 import type { ServiceRegion } from '../orchestrator';
+import { getCategoryConstraint, getCategorySearchTerms } from '../category-constraint';
 
 // ── Types ──
 
@@ -72,7 +73,8 @@ export async function scanBlueOcean(
   demandSignals: DemandSignalOutput,
   competitiveLandscape: CompetitiveLandscapeOutput,
   scoredOpportunities: OpportunityScorerOutput,
-  serviceRegion?: ServiceRegion
+  serviceRegion?: ServiceRegion,
+  category?: string
 ): Promise<BlueOceanScannerOutput> {
   const { institution, topEmployers, economicTrends } = regionalIntel;
   const allCities = serviceRegion
@@ -185,11 +187,13 @@ export async function scanBlueOcean(
     .map(s => `### ${s.strategy} (${s.searchCount} searches)\n${s.rawFindings}`)
     .join('\n\n');
 
+  const categoryConstraint = getCategoryConstraint(category);
+
   const synthesisResult = await callClaude(
-    `You are a workforce development VISIONARY — not a conventional analyst. Your job is to identify the 3-5 most compelling HIDDEN program opportunities that a conventional analysis would miss.
+    `${categoryConstraint}You are a workforce development VISIONARY — not a conventional analyst. Your job is to identify the 3-5 most compelling HIDDEN program opportunities that a conventional analysis would miss.
 
 ## CONTEXT
-You are analyzing ${institution.name} serving the ${region} region (${allCities.join(', ')}) in ${institution.state}.
+You are analyzing ${institution.name} serving the ${region} region (${allCities.join(', ')}) in ${institution.state}.${category ? `\n\n**This is a ${category} Category Deep Dive.** All hidden opportunities MUST be within the ${category} domain. Think creatively WITHIN the category — niche sub-specialties, emerging cross-functional roles, underserved niches WITHIN ${category}.` : ''}
 
 ## WHAT CONVENTIONAL ANALYSIS ALREADY FOUND (DO NOT REPEAT THESE):
 ${conventionalPrograms || 'None provided'}

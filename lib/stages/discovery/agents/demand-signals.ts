@@ -12,6 +12,7 @@ import { callClaude } from '@/lib/ai/anthropic';
 import { withCache } from '@/lib/apis/cache';
 import type { RegionalIntelligenceOutput, RegionalEmployer } from './regional-intelligence';
 import type { ServiceRegion } from '../orchestrator';
+import { getCategoryConstraint, getCategorySearchTerms } from '../category-constraint';
 
 // ── Types ──
 
@@ -60,7 +61,8 @@ export interface DemandSignalOutput {
 
 export async function detectDemandSignals(
   regionalIntel: RegionalIntelligenceOutput,
-  serviceRegion?: ServiceRegion
+  serviceRegion?: ServiceRegion,
+  category?: string
 ): Promise<DemandSignalOutput> {
   const { institution, topEmployers } = regionalIntel;
   const region = `${institution.city}, ${institution.state}`;
@@ -71,7 +73,11 @@ export async function detectDemandSignals(
     : [institution.city];
   const metro = serviceRegion?.metroArea || `${institution.serviceArea} ${institution.state}`;
 
+  const categoryConstraint = getCategoryConstraint(category);
+  const categoryTerms = getCategorySearchTerms(category);
+
   console.log(`[Phase 2: Demand Signals] Starting for ${region}`);
+  if (category) console.log(`[Phase 2] 📌 Category constraint: ${category}`);
   console.log(`[Phase 2] Searching across cities: ${allCities.join(', ')}`);
 
   const signals: DemandSignal[] = [];
@@ -80,11 +86,12 @@ export async function detectDemandSignals(
   // ── Step 1: Job posting analysis by top industries ──
   console.log('[Phase 2] Step 1: Job posting analysis...');
 
-  // Identify top industries from employer list
-  const industries = extractTopIndustries(topEmployers);
+  // Identify industries — if category constrained, use category-specific terms
+  const industries = category 
+    ? getCategoryIndustries(category)
+    : extractTopIndustries(topEmployers);
   
   // Search job postings for each major industry — fan out across cities
-  // Use top 4 industries × each city, capped at 12 total queries
   const jobQueries: Array<{ query: string; location: string }> = [];
   for (const ind of industries.slice(0, 4)) {
     for (const city of allCities) {
@@ -104,7 +111,7 @@ export async function detectDemandSignals(
       if (jobResults.jobs.length > 0) {
         // Extract occupation insights from job data
         const jobInsight = await callClaude(
-          `Analyze these ${jobResults.jobs.length} job postings from ${metro}. Identify the top 2-3 specific occupations (with SOC codes if possible) that appear most frequently and would be good fits for community college certificate or associate degree programs.
+          `${categoryConstraint}Analyze these ${jobResults.jobs.length} job postings from ${metro}. Identify the top 2-3 specific occupations (with SOC codes if possible) that appear most frequently and would be good fits for community college certificate or associate degree programs${category ? ` in the ${category} category` : ''}.
 
 JOB POSTINGS:
 ${jobResults.jobs.slice(0, 10).map(j => `- ${j.title} at ${j.company} (${j.location})${j.salary ? ` - ${j.salary}` : ''}\n  ${j.description.slice(0, 200)}`).join('\n')}
@@ -351,6 +358,34 @@ function extractTopIndustries(employers: RegionalEmployer[]): string[] {
     .sort((a, b) => b[1] - a[1])
     .map(([industry]) => industry)
     .slice(0, 8);
+}
+
+/**
+ * Returns industry search terms for category-constrained scans.
+ * These replace the employer-derived industries when a category is active.
+ */
+function getCategoryIndustries(category: string): string[] {
+  const map: Record<string, string[]> = {
+    'business': [
+      'accounting bookkeeping',
+      'business management administration',
+      'human resources HR',
+      'marketing digital marketing',
+      'project management',
+      'entrepreneurship small business',
+      'finance banking insurance',
+      'office administration executive assistant',
+    ],
+    'healthcare': ['nursing', 'medical assisting', 'pharmacy technician', 'dental hygiene', 'health information', 'medical coding billing', 'physical therapy assistant', 'EMT paramedic'],
+    'manufacturing': ['manufacturing', 'CNC machining', 'welding', 'industrial maintenance', 'quality control', 'automation robotics', 'supply chain', 'production supervisor'],
+    'technology': ['cybersecurity', 'software development', 'network administration', 'data analytics', 'cloud computing', 'IT support helpdesk', 'web development', 'database administration'],
+    'transportation': ['CDL truck driving', 'logistics supply chain', 'warehouse operations', 'fleet management', 'forklift operation', 'dispatching'],
+    'construction': ['electrical', 'plumbing', 'HVAC', 'carpentry', 'construction management', 'building inspection'],
+    'hospitality': ['culinary arts', 'hotel management', 'food service management', 'event planning', 'tourism', 'restaurant management'],
+  };
+
+  const key = Object.keys(map).find(k => category.toLowerCase().includes(k));
+  return key ? map[key] : [category];
 }
 
 function inferIndustry(signal: DemandSignal): string {

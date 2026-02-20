@@ -39,6 +39,7 @@ interface CLIFlags {
   metro?: string;
   focus?: string;
   context?: string;
+  category?: string;
   test: boolean;
   output: string;
   json: boolean;
@@ -91,6 +92,8 @@ Discovery Options:
   --cities     Additional cities (comma-separated, e.g., "Iowa City,Coralville")
   --metro      Metro area label (e.g., "Cedar Rapids-Iowa City Corridor")
   --focus      Focus areas (e.g., "Healthcare, Manufacturing, Technology")
+  --category   Category Deep Dive — constrain ALL phases to one category
+               (e.g., "Business & Professional Development", "Healthcare")
   --context    Additional context about the institution
   --url        Institution website URL (for pell-audit)
 
@@ -151,6 +154,7 @@ function parseArgs(): CLIFlags {
       case '--cities': flags.cities = next; i++; break;
       case '--metro': flags.metro = next; i++; break;
       case '--focus': flags.focus = next; i++; break;
+      case '--category': flags.category = next; i++; break;
       case '--context': flags.context = next; i++; break;
       case '--url': (flags as any).url = next; i++; break;
       case '--test': flags.test = true; break;
@@ -292,6 +296,7 @@ async function runDiscover(flags: CLIFlags) {
   log(`│ Metro Area:   ${metro}`);
   log(`│ Counties:     ${counties || '(not specified)'}`);
   log(`│ Focus Areas:  ${focus}`);
+  if (flags.category) log(`│ 📌 CATEGORY:  ${flags.category}`);
   if (context) log(`│ Context:      ${context.slice(0, 80)}${context.length > 80 ? '...' : ''}`);
   log(`│ Blue Ocean:   ${flags.blueOcean ? 'Enabled' : 'Disabled'}`);
   log(`│ Mode:         ${flags.test ? 'TEST ($0.50)' : 'PRODUCTION (~$5-8)'}`);
@@ -329,6 +334,7 @@ async function runDiscover(flags: CLIFlags) {
       },
       focusAreas: focus !== 'All sectors' ? focus : undefined,
       additionalContext: context || undefined,
+      category: flags.category || undefined,
     },
     (event) => {
       const icon = event.status === 'complete' ? '✅' : event.status === 'error' ? '❌' : '⏳';

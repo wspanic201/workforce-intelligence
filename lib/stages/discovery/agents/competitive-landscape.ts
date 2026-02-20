@@ -10,6 +10,7 @@ import { callClaude } from '@/lib/ai/anthropic';
 import type { RegionalIntelligenceOutput } from './regional-intelligence';
 import type { DemandSignalOutput, DemandSignal } from './demand-signals';
 import type { ServiceRegion } from '../orchestrator';
+import { getCategoryConstraint, getCategorySearchTerms } from '../category-constraint';
 
 // ── Types ──
 
@@ -47,7 +48,8 @@ export interface CompetitiveLandscapeOutput {
 export async function scanCompetitiveLandscape(
   regionalIntel: RegionalIntelligenceOutput,
   demandSignals: DemandSignalOutput,
-  serviceRegion?: ServiceRegion
+  serviceRegion?: ServiceRegion,
+  category?: string
 ): Promise<CompetitiveLandscapeOutput> {
   const { institution } = regionalIntel;
   const allCities = serviceRegion 
@@ -55,7 +57,11 @@ export async function scanCompetitiveLandscape(
     : [institution.city];
   const region = serviceRegion?.metroArea || `${institution.city}, ${institution.state}`;
 
+  const categoryConstraint = getCategoryConstraint(category);
+  const categoryTerms = getCategorySearchTerms(category);
+
   console.log(`[Phase 3: Competitive Landscape] Starting for ${region}`);
+  if (category) console.log(`[Phase 3] 📌 Category constraint: ${category}`);
   console.log(`[Phase 3] Covering cities: ${allCities.join(', ')}`);
 
   let searchCount = 0;
@@ -64,13 +70,19 @@ export async function scanCompetitiveLandscape(
   // ── Step 1: Find all educational providers across the full service region ──
   console.log('[Phase 3] Step 1: Mapping educational providers...');
 
-  const providerQueries = [
-    `community colleges near ${region}`,
-    `career technical education centers ${institution.serviceArea} ${institution.state}`,
-    // Search each city for trade schools/training programs
-    ...allCities.map(city => `trade schools vocational training ${city} ${institution.state}`),
-    `${region} workforce training programs certificate`,
-  ].slice(0, 6); // Cap at 6 queries
+  const providerQueries = category
+    ? [
+        `${categoryTerms} training programs ${region}`,
+        `${categoryTerms} certificate continuing education ${institution.serviceArea} ${institution.state}`,
+        ...allCities.map(city => `${categoryTerms} classes courses ${city} ${institution.state}`),
+        `${region} ${categoryTerms} professional development`,
+      ].slice(0, 6)
+    : [
+        `community colleges near ${region}`,
+        `career technical education centers ${institution.serviceArea} ${institution.state}`,
+        ...allCities.map(city => `trade schools vocational training ${city} ${institution.state}`),
+        `${region} workforce training programs certificate`,
+      ].slice(0, 6);
 
   const providerResults = await batchSearch(providerQueries, { delayMs: 500 });
   searchCount += providerQueries.length;
@@ -79,7 +91,7 @@ export async function scanCompetitiveLandscape(
   const allResults = providerResults.flatMap(r => r.results);
   
   const providerExtract = await callClaude(
-    `From these search results, identify ALL educational/training institutions within roughly 50 miles of ${institution.city}, ${institution.state} that could be competitors for workforce training programs.
+    `${categoryConstraint}From these search results, identify ALL educational/training institutions within roughly 50 miles of ${institution.city}, ${institution.state} that could be competitors for ${category ? `${category} programs and training` : 'workforce training programs'}.
 
 EXCLUDE: ${institution.name} (that's us)
 
@@ -135,7 +147,7 @@ Be thorough — include every institution you can identify. Don't fabricate name
         const page = await fetchPage(progSearch.results[0].url, 8000);
         
         const programExtract = await callClaude(
-          `Extract the workforce/CTE/certificate programs offered by ${provider.name} from this page content. Focus on non-credit workforce training, certificates, and career-technical programs.
+          `${categoryConstraint}Extract the ${category ? `${category}-related` : 'workforce/CTE/certificate'} programs offered by ${provider.name} from this page content. Focus on ${category ? `${category} programs, certificates, and professional development offerings` : 'non-credit workforce training, certificates, and career-technical programs'}.
 
 PAGE CONTENT (from ${progSearch.results[0].url}):
 ${page.text.slice(0, 6000)}
@@ -176,7 +188,7 @@ Return ONLY valid JSON:
   const demandOccupations = getUniqueOccupations(demandSignals.signals);
 
   const gapAnalysis = await callClaude(
-    `You are analyzing the competitive landscape for workforce programs in ${region}.
+    `${categoryConstraint}You are analyzing the competitive landscape for ${category ? `${category} programs` : 'workforce programs'} in ${region}.
 
 DEMAND: These occupations have strong demand signals:
 ${demandOccupations.map(o => `- ${o.occupation} (SOC ${o.socCode}) — ${o.strength} demand`).join('\n')}

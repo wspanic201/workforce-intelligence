@@ -17,6 +17,7 @@ import { callClaude } from '@/lib/ai/anthropic';
 import type { RegionalIntelligenceOutput } from './regional-intelligence';
 import type { DemandSignalOutput } from './demand-signals';
 import type { CompetitiveLandscapeOutput, CompetitiveGap } from './competitive-landscape';
+import { getCategoryConstraint } from '../category-constraint';
 
 // ── Types ──
 
@@ -74,7 +75,8 @@ export interface OpportunityScorerOutput {
 export async function scoreOpportunities(
   regionalIntel: RegionalIntelligenceOutput,
   demandSignals: DemandSignalOutput,
-  competitiveLandscape: CompetitiveLandscapeOutput
+  competitiveLandscape: CompetitiveLandscapeOutput,
+  category?: string
 ): Promise<OpportunityScorerOutput> {
   const { institution, topEmployers } = regionalIntel;
   const region = `${institution.city}, ${institution.state}`;
@@ -110,8 +112,10 @@ export async function scoreOpportunities(
 
   // ── Score and rank with Claude ──
 
+  const categoryConstraint = getCategoryConstraint(category);
+
   const scoringResult = await callClaude(
-    `You are a Senior Workforce Intelligence Analyst scoring program opportunities for ${institution.name} in ${institution.serviceArea}, ${institution.state}.
+    `${categoryConstraint}You are a Senior Workforce Intelligence Analyst scoring program opportunities for ${institution.name} in ${institution.serviceArea}, ${institution.state}${category ? `.\n\nThis is a **${category} Category Deep Dive** — ONLY score and recommend programs within the ${category} domain` : ''}.
 
 ## SCORING MATRIX
 Score each candidate 1-10 on these dimensions:
