@@ -19,20 +19,36 @@ function signToken(payload: string): string {
 }
 
 export async function POST(request: NextRequest) {
-  const formData = await request.formData();
-  const password = formData.get('password') as string;
+  let password: string | null = null;
+  
+  // Handle both form data and JSON
+  const contentType = request.headers.get('content-type') || '';
+  if (contentType.includes('application/json')) {
+    const body = await request.json();
+    password = body.password;
+  } else {
+    const formData = await request.formData();
+    password = formData.get('password') as string;
+  }
 
   if (!password) {
+    console.log('[Admin Login] No password provided');
     return NextResponse.redirect(new URL('/admin/login?error=missing', request.url));
   }
 
   const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
   if (!adminPasswordHash) {
-    console.error('[Admin Auth] ADMIN_PASSWORD_HASH not set');
+    console.error('[Admin Login] ADMIN_PASSWORD_HASH not set in env');
     return NextResponse.redirect(new URL('/admin/login?error=config', request.url));
   }
 
   const inputHash = hashPassword(password);
+  console.log('[Admin Login] Hash comparison:', {
+    inputHashPrefix: inputHash.substring(0, 8) + '...',
+    expectedPrefix: adminPasswordHash.substring(0, 8) + '...',
+    match: inputHash === adminPasswordHash,
+  });
+  
   if (inputHash !== adminPasswordHash) {
     return NextResponse.redirect(new URL('/admin/login?error=invalid', request.url));
   }
