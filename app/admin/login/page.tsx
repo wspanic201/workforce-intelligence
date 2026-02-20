@@ -1,38 +1,14 @@
 /**
  * Admin login page
- * Simple password authentication for /admin access
+ * Posts to /api/admin/login which sets cookie and redirects
  */
 
-import { redirect } from 'next/navigation';
-import { verifyAdminSession, createAdminSession, verifyAdminPassword } from '@/lib/auth/admin';
-
-export default async function AdminLoginPage() {
-  // Check if already logged in
-  const isAuthenticated = await verifyAdminSession();
-  if (isAuthenticated) {
-    redirect('/admin');
-  }
-
-  async function handleLogin(formData: FormData) {
-    'use server';
-
-    const password = formData.get('password') as string;
-
-    if (!password) {
-      return;
-    }
-
-    // Verify password
-    if (!verifyAdminPassword(password)) {
-      redirect('/admin/login?error=invalid');
-    }
-
-    // Create session
-    await createAdminSession();
-
-    // Redirect to admin dashboard
-    redirect('/admin');
-  }
+export default function AdminLoginPage({
+  searchParams,
+}: {
+  searchParams: { error?: string };
+}) {
+  const error = searchParams?.error;
 
   return (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
@@ -48,8 +24,8 @@ export default async function AdminLoginPage() {
             </p>
           </div>
 
-          {/* Login Form */}
-          <form action={handleLogin} className="space-y-6">
+          {/* Login Form - posts to API route */}
+          <form action="/api/admin/login" method="POST" className="space-y-6">
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Password
@@ -74,11 +50,15 @@ export default async function AdminLoginPage() {
           </form>
 
           {/* Error Message */}
-          <div className="mt-4 text-center">
-            <p className="text-red-500 text-sm" id="error-message">
-              {/* JavaScript will populate this */}
-            </p>
-          </div>
+          {error && (
+            <div className="mt-4 text-center">
+              <p className="text-red-500 text-sm">
+                {error === 'invalid' ? 'Invalid password. Please try again.' :
+                 error === 'config' ? 'Server configuration error.' :
+                 'Something went wrong. Please try again.'}
+              </p>
+            </div>
+          )}
         </div>
 
         {/* Footer */}
@@ -86,15 +66,6 @@ export default async function AdminLoginPage() {
           Wavelength © 2026
         </p>
       </div>
-
-      {/* Client-side error handling */}
-      <script dangerouslySetInnerHTML={{
-        __html: `
-          if (window.location.search.includes('error=invalid')) {
-            document.getElementById('error-message').textContent = 'Invalid password. Please try again.';
-          }
-        `
-      }} />
     </div>
   );
 }

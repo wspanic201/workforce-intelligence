@@ -52,7 +52,7 @@ export async function createAdminSession(): Promise<string> {
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
     maxAge: SESSION_DURATION / 1000,
-    path: '/admin',
+    path: '/',
   });
 
   return token;
