@@ -652,8 +652,7 @@ This Program Market Scan was generated using Wavelength multi-phase analysis:
 5. **Blue Ocean Scanner** — Creative opportunity hunting across 6 strategies: employer pain points, supply chain decomposition, peer comparison, economic development signals, orphan occupations, and skill cluster analysis
 
 **Total research queries executed:** ${totalSearches}  
-**Data sources consulted:** ${dataSources.length}  
-**Analysis model:** Claude Sonnet 4.5 (Anthropic)
+**Data sources consulted:** ${dataSources.length}
 
 ### Limitations
 
