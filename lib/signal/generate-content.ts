@@ -104,11 +104,24 @@ Return ONLY valid JSON in this exact structure:
 }`;
 
   console.log('[Signal] Generating newsletter content with Claude...');
-  const { content } = await callClaude(prompt, {
-    model: 'claude-sonnet-4-6',
-    maxTokens: 2000,
-    temperature: 1.0,
-  });
+  
+  // Use direct API call (non-streaming) to avoid streaming stall issues
+  const Anthropic = (await import('@anthropic-ai/sdk')).default;
+  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  
+  let content: string;
+  try {
+    const response = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 2000,
+      temperature: 1.0,
+      messages: [{ role: 'user', content: prompt }],
+    });
+    content = response.content[0].type === 'text' ? response.content[0].text : '';
+  } catch (apiError) {
+    console.error('[Signal] Anthropic API error:', apiError);
+    throw apiError;
+  }
 
   console.log('[Signal] Raw Claude response length:', content.length);
   console.log('[Signal] First 500 chars:', content.substring(0, 500));
