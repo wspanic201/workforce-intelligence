@@ -317,6 +317,11 @@ export default function OrderDetailPage() {
             <CardTitle className="text-sm font-medium text-slate-500">Report Preview</CardTitle>
             <div className="flex gap-2">
               <Button variant="outline" size="sm" onClick={() => {
+                window.open(`/api/admin/orders/${order.id}/pdf`, '_blank');
+              }}>
+                📄 Download PDF
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => {
                 const link = `${window.location.origin}/report/${order.delivery_token}`;
                 navigator.clipboard.writeText(link);
               }}>

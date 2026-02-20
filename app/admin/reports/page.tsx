@@ -1,6 +1,6 @@
 /**
  * Reports Management Page
- * View, filter, and manage validation reports
+ * View, filter, and manage validation reports — Wavelength brand styling
  */
 
 import Link from 'next/link';
@@ -14,67 +14,68 @@ export default async function ReportsAdminPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Reports</h1>
-          <p className="text-gray-600 mt-1">Validation reports and pipeline runs</p>
+          <h1 className="text-2xl font-heading font-bold text-slate-900">Reports</h1>
+          <p className="text-slate-500 mt-1 text-sm">Validation reports and pipeline runs</p>
         </div>
-        <button className="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700">
+        <button className="font-heading font-semibold text-sm py-2.5 px-5 rounded-xl text-white transition-all hover:-translate-y-0.5"
+          style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #14b8a6 100%)' }}>
           + New Report
         </button>
       </div>
 
       {/* Stats */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <StatBox title="Total Reports" value={reports.length} />
-        <StatBox title="This Week" value={reports.filter(r => isThisWeek(r.created_at)).length} />
-        <StatBox title="Pending" value={reports.filter(r => r.status === 'pending').length} />
-        <StatBox title="Completed" value={reports.filter(r => r.status === 'review' || r.status === 'completed').length} />
+        <StatBox title="Total Reports" value={reports.length} accent="purple" />
+        <StatBox title="This Week" value={reports.filter(r => isThisWeek(r.created_at)).length} accent="blue" />
+        <StatBox title="Pending" value={reports.filter(r => r.status === 'pending').length} accent="amber" />
+        <StatBox title="Completed" value={reports.filter(r => r.status === 'review' || r.status === 'completed').length} accent="teal" />
       </div>
 
       {/* Reports Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <table className="min-w-full divide-y divide-slate-100">
+          <thead>
+            <tr className="bg-slate-50">
+              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
                 Program
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
                 Client
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
                 Created
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="divide-y divide-slate-50">
             {reports.map((report) => (
-              <tr key={report.id} className="hover:bg-gray-50">
+              <tr key={report.id} className="hover:bg-slate-50/50 transition-colors">
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm font-medium text-gray-900">
+                  <div className="text-sm font-medium text-slate-900">
                     {report.program_name || 'Untitled'}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-600">
+                  <div className="text-sm text-slate-500">
                     {report.client_name || 'Unknown'}
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <StatusBadge status={report.status} />
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                   {new Date(report.created_at).toLocaleDateString()}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm">
-                  <Link 
+                <td className="px-6 py-4 whitespace-nowrap text-sm space-x-3">
+                  <Link
                     href={`/admin/reports/${report.id}`}
-                    className="text-purple-600 hover:text-purple-900"
+                    className="text-purple-600 hover:text-purple-900 font-medium"
                   >
                     View
                   </Link>
@@ -83,7 +84,7 @@ export default async function ReportsAdminPage() {
             ))}
             {reports.length === 0 && (
               <tr>
-                <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                <td colSpan={5} className="px-6 py-12 text-center text-slate-400">
                   No reports yet
                 </td>
               </tr>
@@ -95,37 +96,43 @@ export default async function ReportsAdminPage() {
   );
 }
 
-// Helper components
-function StatBox({ title, value }: { title: string; value: number }) {
+function StatBox({ title, value, accent }: { title: string; value: number; accent: string }) {
+  const gradients: Record<string, string> = {
+    purple: 'from-purple-500 to-blue-500',
+    blue: 'from-blue-500 to-cyan-500',
+    teal: 'from-teal-500 to-emerald-500',
+    amber: 'from-amber-500 to-orange-500',
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <p className="text-sm font-medium text-gray-600">{title}</p>
-      <p className="text-2xl font-bold text-gray-900 mt-2">{value}</p>
+    <div className="relative bg-white rounded-xl border border-slate-200 p-5 shadow-sm overflow-hidden">
+      <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${gradients[accent] || gradients.purple}`} />
+      <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">{title}</p>
+      <p className="text-2xl font-heading font-bold text-slate-900 mt-2">{value}</p>
     </div>
   );
 }
 
 function StatusBadge({ status }: { status: string }) {
-  const colors = {
-    pending: 'bg-gray-100 text-gray-800',
-    researching: 'bg-blue-100 text-blue-800',
-    review: 'bg-yellow-100 text-yellow-800',
-    completed: 'bg-green-100 text-green-800',
-    error: 'bg-red-100 text-red-800',
+  const styles: Record<string, string> = {
+    pending: 'bg-slate-100 text-slate-600',
+    researching: 'bg-blue-50 text-blue-700',
+    review: 'bg-amber-50 text-amber-700',
+    completed: 'bg-emerald-50 text-emerald-700',
+    error: 'bg-red-50 text-red-700',
   };
 
   return (
-    <span className={`px-2 py-1 text-xs font-medium rounded-full ${colors[status as keyof typeof colors] || colors.pending}`}>
+    <span className={`px-2.5 py-1 text-xs font-semibold rounded-full ${styles[status] || styles.pending}`}>
       {status}
     </span>
   );
 }
 
-// Data helpers
 async function getReports() {
   try {
     const supabase = getSupabaseServerClient();
-    
+
     const { data, error } = await supabase
       .from('validation_projects')
       .select('id, program_name, client_name, status, created_at')

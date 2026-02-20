@@ -1,9 +1,9 @@
 /**
- * HTML template with embedded CSS for WorkforceOS PDF reports.
+ * HTML template with embedded CSS for Wavelength PDF reports.
  * Designed for Puppeteer PDF rendering — everything is inline, no external resources.
  * 
  * Design: Clean consulting aesthetic (McKinsey / Deloitte inspired).
- * Colors: Deep navy (#1a2332), teal accent (#0ea5e9), white background.
+ * Colors: Deep navy (#1a2332), teal accent (#7c3aed), white background.
  * Fonts: System sans-serif stack.
  */
 
@@ -47,7 +47,7 @@ ${getStyles(options)}
   <div class="cover-content">
     <div class="cover-logo">
       <div class="logo-mark">W</div>
-      <div class="logo-text">WorkforceOS</div>
+      <div class="logo-text">Wavelength</div>
     </div>
     <div class="cover-divider"></div>
     <h1 class="cover-title">${options.title}</h1>
@@ -60,7 +60,7 @@ ${getStyles(options)}
       <p class="cover-date">${date}</p>
       <div class="cover-badge">
         <span class="badge-dot"></span>
-        Prepared by WorkforceOS
+        Prepared by Wavelength
       </div>
     </div>
   </div>
@@ -153,7 +153,7 @@ body {
   left: 0;
   right: 0;
   height: 8px;
-  background: linear-gradient(90deg, #1a2332 0%, #0ea5e9 100%);
+  background: linear-gradient(90deg, #7c3aed 0%, #3b82f6 40%, #14b8a6 100%);
 }
 
 .cover-content {
@@ -175,7 +175,7 @@ body {
 .logo-mark {
   width: 48px;
   height: 48px;
-  background: #1a2332;
+  background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #14b8a6 100%);
   color: white;
   border-radius: 10px;
   display: flex;
@@ -196,7 +196,7 @@ body {
 .cover-divider {
   width: 80px;
   height: 3px;
-  background: #0ea5e9;
+  background: linear-gradient(90deg, #7c3aed, #14b8a6);
   margin-bottom: 40px;
 }
 
@@ -262,7 +262,7 @@ body {
 .badge-dot {
   width: 8px;
   height: 8px;
-  background: #0ea5e9;
+  background: #7c3aed;
   border-radius: 50%;
   display: inline-block;
 }
@@ -287,7 +287,7 @@ body {
   color: #1a2332;
   margin-bottom: 32px;
   padding-bottom: 12px;
-  border-bottom: 3px solid #0ea5e9;
+  border-bottom: 3px solid #7c3aed;
 }
 
 .toc-list {
@@ -306,7 +306,7 @@ body {
 .toc-number {
   font-size: 13px;
   font-weight: 700;
-  color: #0ea5e9;
+  color: #7c3aed;
   width: 36px;
   flex-shrink: 0;
 }
@@ -349,7 +349,7 @@ h2 {
   color: #1a2332;
   margin: 0 0 18px 0;
   padding-bottom: 10px;
-  border-bottom: 2.5px solid #0ea5e9;
+  border-bottom: 2.5px solid #7c3aed;
   page-break-before: always;
   page-break-after: avoid;
   letter-spacing: -0.3px;
@@ -402,7 +402,7 @@ em {
 }
 
 a {
-  color: #0ea5e9;
+  color: #7c3aed;
   text-decoration: none;
 }
 
@@ -451,7 +451,7 @@ li {
 }
 
 li::marker {
-  color: #0ea5e9;
+  color: #7c3aed;
   font-weight: 700;
 }
 
@@ -527,7 +527,7 @@ tbody tr:last-child td {
 
 /* ── Callout (Blockquotes) ── */
 .callout {
-  border-left: 4px solid #0ea5e9;
+  border-left: 4px solid #7c3aed;
   background: #f0f9ff;
   padding: 16px 20px;
   margin: 16px 0;
