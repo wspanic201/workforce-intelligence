@@ -1,20 +1,20 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, AlertTriangle, TrendingDown, TrendingUp, CheckCircle2, AlertCircle, XCircle } from 'lucide-react';
+import { ArrowRight, AlertTriangle, TrendingUp, CheckCircle2, AlertCircle, XCircle, Shield } from 'lucide-react';
 import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
 import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
 import { PrintButton } from '@/components/ui/PrintButton';
 
 export const metadata: Metadata = {
-  title: 'Curriculum Drift Analysis — Bellevue College Cybersecurity AAS | Wavelength Sample Report',
+  title: 'Curriculum Drift Analysis — Bellevue University Cybersecurity BS | Wavelength Report',
   description:
-    'Sample Curriculum Drift Analysis for Bellevue College Cybersecurity AAS. Drift score 42/100 — 13 competency gaps identified, critical cloud-native and SIEM alignment issues.',
+    'Live Curriculum Drift Analysis for Bellevue University Cybersecurity BS. Drift score 65/100 — 13 competency gaps identified across 27 employer postings analyzed.',
   alternates: { canonical: 'https://withwavelength.com/report/bellevue-cybersecurity-drift' },
   openGraph: {
-    title: 'Curriculum Drift Analysis — Bellevue College Cybersecurity AAS',
+    title: 'Curriculum Drift Analysis — Bellevue University Cybersecurity BS',
     description:
-      '42/100 drift score. 13 critical competency gaps between curriculum and Seattle tech employer requirements.',
+      '65/100 drift score (significant). 13 employer skill gaps identified from 27 live job postings.',
     url: 'https://withwavelength.com/report/bellevue-cybersecurity-drift',
     type: 'article',
   },
@@ -22,399 +22,185 @@ export const metadata: Metadata = {
 
 // ─── Helper Functions ─────────────────────────────────────────────────────────
 
-function driftScoreColor(score: number) {
-  if (score >= 75) return 'text-teal-600 dark:text-teal-400';
-  if (score >= 50) return 'text-amber-600 dark:text-amber-400';
-  return 'text-rose-600 dark:text-rose-400';
+function driftLevelColor(level: string) {
+  switch (level) {
+    case 'aligned': return { text: 'text-teal-600 dark:text-teal-400', bg: 'bg-teal-500', border: 'border-teal-500/30', surface: 'bg-teal-500/5' };
+    case 'minor': return { text: 'text-blue-600 dark:text-blue-400', bg: 'bg-blue-500', border: 'border-blue-500/30', surface: 'bg-blue-500/5' };
+    case 'moderate': return { text: 'text-amber-600 dark:text-amber-400', bg: 'bg-amber-500', border: 'border-amber-500/30', surface: 'bg-amber-500/5' };
+    case 'significant': return { text: 'text-orange-600 dark:text-orange-400', bg: 'bg-orange-500', border: 'border-orange-500/30', surface: 'bg-orange-500/5' };
+    case 'critical': return { text: 'text-rose-600 dark:text-rose-400', bg: 'bg-rose-500', border: 'border-rose-500/30', surface: 'bg-rose-500/5' };
+    default: return { text: 'text-theme-secondary', bg: 'bg-theme-muted', border: 'border-theme-subtle', surface: 'bg-theme-surface/50' };
+  }
 }
 
-function driftScoreBg(score: number) {
-  if (score >= 75) return 'bg-teal-500';
-  if (score >= 50) return 'bg-amber-500';
-  return 'bg-rose-500';
-}
+// ─── Real Pipeline Data (February 20, 2026) ─────────────────────────────────
 
-function severityBadge(level: 'Critical' | 'Moderate' | 'Minor') {
-  const map = {
-    Critical: 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20',
-    Moderate: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20',
-    Minor: 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/20',
+const scanDate = 'February 20, 2026';
+const driftScore = 65;
+const driftLevel = 'significant';
+const postingsAnalyzed = 27;
+const colors = driftLevelColor(driftLevel);
+
+const employerSkills = [
+  { skill: 'Security Monitoring', frequency: 15, covered: false },
+  { skill: 'Incident Response', frequency: 12, covered: true },
+  { skill: 'SIEM', frequency: 10, covered: false },
+  { skill: 'Vulnerability Management', frequency: 10, covered: true },
+  { skill: 'Risk Assessment', frequency: 9, covered: true },
+  { skill: 'CISSP Certification', frequency: 8, covered: false },
+  { skill: 'Security Policies and Procedures', frequency: 8, covered: true },
+  { skill: 'Threat Hunting', frequency: 7, covered: false },
+  { skill: 'Security+', frequency: 7, covered: false },
+  { skill: 'RMF (Risk Management Framework)', frequency: 6, covered: false },
+  { skill: 'Identity and Access Management', frequency: 6, covered: true },
+  { skill: 'Penetration Testing', frequency: 6, covered: true },
+  { skill: 'Security Clearance', frequency: 6, covered: false },
+  { skill: 'Log Analysis', frequency: 6, covered: false },
+  { skill: 'Cybersecurity Tools Administration', frequency: 5, covered: false },
+  { skill: 'Detection Engineering', frequency: 5, covered: false },
+  { skill: 'Security Control Assessment', frequency: 5, covered: true },
+  { skill: 'Microsoft Defender', frequency: 4, covered: false },
+  { skill: 'NERC CIP', frequency: 3, covered: false },
+  { skill: 'Cloud Security', frequency: 3, covered: false },
+];
+
+const coveredSkills = [
+  'Incident Response', 'Vulnerability Management', 'Risk Assessment',
+  'Security Policies and Procedures', 'Identity and Access Management',
+  'Penetration Testing', 'Security Control Assessment',
+];
+
+const gapSkills = [
+  'Security Monitoring', 'SIEM', 'CISSP Certification', 'Threat Hunting',
+  'Security+', 'RMF (Risk Management Framework)', 'Security Clearance',
+  'Log Analysis', 'Cybersecurity Tools Administration', 'Detection Engineering',
+  'Microsoft Defender', 'NERC CIP', 'Cloud Security',
+];
+
+const staleSkills = [
+  'Cybersecurity Principles', 'Information Systems Security', 'Python Programming',
+  'Problem Solving', 'Control Structures', 'Firewalls',
+  'Intrusion Detection Systems', 'Virtual Private Networks (VPNs)',
+  'Access Control Models', 'Password Management', 'Smart Cards',
+  'Biometric Authentication', 'Public Key Infrastructure (PKI)',
+  'Vulnerability Analysis', 'Security Auditing', 'Compliance',
+  'Database Security', 'Relational Databases', 'NoSQL Databases', 'SQL',
+  'Application Development', 'Operational Security', 'Regulatory Compliance',
+  'Ethics', 'Cryptography', 'Contingency Planning',
+  'Operating System Security', 'Server Security', 'Desktop Security',
+  'Virtualization Security', 'Mobile Device Security',
+  'Web Application Security', 'Secure Development', 'OWASP Top 10',
+  'Digital Forensics', 'Computer Forensics', 'Cyber Investigations',
+  'Evidence Acquisition', 'Threat Identification',
+  'Governance Risk and Compliance',
+];
+
+const narrative = `The Cybersecurity program at Bellevue University demonstrates solid alignment with core security concepts, but faces a significant gap in preparing students for the operational realities of today's Security Operations Centers (SOCs) and enterprise security teams. While the program successfully teaches foundational competencies like incident response, vulnerability management, and penetration testing, employers are consistently seeking candidates with hands-on experience in security monitoring platforms, threat detection tools, and industry-recognized certifications that signal job-readiness. The 65/100 drift score reflects this divide between strong conceptual coverage and missing practical toolsets—particularly Security Information and Event Management (SIEM) platforms, log analysis capabilities, and threat hunting techniques that have become standard expectations for entry-level security analyst roles.
+
+The employer demand pattern reveals two specific challenges. First, there's a clear certification gap: Security+ and CISSP appear frequently in job postings as screening requirements, yet aren't formally integrated into the curriculum pathway. Second, the "Potentially Stale Skills" category requires nuanced interpretation—topics like Python Programming and Cybersecurity Principles aren't obsolete, but may be taught too abstractly. Employers assume these foundations but prioritize candidates who can immediately apply them using current security tools and frameworks like RMF (Risk Management Framework). The frequent mention of security clearance requirements also suggests many local employers are government contractors, creating an opportunity to better prepare students for that career pathway. This isn't a curriculum crisis, but it does indicate the program has drifted from an implementation-focused job market while maintaining strong theoretical grounding.`;
+
+const recommendations = [
+  'Integrate Security+ certification preparation directly into the curriculum as a capstone requirement or embed exam objectives across multiple courses, providing students a marketable credential upon graduation that addresses the most frequent employer screening requirement.',
+  'Establish hands-on labs with industry-standard SIEM platforms (Splunk, IBM QRadar, or Microsoft Sentinel) and require students to complete practical exercises in log analysis, correlation rule creation, and threat detection—skills that can be demonstrated in interviews and on resumes.',
+  'Redesign the Python Programming component to focus specifically on security automation use cases: parsing security logs, automating threat intelligence gathering, and writing detection scripts rather than general programming concepts.',
+  'Create a dedicated "Security Operations" course covering threat hunting methodologies, detection engineering principles, and security monitoring workflows that mirrors the day-to-day responsibilities described in SOC analyst job postings.',
+  'Develop partnerships with local government contractors and defense organizations to provide students information about security clearance processes, eligibility requirements, and sponsorship opportunities, given the frequency of clearance requirements in the regional job market.',
+  'Add Risk Management Framework (RMF) training aligned with NIST SP 800-37 into existing security policy and compliance courses, as this federal standard appears consistently in employer requirements and represents a teachable, structured methodology students can immediately apply.',
+];
+
+// Auto-scraped curriculum data
+const scrapedCourses = [
+  'CYBR 260 – Introduction to Cybersecurity',
+  'CYBR 330 – Information Systems Security',
+  'CYBR 335 – Access Control and Identity Management',
+  'CYBR 340 – Information Security Policy and Management',
+  'CYBR 345 – Database Security',
+  'CYBR 400 – Security Architecture and Design',
+  'CYBR 410 – Offensive Security and Penetration Testing',
+  'CYBR 420 – Digital Forensics and Cyber Investigations',
+  'CYBR 430 – Security Operations and Incident Response',
+  'CYBR 440 – Web Application Security',
+  'CYBR 490 – Cybersecurity Capstone',
+];
+
+// ─── SVG Arc Gauge Component ─────────────────────────────────────────────────
+
+function DriftGauge({ score, level }: { score: number; level: string }) {
+  const radius = 80;
+  const stroke = 12;
+  const cx = 100;
+  const cy = 100;
+  // Arc from 180° (left) to 0° (right) — semicircle
+  const startAngle = Math.PI;
+  const endAngle = 0;
+  const range = startAngle - endAngle;
+  const progress = score / 100;
+  const progressAngle = startAngle - range * progress;
+
+  const arcPath = (angle: number) => {
+    const x = cx + radius * Math.cos(angle);
+    const y = cy - radius * Math.sin(angle);
+    return { x, y };
   };
-  return map[level];
+
+  const start = arcPath(startAngle);
+  const end = arcPath(endAngle);
+  const progressEnd = arcPath(progressAngle);
+  const largeArc = progress > 0.5 ? 1 : 0;
+
+  const bgD = `M ${start.x} ${start.y} A ${radius} ${radius} 0 1 1 ${end.x} ${end.y}`;
+  const fgD = `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 1 ${progressEnd.x} ${progressEnd.y}`;
+
+  const colorMap: Record<string, string> = {
+    aligned: '#14b8a6',
+    minor: '#3b82f6',
+    moderate: '#f59e0b',
+    significant: '#f97316',
+    critical: '#ef4444',
+  };
+  const color = colorMap[level] || '#94a3b8';
+
+  return (
+    <div className="flex flex-col items-center">
+      <svg width="200" height="120" viewBox="0 0 200 120">
+        <path d={bgD} fill="none" stroke="currentColor" strokeWidth={stroke} className="text-theme-surface" strokeLinecap="round" />
+        <path d={fgD} fill="none" stroke={color} strokeWidth={stroke} strokeLinecap="round" />
+        <text x={cx} y={cy - 10} textAnchor="middle" className="fill-current text-theme-primary" fontSize="36" fontWeight="bold" fontFamily="var(--font-heading)">
+          {score}
+        </text>
+        <text x={cx} y={cy + 10} textAnchor="middle" className="fill-current text-theme-muted" fontSize="12">
+          / 100
+        </text>
+      </svg>
+      <span className={`mt-1 text-sm font-bold uppercase tracking-wider ${driftLevelColor(level).text}`}>
+        {level} drift
+      </span>
+    </div>
+  );
 }
-
-// ─── Data ─────────────────────────────────────────────────────────────────────
-
-const driftDimensions = [
-  { name: 'Technical Skills Alignment', score: 38, description: 'Cloud-native security, SIEM platforms, automation' },
-  { name: 'Certification Relevance', score: 62, description: 'CompTIA Security+, CISSP, CEH currency' },
-  { name: 'Tool/Platform Currency', score: 29, description: 'AWS, Azure, CrowdStrike, Splunk, Elastic' },
-  { name: 'Soft Skills Coverage', score: 71, description: 'Communication, incident response, documentation' },
-  { name: 'Industry Standards Compliance', score: 48, description: 'NIST, NICE Framework, Zero Trust architecture' },
-];
-
-const overallDriftScore = 42; // Lower = more drift (inverse of alignment)
-
-const competencyGaps = [
-  {
-    num: 1,
-    severity: 'Critical' as const,
-    curriculumTeaches: 'Basic firewall configuration and perimeter defense models',
-    employersRequire: 'Cloud-native SASE architecture (Secure Access Service Edge) with zero-trust principles',
-    gap: 'Curriculum is rooted in on-premises perimeter security. Seattle employers (Microsoft, Amazon, Google) have moved to cloud-first infrastructure where traditional firewall config is secondary to identity-based access controls, cloud-native firewalls (AWS Network Firewall, Azure Firewall), and SASE platforms (Zscaler, Palo Alto Prisma Access).',
-    niceFramework: 'NICE SP-SYS-001: Applies system security principles to architecture design',
-  },
-  {
-    num: 2,
-    severity: 'Critical' as const,
-    curriculumTeaches: 'Wireshark packet capture and basic network analysis',
-    employersRequire: 'SIEM correlation and threat hunting (Splunk, Elastic Security, Microsoft Sentinel)',
-    gap: 'Students learn Wireshark packet inspection but not how to operationalize detection at enterprise scale. Job postings from Microsoft, Amazon, and T-Mobile require Splunk query language (SPL), Elastic SIEM correlation, and Microsoft Sentinel KQL queries — none of which are in the current curriculum.',
-    niceFramework: 'NICE OM-ANA-001: Analyzes data/information from multiple sources to identify anomalies',
-  },
-  {
-    num: 3,
-    severity: 'Critical' as const,
-    curriculumTeaches: 'Windows Active Directory and Group Policy management',
-    employersRequire: 'Identity and Access Management (IAM) in AWS/Azure, Okta, Microsoft Entra ID',
-    gap: 'While AD fundamentals remain relevant, the market has shifted to cloud IAM platforms. Employers expect knowledge of AWS IAM policies, Azure AD Conditional Access (now Entra ID), SAML/OAuth integration, and identity governance tools. Bellevue curriculum does not cover cloud IAM architecture.',
-    niceFramework: 'NICE PR-INF-001: Manages access controls and user permissions',
-  },
-  {
-    num: 4,
-    severity: 'Critical' as const,
-    curriculumTeaches: 'CompTIA Security+ exam prep (general security concepts)',
-    employersRequire: 'Cloud security certifications (AWS Security Specialty, Azure Security Engineer, Microsoft SC-200)',
-    gap: 'Security+ is still valued as a foundation, but Seattle tech employers increasingly list cloud-specific certifications. Microsoft, Amazon, and Google require AWS Security Specialty, Azure Security Engineer, or Microsoft SC-200 (Security Operations Analyst). The curriculum prepares for Security+ but does not integrate cloud security cert prep.',
-    niceFramework: 'NICE PR-CDA-001: Applies security controls to cloud environments',
-  },
-  {
-    num: 5,
-    severity: 'Critical' as const,
-    curriculumTeaches: 'Cisco-centric networking (CCNA Cyber Ops pathway)',
-    employersRequire: 'Cloud networking and software-defined security (AWS VPC, Azure NSG, Terraform)',
-    gap: 'Cisco CCNA Cyber Ops is a legacy track that does not align with cloud-first infrastructure. Employers need skills in AWS VPC design, Azure Network Security Groups, and infrastructure-as-code security (Terraform, CloudFormation). The curriculum is anchored to on-prem Cisco environments.',
-    niceFramework: 'NICE PR-INF-002: Configures network security architecture',
-  },
-  {
-    num: 6,
-    severity: 'Moderate' as const,
-    curriculumTeaches: 'Vulnerability scanning with Nessus and OpenVAS',
-    employersRequire: 'Integrated vulnerability management (Tenable.io, Qualys VMDR, Rapid7 InsightVM)',
-    gap: 'Nessus fundamentals are taught, but the curriculum does not cover continuous vulnerability management platforms, API integrations, or ticketing workflows (Jira, ServiceNow). Employers expect vulnerability data to drive remediation workflows, not just generate reports.',
-    niceFramework: 'NICE OM-DTA-002: Conducts vulnerability assessments and prioritizes remediation',
-  },
-  {
-    num: 7,
-    severity: 'Moderate' as const,
-    curriculumTeaches: 'Basic scripting (PowerShell, Bash) for automation tasks',
-    employersRequire: 'Python for security automation, API integration, and threat intelligence',
-    gap: 'PowerShell and Bash are covered lightly, but Python is the industry standard for security automation (SOAR platforms, API queries, threat intel feeds). Job postings from Microsoft, Amazon, and Google list Python as required or strongly preferred. Bellevue does not emphasize Python in the security context.',
-    niceFramework: 'NICE OM-ANA-003: Automates data collection and analysis tasks',
-  },
-  {
-    num: 8,
-    severity: 'Moderate' as const,
-    curriculumTeaches: 'Incident response theory and documentation',
-    employersRequire: 'Hands-on SOAR (Security Orchestration, Automation, Response) and playbook execution',
-    gap: 'Students learn the NIST incident response lifecycle but not how to execute it in modern SOAR platforms (Microsoft Sentinel, Splunk Phantom, Palo Alto Cortex XSOAR). Employers expect candidates to arrive with playbook automation experience.',
-    niceFramework: 'NICE PR-CIR-001: Responds to cyber incidents and executes containment strategies',
-  },
-  {
-    num: 9,
-    severity: 'Moderate' as const,
-    curriculumTeaches: 'Ethical hacking and penetration testing basics (CEH prep)',
-    employersRequire: 'Cloud penetration testing and container security (Docker, Kubernetes)',
-    gap: 'CEH focuses on traditional network/web app pentesting. Seattle employers increasingly deploy containerized workloads (Kubernetes, Docker) and need security professionals who can test cloud infrastructure and container misconfigurations. This is absent from the curriculum.',
-    niceFramework: 'NICE OM-ANA-004: Performs penetration testing to identify weaknesses',
-  },
-  {
-    num: 10,
-    severity: 'Moderate' as const,
-    curriculumTeaches: 'Cryptography theory (symmetric, asymmetric, hashing)',
-    employersRequire: 'Applied cryptography in AWS KMS, Azure Key Vault, TLS/SSL configuration',
-    gap: 'Crypto theory is taught well, but students are not learning how to implement cryptographic controls in cloud environments (AWS KMS key policies, Azure Key Vault access, certificate management). Practical application is missing.',
-    niceFramework: 'NICE PR-CDA-002: Implements cryptographic controls to protect data',
-  },
-  {
-    num: 11,
-    severity: 'Minor' as const,
-    curriculumTeaches: 'Risk assessment methodologies (qualitative, quantitative)',
-    employersRequire: 'GRC platform experience (Archer, ServiceNow GRC, OneTrust)',
-    gap: 'Risk assessment is taught conceptually, but students do not gain hands-on experience with Governance, Risk, and Compliance (GRC) platforms that operationalize risk management. Some employers list GRC platform experience as preferred.',
-    niceFramework: 'OV-MGT-001: Conducts cybersecurity risk assessments',
-  },
-  {
-    num: 12,
-    severity: 'Minor' as const,
-    curriculumTeaches: 'General compliance awareness (HIPAA, PCI-DSS)',
-    employersRequire: 'NIST Cybersecurity Framework and Zero Trust architecture implementation',
-    gap: 'The curriculum mentions NIST CSF and compliance standards but does not require students to map controls or design architectures. Employers expect candidates to implement NIST CSF and Zero Trust models, not just recite them.',
-    niceFramework: 'OV-LGA-001: Applies compliance requirements to system design',
-  },
-  {
-    num: 13,
-    severity: 'Minor' as const,
-    curriculumTeaches: 'Basic Linux administration for security contexts',
-    employersRequire: 'Hardening cloud Linux instances and container security',
-    gap: 'Linux skills are foundational but not extended to cloud-native environments. Employers want students to harden EC2 instances, configure IAM roles, and secure containerized Linux environments — not just manage local Linux servers.',
-    niceFramework: 'NICE PR-INF-003: Hardens systems against attack',
-  },
-];
-
-const employerSignals = [
-  {
-    employer: 'Microsoft (Redmond/Bellevue)',
-    openings: '45+ cybersecurity roles (Q1 2026)',
-    topSkills: ['Azure Security', 'Microsoft Sentinel', 'KQL', 'Threat hunting', 'Azure AD/Entra ID', 'Python'],
-    certPreferences: ['Azure Security Engineer (AZ-500)', 'SC-200 (Security Operations)', 'CISSP', 'GIAC'],
-    shift: 'Heavy emphasis on Microsoft cloud security stack. Sentinel SIEM and Entra ID expertise now baseline requirements for security analyst roles.',
-  },
-  {
-    employer: 'Amazon Web Services (Seattle)',
-    openings: '35+ security engineering positions',
-    topSkills: ['AWS Security', 'GuardDuty', 'Security Hub', 'IAM', 'CloudTrail', 'Python', 'Terraform'],
-    certPreferences: ['AWS Security Specialty', 'CISSP', 'OSCP'],
-    shift: 'Cloud-native focus across all roles. Expects candidates to arrive with hands-on AWS security services experience, not just theoretical knowledge.',
-  },
-  {
-    employer: 'Google (Kirkland/Seattle)',
-    openings: '18+ security analyst roles',
-    topSkills: ['GCP security', 'Chronicle SIEM', 'Threat detection', 'Python', 'Kubernetes security'],
-    certPreferences: ['Google Cloud Security Engineer', 'CISSP', 'OSCP'],
-    shift: 'Container security and GCP-native tools increasingly emphasized. Coding skills (Python, Go) expected for automation.',
-  },
-  {
-    employer: 'T-Mobile (Bellevue)',
-    openings: '12+ cybersecurity positions',
-    topSkills: ['SIEM (Splunk)', 'Cloud security (AWS/Azure)', 'SOC operations', 'Incident response', 'Network security'],
-    certPreferences: ['Security+', 'CySA+', 'CISSP', 'AWS/Azure Security'],
-    shift: 'Hybrid cloud environment — requires multi-cloud security skills. Strong SOC analyst pipeline need with SIEM expertise.',
-  },
-  {
-    employer: 'Meta (Seattle)',
-    openings: '10+ security engineering roles',
-    topSkills: ['Application security', 'Threat modeling', 'Python/C++', 'Cloud security', 'DevSecOps'],
-    certPreferences: ['OSCP', 'AWS/GCP Security', 'GWAPT'],
-    shift: 'AppSec and DevSecOps culture — security embedded in engineering. High coding bar for entry.',
-  },
-  {
-    employer: 'Boeing (Seattle/Everett)',
-    openings: '15+ IT security roles',
-    topSkills: ['Network security', 'SIEM platforms', 'Compliance (NIST, CMMC)', 'Risk assessment', 'ICS/SCADA basics'],
-    certPreferences: ['CISSP', 'CISM', 'Security+', 'GIAC'],
-    shift: 'Defense contractor focus — NIST 800-171, CMMC compliance requirements. Hybrid on-prem + cloud security.',
-  },
-  {
-    employer: 'Expedia Group (Seattle)',
-    openings: '8+ application security engineers',
-    topSkills: ['AppSec', 'AWS security', 'CI/CD security', 'Threat modeling', 'Python'],
-    certPreferences: ['AWS Security', 'OSCP', 'GWAPT'],
-    shift: 'Cloud-native travel platform — DevSecOps integration, AWS-heavy. Security automation expected.',
-  },
-];
-
-const certToolCurrency = {
-  currentlyCovered: [
-    { name: 'CompTIA Security+', relevance: 'High', status: 'Still industry standard for entry-level', trend: 'up' as const },
-    { name: 'CompTIA CySA+', relevance: 'Moderate', status: 'Mentioned in curriculum but not emphasized', trend: 'flat' as const },
-    { name: 'CEH (Certified Ethical Hacker)', relevance: 'Moderate', status: 'Legacy pentesting cert — still valued but not cloud-focused', trend: 'down' as const },
-    { name: 'Cisco CCNA Security/Cyber Ops', relevance: 'Low', status: 'Cisco-centric, on-prem focus — market has moved to cloud', trend: 'down' as const },
-  ],
-  missingCerts: [
-    { name: 'AWS Certified Security – Specialty', relevance: 'Critical', demand: '71% of cloud security job postings in Seattle area' },
-    { name: 'Microsoft Certified: Azure Security Engineer (AZ-500)', relevance: 'Critical', demand: '68% of cloud security job postings (Microsoft dominance)' },
-    { name: 'Microsoft SC-200 (Security Operations Analyst)', relevance: 'High', demand: 'Sentinel SOC roles — growing rapidly' },
-    { name: 'CISSP', relevance: 'High', demand: 'Standard for senior roles; Bellevue could prep fundamentals' },
-    { name: 'GIAC Security Essentials (GSEC) or GCIH', relevance: 'Moderate', demand: 'Preferred by Boeing and defense contractors' },
-  ],
-  toolsCurrentlyTaught: [
-    'Wireshark', 'Nessus', 'OpenVAS', 'Kali Linux', 'Metasploit', 'Windows Active Directory', 'PowerShell (basic)', 'Cisco Packet Tracer'
-  ],
-  toolsEmployersRequire: [
-    'Microsoft Sentinel', 'Splunk Enterprise Security', 'Elastic SIEM', 'AWS Security Hub', 'Azure Defender/Sentinel', 
-    'GuardDuty', 'KQL (Kusto Query Language)', 'Tenable.io / Qualys VMDR', 'Terraform', 'Python (boto3, requests, etc.)', 
-    'Docker/Kubernetes security tools', 'Microsoft Entra ID', 'ServiceNow Security Operations'
-  ],
-};
-
-const peerBenchmark = [
-  {
-    institution: 'University of Washington (Cybersecurity Certificate — Continuing Education)',
-    strengths: [
-      'Cloud security module with AWS and Azure hands-on labs',
-      'Microsoft Sentinel and SIEM training integrated',
-      'Python for security automation included',
-      'Industry partnerships with Microsoft, Amazon, T-Mobile for guest lectures and internships',
-    ],
-    weaknesses: [
-      'Non-credit program — not eligible for financial aid',
-      'Higher cost (~$12,995 for 24-week program)',
-    ],
-    differentiator: 'UW brand + direct Microsoft/Amazon employer pipeline',
-  },
-  {
-    institution: 'Tacoma Community College (Networking & Cybersecurity AAS)',
-    strengths: [
-      'Recently updated curriculum (2024) with Microsoft Azure integration',
-      'CompTIA trifecta (A+, Network+, Security+) embedded',
-      'Offers stackable certificates leading to AAS',
-      'Partnership with T-Mobile and Boeing for internships',
-    ],
-    weaknesses: [
-      'Less cloud-native emphasis compared to UW',
-      'Limited SIEM platform training (mainly theory)',
-    ],
-    differentiator: 'Strong defense contractor and telecom focus (Boeing, T-Mobile)',
-  },
-  {
-    institution: 'Seattle Central College (Cybersecurity AAS)',
-    strengths: [
-      'Cisco NetAcad CyberOps curriculum (updated 2024)',
-      'Hands-on labs with Packet Tracer and virtual environments',
-      'Security+ and CySA+ prep courses',
-      'Affordable tuition (~$115/credit hour for in-state)',
-    ],
-    weaknesses: [
-      'Still Cisco-centric — limited cloud platform exposure',
-      'No advanced SIEM or SOAR training',
-      'Lacks Python emphasis',
-    ],
-    differentiator: 'Strong Cisco partnership and NetAcad credentialing',
-  },
-  {
-    institution: 'Bellevue College (Current State)',
-    strengths: [
-      'Established program with local employer recognition',
-      'CompTIA Security+ and CEH prep included',
-      'Affordable tuition (~$120/credit hour for in-state)',
-      'Transfer pathways to UW and City University of Seattle',
-    ],
-    weaknesses: [
-      'Curriculum has not been updated since 2020',
-      'No cloud security certifications (AWS/Azure/Microsoft)',
-      'Limited SIEM platform exposure (Wireshark-centric)',
-      'Python not emphasized in security context',
-      'No SOAR or cloud IAM coverage',
-      'Microsoft Sentinel absent despite regional employer dominance',
-    ],
-    driftSummary: "Bellevue's curriculum is 4-5 years behind market demand. While foundational skills are solid, the lack of cloud-native security training — especially Microsoft Azure/Sentinel given regional employer mix — creates a critical employability gap.",
-  },
-];
-
-const curriculumUpdates = {
-  immediate: [
-    {
-      action: 'Add Microsoft Azure Fundamentals (AZ-900) and Azure Security module (16 hours)',
-      effort: 'Low',
-      impact: 'High',
-      timeline: 'Spring 2026',
-      owner: 'IT/Security faculty + Microsoft Learn partnership',
-    },
-    {
-      action: 'Replace Wireshark-only network analysis with Microsoft Sentinel KQL training',
-      effort: 'Medium',
-      impact: 'High',
-      timeline: 'Fall 2026',
-      owner: 'IT faculty + Microsoft Academic partnership (free licenses)',
-    },
-    {
-      action: 'Integrate Python for cybersecurity automation (8-week module)',
-      effort: 'Medium',
-      impact: 'High',
-      timeline: 'Fall 2026',
-      owner: 'Computer Science + IT faculty collaboration',
-    },
-    {
-      action: 'Update Security+ curriculum to SY0-701 (current 2024 version)',
-      effort: 'Low',
-      impact: 'Medium',
-      timeline: 'Summer 2026',
-      owner: 'CompTIA Academy partnership refresh',
-    },
-  ],
-  nextRevision: [
-    {
-      action: 'Launch Cloud Security Specialization track (Azure + AWS fundamentals → Security certs)',
-      effort: 'High',
-      impact: 'Critical',
-      timeline: '2027 catalog year',
-      owner: 'Curriculum committee + Microsoft/AWS partnerships',
-    },
-    {
-      action: 'Replace Cisco CCNA Cyber Ops track with cloud networking security (Azure NSG, AWS VPC, Terraform)',
-      effort: 'High',
-      impact: 'High',
-      timeline: '2027-2028',
-      owner: 'IT Networking + Security faculty',
-    },
-    {
-      action: 'Add SIEM/SOAR capstone project (Microsoft Sentinel + AWS Security Hub)',
-      effort: 'Medium',
-      impact: 'High',
-      timeline: '2027',
-      owner: 'Capstone redesign committee',
-    },
-    {
-      action: 'Develop stackable micro-credential: Cloud IAM & Identity Security (Entra ID, AWS IAM, Okta)',
-      effort: 'Medium',
-      impact: 'Medium',
-      timeline: '2027',
-      owner: 'Workforce development + continuing education',
-    },
-  ],
-  strategic: [
-    {
-      action: 'Formalize industry advisory board with Microsoft, Amazon, T-Mobile, Boeing, Google security leaders',
-      effort: 'Low',
-      impact: 'Critical',
-      timeline: 'Q2 2026',
-      owner: 'Dean of IT + Workforce Development',
-    },
-    {
-      action: 'Establish paid internship pipeline with Seattle tech employers (Microsoft, Amazon, Google, T-Mobile)',
-      effort: 'Medium',
-      impact: 'High',
-      timeline: '2026-2027',
-      owner: 'Career services + employer relations',
-    },
-    {
-      action: 'Launch evening/weekend cohort for working professionals (cybersecurity upskilling)',
-      effort: 'Medium',
-      impact: 'Medium',
-      timeline: '2027',
-      owner: 'Scheduling + workforce development',
-    },
-    {
-      action: 'Pursue NSA/DHS CAE-CD (Center of Academic Excellence in Cyber Defense) designation',
-      effort: 'High',
-      impact: 'High',
-      timeline: '2027-2029',
-      owner: 'Administration + curriculum committee',
-    },
-  ],
-};
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function BellevueCybersecurityDriftPage() {
+  const maxFrequency = employerSkills[0]?.frequency ?? 1;
+
   return (
     <div className="overflow-x-hidden bg-theme-page">
-      {/* ═══════════ DISCLAIMER BANNER ═══════════ */}
-      <div className="w-full bg-amber-500/10 border-b border-amber-500/20 py-2.5 px-4 text-center">
-        <p className="text-xs font-semibold text-amber-700 dark:text-amber-400">
-          📋 Sample Report for demonstration purposes — data synthesized from public sources and industry trends (February 2026)
+      {/* ═══════════ LIVE DATA BANNER ═══════════ */}
+      <div className="w-full bg-teal-500/10 border-b border-teal-500/20 py-2.5 px-4 text-center">
+        <p className="text-xs font-semibold text-teal-700 dark:text-teal-400">
+          🔴 Live Report — Real data from {postingsAnalyzed} job postings and auto-scraped curriculum · Analyzed {scanDate}
         </p>
       </div>
 
-      {/* ═══════════ A. HERO + OVERVIEW ═══════════ */}
+      {/* ═══════════ A. HERO ═══════════ */}
       <section className="relative min-h-[60vh] flex items-center justify-center pt-32 lg:pt-36 pb-16">
         <Stars count={140} />
         <Aurora className="opacity-70" />
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={800}>
-            <span className="overline">Curriculum Drift Analysis · Sample Report</span>
+            <span className="overline">Curriculum Drift Analysis · Live Report</span>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
@@ -422,25 +208,20 @@ export default function BellevueCybersecurityDriftPage() {
               className="font-heading font-bold text-gradient-cosmic leading-[1.05] mx-auto max-w-4xl mt-4"
               style={{ fontSize: 'clamp(2.5rem, 5vw + 0.5rem, 4rem)' }}
             >
-              Bellevue College
+              Bellevue University
             </h1>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={180} duration={800}>
             <p className="mt-4 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed">
-              Cybersecurity AAS · Bellevue, Washington · Analysis Date: February 2026
+              Cybersecurity BS · Bellevue, Nebraska · Analysis Date: {scanDate}
             </p>
           </AnimateOnScroll>
 
-          {/* Drift Score Banner */}
+          {/* Drift Score Gauge */}
           <AnimateOnScroll variant="fade-up" delay={260} duration={800}>
-            <div className="mt-8 inline-block bg-rose-500/10 border border-rose-500/30 rounded-2xl px-8 py-4">
-              <p className="text-rose-700 dark:text-rose-400 font-heading font-bold text-2xl md:text-3xl">
-                DRIFT SCORE: 42 / 100
-              </p>
-              <p className="text-sm text-theme-secondary mt-1">
-                Lower scores indicate more drift · 100 = perfect alignment
-              </p>
+            <div className="mt-8 inline-block">
+              <DriftGauge score={driftScore} level={driftLevel} />
             </div>
           </AnimateOnScroll>
 
@@ -448,16 +229,16 @@ export default function BellevueCybersecurityDriftPage() {
           <AnimateOnScroll variant="fade-up" delay={340} duration={800}>
             <div className="mt-6 flex flex-wrap justify-center gap-3">
               <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-500/20">
-                54 Competencies Analyzed
+                {postingsAnalyzed} Job Postings Analyzed
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20">
+                {coveredSkills.length} Skills Covered
               </span>
               <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20">
-                13 Gaps Identified
+                {gapSkills.length} Gaps Identified
               </span>
               <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
-                143 Employer Signals
-              </span>
-              <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/20">
-                Last Updated: 2020
+                {staleSkills.length} Potentially Stale Skills
               </span>
             </div>
           </AnimateOnScroll>
@@ -470,579 +251,240 @@ export default function BellevueCybersecurityDriftPage() {
         </div>
       </section>
 
-      {/* ═══════════ B. DRIFT SCORE DASHBOARD ═══════════ */}
+      {/* ═══════════ B. EMPLOYER SKILLS FREQUENCY ═══════════ */}
       <section className="relative py-16 md:py-24">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
-            <span className="overline">Drift Score Dashboard</span>
+            <span className="overline">Employer Skills Analysis</span>
             <h2
               className="font-heading font-bold text-theme-primary mt-4"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              Five dimensions. One warning signal.
+              What employers are hiring for
             </h2>
+            <p className="mt-3 text-theme-secondary text-sm max-w-2xl">
+              Top 20 skills extracted from {postingsAnalyzed} Information Security Analyst job postings. Green = covered by curriculum. Red = gap.
+            </p>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={100}>
             <div className="mt-10 card-cosmic rounded-2xl overflow-hidden">
-              {driftDimensions.map((d, i) => (
+              {employerSkills.map((s, i) => (
                 <div
-                  key={d.name}
-                  className={`flex items-center gap-4 px-5 py-4 ${
-                    i < driftDimensions.length - 1 ? 'border-b border-theme-subtle' : ''
+                  key={s.skill}
+                  className={`flex items-center gap-4 px-5 py-3.5 ${
+                    i < employerSkills.length - 1 ? 'border-b border-theme-subtle' : ''
                   }`}
                 >
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-theme-primary">{d.name}</p>
-                    <p className="text-xs text-theme-muted">{d.description}</p>
+                  <div className="flex-shrink-0 w-5">
+                    {s.covered ? (
+                      <CheckCircle2 className="w-4 h-4 text-teal-500" />
+                    ) : (
+                      <XCircle className="w-4 h-4 text-rose-500" />
+                    )}
                   </div>
-                  <div className="w-24 sm:w-32">
+                  <div className="flex-1 min-w-0">
+                    <p className={`text-sm font-semibold ${s.covered ? 'text-theme-primary' : 'text-rose-700 dark:text-rose-400'}`}>
+                      {s.skill}
+                    </p>
+                  </div>
+                  <div className="w-24 sm:w-40">
                     <div className="h-1.5 rounded-full bg-theme-surface overflow-hidden">
                       <div
-                        className={`h-full rounded-full ${driftScoreBg(d.score)}`}
-                        style={{ width: `${d.score}%` }}
+                        className={`h-full rounded-full ${s.covered ? 'bg-teal-500' : 'bg-rose-500'}`}
+                        style={{ width: `${(s.frequency / maxFrequency) * 100}%` }}
                       />
                     </div>
                   </div>
-                  <span className={`text-lg font-bold font-mono w-12 text-right ${driftScoreColor(d.score)}`}>
-                    {d.score}
+                  <span className="text-sm font-mono w-10 text-right text-theme-muted">
+                    {s.frequency}/{postingsAnalyzed}
                   </span>
                 </div>
               ))}
-
-              {/* Overall row */}
-              <div className="flex items-center gap-4 px-5 py-5 bg-rose-500/5 border-t-2 border-rose-500/30">
-                <div className="flex-1">
-                  <p className="text-base font-heading font-bold text-theme-primary">OVERALL DRIFT SCORE</p>
-                  <p className="text-xs text-theme-muted">Composite across 5 dimensions</p>
-                </div>
-                <div className="w-24 sm:w-32">
-                  <div className="h-1.5 rounded-full bg-theme-surface overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-rose-500"
-                      style={{ width: `${overallDriftScore}%` }}
-                    />
-                  </div>
-                </div>
-                <span className="text-xl font-bold font-mono w-12 text-right text-rose-600 dark:text-rose-400">
-                  {overallDriftScore}
-                </span>
-              </div>
             </div>
           </AnimateOnScroll>
 
-          {/* Callout */}
+          {/* Coverage Summary */}
           <AnimateOnScroll variant="fade-up" delay={200}>
-            <div className="mt-6 card-cosmic rounded-xl p-5 border-rose-500/30 bg-rose-500/5">
+            <div className={`mt-6 card-cosmic rounded-xl p-5 ${colors.border} ${colors.surface}`}>
               <p className="text-sm text-theme-primary leading-relaxed">
-                <span className="font-bold">⚠️ Significant Drift Detected:</span> Score of 42/100 indicates the curriculum has drifted substantially from current employer requirements. Tool/Platform Currency (29/100) and Technical Skills Alignment (38/100) are critical concern areas.
+                <span className="font-bold">⚠️ {driftLevel.charAt(0).toUpperCase() + driftLevel.slice(1)} Drift:</span>{' '}
+                Only {coveredSkills.length} of {employerSkills.length} top employer skills ({Math.round((coveredSkills.length / employerSkills.length) * 100)}%) are covered by the curriculum.
+                The highest-frequency gap is <span className="font-semibold">Security Monitoring</span> (found in {employerSkills[0].frequency} of {postingsAnalyzed} postings).
               </p>
             </div>
           </AnimateOnScroll>
         </div>
       </section>
 
-      {/* ═══════════ C. EXECUTIVE SUMMARY ═══════════ */}
-      <section className="relative py-16 md:py-24">
+      {/* ═══════════ C. NARRATIVE ANALYSIS ═══════════ */}
+      <section className="relative py-16 md:py-24 bg-theme-surface/30">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
-            <span className="overline">Executive Summary</span>
+            <span className="overline">AI-Generated Analysis</span>
             <h2
               className="font-heading font-bold text-theme-primary mt-4"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              How bad is the drift?
+              What the data tells us
             </h2>
           </AnimateOnScroll>
 
-          <StaggerChildren stagger={100} variant="fade-up" className="mt-8 space-y-6">
-            <div className="card-cosmic rounded-2xl p-6">
-              <h3 className="font-heading font-bold text-lg text-theme-primary mb-3">The Problem</h3>
-              <p className="text-theme-secondary leading-relaxed">
-                Bellevue College's Cybersecurity AAS program, last updated in 2020, has experienced severe curriculum drift. With a composite drift score of 42/100, the program is teaching a cybersecurity paradigm that Seattle's dominant tech employers — Microsoft, Amazon, Google, T-Mobile, Meta, Boeing, and Expedia — have moved beyond. The curriculum is rooted in on-premises perimeter security (firewalls, Cisco networking, Active Directory) at a time when these employers have shifted to cloud-native infrastructure, zero-trust architecture, and SIEM-driven security operations.
-              </p>
-            </div>
-
-            <div className="card-cosmic rounded-2xl p-6">
-              <h3 className="font-heading font-bold text-lg text-theme-primary mb-3">What's Causing It?</h3>
-              <p className="text-theme-secondary leading-relaxed">
-                The drift is driven by three structural issues: (1) <span className="font-semibold text-theme-primary">No cloud security training</span> — AWS, Azure, and cloud IAM are entirely absent despite appearing in 71% of Seattle cybersecurity job postings (with Azure/Microsoft dominance given regional employer mix); (2) <span className="font-semibold text-theme-primary">Outdated tooling</span> — students learn Wireshark packet capture but not enterprise SIEM platforms (Microsoft Sentinel, Splunk, Elastic) that employers actually use; (3) <span className="font-semibold text-theme-primary">Cisco-centric networking</span> — the curriculum is anchored to CCNA Cyber Ops, a legacy track that does not prepare students for software-defined cloud networking. Peer institutions (Tacoma Community College, UW) have already integrated Azure and SIEM training; Bellevue has not.
-              </p>
-            </div>
-
-            <div className="card-cosmic rounded-2xl p-6">
-              <h3 className="font-heading font-bold text-lg text-theme-primary mb-3">The Risk</h3>
-              <p className="text-theme-secondary leading-relaxed">
-                Graduates are arriving to the Seattle job market undertrained for the roles employers are hiring for. Job postings from Microsoft, Amazon, and T-Mobile explicitly require Microsoft Sentinel, AWS security services, and Python automation — competencies Bellevue does not emphasize. This creates a placement risk: students who successfully complete the AAS may struggle to compete against candidates from UW's continuing education cybersecurity program or Tacoma Community College's updated curriculum. Over time, employer feedback loops will damage Bellevue's reputation as a cybersecurity talent source, threatening enrollment and advisory board engagement.
-              </p>
-            </div>
-          </StaggerChildren>
-        </div>
-      </section>
-
-      {/* ═══════════ D. COMPETENCY GAP ANALYSIS ═══════════ */}
-      <section className="relative py-16 md:py-24 bg-theme-surface/30">
-        <div className="max-w-[1100px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up">
-            <div className="text-center mb-12">
-              <span className="overline">Competency Gap Analysis</span>
-              <h2
-                className="font-heading font-bold text-theme-primary mt-3"
-                style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.5rem)' }}
-              >
-                What you teach vs. What employers need
-              </h2>
-              <p className="mt-3 text-theme-secondary max-w-2xl mx-auto text-sm">
-                Side-by-side analysis of 13 critical competency gaps. Each gap mapped to the NICE Cybersecurity Workforce Framework.
-              </p>
+          <AnimateOnScroll variant="fade-up" delay={100}>
+            <div className="mt-8 card-cosmic rounded-2xl p-7">
+              {narrative.split('\n\n').map((para, i) => (
+                <p key={i} className={`text-theme-secondary leading-relaxed ${i > 0 ? 'mt-5' : ''}`}>
+                  {para}
+                </p>
+              ))}
             </div>
           </AnimateOnScroll>
-
-          <StaggerChildren stagger={60} variant="fade-up" className="space-y-5">
-            {competencyGaps.map((gap) => (
-              <div key={gap.num} className="card-cosmic rounded-xl p-6">
-                <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
-                  <div className="flex items-center gap-3">
-                    <span className="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-sm font-bold text-purple-700 dark:text-purple-400">
-                      {gap.num}
-                    </span>
-                    <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${severityBadge(gap.severity)}`}>
-                      {gap.severity}
-                    </span>
-                  </div>
-                  <span className="text-xs font-mono text-theme-muted">{gap.niceFramework}</span>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-5">
-                  <div>
-                    <div className="flex items-start gap-2 mb-2">
-                      <XCircle className="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" />
-                      <p className="text-xs font-bold uppercase tracking-wider text-theme-muted">Curriculum Teaches</p>
-                    </div>
-                    <p className="text-sm text-theme-secondary leading-relaxed">{gap.curriculumTeaches}</p>
-                  </div>
-
-                  <div>
-                    <div className="flex items-start gap-2 mb-2">
-                      <CheckCircle2 className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
-                      <p className="text-xs font-bold uppercase tracking-wider text-theme-muted">Employers Require</p>
-                    </div>
-                    <p className="text-sm text-theme-secondary leading-relaxed">{gap.employersRequire}</p>
-                  </div>
-                </div>
-
-                <div className="mt-4 pt-4 border-t border-theme-subtle">
-                  <p className="text-xs font-bold uppercase tracking-wider text-theme-muted mb-2">Gap Analysis</p>
-                  <p className="text-sm text-theme-secondary leading-relaxed">{gap.gap}</p>
-                </div>
-              </div>
-            ))}
-          </StaggerChildren>
         </div>
       </section>
 
-      {/* ═══════════ E. EMPLOYER SIGNAL ANALYSIS ═══════════ */}
+      {/* ═══════════ D. SKILLS COMPARISON ═══════════ */}
       <section className="relative py-16 md:py-24">
         <div className="max-w-[1100px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-12">
-              <span className="overline">Employer Signal Analysis</span>
+              <span className="overline">Skills Comparison</span>
               <h2
                 className="font-heading font-bold text-theme-primary mt-3"
                 style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.5rem)' }}
               >
-                What Seattle tech employers actually post
-              </h2>
-              <p className="mt-3 text-theme-secondary max-w-2xl mx-auto text-sm">
-                Analysis of 143 cybersecurity job postings from Seattle-area employers (Q4 2025 – Q1 2026). Skills and certifications ranked by frequency.
-              </p>
-            </div>
-          </AnimateOnScroll>
-
-          <StaggerChildren stagger={80} variant="fade-up" className="space-y-5">
-            {employerSignals.map((signal, i) => (
-              <div key={i} className="card-cosmic rounded-xl p-6">
-                <div className="flex flex-wrap items-start justify-between gap-3 mb-4">
-                  <div>
-                    <h3 className="font-heading font-bold text-lg text-theme-primary">{signal.employer}</h3>
-                    <p className="text-xs text-theme-muted mt-0.5">{signal.openings}</p>
-                  </div>
-                </div>
-
-                <div className="grid sm:grid-cols-2 gap-5">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-theme-muted mb-2">Top Required Skills</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {signal.topSkills.map((skill) => (
-                        <span key={skill} className="text-xs px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-700 dark:text-teal-400">
-                          {skill}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-theme-muted mb-2">Certification Preferences</p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {signal.certPreferences.map((cert) => (
-                        <span key={cert} className="text-xs px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-700 dark:text-purple-400">
-                          {cert}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                <div className="mt-4 pt-4 border-t border-theme-subtle">
-                  <p className="text-xs font-bold uppercase tracking-wider text-theme-muted mb-1.5">How Requirements Have Shifted</p>
-                  <p className="text-sm text-theme-secondary leading-relaxed italic">{signal.shift}</p>
-                </div>
-              </div>
-            ))}
-          </StaggerChildren>
-
-          {/* Summary Card */}
-          <AnimateOnScroll variant="fade-up" delay={200}>
-            <div className="mt-10 rounded-xl p-6 bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/20">
-              <h3 className="font-heading font-bold text-lg text-theme-primary mb-3">Key Trends Across Seattle Employers</h3>
-              <ul className="space-y-2 text-sm text-theme-secondary">
-                <li className="flex items-start gap-2">
-                  <TrendingUp className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
-                  <span><span className="font-semibold text-theme-primary">Cloud security (Azure/AWS)</span> appears in 71% of postings — up from 38% in 2022</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <TrendingUp className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
-                  <span><span className="font-semibold text-theme-primary">Microsoft Sentinel / Azure Defender</span> required in 68% of SOC analyst roles (Microsoft regional dominance)</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <TrendingUp className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
-                  <span><span className="font-semibold text-theme-primary">Python automation</span> listed in 62% of postings — up from 27% in 2022</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <TrendingDown className="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" />
-                  <span><span className="font-semibold text-theme-primary">Cisco CCNA Security</span> mentioned in only 9% of postings — down from 34% in 2022</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <TrendingDown className="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" />
-                  <span><span className="font-semibold text-theme-primary">Traditional perimeter firewalls</span> as primary skill down to 15% — replaced by cloud-native security</span>
-                </li>
-              </ul>
-            </div>
-          </AnimateOnScroll>
-        </div>
-      </section>
-
-      {/* ═══════════ F. CERTIFICATION & TOOL CURRENCY ═══════════ */}
-      <section className="relative py-16 md:py-24 bg-theme-surface/30">
-        <div className="max-w-[1100px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up">
-            <div className="text-center mb-12">
-              <span className="overline">Certification & Tool Currency</span>
-              <h2
-                className="font-heading font-bold text-theme-primary mt-3"
-                style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.5rem)' }}
-              >
-                Are you preparing students for the right credentials?
+                Covered, Missing, and Potentially Stale
               </h2>
             </div>
           </AnimateOnScroll>
 
-          <div className="grid lg:grid-cols-2 gap-6">
-            {/* Currently Covered Certs */}
+          <div className="grid md:grid-cols-3 gap-6">
+            {/* Covered */}
             <AnimateOnScroll variant="fade-up">
-              <div className="card-cosmic rounded-xl p-6">
-                <h3 className="font-heading font-bold text-lg text-theme-primary mb-4">Certifications Currently Covered</h3>
-                <div className="space-y-3">
-                  {certToolCurrency.currentlyCovered.map((cert) => (
-                    <div key={cert.name} className="flex items-start gap-3 p-3 rounded-lg bg-theme-surface/50 border border-theme-subtle">
-                      <div className="flex-shrink-0 mt-0.5">
-                        {cert.trend === 'up' && <TrendingUp className="w-4 h-4 text-teal-500" />}
-                        {cert.trend === 'down' && <TrendingDown className="w-4 h-4 text-rose-500" />}
-                        {cert.trend === 'flat' && <span className="w-4 h-4 flex items-center justify-center text-amber-500">—</span>}
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-sm font-semibold text-theme-primary">{cert.name}</p>
-                        <p className="text-xs text-theme-muted mt-0.5">{cert.status}</p>
-                        <span className={`inline-block mt-1.5 text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          cert.relevance === 'High' 
-                            ? 'bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20'
-                            : cert.relevance === 'Moderate'
-                            ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20'
-                            : 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20'
-                        }`}>
-                          {cert.relevance} Relevance
-                        </span>
-                      </div>
-                    </div>
+              <div className="card-cosmic rounded-xl p-6 border-teal-500/30 bg-teal-500/5 h-full">
+                <div className="flex items-center gap-2 mb-4">
+                  <CheckCircle2 className="w-5 h-5 text-teal-500" />
+                  <h3 className="font-heading font-bold text-lg text-theme-primary">Covered ({coveredSkills.length})</h3>
+                </div>
+                <p className="text-xs text-theme-muted mb-4">Employer-demanded skills present in the curriculum</p>
+                <div className="flex flex-wrap gap-2">
+                  {coveredSkills.map((s) => (
+                    <span key={s} className="text-xs px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-700 dark:text-teal-400">
+                      {s}
+                    </span>
                   ))}
                 </div>
               </div>
             </AnimateOnScroll>
 
-            {/* Missing Certs */}
+            {/* Gaps */}
             <AnimateOnScroll variant="fade-up" delay={80}>
-              <div className="card-cosmic rounded-xl p-6 border-rose-500/30 bg-rose-500/5">
-                <h3 className="font-heading font-bold text-lg text-theme-primary mb-4">Missing Certifications</h3>
-                <div className="space-y-3">
-                  {certToolCurrency.missingCerts.map((cert) => (
-                    <div key={cert.name} className="flex items-start gap-3 p-3 rounded-lg bg-theme-surface/50 border border-theme-subtle">
-                      <AlertTriangle className="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" />
-                      <div className="flex-1">
-                        <p className="text-sm font-semibold text-theme-primary">{cert.name}</p>
-                        <p className="text-xs text-theme-muted mt-0.5">{cert.demand}</p>
-                        <span className={`inline-block mt-1.5 text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          cert.relevance === 'Critical' 
-                            ? 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20'
-                            : 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20'
-                        }`}>
-                          {cert.relevance}
-                        </span>
-                      </div>
-                    </div>
+              <div className="card-cosmic rounded-xl p-6 border-rose-500/30 bg-rose-500/5 h-full">
+                <div className="flex items-center gap-2 mb-4">
+                  <AlertTriangle className="w-5 h-5 text-rose-500" />
+                  <h3 className="font-heading font-bold text-lg text-theme-primary">Gaps ({gapSkills.length})</h3>
+                </div>
+                <p className="text-xs text-theme-muted mb-4">Employer-demanded skills missing from curriculum</p>
+                <div className="flex flex-wrap gap-2">
+                  {gapSkills.map((s) => (
+                    <span key={s} className="text-xs px-2.5 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-700 dark:text-rose-400">
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </AnimateOnScroll>
+
+            {/* Stale */}
+            <AnimateOnScroll variant="fade-up" delay={160}>
+              <div className="card-cosmic rounded-xl p-6 border-amber-500/30 bg-amber-500/5 h-full">
+                <div className="flex items-center gap-2 mb-4">
+                  <AlertCircle className="w-5 h-5 text-amber-500" />
+                  <h3 className="font-heading font-bold text-lg text-theme-primary">Potentially Stale ({staleSkills.length})</h3>
+                </div>
+                <p className="text-xs text-theme-muted mb-4">Curriculum skills not appearing in top employer demands</p>
+                <div className="flex flex-wrap gap-2 max-h-64 overflow-y-auto">
+                  {staleSkills.map((s) => (
+                    <span key={s} className="text-xs px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400">
+                      {s}
+                    </span>
                   ))}
                 </div>
               </div>
             </AnimateOnScroll>
           </div>
+        </div>
+      </section>
 
-          {/* Tools Comparison */}
-          <AnimateOnScroll variant="fade-up" delay={120}>
-            <div className="mt-8 grid md:grid-cols-2 gap-6">
-              <div className="card-cosmic rounded-xl p-6">
-                <h3 className="font-heading font-bold text-base text-theme-primary mb-3">Tools Currently Taught</h3>
-                <div className="flex flex-wrap gap-2">
-                  {certToolCurrency.toolsCurrentlyTaught.map((tool) => (
-                    <span key={tool} className="text-xs px-2.5 py-1 rounded-full bg-theme-surface border border-theme-subtle text-theme-secondary">
-                      {tool}
-                    </span>
-                  ))}
-                </div>
-              </div>
+      {/* ═══════════ E. AUTO-SCRAPED CURRICULUM ═══════════ */}
+      <section className="relative py-16 md:py-24 bg-theme-surface/30">
+        <div className="max-w-[900px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up">
+            <span className="overline">Auto-Scraped Curriculum</span>
+            <h2
+              className="font-heading font-bold text-theme-primary mt-4"
+              style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
+            >
+              What Bellevue University teaches
+            </h2>
+            <p className="mt-3 text-theme-secondary text-sm max-w-2xl">
+              Courses automatically extracted from{' '}
+              <a href="https://www.bellevue.edu/degrees/academic-catalog/course-listing/CYBR/" className="underline text-purple-600 dark:text-purple-400" target="_blank" rel="noopener noreferrer">
+                bellevue.edu
+              </a>{' '}
+              — {scrapedCourses.length} cybersecurity courses identified.
+            </p>
+          </AnimateOnScroll>
 
-              <div className="card-cosmic rounded-xl p-6 border-teal-500/30 bg-teal-500/5">
-                <h3 className="font-heading font-bold text-base text-theme-primary mb-3">Tools Employers Require</h3>
-                <div className="flex flex-wrap gap-2">
-                  {certToolCurrency.toolsEmployersRequire.map((tool) => (
-                    <span key={tool} className="text-xs px-2.5 py-1 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-700 dark:text-teal-400">
-                      {tool}
-                    </span>
-                  ))}
-                </div>
+          <AnimateOnScroll variant="fade-up" delay={100}>
+            <div className="mt-8 card-cosmic rounded-2xl p-6">
+              <div className="grid sm:grid-cols-2 gap-3">
+                {scrapedCourses.map((course) => (
+                  <div key={course} className="flex items-start gap-2.5 p-3 rounded-lg bg-theme-surface/50 border border-theme-subtle">
+                    <Shield className="w-4 h-4 text-purple-500 flex-shrink-0 mt-0.5" />
+                    <span className="text-sm text-theme-secondary">{course}</span>
+                  </div>
+                ))}
               </div>
             </div>
           </AnimateOnScroll>
         </div>
       </section>
 
-      {/* ═══════════ G. PEER BENCHMARK ═══════════ */}
+      {/* ═══════════ F. RECOMMENDATIONS ═══════════ */}
       <section className="relative py-16 md:py-24">
         <div className="max-w-[1100px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-12">
-              <span className="overline">Peer Benchmark</span>
+              <span className="overline">AI-Generated Recommendations</span>
               <h2
                 className="font-heading font-bold text-theme-primary mt-3"
                 style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.5rem)' }}
               >
-                How do peer programs compare?
+                What to fix — and how
               </h2>
               <p className="mt-3 text-theme-secondary max-w-2xl mx-auto text-sm">
-                Analysis of cybersecurity programs at UW, Tacoma Community College, and Seattle Central College.
+                {recommendations.length} prioritized recommendations generated from employer skill gap analysis.
               </p>
             </div>
           </AnimateOnScroll>
 
           <StaggerChildren stagger={80} variant="fade-up" className="space-y-5">
-            {peerBenchmark.map((peer, i) => (
-              <div key={i} className={`card-cosmic rounded-xl p-6 ${peer.institution.includes('Bellevue') ? 'border-amber-500/30 bg-amber-500/5' : ''}`}>
-                <div className="mb-4">
-                  <h3 className="font-heading font-bold text-lg text-theme-primary">{peer.institution}</h3>
-                  {peer.differentiator && (
-                    <p className="text-xs text-purple-600 dark:text-purple-400 mt-1 italic">💡 {peer.differentiator}</p>
-                  )}
+            {recommendations.map((rec, i) => (
+              <div key={i} className="card-cosmic rounded-xl p-6">
+                <div className="flex items-start gap-4">
+                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-sm font-bold text-purple-700 dark:text-purple-400">
+                    {i + 1}
+                  </span>
+                  <p className="text-sm text-theme-secondary leading-relaxed">{rec}</p>
                 </div>
-
-                <div className="grid md:grid-cols-2 gap-5">
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-teal-600 dark:text-teal-400 mb-2">Strengths</p>
-                    <ul className="space-y-1.5">
-                      {peer.strengths.map((s, j) => (
-                        <li key={j} className="flex items-start gap-2 text-sm text-theme-secondary">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-teal-500 flex-shrink-0 mt-0.5" />
-                          {s}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div>
-                    <p className="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 mb-2">Weaknesses</p>
-                    <ul className="space-y-1.5">
-                      {peer.weaknesses.map((w, j) => (
-                        <li key={j} className="flex items-start gap-2 text-sm text-theme-secondary">
-                          <AlertCircle className="w-3.5 h-3.5 text-amber-500 flex-shrink-0 mt-0.5" />
-                          {w}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                {peer.driftSummary && (
-                  <div className="mt-4 pt-4 border-t border-theme-subtle">
-                    <p className="text-xs font-bold uppercase tracking-wider text-theme-muted mb-1.5">Drift Assessment</p>
-                    <p className="text-sm text-theme-secondary leading-relaxed">{peer.driftSummary}</p>
-                  </div>
-                )}
               </div>
             ))}
           </StaggerChildren>
         </div>
       </section>
 
-      {/* ═══════════ H. RECOMMENDED CURRICULUM UPDATES ═══════════ */}
-      <section className="relative py-16 md:py-24 bg-theme-surface/30">
-        <div className="max-w-[1100px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up">
-            <div className="text-center mb-12">
-              <span className="overline">Recommended Curriculum Updates</span>
-              <h2
-                className="font-heading font-bold text-theme-primary mt-3"
-                style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.5rem)' }}
-              >
-                Priority Matrix: What to fix and when
-              </h2>
-            </div>
-          </AnimateOnScroll>
-
-          {/* Immediate Actions */}
-          <AnimateOnScroll variant="fade-up">
-            <div className="mb-8">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl">⚡</span>
-                <h3 className="font-heading font-bold text-xl text-theme-primary">Immediate (This Semester)</h3>
-              </div>
-              <div className="space-y-3">
-                {curriculumUpdates.immediate.map((action, i) => (
-                  <div key={i} className="card-cosmic rounded-xl p-5 border-teal-500/30 bg-teal-500/5">
-                    <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
-                      <p className="text-sm font-semibold text-theme-primary flex-1">{action.action}</p>
-                      <div className="flex gap-2">
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          action.effort === 'Low' 
-                            ? 'bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20'
-                            : 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20'
-                        }`}>
-                          {action.effort} Effort
-                        </span>
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          action.impact === 'High'
-                            ? 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-500/20'
-                            : 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/20'
-                        }`}>
-                          {action.impact} Impact
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex flex-wrap gap-3 text-xs text-theme-muted">
-                      <span>Timeline: {action.timeline}</span>
-                      <span>·</span>
-                      <span>Owner: {action.owner}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </AnimateOnScroll>
-
-          {/* Next Revision Cycle */}
-          <AnimateOnScroll variant="fade-up" delay={80}>
-            <div className="mb-8">
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl">🔨</span>
-                <h3 className="font-heading font-bold text-xl text-theme-primary">Next Revision Cycle (2027)</h3>
-              </div>
-              <div className="space-y-3">
-                {curriculumUpdates.nextRevision.map((action, i) => (
-                  <div key={i} className="card-cosmic rounded-xl p-5">
-                    <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
-                      <p className="text-sm font-semibold text-theme-primary flex-1">{action.action}</p>
-                      <div className="flex gap-2">
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          action.effort === 'High' 
-                            ? 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20'
-                            : 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20'
-                        }`}>
-                          {action.effort} Effort
-                        </span>
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          action.impact === 'Critical'
-                            ? 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20'
-                            : action.impact === 'High'
-                            ? 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-500/20'
-                            : 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/20'
-                        }`}>
-                          {action.impact} Impact
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex flex-wrap gap-3 text-xs text-theme-muted">
-                      <span>Timeline: {action.timeline}</span>
-                      <span>·</span>
-                      <span>Owner: {action.owner}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </AnimateOnScroll>
-
-          {/* Strategic Initiatives */}
-          <AnimateOnScroll variant="fade-up" delay={120}>
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <span className="text-2xl">🔭</span>
-                <h3 className="font-heading font-bold text-xl text-theme-primary">Strategic Initiatives (2027+)</h3>
-              </div>
-              <div className="space-y-3">
-                {curriculumUpdates.strategic.map((action, i) => (
-                  <div key={i} className="card-cosmic rounded-xl p-5 border-purple-500/30 bg-purple-500/5">
-                    <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
-                      <p className="text-sm font-semibold text-theme-primary flex-1">{action.action}</p>
-                      <div className="flex gap-2">
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          action.effort === 'High' 
-                            ? 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20'
-                            : action.effort === 'Medium'
-                            ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20'
-                            : 'bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20'
-                        }`}>
-                          {action.effort} Effort
-                        </span>
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          action.impact === 'Critical'
-                            ? 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20'
-                            : 'bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-500/20'
-                        }`}>
-                          {action.impact} Impact
-                        </span>
-                      </div>
-                    </div>
-                    <div className="flex flex-wrap gap-3 text-xs text-theme-muted">
-                      <span>Timeline: {action.timeline}</span>
-                      <span>·</span>
-                      <span>Owner: {action.owner}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </AnimateOnScroll>
-        </div>
-      </section>
-
-      {/* ═══════════ I. METHODOLOGY ═══════════ */}
-      <section className="relative py-16 md:py-20">
+      {/* ═══════════ G. METHODOLOGY ═══════════ */}
+      <section className="relative py-16 md:py-20 bg-theme-surface/30">
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-10">
@@ -1051,63 +493,52 @@ export default function BellevueCybersecurityDriftPage() {
                 className="font-heading font-bold text-theme-primary mt-3"
                 style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.5rem)' }}
               >
-                How drift is measured
+                How this report was generated
               </h2>
             </div>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={80}>
             <div className="card-cosmic rounded-2xl p-7">
-              <h3 className="font-heading font-bold text-lg text-theme-primary mb-4">Data Sources</h3>
-              <ul className="space-y-2.5 text-sm text-theme-secondary">
-                <li className="flex items-start gap-2.5">
-                  <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5" />
-                  <span><span className="font-semibold text-theme-primary">NICE Cybersecurity Workforce Framework</span> — 52 work roles and 1,000+ KSAs (Knowledge, Skills, Abilities) mapped to curriculum</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5" />
-                  <span><span className="font-semibold text-theme-primary">O*NET Database (SOC 15-1212, 15-1299)</span> — Information Security Analysts task data and emerging skills trends</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5" />
-                  <span><span className="font-semibold text-theme-primary">Employer Job Postings (SerpAPI)</span> — 143 cybersecurity job postings from Microsoft, Amazon, Google, T-Mobile, Meta, Boeing, Expedia (Q4 2025 – Q1 2026)</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5" />
-                  <span><span className="font-semibold text-theme-primary">CyberSeek.org</span> — Regional labor market data for Seattle-Bellevue-Tacoma MSA</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5" />
-                  <span><span className="font-semibold text-theme-primary">BLS Occupational Outlook</span> — National employment and wage trends for cybersecurity roles</span>
-                </li>
-                <li className="flex items-start gap-2.5">
-                  <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5" />
-                  <span><span className="font-semibold text-theme-primary">Peer Program Curricula</span> — Published learning outcomes from UW, Tacoma CC, Seattle Central College</span>
-                </li>
-              </ul>
+              <h3 className="font-heading font-bold text-lg text-theme-primary mb-4">Automated Pipeline</h3>
+              <div className="space-y-4 text-sm text-theme-secondary leading-relaxed">
+                <p>This report was generated by Wavelength&apos;s Curriculum Drift Analysis pipeline — a fully automated system that requires only an institution name, program name, and target occupation.</p>
 
-              <h3 className="font-heading font-bold text-lg text-theme-primary mt-6 mb-4">Drift Scoring Algorithm</h3>
-              <div className="space-y-3 text-sm text-theme-secondary leading-relaxed">
-                <p>
-                  Curriculum drift is scored on a 0-100 scale where <span className="font-semibold text-theme-primary">higher scores = better alignment</span> (less drift). The composite score is calculated across five dimensions:
-                </p>
-                <ol className="list-decimal list-inside space-y-2 ml-2">
-                  <li><span className="font-semibold text-theme-primary">Technical Skills Alignment:</span> Percentage of employer-required technical competencies (NICE Framework KSAs) covered in curriculum</li>
-                  <li><span className="font-semibold text-theme-primary">Certification Relevance:</span> Weighted score of certification prep courses based on employer demand frequency</li>
-                  <li><span className="font-semibold text-theme-primary">Tool/Platform Currency:</span> Overlap between tools taught vs. tools required in job postings (weighted by posting frequency)</li>
-                  <li><span className="font-semibold text-theme-primary">Soft Skills Coverage:</span> Coverage of NICE professional competencies (communication, teamwork, incident response documentation)</li>
-                  <li><span className="font-semibold text-theme-primary">Industry Standards Compliance:</span> Integration of NIST CSF, Zero Trust, ISO 27001, and regulatory frameworks</li>
+                <ol className="list-decimal list-inside space-y-3 ml-2">
+                  <li>
+                    <span className="font-semibold text-theme-primary">Auto-Curriculum Scraping:</span>{' '}
+                    The pipeline searched bellevue.edu for cybersecurity program pages, extracted {scrapedCourses.length} courses and 26 skills using AI-powered content analysis. No manual curriculum input required.
+                  </li>
+                  <li>
+                    <span className="font-semibold text-theme-primary">Job Posting Analysis:</span>{' '}
+                    {postingsAnalyzed} Information Security Analyst (SOC 15-1212) job postings were collected via SerpAPI and analyzed by Claude Sonnet to extract the top {employerSkills.length} employer-demanded skills with frequency counts.
+                  </li>
+                  <li>
+                    <span className="font-semibold text-theme-primary">Skill Extraction:</span>{' '}
+                    AI extracted 48 distinct curriculum skills from the scraped course descriptions, then matched them against employer demands to identify covered skills, gaps, and potentially stale topics.
+                  </li>
+                  <li>
+                    <span className="font-semibold text-theme-primary">Drift Scoring:</span>{' '}
+                    The drift score (0-100, higher = more drift) is calculated by AI analysis of skill coverage gaps weighted by employer demand frequency. A score of {driftScore} indicates {driftLevel} drift.
+                  </li>
+                  <li>
+                    <span className="font-semibold text-theme-primary">Narrative & Recommendations:</span>{' '}
+                    Claude Sonnet generated the analysis narrative and {recommendations.length} prioritized recommendations based on the complete gap analysis.
+                  </li>
                 </ol>
-                <p className="pt-2">
-                  Each dimension is scored independently, then weighted and combined into the overall drift score. Scores below 50 indicate severe drift; 50-75 moderate drift; 75+ minimal drift.
-                </p>
+
+                <div className="mt-4 p-4 rounded-lg bg-amber-500/5 border border-amber-500/20">
+                  <p className="text-xs text-amber-700 dark:text-amber-400">
+                    <span className="font-bold">Note:</span> O*NET baseline enrichment was unavailable during this scan (API authentication issue). Future scans will include O*NET essential skills, knowledge areas, and hot technologies as an additional baseline for gap detection.
+                  </p>
+                </div>
               </div>
             </div>
           </AnimateOnScroll>
         </div>
       </section>
 
-      {/* ═══════════ J. CTA ═══════════ */}
+      {/* ═══════════ H. CTA ═══════════ */}
       <section className="relative py-16 md:py-24 bg-gradient-to-br from-purple-500/10 via-blue-500/10 to-teal-500/10">
         <div className="max-w-[800px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up">
@@ -1148,23 +579,23 @@ export default function BellevueCybersecurityDriftPage() {
               <ul className="mt-3 space-y-1.5 text-sm text-theme-secondary">
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
-                  <span>Full competency gap analysis (NICE Framework mapped)</span>
+                  <span>Full competency gap analysis with AI-powered skill extraction</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
-                  <span>Regional employer signal analysis (job posting data)</span>
+                  <span>Auto-scraped curriculum analysis (no manual data entry)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
-                  <span>Peer program benchmark (3-5 comparable institutions)</span>
+                  <span>Regional employer signal analysis from live job postings</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
-                  <span>Prioritized curriculum update roadmap</span>
+                  <span>O*NET baseline integration with hot technology tracking</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <CheckCircle2 className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
-                  <span>Quarterly drift monitoring updates</span>
+                  <span>Prioritized recommendations with quarterly monitoring updates</span>
                 </li>
               </ul>
             </div>

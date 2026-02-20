@@ -60,12 +60,13 @@ export interface GapItem {
   // What's mandated
   mandatedProgram: MandatedProgram;
 
-  // Revenue sizing
-  estimatedAnnualCohortSize: number;    // Students per year
+  // Revenue sizing (realistic Year 1 / Year 2+ projections)
+  estimatedAnnualCohortSize: number;    // Students per cohort
   estimatedTuitionPerStudent: number;   // Dollars
-  estimatedAnnualRevenue: number;       // cohort × tuition
+  estimatedAnnualRevenue: number;       // Year 1 revenue (conservative ramp)
+  estimatedYear2Revenue?: number;       // Year 2+ revenue (at scale)
   revenueConfidence: 'high' | 'medium' | 'low';
-  revenueRationale: string;
+  revenueRationale: string;            // Shows Year 1 and Year 2+ breakdown
 
   // Priority
   opportunityScore: number; // 1–10

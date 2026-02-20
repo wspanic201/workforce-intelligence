@@ -82,80 +82,127 @@ function extractKeywords(name: string): string[] {
 }
 
 // ── Revenue Sizing ──
+// 
+// Revenue model grounded in realistic CE program operations:
+// - Cohort sizes: 12-18 for hands-on/lab programs, 18-25 for classroom-based
+// - New programs typically run 1-2 cohorts in year 1, scaling to 2-3 by year 2-3
+// - High demand ≠ huge cohorts. It means easier to fill, not larger classes.
+// - Facility/instructor constraints are real — you can't run 60 cosmetology
+//   students through a 10-chair salon.
+
+/**
+ * Realistic cohort size based on program type and demand.
+ * Hands-on programs (cosmetology, trades, healthcare) have smaller cohorts
+ * due to lab/equipment constraints. Classroom-based programs can be larger.
+ */
+function getRealisticCohortSize(mandate: MandatedProgram): number {
+  const handsOnKeywords = [
+    'barber', 'cosmetolog', 'esthetician', 'nail', 'massage',
+    'cna', 'nurse aide', 'emt', 'paramedic', 'phlebotom',
+    'cdl', 'driver', 'hvac', 'electric', 'plumb', 'weld',
+    'pharmacy tech', 'surgical', 'dental', 'dialysis',
+  ];
+  const isHandsOn = handsOnKeywords.some(kw =>
+    mandate.occupation.toLowerCase().includes(kw)
+  );
+
+  if (isHandsOn) {
+    // Lab/clinical programs: 12-18 students per cohort
+    return mandate.demandLevel === 'high' ? 16 : mandate.demandLevel === 'medium' ? 14 : 12;
+  }
+  // Classroom-based (real estate, insurance, food safety, mandatory reporter):
+  return mandate.demandLevel === 'high' ? 25 : mandate.demandLevel === 'medium' ? 20 : 15;
+}
+
+/**
+ * Realistic cohorts per year for a NEW program.
+ * Year 1 is always conservative. The rationale field explains the ramp.
+ */
+function getCohortsPerYear(mandate: MandatedProgram): { year1: number; year2: number } {
+  // Short programs (<80 hours) can run more frequently
+  if (mandate.clockHours > 0 && mandate.clockHours <= 80) {
+    return mandate.demandLevel === 'high'
+      ? { year1: 3, year2: 4 }
+      : { year1: 2, year2: 3 };
+  }
+  // Medium programs (80-300 hours)
+  if (mandate.clockHours <= 300) {
+    return mandate.demandLevel === 'high'
+      ? { year1: 2, year2: 3 }
+      : { year1: 1, year2: 2 };
+  }
+  // Long programs (300+ hours — cosmetology, barber, etc.)
+  return mandate.demandLevel === 'high'
+    ? { year1: 2, year2: 2 }
+    : { year1: 1, year2: 2 };
+}
 
 /**
  * Estimate annual revenue for a mandated program not currently offered.
- * Uses conservative cohort sizing based on demand level and hours.
+ * Uses realistic cohort sizes and conservative Year 1 ramp assumptions.
  */
 function estimateRevenue(mandate: MandatedProgram): {
   cohortSize: number;
   tuitionPerStudent: number;
   annualRevenue: number;
+  year2Revenue: number;
   confidence: 'high' | 'medium' | 'low';
   rationale: string;
 } {
-  // Cohort size by demand level
-  const cohortByDemand: Record<'high' | 'medium' | 'low', number> = {
-    high: 60,
-    medium: 30,
-    low: 15,
-  };
+  const cohortSize = getRealisticCohortSize(mandate);
+  const cohorts = getCohortsPerYear(mandate);
 
-  // Tuition estimate based on program length / clock hours
-  // ~$8–$14 per clock hour is typical for noncredit workforce training
-  const hourlyRate = mandate.clockHours >= 300 ? 10 : 12;
+  // Tuition estimate based on clock hours
+  // Short courses: $10-15/hr, longer programs: $8-12/hr (volume discount effect)
+  const hourlyRate = mandate.clockHours <= 100 ? 12 : mandate.clockHours <= 300 ? 10 : 8;
   const baseTuition = Math.max(
-    400,
-    Math.round(mandate.clockHours * hourlyRate / 50) * 50, // round to nearest $50
+    250,
+    Math.round(mandate.clockHours * hourlyRate / 50) * 50,
   );
+  const tuitionPerStudent = Math.min(baseTuition, 8000);
 
-  // Cap at reasonable levels
-  const tuitionPerStudent = Math.min(baseTuition, 3500);
-  const cohortSize = cohortByDemand[mandate.demandLevel];
-
-  // High-demand programs often run multiple cohorts per year
-  const cohortMultiplier = mandate.demandLevel === 'high' ? 3 : mandate.demandLevel === 'medium' ? 2 : 1;
-  const annualRevenue = cohortSize * cohortMultiplier * tuitionPerStudent;
+  const annualRevenue = cohortSize * cohorts.year1 * tuitionPerStudent;
+  const year2Revenue = cohortSize * cohorts.year2 * tuitionPerStudent;
 
   const confidence: 'high' | 'medium' | 'low' =
-    mandate.demandLevel === 'high' && mandate.clockHours > 0
-      ? 'medium'
-      : 'low';
+    mandate.demandLevel === 'high' && mandate.clockHours > 0 ? 'medium' : 'low';
 
   const rationale =
-    `${cohortSize} students/cohort × ${cohortMultiplier} cohort(s)/year × ` +
-    `$${tuitionPerStudent.toLocaleString()} tuition = ` +
-    `$${annualRevenue.toLocaleString()}/year (${mandate.demandLevel} demand, ${mandate.clockHours} clock hours)`;
+    `Year 1: ${cohortSize} students/cohort × ${cohorts.year1} cohort(s) × ` +
+    `$${tuitionPerStudent.toLocaleString()} = $${annualRevenue.toLocaleString()} | ` +
+    `Year 2+: ${cohortSize} × ${cohorts.year2} cohort(s) = $${year2Revenue.toLocaleString()} ` +
+    `(${mandate.demandLevel} demand, ${mandate.clockHours} clock hours)`;
 
-  return { cohortSize, tuitionPerStudent, annualRevenue, confidence, rationale };
+  return { cohortSize, tuitionPerStudent, annualRevenue, year2Revenue, confidence, rationale };
 }
 
 /**
- * Market-rate revenue estimation — uses real competitor pricing from web search.
+ * Market-rate revenue estimation — uses real competitor pricing from web search
+ * combined with realistic cohort sizing.
  */
 function estimateRevenueWithMarketRate(mandate: MandatedProgram, marketTuition: number): {
   cohortSize: number;
   tuitionPerStudent: number;
   annualRevenue: number;
+  year2Revenue: number;
   confidence: 'high' | 'medium' | 'low';
   rationale: string;
 } {
-  const cohortByDemand: Record<'high' | 'medium' | 'low', number> = {
-    high: 60, medium: 30, low: 15,
-  };
-  const cohortSize = cohortByDemand[mandate.demandLevel];
-  const cohortMultiplier = mandate.demandLevel === 'high' ? 3 : mandate.demandLevel === 'medium' ? 2 : 1;
-  const annualRevenue = cohortSize * cohortMultiplier * marketTuition;
+  const cohortSize = getRealisticCohortSize(mandate);
+  const cohorts = getCohortsPerYear(mandate);
+  const annualRevenue = cohortSize * cohorts.year1 * marketTuition;
+  const year2Revenue = cohortSize * cohorts.year2 * marketTuition;
 
   return {
     cohortSize,
     tuitionPerStudent: marketTuition,
     annualRevenue,
+    year2Revenue,
     confidence: 'medium',
     rationale:
-      `${cohortSize} students/cohort × ${cohortMultiplier} cohort(s)/year × ` +
-      `$${marketTuition.toLocaleString()} tuition (market rate) = ` +
-      `$${annualRevenue.toLocaleString()}/year`,
+      `Year 1: ${cohortSize} students/cohort × ${cohorts.year1} cohort(s) × ` +
+      `$${marketTuition.toLocaleString()} (market rate) = $${annualRevenue.toLocaleString()} | ` +
+      `Year 2+: ${cohortSize} × ${cohorts.year2} = $${year2Revenue.toLocaleString()}`,
   };
 }
 
@@ -169,10 +216,10 @@ function scoreOpportunity(mandate: MandatedProgram, revenueEstimate: number): nu
   else if (mandate.demandLevel === 'medium') score += 1;
   else score -= 1;
 
-  // Revenue potential
-  if (revenueEstimate >= 200000) score += 2;
-  else if (revenueEstimate >= 100000) score += 1;
-  else if (revenueEstimate < 30000) score -= 1;
+  // Revenue potential (realistic CE program revenue thresholds)
+  if (revenueEstimate >= 100000) score += 2;
+  else if (revenueEstimate >= 50000) score += 1;
+  else if (revenueEstimate < 15000) score -= 1;
 
   // Renewal CE demand (recurring revenue)
   if (mandate.renewalRequired) score += 1;
@@ -263,6 +310,7 @@ export async function analyzeGapsAndWriteReport(
       estimatedAnnualCohortSize: rev.cohortSize,
       estimatedTuitionPerStudent: rev.tuitionPerStudent,
       estimatedAnnualRevenue: rev.annualRevenue,
+      estimatedYear2Revenue: rev.year2Revenue,
       revenueConfidence: marketPrice ? 'medium' as const : rev.confidence,
       revenueRationale: rev.rationale,
       opportunityScore: score,
@@ -294,7 +342,7 @@ export async function analyzeGapsAndWriteReport(
       g => {
         const cip = findCipByOccupation(g.mandatedProgram.occupation);
         const cipCol = cip ? `${cip.cipCode} (${cip.cipTitle})` : '—';
-        return `| ${g.mandatedProgram.occupation} | ${g.mandatedProgram.clockHours}h | ${g.mandatedProgram.regulatoryBody} | ${g.mandatedProgram.statute} | ${cipCol} | ${g.mandatedProgram.demandLevel.toUpperCase()} | $${g.estimatedAnnualRevenue.toLocaleString()}/yr |`;
+        return `| ${g.mandatedProgram.occupation} | ${g.mandatedProgram.clockHours}h | ${g.mandatedProgram.regulatoryBody} | ${g.mandatedProgram.statute} | ${cipCol} | ${g.mandatedProgram.demandLevel.toUpperCase()} | ${g.estimatedAnnualCohortSize}/cohort | $${g.estimatedAnnualRevenue.toLocaleString()} Yr1 / $${(g.estimatedYear2Revenue ?? g.estimatedAnnualRevenue).toLocaleString()} Yr2+ |`;
       },
     )
     .join('\n');
@@ -316,7 +364,8 @@ CONTEXT:
 - Total mandated programs in ${state}: ${mandated.length}
 - Currently offered by this institution: ${offeredMandates.length}
 - Compliance gaps identified: ${gaps.length}
-- Total estimated unrealized annual revenue: $${totalRevenue.toLocaleString()}
+- Total estimated Year 1 revenue (conservative): $${totalRevenue.toLocaleString()}
+- Total estimated Year 2+ revenue (at scale): $${gaps.reduce((s, g) => s + (g.estimatedYear2Revenue ?? g.estimatedAnnualRevenue), 0).toLocaleString()}
 - High-priority gaps: ${highPriority}
 
 CURRENTLY OFFERED (mandated programs they DO have):
@@ -326,9 +375,17 @@ TOP COMPLIANCE GAPS (programs mandated by ${state} law that they do NOT offer):
 ${topGapsNarrative}
 
 FULL GAP TABLE (for the table section):
-| Program | Required Hours | Regulatory Body | Citation | CIP Code | Demand | Est. Revenue |
-|---------|---------------|-----------------|----------|----------|--------|-------------|
+| Program | Required Hours | Regulatory Body | Citation | CIP Code | Demand | Cohort Size | Revenue (Yr1 / Yr2+) |
+|---------|---------------|-----------------|----------|----------|--------|-------------|----------------------|
 ${gapTableRows}
+
+REVENUE METHODOLOGY (include this in the Methodology section):
+Revenue estimates use conservative Year 1 / Year 2+ projections based on:
+- Realistic cohort sizes: 12-18 for hands-on/lab programs (cosmetology, healthcare, trades), 18-25 for classroom programs (real estate, food safety)
+- Year 1 assumes new program ramp (1-2 cohorts). Year 2+ assumes moderate scaling (2-3 cohorts).
+- Tuition based on market-rate competitor pricing via web search when available, or regional benchmarks when not.
+- These are TUITION REVENUE estimates only. They do not include fees, materials charges, or grant funding. They also do not subtract instructor costs, equipment, or overhead.
+- Actual revenue depends on enrollment, retention, and institutional pricing decisions.
 
 REPORT REQUIREMENTS:
 Write a complete, polished consulting report in Markdown with these exact sections:
