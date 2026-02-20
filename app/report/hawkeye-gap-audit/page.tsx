@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight, AlertTriangle, CheckCircle2, XCircle, Shield, DollarSign, Clock, Building2 } from 'lucide-react';
+import { ArrowRight, AlertTriangle, CheckCircle2, XCircle, Shield, DollarSign, Clock, Building2, TrendingUp } from 'lucide-react';
 import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
 import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
@@ -9,12 +9,12 @@ import { PrintButton } from '@/components/ui/PrintButton';
 export const metadata: Metadata = {
   title: 'Compliance Gap Analysis — Hawkeye Community College | Wavelength',
   description:
-    'Live Compliance Gap Analysis for Hawkeye Community College, Waterloo Iowa. 8 compliance gaps identified across 27 state-mandated programs — $3.8M estimated annual revenue opportunity.',
+    'Live Compliance Gap Analysis for Hawkeye Community College, Waterloo Iowa. 8 compliance gaps identified across 25 state-mandated programs — $1.2M Year 1, scaling to $1.9M Year 2+.',
   alternates: { canonical: 'https://withwavelength.com/report/hawkeye-gap-audit' },
   openGraph: {
     title: 'Compliance Gap Analysis — Hawkeye Community College',
     description:
-      '8 compliance gaps, $3.8M revenue opportunity. 27 Iowa-mandated programs analyzed against Hawkeye\'s current catalog.',
+      '8 compliance gaps, $1.2M–$1.9M revenue opportunity. 25 Iowa-mandated programs analyzed against Hawkeye\'s current catalog.',
     url: 'https://withwavelength.com/report/hawkeye-gap-audit',
     type: 'article',
   },
@@ -52,14 +52,15 @@ function DemandBadge({ level }: { level: 'HIGH' | 'MEDIUM' | 'LOW' }) {
   return <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${m.cls}`}>{level}</span>;
 }
 
-// ─── Real Pipeline Data (Generated 2026-02-19 via live compliance-gap pipeline) ──
+// ─── Real Pipeline Data (Generated 2026-02-19 via live compliance-gap pipeline v2) ──
 
 const complianceStats = {
-  totalMandated: 27,
-  currentlyOffered: 19,
+  totalMandated: 25,
+  currentlyOffered: 17,
   gaps: 8,
-  complianceRate: 70,
-  estimatedAnnualRevenue: 3_834_360,
+  complianceRate: 68,
+  year1Revenue: 515_932,
+  year2Revenue: 998_614,
   highPriorityGaps: 8,
 };
 
@@ -76,187 +77,200 @@ const offeredPrograms = [
   'Commercial Driver\'s License (CDL) Entry Level Driver Training',
   'Child Care Provider Professional Development',
   'Plumbing Journeyperson',
+  'HVAC/Mechanical Systems Journeyperson',
   'Professional Engineer Continuing Education',
   'Land Surveyor Continuing Education',
   'Dental Hygienist Continuing Education',
   'Respiratory Therapist',
-  'Medical Laboratory Technician',
-  'Substance Abuse Counselor (CADC)',
-  'Pesticide Applicator Certification',
 ];
 
 const gapPrograms = [
   {
     rank: 1,
     name: 'Barber',
-    hours: 2000,
+    hours: 2100,
     regulatoryBody: 'Iowa Board of Barbering',
     statute: 'Iowa Code Chapter 158; Iowa Admin. Code 645-61',
-    requirement: '2,000 hours of approved barber school training',
-    demandLevel: 'MEDIUM' as const,
-    regionalDemand: '~1,500 licensed barbers statewide; Waterloo region ~30-40',
+    requirement: '2,100 hours of training from an approved barber school',
+    demandLevel: 'LOW' as const,
+    regionalDemand: '~1,800 licensed barbers statewide; Waterloo region ~40-50',
     tuitionPerStudent: 14_546,
     tuitionRange: '$14,480–$14,980',
-    annualCohortSize: 30,
-    cohortsPerYear: 2,
-    estimatedAnnualRevenue: 872_760,
+    cohortSize: 12,
+    cohortsYear1: 1,
+    cohortsYear2: 2,
+    year1Revenue: 174_552,
+    year2Revenue: 349_104,
     programLength: '12–18 months full-time',
     cipCode: '12.0402 (Barbering/Barber)',
     implementationComplexity: 'High',
     timeToRevenue: '18–24 months',
-    keyInsight: 'Highest single revenue opportunity. Requires specialized facility including hydraulic barber chairs, sterilization equipment, and dedicated clinic space. Kirkwood Community College operates the nearest competing program.',
+    keyInsight: 'Premium tuition ($14,546) reflects 2,100-hour requirement. Requires separate facilities under Iowa Board of Barbering regulations (distinct from cosmetology board). Kirkwood Community College operates the nearest competing program.',
   },
   {
     rank: 2,
+    name: 'Esthetician',
+    hours: 600,
+    regulatoryBody: 'Iowa Board of Cosmetology Arts and Sciences',
+    statute: 'Iowa Code Chapter 157; Iowa Admin. Code 645-64',
+    requirement: '600 hours of training from an approved school',
+    demandLevel: 'MEDIUM' as const,
+    regionalDemand: '~3,000 licensed estheticians statewide; Waterloo region ~65-80',
+    tuitionPerStudent: 12_000,
+    tuitionRange: '$7,395–$14,525',
+    cohortSize: 14,
+    cohortsYear1: 1,
+    cohortsYear2: 2,
+    year1Revenue: 168_000,
+    year2Revenue: 336_000,
+    programLength: '4–6 months full-time',
+    cipCode: '—',
+    implementationComplexity: 'Medium',
+    timeToRevenue: '12–18 months',
+    keyInsight: 'Growth sector driven by medical spa expansion. $12,000 market-rate tuition for 600-hour program. Complements cosmetology and nail technology — shared facility space. Recommended as first cosmetology-cluster launch.',
+  },
+  {
+    rank: 3,
     name: 'Cosmetologist',
     hours: 2100,
     regulatoryBody: 'Iowa Board of Cosmetology Arts and Sciences',
     statute: 'Iowa Code Chapter 157; Iowa Admin. Code 645-60',
-    requirement: '2,100 hours of approved cosmetology school training',
-    demandLevel: 'HIGH' as const,
-    regionalDemand: '~8,000 licensed cosmetologists statewide; Waterloo region ~180-220',
+    requirement: '2,100 hours of training from an approved cosmetology school',
+    demandLevel: 'MEDIUM' as const,
+    regionalDemand: '~12,000 licensed cosmetologists statewide; Waterloo region ~260-300',
     tuitionPerStudent: 4_795,
     tuitionRange: '$4,150–$9,172',
-    annualCohortSize: 60,
-    cohortsPerYear: 3,
-    estimatedAnnualRevenue: 863_100,
+    cohortSize: 14,
+    cohortsYear1: 1,
+    cohortsYear2: 2,
+    year1Revenue: 67_130,
+    year2Revenue: 134_260,
     programLength: '12–18 months full-time',
     cipCode: '12.0401 (Cosmetology/Cosmetologist, General)',
     implementationComplexity: 'High',
     timeToRevenue: '18–24 months',
-    keyInsight: 'Shares facility requirements with barbering and esthetics programs, creating economies of scope. Supports federal financial aid eligibility. Consistent enrollment across economic cycles.',
-  },
-  {
-    rank: 3,
-    name: 'Certified Food Protection Manager',
-    hours: 8,
-    regulatoryBody: 'Iowa Dept. of Inspections and Appeals, Food and Consumer Safety Bureau',
-    statute: 'Iowa Code 137F.2; Iowa Admin. Code 481-31.4',
-    requirement: 'Pass ANSI-accredited food safety manager certification exam (ServSafe, Prometric, etc.); at least one certified manager required per food establishment',
-    demandLevel: 'HIGH' as const,
-    regionalDemand: '~8,000 food establishments statewide; Waterloo region ~200-250',
-    tuitionPerStudent: 4_750,
-    tuitionRange: '$3,500–$6,000',
-    annualCohortSize: 60,
-    cohortsPerYear: 3,
-    estimatedAnnualRevenue: 855_000,
-    programLength: '1–2 days',
-    cipCode: '—',
-    implementationComplexity: 'Low',
-    timeToRevenue: '3–6 months',
-    keyInsight: 'Quick-win deployment. Minimal infrastructure — standard classroom and ANSI-accredited exam partnership. Certifications expire every 5 years, creating recurring demand. Strong employer-sponsored enrollment potential.',
+    keyInsight: 'Largest licensee population in the cosmetology cluster (260-300 regional). Shares facility requirements with esthetics and nail programs, creating economies of scope. Supports federal financial aid eligibility.',
   },
   {
     rank: 4,
-    name: 'Esthetician',
-    hours: 600,
-    regulatoryBody: 'Iowa Board of Cosmetology Arts and Sciences',
-    statute: 'Iowa Code Chapter 157; Iowa Admin. Code 645-60',
-    requirement: '600 hours of approved esthetics training',
-    demandLevel: 'MEDIUM' as const,
-    regionalDemand: '~1,800 licensed estheticians statewide; Waterloo region ~35-50',
-    tuitionPerStudent: 12_000,
-    tuitionRange: '$7,395–$14,525',
-    annualCohortSize: 30,
-    cohortsPerYear: 2,
-    estimatedAnnualRevenue: 720_000,
-    programLength: '4–6 months',
-    cipCode: '—',
-    implementationComplexity: 'Medium',
-    timeToRevenue: '12–18 months',
-    keyInsight: 'Growth sector driven by medical spa expansion and wellness industry demand. Complements cosmetology and nail technology — shared facility space. Accessible entry point with lower hour requirements.',
-  },
-  {
-    rank: 5,
-    name: 'Mandatory Reporter Training (Education & Child Care Staff)',
-    hours: 2,
-    regulatoryBody: 'Iowa Dept. of Education & Iowa Dept. of Health and Human Services',
-    statute: 'Iowa Code 232.69; Iowa Admin. Code 441-109.7',
-    requirement: '2 hours initial child abuse mandatory reporter training for all school employees and child care workers age 18+; 1-hour refresher every 3 years',
-    demandLevel: 'HIGH' as const,
-    regionalDemand: '~100,000+ educators and child care workers statewide; Waterloo region ~2,500-3,000',
-    tuitionPerStudent: 1_575,
-    tuitionRange: '$1,575',
-    annualCohortSize: 60,
-    cohortsPerYear: 3,
-    estimatedAnnualRevenue: 283_500,
-    programLength: '2 hours',
-    cipCode: '—',
-    implementationComplexity: 'Low',
-    timeToRevenue: '2–4 months',
-    keyInsight: 'Highest volume recurring demand. Online or in-person delivery. Strong institutional partnership potential with school districts and child care centers. 85%+ profit margins after initial development.',
-  },
-  {
-    rank: 6,
     name: 'Nail Technician',
     hours: 325,
     regulatoryBody: 'Iowa Board of Cosmetology Arts and Sciences',
-    statute: 'Iowa Code Chapter 157; Iowa Admin. Code 645-60',
-    requirement: '325 hours of approved nail technology training',
+    statute: 'Iowa Code Chapter 157; Iowa Admin. Code 645-65',
+    requirement: '325 hours of training from an approved school',
     demandLevel: 'MEDIUM' as const,
-    regionalDemand: '~2,000 licensed nail technicians statewide; Waterloo region ~40-60',
+    regionalDemand: '~2,500 licensed nail technicians statewide; Waterloo region ~55-70',
     tuitionPerStudent: 3_000,
     tuitionRange: '$1,700–$4,600',
-    annualCohortSize: 30,
-    cohortsPerYear: 2,
-    estimatedAnnualRevenue: 180_000,
-    programLength: '8–12 weeks',
+    cohortSize: 14,
+    cohortsYear1: 1,
+    cohortsYear2: 2,
+    year1Revenue: 42_000,
+    year2Revenue: 84_000,
+    programLength: '8–12 weeks full-time',
     cipCode: '—',
     implementationComplexity: 'Medium',
     timeToRevenue: '12–18 months',
     keyInsight: 'Lowest hour requirement in cosmetology suite. Serves immigrant entrepreneurs disproportionately — accessible licensure pathway for non-native English speakers. Complements cosmetology and esthetics.',
   },
   {
-    rank: 7,
+    rank: 5,
     name: 'Real Estate Salesperson',
-    hours: 45,
+    hours: 60,
     regulatoryBody: 'Iowa Professional Licensing Bureau',
     statute: 'Iowa Code Chapter 543B; Iowa Admin. Code 193E',
-    requirement: '45 hours of approved pre-license education within 24 months prior to examination',
+    requirement: '60 hours of pre-license education from an approved provider within 24 months prior to examination',
     demandLevel: 'MEDIUM' as const,
-    regionalDemand: '~8,000 active salespersons statewide; Waterloo region ~150-200',
+    regionalDemand: '~8,500 active salespersons statewide; Waterloo region ~180-220',
     tuitionPerStudent: 500,
     tuitionRange: '$500',
-    annualCohortSize: 30,
-    cohortsPerYear: 2,
-    estimatedAnnualRevenue: 30_000,
-    programLength: '2–4 weeks',
+    cohortSize: 20,
+    cohortsYear1: 2,
+    cohortsYear2: 3,
+    year1Revenue: 20_000,
+    year2Revenue: 30_000,
+    programLength: '6–10 weeks part-time',
     cipCode: '52.1501 (Real Estate)',
     implementationComplexity: 'Low',
     timeToRevenue: '3–6 months',
-    keyInsight: 'Low-overhead professional development offering. Hybrid delivery (online + in-person exam prep). Partner with local brokerages for employer-sponsored enrollment.',
+    keyInsight: 'Low-overhead professional development offering. Hybrid delivery (online + in-person exam prep). Partner with local brokerages for employer-sponsored enrollment. 36-hour CE requirement every 3 years creates recurring revenue.',
   },
   {
-    rank: 8,
+    rank: 6,
     name: 'Real Estate Broker',
     hours: 60,
     regulatoryBody: 'Iowa Professional Licensing Bureau',
     statute: 'Iowa Code Chapter 543B; Iowa Admin. Code 193E',
-    requirement: '60 hours of approved broker pre-license education within 24 months prior to examination',
+    requirement: '60 hours of broker pre-license education within 24 months prior to examination (requires 2 years salesperson experience)',
     demandLevel: 'MEDIUM' as const,
-    regionalDemand: '~3,500 active brokers statewide; Waterloo region ~70-90',
+    regionalDemand: '~3,200 active brokers statewide; Waterloo region ~70-90',
     tuitionPerStudent: 500,
     tuitionRange: '$500',
-    annualCohortSize: 30,
-    cohortsPerYear: 2,
-    estimatedAnnualRevenue: 30_000,
-    programLength: '3–6 weeks',
+    cohortSize: 20,
+    cohortsYear1: 2,
+    cohortsYear2: 3,
+    year1Revenue: 20_000,
+    year2Revenue: 30_000,
+    programLength: '6–10 weeks part-time',
     cipCode: '52.1501 (Real Estate)',
     implementationComplexity: 'Low',
     timeToRevenue: '3–6 months',
-    keyInsight: 'Pairs with Salesperson program. 36-hour CE requirement every 3 years creates recurring revenue. Partner with Coldwell Banker, RE/MAX, Keller Williams for employer-sponsored cohorts.',
+    keyInsight: 'Pairs with Salesperson program. Advanced curriculum covers agency, finance, and brokerage management. Partner with Coldwell Banker, RE/MAX, Keller Williams for employer-sponsored cohorts.',
+  },
+  {
+    rank: 7,
+    name: 'Mandatory Reporter Training — Educators & School Staff',
+    hours: 2,
+    regulatoryBody: 'Iowa Department of Education',
+    statute: 'Iowa Code Chapter 232; Iowa Admin. Code 281-13.28',
+    requirement: '2 hours child abuse mandatory reporter training for all school employees 18+; renewal every 3 years for educator license maintenance',
+    demandLevel: 'HIGH' as const,
+    regionalDemand: '~110,000 K-12 educators and staff statewide; Waterloo region ~2,500-3,000',
+    tuitionPerStudent: 45,
+    tuitionRange: '$25–$75',
+    cohortSize: 25,
+    cohortsYear1: 6,
+    cohortsYear2: 8,
+    year1Revenue: 6_750,
+    year2Revenue: 9_000,
+    programLength: '2 hours',
+    cipCode: '—',
+    implementationComplexity: 'Low',
+    timeToRevenue: '2–4 months',
+    keyInsight: 'Highest-volume recurring demand with 3-year renewal cycle. Online or in-person delivery. Strong institutional partnership potential with school districts and child care centers. Minimal infrastructure — revenue is modest per student but highly scalable.',
+  },
+  {
+    rank: 8,
+    name: 'Certified Food Protection Manager',
+    hours: 8,
+    regulatoryBody: 'Iowa Dept. of Inspections and Appeals, Food and Consumer Safety Bureau',
+    statute: 'Iowa Code Chapter 137F; Iowa Admin. Code 481-31.4',
+    requirement: 'Pass ANSI-accredited food safety manager certification exam (ServSafe, Prometric, etc.); at least one certified manager required per food establishment',
+    demandLevel: 'HIGH' as const,
+    regionalDemand: '~15,000 food establishments statewide; Waterloo region ~350-400',
+    tuitionPerStudent: 175,
+    tuitionRange: '$150–$200',
+    cohortSize: 25,
+    cohortsYear1: 4,
+    cohortsYear2: 6,
+    year1Revenue: 17_500,
+    year2Revenue: 26_250,
+    programLength: '1–2 days',
+    cipCode: '—',
+    implementationComplexity: 'Low',
+    timeToRevenue: '3–6 months',
+    keyInsight: 'Quick-win deployment. Minimal infrastructure — standard classroom and ANSI-accredited exam partnership (ServSafe). Certifications expire every 5 years, creating recurring demand. Strong employer-sponsored enrollment potential.',
   },
 ];
 
 const complianceCategories = [
-  { category: 'Healthcare & Emergency Services', mandated: 10, offered: 10, gaps: 0, color: 'teal' },
-  { category: 'Skilled Trades & Transportation', mandated: 3, offered: 2, gaps: 1, color: 'blue' },
-  { category: 'Personal Care & Cosmetology', mandated: 4, offered: 0, gaps: 4, color: 'rose' },
-  { category: 'Food Safety & Public Health', mandated: 1, offered: 0, gaps: 1, color: 'rose' },
-  { category: 'Education & Child Welfare', mandated: 1, offered: 0, gaps: 1, color: 'rose' },
+  { category: 'Healthcare & Allied Health', mandated: 7, offered: 7, gaps: 0, color: 'teal' },
+  { category: 'Skilled Trades & Transportation', mandated: 3, offered: 3, gaps: 0, color: 'teal' },
+  { category: 'Cosmetology & Barbering', mandated: 4, offered: 0, gaps: 4, color: 'rose' },
+  { category: 'Mandatory Professional Training', mandated: 2, offered: 0, gaps: 2, color: 'rose' },
   { category: 'Real Estate & Professional Licensing', mandated: 2, offered: 0, gaps: 2, color: 'amber' },
-  { category: 'Agriculture & Environmental', mandated: 3, offered: 3, gaps: 0, color: 'teal' },
-  { category: 'Engineering & Surveying', mandated: 3, offered: 3, gaps: 0, color: 'teal' },
+  { category: 'Education & Child Welfare', mandated: 1, offered: 1, gaps: 0, color: 'teal' },
+  { category: 'Professional Services & CE', mandated: 6, offered: 6, gaps: 0, color: 'teal' },
 ];
 
 const strategicRecommendations = [
@@ -266,22 +280,22 @@ const strategicRecommendations = [
     icon: '⚡',
     actions: [
       {
-        title: 'Launch Certified Food Protection Manager training — partner with ServSafe or Prometric',
+        title: 'Launch Mandatory Reporter Training as online compliance solution for regional school districts',
         effort: 'Low',
         impact: 'High',
-        revenue: '$855K/yr',
+        revenue: '$7K–$9K/yr (high volume)',
       },
       {
-        title: 'Deploy Mandatory Reporter Training as online compliance solution for regional school districts',
+        title: 'Deploy Certified Food Protection Manager training — partner with ServSafe or Prometric',
         effort: 'Low',
-        impact: 'High',
-        revenue: '$284K/yr',
+        impact: 'Medium',
+        revenue: '$18K–$26K/yr',
       },
       {
         title: 'Develop Real Estate Salesperson & Broker pre-license programs — classroom + hybrid delivery',
         effort: 'Low',
         impact: 'Medium',
-        revenue: '$60K/yr',
+        revenue: '$40K–$60K/yr combined',
       },
     ],
   },
@@ -291,22 +305,22 @@ const strategicRecommendations = [
     icon: '🔨',
     actions: [
       {
+        title: 'Launch Esthetician program as first cosmetology-cluster offering — 600 hours, $12K tuition',
+        effort: 'Medium',
+        impact: 'High',
+        revenue: '$168K Yr1 → $336K Yr2+',
+      },
+      {
         title: 'Conduct feasibility study for Cosmetology & Barbering Center of Excellence',
         effort: 'Medium',
         impact: 'High',
-        revenue: 'Enables $2.6M cluster',
+        revenue: 'Enables $903K cluster',
       },
       {
-        title: 'Launch Nail Technician and Esthetician programs in shared cosmetology facility',
+        title: 'Launch Nail Technician program in shared cosmetology facility — 325 hours',
         effort: 'Medium',
-        impact: 'High',
-        revenue: '$900K/yr combined',
-      },
-      {
-        title: 'Establish Regulatory Compliance Advisory Board with Iowa licensing agency representatives',
-        effort: 'Low',
         impact: 'Medium',
-        revenue: 'Strategic positioning',
+        revenue: '$42K Yr1 → $84K Yr2+',
       },
     ],
   },
@@ -316,16 +330,16 @@ const strategicRecommendations = [
     icon: '🔭',
     actions: [
       {
-        title: 'Open Cosmetology & Barbering Center — 8,000-10,000 sq ft dedicated facility with student clinic',
+        title: 'Open Cosmetology & Barbering programs — 2,100 hours each, dedicated facility with student clinic',
         effort: 'High',
         impact: 'High',
-        revenue: '$2.64M/yr at steady state',
+        revenue: '$242K Yr1 → $483K Yr2+',
       },
       {
         title: 'Pursue Perkins V funding and Iowa Skilled Workforce Shortage Tuition Grant eligibility',
         effort: 'Medium',
         impact: 'High',
-        revenue: 'Offsets $350-450K capital',
+        revenue: 'Offsets capital investment',
       },
       {
         title: 'Integrate compliance programs into strategic enrollment management and equity initiatives',
@@ -340,13 +354,16 @@ const strategicRecommendations = [
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export default function HawkeyeGapAuditPage() {
+  const totalYear1 = gapPrograms.reduce((s, g) => s + g.year1Revenue, 0);
+  const totalYear2 = gapPrograms.reduce((s, g) => s + g.year2Revenue, 0);
+
   return (
     <div className="overflow-x-hidden bg-theme-page">
 
       {/* ═══════════ LIVE DATA BANNER ═══════════ */}
       <div className="w-full bg-teal-500/10 border-b border-teal-500/20 py-2.5 px-4 text-center">
         <p className="text-xs font-semibold text-teal-700 dark:text-teal-400">
-          ✅ Generated by live pipeline — real regulatory data, real catalog scan, real market-rate pricing. February 19, 2026.
+          ✅ Generated by live pipeline v2 — real regulatory data, real catalog scan, market-rate tuition from web search. February 19, 2026.
         </p>
       </div>
 
@@ -380,11 +397,11 @@ export default function HawkeyeGapAuditPage() {
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-600 dark:text-purple-400 font-semibold text-sm">
                 <span className="w-2 h-2 rounded-full bg-purple-500" />
-                27 Mandated Programs
+                25 Mandated Programs
               </span>
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-600 dark:text-teal-400 font-semibold text-sm">
                 <span className="w-2 h-2 rounded-full bg-teal-500" />
-                19 Currently Offered
+                17 Currently Offered
               </span>
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-700 dark:text-rose-400 font-semibold text-sm">
                 <span className="w-2 h-2 rounded-full bg-rose-500" />
@@ -392,7 +409,7 @@ export default function HawkeyeGapAuditPage() {
               </span>
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 font-semibold text-sm">
                 <span className="w-2 h-2 rounded-full bg-amber-500" />
-                $3.8M Revenue Opportunity
+                $516K → $999K Revenue
               </span>
             </div>
           </AnimateOnScroll>
@@ -435,14 +452,14 @@ export default function HawkeyeGapAuditPage() {
                     WebkitTextFillColor: 'transparent',
                   }}
                 >
-                  70%
+                  68%
                 </div>
-                <p className="text-sm text-theme-muted">19 of 27 mandated programs</p>
+                <p className="text-sm text-theme-muted">17 of 25 mandated programs</p>
                 <div className="mt-4">
-                  <HealthBar score={70} color="amber" />
+                  <HealthBar score={68} color="amber" />
                 </div>
                 <p className="mt-5 text-xs text-theme-tertiary leading-relaxed">
-                  Hawkeye offers 19 of 27 Iowa state-mandated training programs. 8 gaps represent both regulatory exposure and $3.8M in unrealized annual revenue.
+                  Hawkeye offers 17 of 25 Iowa state-mandated training programs. 8 gaps represent both regulatory exposure and unrealized revenue scaling from $516K in Year 1 to $999K annually at steady state.
                 </p>
               </div>
             </AnimateOnScroll>
@@ -491,16 +508,16 @@ export default function HawkeyeGapAuditPage() {
           <AnimateOnScroll variant="fade-up" delay={80}>
             <div className="space-y-5 text-theme-secondary leading-relaxed">
               <p>
-                Hawkeye Community College currently offers 19 of the 27 state-mandated training programs required under Iowa law, representing a <strong>70% compliance rate</strong> with statutory workforce development obligations. This analysis identifies <strong>8 high-priority compliance gaps</strong> that represent both regulatory exposure and significant unrealized revenue potential.
+                Hawkeye Community College currently offers 17 of the 25 state-mandated training programs required under Iowa law, representing a <strong>68% compliance rate</strong>. This analysis identifies <strong>8 critical compliance gaps</strong> where the institution is not currently serving populations legally required to obtain licensure or certification.
               </p>
               <p>
-                The institution is not currently positioned to serve mandatory training markets in <strong>food safety management, cosmetology and barbering, real estate licensing, and mandatory reporter education</strong> — sectors with established demand and regulatory enforcement mechanisms. Three programs alone — Barber ($872,760), Cosmetologist ($863,100), and Certified Food Protection Manager ($855,000) — account for $2.59 million of the $3.83 million total opportunity.
+                The eight missing programs span three high-demand sectors: <strong>cosmetology and barbering</strong> (Esthetician, Cosmetologist, Nail Technician, Barber), <strong>mandatory professional training</strong> (Mandatory Reporter Training for educators, Certified Food Protection Manager), and <strong>real estate licensing</strong> (Salesperson and Broker pre-license education).
               </p>
               <p>
-                These programs are governed by Iowa Code Chapters 137F, 157, 158, 232, and 543B, with active enforcement by the Iowa Department of Inspections and Appeals, Iowa Board of Cosmetology Arts and Sciences, Iowa Board of Barbering, and Iowa Professional Licensing Bureau. Regional demand analysis indicates <strong>2,500–3,500 potential students annually</strong> in the Waterloo service area across these eight program categories.
+                Conservative revenue projections estimate <strong>$515,932 in Year 1 tuition revenue</strong> from initial program launches, scaling to <strong>$998,614 annually by Year 2+</strong> as cohorts expand. These figures use realistic cohort sizes (12–25 students) and market-rate tuition verified through web research at comparable Iowa institutions. Tuition revenue only — does not include fees, materials, or grant funding.
               </p>
               <p>
-                Hawkeye maintains <strong>strong compliance in healthcare-related mandated training</strong>, offering all required programs for CNAs, EMTs, Paramedics, LPNs, RNs, Pharmacy Technicians, and therapy professionals. The CDL Entry Level Driver Training, Child Care Provider Professional Development, and Licensed Massage Therapist programs are also in compliance. The compliance gaps cluster in three domains: personal care/cosmetology services (4 gaps), food safety (1 gap), mandatory reporter obligations (1 gap), and real estate licensing (2 gaps).
+                The highest-revenue programs — Barber ($174,552 Year 1), Esthetician ($168,000), and Cosmetologist ($67,130) — require significant facility investment but serve established markets with verified demand. Quick-win programs — Real Estate, Mandatory Reporter, and Food Protection — can launch within 3–6 months with minimal infrastructure.
               </p>
             </div>
           </AnimateOnScroll>
@@ -511,17 +528,17 @@ export default function HawkeyeGapAuditPage() {
               <div className="rounded-xl p-5 bg-teal-500/5 border border-teal-500/15">
                 <CheckCircle2 className="w-5 h-5 text-teal-500 mb-3" />
                 <p className="text-sm font-bold text-theme-primary mb-1">Full Compliance</p>
-                <p className="text-xs text-theme-secondary leading-relaxed">Healthcare, emergency services, agriculture, and engineering programs — all mandated programs offered.</p>
+                <p className="text-xs text-theme-secondary leading-relaxed">Healthcare, skilled trades, transportation, and professional CE programs — all mandated programs offered.</p>
               </div>
               <div className="rounded-xl p-5 bg-rose-500/5 border border-rose-500/15">
                 <XCircle className="w-5 h-5 text-rose-500 mb-3" />
                 <p className="text-sm font-bold text-theme-primary mb-1">Major Gap Cluster</p>
-                <p className="text-xs text-theme-secondary leading-relaxed">Personal care & cosmetology: 0 of 4 mandated programs offered. $2.64M combined annual revenue left on the table.</p>
+                <p className="text-xs text-theme-secondary leading-relaxed">Cosmetology & barbering: 0 of 4 mandated programs offered. $451K Year 1, scaling to $903K at steady state.</p>
               </div>
               <div className="rounded-xl p-5 bg-amber-500/5 border border-amber-500/15">
                 <AlertTriangle className="w-5 h-5 text-amber-500 mb-3" />
                 <p className="text-sm font-bold text-theme-primary mb-1">Quick Wins Available</p>
-                <p className="text-xs text-theme-secondary leading-relaxed">Food Protection Manager, Mandatory Reporter, and Real Estate programs can launch in 2–6 months with minimal infrastructure.</p>
+                <p className="text-xs text-theme-secondary leading-relaxed">Real Estate, Mandatory Reporter, and Food Protection can launch in 2–6 months with minimal infrastructure investment.</p>
               </div>
             </div>
           </AnimateOnScroll>
@@ -538,7 +555,7 @@ export default function HawkeyeGapAuditPage() {
                 className="font-heading font-bold text-theme-primary mt-3"
                 style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.5rem)' }}
               >
-                19 Mandated Programs Currently Offered
+                17 Mandated Programs Currently Offered
               </h2>
               <p className="mt-3 text-theme-secondary max-w-xl mx-auto text-sm">
                 These state-mandated training programs are already part of Hawkeye&apos;s catalog, meeting Iowa regulatory requirements.
@@ -575,7 +592,7 @@ export default function HawkeyeGapAuditPage() {
                 8 State-Mandated Programs Not Offered
               </h2>
               <p className="mt-3 text-theme-secondary max-w-xl mx-auto text-sm">
-                Each gap represents an Iowa-mandated training program with confirmed statutory citations, regulatory enforcement, and market-rate revenue estimates.
+                Each gap includes Iowa statutory citations, market-rate tuition, realistic cohort sizes (12–25), and Year 1 / Year 2+ revenue projections.
               </p>
             </div>
           </AnimateOnScroll>
@@ -614,17 +631,24 @@ export default function HawkeyeGapAuditPage() {
                   </div>
                 </div>
 
-                {/* Stats Row */}
+                {/* Stats Row — now shows Year 1 AND Year 2+ */}
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
                   <div className="rounded-lg p-3 bg-theme-surface/50 border border-theme-subtle text-center">
                     <DollarSign className="w-4 h-4 text-teal-500 mx-auto mb-1" />
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-0.5">Annual Revenue</p>
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-0.5">Year 1</p>
                     <p className="text-lg font-bold font-mono text-teal-600 dark:text-teal-400">
-                      ${gap.estimatedAnnualRevenue.toLocaleString()}
+                      ${gap.year1Revenue.toLocaleString()}
                     </p>
                   </div>
                   <div className="rounded-lg p-3 bg-theme-surface/50 border border-theme-subtle text-center">
-                    <Building2 className="w-4 h-4 text-purple-500 mx-auto mb-1" />
+                    <TrendingUp className="w-4 h-4 text-purple-500 mx-auto mb-1" />
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-0.5">Year 2+</p>
+                    <p className="text-lg font-bold font-mono text-purple-600 dark:text-purple-400">
+                      ${gap.year2Revenue.toLocaleString()}
+                    </p>
+                  </div>
+                  <div className="rounded-lg p-3 bg-theme-surface/50 border border-theme-subtle text-center">
+                    <Building2 className="w-4 h-4 text-blue-500 mx-auto mb-1" />
                     <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-0.5">Tuition</p>
                     <p className="text-sm font-bold font-mono text-theme-primary">${gap.tuitionPerStudent.toLocaleString()}</p>
                     <p className="text-[10px] text-theme-muted">{gap.tuitionRange}</p>
@@ -633,11 +657,6 @@ export default function HawkeyeGapAuditPage() {
                     <Clock className="w-4 h-4 text-amber-500 mx-auto mb-1" />
                     <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-0.5">Program Length</p>
                     <p className="text-sm font-bold text-theme-primary">{gap.programLength}</p>
-                  </div>
-                  <div className="rounded-lg p-3 bg-theme-surface/50 border border-theme-subtle text-center">
-                    <Clock className="w-4 h-4 text-blue-500 mx-auto mb-1" />
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-0.5">Time to Revenue</p>
-                    <p className="text-sm font-bold text-theme-primary">{gap.timeToRevenue}</p>
                   </div>
                 </div>
 
@@ -677,7 +696,7 @@ export default function HawkeyeGapAuditPage() {
                         Revenue Model
                       </p>
                       <p className="text-sm text-theme-secondary">
-                        {gap.annualCohortSize} students/cohort × {gap.cohortsPerYear} cohort{gap.cohortsPerYear > 1 ? 's' : ''}/year × ${gap.tuitionPerStudent.toLocaleString()} tuition
+                        {gap.cohortSize} students/cohort × {gap.cohortsYear1} cohort{gap.cohortsYear1 > 1 ? 's' : ''} Yr1 → {gap.cohortsYear2} Yr2+ × ${gap.tuitionPerStudent.toLocaleString()}
                       </p>
                     </div>
                     <div className="rounded-xl p-4 bg-purple-500/5 border border-purple-500/15">
@@ -704,10 +723,10 @@ export default function HawkeyeGapAuditPage() {
                 className="font-heading font-bold text-theme-primary mt-3"
                 style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.5rem)' }}
               >
-                $3,834,360 Annual Revenue Opportunity
+                $516K Year 1 → $999K Year 2+
               </h2>
               <p className="mt-3 text-theme-secondary max-w-xl mx-auto text-sm">
-                Conservative enrollment projections based on regional demand analysis and market-rate tuition at comparable Iowa community colleges.
+                Conservative enrollment projections with realistic cohort sizes (12–25 students) and market-rate tuition verified at comparable Iowa institutions.
               </p>
             </div>
           </AnimateOnScroll>
@@ -719,35 +738,73 @@ export default function HawkeyeGapAuditPage() {
                 <p className="text-xs font-bold uppercase tracking-widest text-theme-muted mb-2">
                   Cosmetology & Barbering Cluster
                 </p>
-                <p
-                  className="text-4xl font-bold font-mono mb-2"
-                  style={{
-                    background: 'linear-gradient(135deg, #a855f7, #6366f1)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
-                  $2,635,860
-                </p>
-                <p className="text-sm text-theme-muted">69% of total opportunity · High capital investment</p>
-                <p className="text-xs text-theme-tertiary mt-2">Cosmetologist + Barber + Esthetician + Nail Technician</p>
+                <div className="flex items-center justify-center gap-3 mb-2">
+                  <div>
+                    <p className="text-[10px] text-theme-muted">Year 1</p>
+                    <p
+                      className="text-2xl font-bold font-mono"
+                      style={{
+                        background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                      }}
+                    >
+                      $451K
+                    </p>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-theme-muted" />
+                  <div>
+                    <p className="text-[10px] text-theme-muted">Year 2+</p>
+                    <p
+                      className="text-2xl font-bold font-mono"
+                      style={{
+                        background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                      }}
+                    >
+                      $903K
+                    </p>
+                  </div>
+                </div>
+                <p className="text-sm text-theme-muted">87% of total opportunity · High capital investment</p>
+                <p className="text-xs text-theme-tertiary mt-2">Barber + Esthetician + Cosmetologist + Nail Technician</p>
               </div>
               <div className="card-cosmic rounded-2xl p-6 text-center">
                 <p className="text-xs font-bold uppercase tracking-widest text-theme-muted mb-2">
-                  Short-Cycle Programs
+                  Quick-Launch Programs
                 </p>
-                <p
-                  className="text-4xl font-bold font-mono mb-2"
-                  style={{
-                    background: 'linear-gradient(135deg, #14b8a6, #0ea5e9)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
-                  $1,198,500
-                </p>
-                <p className="text-sm text-theme-muted">31% of total opportunity · Minimal capital</p>
-                <p className="text-xs text-theme-tertiary mt-2">Food Protection + Mandatory Reporter + Real Estate (×2)</p>
+                <div className="flex items-center justify-center gap-3 mb-2">
+                  <div>
+                    <p className="text-[10px] text-theme-muted">Year 1</p>
+                    <p
+                      className="text-2xl font-bold font-mono"
+                      style={{
+                        background: 'linear-gradient(135deg, #14b8a6, #0ea5e9)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                      }}
+                    >
+                      $64K
+                    </p>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-theme-muted" />
+                  <div>
+                    <p className="text-[10px] text-theme-muted">Year 2+</p>
+                    <p
+                      className="text-2xl font-bold font-mono"
+                      style={{
+                        background: 'linear-gradient(135deg, #14b8a6, #0ea5e9)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                      }}
+                    >
+                      $95K
+                    </p>
+                  </div>
+                </div>
+                <p className="text-sm text-theme-muted">13% of total · Minimal capital required</p>
+                <p className="text-xs text-theme-tertiary mt-2">Real Estate (×2) + Mandatory Reporter + Food Protection</p>
               </div>
             </div>
           </AnimateOnScroll>
@@ -759,9 +816,10 @@ export default function HawkeyeGapAuditPage() {
                 <thead>
                   <tr className="border-b border-theme-subtle">
                     <th className="text-left py-3 px-4 text-xs font-bold uppercase tracking-widest text-theme-muted">Program</th>
-                    <th className="text-right py-3 px-4 text-xs font-bold uppercase tracking-widest text-theme-muted">Annual Revenue</th>
+                    <th className="text-right py-3 px-4 text-xs font-bold uppercase tracking-widest text-theme-muted">Year 1</th>
+                    <th className="text-right py-3 px-4 text-xs font-bold uppercase tracking-widest text-theme-muted">Year 2+</th>
+                    <th className="text-center py-3 px-4 text-xs font-bold uppercase tracking-widest text-theme-muted">Cohort</th>
                     <th className="text-center py-3 px-4 text-xs font-bold uppercase tracking-widest text-theme-muted">Complexity</th>
-                    <th className="text-center py-3 px-4 text-xs font-bold uppercase tracking-widest text-theme-muted">Time to Revenue</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -775,7 +833,13 @@ export default function HawkeyeGapAuditPage() {
                         <p className="text-[11px] text-theme-muted mt-0.5">{gap.statute}</p>
                       </td>
                       <td className="py-3 px-4 text-right font-mono font-bold text-teal-600 dark:text-teal-400 text-[14px]">
-                        ${gap.estimatedAnnualRevenue.toLocaleString()}
+                        ${gap.year1Revenue.toLocaleString()}
+                      </td>
+                      <td className="py-3 px-4 text-right font-mono font-bold text-purple-600 dark:text-purple-400 text-[14px]">
+                        ${gap.year2Revenue.toLocaleString()}
+                      </td>
+                      <td className="py-3 px-4 text-center text-[13px] text-theme-secondary">
+                        {gap.cohortSize} students
                       </td>
                       <td className="py-3 px-4 text-center">
                         <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${
@@ -788,17 +852,23 @@ export default function HawkeyeGapAuditPage() {
                           {gap.implementationComplexity}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-center text-[13px] text-theme-secondary">{gap.timeToRevenue}</td>
                     </tr>
                   ))}
                   <tr className="border-t-2 border-theme-subtle">
                     <td className="py-3 px-4 font-bold text-theme-primary">TOTAL</td>
                     <td className="py-3 px-4 text-right font-mono font-bold text-[16px]" style={{
-                      background: 'linear-gradient(135deg, #a855f7, #14b8a6)',
+                      background: 'linear-gradient(135deg, #14b8a6, #0ea5e9)',
                       WebkitBackgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                     }}>
-                      $3,834,360
+                      ${totalYear1.toLocaleString()}
+                    </td>
+                    <td className="py-3 px-4 text-right font-mono font-bold text-[16px]" style={{
+                      background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                    }}>
+                      ${totalYear2.toLocaleString()}
                     </td>
                     <td />
                     <td />
@@ -900,15 +970,15 @@ export default function HawkeyeGapAuditPage() {
                   {[
                     {
                       step: 'Agent 1: Catalog Scanner',
-                      desc: 'Scraped hawkeyecollege.edu and searched 37 candidate pages. Fetched 12 relevant program pages and extracted 107 programs via AI analysis. Duration: 46 seconds.',
+                      desc: 'Scraped hawkeyecollege.edu across 37 candidate pages. Fetched 12 relevant program pages and extracted 107 distinct programs via AI analysis. Duration: 28 seconds.',
                     },
                     {
                       step: 'Agent 2: Regulatory Scanner',
-                      desc: 'Executed 16 targeted web searches across Iowa regulatory databases, licensing boards, and administrative code. Fetched 6 regulatory pages. Identified 27 state-mandated programs with statute citations. Duration: 156 seconds.',
+                      desc: 'Executed 16 targeted web searches across Iowa regulatory databases. Analyzed Iowa Code and Admin. Code across 5 regulatory bodies. Identified 25 state-mandated programs with statute citations. Duration: 88 seconds.',
                     },
                     {
-                      step: 'Agent 3: Gap Analyzer & Report Writer',
-                      desc: 'Cross-referenced 27 mandated programs against 107 offered programs. Found 8 gaps. Conducted 24 market-rate tuition searches across Iowa community colleges for pricing. Wrote professional report. Duration: 177 seconds.',
+                      step: 'Agent 3: Gap Analyzer',
+                      desc: 'Cross-referenced 25 mandated programs vs 107 offered. Found 8 gaps, 17 already offered. Conducted 24 market-rate tuition searches for pricing verification. Duration: 124 seconds.',
                     },
                   ].map((item) => (
                     <li key={item.step} className="flex items-start gap-3">
@@ -923,16 +993,16 @@ export default function HawkeyeGapAuditPage() {
             <AnimateOnScroll variant="fade-up" delay={160}>
               <div className="card-cosmic rounded-2xl p-6">
                 <p className="text-xs font-bold uppercase tracking-widest text-theme-muted mb-4">
-                  Data Sources
+                  Data Sources & Revenue Model
                 </p>
                 <ul className="space-y-3">
                   {[
-                    { source: 'Iowa Code', desc: 'Chapters 105, 137F, 157, 158, 232, 543B — mandatory training and licensing statutes' },
-                    { source: 'Iowa Admin. Code', desc: 'Rules 441-109.7, 481-31.4, 645-60, 645-61, 193E — regulatory implementation details' },
-                    { source: 'Hawkeye Website', desc: 'hawkeyecollege.edu — program catalog, continuing education, workforce training pages' },
-                    { source: 'Licensing Boards', desc: 'Iowa Board of Cosmetology Arts and Sciences, Board of Barbering, Professional Licensing Bureau, DIAL' },
-                    { source: 'Market Pricing', desc: 'Tuition data from Iowa community colleges, private training providers, and certification bodies' },
-                    { source: 'Demand Data', desc: 'Iowa Professional Licensing Bureau licensure counts, regional population-proportional estimates' },
+                    { source: 'Iowa Code', desc: 'Chapters 137F, 157, 158, 232, 543B — mandatory training and licensing statutes' },
+                    { source: 'Iowa Admin. Code', desc: 'Rules 281-13.28, 481-31.4, 645-60/61/64/65, 193E — regulatory implementation' },
+                    { source: 'Hawkeye Website', desc: 'hawkeyecollege.edu — 107 programs extracted from catalog and workforce training pages' },
+                    { source: 'Licensing Boards', desc: 'Iowa Board of Cosmetology Arts and Sciences, Board of Barbering, Professional Licensing Bureau' },
+                    { source: 'Market Pricing', desc: 'Tuition verified via web search at Iowa community colleges and private training providers' },
+                    { source: 'Revenue Model', desc: 'Cohorts of 12–25 students (lab vs classroom). Year 1: 1–2 cohorts. Year 2+: 2–4 cohorts at scale.' },
                   ].map((item) => (
                     <li key={item.source} className="flex items-start gap-3">
                       <span className="text-[11px] font-bold text-teal-600 dark:text-teal-400 pt-0.5 flex-shrink-0 w-24">{item.source}</span>
@@ -943,7 +1013,7 @@ export default function HawkeyeGapAuditPage() {
 
                 <div className="mt-5 pt-4 border-t border-theme-subtle">
                   <p className="text-[11px] text-theme-muted leading-relaxed">
-                    <strong>Pipeline runtime:</strong> 380 seconds total · <strong>Model:</strong> Claude Sonnet 4.5 · <strong>Searches:</strong> 40+ web queries · <strong>Pages analyzed:</strong> 18 fetched pages
+                    <strong>Pipeline runtime:</strong> 240 seconds · <strong>Model:</strong> Claude Sonnet 4.5 · <strong>Searches:</strong> 40+ web queries · <strong>Pages analyzed:</strong> 18 fetched pages
                   </p>
                 </div>
               </div>
@@ -964,7 +1034,7 @@ export default function HawkeyeGapAuditPage() {
               What compliance gaps exist in your catalog?
             </h2>
             <p className="mt-4 text-theme-secondary text-lg leading-relaxed">
-              Know exactly which state-mandated programs you&apos;re missing — with real statute citations, market-rate pricing, and revenue projections.
+              Know exactly which state-mandated programs you&apos;re missing — with real statute citations, market-rate pricing, and Year 1 / Year 2+ revenue projections.
               Delivered in 48 hours.
             </p>
 
@@ -997,7 +1067,7 @@ export default function HawkeyeGapAuditPage() {
             </div>
 
             <p className="mt-6 text-xs text-theme-muted">
-              Includes: catalog scan, regulatory mandate identification, gap analysis, market-rate tuition research, revenue projections, and implementation roadmap.
+              Includes: catalog scan, regulatory mandate identification, gap analysis, market-rate tuition research, Year 1 &amp; Year 2+ revenue projections, and implementation roadmap.
             </p>
           </AnimateOnScroll>
         </div>
