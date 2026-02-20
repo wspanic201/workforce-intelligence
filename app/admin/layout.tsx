@@ -1,132 +1,96 @@
-'use client';
+/**
+ * Admin dashboard layout
+ * Shared navigation and layout for all /admin routes
+ */
 
-import { useState, useEffect, createContext, useContext } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { redirect } from 'next/navigation';
+import { verifyAdminSession, destroyAdminSession } from '@/lib/auth/admin';
 
-// Auth context
-const AuthContext = createContext<{
-  authenticated: boolean;
-  logout: () => void;
-}>({ authenticated: false, logout: () => {} });
-
-export function useAdmin() {
-  return useContext(AuthContext);
-}
-
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const [authenticated, setAuthenticated] = useState(false);
-  const [checking, setChecking] = useState(true);
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const pathname = usePathname();
-
-  useEffect(() => {
-    fetch('/api/admin/auth')
-      .then(r => r.json())
-      .then(d => setAuthenticated(d.authenticated))
-      .finally(() => setChecking(false));
-  }, []);
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    const res = await fetch('/api/admin/auth', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ password }),
-    });
-    if (res.ok) {
-      setAuthenticated(true);
-    } else {
-      setError('Wrong password');
-    }
-  };
-
-  const handleLogout = async () => {
-    await fetch('/api/admin/auth', { method: 'DELETE' });
-    setAuthenticated(false);
-  };
-
-  if (checking) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <p className="text-slate-500">Loading...</p>
-      </div>
-    );
+export default async function AdminLayout({
+  children,
+}: {
+  children: React.Node;
+}) {
+  // Verify authentication (redirect handled by middleware, but double-check)
+  const isAuthenticated = await verifyAdminSession();
+  
+  // Skip layout for login page
+  if (!isAuthenticated) {
+    return <>{children}</>;
   }
 
-  if (!authenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
-        <form onSubmit={handleLogin} className="bg-white rounded-xl shadow-lg p-8 w-full max-w-sm space-y-4">
-          <div className="text-center">
-            <h1 className="font-heading text-xl font-bold text-slate-900">Wavelength Admin</h1>
-            <p className="text-sm text-slate-500 mt-1">Enter admin password</p>
-          </div>
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            autoFocus
-          />
-          {error && <p className="text-sm text-red-500">{error}</p>}
-          <Button type="submit" className="w-full">Sign In</Button>
-        </form>
-      </div>
-    );
+  async function handleLogout() {
+    'use server';
+    await destroyAdminSession();
+    redirect('/admin/login');
   }
-
-  const nav = [
-    { label: 'Orders', href: '/admin' },
-    { label: 'New Order', href: '/admin/intake' },
-  ];
 
   return (
-    <AuthContext.Provider value={{ authenticated, logout: handleLogout }}>
-      <div className="min-h-screen bg-slate-50">
-        {/* Admin nav bar */}
-        <header className="bg-slate-900 text-white">
-          <div className="mx-auto max-w-7xl px-6 flex h-14 items-center justify-between">
-            <div className="flex items-center gap-8">
-              <Link href="/admin" className="font-heading font-bold text-sm tracking-wide">
-                WOS ADMIN
+    <div className="min-h-screen bg-gray-50">
+      {/* Top Navigation */}
+      <nav className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16">
+            <div className="flex">
+              {/* Logo */}
+              <Link href="/admin" className="flex items-center">
+                <span className="text-xl font-bold text-gray-900">
+                  Wavelength
+                </span>
+                <span className="ml-2 text-sm text-gray-500">Admin</span>
               </Link>
-              <nav className="flex gap-1">
-                {nav.map(item => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`px-3 py-1.5 rounded text-sm transition-colors ${
-                      pathname === item.href
-                        ? 'bg-white/15 text-white'
-                        : 'text-slate-400 hover:text-white hover:bg-white/10'
-                    }`}
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </nav>
+
+              {/* Navigation Links */}
+              <div className="hidden sm:ml-10 sm:flex sm:space-x-8">
+                <NavLink href="/admin" exact>Dashboard</NavLink>
+                <NavLink href="/admin/signal">The Signal</NavLink>
+                <NavLink href="/admin/reports">Reports</NavLink>
+                <NavLink href="/admin/chat">Chat</NavLink>
+                <NavLink href="/admin/config">Config</NavLink>
+              </div>
             </div>
-            <div className="flex items-center gap-4">
-              <Link href="/" className="text-xs text-slate-500 hover:text-slate-300">
-                ← Public Site
+
+            {/* Right side */}
+            <div className="flex items-center space-x-4">
+              <Link
+                href="/"
+                target="_blank"
+                className="text-sm text-gray-600 hover:text-gray-900"
+              >
+                View Site
               </Link>
-              <button onClick={handleLogout} className="text-xs text-slate-500 hover:text-slate-300">
-                Logout
-              </button>
+              <form action={handleLogout}>
+                <button
+                  type="submit"
+                  className="text-sm text-gray-600 hover:text-gray-900"
+                >
+                  Logout
+                </button>
+              </form>
             </div>
           </div>
-        </header>
-
-        {/* Content */}
-        <div className="mx-auto max-w-7xl px-6 py-8">
-          {children}
         </div>
-      </div>
-    </AuthContext.Provider>
+      </nav>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {children}
+      </main>
+    </div>
+  );
+}
+
+// Navigation link component with active state
+function NavLink({ href, exact = false, children }: { href: string; exact?: boolean; children: React.ReactNode }) {
+  // Note: We'll need to use client-side logic for active state
+  // For now, keeping it simple
+  return (
+    <Link
+      href={href}
+      className="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-600 hover:text-gray-900 hover:border-gray-300"
+    >
+      {children}
+    </Link>
   );
 }

@@ -1,238 +1,198 @@
-'use client';
+/**
+ * Admin Dashboard Home
+ * System overview and quick stats
+ */
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { getSupabaseServerClient } from '@/lib/supabase/client';
+import { checkSendHealth } from '@/lib/signal/send-tracker';
+import { checkNewsSourcesHealth } from '@/lib/signal/news-sources';
 
-interface Order {
-  id: string;
-  created_at: string;
-  contact_name: string;
-  contact_email: string;
-  institution_name: string;
-  service_tier: string;
-  amount_cents: number;
-  payment_status: string;
-  order_status: string;
-  admin_created: boolean;
-  delivered_at: string | null;
-}
-
-const STATUS_COLORS: Record<string, string> = {
-  intake: 'bg-gray-100 text-gray-700',
-  pending_payment: 'bg-yellow-100 text-yellow-800',
-  paid: 'bg-blue-100 text-blue-700',
-  queued: 'bg-indigo-100 text-indigo-700',
-  running: 'bg-purple-100 text-purple-700',
-  complete: 'bg-emerald-100 text-emerald-700',
-  review: 'bg-amber-100 text-amber-800',
-  delivered: 'bg-green-100 text-green-700',
-  cancelled: 'bg-red-100 text-red-700',
-};
-
-const STATUS_LABELS: Record<string, string> = {
-  intake: 'Intake',
-  pending_payment: 'Awaiting Payment',
-  paid: 'Paid — Ready',
-  queued: 'Queued',
-  running: 'Pipeline Running',
-  complete: 'Complete',
-  review: 'Under Review',
-  delivered: 'Delivered ✓',
-  cancelled: 'Cancelled',
-};
-
-const TIER_LABELS: Record<string, string> = {
-  discovery: 'Discovery',
-  validation: 'Validation',
-  discovery_validation: 'Discovery + Validation',
-  full_lifecycle: 'Full Lifecycle',
-};
-
-function formatMoney(cents: number): string {
-  if (cents === 0) return '—';
-  return `$${(cents / 100).toLocaleString()}`;
-}
-
-function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
-}
-
-function shortId(id: string): string {
-  return id.slice(0, 8).toUpperCase();
-}
-
-export default function AdminDashboard() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<string>('all');
-
-  useEffect(() => {
-    fetchOrders();
-  }, [filter]);
-
-  const fetchOrders = async () => {
-    setLoading(true);
-    const params = filter !== 'all' ? `?status=${filter}` : '';
-    const res = await fetch(`/api/admin/orders${params}`);
-    if (res.ok) {
-      setOrders(await res.json());
-    }
-    setLoading(false);
-  };
-
-  // Stats
-  const totalRevenue = orders.reduce((sum, o) => 
-    o.payment_status === 'paid' || o.payment_status === 'waived' ? sum + o.amount_cents : sum, 0
-  );
-  const activeOrders = orders.filter(o => ['paid', 'queued', 'running', 'review'].includes(o.order_status));
-  const deliveredOrders = orders.filter(o => o.order_status === 'delivered');
-
-  const filterButtons = [
-    { key: 'all', label: 'All' },
-    { key: 'paid', label: 'Ready' },
-    { key: 'running', label: 'Running' },
-    { key: 'review', label: 'Review' },
-    { key: 'delivered', label: 'Delivered' },
-  ];
+export default async function AdminDashboardPage() {
+  // Fetch dashboard data
+  const [reportStats, signalHealth, newsHealth] = await Promise.all([
+    getReportStats(),
+    checkSendHealth().catch(() => null),
+    checkNewsSourcesHealth().catch(() => null),
+  ]);
 
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="font-heading text-2xl font-bold text-slate-900">Orders</h1>
-          <p className="text-sm text-slate-500 mt-1">Manage client orders and pipeline runs</p>
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <p className="text-gray-600 mt-1">Wavelength platform overview</p>
+      </div>
+
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard
+          title="Reports This Week"
+          value={reportStats.thisWeek}
+          subtitle={`${reportStats.total} total`}
+          href="/admin/reports"
+          status="good"
+        />
+        
+        <StatCard
+          title="The Signal"
+          value={signalHealth?.healthy ? 'Healthy' : 'Issues'}
+          subtitle={signalHealth ? `${signalHealth.daysSinceSuccess.toFixed(1)}d since last send` : 'Loading...'}
+          href="/admin/signal"
+          status={signalHealth?.healthy ? 'good' : 'warning'}
+        />
+
+        <StatCard
+          title="News Sources"
+          value={getHealthySourcesCount(newsHealth)}
+          subtitle="sources available"
+          href="/admin/signal"
+          status={newsHealth?.brave || newsHealth?.newsapi || newsHealth?.googleRss ? 'good' : 'error'}
+        />
+
+        <StatCard
+          title="Pending Orders"
+          value={0}
+          subtitle="awaiting generation"
+          href="/admin/reports"
+          status="neutral"
+        />
+      </div>
+
+      {/* Quick Actions */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <QuickAction
+            title="Send Newsletter"
+            description="Preview and send The Signal"
+            href="/admin/signal"
+            icon="📧"
+          />
+          <QuickAction
+            title="Generate Report"
+            description="Create a new validation report"
+            href="/admin/reports?action=new"
+            icon="📊"
+          />
+          <QuickAction
+            title="Chat with Cassidy"
+            description="Get help or run commands"
+            href="/admin/chat"
+            icon="💬"
+          />
         </div>
-        <Link href="/admin/intake">
-          <Button>+ New Order</Button>
-        </Link>
       </div>
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-4">
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500">Total Revenue</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{formatMoney(totalRevenue)}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500">Active Orders</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{activeOrders.length}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm font-medium text-slate-500">Delivered</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{deliveredOrders.length}</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Filters */}
-      <div className="flex gap-2">
-        {filterButtons.map(btn => (
-          <button
-            key={btn.key}
-            onClick={() => setFilter(btn.key)}
-            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-              filter === btn.key
-                ? 'bg-slate-900 text-white'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-            }`}
-          >
-            {btn.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Order List */}
-      {loading ? (
-        <p className="text-slate-500 text-center py-12">Loading orders...</p>
-      ) : orders.length === 0 ? (
-        <Card>
-          <CardContent className="py-12 text-center">
-            <p className="text-slate-500">No orders yet.</p>
-            <Link href="/admin/intake" className="text-blue-600 hover:underline text-sm mt-2 block">
-              Create your first order →
-            </Link>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-slate-100 bg-slate-50/50">
-                <th className="text-left px-4 py-3 font-medium text-slate-500">Order</th>
-                <th className="text-left px-4 py-3 font-medium text-slate-500">Institution</th>
-                <th className="text-left px-4 py-3 font-medium text-slate-500">Contact</th>
-                <th className="text-left px-4 py-3 font-medium text-slate-500">Tier</th>
-                <th className="text-left px-4 py-3 font-medium text-slate-500">Amount</th>
-                <th className="text-left px-4 py-3 font-medium text-slate-500">Status</th>
-                <th className="text-left px-4 py-3 font-medium text-slate-500">Date</th>
-                <th className="px-4 py-3"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map(order => (
-                <tr key={order.id} className="border-b border-slate-100 hover:bg-slate-50/50 transition-colors">
-                  <td className="px-4 py-3">
-                    <span className="font-mono text-xs text-slate-500">
-                      WOS-{shortId(order.id)}
-                    </span>
-                    {order.admin_created && (
-                      <span className="ml-1 text-xs text-slate-400" title="Admin-created">⚙️</span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 font-medium text-slate-900">
-                    {order.institution_name}
-                  </td>
-                  <td className="px-4 py-3 text-slate-600">
-                    {order.contact_name}
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="text-xs font-medium text-slate-600">
-                      {TIER_LABELS[order.service_tier] || order.service_tier}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 font-medium">
-                    {formatMoney(order.amount_cents)}
-                  </td>
-                  <td className="px-4 py-3">
-                    <Badge className={`${STATUS_COLORS[order.order_status] || 'bg-gray-100'} border-0 text-xs`}>
-                      {STATUS_LABELS[order.order_status] || order.order_status}
-                    </Badge>
-                  </td>
-                  <td className="px-4 py-3 text-slate-500">
-                    {formatDate(order.created_at)}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <Link href={`/admin/orders/${order.id}`}>
-                      <Button variant="ghost" size="sm" className="text-xs">
-                        View →
-                      </Button>
-                    </Link>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* Recent Activity */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h2>
+        <div className="space-y-3">
+          {reportStats.recent.map((report: any) => (
+            <div key={report.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
+              <div>
+                <p className="text-sm font-medium text-gray-900">{report.project_name || 'Untitled Report'}</p>
+                <p className="text-xs text-gray-500">{new Date(report.created_at).toLocaleDateString()}</p>
+              </div>
+              <span className="text-xs text-gray-500">{report.status}</span>
+            </div>
+          ))}
+          {reportStats.recent.length === 0 && (
+            <p className="text-sm text-gray-500">No recent reports</p>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
+}
+
+// Helper components
+function StatCard({ 
+  title, 
+  value, 
+  subtitle, 
+  href, 
+  status 
+}: { 
+  title: string; 
+  value: string | number; 
+  subtitle: string; 
+  href: string;
+  status: 'good' | 'warning' | 'error' | 'neutral';
+}) {
+  const statusColors = {
+    good: 'border-green-500',
+    warning: 'border-yellow-500',
+    error: 'border-red-500',
+    neutral: 'border-gray-300',
+  };
+
+  return (
+    <Link href={href}>
+      <div className={`bg-white rounded-lg shadow p-6 border-l-4 ${statusColors[status]} hover:shadow-lg transition-shadow`}>
+        <p className="text-sm font-medium text-gray-600">{title}</p>
+        <p className="text-2xl font-bold text-gray-900 mt-2">{value}</p>
+        <p className="text-xs text-gray-500 mt-1">{subtitle}</p>
+      </div>
+    </Link>
+  );
+}
+
+function QuickAction({ title, description, href, icon }: { title: string; description: string; href: string; icon: string }) {
+  return (
+    <Link href={href}>
+      <div className="border border-gray-200 rounded-lg p-4 hover:border-purple-500 hover:shadow transition-all">
+        <div className="text-2xl mb-2">{icon}</div>
+        <h3 className="font-semibold text-gray-900">{title}</h3>
+        <p className="text-sm text-gray-600 mt-1">{description}</p>
+      </div>
+    </Link>
+  );
+}
+
+// Data fetching helpers
+async function getReportStats() {
+  try {
+    const supabase = getSupabaseServerClient();
+    
+    // Get total count
+    const { count: total } = await supabase
+      .from('validation_projects')
+      .select('*', { count: 'exact', head: true });
+
+    // Get this week's count
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    
+    const { count: thisWeek } = await supabase
+      .from('validation_projects')
+      .select('*', { count: 'exact', head: true })
+      .gte('created_at', oneWeekAgo.toISOString());
+
+    // Get recent reports
+    const { data: recent } = await supabase
+      .from('validation_projects')
+      .select('id, program_name, status, created_at')
+      .order('created_at', { ascending: false })
+      .limit(5);
+
+    return {
+      total: total || 0,
+      thisWeek: thisWeek || 0,
+      recent: recent || [],
+    };
+  } catch (error) {
+    console.error('[Admin] Failed to fetch report stats:', error);
+    return { total: 0, thisWeek: 0, recent: [] };
+  }
+}
+
+function getHealthySourcesCount(newsHealth: any) {
+  if (!newsHealth) return '?';
+  let count = 0;
+  if (newsHealth.brave) count++;
+  if (newsHealth.newsapi) count++;
+  if (newsHealth.googleRss) count++;
+  if (newsHealth.cache) count++;
+  return `${count}/4`;
 }
