@@ -105,7 +105,7 @@ Return ONLY valid JSON in this exact structure:
 
   console.log('[Signal] Generating newsletter content with Claude...');
   const { content } = await callClaude(prompt, {
-    model: 'claude-3-haiku-20240307',  // Using Haiku until API key is upgraded to support Sonnet
+    model: 'claude-sonnet-4-5',
     maxTokens: 2000,
     temperature: 1.0,
   });
