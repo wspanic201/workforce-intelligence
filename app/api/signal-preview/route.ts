@@ -1,151 +1,193 @@
 /**
  * GET /api/signal-preview
  *
- * Generates a preview of the Signal newsletter HTML without sending it.
- * Returns the HTML directly so you can view it in a browser.
+ * Generates and displays a preview of the next Signal newsletter
+ * without sending it. Useful for reviewing before broadcast.
  *
- * Protected by CRON_SECRET (pass as ?secret=... or x-cron-secret header).
- *
- * Usage:
- *   curl -s "http://localhost:3000/api/signal-preview?secret=YOUR_CRON_SECRET" > preview.html && open preview.html
+ * Query params:
+ *   ?secret=<cron-secret> - Required for auth
+ *   ?raw=true - Return raw HTML instead of rendered page
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { generateSignalContent, type NewsItem } from '@/lib/signal/generate-content';
+import { generateSignalContent } from '@/lib/signal/generate-content';
 import { renderSignalEmail } from '@/lib/signal/email-template';
+import { fetchNewsWithFallback } from '@/lib/signal/news-sources';
 
 function isAuthorized(request: NextRequest): boolean {
   const cronSecret = process.env.CRON_SECRET;
-  if (!cronSecret) {
-    console.warn('[Signal Preview] CRON_SECRET not set');
-    return false;
-  }
-  const headerSecret = request.headers.get('x-cron-secret');
-  if (headerSecret === cronSecret) return true;
+  if (!cronSecret) return false;
+  
   const querySecret = request.nextUrl.searchParams.get('secret');
-  if (querySecret === cronSecret) return true;
-  return false;
-}
-
-async function fetchWorkforceNews(): Promise<NewsItem[]> {
-  const apiKey = process.env.BRAVE_API_KEY || process.env.BRAVE_SEARCH_API_KEY;
-  if (!apiKey) {
-    console.warn('[Signal Preview] No Brave API key — using mock data');
-    return getMockNewsItems();
-  }
-
-  const queries = [
-    'workforce development community college training programs 2025',
-    'labor market trends jobs hiring United States 2025',
-    'workforce shortage skilled trades healthcare manufacturing 2025',
-  ];
-
-  const allResults: NewsItem[] = [];
-  const seen = new Set<string>();
-
-  for (const query of queries) {
-    try {
-      const url = `https://api.search.brave.com/res/v1/web/search?q=${encodeURIComponent(query)}&count=4&freshness=pw`;
-      const response = await fetch(url, {
-        headers: {
-          Accept: 'application/json',
-          'Accept-Encoding': 'gzip',
-          'X-Subscription-Token': apiKey,
-        },
-        signal: AbortSignal.timeout(15000),
-      });
-
-      if (!response.ok) {
-        console.warn(`[Signal Preview] Brave HTTP ${response.status}`);
-        continue;
-      }
-
-      const data = await response.json();
-      const results = data.web?.results || [];
-      for (const result of results) {
-        if (seen.has(result.url)) continue;
-        seen.add(result.url);
-        allResults.push({
-          title: result.title || '',
-          url: result.url || '',
-          snippet: result.description || '',
-          date: result.age || undefined,
-        });
-      }
-    } catch (err) {
-      console.warn(`[Signal Preview] Brave query failed`, err);
-    }
-  }
-
-  return allResults.length >= 2 ? allResults.slice(0, 8) : getMockNewsItems();
-}
-
-function getMockNewsItems(): NewsItem[] {
-  return [
-    {
-      title: 'Healthcare sector faces 3.2 million worker shortage by 2026, new report warns',
-      url: 'https://example.com/healthcare-shortage',
-      snippet: 'A new workforce analysis projects a critical gap in healthcare workers, particularly in nursing, medical assisting, and allied health roles across rural and suburban regions.',
-      date: 'this week',
-    },
-    {
-      title: 'Manufacturing automation is creating new roles faster than workers can be trained',
-      url: 'https://example.com/manufacturing-automation',
-      snippet: 'Industry groups report that while automation is displacing some roles, demand for technicians who can operate, maintain, and program new equipment is surging.',
-      date: 'this week',
-    },
-    {
-      title: 'Community colleges see surge in short-term credential enrollment post-pandemic',
-      url: 'https://example.com/cc-credentials',
-      snippet: 'Enrollment in workforce-focused short-term credentials at community colleges is up 18% compared to pre-pandemic levels, with highest demand in healthcare, IT, and skilled trades.',
-      date: 'this week',
-    },
-    {
-      title: 'Workforce Pell expansion opens new funding doors for certificate programs',
-      url: 'https://example.com/pell-expansion',
-      snippet: 'Short-term Pell implementation is moving forward, creating a funding pathway for programs under 600 clock hours that previously had no federal financial aid access.',
-      date: 'this week',
-    },
-    {
-      title: 'Construction sector reports record unfilled positions despite wage increases',
-      url: 'https://example.com/construction-workforce',
-      snippet: 'The construction industry has over 400,000 unfilled positions nationally, with employers reporting that even 20-30% wage increases have not resolved pipeline shortages.',
-      date: 'this week',
-    },
-    {
-      title: 'Cybersecurity bootcamp graduates outpacing four-year degree holders in hiring',
-      url: 'https://example.com/cybersecurity-hiring',
-      snippet: 'Employers report high satisfaction rates with bootcamp and certificate graduates for entry-level security roles, signaling opportunity for community college programs in this space.',
-      date: 'this week',
-    },
-  ];
+  return querySecret === cronSecret;
 }
 
 export async function GET(request: NextRequest) {
   if (!isAuthorized(request)) {
-    return new NextResponse('Unauthorized', { status: 401 });
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
+  const raw = request.nextUrl.searchParams.get('raw') === 'true';
+
   try {
-    console.log('[Signal Preview] Fetching news items...');
-    const newsItems = await fetchWorkforceNews();
+    console.log('[Signal:Preview] Generating preview...');
 
-    console.log('[Signal Preview] Generating content with Claude...');
-    const signalContent = await generateSignalContent(newsItems);
+    // Fetch news
+    const newsResult = await fetchNewsWithFallback();
+    
+    if (newsResult.items.length < 3) {
+      return new NextResponse(
+        `<html><body style="font-family: sans-serif; padding: 40px;">
+          <h1>⚠️ Preview Generation Failed</h1>
+          <p>Insufficient news items: ${newsResult.items.length} found (minimum 3 required)</p>
+          <p>Source attempted: ${newsResult.source}</p>
+          <p>Error: ${newsResult.error || 'Unknown'}</p>
+          <p><a href="/api/signal-health?secret=${request.nextUrl.searchParams.get('secret')}">Check health status</a></p>
+        </body></html>`,
+        { headers: { 'Content-Type': 'text/html' } }
+      );
+    }
 
-    console.log('[Signal Preview] Rendering HTML...');
+    // Generate content
+    const signalContent = await generateSignalContent(newsResult.items);
     const html = renderSignalEmail(signalContent);
 
-    return new NextResponse(html, {
-      status: 200,
-      headers: {
-        'Content-Type': 'text/html; charset=utf-8',
-        'Cache-Control': 'no-store',
-      },
+    if (raw) {
+      // Return raw HTML for email clients
+      return new NextResponse(html, {
+        headers: { 'Content-Type': 'text/html' },
+      });
+    }
+
+    // Wrap in preview interface
+    const previewHtml = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Signal Newsletter Preview</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f5;
+    }
+    .preview-header {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .preview-header h1 {
+      margin: 0 0 10px 0;
+      font-size: 24px;
+    }
+    .preview-info {
+      display: flex;
+      gap: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+    .preview-actions {
+      margin-top: 15px;
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      padding: 8px 16px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      display: inline-block;
+    }
+    .btn-primary {
+      background: #6366f1;
+      color: white;
+    }
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #374151;
+    }
+    .email-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .status {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .status-success { background: #d1fae5; color: #065f46; }
+    .status-warning { background: #fef3c7; color: #92400e; }
+  </style>
+</head>
+<body>
+  <div class="preview-header">
+    <h1>📧 The Signal Newsletter Preview</h1>
+    <div class="preview-info">
+      <div>
+        <strong>Edition:</strong> ${signalContent.edition}
+      </div>
+      <div>
+        <strong>News Source:</strong> 
+        <span class="status ${newsResult.source === 'brave' ? 'status-success' : 'status-warning'}">
+          ${newsResult.source.toUpperCase()}
+        </span>
+      </div>
+      <div>
+        <strong>Stories:</strong> ${newsResult.items.length}
+      </div>
+    </div>
+    <div class="preview-actions">
+      <a href="/api/send-signal?secret=${request.nextUrl.searchParams.get('secret')}&test=true" 
+         class="btn btn-primary">
+        Send Test (to yourself)
+      </a>
+      <a href="/api/signal-preview?secret=${request.nextUrl.searchParams.get('secret')}&raw=true" 
+         class="btn btn-secondary" target="_blank">
+        View Raw HTML
+      </a>
+      <a href="/api/signal-health?secret=${request.nextUrl.searchParams.get('secret')}" 
+         class="btn btn-secondary">
+        Health Check
+      </a>
+    </div>
+  </div>
+  
+  <div class="email-container">
+    ${html}
+  </div>
+</body>
+</html>`;
+
+    return new NextResponse(previewHtml, {
+      headers: { 'Content-Type': 'text/html' },
     });
+
   } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error('[Signal Preview] Failed:', message);
-    return new NextResponse(`Error generating preview: ${message}`, { status: 500 });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error('[Signal:Preview] Failed:', errorMessage);
+
+    return new NextResponse(
+      `<html><body style="font-family: sans-serif; padding: 40px;">
+        <h1>❌ Preview Generation Failed</h1>
+        <pre style="background: #fee; padding: 20px; border-radius: 4px;">${errorMessage}</pre>
+        <p><a href="/api/signal-health?secret=${request.nextUrl.searchParams.get('secret')}">Check health status</a></p>
+      </body></html>`,
+      { 
+        status: 500,
+        headers: { 'Content-Type': 'text/html' },
+      }
+    );
   }
 }

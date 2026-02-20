@@ -1,27 +1,33 @@
 /**
  * POST/GET /api/send-signal
  *
- * Fetches recent workforce news via Brave Search, generates newsletter
- * content with Claude, renders the HTML template, and sends a broadcast
- * to the Resend audience for The Signal by Wavelength.
+ * Production-grade newsletter sender with:
+ * - Multi-source news fetching (Brave → NewsAPI → Google RSS → Cache)
+ * - Send tracking and monitoring
+ * - Telegram alerts on success/failure
+ * - Retry logic with exponential backoff
+ * - Test mode (dry run)
  *
- * Protected by x-cron-secret header (or ?secret= query param for GET cron calls).
- * Vercel cron fires this on a GET request, so both methods are supported.
- *
+ * Protected by x-cron-secret header.
  * Schedule: Mon/Wed/Fri at 8:00 AM CST (13:00 UTC) — see vercel.json
- *
- * TODO: Create the Resend audience for The Signal and set RESEND_AUDIENCE_ID_SIGNAL
- * in Vercel environment variables before going live.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { generateSignalContent, type NewsItem } from '@/lib/signal/generate-content';
+import { generateSignalContent } from '@/lib/signal/generate-content';
 import { renderSignalEmail } from '@/lib/signal/email-template';
+import { fetchNewsWithFallback } from '@/lib/signal/news-sources';
+import { 
+  logSendAttempt, 
+  notifySuccess, 
+  notifyFailure,
+  notifyWarning,
+  type SendAttempt 
+} from '@/lib/signal/send-tracker';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// ── Auth helper ──────────────────────────────────────────────────────────────
+// ── Auth ────────────────────────────────────────────────────────────────────
 
 function isAuthorized(request: NextRequest): boolean {
   const cronSecret = process.env.CRON_SECRET;
@@ -29,177 +35,231 @@ function isAuthorized(request: NextRequest): boolean {
     console.warn('[Signal] CRON_SECRET not set — rejecting all requests');
     return false;
   }
-  // Header check (POST usage and manual curl calls)
+  
   const headerSecret = request.headers.get('x-cron-secret');
   if (headerSecret === cronSecret) return true;
-  // Query param check (Vercel cron GET, useful for quick testing)
+  
   const querySecret = request.nextUrl.searchParams.get('secret');
   if (querySecret === cronSecret) return true;
+  
   return false;
 }
 
-// ── Brave Search ─────────────────────────────────────────────────────────────
+// ── Resend broadcast with retry ─────────────────────────────────────────────
 
-interface BraveSearchResult {
-  title: string;
-  url: string;
-  description: string;
-  age?: string;
-}
+async function sendBroadcastWithRetry(
+  htmlContent: string,
+  edition: string,
+  maxRetries = 2
+): Promise<{ broadcastId: string; recipientCount: number }> {
+  const audienceId = process.env.RESEND_AUDIENCE_ID_SIGNAL;
+  if (!audienceId) {
+    throw new Error('RESEND_AUDIENCE_ID_SIGNAL not set');
+  }
 
-async function fetchWorkforceNews(): Promise<NewsItem[]> {
-  // Support both BRAVE_API_KEY (spec) and BRAVE_SEARCH_API_KEY (existing project convention)
-  const apiKey = process.env.BRAVE_API_KEY || process.env.BRAVE_SEARCH_API_KEY;
-  if (!apiKey) throw new Error('No Brave Search API key set (BRAVE_API_KEY or BRAVE_SEARCH_API_KEY)');
+  let lastError: Error | null = null;
 
-  const queries = [
-    'workforce development community college training programs 2025',
-    'labor market trends jobs hiring United States 2025',
-    'workforce shortage skilled trades healthcare manufacturing 2025',
-  ];
-
-  const allResults: NewsItem[] = [];
-  const seen = new Set<string>();
-
-  for (const query of queries) {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
     try {
-      const url = `https://api.search.brave.com/res/v1/web/search?q=${encodeURIComponent(query)}&count=4&freshness=pw`;
-      const response = await fetch(url, {
-        headers: {
-          Accept: 'application/json',
-          'Accept-Encoding': 'gzip',
-          'X-Subscription-Token': apiKey,
-        },
-        signal: AbortSignal.timeout(15000),
+      if (attempt > 0) {
+        const delayMs = Math.pow(2, attempt) * 1000; // 2s, 4s
+        console.log(`[Signal] Retry ${attempt}/${maxRetries} after ${delayMs}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delayMs));
+      }
+
+      // Create broadcast
+      const broadcastRes = await resend.broadcasts.create({
+        audienceId,
+        from: 'The Signal <hello@signal.withwavelength.com>',
+        subject: `The Signal · ${edition}`,
+        html: htmlContent,
+        name: `The Signal – ${edition}`,
       });
 
-      if (!response.ok) {
-        console.warn(`[Signal] Brave Search HTTP ${response.status} for query: "${query}"`);
-        continue;
+      if (broadcastRes.error) {
+        throw new Error(`Broadcast creation failed: ${broadcastRes.error.message}`);
       }
 
-      const data = await response.json();
-      const results: BraveSearchResult[] = data.web?.results || [];
-
-      for (const result of results) {
-        if (seen.has(result.url)) continue;
-        seen.add(result.url);
-        allResults.push({
-          title: result.title || '',
-          url: result.url || '',
-          snippet: result.description || '',
-          date: result.age || undefined,
-        });
+      const broadcastId = broadcastRes.data?.id;
+      if (!broadcastId) {
+        throw new Error('Broadcast created but returned no ID');
       }
-    } catch (err) {
-      console.warn(`[Signal] Brave query failed: "${query}"`, err);
+
+      // Send immediately
+      const sendRes = await resend.broadcasts.send(broadcastId);
+
+      if (sendRes.error) {
+        throw new Error(`Broadcast send failed: ${sendRes.error.message}`);
+      }
+
+      console.log(`[Signal] ✓ Broadcast sent successfully (ID: ${broadcastId})`);
+
+      // Estimate recipient count (Resend doesn't return exact count immediately)
+      // We could fetch audience contacts, but that's an extra API call
+      const recipientCount = 0; // Placeholder — actual delivery tracked async by Resend
+
+      return { broadcastId, recipientCount };
+
+    } catch (error) {
+      lastError = error as Error;
+      console.error(`[Signal] Broadcast attempt ${attempt + 1} failed:`, error);
     }
   }
 
-  console.log(`[Signal] Fetched ${allResults.length} news items from Brave Search`);
-  return allResults.slice(0, 8); // Cap at 8 items for the prompt
+  throw lastError || new Error('Broadcast failed after all retries');
 }
 
-// ── Resend audience broadcast ────────────────────────────────────────────────
+// ── Main send handler ───────────────────────────────────────────────────────
 
-async function sendBroadcast(htmlContent: string, edition: string): Promise<number> {
-  const audienceId = process.env.RESEND_AUDIENCE_ID_SIGNAL;
-  if (!audienceId) {
-    throw new Error('RESEND_AUDIENCE_ID_SIGNAL not set. Create the audience in Resend and add this env var.');
-  }
+async function handleSendSignal(testMode = false): Promise<{
+  success: boolean;
+  edition: string;
+  newsSource: string;
+  newsItemCount: number;
+  broadcastId?: string;
+  recipientCount?: number;
+  error?: string;
+  durationMs: number;
+}> {
+  const startTime = Date.now();
+  const attemptId = `signal-${Date.now()}`;
 
-  // Fetch all contacts in the audience
-  // Resend audiences: list contacts then send individual emails
-  // (Resend does not have a single "broadcast to audience" API endpoint yet —
-  //  broadcast is done via their "Broadcasts" feature or by iterating contacts)
-  //
-  // Using Resend Broadcasts API (available on paid plans):
-  // POST /broadcasts with audienceId sends to all contacts in that audience.
-
-  const broadcastRes = await resend.broadcasts.create({
-    audienceId,
-    from: 'The Signal <hello@signal.withwavelength.com>',
-    subject: `The Signal · ${edition}`,
-    html: htmlContent,
-    name: `The Signal – ${edition}`,
-  });
-
-  if (broadcastRes.error) {
-    throw new Error(`Resend broadcast creation failed: ${broadcastRes.error.message}`);
-  }
-
-  const broadcastId = broadcastRes.data?.id;
-  if (!broadcastId) {
-    throw new Error('Resend broadcast created but returned no ID');
-  }
-
-  // Send the broadcast immediately (no scheduledAt = send now)
-  const sendRes = await resend.broadcasts.send(broadcastId);
-
-  if (sendRes.error) {
-    throw new Error(`Resend broadcast send failed: ${sendRes.error.message}`);
-  }
-
-  console.log(`[Signal] Broadcast sent. ID: ${broadcastId}`);
-
-  // We don't know the exact recipient count without listing contacts,
-  // but return the broadcast ID for logging.
-  return broadcastId ? 1 : 0; // Placeholder — actual count is async in Resend
-}
-
-// ── Core handler ─────────────────────────────────────────────────────────────
-
-async function handleSendSignal(): Promise<{ success: boolean; edition: string; broadcastId?: string }> {
-  // 1. Fetch news
-  const newsItems = await fetchWorkforceNews();
-  if (newsItems.length < 2) {
-    throw new Error('[Signal] Not enough news items fetched to generate newsletter');
-  }
-
-  // 2. Generate content with Claude
-  const signalContent = await generateSignalContent(newsItems);
-
-  // 3. Render HTML
-  const html = renderSignalEmail(signalContent);
-
-  // 4. Send broadcast via Resend
-  await sendBroadcast(html, signalContent.edition);
-
-  return {
-    success: true,
-    edition: signalContent.edition,
+  let attempt: SendAttempt = {
+    id: attemptId,
+    timestamp: new Date().toISOString(),
+    edition: '',
+    newsSource: '',
+    newsItemCount: 0,
+    status: 'failed',
+    durationMs: 0,
   };
+
+  try {
+    // 1. Fetch news with fallback chain
+    console.log('[Signal] Fetching news...');
+    const newsResult = await fetchNewsWithFallback();
+
+    if (newsResult.items.length < 3) {
+      const error = 'Insufficient news items (minimum 3 required)';
+      attempt = {
+        ...attempt,
+        newsSource: newsResult.source,
+        newsItemCount: newsResult.items.length,
+        error,
+        durationMs: Date.now() - startTime,
+      };
+      await logSendAttempt(attempt);
+      await notifyFailure(attempt);
+      throw new Error(error);
+    }
+
+    // Warn if using fallback
+    if (newsResult.source !== 'brave') {
+      await notifyWarning(
+        `⚠️ Using fallback news source: ${newsResult.source}\n` +
+        `Primary source (Brave) failed. Newsletter will still send.`
+      );
+    }
+
+    // 2. Generate content with Claude
+    console.log('[Signal] Generating content...');
+    const signalContent = await generateSignalContent(newsResult.items);
+
+    // 3. Render HTML
+    const html = renderSignalEmail(signalContent);
+
+    // 4. Send broadcast (or skip if test mode)
+    let broadcastId: string | undefined;
+    let recipientCount: number | undefined;
+
+    if (testMode) {
+      console.log('[Signal] TEST MODE — skipping actual send');
+      broadcastId = 'test-mode';
+      recipientCount = 0;
+    } else {
+      const sendResult = await sendBroadcastWithRetry(html, signalContent.edition);
+      broadcastId = sendResult.broadcastId;
+      recipientCount = sendResult.recipientCount;
+    }
+
+    // 5. Log success
+    attempt = {
+      ...attempt,
+      edition: signalContent.edition,
+      newsSource: newsResult.source,
+      newsItemCount: newsResult.items.length,
+      status: 'success',
+      broadcastId,
+      recipientCount,
+      durationMs: Date.now() - startTime,
+    };
+
+    await logSendAttempt(attempt);
+    
+    if (!testMode) {
+      await notifySuccess(attempt);
+    }
+
+    return {
+      success: true,
+      edition: signalContent.edition,
+      newsSource: newsResult.source,
+      newsItemCount: newsResult.items.length,
+      broadcastId,
+      recipientCount,
+      durationMs: attempt.durationMs,
+    };
+
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    
+    attempt = {
+      ...attempt,
+      status: 'failed',
+      error: errorMessage,
+      durationMs: Date.now() - startTime,
+    };
+
+    await logSendAttempt(attempt);
+    await notifyFailure(attempt);
+
+    return {
+      success: false,
+      edition: attempt.edition || 'unknown',
+      newsSource: attempt.newsSource || 'unknown',
+      newsItemCount: attempt.newsItemCount,
+      error: errorMessage,
+      durationMs: attempt.durationMs,
+    };
+  }
 }
 
-// ── Route handlers ───────────────────────────────────────────────────────────
+// ── Route handlers ──────────────────────────────────────────────────────────
 
 export async function POST(request: NextRequest) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  try {
-    const result = await handleSendSignal();
-    return NextResponse.json({ success: true, edition: result.edition });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error('[Signal] Send failed:', message);
-    return NextResponse.json({ success: false, error: message }, { status: 500 });
-  }
+  const body = await request.json().catch(() => ({}));
+  const testMode = body.testMode === true;
+
+  const result = await handleSendSignal(testMode);
+
+  return NextResponse.json(result, {
+    status: result.success ? 200 : 500,
+  });
 }
 
-// Vercel cron jobs use GET requests
 export async function GET(request: NextRequest) {
   if (!isAuthorized(request)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  try {
-    const result = await handleSendSignal();
-    return NextResponse.json({ success: true, edition: result.edition });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error('[Signal] Send failed:', message);
-    return NextResponse.json({ success: false, error: message }, { status: 500 });
-  }
+  const testMode = request.nextUrl.searchParams.get('test') === 'true';
+  const result = await handleSendSignal(testMode);
+
+  return NextResponse.json(result, {
+    status: result.success ? 200 : 500,
+  });
 }
