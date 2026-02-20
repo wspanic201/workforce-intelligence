@@ -1,26 +1,28 @@
 /**
- * Admin authentication and session management
- * Simple password-based auth for /admin routes
+ * Admin authentication - JWT-based for serverless compatibility
+ * Uses signed cookies instead of in-memory sessions
  */
 
 import { cookies } from 'next/headers';
 import { NextRequest } from 'next/server';
 import crypto from 'crypto';
 
-// Session cookie name
-const SESSION_COOKIE = 'wavelength_admin_session';
-
-// Session duration (4 hours)
-const SESSION_DURATION = 4 * 60 * 60 * 1000;
-
-// In-memory session store (upgrade to Redis/DB for multi-instance later)
-const sessions = new Map<string, { createdAt: number; lastActivity: number }>();
+const SESSION_COOKIE = 'wavelength_admin';
+const SESSION_DURATION = 4 * 60 * 60 * 1000; // 4 hours
 
 /**
- * Hash password with SHA-256 (simple, upgrade to bcrypt for production scale)
+ * Hash password with SHA-256
  */
 function hashPassword(password: string): string {
   return crypto.createHash('sha256').update(password).digest('hex');
+}
+
+/**
+ * Create HMAC signature for session token
+ */
+function signToken(payload: string): string {
+  const secret = process.env.ADMIN_PASSWORD_HASH || 'fallback';
+  return crypto.createHmac('sha256', secret).update(payload).digest('hex');
 }
 
 /**
@@ -28,80 +30,62 @@ function hashPassword(password: string): string {
  */
 export function verifyAdminPassword(password: string): boolean {
   const adminPasswordHash = process.env.ADMIN_PASSWORD_HASH;
-  
   if (!adminPasswordHash) {
     console.error('[Admin Auth] ADMIN_PASSWORD_HASH not set');
     return false;
   }
-
-  const inputHash = hashPassword(password);
-  return inputHash === adminPasswordHash;
+  return hashPassword(password) === adminPasswordHash;
 }
 
 /**
- * Create a new admin session
+ * Create admin session (sets signed cookie)
  */
 export async function createAdminSession(): Promise<string> {
-  const sessionId = crypto.randomBytes(32).toString('hex');
-  const now = Date.now();
-  
-  sessions.set(sessionId, {
-    createdAt: now,
-    lastActivity: now,
-  });
+  const expiresAt = Date.now() + SESSION_DURATION;
+  const payload = `admin:${expiresAt}`;
+  const signature = signToken(payload);
+  const token = `${payload}:${signature}`;
 
-  // Set cookie
   const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE, sessionId, {
+  cookieStore.set(SESSION_COOKIE, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
-    maxAge: SESSION_DURATION / 1000, // in seconds
+    maxAge: SESSION_DURATION / 1000,
     path: '/admin',
   });
 
-  // Cleanup old sessions
-  cleanupExpiredSessions();
-
-  return sessionId;
+  return token;
 }
 
 /**
- * Verify admin session from request
+ * Verify admin session from cookie (works in middleware or server components)
  */
 export async function verifyAdminSession(request?: NextRequest): Promise<boolean> {
-  let sessionId: string | undefined;
+  let token: string | undefined;
 
   if (request) {
-    // Middleware context - read from request cookies
-    sessionId = request.cookies.get(SESSION_COOKIE)?.value;
+    token = request.cookies.get(SESSION_COOKIE)?.value;
   } else {
-    // Server component context - use cookies() function
     const cookieStore = await cookies();
-    sessionId = cookieStore.get(SESSION_COOKIE)?.value;
+    token = cookieStore.get(SESSION_COOKIE)?.value;
   }
 
-  if (!sessionId) {
-    return false;
-  }
+  if (!token) return false;
 
-  const session = sessions.get(sessionId);
-  if (!session) {
-    return false;
-  }
+  const parts = token.split(':');
+  if (parts.length !== 3) return false;
 
-  const now = Date.now();
-  const sessionAge = now - session.createdAt;
+  const [role, expiresAtStr, signature] = parts;
+  const payload = `${role}:${expiresAtStr}`;
 
-  // Check if session expired
-  if (sessionAge > SESSION_DURATION) {
-    sessions.delete(sessionId);
-    return false;
-  }
+  // Verify signature
+  const expectedSig = signToken(payload);
+  if (signature !== expectedSig) return false;
 
-  // Update last activity
-  session.lastActivity = now;
-  sessions.set(sessionId, session);
+  // Check expiry
+  const expiresAt = parseInt(expiresAtStr, 10);
+  if (Date.now() > expiresAt) return false;
 
   return true;
 }
@@ -111,39 +95,5 @@ export async function verifyAdminSession(request?: NextRequest): Promise<boolean
  */
 export async function destroyAdminSession(): Promise<void> {
   const cookieStore = await cookies();
-  const sessionId = cookieStore.get(SESSION_COOKIE)?.value;
-
-  if (sessionId) {
-    sessions.delete(sessionId);
-  }
-
   cookieStore.delete(SESSION_COOKIE);
-}
-
-/**
- * Cleanup expired sessions (run periodically)
- */
-function cleanupExpiredSessions() {
-  const now = Date.now();
-  const expired: string[] = [];
-
-  for (const [sessionId, session] of sessions.entries()) {
-    if (now - session.createdAt > SESSION_DURATION) {
-      expired.push(sessionId);
-    }
-  }
-
-  expired.forEach(id => sessions.delete(id));
-
-  if (expired.length > 0) {
-    console.log(`[Admin Auth] Cleaned up ${expired.length} expired sessions`);
-  }
-}
-
-/**
- * Generate password hash for setup
- * Usage: node -e "const crypto = require('crypto'); console.log(crypto.createHash('sha256').update('your-password').digest('hex'))"
- */
-export function generatePasswordHash(password: string): string {
-  return hashPassword(password);
 }
