@@ -46,8 +46,25 @@ ${getStyles(options)}
   <div class="cover-top-bar"></div>
   <div class="cover-content">
     <div class="cover-logo">
-      <div class="logo-mark">W</div>
-      <div class="logo-text">Wavelength</div>
+      <svg viewBox="0 0 200 48" fill="none" xmlns="http://www.w3.org/2000/svg" width="240" height="58">
+        <defs>
+          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#7c3aed"/>
+            <stop offset="45%" stop-color="#3b82f6"/>
+            <stop offset="100%" stop-color="#14b8a6"/>
+          </linearGradient>
+          <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="#14b8a6" stop-opacity="0.2"/>
+          </linearGradient>
+        </defs>
+        <g transform="translate(4, 10)">
+          <path d="M2,16 C5,10 9,10 12,16 C15,22 19,22 22,16 C25,10 29,10 32,16 C35,22 38,20 38,16" stroke="url(#g2)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+          <path d="M2,14 C5,4 9,4 12,14 C15,24 19,24 22,14 C25,4 29,4 32,14 C35,24 38,22 38,14" stroke="url(#g1)" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <circle cx="2" cy="14" r="2" fill="url(#g1)"/>
+        </g>
+        <text x="52" y="31" font-family="system-ui, -apple-system, sans-serif" font-weight="700" font-size="20" fill="#ffffff" letter-spacing="-0.3">Wavelength</text>
+      </svg>
     </div>
     <div class="cover-divider"></div>
     <h1 class="cover-title">${options.title}</h1>
@@ -167,31 +184,7 @@ body {
 }
 
 .cover-logo {
-  display: flex;
-  align-items: center;
-  gap: 14px;
   margin-bottom: 48px;
-}
-
-.logo-mark {
-  width: 48px;
-  height: 48px;
-  background: linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #14b8a6 100%);
-  color: white;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 24px;
-  letter-spacing: -1px;
-}
-
-.logo-text {
-  font-size: 28px;
-  font-weight: 700;
-  color: #f8fafc;
-  letter-spacing: -0.5px;
 }
 
 .cover-divider {
