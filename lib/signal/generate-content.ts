@@ -105,7 +105,7 @@ Return ONLY valid JSON in this exact structure:
 
   console.log('[Signal] Generating newsletter content with Claude...');
   const { content } = await callClaude(prompt, {
-    model: 'claude-3-5-sonnet-20240620',  // Anthropic's official Sonnet 3.5 model ID
+    model: 'claude-3-haiku-20240307',  // Using Haiku until API key is upgraded to support Sonnet
     maxTokens: 2000,
     temperature: 1.0,
   });

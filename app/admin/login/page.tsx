@@ -35,15 +35,15 @@ export default async function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-gray-800 rounded-lg shadow-xl p-8">
+        <div className="bg-white rounded-lg shadow-xl p-8 border border-gray-200">
           {/* Logo / Header */}
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-white mb-2">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
               Wavelength Admin
             </h1>
-            <p className="text-gray-400 text-sm">
+            <p className="text-gray-500 text-sm">
               Enter your password to continue
             </p>
           </div>
@@ -51,7 +51,7 @@ export default async function AdminLoginPage() {
           {/* Login Form */}
           <form action={handleLogin} className="space-y-6">
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                 Password
               </label>
               <input
@@ -60,14 +60,14 @@ export default async function AdminLoginPage() {
                 name="password"
                 required
                 autoFocus
-                className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full px-4 py-3 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="Enter admin password"
               />
             </div>
 
             <button
               type="submit"
-              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-800"
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-white"
             >
               Sign In
             </button>
@@ -75,14 +75,14 @@ export default async function AdminLoginPage() {
 
           {/* Error Message */}
           <div className="mt-4 text-center">
-            <p className="text-red-400 text-sm" id="error-message">
+            <p className="text-red-500 text-sm" id="error-message">
               {/* JavaScript will populate this */}
             </p>
           </div>
         </div>
 
         {/* Footer */}
-        <p className="text-center text-gray-500 text-sm mt-8">
+        <p className="text-center text-gray-400 text-sm mt-8">
           Wavelength © 2026
         </p>
       </div>
