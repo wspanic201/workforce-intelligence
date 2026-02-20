@@ -4,5 +4,16 @@
       "path": "/api/send-signal",
       "schedule": "0 13 * * 1,3,5"
     }
-  ]
+  ],
+  "functions": {
+    "app/api/send-signal/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/signal-preview/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/admin/chat/route.ts": {
+      "maxDuration": 60
+    }
+  }
 }
