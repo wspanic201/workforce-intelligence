@@ -2,10 +2,11 @@
 
 /**
  * Test script for citation agent
- * Usage: node test-citation-agent.mjs
+ * Usage: npx tsx test-citation-agent.mjs
  */
 
-import { runCitationAgent } from './lib/agents/researchers/citation-agent.ts';
+import { config } from 'dotenv';
+config({ path: '.env.local' });
 
 const FAKE_REGULATORY_ANALYSIS = `# Regulatory & Compliance Analysis
 
@@ -56,6 +57,9 @@ async function testCitationAgent() {
   console.log('');
 
   try {
+    // Dynamic import of TypeScript module
+    const { runCitationAgent } = await import('./lib/agents/researchers/citation-agent.ts');
+    
     const result = await runCitationAgent({
       projectId: 'test-citation-001',
       occupation: 'Cosmetology',
