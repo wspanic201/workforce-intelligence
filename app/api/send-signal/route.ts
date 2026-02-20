@@ -240,29 +240,41 @@ async function handleSendSignal(testMode = false): Promise<{
 // ── Route handlers ──────────────────────────────────────────────────────────
 
 export async function POST(request: NextRequest) {
-  if (!isAuthorized(request)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  try {
+    if (!isAuthorized(request)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const body = await request.json().catch(() => ({}));
+    const testMode = body.testMode === true;
+
+    const result = await handleSendSignal(testMode);
+
+    return NextResponse.json(result, {
+      status: result.success ? 200 : 500,
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error('[Signal Route] Unhandled POST error:', msg);
+    return NextResponse.json({ error: msg, unhandled: true }, { status: 500 });
   }
-
-  const body = await request.json().catch(() => ({}));
-  const testMode = body.testMode === true;
-
-  const result = await handleSendSignal(testMode);
-
-  return NextResponse.json(result, {
-    status: result.success ? 200 : 500,
-  });
 }
 
 export async function GET(request: NextRequest) {
-  if (!isAuthorized(request)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  try {
+    if (!isAuthorized(request)) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const testMode = request.nextUrl.searchParams.get('test') === 'true';
+    const result = await handleSendSignal(testMode);
+
+    return NextResponse.json(result, {
+      status: result.success ? 200 : 500,
+    });
+  } catch (e) {
+    const msg = e instanceof Error ? e.message : String(e);
+    console.error('[Signal Route] Unhandled GET error:', msg);
+    return NextResponse.json({ error: msg, unhandled: true }, { status: 500 });
   }
-
-  const testMode = request.nextUrl.searchParams.get('test') === 'true';
-  const result = await handleSendSignal(testMode);
-
-  return NextResponse.json(result, {
-    status: result.success ? 200 : 500,
-  });
 }
