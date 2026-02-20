@@ -106,31 +106,42 @@ export async function fetchCountyEmployment(
   year?: number,
   quarter?: number
 ): Promise<CountyEmploymentProfile | null> {
-  // Default to most recent likely available quarter (6-month lag)
+  // QCEW data has ~6 month lag. Try quarters going backwards from ~2 quarters ago.
+  // Feb 2026 → Q3 2025 just released, try Q3→Q2→Q1 of prev year
   const now = new Date();
-  const defaultYear = year || now.getFullYear();
-  // Q2 of current year is usually available by December
-  const defaultQtr = quarter || Math.max(1, Math.floor((now.getMonth() - 5) / 3));
+  const candidates: Array<[number, number]> = [];
+  
+  if (year && quarter) {
+    candidates.push([year, quarter]);
+  } else {
+    // Generate candidates: start ~2 quarters back, try 4 options
+    const monthsBack = [6, 9, 12, 3]; // most likely to least likely
+    for (const mb of monthsBack) {
+      const d = new Date(now.getFullYear(), now.getMonth() - mb, 1);
+      const y = d.getFullYear();
+      const q = Math.floor(d.getMonth() / 3) + 1;
+      if (!candidates.some(([cy, cq]) => cy === y && cq === q)) {
+        candidates.push([y, q]);
+      }
+    }
+  }
 
-  // Try fetching with cache
+  // Try each candidate until one works
   const csvText = await withCache<string>(
     'qcew_county',
-    { fips, year: defaultYear, quarter: defaultQtr },
+    { fips, candidates: candidates.map(c => c.join('Q')).join(',') },
     async () => {
-      const url = `https://data.bls.gov/cew/data/api/${defaultYear}/${defaultQtr}/area/${fips}.csv`;
-      console.log(`[QCEW] Fetching ${url}`);
-      const resp = await fetch(url);
-      if (!resp.ok) {
-        // Try previous quarter
-        const prevQtr = defaultQtr > 1 ? defaultQtr - 1 : 4;
-        const prevYear = defaultQtr > 1 ? defaultYear : defaultYear - 1;
-        const fallbackUrl = `https://data.bls.gov/cew/data/api/${prevYear}/${prevQtr}/area/${fips}.csv`;
-        console.log(`[QCEW] Primary failed (${resp.status}), trying ${fallbackUrl}`);
-        const fallback = await fetch(fallbackUrl);
-        if (!fallback.ok) throw new Error(`QCEW API returned ${fallback.status}`);
-        return fallback.text();
+      for (const [y, q] of candidates) {
+        const url = `https://data.bls.gov/cew/data/api/${y}/${q}/area/${fips}.csv`;
+        console.log(`[QCEW] Trying ${url}`);
+        const resp = await fetch(url);
+        if (resp.ok) {
+          console.log(`[QCEW] ✓ Got Q${q} ${y} data`);
+          return resp.text();
+        }
+        console.log(`[QCEW] Q${q} ${y} → ${resp.status}`);
       }
-      return resp.text();
+      throw new Error(`QCEW: No data available for FIPS ${fips} (tried ${candidates.map(([y,q]) => `Q${q} ${y}`).join(', ')})`);
     },
     168 // 7 day cache
   );
