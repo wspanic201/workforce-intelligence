@@ -24,12 +24,8 @@ const SEND_LOG_PATH = path.join(process.cwd(), 'data', 'signal-sends.json');
 
 // ── Log management ──────────────────────────────────────────────────────────
 
-async function ensureDataDir() {
-  const dir = path.dirname(SEND_LOG_PATH);
-  if (!existsSync(dir)) {
-    await mkdir(dir, { recursive: true });
-  }
-}
+// Note: Vercel serverless has a read-only filesystem.
+// Send logging is best-effort — falls back gracefully if writes fail.
 
 async function loadSendLog(): Promise<SendAttempt[]> {
   try {
@@ -45,8 +41,16 @@ async function loadSendLog(): Promise<SendAttempt[]> {
 }
 
 async function saveSendLog(log: SendAttempt[]) {
-  await ensureDataDir();
-  await writeFile(SEND_LOG_PATH, JSON.stringify(log, null, 2));
+  try {
+    const dir = path.dirname(SEND_LOG_PATH);
+    if (!existsSync(dir)) {
+      await mkdir(dir, { recursive: true });
+    }
+    await writeFile(SEND_LOG_PATH, JSON.stringify(log, null, 2));
+  } catch (err) {
+    // Vercel serverless filesystem is read-only — this is expected
+    console.warn('[Signal:Tracker] Could not save send log (read-only fs):', (err as Error).message);
+  }
 }
 
 export async function logSendAttempt(attempt: SendAttempt) {
