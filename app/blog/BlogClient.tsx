@@ -6,6 +6,7 @@ import { Stars } from "@/components/cosmic/Stars";
 import { Aurora } from "@/components/cosmic/Aurora";
 import { AnimateOnScroll, StaggerChildren } from "@/components/motion";
 import { Check, Mail, Radio } from "lucide-react";
+import { InstitutionTypeahead } from "@/components/ui/InstitutionTypeahead";
 
 type Post = {
   slug: string;
@@ -260,12 +261,10 @@ function TuneInForm() {
           onChange={e => setFormData(p => ({ ...p, firstName: e.target.value }))}
           className="flex-1 bg-theme-input border border-theme-base rounded-lg px-4 py-2.5 text-theme-primary placeholder:text-theme-muted text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
         />
-        <input
-          type="text"
-          placeholder="Institution"
+        <InstitutionTypeahead
           value={formData.institution}
-          onChange={e => setFormData(p => ({ ...p, institution: e.target.value }))}
-          className="flex-1 bg-theme-input border border-theme-base rounded-lg px-4 py-2.5 text-theme-primary placeholder:text-theme-muted text-sm focus:outline-none focus:border-purple-500/50 transition-colors"
+          onChange={(val) => setFormData(p => ({ ...p, institution: val }))}
+          placeholder="Institution"
         />
       </div>
       <div className="flex gap-3">
