@@ -10,7 +10,7 @@ import { verifyAdminSession, destroyAdminSession } from '@/lib/auth/admin';
 export default async function AdminLayout({
   children,
 }: {
-  children: React.Node;
+  children: React.ReactNode;
 }) {
   // Verify authentication (redirect handled by middleware, but double-check)
   const isAuthenticated = await verifyAdminSession();

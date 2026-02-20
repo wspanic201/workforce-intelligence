@@ -91,7 +91,7 @@ export default async function AdminDashboardPage() {
           {reportStats.recent.map((report: any) => (
             <div key={report.id} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
               <div>
-                <p className="text-sm font-medium text-gray-900">{report.project_name || 'Untitled Report'}</p>
+                <p className="text-sm font-medium text-gray-900">{report.program_name || 'Untitled Report'}</p>
                 <p className="text-xs text-gray-500">{new Date(report.created_at).toLocaleDateString()}</p>
               </div>
               <span className="text-xs text-gray-500">{report.status}</span>
