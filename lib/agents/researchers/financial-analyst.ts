@@ -174,12 +174,33 @@ export async function runFinancialAnalysis(
       source?: string;
       comps?: Array<{ institution: string; price: number; seatHours?: number; url: string }>;
     };
-  }
+  },
+  programType?: 'initial_licensure' | 'continuing_education' | 'non_licensed' | 'unclear'
 ): Promise<{ data: FinancialProjectionsData; markdown: string }> {
   const startTime = Date.now();
   const supabase = getSupabaseServerClient();
 
   try {
+    // ── Step 0: Fetch programType from regulatory analysis (if available) ─────
+    
+    if (!programType) {
+      // Try to fetch from regulatory component results
+      const { data: regulatoryComponent } = await supabase
+        .from('research_components')
+        .select('content')
+        .eq('project_id', projectId)
+        .eq('component_type', 'regulatory_compliance')
+        .eq('status', 'completed')
+        .single();
+      
+      if (regulatoryComponent?.content?.programType) {
+        programType = regulatoryComponent.content.programType;
+        console.log(`[Financial Agent] Using programType from regulatory analysis: ${programType}`);
+      } else {
+        console.log(`[Financial Agent] No programType available — using default full program model`);
+      }
+    }
+
     // ── Step 1: Determine inputs ──────────────────────────────────────────────
 
     // Parse tuition from string range or use mid
@@ -224,19 +245,23 @@ export async function runFinancialAnalysis(
 
     // ── Step 2: Build deterministic financial model ───────────────────────────
 
-    const financialModel = await buildFinancialModelWithBLS(project.program_name, {
-      programName: project.program_name,
-      tuitionEstimate: tuition,
-      cohortSize,
-      // CE model: seat hours, not credit hours
-      totalSeatHours,
-      totalSeatHoursSource,
-      sectionsPerYear,
-      hasExistingLabSpace,
-      perkinsEligible,
-      deliveryFormat,
-      stateFips,
-    });
+    const financialModel = await buildFinancialModelWithBLS(
+      project.program_name, 
+      {
+        programName: project.program_name,
+        tuitionEstimate: tuition,
+        cohortSize,
+        // CE model: seat hours, not credit hours
+        totalSeatHours,
+        totalSeatHoursSource,
+        sectionsPerYear,
+        hasExistingLabSpace,
+        perkinsEligible,
+        deliveryFormat,
+        stateFips,
+      },
+      programType // Route to CEU model if continuing_education
+    );
 
     console.log(`[Financial Agent] Model complete — viability score: ${financialModel.viabilityScore}/10`);
     console.log(`[Financial Agent] Year 1 net (base): $${financialModel.year1NetPosition.toLocaleString()}`);

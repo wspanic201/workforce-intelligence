@@ -8,10 +8,10 @@
  * CE (Continuing Education) model — uses seat hours, not credit hours.
  * CE programs are non-credit; no credit-hour conversion needed.
  *
- * TODO: Add program type routing for licensure vs continuing ed:
+ * PROGRAM TYPE ROUTING (as of 2026-02-20):
  * - Initial Licensure: High tuition ($8K+), long program (1000+ hours), lower volume
  * - Continuing Ed/CEU: Low cost ($150-300), short program (6-20 hours), high volume
- * Pass RegulatoryComplianceData.programType to route to appropriate financial model.
+ * Regulatory analyst provides programType, which routes to appropriate financial model.
  */
 
 import { getBLSData, getBLSStateData } from '@/lib/apis/bls';
@@ -552,17 +552,225 @@ export function buildFinancialModel(inputs: FinancialModelInputs): FinancialMode
   };
 }
 
+// ─── CEU / Continuing Education Financial Model ─────────────────────────────
+
+/**
+ * Build financial model for continuing education / re-licensure programs.
+ * 
+ * Key differences from full program model:
+ * - Low tuition ($150-300 per student)
+ * - Short duration (6-20 contact hours)
+ * - High volume (100-300 students per year across multiple sections)
+ * - Minimal equipment/lab costs
+ * - Focus on margin per section vs. cohort sustainability
+ * 
+ * Example: Cosmetology CEU renewal (6 hours, $155, 200 students/year)
+ */
+export function buildCEUFinancialModel(inputs: {
+  programName: string;
+  tuitionPerStudent: number; // e.g., $155
+  contactHours: number; // e.g., 6
+  studentsPerSection: number; // e.g., 25
+  sectionsPerYear: number; // e.g., 8 (run frequently for high volume)
+  instructorHourlyRate: number;
+  deliveryFormat: 'in-person' | 'hybrid' | 'online';
+}): FinancialModelOutput {
+  const { tuitionPerStudent, contactHours, studentsPerSection, sectionsPerYear, instructorHourlyRate } = inputs;
+
+  // Revenue calculations
+  const totalStudentsYear1 = studentsPerSection * sectionsPerYear;
+  const tuitionRevenueYear1 = totalStudentsYear1 * tuitionPerStudent;
+
+  // Cost calculations (minimal overhead for CEU programs)
+  const instructorCostPerSection = contactHours * instructorHourlyRate;
+  const totalInstructorCost = instructorCostPerSection * sectionsPerYear;
+  
+  // Materials per student (printed handouts, certificates, etc.)
+  const materialsPerStudent = 5; // $5 per student for handouts
+  const totalMaterialsCost = totalStudentsYear1 * materialsPerStudent;
+  
+  // Coordinator overhead (fractional - CEU programs don't need dedicated staff)
+  const coordinatorOverhead = 2000; // ~$2K/year for scheduling/registration
+  
+  // Marketing (minimal for CEU - mostly word of mouth + state board listings)
+  const marketingCost = 500;
+  
+  // Regulatory (if state-approved CEU provider)
+  const regulatoryCost = 300;
+  
+  // Total expenses
+  const totalExpensesYear1 = totalInstructorCost + totalMaterialsCost + coordinatorOverhead + marketingCost + regulatoryCost;
+  
+  // Net position
+  const netPositionYear1 = tuitionRevenueYear1 - totalExpensesYear1;
+  const marginYear1 = netPositionYear1 / tuitionRevenueYear1;
+  
+  // Year 2-3 projections (assume 10% growth per year as word spreads)
+  const totalStudentsYear2 = Math.round(totalStudentsYear1 * 1.10);
+  const totalStudentsYear3 = Math.round(totalStudentsYear2 * 1.10);
+  
+  const tuitionRevenueYear2 = totalStudentsYear2 * tuitionPerStudent;
+  const tuitionRevenueYear3 = totalStudentsYear3 * tuitionPerStudent;
+  
+  // Expenses scale linearly with student count (more sections needed)
+  const sectionsYear2 = Math.ceil(totalStudentsYear2 / studentsPerSection);
+  const sectionsYear3 = Math.ceil(totalStudentsYear3 / studentsPerSection);
+  
+  const totalExpensesYear2 = 
+    (contactHours * instructorHourlyRate * sectionsYear2) +
+    (totalStudentsYear2 * materialsPerStudent) +
+    coordinatorOverhead +
+    marketingCost +
+    regulatoryCost;
+    
+  const totalExpensesYear3 = 
+    (contactHours * instructorHourlyRate * sectionsYear3) +
+    (totalStudentsYear3 * materialsPerStudent) +
+    coordinatorOverhead +
+    marketingCost +
+    regulatoryCost;
+  
+  const netPositionYear2 = tuitionRevenueYear2 - totalExpensesYear2;
+  const netPositionYear3 = tuitionRevenueYear3 - totalExpensesYear3;
+  
+  const marginYear2 = netPositionYear2 / tuitionRevenueYear2;
+  const marginYear3 = netPositionYear3 / tuitionRevenueYear3;
+  
+  // Build output format matching full program model
+  const baseY1: YearlyProjection = {
+    year: 1,
+    enrollment: totalStudentsYear1,
+    revenue: {
+      tuition: tuitionRevenueYear1,
+      perkinsV: 0, // CEU programs typically don't qualify for Perkins
+      total: tuitionRevenueYear1,
+    },
+    expenses: {
+      instructorSalaries: totalInstructorCost,
+      labSupplies: totalMaterialsCost,
+      programCoordinator: coordinatorOverhead,
+      marketing: marketingCost,
+      regulatoryFees: regulatoryCost,
+      total: totalExpensesYear1,
+    },
+    netPosition: netPositionYear1,
+    margin: marginYear1,
+  };
+
+  const baseY2: YearlyProjection = {
+    year: 2,
+    enrollment: totalStudentsYear2,
+    revenue: { tuition: tuitionRevenueYear2, perkinsV: 0, total: tuitionRevenueYear2 },
+    expenses: {
+      instructorSalaries: contactHours * instructorHourlyRate * sectionsYear2,
+      labSupplies: totalStudentsYear2 * materialsPerStudent,
+      programCoordinator: coordinatorOverhead,
+      marketing: marketingCost,
+      regulatoryFees: regulatoryCost,
+      total: totalExpensesYear2,
+    },
+    netPosition: netPositionYear2,
+    margin: marginYear2,
+  };
+
+  const baseY3: YearlyProjection = {
+    year: 3,
+    enrollment: totalStudentsYear3,
+    revenue: { tuition: tuitionRevenueYear3, perkinsV: 0, total: tuitionRevenueYear3 },
+    expenses: {
+      instructorSalaries: contactHours * instructorHourlyRate * sectionsYear3,
+      labSupplies: totalStudentsYear3 * materialsPerStudent,
+      programCoordinator: coordinatorOverhead,
+      marketing: marketingCost,
+      regulatoryFees: regulatoryCost,
+      total: totalExpensesYear3,
+    },
+    netPosition: netPositionYear3,
+    margin: marginYear3,
+  };
+
+  // Break-even: very low for CEU programs (typically 5-10 students)
+  const fixedCosts = coordinatorOverhead + marketingCost + regulatoryCost;
+  const variableCostPerStudent = materialsPerStudent + (instructorCostPerSection / studentsPerSection);
+  const contributionMargin = tuitionPerStudent - variableCostPerStudent;
+  const breakEven = Math.ceil(fixedCosts / contributionMargin);
+
+  // Viability score for CEU programs (different criteria than full programs)
+  let score = 10; // Start optimistic - CEU programs are usually profitable
+  let rationale = '';
+  
+  if (marginYear1 < 0.50) {
+    score -= 3;
+    rationale += `Year 1 margin ${(marginYear1 * 100).toFixed(1)}% below 50% target for CEU programs. `;
+  } else {
+    rationale += `Year 1 margin ${(marginYear1 * 100).toFixed(1)}% exceeds 50% — strong profitability. `;
+  }
+  
+  if (netPositionYear1 < 5000) {
+    score -= 2;
+    rationale += `Year 1 net $${netPositionYear1.toLocaleString()} below $5K minimum threshold. `;
+  } else {
+    rationale += `Year 1 net $${netPositionYear1.toLocaleString()} exceeds $5K minimum. `;
+  }
+  
+  if (breakEven > 15) {
+    score -= 2;
+    rationale += `Break-even ${breakEven} students seems high for CEU model. `;
+  } else {
+    rationale += `Break-even ${breakEven} students — easily achievable. `;
+  }
+
+  rationale += `CEU programs are low-overhead, high-margin offerings ideal for community college CE portfolios.`;
+
+  return {
+    scenarios: {
+      base: baseY1,
+      pessimistic: baseY1, // CEU models don't typically need pessimistic scenarios
+      optimistic: baseY1,
+    },
+    year2Base: baseY2,
+    year3Base: baseY3,
+    year2Pessimistic: baseY2,
+    year2Optimistic: baseY2,
+    year3Pessimistic: baseY3,
+    year3Optimistic: baseY3,
+    breakEvenEnrollment: breakEven,
+    perkinsImpact: null,
+    year1NetPosition: netPositionYear1,
+    viabilityScore: Math.max(1, Math.min(10, score)),
+    viabilityRationale: rationale,
+  };
+}
+
 /**
  * Convenience: fetch BLS rate and run model in one call.
  * Used by the financial analyst agent.
+ * 
+ * Now routes to appropriate model based on programType from regulatory analyst.
  */
 export async function buildFinancialModelWithBLS(
   programName: string,
-  inputs: Omit<FinancialModelInputs, 'adjunctHourlyRate' | 'adjunctHourlyRateSource'>
+  inputs: Omit<FinancialModelInputs, 'adjunctHourlyRate' | 'adjunctHourlyRateSource'>,
+  programType?: 'initial_licensure' | 'continuing_education' | 'non_licensed' | 'unclear'
 ): Promise<FinancialModelOutput> {
   const socMapping = mapProgramToInstructorSoc(programName);
   const { hourlyRate, source } = await fetchAdjunctHourlyRate(socMapping.soc, inputs.stateFips);
 
+  // Route to appropriate financial model based on program type
+  if (programType === 'continuing_education') {
+    // CEU/Re-licensure model: low cost, high volume, short duration
+    return buildCEUFinancialModel({
+      programName,
+      tuitionPerStudent: inputs.tuitionEstimate,
+      contactHours: inputs.totalSeatHours,
+      studentsPerSection: 25, // Typical CEU class size
+      sectionsPerYear: inputs.sectionsPerYear,
+      instructorHourlyRate: hourlyRate,
+      deliveryFormat: inputs.deliveryFormat,
+    });
+  }
+
+  // Default: Full program model (initial licensure or non-licensed long programs)
   return buildFinancialModel({
     ...inputs,
     adjunctHourlyRate: hourlyRate,
