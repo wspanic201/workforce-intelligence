@@ -124,7 +124,7 @@ const services = [
       'Stops you from chasing grants you won\u2019t win and surfaces the ones your programs are actually built for.',
     cta: {
       label: 'View Sample Report',
-      href: '/report/sinclair-grant-scan',
+      href: '/report/valencia-grant-scan',
       primary: true,
     },
   },
