@@ -229,19 +229,26 @@ Return ONLY valid JSON:
   // Parse the scored opportunities
   let result: any = {};
   try {
-    const jsonStr = scoringResult.content.match(/\{[\s\S]*\}/)?.[0];
+    // Strip markdown code fences if present
+    let content = scoringResult.content
+      .replace(/^```(?:json)?\s*\n?/gm, '')
+      .replace(/\n?```\s*$/gm, '')
+      .trim();
+    const jsonStr = content.match(/\{[\s\S]*\}/)?.[0];
     if (jsonStr) {
       result = JSON.parse(jsonStr);
     }
   } catch (e) {
     console.error('[Phase 4] Failed to parse scoring output, attempting recovery...');
     try {
-      // Try extracting the array directly
-      const arrayMatch = scoringResult.content.match(/"scoredOpportunities"\s*:\s*(\[[\s\S]*?\])\s*[,}]/);
+      // Try extracting the array directly (use greedy match for nested objects)
+      const arrayMatch = scoringResult.content.match(/"scoredOpportunities"\s*:\s*(\[[\s\S]*\])\s*[,}]/);
       if (arrayMatch) {
         result = { scoredOpportunities: JSON.parse(arrayMatch[1]) };
       }
-    } catch {}
+    } catch (e2) {
+      console.error('[Phase 4] Recovery also failed:', (e2 as Error).message?.slice(0, 200));
+    }
   }
 
   const scoredOpportunities: ScoredOpportunity[] = (result.scoredOpportunities || []).map((opp: any, i: number) => ({

@@ -278,18 +278,25 @@ CRITICAL:
   // Parse synthesis
   let synthesized: any = {};
   try {
-    const jsonStr = synthesisResult.content.match(/\{[\s\S]*\}/)?.[0];
+    // Strip markdown code fences if present
+    let content = synthesisResult.content
+      .replace(/^```(?:json)?\s*\n?/gm, '')
+      .replace(/\n?```\s*$/gm, '')
+      .trim();
+    const jsonStr = content.match(/\{[\s\S]*\}/)?.[0];
     if (jsonStr) {
       synthesized = JSON.parse(jsonStr);
     }
   } catch (e) {
     console.error('[Phase 6] Failed to parse synthesis output, attempting recovery...');
     try {
-      const arrayMatch = synthesisResult.content.match(/"hiddenOpportunities"\s*:\s*(\[[\s\S]*?\])\s*[,}]/);
+      const arrayMatch = synthesisResult.content.match(/"hiddenOpportunities"\s*:\s*(\[[\s\S]*\])\s*[,}]/);
       if (arrayMatch) {
         synthesized = { hiddenOpportunities: JSON.parse(arrayMatch[1]) };
       }
-    } catch {}
+    } catch (e2) {
+      console.error('[Phase 6] Recovery also failed:', (e2 as Error).message?.slice(0, 200));
+    }
   }
 
   // Normalize opportunities
