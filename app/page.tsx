@@ -113,7 +113,7 @@ function StaticHero() {
           className="text-gradient-cosmic font-heading font-bold leading-[1.05]"
           style={{ fontSize: 'clamp(2.4rem, 5vw + 0.5rem, 4.2rem)' }}
         >
-          Workforce program intelligence delivered in days, not months.
+          Your labor market changed. Did your program portfolio?
         </h1>
 
         {/* Subhead */}
