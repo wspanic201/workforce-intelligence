@@ -9,9 +9,18 @@ export async function POST(request: NextRequest) {
     const { name, email, institution, state, source } = body;
 
     const isLeadMagnet = source === 'lead-magnet-checklist';
+    const isFooterNewsletter = source === 'footer-newsletter';
 
-    // Lead magnet only needs email + institution
-    if (isLeadMagnet) {
+    // Footer newsletter only needs email
+    if (isFooterNewsletter) {
+      if (!email) {
+        return NextResponse.json(
+          { success: false, message: 'Email is required' },
+          { status: 400 }
+        );
+      }
+    } else if (isLeadMagnet) {
+      // Lead magnet only needs email + institution
       if (!email || !institution) {
         return NextResponse.json(
           { success: false, message: 'Missing required fields' },
@@ -29,6 +38,68 @@ export async function POST(request: NextRequest) {
     }
 
     console.log('[Lead captured]', { name, email, institution, state, source, timestamp: new Date().toISOString() });
+
+    if (isFooterNewsletter) {
+      // ── Footer newsletter: Simple email subscription ──
+
+      // Notify Matt
+      try {
+        await resend.emails.send({
+          from: 'Wavelength <hello@signal.withwavelength.com>',
+          to: 'hello@withwavelength.com',
+          subject: `📧 Newsletter Signup: ${email}`,
+          html: `
+            <div style="font-family: -apple-system, sans-serif; max-width: 500px;">
+              <h2 style="color: #14b8a6;">New Newsletter Subscriber</h2>
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr><td style="padding: 8px 0; color: #666; width: 120px;">Email</td><td style="padding: 8px 0; font-weight: 600;"><a href="mailto:${email}">${email}</a></td></tr>
+                <tr><td style="padding: 8px 0; color: #666;">Source</td><td style="padding: 8px 0; font-weight: 600;">Footer Newsletter Form</td></tr>
+              </table>
+              <p style="color: #999; font-size: 13px; margin-top: 20px;">Submitted at ${new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' })} CT</p>
+            </div>
+          `,
+        });
+      } catch (emailErr) {
+        console.error('[Footer newsletter notification failed]', emailErr);
+      }
+
+      // Send welcome email
+      try {
+        await resend.emails.send({
+          from: 'Wavelength <hello@signal.withwavelength.com>',
+          to: email,
+          subject: `Welcome to Wavelength updates`,
+          html: `
+            <div style="font-family: -apple-system, sans-serif; max-width: 560px; margin: 0 auto;">
+              <div style="background: linear-gradient(135deg, #7c3aed, #3b82f6, #14b8a6); padding: 2px; border-radius: 12px;">
+                <div style="background: #050510; border-radius: 10px; padding: 32px;">
+                  <p style="color: #14b8a6; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; margin: 0 0 12px 0;">Wavelength</p>
+                  <h1 style="color: #fff; font-size: 24px; margin: 0 0 8px 0;">Thanks for subscribing.</h1>
+                  <p style="color: rgba(255,255,255,0.7); font-size: 15px; line-height: 1.6; margin: 0 0 24px 0;">
+                    You're now on the list for Wavelength updates — we'll keep you posted on new resources, services, and workforce intelligence insights.
+                  </p>
+                  <div style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 20px; margin-bottom: 24px;">
+                    <p style="color: rgba(255,255,255,0.5); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0;">In the meantime</p>
+                    <p style="color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.6; margin: 0 0 16px 0;">
+                      Curious what program opportunities exist in your region? Start with a free <strong style="color: #fff;">Pell Readiness Check</strong> — takes 5 minutes, no commitment.
+                    </p>
+                    <a href="https://withwavelength.com/pell" style="display: inline-block; background: linear-gradient(135deg, #7c3aed, #3b82f6); color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600;">Get Your Free Pell Check →</a>
+                  </div>
+                  <p style="color: rgba(255,255,255,0.4); font-size: 12px; margin-top: 24px; line-height: 1.6;">
+                    Questions? Reply to this email — it goes straight to our team.<br/>
+                    Wavelength · <a href="https://withwavelength.com" style="color: #14b8a6;">withwavelength.com</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          `,
+        });
+      } catch (emailErr) {
+        console.error('[Footer newsletter welcome email failed]', emailErr);
+      }
+
+      return NextResponse.json({ success: true, message: 'Subscribed! Check your inbox.' });
+    }
 
     if (isLeadMagnet) {
       // ── Lead magnet: "5 Signs Your Program Portfolio Has Gaps" ──

@@ -5,6 +5,7 @@ import "./globals.css";
 import { NavBar } from "@/components/cosmic/NavBar";
 import { WavelengthMark } from "@/components/cosmic/WavelengthLogo";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { FooterNewsletter } from "@/components/FooterNewsletter";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -109,7 +110,7 @@ export default function RootLayout({
                   Wavelength
                 </p>
                 <p className="text-sm text-theme-muted mt-2 leading-relaxed max-w-xs">
-                  Helping community colleges build the programs their communities actually need. Data-backed program development starts here.
+                  Workforce program intelligence for community colleges. From opportunity discovery through program launch.
                 </p>
               </div>
 
@@ -153,32 +154,29 @@ export default function RootLayout({
                 <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-4">Resources</p>
                 <div className="space-y-2.5">
                   <Link href="/samples" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    Sample Report
+                    Sample Reports
                   </Link>
                   <Link href="/blog" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
                     Blog
                   </Link>
-                  <Link href="/#how-it-works" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    How It Works
+                  <Link href="/signal" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    The Signal Newsletter
                   </Link>
-                  <Link href="/#faq" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    FAQ
+                  <Link href="/contact" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    Contact Us
                   </Link>
                 </div>
               </div>
 
-              {/* Contact */}
+              {/* Get in Touch */}
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-4">Get in Touch</p>
+                <div className="mb-5">
+                  <FooterNewsletter />
+                </div>
                 <div className="space-y-2.5">
-                  <Link href="/contact" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    Contact Us
-                  </Link>
                   <Link href="/pell" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
                     Start Free →
-                  </Link>
-                  <Link href="/signal" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    The Signal Newsletter
                   </Link>
                 </div>
               </div>
@@ -186,9 +184,20 @@ export default function RootLayout({
 
             <div className="mt-10 pt-8 border-t border-theme-subtle">
               <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <p className="text-xs text-theme-muted">
-                  © {new Date().getFullYear()} Wavelength. All rights reserved.
-                </p>
+                <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+                  <p className="text-xs text-theme-muted">
+                    © {new Date().getFullYear()} Wavelength. All rights reserved.
+                  </p>
+                  <div className="flex items-center gap-2 text-xs text-theme-muted">
+                    <Link href="/privacy" className="hover:text-theme-primary transition-colors">
+                      Privacy Policy
+                    </Link>
+                    <span>·</span>
+                    <Link href="/terms" className="hover:text-theme-primary transition-colors">
+                      Terms of Service
+                    </Link>
+                  </div>
+                </div>
                 <div className="flex items-center gap-1">
                   <span className="text-xs text-theme-muted">Built in Iowa 🌽 · Tuned to 📡</span>
                 </div>
