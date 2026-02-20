@@ -77,7 +77,7 @@ const ADDONS = [
   {
     name: 'Curriculum Drift Analysis',
     description: 'Annual review that flags where course content has fallen behind employer expectations and industry standards.',
-    price: 'from $495',
+    price: '$495',
     href: '/drift',
   },
 ];

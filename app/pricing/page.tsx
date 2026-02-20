@@ -24,7 +24,6 @@ interface Service {
   category: 'core' | 'addon';
   cta: string;
   ctaStyle: 'primary' | 'secondary' | 'ghost';
-  badge?: string;
   sampleReport?: string;
 }
 
@@ -44,7 +43,6 @@ const SERVICES: Service[] = [
     category: 'addon',
     cta: 'Start Free Check',
     ctaStyle: 'primary',
-    badge: 'FREE',
     sampleReport: '/report/pell-demo',
   },
   {
@@ -84,7 +82,6 @@ const SERVICES: Service[] = [
     category: 'core',
     cta: 'Get Started',
     ctaStyle: 'primary',
-    badge: 'MOST POPULAR',
     sampleReport: '/report/kirkwood-pharmtech-validation',
   },
   {
@@ -392,29 +389,15 @@ export default function PricingPage() {
 function ServiceCard({ service }: { service: Service }) {
   return (
     <div className="card-cosmic rounded-2xl p-6 md:p-8 flex flex-col relative">
-      {service.badge && (
-        <div className="absolute -top-3 left-6">
-          <span className={`inline-block text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full ${
-            service.badge === 'FREE'
-              ? 'bg-teal-500/20 text-teal-400 border border-teal-500/30'
-              : service.badge === 'MOST POPULAR'
-              ? 'bg-purple-500/20 text-purple-400 border border-purple-500/30'
-              : 'bg-blue-500/20 text-blue-400 border border-blue-500/30'
-          }`}>
-            {service.badge}
-          </span>
-        </div>
-      )}
-
       <div className="mb-4">
         <h3 className="font-heading font-bold text-theme-primary text-lg mb-1">{service.name}</h3>
         <p className="text-theme-tertiary text-sm leading-relaxed">{service.description}</p>
       </div>
 
       <div className="mb-5">
-        <span className="text-3xl font-bold text-theme-primary">{service.price}</span>
+        <span className="text-2xl font-mono font-bold text-gradient-cosmic">{service.price}</span>
         {service.priceNote && (
-          <span className="text-theme-muted text-sm ml-1">/{service.priceNote}</span>
+          <span className="text-theme-muted text-xs font-mono ml-1">/{service.priceNote}</span>
         )}
         <div className="text-theme-muted text-xs mt-1 flex items-center gap-1">
           <Clock className="h-3 w-3" /> {service.turnaround}
