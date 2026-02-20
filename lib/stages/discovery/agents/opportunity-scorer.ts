@@ -175,7 +175,7 @@ CRITICAL RULES:
 - Maximum 8 recommendations
 - "What Validation Would Confirm" must contain questions that genuinely require Stage 2 to answer
 
-Return ONLY valid JSON:
+Return ONLY valid JSON — no markdown fences, no commentary before or after the JSON:
 {
   "scoredOpportunities": [
     {
@@ -223,7 +223,7 @@ Return ONLY valid JSON:
     { "programTitle": "Another Program", "compositeScore": 5.1, "tier": "emerging", "included": false }
   ]
 }`,
-    { maxTokens: 8000, temperature: 0.4 }
+    { maxTokens: 12000, temperature: 0.4 }
   );
 
   // Parse the scored opportunities

@@ -231,7 +231,7 @@ Score each 1-10:
 
 Composite = (demand × 0.30) + (gap × 0.25) + (revenue × 0.20) + (wages × 0.15) + (speed × 0.10)
 
-Return ONLY valid JSON:
+Return ONLY valid JSON — no markdown fences, no commentary before or after the JSON:
 {
   "hiddenOpportunities": [
     {
@@ -272,7 +272,7 @@ CRITICAL:
 - Every evidence point MUST come from the search findings above — do NOT fabricate
 - Think CREATIVELY but stay GROUNDED in data
 - Prefer white_space opportunities where no local provider exists`,
-    { maxTokens: 4000, temperature: 0.6 }
+    { maxTokens: 8000, temperature: 0.6 }
   );
 
   // Parse synthesis
