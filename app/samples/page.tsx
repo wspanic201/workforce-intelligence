@@ -147,7 +147,7 @@ const services = [
       'Catches curriculum drift before it shows up in placement rates — giving faculty and curriculum staff a specific, evidence-based update agenda.',
     cta: {
       label: 'View Sample Report',
-      href: '/report/acc-cybersecurity-drift',
+      href: '/report/bellevue-cybersecurity-drift',
       primary: true,
     },
   },

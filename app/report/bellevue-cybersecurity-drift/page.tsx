@@ -7,15 +7,15 @@ import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
 import { PrintButton } from '@/components/ui/PrintButton';
 
 export const metadata: Metadata = {
-  title: 'Curriculum Drift Analysis — Austin Community College Cybersecurity AAS | Wavelength Sample Report',
+  title: 'Curriculum Drift Analysis — Bellevue College Cybersecurity AAS | Wavelength Sample Report',
   description:
-    'Sample Curriculum Drift Analysis for Austin Community College Cybersecurity AAS. Drift score 42/100 — 13 competency gaps identified, critical cloud-native and SIEM alignment issues.',
-  alternates: { canonical: 'https://withwavelength.com/report/acc-cybersecurity-drift' },
+    'Sample Curriculum Drift Analysis for Bellevue College Cybersecurity AAS. Drift score 42/100 — 13 competency gaps identified, critical cloud-native and SIEM alignment issues.',
+  alternates: { canonical: 'https://withwavelength.com/report/bellevue-cybersecurity-drift' },
   openGraph: {
-    title: 'Curriculum Drift Analysis — ACC Cybersecurity AAS',
+    title: 'Curriculum Drift Analysis — Bellevue College Cybersecurity AAS',
     description:
-      '42/100 drift score. 13 critical competency gaps between curriculum and Austin tech employer requirements.',
-    url: 'https://withwavelength.com/report/acc-cybersecurity-drift',
+      '42/100 drift score. 13 critical competency gaps between curriculum and Seattle tech employer requirements.',
+    url: 'https://withwavelength.com/report/bellevue-cybersecurity-drift',
     type: 'article',
   },
 };
@@ -61,31 +61,31 @@ const competencyGaps = [
     severity: 'Critical' as const,
     curriculumTeaches: 'Basic firewall configuration and perimeter defense models',
     employersRequire: 'Cloud-native SASE architecture (Secure Access Service Edge) with zero-trust principles',
-    gap: 'Curriculum is rooted in on-premises perimeter security. Austin employers (Tesla, Dell, Apple) have moved to cloud-first infrastructure where traditional firewall config is secondary to identity-based access controls, cloud-native firewalls (AWS Network Firewall, Azure Firewall), and SASE platforms (Zscaler, Palo Alto Prisma Access).',
+    gap: 'Curriculum is rooted in on-premises perimeter security. Seattle employers (Microsoft, Amazon, Google) have moved to cloud-first infrastructure where traditional firewall config is secondary to identity-based access controls, cloud-native firewalls (AWS Network Firewall, Azure Firewall), and SASE platforms (Zscaler, Palo Alto Prisma Access).',
     niceFramework: 'NICE SP-SYS-001: Applies system security principles to architecture design',
   },
   {
     num: 2,
     severity: 'Critical' as const,
     curriculumTeaches: 'Wireshark packet capture and basic network analysis',
-    employersRequire: 'SIEM correlation and threat hunting (Splunk, Elastic Security, CrowdStrike Falcon)',
-    gap: 'Students learn Wireshark packet inspection but not how to operationalize detection at enterprise scale. Job postings from Indeed, Dell, and Samsung require Splunk query language (SPL), Elastic SIEM correlation, and CrowdStrike EDR investigation — none of which are in the current curriculum.',
+    employersRequire: 'SIEM correlation and threat hunting (Splunk, Elastic Security, Microsoft Sentinel)',
+    gap: 'Students learn Wireshark packet inspection but not how to operationalize detection at enterprise scale. Job postings from Microsoft, Amazon, and T-Mobile require Splunk query language (SPL), Elastic SIEM correlation, and Microsoft Sentinel KQL queries — none of which are in the current curriculum.',
     niceFramework: 'NICE OM-ANA-001: Analyzes data/information from multiple sources to identify anomalies',
   },
   {
     num: 3,
     severity: 'Critical' as const,
     curriculumTeaches: 'Windows Active Directory and Group Policy management',
-    employersRequire: 'Identity and Access Management (IAM) in AWS/Azure, Okta, Azure AD/Entra ID',
-    gap: 'While AD fundamentals remain relevant, the market has shifted to cloud IAM platforms. Employers expect knowledge of AWS IAM policies, Azure AD Conditional Access, SAML/OAuth integration, and identity governance tools. ACC curriculum does not cover cloud IAM architecture.',
+    employersRequire: 'Identity and Access Management (IAM) in AWS/Azure, Okta, Microsoft Entra ID',
+    gap: 'While AD fundamentals remain relevant, the market has shifted to cloud IAM platforms. Employers expect knowledge of AWS IAM policies, Azure AD Conditional Access (now Entra ID), SAML/OAuth integration, and identity governance tools. Bellevue curriculum does not cover cloud IAM architecture.',
     niceFramework: 'NICE PR-INF-001: Manages access controls and user permissions',
   },
   {
     num: 4,
     severity: 'Critical' as const,
     curriculumTeaches: 'CompTIA Security+ exam prep (general security concepts)',
-    employersRequire: 'Cloud security certifications (AWS Security Specialty, Azure Security Engineer, CCSP)',
-    gap: 'Security+ is still valued as a foundation, but Austin\'s tech employers increasingly list cloud-specific certifications. Tesla, Oracle, and IBM require AWS Security Specialty or equivalent. The curriculum prepares for Security+ but does not integrate cloud security cert prep.',
+    employersRequire: 'Cloud security certifications (AWS Security Specialty, Azure Security Engineer, Microsoft SC-200)',
+    gap: 'Security+ is still valued as a foundation, but Seattle tech employers increasingly list cloud-specific certifications. Microsoft, Amazon, and Google require AWS Security Specialty, Azure Security Engineer, or Microsoft SC-200 (Security Operations Analyst). The curriculum prepares for Security+ but does not integrate cloud security cert prep.',
     niceFramework: 'NICE PR-CDA-001: Applies security controls to cloud environments',
   },
   {
@@ -109,7 +109,7 @@ const competencyGaps = [
     severity: 'Moderate' as const,
     curriculumTeaches: 'Basic scripting (PowerShell, Bash) for automation tasks',
     employersRequire: 'Python for security automation, API integration, and threat intelligence',
-    gap: 'PowerShell and Bash are covered lightly, but Python is the industry standard for security automation (SOAR platforms, API queries, threat intel feeds). Job postings from Dell, Samsung, and Indeed list Python as required or strongly preferred. ACC does not emphasize Python in the security context.',
+    gap: 'PowerShell and Bash are covered lightly, but Python is the industry standard for security automation (SOAR platforms, API queries, threat intel feeds). Job postings from Microsoft, Amazon, and Google list Python as required or strongly preferred. Bellevue does not emphasize Python in the security context.',
     niceFramework: 'NICE OM-ANA-003: Automates data collection and analysis tasks',
   },
   {
@@ -117,7 +117,7 @@ const competencyGaps = [
     severity: 'Moderate' as const,
     curriculumTeaches: 'Incident response theory and documentation',
     employersRequire: 'Hands-on SOAR (Security Orchestration, Automation, Response) and playbook execution',
-    gap: 'Students learn the NIST incident response lifecycle but not how to execute it in modern SOAR platforms (Palo Alto Cortex XSOAR, Splunk Phantom, Microsoft Sentinel). Employers expect candidates to arrive with playbook automation experience.',
+    gap: 'Students learn the NIST incident response lifecycle but not how to execute it in modern SOAR platforms (Microsoft Sentinel, Splunk Phantom, Palo Alto Cortex XSOAR). Employers expect candidates to arrive with playbook automation experience.',
     niceFramework: 'NICE PR-CIR-001: Responds to cyber incidents and executes containment strategies',
   },
   {
@@ -125,7 +125,7 @@ const competencyGaps = [
     severity: 'Moderate' as const,
     curriculumTeaches: 'Ethical hacking and penetration testing basics (CEH prep)',
     employersRequire: 'Cloud penetration testing and container security (Docker, Kubernetes)',
-    gap: 'CEH focuses on traditional network/web app pentesting. Austin employers increasingly deploy containerized workloads (Kubernetes, Docker) and need security professionals who can test cloud infrastructure and container misconfigurations. This is absent from the curriculum.',
+    gap: 'CEH focuses on traditional network/web app pentesting. Seattle employers increasingly deploy containerized workloads (Kubernetes, Docker) and need security professionals who can test cloud infrastructure and container misconfigurations. This is absent from the curriculum.',
     niceFramework: 'NICE OM-ANA-004: Performs penetration testing to identify weaknesses',
   },
   {
@@ -142,7 +142,7 @@ const competencyGaps = [
     curriculumTeaches: 'Risk assessment methodologies (qualitative, quantitative)',
     employersRequire: 'GRC platform experience (Archer, ServiceNow GRC, OneTrust)',
     gap: 'Risk assessment is taught conceptually, but students do not gain hands-on experience with Governance, Risk, and Compliance (GRC) platforms that operationalize risk management. Some employers list GRC platform experience as preferred.',
-    niceFramework: 'NICE OV-MGT-001: Conducts cybersecurity risk assessments',
+    niceFramework: 'OV-MGT-001: Conducts cybersecurity risk assessments',
   },
   {
     num: 12,
@@ -150,7 +150,7 @@ const competencyGaps = [
     curriculumTeaches: 'General compliance awareness (HIPAA, PCI-DSS)',
     employersRequire: 'NIST Cybersecurity Framework and Zero Trust architecture implementation',
     gap: 'The curriculum mentions NIST CSF and compliance standards but does not require students to map controls or design architectures. Employers expect candidates to implement NIST CSF and Zero Trust models, not just recite them.',
-    niceFramework: 'NICE OV-LGA-001: Applies compliance requirements to system design',
+    niceFramework: 'OV-LGA-001: Applies compliance requirements to system design',
   },
   {
     num: 13,
@@ -164,53 +164,53 @@ const competencyGaps = [
 
 const employerSignals = [
   {
-    employer: 'Tesla (Austin)',
-    openings: '12+ cybersecurity roles (Q1 2026)',
-    topSkills: ['AWS Security', 'SIEM (Splunk)', 'Python automation', 'Incident response', 'Cloud IAM'],
-    certPreferences: ['AWS Security Specialty', 'CISSP', 'GIAC (GCIH, GCIA)'],
-    shift: 'Heavy pivot to cloud-native security since Austin Gigafactory expansion. Traditional firewall/network focus no longer sufficient.',
+    employer: 'Microsoft (Redmond/Bellevue)',
+    openings: '45+ cybersecurity roles (Q1 2026)',
+    topSkills: ['Azure Security', 'Microsoft Sentinel', 'KQL', 'Threat hunting', 'Azure AD/Entra ID', 'Python'],
+    certPreferences: ['Azure Security Engineer (AZ-500)', 'SC-200 (Security Operations)', 'CISSP', 'GIAC'],
+    shift: 'Heavy emphasis on Microsoft cloud security stack. Sentinel SIEM and Entra ID expertise now baseline requirements for security analyst roles.',
   },
   {
-    employer: 'Dell Technologies (Round Rock/Austin)',
-    openings: '20+ security analyst positions',
-    topSkills: ['Splunk Enterprise Security', 'CrowdStrike Falcon', 'Azure Sentinel', 'Threat hunting', 'PowerShell/Python'],
-    certPreferences: ['Security+', 'CySA+', 'Azure Security Engineer'],
-    shift: 'Moved from on-prem SOC to hybrid cloud monitoring. Requires multi-cloud SIEM experience.',
+    employer: 'Amazon Web Services (Seattle)',
+    openings: '35+ security engineering positions',
+    topSkills: ['AWS Security', 'GuardDuty', 'Security Hub', 'IAM', 'CloudTrail', 'Python', 'Terraform'],
+    certPreferences: ['AWS Security Specialty', 'CISSP', 'OSCP'],
+    shift: 'Cloud-native focus across all roles. Expects candidates to arrive with hands-on AWS security services experience, not just theoretical knowledge.',
   },
   {
-    employer: 'Samsung Austin Semiconductor',
-    openings: '8+ IT security roles',
-    topSkills: ['Network security', 'SIEM platforms', 'Vulnerability management', 'ICS/SCADA security basics', 'Incident response'],
-    certPreferences: ['CISSP', 'CISM', 'CEH'],
-    shift: 'Manufacturing IT security — blend of traditional OT/ICS with cloud management tools. Increasing cloud footprint.',
+    employer: 'Google (Kirkland/Seattle)',
+    openings: '18+ security analyst roles',
+    topSkills: ['GCP security', 'Chronicle SIEM', 'Threat detection', 'Python', 'Kubernetes security'],
+    certPreferences: ['Google Cloud Security Engineer', 'CISSP', 'OSCP'],
+    shift: 'Container security and GCP-native tools increasingly emphasized. Coding skills (Python, Go) expected for automation.',
   },
   {
-    employer: 'Apple (Austin campus)',
-    openings: '15+ security engineering roles',
-    topSkills: ['Application security', 'Cloud security (AWS/GCP)', 'Threat modeling', 'Python', 'Security automation'],
-    certPreferences: ['OSCP', 'AWS Security Specialty', 'CISSP'],
-    shift: 'High bar for entry — expects candidates to arrive with cloud security fundamentals and coding skills.',
+    employer: 'T-Mobile (Bellevue)',
+    openings: '12+ cybersecurity positions',
+    topSkills: ['SIEM (Splunk)', 'Cloud security (AWS/Azure)', 'SOC operations', 'Incident response', 'Network security'],
+    certPreferences: ['Security+', 'CySA+', 'CISSP', 'AWS/Azure Security'],
+    shift: 'Hybrid cloud environment — requires multi-cloud security skills. Strong SOC analyst pipeline need with SIEM expertise.',
   },
   {
-    employer: 'Oracle (Austin)',
-    openings: '10+ cloud security positions',
-    topSkills: ['OCI security', 'AWS/Azure IAM', 'Container security', 'Terraform', 'Identity governance'],
-    certPreferences: ['OCI Security Architect', 'AWS/Azure Security', 'CCSP'],
-    shift: 'Oracle Cloud Infrastructure focus — candidates need multi-cloud IAM and container security knowledge.',
+    employer: 'Meta (Seattle)',
+    openings: '10+ security engineering roles',
+    topSkills: ['Application security', 'Threat modeling', 'Python/C++', 'Cloud security', 'DevSecOps'],
+    certPreferences: ['OSCP', 'AWS/GCP Security', 'GWAPT'],
+    shift: 'AppSec and DevSecOps culture — security embedded in engineering. High coding bar for entry.',
   },
   {
-    employer: 'IBM (Austin)',
-    openings: '6+ security consultant roles',
-    topSkills: ['Cloud security posture management', 'SIEM (QRadar, Splunk)', 'Compliance automation', 'Risk assessment', 'Client communication'],
-    certPreferences: ['CISSP', 'CISM', 'Azure/AWS Security'],
-    shift: 'Consulting roles require strong soft skills + cloud security. Hybrid client environments (on-prem + multi-cloud).',
+    employer: 'Boeing (Seattle/Everett)',
+    openings: '15+ IT security roles',
+    topSkills: ['Network security', 'SIEM platforms', 'Compliance (NIST, CMMC)', 'Risk assessment', 'ICS/SCADA basics'],
+    certPreferences: ['CISSP', 'CISM', 'Security+', 'GIAC'],
+    shift: 'Defense contractor focus — NIST 800-171, CMMC compliance requirements. Hybrid on-prem + cloud security.',
   },
   {
-    employer: 'Indeed (Austin HQ)',
-    openings: '5+ application security engineers',
-    topSkills: ['AppSec', 'DevSecOps', 'CI/CD security', 'AWS security services', 'Threat modeling'],
-    certPreferences: ['OSCP', 'AWS DevOps Engineer', 'GWAPT'],
-    shift: 'Security embedded in engineering teams — DevSecOps culture. Requires coding and cloud-native security.',
+    employer: 'Expedia Group (Seattle)',
+    openings: '8+ application security engineers',
+    topSkills: ['AppSec', 'AWS security', 'CI/CD security', 'Threat modeling', 'Python'],
+    certPreferences: ['AWS Security', 'OSCP', 'GWAPT'],
+    shift: 'Cloud-native travel platform — DevSecOps integration, AWS-heavy. Security automation expected.',
   },
 ];
 
@@ -222,58 +222,58 @@ const certToolCurrency = {
     { name: 'Cisco CCNA Security/Cyber Ops', relevance: 'Low', status: 'Cisco-centric, on-prem focus — market has moved to cloud', trend: 'down' as const },
   ],
   missingCerts: [
-    { name: 'AWS Certified Security – Specialty', relevance: 'Critical', demand: '67% of cloud security job postings' },
-    { name: 'Microsoft Certified: Azure Security Engineer', relevance: 'Critical', demand: '54% of cloud security job postings' },
-    { name: 'CISSP', relevance: 'High', demand: 'Standard for senior roles; ACC could prep fundamentals' },
-    { name: 'CCSP (Certified Cloud Security Professional)', relevance: 'High', demand: 'Cloud-specific CISSP equivalent' },
-    { name: 'GIAC Security Essentials (GSEC) or GCIH', relevance: 'Moderate', demand: 'Preferred by federal contractors and consultancies' },
+    { name: 'AWS Certified Security – Specialty', relevance: 'Critical', demand: '71% of cloud security job postings in Seattle area' },
+    { name: 'Microsoft Certified: Azure Security Engineer (AZ-500)', relevance: 'Critical', demand: '68% of cloud security job postings (Microsoft dominance)' },
+    { name: 'Microsoft SC-200 (Security Operations Analyst)', relevance: 'High', demand: 'Sentinel SOC roles — growing rapidly' },
+    { name: 'CISSP', relevance: 'High', demand: 'Standard for senior roles; Bellevue could prep fundamentals' },
+    { name: 'GIAC Security Essentials (GSEC) or GCIH', relevance: 'Moderate', demand: 'Preferred by Boeing and defense contractors' },
   ],
   toolsCurrentlyTaught: [
     'Wireshark', 'Nessus', 'OpenVAS', 'Kali Linux', 'Metasploit', 'Windows Active Directory', 'PowerShell (basic)', 'Cisco Packet Tracer'
   ],
   toolsEmployersRequire: [
-    'Splunk Enterprise Security', 'Elastic SIEM', 'CrowdStrike Falcon EDR', 'Palo Alto Cortex XSOAR', 'Microsoft Sentinel', 
-    'AWS Security Hub', 'Azure Defender/Sentinel', 'Tenable.io / Qualys VMDR', 'Terraform', 'Python (pandas, requests, etc.)', 
-    'Docker/Kubernetes security tools', 'Okta/Azure AD', 'ServiceNow Security Operations'
+    'Microsoft Sentinel', 'Splunk Enterprise Security', 'Elastic SIEM', 'AWS Security Hub', 'Azure Defender/Sentinel', 
+    'GuardDuty', 'KQL (Kusto Query Language)', 'Tenable.io / Qualys VMDR', 'Terraform', 'Python (boto3, requests, etc.)', 
+    'Docker/Kubernetes security tools', 'Microsoft Entra ID', 'ServiceNow Security Operations'
   ],
 };
 
 const peerBenchmark = [
   {
-    institution: 'UT Austin (Cybersecurity Certificate — Continuing Education)',
+    institution: 'University of Washington (Cybersecurity Certificate — Continuing Education)',
     strengths: [
       'Cloud security module with AWS and Azure hands-on labs',
-      'Splunk and SIEM training integrated',
+      'Microsoft Sentinel and SIEM training integrated',
       'Python for security automation included',
-      'Industry partnerships with Dell, IBM for guest lectures and internships',
+      'Industry partnerships with Microsoft, Amazon, T-Mobile for guest lectures and internships',
     ],
     weaknesses: [
       'Non-credit program — not eligible for financial aid',
-      'Higher cost (~$11,995 for 24-week program)',
+      'Higher cost (~$12,995 for 24-week program)',
     ],
-    differentiator: 'UT brand + employer connections in Austin tech corridor',
+    differentiator: 'UW brand + direct Microsoft/Amazon employer pipeline',
   },
   {
-    institution: 'San Antonio College (Cybersecurity AAS)',
+    institution: 'Tacoma Community College (Networking & Cybersecurity AAS)',
     strengths: [
-      'Recently updated curriculum (2023) with AWS Academy integration',
+      'Recently updated curriculum (2024) with Microsoft Azure integration',
       'CompTIA trifecta (A+, Network+, Security+) embedded',
       'Offers stackable certificates leading to AAS',
-      'Partnership with CPS Energy and USAA for internships',
+      'Partnership with T-Mobile and Boeing for internships',
     ],
     weaknesses: [
-      'Less cloud-native emphasis compared to UT',
+      'Less cloud-native emphasis compared to UW',
       'Limited SIEM platform training (mainly theory)',
     ],
-    differentiator: 'Strong compliance and audit focus (USAA influence)',
+    differentiator: 'Strong defense contractor and telecom focus (Boeing, T-Mobile)',
   },
   {
-    institution: 'Lone Star College (Cybersecurity AAS)',
+    institution: 'Seattle Central College (Cybersecurity AAS)',
     strengths: [
       'Cisco NetAcad CyberOps curriculum (updated 2024)',
       'Hands-on labs with Packet Tracer and virtual environments',
       'Security+ and CySA+ prep courses',
-      'Affordable tuition (~$220/credit hour for in-district)',
+      'Affordable tuition (~$115/credit hour for in-state)',
     ],
     weaknesses: [
       'Still Cisco-centric — limited cloud platform exposure',
@@ -283,39 +283,40 @@ const peerBenchmark = [
     differentiator: 'Strong Cisco partnership and NetAcad credentialing',
   },
   {
-    institution: 'Austin Community College (Current State)',
+    institution: 'Bellevue College (Current State)',
     strengths: [
       'Established program with local employer recognition',
       'CompTIA Security+ and CEH prep included',
-      'Affordable tuition (~$85/credit hour in-district)',
-      'Strong transfer pathways to UT Austin and Texas State',
+      'Affordable tuition (~$120/credit hour for in-state)',
+      'Transfer pathways to UW and City University of Seattle',
     ],
     weaknesses: [
       'Curriculum has not been updated since 2020',
-      'No cloud security certifications (AWS/Azure)',
+      'No cloud security certifications (AWS/Azure/Microsoft)',
       'Limited SIEM platform exposure (Wireshark-centric)',
       'Python not emphasized in security context',
       'No SOAR or cloud IAM coverage',
+      'Microsoft Sentinel absent despite regional employer dominance',
     ],
-    driftSummary: "ACC's curriculum is 4-5 years behind market demand. While foundational skills are solid, the lack of cloud-native security training creates a critical employability gap.",
+    driftSummary: "Bellevue's curriculum is 4-5 years behind market demand. While foundational skills are solid, the lack of cloud-native security training — especially Microsoft Azure/Sentinel given regional employer mix — creates a critical employability gap.",
   },
 ];
 
 const curriculumUpdates = {
   immediate: [
     {
-      action: 'Add AWS Academy Cloud Security Foundations module (16 hours)',
+      action: 'Add Microsoft Azure Fundamentals (AZ-900) and Azure Security module (16 hours)',
       effort: 'Low',
       impact: 'High',
       timeline: 'Spring 2026',
-      owner: 'IT/Security faculty + AWS Academy partnership',
+      owner: 'IT/Security faculty + Microsoft Learn partnership',
     },
     {
-      action: 'Replace Wireshark-only network analysis with Splunk Core Certified User training',
+      action: 'Replace Wireshark-only network analysis with Microsoft Sentinel KQL training',
       effort: 'Medium',
       impact: 'High',
       timeline: 'Fall 2026',
-      owner: 'IT faculty + Splunk4Good program (free edu licenses)',
+      owner: 'IT faculty + Microsoft Academic partnership (free licenses)',
     },
     {
       action: 'Integrate Python for cybersecurity automation (8-week module)',
@@ -334,28 +335,28 @@ const curriculumUpdates = {
   ],
   nextRevision: [
     {
-      action: 'Launch Cloud Security Specialization track (AWS + Azure fundamentals → Security certs)',
+      action: 'Launch Cloud Security Specialization track (Azure + AWS fundamentals → Security certs)',
       effort: 'High',
       impact: 'Critical',
       timeline: '2027 catalog year',
-      owner: 'Curriculum committee + cloud partnerships',
+      owner: 'Curriculum committee + Microsoft/AWS partnerships',
     },
     {
-      action: 'Replace Cisco CCNA Cyber Ops track with cloud networking security (AWS VPC, Azure NSG, Terraform)',
+      action: 'Replace Cisco CCNA Cyber Ops track with cloud networking security (Azure NSG, AWS VPC, Terraform)',
       effort: 'High',
       impact: 'High',
       timeline: '2027-2028',
       owner: 'IT Networking + Security faculty',
     },
     {
-      action: 'Add SIEM/SOAR capstone project (Splunk + Microsoft Sentinel or Cortex XSOAR)',
+      action: 'Add SIEM/SOAR capstone project (Microsoft Sentinel + AWS Security Hub)',
       effort: 'Medium',
       impact: 'High',
       timeline: '2027',
       owner: 'Capstone redesign committee',
     },
     {
-      action: 'Develop stackable micro-credential: Cloud IAM & Identity Security (Okta, Azure AD, AWS IAM)',
+      action: 'Develop stackable micro-credential: Cloud IAM & Identity Security (Entra ID, AWS IAM, Okta)',
       effort: 'Medium',
       impact: 'Medium',
       timeline: '2027',
@@ -364,14 +365,14 @@ const curriculumUpdates = {
   ],
   strategic: [
     {
-      action: 'Formalize industry advisory board with Tesla, Dell, Samsung, Oracle, IBM security leaders',
+      action: 'Formalize industry advisory board with Microsoft, Amazon, T-Mobile, Boeing, Google security leaders',
       effort: 'Low',
       impact: 'Critical',
       timeline: 'Q2 2026',
       owner: 'Dean of IT + Workforce Development',
     },
     {
-      action: 'Establish paid internship pipeline with Austin tech employers (Tesla, Dell, Indeed)',
+      action: 'Establish paid internship pipeline with Seattle tech employers (Microsoft, Amazon, Google, T-Mobile)',
       effort: 'Medium',
       impact: 'High',
       timeline: '2026-2027',
@@ -396,7 +397,7 @@ const curriculumUpdates = {
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
-export default function ACCCybersecurityDriftPage() {
+export default function BellevueCybersecurityDriftPage() {
   return (
     <div className="overflow-x-hidden bg-theme-page">
       {/* ═══════════ DISCLAIMER BANNER ═══════════ */}
@@ -421,13 +422,13 @@ export default function ACCCybersecurityDriftPage() {
               className="font-heading font-bold text-gradient-cosmic leading-[1.05] mx-auto max-w-4xl mt-4"
               style={{ fontSize: 'clamp(2.5rem, 5vw + 0.5rem, 4rem)' }}
             >
-              Austin Community College
+              Bellevue College
             </h1>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={180} duration={800}>
             <p className="mt-4 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed">
-              Cybersecurity AAS · Austin, Texas · Analysis Date: February 2026
+              Cybersecurity AAS · Bellevue, Washington · Analysis Date: February 2026
             </p>
           </AnimateOnScroll>
 
@@ -453,7 +454,7 @@ export default function ACCCybersecurityDriftPage() {
                 13 Gaps Identified
               </span>
               <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20">
-                93 Employer Signals
+                143 Employer Signals
               </span>
               <span className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/20">
                 Last Updated: 2020
@@ -558,21 +559,21 @@ export default function ACCCybersecurityDriftPage() {
             <div className="card-cosmic rounded-2xl p-6">
               <h3 className="font-heading font-bold text-lg text-theme-primary mb-3">The Problem</h3>
               <p className="text-theme-secondary leading-relaxed">
-                Austin Community College's Cybersecurity AAS program, last updated in 2020, has experienced severe curriculum drift. With a composite drift score of 42/100, the program is teaching a cybersecurity paradigm that Austin's dominant tech employers — Tesla, Dell, Samsung, Apple, Oracle, and IBM — have moved beyond. The curriculum is rooted in on-premises perimeter security (firewalls, Cisco networking, Active Directory) at a time when these employers have shifted to cloud-native infrastructure, zero-trust architecture, and SIEM-driven security operations.
+                Bellevue College's Cybersecurity AAS program, last updated in 2020, has experienced severe curriculum drift. With a composite drift score of 42/100, the program is teaching a cybersecurity paradigm that Seattle's dominant tech employers — Microsoft, Amazon, Google, T-Mobile, Meta, Boeing, and Expedia — have moved beyond. The curriculum is rooted in on-premises perimeter security (firewalls, Cisco networking, Active Directory) at a time when these employers have shifted to cloud-native infrastructure, zero-trust architecture, and SIEM-driven security operations.
               </p>
             </div>
 
             <div className="card-cosmic rounded-2xl p-6">
               <h3 className="font-heading font-bold text-lg text-theme-primary mb-3">What's Causing It?</h3>
               <p className="text-theme-secondary leading-relaxed">
-                The drift is driven by three structural issues: (1) <span className="font-semibold text-theme-primary">No cloud security training</span> — AWS, Azure, and cloud IAM are entirely absent despite appearing in 67% of Austin cybersecurity job postings; (2) <span className="font-semibold text-theme-primary">Outdated tooling</span> — students learn Wireshark packet capture but not enterprise SIEM platforms (Splunk, Elastic, CrowdStrike) that employers actually use; (3) <span className="font-semibold text-theme-primary">Cisco-centric networking</span> — the curriculum is anchored to CCNA Cyber Ops, a legacy track that does not prepare students for software-defined cloud networking. Peer institutions (San Antonio College, UT Austin) have already integrated AWS Academy and SIEM training; ACC has not.
+                The drift is driven by three structural issues: (1) <span className="font-semibold text-theme-primary">No cloud security training</span> — AWS, Azure, and cloud IAM are entirely absent despite appearing in 71% of Seattle cybersecurity job postings (with Azure/Microsoft dominance given regional employer mix); (2) <span className="font-semibold text-theme-primary">Outdated tooling</span> — students learn Wireshark packet capture but not enterprise SIEM platforms (Microsoft Sentinel, Splunk, Elastic) that employers actually use; (3) <span className="font-semibold text-theme-primary">Cisco-centric networking</span> — the curriculum is anchored to CCNA Cyber Ops, a legacy track that does not prepare students for software-defined cloud networking. Peer institutions (Tacoma Community College, UW) have already integrated Azure and SIEM training; Bellevue has not.
               </p>
             </div>
 
             <div className="card-cosmic rounded-2xl p-6">
               <h3 className="font-heading font-bold text-lg text-theme-primary mb-3">The Risk</h3>
               <p className="text-theme-secondary leading-relaxed">
-                Graduates are arriving to the Austin job market undertrained for the roles employers are hiring for. Job postings from Dell, Tesla, and Samsung explicitly require Splunk, AWS security, and Python automation — competencies ACC does not emphasize. This creates a placement risk: students who successfully complete the AAS may struggle to compete against candidates from UT Austin's continuing education cybersecurity program or San Antonio College's updated curriculum. Over time, employer feedback loops will damage ACC's reputation as a cybersecurity talent source, threatening enrollment and advisory board engagement.
+                Graduates are arriving to the Seattle job market undertrained for the roles employers are hiring for. Job postings from Microsoft, Amazon, and T-Mobile explicitly require Microsoft Sentinel, AWS security services, and Python automation — competencies Bellevue does not emphasize. This creates a placement risk: students who successfully complete the AAS may struggle to compete against candidates from UW's continuing education cybersecurity program or Tacoma Community College's updated curriculum. Over time, employer feedback loops will damage Bellevue's reputation as a cybersecurity talent source, threatening enrollment and advisory board engagement.
               </p>
             </div>
           </StaggerChildren>
@@ -650,10 +651,10 @@ export default function ACCCybersecurityDriftPage() {
                 className="font-heading font-bold text-theme-primary mt-3"
                 style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.5rem)' }}
               >
-                What Austin tech employers actually post
+                What Seattle tech employers actually post
               </h2>
               <p className="mt-3 text-theme-secondary max-w-2xl mx-auto text-sm">
-                Analysis of 93 cybersecurity job postings from Austin-area employers (Q4 2025 – Q1 2026). Skills and certifications ranked by frequency.
+                Analysis of 143 cybersecurity job postings from Seattle-area employers (Q4 2025 – Q1 2026). Skills and certifications ranked by frequency.
               </p>
             </div>
           </AnimateOnScroll>
@@ -703,27 +704,27 @@ export default function ACCCybersecurityDriftPage() {
           {/* Summary Card */}
           <AnimateOnScroll variant="fade-up" delay={200}>
             <div className="mt-10 rounded-xl p-6 bg-gradient-to-br from-purple-500/10 to-blue-500/10 border border-purple-500/20">
-              <h3 className="font-heading font-bold text-lg text-theme-primary mb-3">Key Trends Across Austin Employers</h3>
+              <h3 className="font-heading font-bold text-lg text-theme-primary mb-3">Key Trends Across Seattle Employers</h3>
               <ul className="space-y-2 text-sm text-theme-secondary">
                 <li className="flex items-start gap-2">
                   <TrendingUp className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
-                  <span><span className="font-semibold text-theme-primary">Cloud security (AWS/Azure)</span> appears in 67% of postings — up from 34% in 2022</span>
+                  <span><span className="font-semibold text-theme-primary">Cloud security (Azure/AWS)</span> appears in 71% of postings — up from 38% in 2022</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <TrendingUp className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
-                  <span><span className="font-semibold text-theme-primary">SIEM platforms (Splunk, Elastic, Sentinel)</span> required in 71% of analyst roles — up from 42% in 2022</span>
+                  <span><span className="font-semibold text-theme-primary">Microsoft Sentinel / Azure Defender</span> required in 68% of SOC analyst roles (Microsoft regional dominance)</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <TrendingUp className="w-4 h-4 text-teal-500 flex-shrink-0 mt-0.5" />
-                  <span><span className="font-semibold text-theme-primary">Python automation</span> listed in 58% of postings — up from 23% in 2022</span>
+                  <span><span className="font-semibold text-theme-primary">Python automation</span> listed in 62% of postings — up from 27% in 2022</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <TrendingDown className="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" />
-                  <span><span className="font-semibold text-theme-primary">Cisco CCNA Security</span> mentioned in only 12% of postings — down from 38% in 2022</span>
+                  <span><span className="font-semibold text-theme-primary">Cisco CCNA Security</span> mentioned in only 9% of postings — down from 34% in 2022</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <TrendingDown className="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" />
-                  <span><span className="font-semibold text-theme-primary">Traditional perimeter firewalls</span> as primary skill down to 19% — replaced by cloud-native security</span>
+                  <span><span className="font-semibold text-theme-primary">Traditional perimeter firewalls</span> as primary skill down to 15% — replaced by cloud-native security</span>
                 </li>
               </ul>
             </div>
@@ -846,14 +847,14 @@ export default function ACCCybersecurityDriftPage() {
                 How do peer programs compare?
               </h2>
               <p className="mt-3 text-theme-secondary max-w-2xl mx-auto text-sm">
-                Analysis of cybersecurity programs at UT Austin, San Antonio College, and Lone Star College.
+                Analysis of cybersecurity programs at UW, Tacoma Community College, and Seattle Central College.
               </p>
             </div>
           </AnimateOnScroll>
 
           <StaggerChildren stagger={80} variant="fade-up" className="space-y-5">
             {peerBenchmark.map((peer, i) => (
-              <div key={i} className={`card-cosmic rounded-xl p-6 ${peer.institution.includes('ACC') ? 'border-amber-500/30 bg-amber-500/5' : ''}`}>
+              <div key={i} className={`card-cosmic rounded-xl p-6 ${peer.institution.includes('Bellevue') ? 'border-amber-500/30 bg-amber-500/5' : ''}`}>
                 <div className="mb-4">
                   <h3 className="font-heading font-bold text-lg text-theme-primary">{peer.institution}</h3>
                   {peer.differentiator && (
@@ -1069,11 +1070,11 @@ export default function ACCCybersecurityDriftPage() {
                 </li>
                 <li className="flex items-start gap-2.5">
                   <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5" />
-                  <span><span className="font-semibold text-theme-primary">Employer Job Postings (SerpAPI)</span> — 93 cybersecurity job postings from Tesla, Dell, Samsung, Apple, Oracle, IBM, Indeed (Q4 2025 – Q1 2026)</span>
+                  <span><span className="font-semibold text-theme-primary">Employer Job Postings (SerpAPI)</span> — 143 cybersecurity job postings from Microsoft, Amazon, Google, T-Mobile, Meta, Boeing, Expedia (Q4 2025 – Q1 2026)</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5" />
-                  <span><span className="font-semibold text-theme-primary">CyberSeek.org</span> — Regional labor market data for Austin-Round Rock MSA</span>
+                  <span><span className="font-semibold text-theme-primary">CyberSeek.org</span> — Regional labor market data for Seattle-Bellevue-Tacoma MSA</span>
                 </li>
                 <li className="flex items-start gap-2.5">
                   <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5" />
@@ -1081,7 +1082,7 @@ export default function ACCCybersecurityDriftPage() {
                 </li>
                 <li className="flex items-start gap-2.5">
                   <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-purple-500 mt-1.5" />
-                  <span><span className="font-semibold text-theme-primary">Peer Program Curricula</span> — Published learning outcomes from UT Austin, San Antonio College, Lone Star College</span>
+                  <span><span className="font-semibold text-theme-primary">Peer Program Curricula</span> — Published learning outcomes from UW, Tacoma CC, Seattle Central College</span>
                 </li>
               </ul>
 
