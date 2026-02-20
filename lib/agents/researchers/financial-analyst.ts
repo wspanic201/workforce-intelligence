@@ -274,7 +274,7 @@ export async function runFinancialAnalysis(
 
     const { content, tokensUsed } = await callClaude(prompt, {
       maxTokens: 2000,
-      model: 'claude-sonnet-4-5',
+      model: 'claude-sonnet-4-6',
     });
 
     let claudeOutput: any = {};

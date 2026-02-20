@@ -105,7 +105,7 @@ Return ONLY valid JSON in this exact structure:
 
   console.log('[Signal] Generating newsletter content with Claude...');
   const { content } = await callClaude(prompt, {
-    model: 'claude-sonnet-4-5',
+    model: 'claude-sonnet-4-6',
     maxTokens: 2000,
     temperature: 1.0,
   });

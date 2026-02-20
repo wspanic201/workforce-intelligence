@@ -263,7 +263,7 @@ export async function saveDiscoveryResults(
     completed_at: metadata.endTime,
     duration_seconds: metadata.durationSeconds,
     total_searches: metadata.totalSearches,
-    model_used: 'claude-sonnet-4-5',
+    model_used: 'claude-sonnet-4-6',
     metadata: metadata.phaseTiming || {},
   });
 

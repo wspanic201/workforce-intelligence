@@ -177,7 +177,7 @@ Respond with ONLY valid JSON.`;
 
   try {
     const { content: fullContent } = await callClaude(prompt, {
-      model: 'claude-sonnet-4-5',
+      model: 'claude-sonnet-4-6',
       maxTokens: 16000,
       temperature: 0.3, // Lower temperature for fact-checking
     });

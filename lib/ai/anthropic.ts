@@ -34,7 +34,7 @@ export async function callClaude(
   const isTestMode = process.env.TEST_MODE === 'true';
   const defaultModel = isTestMode 
     ? (process.env.TEST_MODEL || 'claude-3-5-haiku-20241022')
-    : 'claude-sonnet-4-5';
+    : 'claude-sonnet-4-6';
   const defaultMaxTokens = isTestMode
     ? parseInt(process.env.TEST_MAX_TOKENS || '4000')
     : 8000;
