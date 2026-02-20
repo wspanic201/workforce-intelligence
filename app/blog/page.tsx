@@ -17,6 +17,16 @@ export const metadata: Metadata = {
 
 export const posts = [
   {
+    slug: "reshoring-immigration-structural-workforce-shortages-2026",
+    title: "Reshoring + Immigration Restrictions = Structural Workforce Shortages",
+    excerpt:
+      "Why community colleges can't afford to treat labor market 'demand' as a simple trend line anymore. The macro forces creating permanent talent gaps — and what your institution needs to do about it.",
+    date: "February 20, 2026",
+    readTime: "8 min read",
+    category: "Workforce Strategy",
+    dot: "bg-purple-400",
+  },
+  {
     slug: "dol-65-million-workforce-pell-grants-community-colleges-2026",
     title: "$65M in DOL Grants for Workforce Pell: What Community Colleges Need to Know",
     excerpt:
