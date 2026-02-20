@@ -87,8 +87,8 @@ const services = [
     id: 'program-gap-audit',
     name: 'Program Gap Audit',
     price: '$295',
-    liveDemo: false,
-    format: 'PDF report — delivered by email within 48 hours',
+    liveDemo: true,
+    format: 'Interactive web report + PDF download',
     formatDot: 'bg-orange-400',
     whatsInside: [
       'Current catalog scan against regional employer demand',
@@ -100,9 +100,9 @@ const services = [
     value:
       'A snapshot of where your catalog has fallen behind regional demand — and the highest-value gaps worth filling first.',
     cta: {
-      label: 'Request Sample PDF',
-      href: '/contact',
-      primary: false,
+      label: 'View Sample Report',
+      href: '/report/hawkeye-gap-audit',
+      primary: true,
     },
   },
   {
