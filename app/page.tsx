@@ -85,11 +85,10 @@ const ADDONS = [
 // ─── Category chips for hero ──────────────────────────────────────────────────
 
 const CATEGORY_CHIPS = [
-  { label: 'Market Research',     href: '/market-research' },
-  { label: 'Program Analysis',    href: '/program-analysis' },
-  { label: 'Program Development', href: '/program-development' },
-  { label: 'Grant Alignment',     href: '/grant-alignment' },
-  { label: 'Program Health',      href: '/program-health' },
+  { label: 'Market Research',   href: '/discover',        icon: '🔍' },
+  { label: 'Program Analysis',  href: '/validate',        icon: '📊' },
+  { label: 'Funding & Grants',  href: '/grants',          icon: '💰' },
+  { label: 'Program Health',    href: '/drift',           icon: '🩺' },
 ];
 
 // ─── Static Hero ──────────────────────────────────────────────────────────────
@@ -135,15 +134,15 @@ function StaticHero() {
           </Link>
         </div>
 
-        {/* Category chips */}
-        <div className="mt-10 flex flex-wrap gap-3 justify-center">
+        {/* Category links */}
+        <div className="mt-10 flex flex-wrap gap-2 justify-center">
           {CATEGORY_CHIPS.map((chip) => (
             <Link
               key={chip.label}
               href={chip.href}
-              className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-theme-base bg-theme-card text-theme-secondary text-sm font-medium hover:border-theme-strong hover:text-theme-primary transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white/[0.04] border border-white/[0.08] text-theme-secondary text-sm font-medium hover:bg-white/[0.08] hover:border-white/[0.15] hover:text-theme-primary transition-all duration-200"
             >
-              <span className="opacity-40">●</span>
+              <span>{chip.icon}</span>
               {chip.label}
             </Link>
           ))}

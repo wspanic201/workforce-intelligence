@@ -53,16 +53,35 @@ const SERVICES: Service[] = [
     turnaround: '5–7 business days',
     features: [
       '8–12 program opportunities scored & ranked',
-      'Regional employer demand analysis',
+      'Regional employer demand analysis (BLS QCEW)',
       'Competitive landscape mapping',
       'Blue ocean opportunity identification',
       'Grant eligibility matrix',
       'Implementation timeline estimates',
     ],
     category: 'core',
-    cta: 'Get Started',
+    cta: 'Order Now',
     ctaStyle: 'primary',
     sampleReport: '/report/wake-tech-program-opportunity-scan',
+  },
+  {
+    name: 'Category Deep Dive',
+    slug: 'category',
+    price: '$795',
+    description: 'Focused intelligence scan for a specific program area — healthcare, business, manufacturing, or any category you choose.',
+    turnaround: '3–5 business days',
+    features: [
+      'Deep scan within one program category',
+      '6–8 opportunities scored & ranked',
+      'Category-specific competitive analysis',
+      'Blue ocean opportunities within category',
+      'Employer demand mapped by NAICS industry',
+      'Natural upsell path to full Opportunity Scan',
+    ],
+    category: 'core',
+    cta: 'Order Now',
+    ctaStyle: 'primary',
+    sampleReport: '/report/kirkwood-business-category-deep-dive',
   },
   {
     name: 'Program Validation',
@@ -80,7 +99,7 @@ const SERVICES: Service[] = [
       'Composite GO / NO-GO score',
     ],
     category: 'core',
-    cta: 'Get Started',
+    cta: 'Order Now',
     ctaStyle: 'primary',
     sampleReport: '/report/kirkwood-pharmtech-validation',
   },
@@ -98,7 +117,7 @@ const SERVICES: Service[] = [
       'Priority-ranked implementation roadmap',
     ],
     category: 'addon',
-    cta: 'Get Started',
+    cta: 'Order Now',
     ctaStyle: 'secondary',
     sampleReport: '/report/hawkeye-gap-audit',
   },
@@ -117,7 +136,7 @@ const SERVICES: Service[] = [
       'Deadline calendar & action plan',
     ],
     category: 'addon',
-    cta: 'Get Started',
+    cta: 'Order Now',
     ctaStyle: 'secondary',
     sampleReport: '/report/valencia-grant-scan',
   },
@@ -137,7 +156,7 @@ const SERVICES: Service[] = [
       'Actionable curriculum update recommendations',
     ],
     category: 'addon',
-    cta: 'Get Started',
+    cta: 'Order Now',
     ctaStyle: 'secondary',
     sampleReport: '/report/bellevue-cybersecurity-drift',
   },
@@ -218,7 +237,7 @@ export default function PricingPage() {
           </AnimateOnScroll>
 
           <StaggerChildren stagger={120}>
-            <div className="grid md:grid-cols-2 gap-6 mb-16">
+            <div className="grid md:grid-cols-3 gap-6 mb-16">
               {SERVICES.filter(s => s.category === 'core').map(service => (
                 <ServiceCard key={service.slug} service={service} />
               ))}

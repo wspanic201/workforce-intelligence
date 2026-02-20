@@ -5,17 +5,29 @@ import Link from 'next/link';
 import { WavelengthMark } from './WavelengthLogo';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
-const SERVICES = [
-  { label: 'Discovery Scan',      tagline: 'What should we build?',        href: '/discover',       price: '$1,500' },
-  { label: 'Category Deep Dive',  tagline: 'Deep scan for a specific program area',  href: '/category',       price: '$795'   },
-  { label: 'Program Validation',  tagline: 'Should we build this?',        href: '/validate',       price: '$3,500' },
-];
-
-const ADDONS = [
-  { label: 'Pell Readiness Check',      href: '/pell',            price: 'Free'    },
-  { label: 'Program Gap Audit',         href: '/compliance-gap',  price: '$295'    },
-  { label: 'Grant Intelligence Scan',   href: '/grants',          price: '$495'    },
-  { label: 'Curriculum Drift Analysis', href: '/drift',           price: '$495'    },
+const CATEGORIES = [
+  {
+    label: 'Market Research',
+    services: [
+      { label: 'Program Opportunity Scan', tagline: 'Full regional market intelligence', href: '/discover', price: '$1,500' },
+      { label: 'Category Deep Dive',       tagline: 'Focused scan for one program area', href: '/category', price: '$795' },
+    ],
+  },
+  {
+    label: 'Program Analysis',
+    services: [
+      { label: 'Program Validation',       tagline: 'Feasibility analysis with GO/NO-GO', href: '/validate', price: '$3,500' },
+      { label: 'Program Gap Audit',         tagline: 'Catalog vs. state mandate comparison', href: '/compliance-gap', price: '$295' },
+      { label: 'Curriculum Drift Analysis', tagline: 'Annual content alignment review', href: '/drift', price: '$495' },
+    ],
+  },
+  {
+    label: 'Funding & Grants',
+    services: [
+      { label: 'Grant Intelligence Scan',  tagline: 'Federal grant scoring and prioritization', href: '/grants', price: '$495' },
+      { label: 'Pell Readiness Check',      tagline: 'Workforce Pell eligibility scoring', href: '/pell', price: 'Free' },
+    ],
+  },
 ];
 
 export function NavBar() {
@@ -81,61 +93,46 @@ export function NavBar() {
               </button>
 
               {servicesOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-72 rounded-xl bg-theme-nav backdrop-blur-xl border border-theme-subtle shadow-2xl shadow-black/40 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-80 rounded-xl bg-theme-nav backdrop-blur-xl border border-theme-subtle shadow-2xl shadow-black/40 py-2 animate-in fade-in slide-in-from-top-2 duration-200">
 
-                  {/* All Services link */}
+                  {/* All Services → Pricing */}
                   <Link
-                    href="/services"
+                    href="/pricing"
                     onClick={() => setServicesOpen(false)}
                     className="flex items-center justify-between px-4 py-2.5 mx-2 rounded-lg hover:bg-white/[0.05] transition-colors group"
                   >
-                    <span className="text-sm font-semibold text-gradient-cosmic">All Services</span>
+                    <span className="text-sm font-semibold text-gradient-cosmic">All Services & Pricing</span>
                     <svg className="w-3.5 h-3.5 text-theme-muted group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                   </Link>
 
-                  <div className="mx-3 my-2 border-t border-theme-subtle" />
-
-                  {/* Main services with question-based taglines */}
-                  {SERVICES.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setServicesOpen(false)}
-                      className="flex items-center justify-between px-4 py-3 mx-2 rounded-lg hover:bg-white/[0.05] transition-colors group"
-                    >
-                      <div className="flex flex-col">
-                        <span className="text-sm font-medium text-theme-secondary group-hover:text-theme-primary transition-colors">{item.label}</span>
-                        <span className="text-[11px] text-theme-muted italic">{item.tagline}</span>
-                      </div>
-                      <span className="text-xs font-mono font-semibold text-purple-600 ml-3 flex-shrink-0">{item.price}</span>
-                    </Link>
-                  ))}
-
-                  <div className="mx-3 my-2 border-t border-theme-subtle" />
-
-                  {/* Add-Ons */}
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted px-4 pt-1 pb-1.5">Add-Ons</p>
-                  {ADDONS.map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setServicesOpen(false)}
-                      className="flex items-center justify-between px-4 py-2 mx-2 rounded-lg hover:bg-white/[0.05] transition-colors group"
-                    >
-                      <span className="text-[13px] text-theme-secondary group-hover:text-theme-primary transition-colors">{item.label}</span>
-                      <span className="text-xs font-mono font-semibold text-teal-600 ml-3">{item.price}</span>
-                    </Link>
+                  {/* Categories with services */}
+                  {CATEGORIES.map((cat) => (
+                    <div key={cat.label}>
+                      <div className="mx-3 my-2 border-t border-theme-subtle" />
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted px-4 pt-1 pb-1">{cat.label}</p>
+                      {cat.services.map((item) => (
+                        <Link
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setServicesOpen(false)}
+                          className="flex items-center justify-between px-4 py-2.5 mx-2 rounded-lg hover:bg-white/[0.05] transition-colors group"
+                        >
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium text-theme-secondary group-hover:text-theme-primary transition-colors">{item.label}</span>
+                            <span className="text-[11px] text-theme-muted">{item.tagline}</span>
+                          </div>
+                          <span className={`text-xs font-mono font-semibold ml-3 flex-shrink-0 ${item.price === 'Free' ? 'text-teal-500' : 'text-purple-600'}`}>{item.price}</span>
+                        </Link>
+                      ))}
+                    </div>
                   ))}
 
                 </div>
               )}
             </div>
 
-            <Link href="/pricing" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors">
-              Pricing
-            </Link>
             <Link href="/samples" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors">
               Sample Reports
             </Link>
@@ -170,38 +167,29 @@ export function NavBar() {
         {mobileOpen && (
           <div className="md:hidden pb-6 space-y-1 border-t border-theme-subtle pt-4 overflow-y-auto max-h-[calc(100vh-4rem)]">
 
-            <Link href="/services" onClick={() => setMobileOpen(false)}
+            <Link href="/pricing" onClick={() => setMobileOpen(false)}
               className="flex items-center gap-2 text-base font-semibold text-gradient-cosmic py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
-              All Services →
+              All Services & Pricing →
             </Link>
 
-            <div className="border-t border-theme-subtle my-2" />
-            {SERVICES.map((item) => (
-              <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-between py-2.5 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
-                <div className="flex flex-col">
-                  <span className="text-base font-medium text-theme-secondary">{item.label}</span>
-                  <span className="text-xs text-theme-muted italic">{item.tagline}</span>
-                </div>
-                <span className="text-sm font-mono font-semibold text-purple-600 ml-3 flex-shrink-0">{item.price}</span>
-              </Link>
-            ))}
-
-            <div className="border-t border-theme-subtle my-2" />
-            <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted px-2 pt-1 pb-0.5">Add-Ons</p>
-            {ADDONS.map((item) => (
-              <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                className="flex items-center justify-between text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
-                <span>{item.label}</span>
-                <span className="text-sm font-mono font-semibold text-teal-600">{item.price}</span>
-              </Link>
+            {CATEGORIES.map((cat) => (
+              <div key={cat.label}>
+                <div className="border-t border-theme-subtle my-2" />
+                <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted px-2 pt-1 pb-0.5">{cat.label}</p>
+                {cat.services.map((item) => (
+                  <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                    className="flex items-center justify-between py-2.5 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
+                    <div className="flex flex-col">
+                      <span className="text-base font-medium text-theme-secondary">{item.label}</span>
+                      <span className="text-xs text-theme-muted">{item.tagline}</span>
+                    </div>
+                    <span className={`text-sm font-mono font-semibold ml-3 flex-shrink-0 ${item.price === 'Free' ? 'text-teal-500' : 'text-purple-600'}`}>{item.price}</span>
+                  </Link>
+                ))}
+              </div>
             ))}
 
             <div className="border-t border-theme-subtle my-3" />
-            <Link href="/pricing" onClick={() => setMobileOpen(false)}
-              className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
-              Pricing
-            </Link>
             <Link href="/samples" onClick={() => setMobileOpen(false)}
               className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
               Sample Reports
@@ -209,7 +197,7 @@ export function NavBar() {
             <Link href="/signal" onClick={() => setMobileOpen(false)}
               className="flex items-center gap-2 text-base font-medium text-teal-400 hover:text-teal-300 py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
               <span className="inline-block w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
-              The Signal - Insights & Updates
+              The Signal
             </Link>
 
             <div className="pt-3 flex flex-col gap-3">
