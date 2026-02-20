@@ -1,9 +1,4 @@
-import Anthropic from '@anthropic-ai/sdk';
-import { streamAnthropicWithStallDetection } from '../../ai/anthropic';
-
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+import { callClaude } from '../../ai/anthropic';
 
 interface CitationAgentInput {
   projectId: string;
@@ -181,28 +176,11 @@ Be strict on regulatory data. Be lenient on market estimates.
 Respond with ONLY valid JSON.`;
 
   try {
-    const stream = anthropic.messages.stream({
+    const { content: fullContent } = await callClaude(prompt, {
       model: 'claude-sonnet-4-5',
-      max_tokens: 16000,
+      maxTokens: 16000,
       temperature: 0.3, // Lower temperature for fact-checking
-      messages: [
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
     });
-
-    let fullContent = '';
-
-    for await (const chunk of stream) {
-      if (
-        chunk.type === 'content_block_delta' &&
-        chunk.delta.type === 'text_delta'
-      ) {
-        fullContent += chunk.delta.text;
-      }
-    }
 
     // Parse JSON response
     const jsonMatch = fullContent.match(/\{[\s\S]*\}/);

@@ -142,7 +142,8 @@ async function fetchFromGoogleNewsRSS(): Promise<NewsSourceResult> {
     
     // Simple XML parsing for RSS items
     const items: NewsItem[] = [];
-    const itemRegex = /<item>(.*?)<\/item>/gs;
+    // Use [\s\S] instead of . with s flag for compatibility
+    const itemRegex = /<item>([\s\S]*?)<\/item>/g;
     const matches = xml.matchAll(itemRegex);
 
     for (const match of matches) {

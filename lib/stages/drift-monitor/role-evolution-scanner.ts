@@ -280,7 +280,7 @@ export async function analyzeRoleEvolution(
 
   return {
     currentQuarter: currentSnapshot,
-    previousQuarter,
+    previousQuarter: previousSnapshot,
     riskScore,
     riskRationale,
     emergingSkills,
