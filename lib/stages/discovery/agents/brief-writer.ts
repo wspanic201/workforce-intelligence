@@ -308,11 +308,8 @@ function buildProgramSection(opp: ScoredOpportunity, matchedGrants?: GrantMatch[
 
   const barrierBullets = opp.barriers.map(b => `- ${b}`).join('\n');
 
-  const grantSection = matchedGrants && matchedGrants.length > 0
-    ? `### 💰 Grant Alignment
-
-${matchedGrants.map(g => `- **${g.grantName}** (${g.industry}): ${g.details}${g.deadline ? ` — *Deadline: ${g.deadline}*` : ''}${g.estimatedAward ? ` — *Est. Award: ${g.estimatedAward}*` : ''}\n  *Relevance: ${g.relevance}*`).join('\n')}`
-    : '';
+  // Grant alignment moved to consolidated Funding Roadmap section — no per-program grant bloat
+  const grantSection = '';
 
   return `## ${opp.programTitle}
 

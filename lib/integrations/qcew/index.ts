@@ -199,8 +199,8 @@ export async function fetchCountyEmployment(
     .filter(s => s.employment >= 500)
     .sort((a, b) => b.employment - a.employment);
 
-  const actualYear = parseInt(rows[0]?.year) || defaultYear;
-  const actualQtr = parseInt(rows[0]?.qtr) || defaultQtr;
+  const actualYear = parseInt(rows[0]?.year) || now.getFullYear();
+  const actualQtr = parseInt(rows[0]?.qtr) || 1;
 
   return {
     fips,
