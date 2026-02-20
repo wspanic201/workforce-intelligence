@@ -105,15 +105,23 @@ Return ONLY valid JSON in this exact structure:
 
   console.log('[Signal] Generating newsletter content with Claude...');
   const { content } = await callClaude(prompt, {
-    model: 'claude-sonnet-4-5',
+    model: 'claude-3-7-sonnet-20250219',  // Use official Anthropic model ID
     maxTokens: 2000,
     temperature: 1.0,
   });
 
+  console.log('[Signal] Raw Claude response length:', content.length);
+  console.log('[Signal] First 500 chars:', content.substring(0, 500));
+
   const parsed = extractJSON(content) as SignalContent;
+
+  console.log('[Signal] Parsed object keys:', Object.keys(parsed));
+  console.log('[Signal] laborMarketSignal:', parsed.laborMarketSignal ? 'present' : 'MISSING');
 
   // Validate structure
   if (!parsed.laborMarketSignal?.headline || !parsed.laborMarketSignal?.body) {
+    console.error('[Signal] Full parsed object:', JSON.stringify(parsed, null, 2));
+    console.error('[Signal] Full Claude response:', content);
     throw new Error('[Signal] Missing laborMarketSignal in Claude response');
   }
   if (!Array.isArray(parsed.workforceNews) || parsed.workforceNews.length < 2) {
