@@ -739,6 +739,17 @@ export function buildCEUFinancialModel(inputs: {
     year1NetPosition: netPositionYear1,
     viabilityScore: Math.max(1, Math.min(10, score)),
     viabilityRationale: rationale,
+    assumptions: [
+      { item: 'Tuition per student', value: `$${tuitionPerStudent}`, source: 'Project input' },
+      { item: 'Contact hours', value: `${contactHours} hours`, source: 'Program specification' },
+      { item: 'Students per section', value: `${studentsPerSection}`, source: 'CEU model standard' },
+      { item: 'Sections per year', value: `${sectionsPerYear}`, source: 'Project input' },
+      { item: 'Instructor hourly rate', value: `$${instructorHourlyRate.toFixed(2)}/hour`, source: 'BLS postsecondary instructor median' },
+      { item: 'Materials per student', value: `$${materialsPerStudent}`, source: 'CEU model benchmark (handouts, certificates)' },
+      { item: 'Coordinator overhead', value: `$${coordinatorOverhead}/year`, source: 'CEU model benchmark (fractional)' },
+      { item: 'Marketing budget', value: `$${marketingCost}/year`, source: 'CEU model benchmark (word-of-mouth dominant)' },
+      { item: 'Year 2-3 growth', value: '10% annually', source: 'CEU model assumption (as word spreads among licensed professionals)' },
+    ],
   };
 }
 

@@ -114,7 +114,7 @@ KEY COST DRIVERS:
   - Coordinator (0.25 FTE): ${fmt(b.expenses.coordinatorCost)}
 
 ASSUMPTIONS USED:
-${model.assumptions.map(a => `  - ${a.item}: ${a.value} [${a.source}]`).join('\n')}
+${model.assumptions ? model.assumptions.map(a => `  - ${a.item}: ${a.value} [${a.source}]`).join('\n') : '  - CEU model: minimal assumptions, uses instructor hourly rate + fixed overhead'}
 
 ═══════════════════════════════════════════════════════════
 YOUR TASK:

@@ -2,6 +2,7 @@ import { callClaude, extractJSON } from '@/lib/ai/anthropic';
 import { ValidationProject } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { PROGRAM_VALIDATOR_SYSTEM_PROMPT } from '@/lib/prompts/program-validator';
+import { searchWeb } from '@/lib/apis/web-research';
 
 export interface RegulatoryComplianceData {
   score: number;
@@ -77,6 +78,78 @@ export interface RegulatoryComplianceData {
   markdownReport: string;
 }
 
+/**
+ * Extract state from geographic area.
+ */
+function extractState(project: any): string | null {
+  const geo = (project.geographic_area || '').toLowerCase();
+  
+  const stateMap: Record<string, string> = {
+    'iowa': 'Iowa',
+    'minnesota': 'Minnesota',
+    'illinois': 'Illinois',
+    'wisconsin': 'Wisconsin',
+    'missouri': 'Missouri',
+    'nebraska': 'Nebraska',
+    'kansas': 'Kansas',
+    'california': 'California',
+    'texas': 'Texas',
+    'florida': 'Florida',
+    'new york': 'New York',
+    // Add more as needed
+  };
+
+  for (const [key, value] of Object.entries(stateMap)) {
+    if (geo.includes(key)) return value;
+  }
+
+  return null;
+}
+
+/**
+ * Extract occupation from program name.
+ */
+function extractOccupation(programName: string): string {
+  // Strip common program qualifiers
+  return programName
+    .replace(/\s*(certificate|diploma|degree|program|associate|bachelor|training|course|license|renewal|continuing education)\s*/gi, '')
+    .trim();
+}
+
+/**
+ * Search for official .gov sources for licensure requirements.
+ * This pre-filters results to government websites only.
+ */
+async function findOfficialGovernmentSources(
+  occupation: string,
+  state: string
+): Promise<string[]> {
+  const queries = [
+    `${occupation} license requirements ${state} site:.gov`,
+    `${occupation} continuing education ${state} site:.gov`,
+    `${state} ${occupation} renewal requirements site:.gov`,
+  ];
+
+  const urls: string[] = [];
+
+  for (const query of queries) {
+    try {
+      const results = await searchWeb(query);
+      // Filter to .gov domains only
+      const govUrls = results.results
+        .filter(r => r.url.includes('.gov'))
+        .map(r => r.url)
+        .slice(0, 3);
+      urls.push(...govUrls);
+    } catch (err) {
+      console.warn(`[Regulatory] .gov search failed for: ${query}`);
+    }
+  }
+
+  // Deduplicate
+  return Array.from(new Set(urls));
+}
+
 export async function runRegulatoryCompliance(
   projectId: string,
   project: ValidationProject
@@ -86,6 +159,17 @@ export async function runRegulatoryCompliance(
 
   try {
     console.log(`[Regulatory] Starting for "${project.program_name}"`);
+
+    // Pre-search for official .gov sources
+    const state = extractState(project as any);
+    const occupation = extractOccupation(project.program_name);
+    
+    let govSources: string[] = [];
+    if (state && occupation) {
+      console.log(`[Regulatory] Pre-searching for .gov sources: ${occupation} in ${state}`);
+      govSources = await findOfficialGovernmentSources(occupation, state);
+      console.log(`[Regulatory] Found ${govSources.length} official .gov sources`);
+    }
 
     const prompt = `${PROGRAM_VALIDATOR_SYSTEM_PROMPT}
 
@@ -114,14 +198,40 @@ These are fundamentally different programs with different:
 
 Determine which type applies to this program and structure your analysis accordingly.
 
-DATA SOURCE REQUIREMENTS:
-- ALL licensure data MUST come from official state sources:
-  - State licensing board websites (.gov domains)
-  - State statutes/administrative code (cite specific statute numbers)
-  - State department of professional regulation
-- Do NOT use third-party training provider websites, random blogs, or unofficial sources
-- If you cannot find official state code, state "Unable to locate official state requirement" rather than guessing
-- Cite the specific statute/rule number for all licensure requirements
+DATA SOURCE REQUIREMENTS - CRITICAL:
+- ALL licensure data MUST come from OFFICIAL GOVERNMENT SOURCES ONLY:
+  - ✅ ALLOWED: .gov domains ONLY (state licensing boards, state legislature websites)
+  - ✅ ALLOWED: Official state administrative code websites (e.g., legis.iowa.gov/docs/iac/)
+  - ❌ FORBIDDEN: Third-party training providers (.com, .org, .edu)
+  - ❌ FORBIDDEN: Cosmetology schools, CE provider websites
+  - ❌ FORBIDDEN: Wikipedia, blogs, general education sites
+  - ❌ FORBIDDEN: Any site that is NOT an official state government website
+
+VERIFICATION PROTOCOL:
+1. Search for "[state] [occupation] license requirements site:.gov"
+2. Locate the official state licensing board page (.gov)
+3. Find the specific statute/administrative code citation
+4. Fetch and READ the actual statute text from legis.[state].gov or equivalent
+5. Quote the EXACT hour requirement from the statute
+6. Cite the statute number (e.g., "Iowa Code §157.10" or "Iowa Admin Code 645-60.18")
+7. If you CANNOT find a .gov source with the exact requirement, return "Unable to locate official requirement from state government source" instead of guessing
+
+EXAMPLE (Iowa Cosmetology):
+- Correct source: dial.iowa.gov (Iowa Department of Inspections, Appeals & Licensing)
+- Correct source: legis.iowa.gov (Iowa Legislature official code)
+- WRONG source: rocketcert.com (training provider)
+- WRONG source: rossbeautyacademy.com (school)
+
+DO NOT GUESS. DO NOT ESTIMATE. DO NOT USE NON-.GOV SOURCES FOR LICENSURE REQUIREMENTS.
+
+${govSources.length > 0 ? `
+OFFICIAL .GOV SOURCES FOUND (use these first):
+${govSources.map((url, i) => `${i + 1}. ${url}`).join('\n')}
+
+You MUST verify licensure requirements using these .gov sources before responding.
+If these sources don't contain the information, search for additional .gov sources.
+DO NOT use any non-.gov websites for licensure hour requirements.
+` : ''}
 
 ANALYSIS REQUIRED:
 1. Program type classification (initial licensure vs. continuing ed vs. non-licensed)
