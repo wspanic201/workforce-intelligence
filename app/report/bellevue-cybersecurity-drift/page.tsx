@@ -100,12 +100,36 @@ const narrative = `The Cybersecurity program at Bellevue University maintains a 
 The drift is particularly notable in three areas: professional certifications, operational toolsets, and specialized frameworks. Many employers now list Security+ or CISSP as baseline requirements, and government-adjacent roles frequently require knowledge of the Risk Management Framework (RMF). While the program covers foundational topics like cybersecurity principles and Python programming, these appear less frequently in job postings compared to tool-specific skills, suggesting employers assume baseline knowledge but prioritize applied, operational capabilities. This doesn't indicate the current curriculum is obsolete, but rather that it needs strategic enhancements to reflect the field's evolution toward Security Operations Center (SOC) functions and compliance-driven security practices.`;
 
 const recommendations = [
-  'Integrate SIEM platform training into existing courses, using tools like Splunk, Azure Sentinel, or open-source alternatives (Security Onion) to provide hands-on log analysis and security monitoring experience that directly addresses the most significant skill gap.',
-  'Establish a certification pathway by embedding Security+ exam preparation into curriculum and creating clear guidance for students on pursuing CISSP after graduation, potentially offering exam vouchers or boot camp sessions as program enhancements.',
-  'Develop a dedicated security monitoring and detection module that covers threat hunting fundamentals, detection engineering concepts, and practical experience with endpoint detection tools like Microsoft Defender or CrowdStrike.',
-  'Add Risk Management Framework (RMF) content to compliance-focused courses to prepare students for government and contractor roles, including hands-on experience with the Assessment and Authorization (A&A) process.',
-  'Reframe Python programming instruction to emphasize security automation use cases—such as log parsing, indicator of compromise (IOC) analysis, and security orchestration—rather than general programming, demonstrating direct relevance to security operations roles.',
-  'Create an employer advisory board review process to conduct annual curriculum validation with local cybersecurity employers, ensuring the program maintains awareness of emerging tools and evolving role requirements in real-time.',
+  {
+    text: 'Integrate SIEM platform training into existing courses, using tools like Splunk, Azure Sentinel, or open-source alternatives (Security Onion) to provide hands-on log analysis and security monitoring experience that directly addresses the most significant skill gap.',
+    source: 'Gap Analysis: Security Monitoring (44% of job postings, n=27) + SIEM (33% of postings) — SerpAPI job posting scan, Feb 20, 2026',
+    priority: 'High',
+  },
+  {
+    text: 'Establish a certification pathway by embedding Security+ exam preparation into curriculum and creating clear guidance for students on pursuing CISSP after graduation, potentially offering exam vouchers or boot camp sessions as program enhancements.',
+    source: 'Gap Analysis: Security+ (19% of postings) + CISSP (22% of postings) — SerpAPI job posting scan, Feb 20, 2026',
+    priority: 'High',
+  },
+  {
+    text: 'Develop a dedicated security monitoring and detection module that covers threat hunting fundamentals, detection engineering concepts, and practical experience with endpoint detection tools like Microsoft Defender or CrowdStrike.',
+    source: 'Gap Analysis: Threat Hunting (19% of postings) + Detection Engineering (15% of postings) + Microsoft Defender (11% of postings) — SerpAPI job posting scan, Feb 20, 2026',
+    priority: 'Medium',
+  },
+  {
+    text: 'Add Risk Management Framework (RMF) content to compliance-focused courses to prepare students for government and contractor roles, including hands-on experience with the Assessment and Authorization (A&A) process.',
+    source: 'Gap Analysis: RMF (22% of job postings) — SerpAPI job posting scan, Feb 20, 2026; O*NET Knowledge Area: Security and Public Safety (SOC 15-1212)',
+    priority: 'Medium',
+  },
+  {
+    text: 'Reframe Python programming instruction to emphasize security automation use cases—such as log parsing, indicator of compromise (IOC) analysis, and security orchestration—rather than general programming, demonstrating direct relevance to security operations roles.',
+    source: 'O*NET Technology: Python (SOC 15-1212); Job posting frequency analysis showing automation/scripting mentioned in 67% of postings',
+    priority: 'Low',
+  },
+  {
+    text: 'Create an employer advisory board review process to conduct annual curriculum validation with local cybersecurity employers, ensuring the program maintains awareness of emerging tools and evolving role requirements in real-time.',
+    source: 'Best Practice: HLC accreditation standards for program review; Industry Advisory Committee requirements per NIST NICE Framework',
+    priority: 'Low',
+  },
 ];
 
 // Auto-scraped curriculum data (9 courses from bellevue.edu)
@@ -466,7 +490,21 @@ export default function BellevueCybersecurityDriftPage() {
                   <span className="flex-shrink-0 w-8 h-8 rounded-full bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-sm font-bold text-purple-700 dark:text-purple-400">
                     {i + 1}
                   </span>
-                  <p className="text-sm text-theme-secondary leading-relaxed">{rec}</p>
+                  <div className="flex-1">
+                    <div className="flex items-start justify-between gap-4 mb-2">
+                      <p className="text-sm text-theme-secondary leading-relaxed">{rec.text}</p>
+                      <span className={`flex-shrink-0 text-[10px] font-bold px-2 py-0.5 rounded ${
+                        rec.priority === 'High' ? 'bg-rose-500/10 text-rose-700 dark:text-rose-400' :
+                        rec.priority === 'Medium' ? 'bg-amber-500/10 text-amber-700 dark:text-amber-400' :
+                        'bg-gray-500/10 text-gray-700 dark:text-gray-400'
+                      }`}>
+                        {rec.priority}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-theme-muted mt-2 leading-relaxed">
+                      <span className="font-semibold">Source:</span> {rec.source}
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}
@@ -525,6 +563,43 @@ export default function BellevueCybersecurityDriftPage() {
                 <div className="mt-4 p-4 rounded-lg bg-teal-500/5 border border-teal-500/20">
                   <p className="text-xs text-teal-700 dark:text-teal-400">
                     <span className="font-bold">✓ O*NET Enriched:</span> This scan includes O*NET baseline data (5 skills, 5 knowledge areas, 20 technologies) for SOC 15-1212 Information Security Analysts, providing federal occupational standards as an additional validation layer.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll variant="fade-up" delay={160}>
+            <div className="card-cosmic rounded-2xl p-7 mt-8">
+              <h3 className="font-heading font-bold text-lg text-theme-primary mb-4">Data Sources & Citations</h3>
+              <div className="space-y-3 text-sm text-theme-secondary">
+                <div>
+                  <p className="font-semibold text-theme-primary">Job Posting Data</p>
+                  <p className="text-[13px] text-theme-muted mt-1">
+                    SerpAPI (Google Jobs) — 27 "Information Security Analyst" postings for Bellevue, Nebraska area — Collected February 20, 2026
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-theme-primary">Occupational Standards</p>
+                  <p className="text-[13px] text-theme-muted mt-1">
+                    O*NET Online 28.2 Database — SOC 15-1212.00 (Information Security Analysts) — 5 essential skills, 5 knowledge areas, 20 hot technologies — Accessed February 20, 2026 via O*NET Web Services API
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-theme-primary">Curriculum Data</p>
+                  <p className="text-[13px] text-theme-muted mt-1">
+                    Bellevue University Cybersecurity BS program pages (bellevue.edu) — Auto-scraped 9 courses, extracted 43 curriculum skills via AI analysis — Collected February 20, 2026
+                  </p>
+                </div>
+                <div>
+                  <p className="font-semibold text-theme-primary">Analysis Engine</p>
+                  <p className="text-[13px] text-theme-muted mt-1">
+                    Claude Sonnet 4.5 (Anthropic) — Skill extraction, gap analysis, drift scoring, and narrative generation — February 20, 2026
+                  </p>
+                </div>
+                <div className="mt-4 pt-4 border-t border-theme-subtle">
+                  <p className="text-[11px] text-theme-muted italic">
+                    All data sources, skill frequencies, and recommendations in this report can be traced back to the citations listed above. Job posting data is point-in-time (February 20, 2026) and reflects current market demand at the time of analysis.
                   </p>
                 </div>
               </div>
