@@ -118,7 +118,7 @@ function StaticHero() {
 
         {/* Subhead */}
         <p className="mt-6 text-lg md:text-xl text-theme-secondary leading-relaxed max-w-2xl mx-auto">
-          A complete intelligence stack for community college CE divisions — from opportunity discovery through program launch, plus standalone reports you can order anytime.
+          A complete intelligence stack for community college CE divisions — from program opportunity discovery through program launch, plus standalone reports you can order anytime.
         </p>
 
         {/* CTAs */}
