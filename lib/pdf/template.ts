@@ -144,7 +144,7 @@ body {
   padding: 0;
   margin: -1in; /* counteract page margins for first page */
   padding: 2in 1.5in;
-  background: white;
+  background: #0f172a;
 }
 
 .cover-top-bar {
@@ -189,7 +189,7 @@ body {
 .logo-text {
   font-size: 28px;
   font-weight: 700;
-  color: #1a2332;
+  color: #f8fafc;
   letter-spacing: -0.5px;
 }
 
@@ -203,7 +203,7 @@ body {
 .cover-title {
   font-size: 36px;
   font-weight: 800;
-  color: #1a2332;
+  color: #f8fafc;
   letter-spacing: -1px;
   line-height: 1.15;
   margin-bottom: 12px;
@@ -212,7 +212,7 @@ body {
 
 .cover-subtitle {
   font-size: 18px;
-  color: #64748b;
+  color: #94a3b8;
   font-weight: 400;
   margin-bottom: 48px;
 }
@@ -225,14 +225,14 @@ body {
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 2px;
-  color: #94a3b8;
+  color: #64748b;
   margin-bottom: 6px;
 }
 
 .cover-client-name {
   font-size: 22px;
   font-weight: 600;
-  color: #1a2332;
+  color: #e2e8f0;
 }
 
 .cover-meta {
@@ -244,7 +244,7 @@ body {
 
 .cover-date {
   font-size: 14px;
-  color: #64748b;
+  color: #94a3b8;
 }
 
 .cover-badge {
@@ -252,11 +252,11 @@ body {
   align-items: center;
   gap: 8px;
   padding: 8px 20px;
-  border: 1.5px solid #e2e8f0;
+  border: 1.5px solid #334155;
   border-radius: 100px;
   font-size: 12px;
   font-weight: 500;
-  color: #475569;
+  color: #94a3b8;
 }
 
 .badge-dot {
@@ -271,7 +271,7 @@ body {
   position: absolute;
   bottom: 40px;
   font-size: 10px;
-  color: #94a3b8;
+  color: #475569;
   letter-spacing: 0.5px;
 }
 

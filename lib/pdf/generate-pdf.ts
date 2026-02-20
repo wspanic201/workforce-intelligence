@@ -66,7 +66,7 @@ export async function generatePDF(
       <div style="width: 100%; font-family: -apple-system, 'Segoe UI', sans-serif; font-size: 8px; padding: 10px 40px 0; display: flex; justify-content: space-between; align-items: center; color: #94a3b8; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">
         <div style="display: flex; align-items: center; gap: 6px;">
           <span style="background: #1a2332; color: white; width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; border-radius: 3px; font-weight: 800; font-size: 9px;">W</span>
-          <span style="font-weight: 700; color: #1a2332; font-size: 9px; letter-spacing: -0.2px;">WorkforceOS</span>
+          <span style="font-weight: 700; color: #1a2332; font-size: 9px; letter-spacing: -0.2px;">Wavelength</span>
         </div>
         <div style="font-weight: 500; color: #64748b; font-size: 8px;">${reportTypeLabel}</div>
       </div>
