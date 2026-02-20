@@ -239,7 +239,7 @@ export default function Article() {
           This is exactly what <Link href="/drift" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">Curriculum Drift Analysis</Link> was designed to address. Quarterly scans of your program curriculum against current occupational requirements ensure that the programs you're proposing won't become obsolete before students even graduate. In your grant proposal, this becomes evidence of institutional capacity for ongoing quality assurance—a significant competitive advantage.
         </p>
 
-        <div className="bg-gradient-to-r from-violet-900/40 to-teal-900/40 border border-gray-200 rounded-2xl p-8 mt-12 mb-12 text-center">
+        <div className="bg-gradient-to-r from-violet-50 to-teal-50 border border-violet-200 rounded-2xl p-8 mt-12 mb-12 text-center">
           <h3 className="font-bold text-gray-900 mb-4" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"1.4rem"}}>
             Need to Move Fast on Grant Readiness?
           </h3>
