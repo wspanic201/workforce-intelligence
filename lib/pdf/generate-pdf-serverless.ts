@@ -47,7 +47,30 @@ export async function generatePDFBuffer(
     });
 
     const page = await browser.newPage();
+    
+    // ── Two-pass rendering for TOC page numbers ──
     await page.setContent(fullHtml, { waitUntil: 'networkidle0' });
+    
+    const sectionPages: Record<string, number> = await page.evaluate(() => {
+      const tocPageOffset = 2;
+      const result: Record<string, number> = {};
+      const h2s = document.querySelectorAll('.content h2[id]');
+      h2s.forEach((h2, i) => {
+        const id = h2.getAttribute('id');
+        if (id) result[id] = tocPageOffset + 1 + i;
+      });
+      return result;
+    });
+
+    const htmlWithPageNums = fullHtml.replace(
+      /(<a href="#([^"]*)" class="toc-link">.*?<\/a>\s*<span class="toc-dots"><\/span>)/g,
+      (match, before, id) => {
+        const pageNum = sectionPages[id] || '';
+        return `${before}<span class="toc-page-num">${pageNum}</span>`;
+      }
+    );
+    
+    await page.setContent(htmlWithPageNums, { waitUntil: 'domcontentloaded' });
 
     const reportTypeLabel = options.reportType === 'discovery'
       ? 'Market Scan'

@@ -52,8 +52,41 @@ export async function generatePDF(
     });
     const page = await browser.newPage();
 
-    // Set content and wait for rendering
+    // ── Two-pass rendering for TOC page numbers ──
+    
+    // Pass 1: Render HTML, extract page numbers for each h2 section
     await page.setContent(fullHtml, { waitUntil: 'networkidle0' });
+    
+    // Get the positions of all h2 elements and calculate which page they land on
+    const sectionPages: Record<string, number> = await page.evaluate(() => {
+      const pageHeightPx = 9.5 * 96; // ~letter height minus margins (9.5in usable × 96dpi)
+      const tocPageOffset = 2; // cover page + TOC page
+      const result: Record<string, number> = {};
+      const h2s = document.querySelectorAll('.content h2[id]');
+      h2s.forEach((h2) => {
+        const id = h2.getAttribute('id');
+        if (id) {
+          const rect = h2.getBoundingClientRect();
+          const contentTop = document.querySelector('.content')?.getBoundingClientRect().top || 0;
+          const relativeTop = rect.top - contentTop;
+          // Each h2 forces a page break, so count preceding h2s + offset
+          const pageNum = tocPageOffset + 1 + Array.from(h2s).indexOf(h2);
+          result[id] = pageNum;
+        }
+      });
+      return result;
+    });
+
+    // Pass 2: Inject page numbers into TOC and re-render
+    const htmlWithPageNums = fullHtml.replace(
+      /(<a href="#([^"]*)" class="toc-link">.*?<\/a>\s*<span class="toc-dots"><\/span>)/g,
+      (match, before, id) => {
+        const pageNum = sectionPages[id] || '';
+        return `${before}<span class="toc-page-num">${pageNum}</span>`;
+      }
+    );
+    
+    await page.setContent(htmlWithPageNums, { waitUntil: 'domcontentloaded' });
 
     // Build header/footer templates
     const reportTypeLabel = options.reportType === 'discovery'

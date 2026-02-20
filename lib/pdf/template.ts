@@ -79,6 +79,7 @@ ${getStyles(options)}
       <a href="#${item.id}" class="toc-link">${item.title}</a>
       <span class="toc-dots"></span>
     </div>`).join('')}
+    <p class="toc-note">Page numbers populated during PDF generation.</p>
   </div>
 </div>
 
@@ -323,9 +324,23 @@ body {
   flex: 1;
   border-bottom: 1.5px dotted #cbd5e1;
   margin: 0 8px;
-  min-width: 40px;
+  min-width: 20px;
   position: relative;
   top: -4px;
+}
+
+.toc-page-num {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  flex-shrink: 0;
+  min-width: 24px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.toc-note {
+  display: none; /* hidden placeholder, replaced by JS during PDF gen */
 }
 
 /* ── Content ── */
