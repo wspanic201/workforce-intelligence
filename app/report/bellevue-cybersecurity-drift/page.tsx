@@ -184,13 +184,6 @@ export default function BellevueCybersecurityDriftPage() {
 
   return (
     <div className="overflow-x-hidden bg-theme-page">
-      {/* ═══════════ LIVE DATA BANNER ═══════════ */}
-      <div className="w-full bg-teal-500/10 border-b border-teal-500/20 py-2.5 px-4 text-center">
-        <p className="text-xs font-semibold text-teal-700 dark:text-teal-400">
-          🔴 Live Report — Real data from {postingsAnalyzed} job postings and auto-scraped curriculum · Analyzed {scanDate}
-        </p>
-      </div>
-
       {/* ═══════════ A. HERO ═══════════ */}
       <section className="relative min-h-[60vh] flex items-center justify-center pt-32 lg:pt-36 pb-16">
         <Stars count={140} />
