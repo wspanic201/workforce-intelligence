@@ -10,6 +10,9 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+
+export const maxDuration = 60;
+
 import { generateSignalContent } from '@/lib/signal/generate-content';
 import { renderSignalEmail } from '@/lib/signal/email-template';
 import { fetchNewsWithFallback } from '@/lib/signal/news-sources';

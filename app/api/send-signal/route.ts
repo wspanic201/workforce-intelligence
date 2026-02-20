@@ -13,6 +13,9 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+
+export const maxDuration = 60;
+
 import { Resend } from 'resend';
 import { generateSignalContent } from '@/lib/signal/generate-content';
 import { renderSignalEmail } from '@/lib/signal/email-template';
