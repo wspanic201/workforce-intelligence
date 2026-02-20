@@ -1,5 +1,6 @@
 import { callClaude } from '@/lib/ai/anthropic';
 import type { EmployerSkill } from './types';
+import type { OnetOccupationProfile } from '@/lib/apis/onet';
 
 // Fuzzy skill matching — "Electronic Health Records" matches "EHR"
 async function matchSkills(
@@ -53,13 +54,75 @@ Only return valid JSON.`;
 
 export async function calculateDriftScore(
   employerSkills: EmployerSkill[],
-  curriculumSkills: string[]
-): Promise<{ score: number; covered: string[]; gaps: string[]; stale: string[] }> {
+  curriculumSkills: string[],
+  onetProfile?: OnetOccupationProfile
+): Promise<{ score: number; covered: string[]; gaps: string[]; stale: string[]; onetGaps?: string[] }> {
   const { covered, gaps, stale } = await matchSkills(employerSkills, curriculumSkills);
 
   const top20Count = Math.min(employerSkills.length, 20);
   const coverage = top20Count > 0 ? covered.length / top20Count : 0;
-  const score = Math.round((1 - coverage) * 100);
+  let score = Math.round((1 - coverage) * 100);
 
-  return { score, covered, gaps, stale };
+  let onetGaps: string[] | undefined;
+
+  if (onetProfile) {
+    // Collect essential O*NET skills/knowledge (importance >= 60)
+    const essentialOnet = [
+      ...onetProfile.skills.filter(s => s.importance >= 60).map(s => s.name),
+      ...onetProfile.knowledge.filter(k => k.importance >= 60).map(k => k.name),
+    ];
+
+    if (essentialOnet.length > 0) {
+      // Match O*NET essentials against curriculum
+      const onetMatchResult = await matchOnetAgainstCurriculum(essentialOnet, curriculumSkills);
+      onetGaps = onetMatchResult.missing;
+
+      // Boost drift score based on missing essential O*NET skills
+      if (onetGaps.length > 0) {
+        const onetMissRate = onetGaps.length / essentialOnet.length;
+        // Blend: 70% employer-based score + 30% O*NET gap penalty
+        score = Math.round(score * 0.7 + onetMissRate * 100 * 0.3);
+        score = Math.min(100, score);
+      }
+    }
+  }
+
+  return { score, covered, gaps, stale, onetGaps };
+}
+
+async function matchOnetAgainstCurriculum(
+  onetSkills: string[],
+  curriculumSkills: string[]
+): Promise<{ covered: string[]; missing: string[] }> {
+  const prompt = `Compare these O*NET occupation skills against a curriculum's skill list.
+
+O*NET ESSENTIAL SKILLS/KNOWLEDGE:
+${onetSkills.join('\n')}
+
+CURRICULUM SKILLS:
+${curriculumSkills.join('\n')}
+
+Return JSON:
+{
+  "covered": ["O*NET skills that ARE covered in curriculum"],
+  "missing": ["O*NET skills that are NOT in curriculum"]
+}
+
+Be generous with matching — semantic equivalence counts. Only return valid JSON.`;
+
+  const result = await callClaude(prompt, { maxTokens: 1500, temperature: 0.2 });
+
+  try {
+    const cleaned = result.content.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    return JSON.parse(cleaned);
+  } catch {
+    // Fallback: basic string matching
+    const covered = onetSkills.filter(os =>
+      curriculumSkills.some(cs =>
+        cs.toLowerCase().includes(os.toLowerCase()) ||
+        os.toLowerCase().includes(cs.toLowerCase())
+      )
+    );
+    return { covered, missing: onetSkills.filter(s => !covered.includes(s)) };
+  }
 }

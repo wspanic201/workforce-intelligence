@@ -2,6 +2,8 @@ import { callClaude, extractJSON } from '@/lib/ai/anthropic';
 import { ValidationProject } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { searchWeb } from '@/lib/apis/web-research';
+import { getCompetitorCompletions } from '@/lib/apis/ipeds';
+import { socToCip } from '@/lib/mappings/soc-cip-crosswalk';
 
 // ─── Competitor Pricing Types ─────────────────────────────────────────────────
 
@@ -125,6 +127,9 @@ export interface CompetitiveAnalysisData {
   competitive_advantages: string[];
   threats: string[];
   recommendations: string[];
+  cipCode?: string;
+  cipTitle?: string;
+  ipedsCompletions?: Array<{ institution: string; city: string; completions: number }>;
 }
 
 export async function runCompetitiveAnalysis(
@@ -135,6 +140,33 @@ export async function runCompetitiveAnalysis(
   const supabase = getSupabaseServerClient();
 
   try {
+    // Look up CIP code from SOC code for IPEDS data
+    const socCode = (project as any).soc_code || (project as any).soc_codes || null;
+    const state = (project as any).state || '';
+    let cipCode: string | null = null;
+    let cipTitle: string | null = null;
+    let competitorCompletions: Array<{ institution: string; city: string; completions: number }> = [];
+
+    if (socCode) {
+      const cipMappings = socToCip(socCode);
+      if (cipMappings.length > 0) {
+        cipCode = cipMappings[0].cipCode;
+        cipTitle = cipMappings[0].cipTitle;
+      }
+    }
+
+    if (cipCode && state) {
+      try {
+        competitorCompletions = await getCompetitorCompletions(cipCode, state);
+      } catch (err) {
+        console.warn(`[CompetitorAnalyst] IPEDS lookup failed for CIP ${cipCode} in ${state}:`, err);
+      }
+    }
+
+    const ipedsSection = competitorCompletions.length > 0
+      ? `\nIPEDS PROGRAM COMPLETIONS (actual graduates from competing institutions, CIP ${cipCode} - ${cipTitle}):\n${competitorCompletions.map(c => `- ${c.institution} (${c.city}): ${c.completions} completers`).join('\n')}\n`
+      : '';
+
     const prompt = `You are a competitive landscape analyst for workforce education programs.
 
 Analyze the competitive landscape for this program and return ONLY valid JSON.
@@ -144,6 +176,8 @@ TYPE: ${project.program_type || 'Not specified'}
 AUDIENCE: ${project.target_audience || 'Not specified'}
 CLIENT: ${project.client_name}
 ${project.constraints ? `CONSTRAINTS: ${project.constraints}` : ''}
+${cipCode ? `CIP CODE: ${cipCode} (${cipTitle})` : ''}
+${ipedsSection}
 
 Identify 3-5 competing programs, market gaps, and differentiation opportunities.
 
@@ -179,6 +213,13 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Kee
     });
 
     const data = extractJSON(content) as CompetitiveAnalysisData;
+    if (cipCode) {
+      data.cipCode = cipCode;
+      data.cipTitle = cipTitle ?? undefined;
+    }
+    if (competitorCompletions.length > 0) {
+      data.ipedsCompletions = competitorCompletions;
+    }
     const markdown = formatCompetitiveAnalysis(data, project);
 
     const duration = Date.now() - startTime;

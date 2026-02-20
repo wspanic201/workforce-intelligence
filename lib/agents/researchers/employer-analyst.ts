@@ -3,6 +3,7 @@ import { ValidationProject } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { PROGRAM_VALIDATOR_SYSTEM_PROMPT } from '@/lib/prompts/program-validator';
 import { searchGoogleJobs } from '@/lib/apis/serpapi';
+import { searchWeb } from '@/lib/apis/web-research';
 import { withCache } from '@/lib/apis/cache';
 
 export interface EmployerDemandData {
@@ -80,7 +81,37 @@ export async function runEmployerDemand(
         console.log(`[Employer Demand] Found ${jobsData.count} jobs, top employer: ${employerList[0]?.name} (${employerList[0]?.openings} openings)`);
       }
     } catch (err) {
-      console.warn('[Employer Demand] Google Jobs failed:', err);
+      console.warn('[Employer Analyst] SerpAPI jobs failed, using Brave Search fallback');
+      try {
+        // Fallback: use web search for job posting data
+        const webResults = await searchWeb(`${targetOccupation} jobs ${location} hiring requirements`);
+        if (webResults && webResults.results && webResults.results.length > 0) {
+          // Extract employer names and job-like data from web search snippets
+          const extractedEmployers = new Map<string, number>();
+          for (const result of webResults.results) {
+            // Look for company/employer names in titles (common pattern: "Job Title at Company" or "Company - Job Title")
+            const titleMatch = result.title?.match(/(?:at|@)\s+(.+?)(?:\s*[-|–]|$)/i)
+              || result.title?.match(/^(.+?)\s*[-|–]\s*/);
+            if (titleMatch) {
+              const name = titleMatch[1].trim();
+              // Filter out generic site names
+              if (name && !['Indeed', 'LinkedIn', 'Glassdoor', 'ZipRecruiter', 'Monster', 'SimplyHired', 'Salary.com'].includes(name)) {
+                extractedEmployers.set(name, (extractedEmployers.get(name) || 0) + 1);
+              }
+            }
+          }
+          // Convert to employerList format
+          employerList = Array.from(extractedEmployers.entries())
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 10)
+            .map(([name, count]) => ({ name, openings: count }));
+          if (employerList.length > 0) {
+            console.log(`[Employer Demand] Brave fallback found ${employerList.length} employers from web results`);
+          }
+        }
+      } catch (fallbackErr) {
+        console.warn('[Employer Demand] Brave Search fallback also failed:', fallbackErr);
+      }
     }
 
     const prompt = `${PROGRAM_VALIDATOR_SYSTEM_PROMPT}

@@ -1,5 +1,7 @@
 import { callClaude } from '@/lib/ai/anthropic';
 import type { DriftProgram, DriftScanResult, EmployerSkill } from './types';
+import { socToCip } from '@/lib/mappings/soc-cip-crosswalk';
+import type { OnetOccupationProfile } from '@/lib/apis/onet';
 
 export async function generateDriftNarrative(
   program: DriftProgram,
@@ -48,7 +50,8 @@ Return JSON:
 export function generateDriftReportHTML(
   program: DriftProgram,
   scan: DriftScanResult,
-  employerSkills: EmployerSkill[]
+  employerSkills: EmployerSkill[],
+  onetProfile?: OnetOccupationProfile
 ): string {
   const scoreColor = {
     aligned: '#16a34a',
@@ -146,7 +149,7 @@ export function generateDriftReportHTML(
   <div class="cover-brand">Wavelength · Program Curriculum Drift Analysis</div>
   <div class="cover-title">Program Drift Alert</div>
   <div class="cover-subtitle">${program.programName} · ${program.institutionName}</div>
-  <div class="cover-meta">Occupation: ${program.occupationTitle} ${program.socCode ? `(SOC ${program.socCode})` : ''} · Scanned ${new Date(scan.scannedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} · ${scan.postingsAnalyzed} job postings analyzed</div>
+  <div class="cover-meta">Occupation: ${program.occupationTitle} ${program.socCode ? `(SOC ${program.socCode}${(() => { const cips = socToCip(program.socCode!); return cips.length > 0 ? ` | CIP: ${cips[0].cipCode} — ${cips[0].cipTitle}` : ''; })()})` : ''} · Scanned ${new Date(scan.scannedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })} · ${scan.postingsAnalyzed} job postings analyzed</div>
 </div>
 
 <div class="body">
@@ -177,6 +180,33 @@ export function generateDriftReportHTML(
     ${scan.staleSkills.map(s => `<span class="tag tag-stale">${s}</span>`).join('')}
   </div>` : ''}
 
+  ${onetProfile && scan.onetSkillsUsed ? `
+  <h2>O*NET Occupation Baseline</h2>
+  <p style="font-size:10px;color:#64748b;margin-bottom:10px">Official O*NET profile for <strong>${onetProfile.title}</strong> (${onetProfile.socCode}) — essential skills &amp; knowledge (importance ≥ 60)</p>
+  <table>
+    <tr><th>Skill / Knowledge</th><th>Importance</th><th>In Curriculum?</th></tr>
+    ${[...onetProfile.skills, ...onetProfile.knowledge]
+      .filter(s => s.importance >= 60)
+      .sort((a, b) => b.importance - a.importance)
+      .slice(0, 20)
+      .map(s => `
+    <tr>
+      <td>${s.name}</td>
+      <td>${s.importance}</td>
+      <td>${scan.onetGaps?.includes(s.name) ? '<span style="color:#dc2626;font-weight:600">✗ Missing</span>' : '<span style="color:#16a34a;font-weight:600">✓ Covered</span>'}</td>
+    </tr>`).join('')}
+  </table>
+  ${onetProfile.technologies.some(t => t.hotTechnology) ? `
+  <div style="margin-bottom:16px">
+    <strong style="font-size:10px;color:#64748b">🔥 HOT TECHNOLOGIES (O*NET flagged):</strong><br>
+    ${onetProfile.technologies
+      .filter(t => t.hotTechnology)
+      .map(t => {
+        const isGap = scan.onetGaps?.some(g => g.toLowerCase().includes(t.name.toLowerCase()) || t.name.toLowerCase().includes(g.toLowerCase()));
+        return `<span class="tag ${isGap ? 'tag-gap' : 'tag-covered'}">🔥 ${t.name}</span>`;
+      }).join('')}
+  </div>` : ''}
+  ` : ''}
   <h2>Top Employer Requirements</h2>
   <table>
     <tr><th>#</th><th>Skill / Requirement</th><th>Employer Frequency</th><th>In Curriculum?</th></tr>

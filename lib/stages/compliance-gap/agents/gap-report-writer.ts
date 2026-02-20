@@ -26,6 +26,19 @@ import type {
   OfferedProgram,
 } from '../types';
 import { normalizeProgramName } from './catalog-scanner';
+import { socToCip, getCrosswalkData } from '@/lib/mappings/soc-cip-crosswalk';
+
+/** Best-effort CIP lookup by occupation name when no SOC code is available */
+function findCipByOccupation(occupation: string): { cipCode: string; cipTitle: string } | null {
+  const norm = occupation.toLowerCase();
+  const crosswalk = getCrosswalkData();
+  // Try matching SOC title first, then CIP title
+  const match = crosswalk.find(e =>
+    norm.includes(e.socTitle.toLowerCase().split(',')[0]) ||
+    e.socTitle.toLowerCase().includes(norm.split(/\s+/).slice(0, 2).join(' '))
+  );
+  return match ? { cipCode: match.cipCode, cipTitle: match.cipTitle } : null;
+}
 
 // ── Fuzzy Matching Helpers ──
 
@@ -278,8 +291,11 @@ export async function analyzeGapsAndWriteReport(
   const gapTableRows = gaps
     .slice(0, 20) // top 20 for prompt size
     .map(
-      g =>
-        `| ${g.mandatedProgram.occupation} | ${g.mandatedProgram.clockHours}h | ${g.mandatedProgram.regulatoryBody} | ${g.mandatedProgram.statute} | ${g.mandatedProgram.demandLevel.toUpperCase()} | $${g.estimatedAnnualRevenue.toLocaleString()}/yr |`,
+      g => {
+        const cip = findCipByOccupation(g.mandatedProgram.occupation);
+        const cipCol = cip ? `${cip.cipCode} (${cip.cipTitle})` : '—';
+        return `| ${g.mandatedProgram.occupation} | ${g.mandatedProgram.clockHours}h | ${g.mandatedProgram.regulatoryBody} | ${g.mandatedProgram.statute} | ${cipCol} | ${g.mandatedProgram.demandLevel.toUpperCase()} | $${g.estimatedAnnualRevenue.toLocaleString()}/yr |`;
+      },
     )
     .join('\n');
 
@@ -310,8 +326,8 @@ TOP COMPLIANCE GAPS (programs mandated by ${state} law that they do NOT offer):
 ${topGapsNarrative}
 
 FULL GAP TABLE (for the table section):
-| Program | Required Hours | Regulatory Body | Citation | Demand | Est. Revenue |
-|---------|---------------|-----------------|----------|--------|-------------|
+| Program | Required Hours | Regulatory Body | Citation | CIP Code | Demand | Est. Revenue |
+|---------|---------------|-----------------|----------|----------|--------|-------------|
 ${gapTableRows}
 
 REPORT REQUIREMENTS:

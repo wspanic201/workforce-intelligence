@@ -5,6 +5,8 @@ import { generateDriftNarrative, generateDriftReportHTML } from './reporter';
 import { scrapeCurriculum } from './curriculum-scraper';
 import { getDriftLevel } from './types';
 import type { DriftProgram, DriftScanResult, EmployerSkill } from './types';
+import { getOccupationProfile } from '@/lib/apis/onet';
+import type { OnetOccupationProfile } from '@/lib/apis/onet';
 
 export async function runDriftScan(program: DriftProgram): Promise<{
   result: DriftScanResult;
@@ -40,6 +42,22 @@ export async function runDriftScan(program: DriftProgram): Promise<{
   const postings = await scanJobPostings(program.occupationTitle, program.socCode);
   console.log(`[DriftMonitor] Found ${postings.length} postings`);
 
+  // Step 1.5: Fetch O*NET occupation profile (optional enrichment)
+  let onetProfile: OnetOccupationProfile | null = null;
+  if (program.socCode) {
+    console.log(`[DriftMonitor] Step 1.5: Fetching O*NET profile for SOC ${program.socCode}...`);
+    try {
+      onetProfile = await getOccupationProfile(program.socCode);
+      if (onetProfile) {
+        console.log(`[DriftMonitor] O*NET profile loaded: ${onetProfile.skills.length} skills, ${onetProfile.knowledge.length} knowledge, ${onetProfile.technologies.length} technologies`);
+      } else {
+        console.warn('[DriftMonitor] O*NET profile not found — continuing without baseline');
+      }
+    } catch (err) {
+      console.warn(`[DriftMonitor] O*NET fetch failed — continuing without baseline: ${err}`);
+    }
+  }
+
   // Step 2: Extract employer skills from postings
   console.log('[DriftMonitor] Step 2: Extracting employer skills...');
   const employerSkills = await extractEmployerSkills(postings);
@@ -52,7 +70,7 @@ export async function runDriftScan(program: DriftProgram): Promise<{
 
   // Step 4: Calculate drift score
   console.log('[DriftMonitor] Step 4: Calculating drift score...');
-  const { score, covered, gaps, stale } = await calculateDriftScore(employerSkills, curriculumSkills);
+  const { score, covered, gaps, stale, onetGaps } = await calculateDriftScore(employerSkills, curriculumSkills, onetProfile ?? undefined);
   const driftLevel = getDriftLevel(score);
   console.log(`[DriftMonitor] Drift Score: ${score}/100 (${driftLevel})`);
 
@@ -67,6 +85,8 @@ export async function runDriftScan(program: DriftProgram): Promise<{
     staleSkills: stale,
     driftScore: score,
     driftLevel,
+    onetSkillsUsed: !!onetProfile,
+    onetGaps: onetGaps ?? [],
   };
 
   const { narrative, recommendations } = await generateDriftNarrative(program, partialResult);
@@ -78,7 +98,7 @@ export async function runDriftScan(program: DriftProgram): Promise<{
   };
 
   // Step 6: Generate HTML report
-  const reportHtml = generateDriftReportHTML(program, result, employerSkills);
+  const reportHtml = generateDriftReportHTML(program, result, employerSkills, onetProfile ?? undefined);
 
   console.log('[DriftMonitor] ✅ Drift scan complete');
   return { result, employerSkills, reportHtml };

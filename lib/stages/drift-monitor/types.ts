@@ -30,6 +30,8 @@ export interface DriftScanResult {
   driftLevel: 'aligned' | 'minor' | 'moderate' | 'significant' | 'critical';
   narrative: string; // Claude-generated analysis paragraph
   recommendations: string[]; // specific action items
+  onetSkillsUsed?: boolean; // whether O*NET baseline was included in analysis
+  onetGaps?: string[]; // O*NET essential skills missing from curriculum
 }
 
 export function getDriftLevel(score: number): DriftScanResult['driftLevel'] {

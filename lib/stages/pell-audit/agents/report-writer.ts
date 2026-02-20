@@ -20,6 +20,7 @@ import type {
   PellAuditReport,
 } from '../types';
 import type { RegulatoryScanOutput } from './regulatory-scanner';
+import { socToCip } from '@/lib/mappings/soc-cip-crosswalk';
 
 // ── Main Agent ──
 
@@ -39,9 +40,15 @@ export async function writeReport(
   // ── Build data context for the writer ──
 
   // Program inventory summary
-  const inventorySummary = classification.programs.map(p => 
-    `- **${p.name}** (${p.credentialType}) — ${p.clockHourEstimate} hrs / ${p.weekEstimate} wks — ${p.pellCategory.replace(/-/g, ' ')}${p.primarySOC ? ` [SOC: ${p.primarySOC}]` : ''}`
-  ).join('\n');
+  const inventorySummary = classification.programs.map(p => {
+    let socCipLabel = '';
+    if (p.primarySOC) {
+      const cipMappings = socToCip(p.primarySOC);
+      const cipLabel = cipMappings.length > 0 ? ` | CIP: ${cipMappings[0].cipCode} (${cipMappings[0].cipTitle})` : '';
+      socCipLabel = ` [SOC: ${p.primarySOC}${cipLabel}]`;
+    }
+    return `- **${p.name}** (${p.credentialType}) — ${p.clockHourEstimate} hrs / ${p.weekEstimate} wks — ${p.pellCategory.replace(/-/g, ' ')}${socCipLabel}`;
+  }).join('\n');
 
   // Pell scores for scored programs
   const pellScores = scoring.scoredPrograms.map(p => {
@@ -65,15 +72,17 @@ export async function writeReport(
   }).join('\n\n');
 
   // Gap opportunities
-  const gapDetails = gaps.gaps.map((g, i) => 
-    `${i + 1}. **${g.occupationTitle}** (SOC: ${g.socCode}) — Score: ${g.opportunityScore}/10 [${g.priorityTier.toUpperCase()}]
+  const gapDetails = gaps.gaps.map((g, i) => {
+    const cipMappings = socToCip(g.socCode);
+    const cipLabel = cipMappings.length > 0 ? ` | CIP: ${cipMappings[0].cipCode} (${cipMappings[0].cipTitle})` : '';
+    return `${i + 1}. **${g.occupationTitle}** (SOC: ${g.socCode}${cipLabel}) — Score: ${g.opportunityScore}/10 [${g.priorityTier.toUpperCase()}]
    Demand: ${g.regionalDemand}
    Median Wage: $${g.medianWage.toLocaleString()}/yr | Growth: ${g.growthRate}
    Pell-Eligible Design: ${g.pellEligible ? 'Yes' : 'No'} — ${g.suggestedProgramLength}
    Credential: ${g.suggestedCredential}
    Competition: ${g.nearbyCompetitors}
-   Your Advantage: ${g.competitiveAdvantage}`
-  ).join('\n\n');
+   Your Advantage: ${g.competitiveAdvantage}`;
+  }).join('\n\n');
 
   // ── Generate the full report ──
   const reportPrompt = `You are writing a Workforce Pell Readiness Audit report for ${institutionName}. This is a professional consulting deliverable — not a blog post, not a summary. Think McKinsey meets community college workforce development.
@@ -131,7 +140,7 @@ REPORT STRUCTURE — Write the following sections in clean, professional Markdow
    - Close with "what this means for [institution]"
 
 2. **PROGRAM INVENTORY** (present ALL programs in a clean table)
-   - Columns: Program Name | Type | Est. Hours | Pell Category | SOC Code
+   - Columns: Program Name | Type | Est. Hours | Pell Category | SOC Code | CIP Code
    - Group by Pell category (ready first, then candidates, then others)
    - Include total count
 
