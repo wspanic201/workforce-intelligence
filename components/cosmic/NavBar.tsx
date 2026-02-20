@@ -136,12 +136,9 @@ export function NavBar() {
             <Link href="/samples" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors">
               Sample Reports
             </Link>
-            <Link href="/blog" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors">
-              Blog
-            </Link>
-            <Link href="/blog#tune-in" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors inline-flex items-center gap-1.5">
+            <Link href="/signal" className="text-sm font-medium text-theme-tertiary hover:text-theme-primary transition-colors inline-flex items-center gap-1.5">
               <span className="inline-block w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-              Tune In
+              The Signal
             </Link>
           </div>
 
@@ -204,14 +201,10 @@ export function NavBar() {
               className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
               Sample Reports
             </Link>
-            <Link href="/blog" onClick={() => setMobileOpen(false)}
-              className="block text-base font-medium text-theme-secondary hover:text-theme-primary py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
-              Blog
-            </Link>
-            <Link href="/blog#tune-in" onClick={() => setMobileOpen(false)}
+            <Link href="/signal" onClick={() => setMobileOpen(false)}
               className="flex items-center gap-2 text-base font-medium text-teal-400 hover:text-teal-300 py-2 px-2 rounded-lg hover:bg-white/[0.05] transition-colors">
               <span className="inline-block w-2 h-2 rounded-full bg-teal-400 animate-pulse" />
-              Tune In — Free Newsletter
+              The Signal - Insights & Updates
             </Link>
 
             <div className="pt-3 flex flex-col gap-3">
