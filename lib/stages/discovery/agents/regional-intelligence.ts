@@ -233,16 +233,13 @@ If data isn't clear, provide best available estimate with "approximately" qualif
   // ── Step 4: Top employers ──
   console.log('[Phase 1] Step 4: Identifying top employers...');
 
-  // Fan employer searches across all cities in the service region
-  const employerQueries = category
-    ? [
-        `${serviceAreaCounties} ${collegeState} ${categoryTerms} employers companies`,
-        ...allCities.map(city => `${city} ${collegeState} ${categoryTerms} companies hiring`),
-      ]
-    : [
-        `${serviceAreaCounties} ${collegeState} largest employers`,
-        ...allCities.map(city => `${city} ${collegeState} top employers major companies`),
-      ];
+  // Fan employer searches across all cities — ALWAYS search for ALL major employers
+  // regardless of category. Every large employer has business, HR, finance, management
+  // roles. Category filtering happens downstream in analysis, not here.
+  const employerQueries = [
+    `${serviceAreaCounties} ${collegeState} largest employers`,
+    ...allCities.map(city => `${city} ${collegeState} top employers major companies`),
+  ];
   // Cap at 5 queries to manage API costs
   const cappedEmployerQueries = employerQueries.slice(0, 5);
 
@@ -261,9 +258,11 @@ If data isn't clear, provide best available estimate with "approximately" qualif
   }
 
   const employerExtract = await callClaude(
-    `${categoryConstraintPrompt}You are identifying the top 15-20 employers in the ${serviceAreaCounties}, ${collegeState} region${category ? ` that are relevant to the "${category}" workforce category` : ''}.
+    `You are identifying the top 15-20 employers in the ${serviceAreaCounties}, ${collegeState} region.
 
-Extract employer information from these web pages. For each employer, provide name, industry, and estimated local employment size.${category ? `\n\nFocus on employers whose workforce needs align with ${category} — companies that hire people with business, management, finance, HR, marketing, accounting, or professional development credentials.` : ''}
+Extract employer information from these web pages. For each employer, provide name, industry, and estimated local employment size.
+
+IMPORTANT: Include ALL major employers regardless of industry. Large manufacturers, defense contractors, healthcare systems, tech companies, food producers — they ALL employ business professionals (HR, finance, management, accounting, training). Do not filter by industry.
 
 WEB CONTENT:
 ${employerPageTexts.join('\n\n---\n\n').slice(0, 12000)}
