@@ -110,8 +110,14 @@ async function fetchWithRetry(
 
     if (response.ok || response.status === 404) return response;
 
+    // Don't retry auth failures — the key is wrong, retrying won't help
+    if (response.status === 401 || response.status === 403) {
+      console.warn(`[O*NET] Auth failed (${response.status}). Check ONET_API_KEY — may need to re-register at services.onetcenter.org`);
+      return response;
+    }
+
     if (
-      (response.status === 429 || response.status === 503 || response.status === 401 || response.status === 403) &&
+      (response.status === 429 || response.status === 503) &&
       attempt < maxRetries
     ) {
       const backoffMs = Math.pow(2, attempt) * 1000 + Math.random() * 500;
