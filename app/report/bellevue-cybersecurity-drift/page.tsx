@@ -9,12 +9,12 @@ import { PrintButton } from '@/components/ui/PrintButton';
 export const metadata: Metadata = {
   title: 'Curriculum Drift Analysis — Bellevue University Cybersecurity BS | Wavelength Report',
   description:
-    'Live Curriculum Drift Analysis for Bellevue University Cybersecurity BS. Drift score 65/100 — 13 competency gaps identified across 27 employer postings analyzed.',
+    'Live Curriculum Drift Analysis for Bellevue University Cybersecurity BS. Drift score 50/100 — 10 competency gaps identified across 27 employer postings analyzed.',
   alternates: { canonical: 'https://withwavelength.com/report/bellevue-cybersecurity-drift' },
   openGraph: {
     title: 'Curriculum Drift Analysis — Bellevue University Cybersecurity BS',
     description:
-      '65/100 drift score (significant). 13 employer skill gaps identified from 27 live job postings.',
+      '50/100 drift score (moderate). 10 employer skill gaps identified from 27 live job postings.',
     url: 'https://withwavelength.com/report/bellevue-cybersecurity-drift',
     type: 'article',
   },
@@ -34,81 +34,81 @@ function driftLevelColor(level: string) {
 }
 
 // ─── Real Pipeline Data (February 20, 2026) ─────────────────────────────────
+// Source: /tmp/drift-test-output.json — O*NET enriched, auto-scraped curriculum
 
 const scanDate = 'February 20, 2026';
-const driftScore = 65;
-const driftLevel = 'significant';
+const driftScore = 50;
+const driftLevel = 'moderate';
 const postingsAnalyzed = 27;
 const colors = driftLevelColor(driftLevel);
 
 const employerSkills = [
-  { skill: 'Security Monitoring', frequency: 15, covered: false },
-  { skill: 'Incident Response', frequency: 12, covered: true },
-  { skill: 'SIEM', frequency: 10, covered: false },
-  { skill: 'Vulnerability Management', frequency: 10, covered: true },
-  { skill: 'Risk Assessment', frequency: 9, covered: true },
-  { skill: 'CISSP Certification', frequency: 8, covered: false },
-  { skill: 'Security Policies and Procedures', frequency: 8, covered: true },
-  { skill: 'Threat Hunting', frequency: 7, covered: false },
-  { skill: 'Security+', frequency: 7, covered: false },
+  { skill: 'Security Monitoring', frequency: 12, covered: false },
+  { skill: 'SIEM', frequency: 9, covered: false },
+  { skill: 'Incident Response', frequency: 9, covered: true },
+  { skill: 'Vulnerability Management', frequency: 8, covered: true },
+  { skill: 'Risk Assessment', frequency: 7, covered: true },
+  { skill: 'CISSP Certification', frequency: 6, covered: false },
   { skill: 'RMF (Risk Management Framework)', frequency: 6, covered: false },
-  { skill: 'Identity and Access Management', frequency: 6, covered: true },
-  { skill: 'Penetration Testing', frequency: 6, covered: true },
-  { skill: 'Security Clearance', frequency: 6, covered: false },
-  { skill: 'Log Analysis', frequency: 6, covered: false },
-  { skill: 'Cybersecurity Tools Administration', frequency: 5, covered: false },
-  { skill: 'Detection Engineering', frequency: 5, covered: false },
-  { skill: 'Security Control Assessment', frequency: 5, covered: true },
-  { skill: 'Microsoft Defender', frequency: 4, covered: false },
-  { skill: 'NERC CIP', frequency: 3, covered: false },
-  { skill: 'Cloud Security', frequency: 3, covered: false },
+  { skill: 'Security Policies and Procedures', frequency: 6, covered: true },
+  { skill: 'Threat Hunting', frequency: 5, covered: false },
+  { skill: 'Security+', frequency: 5, covered: false },
+  { skill: 'Penetration Testing', frequency: 5, covered: true },
+  { skill: 'Identity and Access Management', frequency: 5, covered: true },
+  { skill: 'Security Clearance', frequency: 5, covered: false },
+  { skill: 'Log Analysis', frequency: 5, covered: false },
+  { skill: 'Detection Engineering', frequency: 4, covered: false },
+  { skill: 'Cybersecurity Compliance', frequency: 4, covered: true },
+  { skill: 'Microsoft Defender', frequency: 3, covered: false },
+  { skill: 'Digital Forensics', frequency: 3, covered: true },
+  { skill: 'Cloud Security', frequency: 3, covered: true },
+  { skill: 'Security Control Assessment', frequency: 3, covered: true },
 ];
 
 const coveredSkills = [
   'Incident Response', 'Vulnerability Management', 'Risk Assessment',
-  'Security Policies and Procedures', 'Identity and Access Management',
-  'Penetration Testing', 'Security Control Assessment',
+  'Security Policies and Procedures', 'Penetration Testing',
+  'Identity and Access Management', 'Cloud Security',
+  'Digital Forensics', 'Cybersecurity Compliance', 'Security Control Assessment',
 ];
 
 const gapSkills = [
-  'Security Monitoring', 'SIEM', 'CISSP Certification', 'Threat Hunting',
-  'Security+', 'RMF (Risk Management Framework)', 'Security Clearance',
-  'Log Analysis', 'Cybersecurity Tools Administration', 'Detection Engineering',
-  'Microsoft Defender', 'NERC CIP', 'Cloud Security',
+  'Security Monitoring', 'SIEM', 'CISSP Certification',
+  'RMF (Risk Management Framework)', 'Threat Hunting',
+  'Security+', 'Security Clearance', 'Log Analysis',
+  'Detection Engineering', 'Microsoft Defender',
 ];
 
 const staleSkills = [
   'Cybersecurity Principles', 'Information Systems Security', 'Python Programming',
   'Problem Solving', 'Control Structures', 'Firewalls',
   'Intrusion Detection Systems', 'Virtual Private Networks (VPNs)',
-  'Access Control Models', 'Password Management', 'Smart Cards',
+  'Security Models', 'Password Management', 'Smart Cards',
   'Biometric Authentication', 'Public Key Infrastructure (PKI)',
-  'Vulnerability Analysis', 'Security Auditing', 'Compliance',
-  'Database Security', 'Relational Databases', 'NoSQL Databases', 'SQL',
+  'Vulnerability Analysis', 'Security Auditing', 'Database Security',
+  'Relational Databases', 'NoSQL Databases', 'SQL',
   'Application Development', 'Operational Security', 'Regulatory Compliance',
-  'Ethics', 'Cryptography', 'Contingency Planning',
-  'Operating System Security', 'Server Security', 'Desktop Security',
-  'Virtualization Security', 'Mobile Device Security',
-  'Web Application Security', 'Secure Development', 'OWASP Top 10',
-  'Digital Forensics', 'Computer Forensics', 'Cyber Investigations',
-  'Evidence Acquisition', 'Threat Identification',
-  'Governance Risk and Compliance',
+  'Cryptography', 'Contingency Planning', 'Security Awareness Training',
+  'Operating System Security', 'Mobile Device Security',
+  'Virtualization', 'Cloud Computing Security',
+  'Web Application Security', 'OWASP Top 10',
+  'Threat Identification', 'Governance, Risk, and Compliance (GRC)',
 ];
 
-const narrative = `The Cybersecurity program at Bellevue University demonstrates solid alignment with core security concepts, but faces a significant gap in preparing students for the operational realities of today's Security Operations Centers (SOCs) and enterprise security teams. While the program successfully teaches foundational competencies like incident response, vulnerability management, and penetration testing, employers are consistently seeking candidates with hands-on experience in security monitoring platforms, threat detection tools, and industry-recognized certifications that signal job-readiness. The 65/100 drift score reflects this divide between strong conceptual coverage and missing practical toolsets—particularly Security Information and Event Management (SIEM) platforms, log analysis capabilities, and threat hunting techniques that have become standard expectations for entry-level security analyst roles.
+const narrative = `The Cybersecurity program at Bellevue University maintains a solid foundation in core security concepts, with strong coverage of incident response, vulnerability management, and risk assessment—skills that employers consistently value. However, the program shows moderate drift (50/100) from current market demands, primarily in operational security tools and industry certifications. Employers are actively seeking candidates with hands-on experience in Security Information and Event Management (SIEM) platforms, security monitoring capabilities, and specific certifications like Security+ and CISSP. The 27 job postings analyzed reveal a clear shift toward defensive security operations roles that require proficiency with detection tools like Microsoft Defender, log analysis capabilities, and threat hunting skills—areas where the current curriculum appears to have gaps.
 
-The employer demand pattern reveals two specific challenges. First, there's a clear certification gap: Security+ and CISSP appear frequently in job postings as screening requirements, yet aren't formally integrated into the curriculum pathway. Second, the "Potentially Stale Skills" category requires nuanced interpretation—topics like Python Programming and Cybersecurity Principles aren't obsolete, but may be taught too abstractly. Employers assume these foundations but prioritize candidates who can immediately apply them using current security tools and frameworks like RMF (Risk Management Framework). The frequent mention of security clearance requirements also suggests many local employers are government contractors, creating an opportunity to better prepare students for that career pathway. This isn't a curriculum crisis, but it does indicate the program has drifted from an implementation-focused job market while maintaining strong theoretical grounding.`;
+The drift is particularly notable in three areas: professional certifications, operational toolsets, and specialized frameworks. Many employers now list Security+ or CISSP as baseline requirements, and government-adjacent roles frequently require knowledge of the Risk Management Framework (RMF). While the program covers foundational topics like cybersecurity principles and Python programming, these appear less frequently in job postings compared to tool-specific skills, suggesting employers assume baseline knowledge but prioritize applied, operational capabilities. This doesn't indicate the current curriculum is obsolete, but rather that it needs strategic enhancements to reflect the field's evolution toward Security Operations Center (SOC) functions and compliance-driven security practices.`;
 
 const recommendations = [
-  'Integrate Security+ certification preparation directly into the curriculum as a capstone requirement or embed exam objectives across multiple courses, providing students a marketable credential upon graduation that addresses the most frequent employer screening requirement.',
-  'Establish hands-on labs with industry-standard SIEM platforms (Splunk, IBM QRadar, or Microsoft Sentinel) and require students to complete practical exercises in log analysis, correlation rule creation, and threat detection—skills that can be demonstrated in interviews and on resumes.',
-  'Redesign the Python Programming component to focus specifically on security automation use cases: parsing security logs, automating threat intelligence gathering, and writing detection scripts rather than general programming concepts.',
-  'Create a dedicated "Security Operations" course covering threat hunting methodologies, detection engineering principles, and security monitoring workflows that mirrors the day-to-day responsibilities described in SOC analyst job postings.',
-  'Develop partnerships with local government contractors and defense organizations to provide students information about security clearance processes, eligibility requirements, and sponsorship opportunities, given the frequency of clearance requirements in the regional job market.',
-  'Add Risk Management Framework (RMF) training aligned with NIST SP 800-37 into existing security policy and compliance courses, as this federal standard appears consistently in employer requirements and represents a teachable, structured methodology students can immediately apply.',
+  'Integrate SIEM platform training into existing courses, using tools like Splunk, Azure Sentinel, or open-source alternatives (Security Onion) to provide hands-on log analysis and security monitoring experience that directly addresses the most significant skill gap.',
+  'Establish a certification pathway by embedding Security+ exam preparation into curriculum and creating clear guidance for students on pursuing CISSP after graduation, potentially offering exam vouchers or boot camp sessions as program enhancements.',
+  'Develop a dedicated security monitoring and detection module that covers threat hunting fundamentals, detection engineering concepts, and practical experience with endpoint detection tools like Microsoft Defender or CrowdStrike.',
+  'Add Risk Management Framework (RMF) content to compliance-focused courses to prepare students for government and contractor roles, including hands-on experience with the Assessment and Authorization (A&A) process.',
+  'Reframe Python programming instruction to emphasize security automation use cases—such as log parsing, indicator of compromise (IOC) analysis, and security orchestration—rather than general programming, demonstrating direct relevance to security operations roles.',
+  'Create an employer advisory board review process to conduct annual curriculum validation with local cybersecurity employers, ensuring the program maintains awareness of emerging tools and evolving role requirements in real-time.',
 ];
 
-// Auto-scraped curriculum data
+// Auto-scraped curriculum data (9 courses from bellevue.edu)
 const scrapedCourses = [
   'CYBR 260 – Introduction to Cybersecurity',
   'CYBR 330 – Information Systems Security',
@@ -119,8 +119,6 @@ const scrapedCourses = [
   'CYBR 410 – Offensive Security and Penetration Testing',
   'CYBR 420 – Digital Forensics and Cyber Investigations',
   'CYBR 430 – Security Operations and Incident Response',
-  'CYBR 440 – Web Application Security',
-  'CYBR 490 – Cybersecurity Capstone',
 ];
 
 // ─── SVG Arc Gauge Component ─────────────────────────────────────────────────
@@ -507,15 +505,19 @@ export default function BellevueCybersecurityDriftPage() {
                 <ol className="list-decimal list-inside space-y-3 ml-2">
                   <li>
                     <span className="font-semibold text-theme-primary">Auto-Curriculum Scraping:</span>{' '}
-                    The pipeline searched bellevue.edu for cybersecurity program pages, extracted {scrapedCourses.length} courses and 26 skills using AI-powered content analysis. No manual curriculum input required.
+                    The pipeline searched bellevue.edu for cybersecurity program pages, extracted {scrapedCourses.length} courses and 27 skills using AI-powered content analysis. No manual curriculum input required.
                   </li>
                   <li>
                     <span className="font-semibold text-theme-primary">Job Posting Analysis:</span>{' '}
                     {postingsAnalyzed} Information Security Analyst (SOC 15-1212) job postings were collected via SerpAPI and analyzed by Claude Sonnet to extract the top {employerSkills.length} employer-demanded skills with frequency counts.
                   </li>
                   <li>
+                    <span className="font-semibold text-theme-primary">O*NET Baseline Enrichment:</span>{' '}
+                    The O*NET Web Services API provided 5 essential skills, 5 knowledge areas, and 20 hot technologies for SOC 15-1212 (Information Security Analysts), used as an additional baseline for gap detection and validation.
+                  </li>
+                  <li>
                     <span className="font-semibold text-theme-primary">Skill Extraction:</span>{' '}
-                    AI extracted 48 distinct curriculum skills from the scraped course descriptions, then matched them against employer demands to identify covered skills, gaps, and potentially stale topics.
+                    AI extracted 43 distinct curriculum skills from the scraped course descriptions, then matched them against employer demands and O*NET baselines to identify covered skills, gaps, and potentially stale topics.
                   </li>
                   <li>
                     <span className="font-semibold text-theme-primary">Drift Scoring:</span>{' '}
@@ -527,9 +529,9 @@ export default function BellevueCybersecurityDriftPage() {
                   </li>
                 </ol>
 
-                <div className="mt-4 p-4 rounded-lg bg-amber-500/5 border border-amber-500/20">
-                  <p className="text-xs text-amber-700 dark:text-amber-400">
-                    <span className="font-bold">Note:</span> O*NET baseline enrichment was unavailable during this scan (API authentication issue). Future scans will include O*NET essential skills, knowledge areas, and hot technologies as an additional baseline for gap detection.
+                <div className="mt-4 p-4 rounded-lg bg-teal-500/5 border border-teal-500/20">
+                  <p className="text-xs text-teal-700 dark:text-teal-400">
+                    <span className="font-bold">✓ O*NET Enriched:</span> This scan includes O*NET baseline data (5 skills, 5 knowledge areas, 20 technologies) for SOC 15-1212 Information Security Analysts, providing federal occupational standards as an additional validation layer.
                   </p>
                 </div>
               </div>

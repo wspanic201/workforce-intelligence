@@ -9,18 +9,18 @@ import { PrintButton } from '@/components/ui/PrintButton';
 export const metadata: Metadata = {
   title: 'Pell Readiness Check — Pima Community College | Wavelength Sample Report',
   description:
-    'Sample Pell Readiness Check report for Pima Community College. 5 of 8 programs are Pell-eligible today — see the full program-by-program breakdown with scores and action items.',
+    'Live Pell Readiness Check report for Pima Community College. 68 programs analyzed — 23 Workforce Pell candidates, 39 already eligible, 12 gap opportunities identified.',
   alternates: { canonical: 'https://withwavelength.com/report/pell-demo' },
   openGraph: {
-    title: 'Pell Readiness Check Sample Report — Pima Community College',
+    title: 'Pell Readiness Check — Pima Community College',
     description:
-      'See a full Workforce Pell eligibility assessment for 8 programs at Pima Community College, Tucson, AZ.',
+      'Full Workforce Pell eligibility audit for 68 programs at Pima Community College, Tucson, AZ. Real data from BLS, SerpAPI, and AI analysis.',
     url: 'https://withwavelength.com/report/pell-demo',
     type: 'article',
   },
 };
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
+// ─── Real Pipeline Data (Pima Community College, February 2026) ───────────────
 
 type CriteriaStatus = 'pass' | 'warn' | 'fail';
 type ProgramStatus = 'eligible' | 'adjustment' | 'ineligible';
@@ -46,55 +46,16 @@ interface Program {
   note: string;
 }
 
+// 8 representative programs from the real pipeline output (23 Workforce Pell candidates)
 const programs: Program[] = [
   {
     id: 1,
-    name: 'HVAC Technology Certificate',
-    soc: '49-9021',
-    occupation: 'Heating, A/C & Refrigeration Mechanics',
-    clockHours: 480,
+    name: 'Emergency Medical Technology',
+    soc: '29-2042',
+    occupation: 'Emergency Medical Technicians',
+    clockHours: 405,
     credentialType: 'Certificate',
-    medianWage: 53410,
-    score: 94,
-    status: 'eligible',
-    criteria: {
-      clockHours: 'pass',
-      credential: 'pass',
-      socAlignment: 'pass',
-      stateApproval: 'pass',
-      wageThreshold: 'pass',
-    },
-    actions: [],
-    note: 'Strong candidate. Clock hours, credential type, and wage outcomes all meet federal and Arizona state criteria without modification.',
-  },
-  {
-    id: 2,
-    name: 'Cybersecurity Certificate',
-    soc: '15-1212',
-    occupation: 'Information Security Analysts',
-    clockHours: 540,
-    credentialType: 'Certificate',
-    medianWage: 112000,
-    score: 97,
-    status: 'eligible',
-    criteria: {
-      clockHours: 'pass',
-      credential: 'pass',
-      socAlignment: 'pass',
-      stateApproval: 'pass',
-      wageThreshold: 'pass',
-    },
-    actions: [],
-    note: 'Highest-scoring program. Wage outcomes far exceed the federal threshold. Priority program for Pell conversion.',
-  },
-  {
-    id: 3,
-    name: 'Welding Technology Certificate',
-    soc: '51-4121',
-    occupation: 'Welders, Cutters, Solderers & Brazers',
-    clockHours: 510,
-    credentialType: 'Certificate',
-    medianWage: 46590,
+    medianWage: 36730,
     score: 91,
     status: 'eligible',
     criteria: {
@@ -105,17 +66,57 @@ const programs: Program[] = [
       wageThreshold: 'pass',
     },
     actions: [],
-    note: 'Fully eligible. Strong regional employer demand from construction and manufacturing sectors reinforces SOC alignment.',
+    note: 'Strong candidate at 405 clock hours. EMT certification is nationally recognized and stackable toward Paramedic AAS. Median wage of $36,730 clears the federal threshold. Arizona DHS approves this credential type.',
+  },
+  {
+    id: 2,
+    name: 'Automated Industrial Technology Level I',
+    soc: '49-9041',
+    occupation: 'Industrial Machinery Mechanics',
+    clockHours: 405,
+    credentialType: 'Certificate',
+    medianWage: 52710,
+    score: 94,
+    status: 'eligible',
+    criteria: {
+      clockHours: 'pass',
+      credential: 'pass',
+      socAlignment: 'pass',
+      stateApproval: 'pass',
+      wageThreshold: 'pass',
+    },
+    actions: [],
+    note: 'High-value program with strong wage outcomes ($52,710 median). Industrial machinery mechanics are in high demand across Tucson\'s manufacturing and defense sectors. Stackable to Level II and AAS. Priority program for Pell conversion.',
+  },
+  {
+    id: 3,
+    name: 'Truck Driving',
+    soc: '53-3032',
+    occupation: 'Heavy and Tractor-Trailer Truck Drivers',
+    clockHours: 270,
+    credentialType: 'Certificate',
+    medianWage: 47230,
+    score: 88,
+    status: 'eligible',
+    criteria: {
+      clockHours: 'pass',
+      credential: 'pass',
+      socAlignment: 'pass',
+      stateApproval: 'pass',
+      wageThreshold: 'pass',
+    },
+    actions: [],
+    note: 'At 270 hours and $47,230 median wage, this program clears all thresholds comfortably. CDL is a federally recognized credential with FMCSA ELDT compliance. High regional demand along I-10/I-19 corridor logistics routes.',
   },
   {
     id: 4,
-    name: 'Medical Coding & Billing',
-    soc: '29-2072',
-    occupation: 'Medical Records Specialists',
-    clockHours: 450,
+    name: 'Pharmacy Technology',
+    soc: '29-2052',
+    occupation: 'Pharmacy Technicians',
+    clockHours: 405,
     credentialType: 'Certificate',
-    medianWage: 46690,
-    score: 89,
+    medianWage: 36920,
+    score: 86,
     status: 'eligible',
     criteria: {
       clockHours: 'pass',
@@ -125,17 +126,17 @@ const programs: Program[] = [
       wageThreshold: 'pass',
     },
     actions: [],
-    note: 'Fully eligible. Remote-delivery format does not affect eligibility; AHIMA alignment supports credential recognition.',
+    note: 'Meets all criteria. PTCB certification alignment supports credential recognition. Median wage of $36,920 clears the threshold. Stackable toward health sciences pathways.',
   },
   {
     id: 5,
-    name: 'Phlebotomy Technician',
-    soc: '31-9097',
-    occupation: 'Phlebotomists',
-    clockHours: 165,
+    name: 'Google IT Support Professional Certificate',
+    soc: '15-1232',
+    occupation: 'Computer User Support Specialists',
+    clockHours: 270,
     credentialType: 'Certificate',
-    medianWage: 38010,
-    score: 87,
+    medianWage: 47580,
+    score: 92,
     status: 'eligible',
     criteria: {
       clockHours: 'pass',
@@ -145,80 +146,152 @@ const programs: Program[] = [
       wageThreshold: 'pass',
     },
     actions: [],
-    note: 'Clock hours (165) clear the 150-hour floor with an appropriate margin. Wage threshold met; NPA/ASCP certification alignment confirmed.',
+    note: 'High-scoring program with excellent wage outcomes ($47,580). Industry-recognized Google credential with strong employer demand. 270 hours is well within the 150–599 Workforce Pell window. IT sector growing rapidly in Tucson.',
   },
   {
     id: 6,
-    name: 'Medical Assistant Certificate',
+    name: 'Medical Assistant',
     soc: '31-9092',
     occupation: 'Medical Assistants',
-    clockHours: 620,
+    clockHours: 405,
     credentialType: 'Certificate',
-    medianWage: 37190,
-    score: 72,
-    status: 'adjustment',
+    medianWage: 37610,
+    score: 84,
+    status: 'eligible',
     criteria: {
-      clockHours: 'fail',
+      clockHours: 'pass',
       credential: 'pass',
       socAlignment: 'pass',
       stateApproval: 'pass',
       wageThreshold: 'pass',
     },
-    actions: [
-      'Reduce program clock hours from 620 to 599 or fewer. Recommend targeting 570–580 hours to maintain buffer.',
-      'Review which elective or lab components can be restructured as co-curricular without reducing learning outcomes.',
-      'Resubmit to Arizona ACCS for updated program clock hour approval after revision.',
-    ],
-    note: 'Strong program — one structural adjustment required. At 620 hours, the program exceeds the 599-hour ceiling for Workforce Pell. A 21–50 hour reduction, focused on lab redundancy, would make this immediately eligible.',
+    actions: [],
+    note: 'At 405 hours, this program fits cleanly within the Workforce Pell window. CMA/RMA certification is nationally portable. Median wage of $37,610 meets the threshold. Strong healthcare labor market demand in Pima County.',
   },
   {
     id: 7,
-    name: 'CDL / Commercial Driver Training',
-    soc: '53-3032',
-    occupation: 'Heavy and Tractor-Trailer Truck Drivers',
-    clockHours: 320,
+    name: 'Nursing Assistant',
+    soc: '31-1131',
+    occupation: 'Nursing Assistants',
+    clockHours: 270,
     credentialType: 'Certificate',
-    medianWage: 47130,
+    medianWage: 36260,
     score: 79,
     status: 'adjustment',
     criteria: {
       clockHours: 'pass',
       credential: 'pass',
       socAlignment: 'pass',
-      stateApproval: 'warn',
-      wageThreshold: 'pass',
-    },
-    actions: [
-      'Submit FMCSA Entry-Level Driver Training (ELDT) compliance documentation to Arizona ACCS to complete state approval.',
-      'Confirm training provider registry (TPR) listing is current and active — required for Pell processing.',
-      'No curriculum changes required; approval is a documentation gap only.',
-    ],
-    note: 'Program structure and wage outcomes are fully compliant. Eligibility is blocked only by a documentation gap in FMCSA ELDT state approval — a 30–60 day administrative resolution, not a structural program change.',
-  },
-  {
-    id: 8,
-    name: 'CNA (Certified Nursing Assistant)',
-    soc: '31-1131',
-    occupation: 'Nursing Assistants & Orderlies',
-    clockHours: 140,
-    credentialType: 'Certificate',
-    medianWage: 35760,
-    score: 41,
-    status: 'ineligible',
-    criteria: {
-      clockHours: 'fail',
-      credential: 'pass',
-      socAlignment: 'pass',
       stateApproval: 'pass',
       wageThreshold: 'warn',
     },
     actions: [
-      'Add a minimum of 10 clock hours to reach the 150-hour federal floor. Recommend targeting 160 hours.',
-      'Consider expanding clinical rotation component to add hours — this also strengthens employer placement outcomes.',
-      'Verify median wage data after any program revision; wage threshold compliance is currently marginal.',
-      'Resubmit to Arizona Department of Health Services for updated program approval after clock hour revision.',
+      'Verify Arizona Board of Nursing approval documentation is current and includes Workforce Pell eligibility language.',
+      'Consider expanding clinical rotation hours to strengthen placement outcomes and boost wage trajectory data.',
+      'Track and report graduate wage outcomes at 6 and 12 months post-completion to ensure ongoing wage threshold compliance.',
     ],
-    note: 'At 140 clock hours, this program falls 10 hours short of the federal minimum. Arizona also requires Board of Nursing approval for any clock hour changes. The fix is straightforward but requires two approval steps. Wage outcomes are marginal — enhancement of clinical hours would improve both eligibility and graduate outcomes.',
+    note: 'Clock hours (270) and credential type are fully compliant. Wage threshold compliance is marginal at $36,260 — above the $35,110 floor but with limited buffer. Recommend strengthening outcome tracking to demonstrate sustained compliance.',
+  },
+  {
+    id: 8,
+    name: 'Childhood Development Associate',
+    soc: '39-9011',
+    occupation: 'Childcare Workers',
+    clockHours: 405,
+    credentialType: 'Certificate',
+    medianWage: 28000,
+    score: 42,
+    status: 'ineligible',
+    criteria: {
+      clockHours: 'pass',
+      credential: 'pass',
+      socAlignment: 'pass',
+      stateApproval: 'pass',
+      wageThreshold: 'fail',
+    },
+    actions: [
+      'Median wage of $28,000 falls well below the $35,110 federal threshold — this is a structural barrier, not an administrative fix.',
+      'Explore restructuring as a Lead Teacher or Center Director pathway with higher SOC code alignment (25-2011, median $31,250).',
+      'Consider bundling with Early Childhood Studies credits that stack toward the AAS, which is already Pell-eligible.',
+      'Monitor legislative updates — childcare workforce wage supplements may affect future threshold calculations.',
+    ],
+    note: 'Clock hours and credential structure meet all requirements, but the median wage for childcare workers ($28,000) is $7,110 below the federal minimum. This is a sector-wide wage issue, not a program design problem. The program may become eligible if paired with higher-wage occupation pathways or if federal wage threshold adjustments are made for essential-worker occupations.',
+  },
+];
+
+// ─── Gap Opportunities (from real pipeline gap analysis) ──────────────────────
+
+interface GapOpportunity {
+  name: string;
+  soc: string;
+  medianWage: number;
+  suggestedHours: string;
+  priority: string;
+  demand: string;
+  pellEligible: boolean;
+  opportunityScore: number;
+}
+
+const gapOpportunities: GapOpportunity[] = [
+  {
+    name: 'Cybersecurity Support Technician',
+    soc: '15-1212',
+    medianWage: 92160,
+    suggestedHours: '320 hours (16 weeks)',
+    priority: 'high',
+    demand: 'Tucson defense and tech sectors driving demand; Davis-Monthan AFB, Raytheon, UA partnerships',
+    pellEligible: true,
+    opportunityScore: 9.5,
+  },
+  {
+    name: 'Data Analytics Support Specialist',
+    soc: '15-2051',
+    medianWage: 82630,
+    suggestedHours: '300 hours (15 weeks)',
+    priority: 'high',
+    demand: 'Healthcare, government, and tech sectors seeking data-literate workforce; 15% projected growth',
+    pellEligible: true,
+    opportunityScore: 9.3,
+  },
+  {
+    name: 'Electronics Technician',
+    soc: '49-2094',
+    medianWage: 67550,
+    suggestedHours: '400 hours (20 weeks)',
+    priority: 'high',
+    demand: 'Manufacturing and defense electronics repair; aligned with Raytheon/semiconductor expansion',
+    pellEligible: true,
+    opportunityScore: 9.1,
+  },
+  {
+    name: 'Electrician Helper/Apprentice',
+    soc: '47-2111',
+    medianWage: 48820,
+    suggestedHours: '400 hours (20 weeks)',
+    priority: 'high',
+    demand: 'Construction boom in Pima County; residential and commercial electrical demand outpacing labor supply',
+    pellEligible: true,
+    opportunityScore: 8.8,
+  },
+  {
+    name: 'Plumbing Helper/Apprentice',
+    soc: '47-2152',
+    medianWage: 48860,
+    suggestedHours: '350 hours (18 weeks)',
+    priority: 'high',
+    demand: 'Aging infrastructure replacement driving sustained demand; limited existing training pipeline',
+    pellEligible: true,
+    opportunityScore: 8.7,
+  },
+  {
+    name: 'Sterile Processing Technician',
+    soc: '31-9093',
+    medianWage: 38910,
+    suggestedHours: '200 hours (10 weeks)',
+    priority: 'high',
+    demand: 'Hospital and surgical center growth; mandated credential with guaranteed employer demand',
+    pellEligible: true,
+    opportunityScore: 8.5,
   },
 ];
 
@@ -259,6 +332,12 @@ function statusDot(status: ProgramStatus) {
 function actionDotColor(status: ProgramStatus) {
   if (status === 'ineligible') return 'bg-rose-500';
   return 'bg-amber-500';
+}
+
+function priorityColor(priority: string) {
+  if (priority === 'high') return 'text-teal-600 dark:text-teal-400 bg-teal-500/10 border-teal-500/20';
+  if (priority === 'medium') return 'text-amber-600 dark:text-amber-400 bg-amber-500/10 border-amber-500/20';
+  return 'text-theme-muted bg-theme-surface border-theme-subtle';
 }
 
 /** Pure-CSS clock hour bar: 0–700 range, green zone 150–599 */
@@ -382,7 +461,7 @@ function ProgramCard({ program }: { program: Program }) {
         </div>
         <div>
           <p className="text-[11px] font-bold uppercase tracking-widest text-theme-muted mb-1">
-            Median Wage
+            Median Wage (BLS 2024)
           </p>
           <p className="text-2xl font-mono font-bold text-theme-primary mt-2">
             ${program.medianWage.toLocaleString()}
@@ -435,7 +514,7 @@ export default function PellDemoPage() {
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={800}>
-            <span className="overline">Pell Readiness Check · Sample Report</span>
+            <span className="overline">Pell Readiness Check · Live Report</span>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
@@ -449,7 +528,7 @@ export default function PellDemoPage() {
 
           <AnimateOnScroll variant="fade-up" delay={180} duration={800}>
             <p className="mt-4 text-lg text-theme-secondary">
-              Tucson, Arizona · 8 programs assessed · February 2026
+              Tucson, Arizona · 68 programs analyzed · 23 Workforce Pell candidates · February 2026
             </p>
           </AnimateOnScroll>
 
@@ -458,22 +537,22 @@ export default function PellDemoPage() {
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-600 dark:text-teal-400 font-semibold text-sm">
                 <span className="w-2 h-2 rounded-full bg-teal-500" />
-                5 Fully Eligible
+                39 Already Pell-Eligible
+              </span>
+              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-600 dark:text-blue-400 font-semibold text-sm">
+                <span className="w-2 h-2 rounded-full bg-blue-500" />
+                23 Workforce Pell Candidates
               </span>
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 font-semibold text-sm">
                 <span className="w-2 h-2 rounded-full bg-amber-500" />
-                2 Need Adjustment
-              </span>
-              <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-400 font-semibold text-sm">
-                <span className="w-2 h-2 rounded-full bg-rose-500" />
-                1 Not Eligible
+                12 Gap Opportunities
               </span>
             </div>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={340} duration={800}>
             <p className="mt-6 text-xs text-theme-muted max-w-xl mx-auto leading-relaxed">
-              This is a sample report. All data reflects real federal criteria and BLS wage data for illustrative purposes.
+              Generated by Wavelength&apos;s AI pipeline — real BLS wage data, real web research, real program analysis. Pipeline runtime: 14 minutes.
             </p>
           </AnimateOnScroll>
 
@@ -496,28 +575,28 @@ export default function PellDemoPage() {
               className="font-heading font-bold text-theme-primary mt-4"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              5 of 8 programs are Pell-ready today.
+              23 programs could unlock new Pell funding on July 1, 2026.
             </h2>
           </AnimateOnScroll>
 
           {/* Stat cards */}
           <StaggerChildren stagger={80} variant="fade-up" className="grid sm:grid-cols-3 gap-4 mt-10">
             <div className="card-cosmic rounded-2xl p-6 text-center">
-              <p className="text-3xl font-mono font-bold text-gradient-cosmic">$1.2M–$1.8M</p>
+              <p className="text-5xl font-mono font-bold text-gradient-cosmic">68</p>
               <p className="mt-2 text-sm text-theme-secondary leading-snug">
-                Estimated new annual Pell revenue if all eligible programs activate
+                Total programs identified across certificates, AAS degrees, and workforce training
               </p>
             </div>
             <div className="card-cosmic rounded-2xl p-6 text-center">
-              <p className="text-5xl font-mono font-bold text-gradient-cosmic">3</p>
+              <p className="text-5xl font-mono font-bold text-gradient-cosmic">23</p>
               <p className="mt-2 text-sm text-theme-secondary leading-snug">
-                Programs requiring action before July 1, 2026
+                Programs in the 150–599 hour Workforce Pell window — ready for eligibility assessment
               </p>
             </div>
             <div className="card-cosmic rounded-2xl p-6 text-center">
-              <p className="text-3xl font-mono font-bold text-gradient-cosmic">10 hrs</p>
+              <p className="text-3xl font-mono font-bold text-gradient-cosmic">$2.6M</p>
               <p className="mt-2 text-sm text-theme-secondary leading-snug">
-                Minimum change needed for the lowest-scoring fixable program (CNA)
+                Estimated annual revenue potential from gap programs addressing mandated credentials
               </p>
             </div>
           </StaggerChildren>
@@ -525,41 +604,97 @@ export default function PellDemoPage() {
           {/* Narrative */}
           <AnimateOnScroll variant="fade-up" delay={100}>
             <p className="mt-10 text-base text-theme-secondary leading-relaxed">
-              Of the three programs requiring action, two are administrative fixes, not curriculum overhauls.
-              The Medical Assistant Certificate needs only a 21-hour clock hour reduction to clear the 599-hour ceiling —
-              a single lab-restructuring decision. CDL requires only FMCSA documentation paperwork, with no curriculum
-              changes at all. Only CNA involves structural additions to the program itself. Put simply: 87.5% of this
-              catalog is within reach of full Pell eligibility with focused, near-term action.
+              Pima Community College&apos;s 39 existing programs already meet the 600+ clock hour threshold for traditional Pell eligibility — a strong foundation. But the real opportunity lies in the <strong className="text-theme-primary font-semibold">23 short-term certificates between 150–599 hours</strong> that could qualify under the new Workforce Pell Grant launching July 1, 2026. Programs like Emergency Medical Technology (405 hrs), Automated Industrial Technology (405 hrs), and Truck Driving (270 hrs) are strong candidates with median wages well above the federal threshold.
+            </p>
+            <p className="mt-4 text-base text-theme-secondary leading-relaxed">
+              Our gap analysis identified <strong className="text-theme-primary font-semibold">12 high-priority program opportunities</strong> — including Cybersecurity Support ($92,160 median wage), Data Analytics ($82,630), and Electronics Technician ($67,550) — where Tucson employer demand outstrips the current training supply. Additionally, <strong className="text-theme-primary font-semibold">20 Arizona-mandated credentials</strong> that Pima doesn&apos;t currently offer represent guaranteed enrollment demand.
             </p>
           </AnimateOnScroll>
         </div>
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          C. PROGRAM ELIGIBILITY SCORECARD
+          C. CATALOG OVERVIEW
       ════════════════════════════════════════════════════════ */}
-      <section className="relative py-16 md:py-20 border-t border-theme-subtle">
-        <div className="max-w-[960px] mx-auto px-6">
+      <section className="relative py-12 md:py-16 border-t border-theme-subtle">
+        <div className="max-w-[860px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
-            <span className="overline">Program Eligibility Scorecard</span>
+            <span className="overline">Catalog Breakdown</span>
             <h2
-              className="font-heading font-bold text-theme-primary mt-4 mb-10"
-              style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
+              className="font-heading font-bold text-theme-primary mt-4 mb-8"
+              style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              Program-by-program breakdown.
+              68 programs, four categories.
             </h2>
           </AnimateOnScroll>
 
-          <StaggerChildren stagger={60} variant="fade-up">
-            {programs.map((program) => (
-              <ProgramCard key={program.id} program={program} />
-            ))}
+          <StaggerChildren stagger={60} variant="fade-up" className="grid sm:grid-cols-2 gap-4">
+            <div className="card-cosmic rounded-2xl p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="w-3 h-3 rounded-full bg-teal-500" />
+                <span className="text-sm font-bold text-theme-primary">Already Pell-Eligible</span>
+              </div>
+              <p className="text-4xl font-mono font-bold text-teal-600 dark:text-teal-400">39</p>
+              <p className="mt-2 text-sm text-theme-secondary">Programs ≥600 hours — AAS degrees, long certificates. Already qualify for traditional Pell.</p>
+            </div>
+            <div className="card-cosmic rounded-2xl p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="w-3 h-3 rounded-full bg-blue-500" />
+                <span className="text-sm font-bold text-theme-primary">Workforce Pell Candidates</span>
+              </div>
+              <p className="text-4xl font-mono font-bold text-blue-600 dark:text-blue-400">23</p>
+              <p className="mt-2 text-sm text-theme-secondary">Programs 150–599 hours. Could qualify under the new Workforce Pell Grant effective July 2026.</p>
+            </div>
+            <div className="card-cosmic rounded-2xl p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="w-3 h-3 rounded-full bg-rose-500" />
+                <span className="text-sm font-bold text-theme-primary">Too Short</span>
+              </div>
+              <p className="text-4xl font-mono font-bold text-rose-600 dark:text-rose-400">4</p>
+              <p className="mt-2 text-sm text-theme-secondary">Programs under 150 hours. Below the Workforce Pell floor — may need expansion to qualify.</p>
+            </div>
+            <div className="card-cosmic rounded-2xl p-6">
+              <div className="flex items-center gap-3 mb-3">
+                <span className="w-3 h-3 rounded-full bg-theme-muted" />
+                <span className="text-sm font-bold text-theme-primary">Other</span>
+              </div>
+              <p className="text-4xl font-mono font-bold text-theme-muted">2</p>
+              <p className="mt-2 text-sm text-theme-secondary">Programs requiring further review — unclear clock hours or classification pending.</p>
+            </div>
           </StaggerChildren>
         </div>
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          D. SUMMARY TABLE
+          D. WORKFORCE PELL SCORECARD (8 representative programs)
+      ════════════════════════════════════════════════════════ */}
+      <section className="relative py-16 md:py-20 border-t border-theme-subtle">
+        <div className="max-w-[960px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up">
+            <span className="overline">Workforce Pell Eligibility Scorecard</span>
+            <h2
+              className="font-heading font-bold text-theme-primary mt-4"
+              style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
+            >
+              8 programs, scored and assessed.
+            </h2>
+            <p className="mt-3 text-base text-theme-secondary">
+              Representative selection from 23 Workforce Pell candidates. Scored against federal criteria with real BLS wage data.
+            </p>
+          </AnimateOnScroll>
+
+          <div className="mt-10">
+            <StaggerChildren stagger={60} variant="fade-up">
+              {programs.map((program) => (
+                <ProgramCard key={program.id} program={program} />
+              ))}
+            </StaggerChildren>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════
+          E. SUMMARY TABLE
       ════════════════════════════════════════════════════════ */}
       <section className="relative py-12 md:py-16 border-t border-theme-subtle">
         <div className="max-w-[860px] mx-auto px-6">
@@ -569,7 +704,7 @@ export default function PellDemoPage() {
               className="font-heading font-bold text-theme-primary mt-4 mb-8"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              All programs, one view.
+              All scored programs, one view.
             </h2>
           </AnimateOnScroll>
 
@@ -580,6 +715,7 @@ export default function PellDemoPage() {
                   <tr className="border-b border-theme-subtle">
                     <th className="text-left px-5 py-3 text-[10px] font-bold uppercase tracking-widest text-theme-muted">Program</th>
                     <th className="text-right px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-theme-muted w-24">Clock Hrs</th>
+                    <th className="text-right px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-theme-muted w-24">Wage</th>
                     <th className="text-right px-4 py-3 text-[10px] font-bold uppercase tracking-widest text-theme-muted w-16">Score</th>
                     <th className="text-right px-5 py-3 text-[10px] font-bold uppercase tracking-widest text-theme-muted w-40">Status</th>
                   </tr>
@@ -595,6 +731,7 @@ export default function PellDemoPage() {
                       >
                         <td className="px-5 py-3.5 text-sm font-medium text-theme-primary">{p.name}</td>
                         <td className="px-4 py-3.5 text-sm font-mono text-theme-secondary text-right">{p.clockHours}</td>
+                        <td className="px-4 py-3.5 text-sm font-mono text-theme-secondary text-right">${p.medianWage.toLocaleString()}</td>
                         <td className={`px-4 py-3.5 text-sm font-mono font-bold text-right ${scoreColor(p.score)}`}>{p.score}</td>
                         <td className="px-5 py-3.5 text-right">
                           <span className="inline-flex items-center justify-end gap-1.5">
@@ -613,12 +750,74 @@ export default function PellDemoPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          E. PRIORITY ACTIONS
+          F. GAP OPPORTUNITIES
+      ════════════════════════════════════════════════════════ */}
+      <section className="relative py-16 md:py-20 border-t border-theme-subtle">
+        <div className="max-w-[960px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up">
+            <span className="overline">Gap Analysis</span>
+            <h2
+              className="font-heading font-bold text-theme-primary mt-4"
+              style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
+            >
+              12 programs Tucson needs but Pima doesn&apos;t offer.
+            </h2>
+            <p className="mt-3 text-base text-theme-secondary">
+              Top 6 gap opportunities ranked by regional demand, wage outcomes, and Pell eligibility potential.
+            </p>
+          </AnimateOnScroll>
+
+          <StaggerChildren stagger={60} variant="fade-up" className="mt-10 grid gap-4">
+            {gapOpportunities.map((gap, i) => (
+              <div key={i} className="card-cosmic rounded-2xl p-6">
+                <div className="flex items-start justify-between gap-4 flex-wrap">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap mb-1">
+                      <h3 className="font-heading font-semibold text-lg text-theme-primary leading-snug">
+                        {gap.name}
+                      </h3>
+                      <span className={`text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full border ${priorityColor(gap.priority)}`}>
+                        {gap.priority} priority
+                      </span>
+                      {gap.pellEligible && (
+                        <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                          Pell Eligible
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-theme-muted">SOC {gap.soc} · {gap.suggestedHours}</p>
+                  </div>
+                  <div className="flex flex-col items-end gap-1 flex-shrink-0">
+                    <span className="text-2xl font-mono font-bold text-theme-primary">
+                      ${gap.medianWage.toLocaleString()}
+                    </span>
+                    <span className="text-[10px] text-theme-muted">median wage</span>
+                  </div>
+                </div>
+                <p className="mt-3 text-sm text-theme-secondary leading-relaxed">{gap.demand}</p>
+                <div className="mt-3 flex items-center gap-2">
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-theme-muted">Opportunity Score</span>
+                  <div className="flex-1 h-2 rounded-full bg-theme-surface" style={{ background: 'rgba(148,163,184,0.15)' }}>
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-teal-500 to-blue-500"
+                      style={{ width: `${(gap.opportunityScore / 10) * 100}%` }}
+                    />
+                  </div>
+                  <span className="text-sm font-mono font-bold text-teal-600 dark:text-teal-400">{gap.opportunityScore}</span>
+                </div>
+              </div>
+            ))}
+          </StaggerChildren>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════
+          G. KEY FINDINGS
       ════════════════════════════════════════════════════════ */}
       <section className="relative py-12 md:py-16 border-t border-theme-subtle">
         <div className="max-w-[760px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
-            <span className="overline">Priority Actions</span>
+            <span className="overline">Key Findings</span>
             <h2
               className="font-heading font-bold text-theme-primary mt-4 mb-8"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
@@ -628,7 +827,6 @@ export default function PellDemoPage() {
           </AnimateOnScroll>
 
           <StaggerChildren stagger={100} variant="fade-up" className="flex flex-col gap-4">
-            {/* Action 1 */}
             <div className="card-cosmic rounded-2xl p-6 flex gap-5 items-start border-teal-500/20">
               <div className="flex-shrink-0 w-10 h-10 rounded-full bg-teal-500/15 border border-teal-500/25 flex items-center justify-center">
                 <span className="text-teal-600 dark:text-teal-400 font-mono font-bold text-sm">1</span>
@@ -636,21 +834,20 @@ export default function PellDemoPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 flex-wrap">
                   <h3 className="font-heading font-semibold text-base text-theme-primary">
-                    Submit CDL FMCSA documentation
+                    Assess all 23 Workforce Pell candidates
                   </h3>
                   <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20">
                     Immediate
                   </span>
                 </div>
                 <p className="mt-2 text-sm text-theme-secondary leading-relaxed">
-                  Administrative only — no curriculum changes required. Submit FMCSA Entry-Level Driver Training
-                  (ELDT) compliance documentation to Arizona ACCS and verify TPR listing is active.
-                  Estimated resolution: <strong className="text-theme-primary font-semibold">30–60 days.</strong>
+                  Programs like EMT, Automated Industrial Tech, Truck Driving, and Pharmacy Tech have strong fundamentals.
+                  Conduct full Workforce Pell readiness assessments for all 23 candidates to identify documentation gaps
+                  and ensure compliance with the 8 federal eligibility criteria.
                 </p>
               </div>
             </div>
 
-            {/* Action 2 */}
             <div className="card-cosmic rounded-2xl p-6 flex gap-5 items-start">
               <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/25 flex items-center justify-center">
                 <span className="text-amber-600 dark:text-amber-400 font-mono font-bold text-sm">2</span>
@@ -658,53 +855,51 @@ export default function PellDemoPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 flex-wrap">
                   <h3 className="font-heading font-semibold text-base text-theme-primary">
-                    Restructure Medical Assistant clock hours
+                    Build outcome tracking infrastructure
                   </h3>
                   <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                    30–60 days
+                    Q1 2026
                   </span>
                 </div>
                 <p className="mt-2 text-sm text-theme-secondary leading-relaxed">
-                  Reduce from 620 hours to the 570–580 range by restructuring elective or lab components
-                  as co-curricular. Resubmit to Arizona ACCS for updated approval. Learning outcomes
-                  should be preserved with targeted lab consolidation.
+                  Workforce Pell requires documented completion rates, placement rates, and earnings outcomes.
+                  Establish data collection systems for all short-term certificates now — you&apos;ll need 6+ months
+                  of data before the July 2026 deadline.
                 </p>
               </div>
             </div>
 
-            {/* Action 3 */}
             <div className="card-cosmic rounded-2xl p-6 flex gap-5 items-start">
-              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-500/15 border border-amber-500/25 flex items-center justify-center">
-                <span className="text-amber-600 dark:text-amber-400 font-mono font-bold text-sm">3</span>
+              <div className="flex-shrink-0 w-10 h-10 rounded-full bg-blue-500/15 border border-blue-500/25 flex items-center justify-center">
+                <span className="text-blue-600 dark:text-blue-400 font-mono font-bold text-sm">3</span>
               </div>
               <div className="flex-1">
                 <div className="flex items-center gap-2 flex-wrap">
                   <h3 className="font-heading font-semibold text-base text-theme-primary">
-                    Expand CNA clinical rotation
+                    Develop high-value gap programs
                   </h3>
-                  <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                    60–90 days
+                  <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                    Strategic
                   </span>
                 </div>
                 <p className="mt-2 text-sm text-theme-secondary leading-relaxed">
-                  Add 20 clock hours (target 160 total) via expanded clinical rotation. Resubmit to
-                  Arizona Department of Health Services and Board of Nursing for updated program approval.
-                  Extended clinical time also strengthens graduate placement outcomes.
+                  Cybersecurity ($92K median wage), Data Analytics ($83K), and Electronics Technician ($68K)
+                  represent massive unmet demand in Tucson. These programs could launch as Workforce Pell-eligible
+                  from day one, capturing students who currently have no financial aid pathway to these careers.
                 </p>
               </div>
             </div>
           </StaggerChildren>
 
-          {/* Footer note */}
           <AnimateOnScroll variant="fade-up" delay={120}>
             <div className="mt-8 p-5 rounded-xl border border-teal-500/15 bg-teal-500/5">
               <div className="flex items-start gap-3">
                 <CheckCircle2 className="h-4 w-4 text-teal-600 dark:text-teal-400 mt-0.5 flex-shrink-0" />
                 <p className="text-sm text-theme-secondary leading-relaxed">
-                  <strong className="text-theme-primary font-semibold">Fully eligible programs</strong>{' '}
-                  (HVAC, Cybersecurity, Welding, Medical Coding, Phlebotomy) require no action —
-                  ensure they are submitted for Pell processing by your financial aid office before
-                  the <strong className="text-theme-primary font-semibold">July 1, 2026</strong> effective date.
+                  <strong className="text-theme-primary font-semibold">39 programs are already Pell-eligible</strong> through traditional pathways.
+                  The opportunity cost is in the 23 short-term certificates and 12 gap programs — early movers
+                  will capture market share while competitors wait for guidance. The time to act is{' '}
+                  <strong className="text-theme-primary font-semibold">now, not spring 2026</strong>.
                 </p>
               </div>
             </div>
@@ -713,7 +908,7 @@ export default function PellDemoPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════
-          F. CTA
+          H. CTA
       ════════════════════════════════════════════════════════ */}
       <section className="relative py-20 md:py-28 border-t border-theme-subtle">
         <Stars count={60} />
@@ -729,8 +924,9 @@ export default function PellDemoPage() {
               See where your programs stand.
             </h2>
             <p className="mt-5 text-base text-theme-secondary leading-relaxed max-w-xl mx-auto">
-              This sample reflects one institution&apos;s snapshot. Your Pell Readiness Check assesses your
-              actual catalog against federal and state criteria — delivered within 48 hours.
+              This report was generated by Wavelength&apos;s AI pipeline using real data — BLS wages, web research,
+              and program analysis. Your Pell Readiness Check assesses your actual catalog against federal and
+              state criteria — delivered within 48 hours.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/pell">
