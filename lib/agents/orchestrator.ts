@@ -9,6 +9,7 @@ import { runRegulatoryCompliance } from './researchers/regulatory-analyst';
 import { runEmployerDemand } from './researchers/employer-analyst';
 import { runTigerTeam } from './tiger-team';
 import { runQAReview } from './qa-reviewer';
+import { runCitationAgent } from './researchers/citation-agent';
 import { calculateProgramScore, buildDimensionScore, DIMENSION_WEIGHTS } from '@/lib/scoring/program-scorer';
 import { generateReport } from '@/lib/reports/report-generator';
 import { enrichProject } from './project-enricher';
@@ -242,7 +243,51 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       console.warn(`[Orchestrator] Report quality may be reduced due to missing dimensions`);
     }
 
-    // 7. Calculate program scores
+    // 7. Run citation agent for fact-checking and inline citations
+    let citationResults: Awaited<ReturnType<typeof runCitationAgent>> | null = null;
+    try {
+      console.log(`[Orchestrator] Running citation agent for fact-checking...`);
+
+      // Extract markdown from completed components
+      const componentsByType = completedComponents.reduce((acc, c) => {
+        const key = c.component_type.replace('_', '');
+        acc[key] = c.markdown_output || '';
+        return acc;
+      }, {} as Record<string, string>);
+
+      citationResults = await withTimeout(
+        runCitationAgent({
+          projectId,
+          occupation: projectToValidate.target_occupation || projectToValidate.program_name || 'Unknown',
+          state: projectToValidate.geographic_area || 'United States',
+          regulatoryAnalysis: componentsByType['regulatorycompliance'],
+          marketAnalysis: componentsByType['labormarket'],
+          employerAnalysis: componentsByType['employerdemand'],
+          financialAnalysis: componentsByType['financialviability'],
+          academicAnalysis: componentsByType['institutionalfit'],
+          demographicAnalysis: componentsByType['learnerdemand'],
+          competitiveAnalysis: componentsByType['competitivelandscape'],
+        }),
+        300000, // 5 minutes for citation verification
+        'Citation Agent'
+      );
+
+      // Store citation results in database
+      await supabase.from('research_components').insert({
+        project_id: projectId,
+        component_type: 'citation_verification',
+        agent_persona: 'citation-agent',
+        status: 'completed',
+        content: citationResults,
+        markdown_output: `# Citation Verification\n\n${citationResults.summary}\n\n## Verified Claims\n${citationResults.verifiedClaims.map(c => `- ${c.claim} [${c.citation}]`).join('\n')}\n\n${citationResults.warnings.length > 0 ? `## Warnings\n${citationResults.warnings.map(w => `- ${w}`).join('\n')}` : ''}`,
+      });
+
+      console.log(`[Orchestrator] ✓ Citation agent complete — ${citationResults.verifiedClaims.length} claims verified`);
+    } catch (e) {
+      console.warn('[Orchestrator] Citation agent failed, continuing without citation verification:', e);
+    }
+
+    // 8. Calculate program scores
     console.log(`[Orchestrator] Calculating program scores...`);
 
     const dimensionScores = completedComponents
@@ -274,7 +319,7 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
 
     console.log(`[Orchestrator] Composite Score: ${programScore.compositeScore}/10 — ${programScore.recommendation}`);
 
-    // 8. Run tiger team synthesis (optional, for backward compat)
+    // 9. Run tiger team synthesis (optional, for backward compat)
     let tigerTeamMarkdown = '';
     try {
       console.log(`[Orchestrator] Running tiger team synthesis...`);
@@ -301,7 +346,7 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       console.warn('[Orchestrator] Tiger team synthesis failed, continuing with report generation:', e);
     }
 
-    // 8. Generate report FIRST (so a crash during QA doesn't lose everything)
+    // 10. Generate report FIRST (so a crash during QA doesn't lose everything)
     console.log(`[Orchestrator] Generating professional report...`);
 
     let fullReport = generateReport({
@@ -309,6 +354,7 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       components: completedComponents as ResearchComponent[],
       programScore,
       tigerTeamMarkdown,
+      citations: citationResults || undefined,
     });
 
     // Save initial report (only columns that exist: project_id, executive_summary, full_report_markdown, version)
@@ -325,7 +371,7 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
 
     console.log(`[Orchestrator] ✓ Report saved (${fullReport.length} chars)`);
 
-    // 9. QA Review — optional fact-check, updates report if issues found
+    // 11. QA Review — optional fact-check, updates report if issues found
     // DISABLED: QA's 80K+ token prompt causes OOM on 8GB machines
     // TODO: Re-enable with summarized inputs instead of raw agent outputs
     if (false && tigerTeamMarkdown) {
@@ -347,6 +393,7 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
             components: completedComponents as ResearchComponent[],
             programScore,
             tigerTeamMarkdown,
+            citations: citationResults || undefined,
           });
 
           // Update the saved report
@@ -373,7 +420,7 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       }
     }
 
-    // 10. Update project status
+    // 12. Update project status
     await supabase
       .from('validation_projects')
       .update({
@@ -604,6 +651,39 @@ export async function orchestrateValidationInMemory(
     throw new Error('No research agents completed (0/7). Cannot proceed.');
   }
 
+  // Run citation agent for fact-checking
+  let citationResults: Awaited<ReturnType<typeof runCitationAgent>> | null = null;
+  try {
+    console.log(`[Orchestrator:InMemory] Running citation agent for fact-checking...`);
+
+    const componentsByType = completedComponents.reduce((acc, c) => {
+      const key = c.type.replace('_', '');
+      acc[key] = c.markdown || '';
+      return acc;
+    }, {} as Record<string, string>);
+
+    citationResults = await withTimeout(
+      runCitationAgent({
+        projectId: fakeProjectId,
+        occupation: project.target_occupation || project.program_name || 'Unknown',
+        state: project.geographic_area || 'United States',
+        regulatoryAnalysis: componentsByType['regulatorycompliance'],
+        marketAnalysis: componentsByType['labormarket'],
+        employerAnalysis: componentsByType['employerdemand'],
+        financialAnalysis: componentsByType['financialviability'],
+        academicAnalysis: componentsByType['institutionalfit'],
+        demographicAnalysis: componentsByType['learnerdemand'],
+        competitiveAnalysis: componentsByType['competitivelandscape'],
+      }),
+      300000,
+      'Citation Agent'
+    );
+
+    console.log(`[Orchestrator:InMemory] ✓ Citation agent complete — ${citationResults.verifiedClaims.length} claims verified`);
+  } catch (e) {
+    console.warn('[Orchestrator:InMemory] Citation agent failed:', e);
+  }
+
   // Calculate program scores
   console.log(`[Orchestrator:InMemory] Calculating program scores...`);
 
@@ -681,6 +761,7 @@ export async function orchestrateValidationInMemory(
     components: reportComponents as any,
     programScore,
     tigerTeamMarkdown,
+    citations: citationResults || undefined,
   });
 
   const totalDuration = Date.now() - startTime;

@@ -2,11 +2,38 @@ import { ValidationProject, ResearchComponent } from '@/lib/types/database';
 import { ProgramScore } from '@/lib/scoring/program-scorer';
 import { formatComponentContent } from './format-component';
 
+interface CitationResults {
+  verifiedClaims: Array<{
+    claim: string;
+    source: string;
+    sourceType: string;
+    confidence: string;
+    citation: string;
+  }>;
+  regulatoryCitations: Array<{
+    claim: string;
+    source: string;
+    sourceType: string;
+    confidence: string;
+    citation: string;
+  }>;
+  marketCitations: Array<{
+    claim: string;
+    source: string;
+    sourceType: string;
+    confidence: string;
+    citation: string;
+  }>;
+  warnings: string[];
+  summary: string;
+}
+
 interface ReportInput {
   project: ValidationProject;
   components: ResearchComponent[];
   programScore: ProgramScore;
   tigerTeamMarkdown?: string;
+  citations?: CitationResults;
 }
 
 export function generateReport(input: ReportInput): string {
@@ -178,6 +205,45 @@ ${programScore.recommendation === 'Strong Go' ? `
 `}
 
 ---
+
+${input.citations ? `## Sources & Citations
+
+This report includes verified citations and source references to ensure all key claims are grounded in authoritative data.
+
+${input.citations.summary}
+
+### Regulatory Requirements
+
+${input.citations.regulatoryCitations.length > 0 ? input.citations.regulatoryCitations.map(c => `
+**${c.claim}**
+- Source: ${c.citation}
+- Confidence: ${c.confidence === 'verified' ? '✅ Verified' : c.confidence === 'likely' ? '⚠️ Likely' : '❓ Unverified'}
+- URL: ${c.source}
+`).join('\n') : '_No regulatory citations extracted._'}
+
+### Market Data & Statistics
+
+${input.citations.marketCitations.length > 0 ? input.citations.marketCitations.map(c => `
+**${c.claim}**
+- Source: ${c.citation}
+- Confidence: ${c.confidence === 'verified' ? '✅ Verified' : c.confidence === 'likely' ? '⚠️ Likely' : '❓ Unverified'}
+- URL: ${c.source}
+`).join('\n') : '_No market data citations extracted._'}
+
+### All Verified Claims
+
+${input.citations.verifiedClaims.length > 0 ? input.citations.verifiedClaims.map((c, i) => `${i + 1}. ${c.claim} — **${c.citation}** (${c.sourceType})`).join('\n') : '_No additional claims verified._'}
+
+${input.citations.warnings.length > 0 ? `
+### Citation Warnings
+
+The following claims could not be verified from official sources or contain estimates:
+
+${input.citations.warnings.map(w => `- ${w}`).join('\n')}
+` : ''}
+
+---
+` : ''}
 
 ## Methodology & Data Sources
 

@@ -177,8 +177,7 @@ export default function SamplesPage() {
 
           <AnimateOnScroll variant="fade-up" delay={200} duration={800}>
             <p className="mt-5 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed">
-              Every Wavelength service produces a specific, professional deliverable.
-              Here&apos;s what that looks like before you order.
+              We filter the noise and dial in the signal. Every report is built to drive decisions, not collect dust.
             </p>
           </AnimateOnScroll>
         </div>
