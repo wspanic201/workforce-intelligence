@@ -122,7 +122,7 @@ const SERVICES: Service[] = [
     sampleReport: '/report/hawkeye-gap-audit',
   },
   {
-    name: 'Grant Finder',
+    name: 'Grant Intelligence Scan',
     slug: 'grants',
     price: '$495',
     description: 'Surface and prioritize every federal grant your programs qualify for — scored, ranked, and ready to pursue.',

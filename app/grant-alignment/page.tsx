@@ -78,7 +78,7 @@ export default function GrantAlignmentPage() {
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-green-500/10 border border-green-500/30 mb-4">
                 <span className="text-green-300 text-[10px] font-bold uppercase tracking-wider">$495</span>
               </div>
-              <h3 className="font-heading font-bold text-theme-primary text-2xl mb-3">Grant Finder</h3>
+              <h3 className="font-heading font-bold text-theme-primary text-2xl mb-3">Grant Intelligence Scan</h3>
               <p className="text-theme-secondary text-sm leading-relaxed mb-6">
                 We scan 30+ federal and foundation grants, score each against your institution profile, and deliver a ranked, prioritized report — ready to act on.
               </p>
@@ -100,11 +100,11 @@ export default function GrantAlignmentPage() {
                 ))}
               </ul>
               <p className="text-xs text-theme-tertiary mb-6 italic">
-                Many institutions fund the Grant Finder itself through Perkins V or institutional effectiveness line items.
+                Many institutions fund the Grant Intelligence Scan itself through Perkins V or institutional effectiveness line items.
               </p>
               <Link href="/grants">
                 <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
-                  Learn More About Grant Finder
+                  Learn More About Grant Intelligence Scan
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>
@@ -149,7 +149,7 @@ export default function GrantAlignmentPage() {
             </h2>
             <Link href="/contact">
               <button className="btn-cosmic btn-cosmic-primary text-sm">
-                Order Grant Finder — $495
+                Order Grant Intelligence Scan — $495
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </Link>

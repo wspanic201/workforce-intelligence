@@ -69,7 +69,7 @@ const ADDONS = [
     href: '/compliance-gap',
   },
   {
-    name: 'Grant Finder',
+    name: 'Grant Intelligence Scan',
     description: 'Surface and prioritize every grant your programs qualify for — scored and ready to pursue.',
     price: '$495',
     href: '/grants',

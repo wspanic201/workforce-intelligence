@@ -107,7 +107,7 @@ const services = [
   },
   {
     id: 'grant-intelligence',
-    name: 'Grant Finder',
+    name: 'Grant Intelligence Scan',
     price: '$495',
     liveDemo: true,
     format: 'Interactive web report + PDF download',

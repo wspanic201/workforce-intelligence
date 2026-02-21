@@ -49,7 +49,7 @@ export default function GrantsPage() {
 
           <AnimateOnScroll variant="fade-up" delay={200} duration={800}>
             <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed font-medium">
-              The Grant Finder matches real funding to your institution's programs, capacity, and strengths.
+              The Grant Intelligence Scan matches real funding to your institution's programs, capacity, and strengths.
             </p>
             <p className="mt-3 text-base md:text-lg text-theme-tertiary max-w-2xl mx-auto leading-relaxed">
               30+ federal and foundation grants scanned, scored for your institution, and ranked into a prioritized action plan — with deadlines, effort estimates, and past award data.
@@ -60,7 +60,7 @@ export default function GrantsPage() {
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary">
-                  Order Grant Finder — $495
+                  Order Grant Intelligence Scan — $495
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>
@@ -90,7 +90,7 @@ export default function GrantsPage() {
                 Know exactly which grants to pursue — and which to skip.
               </h2>
               <p className="mt-4 text-theme-tertiary text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
-                Most colleges either chase every grant (exhausting) or miss them entirely (expensive). The Grant Finder gives you a clear, prioritized list matched to your institution&apos;s actual profile, programs, and capacity.
+                Most colleges either chase every grant (exhausting) or miss them entirely (expensive). The Grant Intelligence Scan gives you a clear, prioritized list matched to your institution&apos;s actual profile, programs, and capacity.
               </p>
               <p className="mt-3 text-theme-tertiary text-sm leading-relaxed max-w-xl mx-auto">
                 Grants fund the programs. The right grant strategy pays for new workforce programs before the first student enrolls.
@@ -229,7 +229,7 @@ export default function GrantsPage() {
             <div className="card-cosmic rounded-2xl overflow-hidden">
               <div className="p-6 md:p-8 border-b border-theme-subtle">
                 <h3 className="text-xs font-medium uppercase tracking-widest text-theme-secondary mb-6">
-                  What a Grant Finder delivers
+                  What a Grant Intelligence Scan delivers
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   {[
@@ -382,7 +382,7 @@ export default function GrantsPage() {
 
                   <Link href="/contact">
                     <button className="btn-cosmic btn-cosmic-primary w-full sm:w-auto">
-                      Order Grant Finder
+                      Order Grant Intelligence Scan
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </button>
                   </Link>
@@ -400,7 +400,7 @@ export default function GrantsPage() {
                   <span className="text-gradient-cosmic">∿ ·</span> Standard Pricing
                 </p>
 
-                <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Grant Finder</h3>
+                <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Grant Intelligence Scan</h3>
                 <p className="text-theme-secondary text-sm mb-5">
                   Same complete scan at the standard rate after founding slots fill.
                 </p>
@@ -452,7 +452,7 @@ export default function GrantsPage() {
               From scan to submission — we can help.
             </h2>
             <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
-              The Grant Finder identifies your opportunities. If you want help actually pursuing them, Wavelength offers two ways to go deeper.
+              The Grant Intelligence Scan identifies your opportunities. If you want help actually pursuing them, Wavelength offers two ways to go deeper.
             </p>
           </AnimateOnScroll>
 
@@ -637,7 +637,7 @@ export default function GrantsPage() {
             <div className="mt-8">
               <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary text-base py-3 px-8">
-                  Order Grant Finder — $495
+                  Order Grant Intelligence Scan — $495
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </button>
               </Link>

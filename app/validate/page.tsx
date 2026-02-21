@@ -410,7 +410,7 @@ export default function ValidatePage() {
             <AnimateOnScroll variant="fade-up" delay={200}>
               <Link href="/grant-alignment" className="block card-cosmic rounded-2xl p-7 border-green-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-theme-primary text-lg">Grant Finder</h3>
+                  <h3 className="font-heading font-bold text-theme-primary text-lg">Grant Intelligence Scan</h3>
                   <span className="text-xs font-semibold text-theme-muted">$495</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Find and prioritize the grants your programs qualify for — scored, ranked, and ready to pursue.</p>
