@@ -131,7 +131,7 @@ const services = [
   {
     id: 'curriculum-drift',
     name: 'Curriculum Drift Analysis',
-    price: 'from $1,200/yr',
+    price: '$495/scan',
     liveDemo: true,
     format: 'Interactive web report + PDF download — delivered quarterly',
     formatDot: 'bg-pink-400',

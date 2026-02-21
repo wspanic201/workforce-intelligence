@@ -37,7 +37,7 @@ export default function ProgramHealthPage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={300}>
             <div className="flex flex-wrap justify-center gap-3 mt-8">
-              {['Quarterly scans', 'From $1,200/yr', 'Accreditation-ready reports'].map(s => (
+              {['Quarterly scans', '$495/scan', 'Accreditation-ready reports'].map(s => (
                 <span key={s} className="inline-flex items-center gap-1.5 text-xs font-medium text-theme-tertiary">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-400 shrink-0" />
                   {s}
@@ -78,7 +78,7 @@ export default function ProgramHealthPage() {
             <div className="card-cosmic rounded-2xl p-8 md:p-10 border-orange-500/20">
               <span className="inline-flex items-center gap-1.5 text-xs font-medium text-theme-tertiary mb-4">
                 <span className="w-1.5 h-1.5 rounded-full bg-orange-400 shrink-0" />
-                From $1,200/yr
+                $495/scan
               </span>
               <h3 className="font-heading font-bold text-theme-primary text-2xl mb-3">Curriculum Drift Analysis</h3>
               <p className="text-theme-secondary text-sm leading-relaxed mb-6">
@@ -146,7 +146,7 @@ export default function ProgramHealthPage() {
             </h2>
             <Link href="/drift">
               <button className="btn-cosmic btn-cosmic-primary text-sm">
-                Start with a Free Drift Scan
+                Order a Drift Scan
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </Link>

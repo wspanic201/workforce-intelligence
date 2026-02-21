@@ -313,7 +313,7 @@ export default function AiCurriculumAlignmentPage() {
               href="https://withwavelength.com/drift"
               className="inline-block bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-theme-primary px-6 py-3 rounded-xl font-semibold transition-all"
             >
-              Run a Free Drift Scan →
+              Order a Drift Scan →
             </Link>
             <Link
               href="https://withwavelength.com/drift"
