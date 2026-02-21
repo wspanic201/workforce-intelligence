@@ -12,7 +12,7 @@ const SUBJECTS = [
   'Program Validation',
   'Pell Readiness Check',
   'Program Gap Audit',
-  'Grant Intelligence Scan',
+  'Grant Finder',
   'Curriculum Drift Analysis',
   'General Question',
   'Partnership Inquiry',
@@ -193,7 +193,7 @@ export default function ContactPage() {
                   {[
                     { label: 'Program Opportunity Scan', href: '/discover', price: '$1,500' },
                     { label: 'Program Validation', href: '/validate', price: '$3,500' },
-                    { label: 'Grant Intelligence Scan', href: '/grants', price: '$495' },
+                    { label: 'Grant Finder', href: '/grants', price: '$495' },
                     { label: 'Curriculum Drift Analysis', href: '/drift', price: '$495' },
                   ].map((s) => (
                     <Link key={s.href} href={s.href} className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors group">

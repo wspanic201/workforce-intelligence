@@ -24,7 +24,7 @@ const CATEGORIES = [
   {
     label: 'Funding & Grants',
     services: [
-      { label: 'Grant Intelligence Scan',  tagline: 'Federal grant scoring and prioritization', href: '/grants', price: '$495' },
+      { label: 'Grant Finder',  tagline: 'Federal grant scoring and prioritization', href: '/grants', price: '$495' },
       { label: 'Pell Readiness Check',      tagline: 'Workforce Pell eligibility scoring', href: '/pell', price: 'Free' },
     ],
   },

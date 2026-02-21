@@ -143,7 +143,7 @@ export default function RootLayout({
                     <span className="text-teal-400/70 text-[10px] font-mono">$295</span>
                   </Link>
                   <Link href="/grants" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    <span>Grant Intelligence Scan</span>
+                    <span>Grant Finder</span>
                     <span className="text-teal-400/70 text-[10px] font-mono">$495</span>
                   </Link>
                   <Link href="/drift" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
