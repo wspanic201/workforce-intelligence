@@ -420,7 +420,7 @@ export default function ProgramDevelopmentPage() {
           <p className="text-theme-tertiary leading-relaxed mb-4">
             Our{" "}
             <Link href="/validate" className="text-teal-400 underline hover:no-underline">
-              Program Validation tool
+              Feasibility Report tool
             </Link>{" "}
             structures this process — mapping your program concept against regional job postings
             and returning an evidence-based demand score before you commit to curriculum
@@ -588,7 +588,7 @@ export default function ProgramDevelopmentPage() {
                 labelColor: "text-teal-400",
               },
               {
-                name: "Program Validation",
+                name: "Feasibility Report",
                 href: "/validate",
                 desc: "Takes a specific program concept and returns an evidence-based demand score with supporting regional data — so you can validate before you invest in curriculum development.",
                 color: "border-blue-500/20 bg-blue-900/10",
@@ -602,7 +602,7 @@ export default function ProgramDevelopmentPage() {
                 labelColor: "text-purple-400",
               },
               {
-                name: "Compliance Gap Report",
+                name: "Catalog Gap Analysis",
                 href: "/compliance-gap",
                 desc: "A detailed written analysis of your institution's Workforce Pell compliance exposure, with specific remediation recommendations for each identified gap.",
                 color: "border-indigo-500/20 bg-indigo-900/10",

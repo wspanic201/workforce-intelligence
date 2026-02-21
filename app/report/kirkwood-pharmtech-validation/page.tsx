@@ -7,12 +7,12 @@ import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
 import { PrintButton } from '@/components/ui/PrintButton';
 
 export const metadata: Metadata = {
-  title: 'Program Validation — Kirkwood Community College | Wavelength Sample Report',
+  title: 'Feasibility Report — Kirkwood Community College | Wavelength Sample Report',
   description:
-    'Sample Program Validation report for Kirkwood Community College Pharmacy Technician Certificate. CONDITIONAL GO — 7.6/10 composite score with 7 specialist analyses.',
+    'Sample Feasibility Report report for Kirkwood Community College Pharmacy Technician Certificate. CONDITIONAL GO — 7.6/10 composite score with 7 specialist analyses.',
   alternates: { canonical: 'https://withwavelength.com/report/kirkwood-pharmtech-validation' },
   openGraph: {
-    title: 'Program Validation — Kirkwood Community College Pharmacy Technician Certificate',
+    title: 'Feasibility Report — Kirkwood Community College Pharmacy Technician Certificate',
     description:
       'CONDITIONAL GO: 7.6/10 composite. Full 7-dimension validation with real BLS data, live job market analysis, and model-driven financial projections.',
     url: 'https://withwavelength.com/report/kirkwood-pharmtech-validation',
@@ -243,7 +243,7 @@ export default function KirkwoodPharmTechValidationPage() {
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={800}>
-            <span className="overline">Program Validation · Sample Report</span>
+            <span className="overline">Feasibility Report · Sample Report</span>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
@@ -1121,7 +1121,7 @@ export default function KirkwoodPharmTechValidationPage() {
             <p className="mt-4 text-theme-secondary text-lg leading-relaxed">
               This validation was produced by a live run of Wavelength&apos;s 7-stage Program Validator
               pipeline on February 19, 2026 — real BLS data, real employer job postings, real
-              financial projections. Your Program Validation delivers the same depth, tailored to
+              financial projections. Your Feasibility Report delivers the same depth, tailored to
               your institution, your region, and your program.
             </p>
             <p className="mt-4 font-mono text-gradient-cosmic font-bold text-lg">
@@ -1130,7 +1130,7 @@ export default function KirkwoodPharmTechValidationPage() {
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/validate">
                 <button className="btn-cosmic btn-cosmic-primary text-sm py-3 px-7">
-                  Order a Program Validation
+                  Order a Feasibility Report
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>

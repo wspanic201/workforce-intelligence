@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 const LIFECYCLE_STAGES = [
   {
     stage: '1',
-    name: 'Program Opportunity Scan',
+    name: 'Program Finder',
     price: '$1,500',
     available: true,
     href: '/discover',
@@ -25,7 +25,7 @@ const LIFECYCLE_STAGES = [
   },
   {
     stage: '2',
-    name: 'Program Validation',
+    name: 'Feasibility Report',
     price: '$3,500',
     available: true,
     href: '/validate',
@@ -71,7 +71,7 @@ const ADDONS = [
     href: '/compliance-gap',
   },
   {
-    name: 'Grant Intelligence Scan',
+    name: 'Grant Finder',
     description: 'Surface and prioritize every grant your programs qualify for — scored and ready to pursue.',
     price: '$495',
     href: '/grants',

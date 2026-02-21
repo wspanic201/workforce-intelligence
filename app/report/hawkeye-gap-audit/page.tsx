@@ -7,12 +7,12 @@ import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
 import { PrintButton } from '@/components/ui/PrintButton';
 
 export const metadata: Metadata = {
-  title: 'Compliance Gap Analysis — Hawkeye Community College | Wavelength',
+  title: 'Catalog Gap Analysis — Hawkeye Community College | Wavelength',
   description:
-    'Live Compliance Gap Analysis for Hawkeye Community College, Waterloo Iowa. 8 compliance gaps identified across 25 state-mandated programs — $1.2M Year 1, scaling to $1.9M Year 2+.',
+    'Live Catalog Gap Analysis for Hawkeye Community College, Waterloo Iowa. 8 compliance gaps identified across 25 state-mandated programs — $1.2M Year 1, scaling to $1.9M Year 2+.',
   alternates: { canonical: 'https://withwavelength.com/report/hawkeye-gap-audit' },
   openGraph: {
-    title: 'Compliance Gap Analysis — Hawkeye Community College',
+    title: 'Catalog Gap Analysis — Hawkeye Community College',
     description:
       '8 compliance gaps, $1.2M–$1.9M revenue opportunity. 25 Iowa-mandated programs analyzed against Hawkeye\'s current catalog.',
     url: 'https://withwavelength.com/report/hawkeye-gap-audit',
@@ -367,7 +367,7 @@ export default function HawkeyeGapAuditPage() {
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={800}>
-            <span className="overline">Compliance Gap Analysis · Live Report</span>
+            <span className="overline">Catalog Gap Analysis · Live Report</span>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
@@ -398,7 +398,7 @@ export default function HawkeyeGapAuditPage() {
               </span>
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-700 dark:text-rose-400 font-semibold text-sm">
                 <span className="w-2 h-2 rounded-full bg-rose-500" />
-                8 Compliance Gaps
+                8 Catalog Gaps
               </span>
               <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 font-semibold text-sm">
                 <span className="w-2 h-2 rounded-full bg-amber-500" />
@@ -577,7 +577,7 @@ export default function HawkeyeGapAuditPage() {
         <div className="max-w-[1200px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
             <div className="text-center mb-12">
-              <span className="overline">Section E · Compliance Gaps</span>
+              <span className="overline">Section E · Catalog Gaps</span>
               <h2
                 className="font-heading font-bold text-theme-primary mt-3"
                 style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.5rem)' }}
@@ -603,7 +603,7 @@ export default function HawkeyeGapAuditPage() {
                     </div>
                     <div>
                       <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-0.5">
-                        Compliance Gap · {gap.hours.toLocaleString()} Hours Required
+                        Catalog Gap · {gap.hours.toLocaleString()} Hours Required
                       </p>
                       <h3 className="font-heading font-bold text-lg text-theme-primary leading-snug">
                         {gap.name}
@@ -1048,7 +1048,7 @@ export default function HawkeyeGapAuditPage() {
             <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary text-sm py-3 px-8">
-                  Order a Compliance Gap Analysis
+                  Order a Catalog Gap Analysis
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>

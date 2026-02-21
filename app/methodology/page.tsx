@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Methodology — 6-Lens Workforce Program Validation Framework",
+  title: "Methodology — 6-Lens Workforce Feasibility Report Framework",
   description:
     "Learn how Wavelength validates community college programs using a 6-lens framework: market demand, financial viability, competitive landscape, curriculum design, workforce alignment, and marketing strategy.",
   alternates: {

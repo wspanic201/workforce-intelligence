@@ -9,14 +9,14 @@ const CATEGORIES = [
   {
     label: 'Market Research',
     services: [
-      { label: 'Program Opportunity Scan', tagline: 'Full regional market intelligence', href: '/discover', price: '$1,500' },
+      { label: 'Program Finder', tagline: 'Full regional market intelligence', href: '/discover', price: '$1,500' },
       { label: 'Category Deep Dive',       tagline: 'Focused scan for one program area', href: '/category', price: '$795' },
     ],
   },
   {
     label: 'Program Analysis',
     services: [
-      { label: 'Program Validation',       tagline: 'Feasibility analysis with GO/NO-GO', href: '/validate', price: '$3,500' },
+      { label: 'Feasibility Report',       tagline: 'Feasibility analysis with GO/NO-GO', href: '/validate', price: '$3,500' },
       { label: 'Program Gap Audit',         tagline: 'Catalog vs. state mandate comparison', href: '/compliance-gap', price: '$295' },
       { label: 'Curriculum Drift Analysis', tagline: 'Annual content alignment review', href: '/drift', price: '$495' },
     ],
@@ -24,7 +24,7 @@ const CATEGORIES = [
   {
     label: 'Funding & Grants',
     services: [
-      { label: 'Grant Intelligence Scan',  tagline: 'Federal grant scoring and prioritization', href: '/grants', price: '$495' },
+      { label: 'Grant Finder',  tagline: 'Federal grant scoring and prioritization', href: '/grants', price: '$495' },
       { label: 'Pell Readiness Check',      tagline: 'Workforce Pell eligibility scoring', href: '/pell', price: 'Free' },
     ],
   },

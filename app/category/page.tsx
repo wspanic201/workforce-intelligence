@@ -310,7 +310,7 @@ export default function CategoryPage() {
               },
               {
                 title: 'You want to test before going all-in',
-                desc: 'Start with a $795 Deep Dive. If the opportunities are strong, upgrade to a full $1,500 Program Opportunity Scan across all sectors.',
+                desc: 'Start with a $795 Deep Dive. If the opportunities are strong, upgrade to a full $1,500 Program Finder across all sectors.',
               },
             ].map(({ title, desc }) => (
               <div key={title} className="flex gap-4">
@@ -387,7 +387,7 @@ export default function CategoryPage() {
             <AnimateOnScroll variant="scale" delay={200}>
               <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-teal-500/20 h-full flex flex-col">
                 <p className="overline mb-4">Need more?</p>
-                <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Program Opportunity Scan</h3>
+                <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Program Finder</h3>
                 <p className="text-theme-secondary text-sm mb-5">
                   Full market intelligence across all program areas. 25+ pages, 100+ searches, every sector analyzed.
                 </p>

@@ -124,11 +124,11 @@ export default function RootLayout({
                 <p className="text-[9px] font-bold uppercase tracking-widest text-theme-muted mb-2 mt-3">Core Program Intelligence Services</p>
                 <div className="space-y-2.5 mb-4">
                   <Link href="/discover" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    <span>Program Opportunity Scan</span>
+                    <span>Program Finder</span>
                     <span className="text-purple-400/70 text-[10px] font-mono">$1,500</span>
                   </Link>
                   <Link href="/validate" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    <span>Program Validation</span>
+                    <span>Feasibility Report</span>
                     <span className="text-purple-400/70 text-[10px] font-mono">$3,500</span>
                   </Link>
                 </div>
@@ -143,7 +143,7 @@ export default function RootLayout({
                     <span className="text-teal-400/70 text-[10px] font-mono">$295</span>
                   </Link>
                   <Link href="/grants" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    <span>Grant Intelligence Scan</span>
+                    <span>Grant Finder</span>
                     <span className="text-teal-400/70 text-[10px] font-mono">$495</span>
                   </Link>
                   <Link href="/drift" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">

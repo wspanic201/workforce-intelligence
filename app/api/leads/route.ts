@@ -176,9 +176,9 @@ export async function POST(request: NextRequest) {
                   <div style="margin-top: 28px; padding: 20px; background: rgba(20,184,166,0.08); border: 1px solid rgba(20,184,166,0.2); border-radius: 8px;">
                     <p style="color: rgba(255,255,255,0.5); font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0;">What to do next</p>
                     <p style="color: rgba(255,255,255,0.8); font-size: 14px; line-height: 1.6; margin: 0 0 16px 0;">
-                      If 2 or more of these signs sound familiar, your portfolio likely has gaps worth understanding. The fastest way to see them clearly: a <strong style="color: #fff;">Program Opportunity Scan</strong> — 7–10 validated program opportunities for your region, scored and ranked.
+                      If 2 or more of these signs sound familiar, your portfolio likely has gaps worth understanding. The fastest way to see them clearly: a <strong style="color: #fff;">Program Finder</strong> — 7–10 validated program opportunities for your region, scored and ranked.
                     </p>
-                    <a href="https://withwavelength.com/discover" style="display: inline-block; background: linear-gradient(135deg, #7c3aed, #3b82f6); color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600;">See What a Program Opportunity Scan Includes →</a>
+                    <a href="https://withwavelength.com/discover" style="display: inline-block; background: linear-gradient(135deg, #7c3aed, #3b82f6); color: #fff; text-decoration: none; padding: 12px 24px; border-radius: 8px; font-size: 14px; font-weight: 600;">See What a Program Finder Includes →</a>
                   </div>
 
                   <p style="color: rgba(255,255,255,0.4); font-size: 12px; margin-top: 24px; line-height: 1.6;">

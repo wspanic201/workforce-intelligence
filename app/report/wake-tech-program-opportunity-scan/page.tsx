@@ -7,12 +7,12 @@ import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
 import { PrintButton } from '@/components/ui/PrintButton';
 
 export const metadata: Metadata = {
-  title: 'Program Opportunity Scan — Wake Technical Community College | Wavelength Sample Report',
+  title: 'Program Finder — Wake Technical Community College | Wavelength Sample Report',
   description:
-    'Full Program Opportunity Scan for Wake Technical Community College. 8 high-potential programs scored and ranked, plus 5 Blue Ocean opportunities — see the complete analysis.',
+    'Full Program Finder for Wake Technical Community College. 8 high-potential programs scored and ranked, plus 5 Blue Ocean opportunities — see the complete analysis.',
   alternates: { canonical: 'https://withwavelength.com/report/wake-tech-program-opportunity-scan' },
   openGraph: {
-    title: 'Program Opportunity Scan — Wake Technical Community College',
+    title: 'Program Finder — Wake Technical Community College',
     description:
       '8 scored program opportunities, 5 Blue Ocean discoveries, and a complete funding roadmap for Wake Technical Community College.',
     url: 'https://withwavelength.com/report/wake-tech-program-opportunity-scan',
@@ -680,7 +680,7 @@ export default function DemoReportPage() {
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={800}>
-            <span className="overline">Program Opportunity Scan · Sample Report</span>
+            <span className="overline">Program Finder · Sample Report</span>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
@@ -727,7 +727,7 @@ export default function DemoReportPage() {
 
           <AnimateOnScroll variant="fade-up" delay={340} duration={800}>
             <p className="mt-6 text-xs text-theme-muted max-w-xl mx-auto leading-relaxed">
-              This is a real Program Opportunity Scan conducted for Wake Technical Community College. All data and recommendations are based on actual labor market research, employer intelligence, and competitive analysis.
+              This is a real Program Finder conducted for Wake Technical Community College. All data and recommendations are based on actual labor market research, employer intelligence, and competitive analysis.
             </p>
           </AnimateOnScroll>
 
@@ -1327,8 +1327,8 @@ export default function DemoReportPage() {
               },
               {
                 num: 3,
-                title: 'Engage Wavelength Program Validation ($3,500)',
-                body: 'Program Validation confirms employer demand, models enrollment and revenue, conducts detailed feasibility analysis, and delivers a go/no-go recommendation with full supporting data. This is the critical step before committing development resources.',
+                title: 'Engage Wavelength Feasibility Report ($3,500)',
+                body: 'Feasibility Report confirms employer demand, models enrollment and revenue, conducts detailed feasibility analysis, and delivers a go/no-go recommendation with full supporting data. This is the critical step before committing development resources.',
               },
               {
                 num: 4,
@@ -1479,12 +1479,12 @@ export default function DemoReportPage() {
               See which programs your region is asking for.
             </h2>
             <p className="mt-5 text-base text-theme-secondary leading-relaxed max-w-xl mx-auto">
-              This is a real scan conducted for Wake Technical Community College. Your Program Opportunity Scan delivers 7–10 scored, ranked program opportunities — researched, written, and delivered within 7 business days.
+              This is a real scan conducted for Wake Technical Community College. Your Program Finder delivers 7–10 scored, ranked program opportunities — researched, written, and delivered within 7 business days.
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/discover">
                 <button className="btn-cosmic btn-cosmic-primary text-sm py-3 px-7">
-                  Order a Program Opportunity Scan →
+                  Order a Program Finder →
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>

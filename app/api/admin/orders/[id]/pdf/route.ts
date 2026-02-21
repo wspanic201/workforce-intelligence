@@ -41,7 +41,7 @@ export async function GET(
     const reportType = order.service_tier?.includes('validation') ? 'validation' : 'discovery';
     const reportTypeLabel = reportType === 'discovery'
       ? 'Program Market Scan'
-      : 'Program Validation Report';
+      : 'Feasibility Report Report';
 
     const title = order.program_name
       ? `${order.program_name} — ${reportTypeLabel}`

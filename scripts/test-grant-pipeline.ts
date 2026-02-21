@@ -1,5 +1,5 @@
 /**
- * Test: Grant Intelligence Scan Pipeline
+ * Test: Grant Finder Pipeline
  * 
  * Run with: DOTENV_CONFIG_PATH=.env.local npx tsx --require dotenv/config scripts/test-grant-pipeline.ts
  */
@@ -15,7 +15,7 @@ async function main() {
     }
   }
 
-  console.log('Starting Grant Intelligence Scan for Valencia College...');
+  console.log('Starting Grant Finder for Valencia College...');
   console.log('API keys verified: ANTHROPIC, SERPAPI');
 
   const result = await runGrantFinder({

@@ -78,7 +78,7 @@ export default function MarketResearchPage() {
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-violet-500/10 border border-violet-500/30 mb-4">
                 <span className="text-violet-300 text-[10px] font-bold uppercase tracking-wider">$1,500</span>
               </div>
-              <h3 className="font-heading font-bold text-theme-primary text-2xl mb-3">Program Opportunity Scan</h3>
+              <h3 className="font-heading font-bold text-theme-primary text-2xl mb-3">Program Finder</h3>
               <p className="text-theme-secondary text-sm leading-relaxed mb-6">
                 We research your regional labor market across 50+ sources and deliver 7–10 validated program opportunities — each scored, ranked, and backed by real employer demand.
               </p>
@@ -100,7 +100,7 @@ export default function MarketResearchPage() {
               </ul>
               <Link href="/discover">
                 <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
-                  Learn More About Program Opportunity Scan
+                  Learn More About Program Finder
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>
@@ -117,13 +117,13 @@ export default function MarketResearchPage() {
               How it connects
             </h2>
             <p className="text-theme-secondary mt-4 max-w-2xl mx-auto">
-              Market Research is the starting point. Once you know what to build, Program Validation confirms the demand is deep enough to justify investment. Grant Alignment finds the funding to build it.
+              Market Research is the starting point. Once you know what to build, Feasibility Report confirms the demand is deep enough to justify investment. Grant Alignment finds the funding to build it.
             </p>
           </AnimateOnScroll>
           <StaggerChildren stagger={100} variant="fade-up" className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               { step: '1', label: 'Market Research', desc: 'Find what to build', href: '/market-research', active: true },
-              { step: '2', label: 'Program Validation', desc: 'Confirm demand is real', href: '/program-development', active: false },
+              { step: '2', label: 'Feasibility Report', desc: 'Confirm demand is real', href: '/program-development', active: false },
               { step: '3', label: 'Grant Alignment', desc: 'Find the funding', href: '/grant-alignment', active: false },
             ].map(({ step, label, desc, href, active }) => (
               <Link key={step} href={href} className={`block p-5 rounded-xl border ${active ? 'border-violet-500/30 bg-violet-500/5' : 'border-theme-subtle bg-white/[0.02]'} hover:bg-white/[0.04] transition-colors`}>
@@ -145,7 +145,7 @@ export default function MarketResearchPage() {
             </h2>
             <Link href="/contact">
               <button className="btn-cosmic btn-cosmic-primary text-sm">
-                Run a Program Opportunity Scan
+                Run a Program Finder
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </Link>

@@ -370,12 +370,12 @@ function buildNextSteps(
 Share this Market Scan with your Dean, VP of Instruction, and program development leads. Focus discussion on the top 3 recommendations and how they align with institutional strategic priorities.
 
 **2. Select 1-3 programs for deeper validation**  
-We recommend the following for immediate Program Validation:
+We recommend the following for immediate Feasibility Report:
 
 ${topPrograms.map((p, i) => `   ${i + 1}. **${p.programTitle}** (${p.scores.composite}/10 — ${p.tier.replace(/_/g, ' ')})`).join('\n')}
 
-**3. Engage Wavelength Program Validation**  
-Program Validation will confirm employer demand, model enrollment and revenue, conduct detailed feasibility analysis, and deliver a go/no-go recommendation with full supporting data. This is the critical step before committing development resources.
+**3. Engage Wavelength Feasibility Report**  
+Feasibility Report will confirm employer demand, model enrollment and revenue, conduct detailed feasibility analysis, and deliver a go/no-go recommendation with full supporting data. This is the critical step before committing development resources.
 
 ${quickWins.length > 0 ? `**4. Consider fast-tracking Quick Wins**  
 ${quickWins.map(q => `**${q.programTitle}**`).join(' and ')} ${quickWins.length === 1 ? 'is' : 'are'} launchable within 3-6 months with minimal startup investment. ${quickWins.length === 1 ? 'This program' : 'These programs'} could generate revenue while longer-term strategic programs are being developed.` : ''}

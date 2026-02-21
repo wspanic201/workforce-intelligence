@@ -43,7 +43,7 @@ export default function GrantsPage() {
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl mt-4"
               style={{ fontSize: 'clamp(2.5rem, 5vw + 0.5rem, 4.5rem)' }}
             >
-              Grant Intelligence Scan
+              Grant Finder
             </h1>
           </AnimateOnScroll>
 
@@ -60,7 +60,7 @@ export default function GrantsPage() {
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary">
-                  Order Grant Intelligence Scan — $495
+                  Order Grant Finder — $495
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>
@@ -90,7 +90,7 @@ export default function GrantsPage() {
                 Know exactly which grants to pursue — and which to skip.
               </h2>
               <p className="mt-4 text-theme-tertiary text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
-                Most colleges either chase every grant (exhausting) or miss them entirely (expensive). The Grant Intelligence Scan gives you a clear, prioritized list matched to your institution&apos;s actual profile, programs, and capacity.
+                Most colleges either chase every grant (exhausting) or miss them entirely (expensive). The Grant Finder gives you a clear, prioritized list matched to your institution&apos;s actual profile, programs, and capacity.
               </p>
               <p className="mt-3 text-theme-tertiary text-sm leading-relaxed max-w-xl mx-auto">
                 Grants fund the programs. The right grant strategy pays for new workforce programs before the first student enrolls.
@@ -229,7 +229,7 @@ export default function GrantsPage() {
             <div className="card-cosmic rounded-2xl overflow-hidden">
               <div className="p-6 md:p-8 border-b border-theme-subtle">
                 <h3 className="text-xs font-medium uppercase tracking-widest text-theme-secondary mb-6">
-                  What a Grant Intelligence Scan delivers
+                  What a Grant Finder delivers
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   {[
@@ -382,7 +382,7 @@ export default function GrantsPage() {
 
                   <Link href="/contact">
                     <button className="btn-cosmic btn-cosmic-primary w-full sm:w-auto">
-                      Order Grant Intelligence Scan
+                      Order Grant Finder
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </button>
                   </Link>
@@ -400,7 +400,7 @@ export default function GrantsPage() {
                   <span className="text-gradient-cosmic">∿ ·</span> Standard Pricing
                 </p>
 
-                <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Grant Intelligence Scan</h3>
+                <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Grant Finder</h3>
                 <p className="text-theme-secondary text-sm mb-5">
                   Same complete scan at the standard rate after founding slots fill.
                 </p>
@@ -452,7 +452,7 @@ export default function GrantsPage() {
               From scan to submission — we can help.
             </h2>
             <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
-              The Grant Intelligence Scan identifies your opportunities. If you want help actually pursuing them, Wavelength offers two ways to go deeper.
+              The Grant Finder identifies your opportunities. If you want help actually pursuing them, Wavelength offers two ways to go deeper.
             </p>
           </AnimateOnScroll>
 
@@ -550,14 +550,14 @@ export default function GrantsPage() {
               },
               {
                 stage: '→',
-                name: 'Program Opportunity Scan',
+                name: 'Program Finder',
                 href: '/discover',
                 desc: '25+ page market intelligence report — scored program opportunities, employer demand signals, and grant alignment. Identifies the programs worth funding.',
                 tag: '$1,500',
               },
               {
                 stage: '→',
-                name: 'Program Validation',
+                name: 'Feasibility Report',
                 href: '/validate',
                 desc: 'Deep-dive feasibility with financial projections, employer verification, and a GO / NO-GO recommendation.',
                 tag: '$2,000',
@@ -595,7 +595,7 @@ export default function GrantsPage() {
             <AnimateOnScroll variant="fade-up" delay={100}>
               <Link href="/market-research" className="block card-cosmic rounded-2xl p-7 border-violet-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-theme-primary text-lg">Program Opportunity Scan</h3>
+                  <h3 className="font-heading font-bold text-theme-primary text-lg">Program Finder</h3>
                   <span className="text-xs font-semibold text-theme-muted">$1,500</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Discover 7–10 validated program opportunities for your region — scored, ranked, and backed by real employer demand.</p>
@@ -607,7 +607,7 @@ export default function GrantsPage() {
             <AnimateOnScroll variant="fade-up" delay={200}>
               <Link href="/program-development" className="block card-cosmic rounded-2xl p-7 border-emerald-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-theme-primary text-lg">Program Validation</h3>
+                  <h3 className="font-heading font-bold text-theme-primary text-lg">Feasibility Report</h3>
                   <span className="text-xs font-semibold text-theme-muted">$2,000</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Validate a specific program idea with a full financial model, competitive analysis, and Go/No-Go recommendation.</p>
@@ -637,7 +637,7 @@ export default function GrantsPage() {
             <div className="mt-8">
               <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary text-base py-3 px-8">
-                  Order Grant Intelligence Scan — $495
+                  Order Grant Finder — $495
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </button>
               </Link>

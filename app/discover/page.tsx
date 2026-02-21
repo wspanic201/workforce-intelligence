@@ -18,7 +18,7 @@ import { Aurora } from '@/components/cosmic/Aurora';
 const discoverProductJsonLd = {
   "@context": "https://schema.org",
   "@type": "Product",
-  name: "Program Opportunity Scan",
+  name: "Program Finder",
   description:
     "Full market intelligence before you build a new program — 25+ pages of scored opportunities, employer demand signals, competitive gaps, and grant alignment for community colleges.",
   url: "https://withwavelength.com/discover",
@@ -63,13 +63,13 @@ export default function DiscoverPage() {
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl mt-4"
               style={{ fontSize: 'clamp(2.5rem, 5vw + 0.5rem, 4.5rem)' }}
             >
-              Program Opportunity Scan
+              Find the next high-demand program your workforce needs
             </h1>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={200} duration={800}>
             <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed font-medium">
-              Find out exactly what programs your region needs — before you invest a dollar in development.
+              The Program Finder maps regional demand, employer needs, and competitive gaps into a clear action plan — before you invest a dollar in development.
             </p>
             <p className="mt-3 text-base md:text-lg text-theme-tertiary max-w-2xl mx-auto leading-relaxed">
               A 25+ page report with scored opportunities, competitive gaps, employer demand signals, grant alignment, and hidden opportunities your competitors will miss. All from 50+ verified sources.
@@ -86,7 +86,7 @@ export default function DiscoverPage() {
               </a>
               <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary">
-                  Order a Program Opportunity Scan — $1,500
+                  Order a Program Finder — $1,500
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>
@@ -112,7 +112,7 @@ export default function DiscoverPage() {
               className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              Six phases of research. One comprehensive Program Opportunity Scan.
+              Six phases of research. One comprehensive Program Finder.
             </h2>
           </AnimateOnScroll>
 
@@ -145,7 +145,7 @@ export default function DiscoverPage() {
               },
               {
                 icon: FileText,
-                title: 'The Program Opportunity Scan Report',
+                title: 'The Program Finder Report',
                 desc: '25+ page report with scored programs, evidence trails, grant alignment, barriers, Workforce Pell readiness scores, and specific next steps.',
               },
             ].map(({ icon: Icon, title, desc }) => (
@@ -323,7 +323,7 @@ export default function DiscoverPage() {
               Start free. Go deeper when you&apos;re ready.
             </h2>
             <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
-              The Pell Readiness Check is free and gets you started in 60 seconds. When you&apos;re ready for full market intelligence, a Program Opportunity Scan is the next step.
+              The Pell Readiness Check is free and gets you started in 60 seconds. When you&apos;re ready for full market intelligence, a Program Finder is the next step.
             </p>
           </AnimateOnScroll>
 
@@ -386,7 +386,7 @@ export default function DiscoverPage() {
 
                   <ul className="text-left max-w-xs mx-auto space-y-3 mb-7 flex-1">
                     {[
-                      'Full 25+ page Program Opportunity Scan',
+                      'Full 25+ page Program Finder',
                       'Conventional + Blue Ocean opportunities',
                       '50+ sources cited & verified',
                       'Scored & ranked program recommendations',
@@ -403,7 +403,7 @@ export default function DiscoverPage() {
 
                   <Link href="/contact">
                     <button className="btn-cosmic btn-cosmic-primary w-full sm:w-auto">
-                      Order Program Opportunity Scan
+                      Order Program Finder
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </button>
                   </Link>
@@ -427,7 +427,7 @@ export default function DiscoverPage() {
             <AnimateOnScroll variant="fade-up" delay={100}>
               <Link href="/program-development" className="block card-cosmic rounded-2xl p-7 border-emerald-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-theme-primary text-lg">Program Validation</h3>
+                  <h3 className="font-heading font-bold text-theme-primary text-lg">Feasibility Report</h3>
                   <span className="text-xs font-semibold text-theme-muted">$2,000</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Validate a specific program idea with a full financial model, competitive analysis, and Go/No-Go recommendation.</p>
@@ -439,7 +439,7 @@ export default function DiscoverPage() {
             <AnimateOnScroll variant="fade-up" delay={200}>
               <Link href="/grant-alignment" className="block card-cosmic rounded-2xl p-7 border-green-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-theme-primary text-lg">Grant Intelligence Scan</h3>
+                  <h3 className="font-heading font-bold text-theme-primary text-lg">Grant Finder</h3>
                   <span className="text-xs font-semibold text-theme-muted">$495</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Find and prioritize the grants your programs qualify for — scored, ranked, and ready to pursue.</p>
@@ -460,10 +460,10 @@ export default function DiscoverPage() {
               className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              After Your Program Opportunity Scan
+              After Your Program Finder
             </h2>
             <p className="text-theme-secondary mt-3">
-              Your Program Opportunity Scan identifies the opportunities. The next stages help you act on them.
+              Your Program Finder identifies the opportunities. The next stages help you act on them.
             </p>
           </AnimateOnScroll>
 
@@ -471,7 +471,7 @@ export default function DiscoverPage() {
             {[
               {
                 stage: '2',
-                name: 'Program Validation',
+                name: 'Feasibility Report',
                 desc: 'Deep-dive feasibility analysis with financial projections, employer verification, and a GO / NO-GO recommendation.',
               },
               {
@@ -500,7 +500,7 @@ export default function DiscoverPage() {
           <AnimateOnScroll variant="fade-up" delay={300} className="text-center mt-10">
             <Link href="/validate">
               <button className="btn-cosmic btn-cosmic-ghost text-sm">
-                Learn About Program Validation
+                Learn About Feasibility Report
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </Link>

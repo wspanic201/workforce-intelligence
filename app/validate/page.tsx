@@ -55,7 +55,7 @@ export default function ValidatePage() {
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"
               style={{ fontSize: 'clamp(2.5rem, 5vw + 0.5rem, 4.5rem)' }}
             >
-              Program Validation
+              Feasibility Report
             </h1>
           </AnimateOnScroll>
 
@@ -398,7 +398,7 @@ export default function ValidatePage() {
             <AnimateOnScroll variant="fade-up" delay={100}>
               <Link href="/market-research" className="block card-cosmic rounded-2xl p-7 border-violet-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-theme-primary text-lg">Program Opportunity Scan</h3>
+                  <h3 className="font-heading font-bold text-theme-primary text-lg">Program Finder</h3>
                   <span className="text-xs font-semibold text-theme-muted">$1,500</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Discover 7–10 validated program opportunities for your region — scored, ranked, and backed by real employer demand.</p>
@@ -410,7 +410,7 @@ export default function ValidatePage() {
             <AnimateOnScroll variant="fade-up" delay={200}>
               <Link href="/grant-alignment" className="block card-cosmic rounded-2xl p-7 border-green-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-theme-primary text-lg">Grant Intelligence Scan</h3>
+                  <h3 className="font-heading font-bold text-theme-primary text-lg">Grant Finder</h3>
                   <span className="text-xs font-semibold text-theme-muted">$495</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Find and prioritize the grants your programs qualify for — scored, ranked, and ready to pursue.</p>

@@ -1,5 +1,5 @@
 /**
- * Compliance Gap: Catalog Scanner Agent
+ * Catalog Gap: Catalog Scanner Agent
  *
  * Scrapes a college's website to build the list of programs/courses
  * they currently offer. Simplified version of the pell-audit catalog

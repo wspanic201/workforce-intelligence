@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const services = [
   {
     id: 'opportunity-scan',
-    name: 'Program Opportunity Scan',
+    name: 'Program Finder',
     price: '$1,500',
     liveDemo: true,
     format: 'Interactive web report + PDF download',
@@ -38,7 +38,7 @@ const services = [
   },
   {
     id: 'program-validation',
-    name: 'Program Validation',
+    name: 'Feasibility Report',
     price: '$3,500',
     liveDemo: true,
     format: 'PDF report — delivered by email within 5 business days',
@@ -107,7 +107,7 @@ const services = [
   },
   {
     id: 'grant-intelligence',
-    name: 'Grant Intelligence Scan',
+    name: 'Grant Finder',
     price: '$495',
     liveDemo: true,
     format: 'Interactive web report + PDF download',

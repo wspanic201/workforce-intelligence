@@ -46,7 +46,7 @@ const SERVICES: Service[] = [
     sampleReport: '/report/pell-demo',
   },
   {
-    name: 'Program Opportunity Scan',
+    name: 'Program Finder',
     slug: 'discover',
     price: '$1,500',
     description: 'Identify the highest-potential new programs for your region — scored, ranked, and backed by real employer demand data.',
@@ -84,7 +84,7 @@ const SERVICES: Service[] = [
     sampleReport: '/report/kirkwood-business-category-deep-dive',
   },
   {
-    name: 'Program Validation',
+    name: 'Feasibility Report',
     slug: 'validate',
     price: '$3,500',
     description: 'Seven-specialist feasibility analysis with financial projections and a definitive GO / NO-GO recommendation.',
@@ -122,7 +122,7 @@ const SERVICES: Service[] = [
     sampleReport: '/report/hawkeye-gap-audit',
   },
   {
-    name: 'Grant Intelligence Scan',
+    name: 'Grant Finder',
     slug: 'grants',
     price: '$495',
     description: 'Surface and prioritize every federal grant your programs qualify for — scored, ranked, and ready to pursue.',
@@ -354,7 +354,7 @@ export default function PricingPage() {
               />
               <FaqItem
                 q="How long does delivery take?"
-                a="Most add-on reports deliver in 3–7 business days. Core services (Opportunity Scan, Program Validation) take 5–10 business days depending on scope. We'll confirm your timeline during onboarding."
+                a="Most add-on reports deliver in 3–7 business days. Core services (Opportunity Scan, Feasibility Report) take 5–10 business days depending on scope. We'll confirm your timeline during onboarding."
               />
               <FaqItem
                 q="Do you offer volume discounts?"

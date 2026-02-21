@@ -118,13 +118,13 @@ export default function ProgramHealthPage() {
               How it connects
             </h2>
             <p className="text-theme-secondary mt-4 max-w-2xl mx-auto">
-              Program Health is the ongoing layer. Market Research finds the right programs to build. Program Validation confirms demand. Curriculum Drift Analysis keeps them aligned once they&apos;re live.
+              Program Health is the ongoing layer. Market Research finds the right programs to build. Feasibility Report confirms demand. Curriculum Drift Analysis keeps them aligned once they&apos;re live.
             </p>
           </AnimateOnScroll>
           <StaggerChildren stagger={100} variant="fade-up" className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               { step: '1', label: 'Market Research', desc: 'Find what to build', href: '/market-research', active: false },
-              { step: '2', label: 'Program Validation', desc: 'Confirm demand', href: '/program-development', active: false },
+              { step: '2', label: 'Feasibility Report', desc: 'Confirm demand', href: '/program-development', active: false },
               { step: '3', label: 'Program Health', desc: 'Keep programs aligned', href: '/program-health', active: true },
             ].map(({ step, label, desc, href, active }) => (
               <Link key={step} href={href} className={`block p-5 rounded-xl border ${active ? 'border-orange-500/30 bg-orange-500/5' : 'border-theme-subtle bg-white/[0.02]'} hover:bg-white/[0.04] transition-colors`}>

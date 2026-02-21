@@ -204,7 +204,7 @@ export default function Article() {
         </p>
 
         <p className="text-gray-700 leading-relaxed mb-6">
-          For institutions that need a more comprehensive view, the <Link href="/compliance-gap" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">Compliance Gap Report</Link> ($295) provides a detailed analysis of your entire program portfolio, identifying not just Pell eligibility status but also where programs cluster, where coverage gaps exist relative to labor market demand, and which programs represent the strongest candidates for grant funding. This report becomes the foundation of your grant narrative—you're not just proposing programs you think might work, you're demonstrating data-driven portfolio strategy.
+          For institutions that need a more comprehensive view, the <Link href="/compliance-gap" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">Catalog Gap Analysis</Link> ($295) provides a detailed analysis of your entire program portfolio, identifying not just Pell eligibility status but also where programs cluster, where coverage gaps exist relative to labor market demand, and which programs represent the strongest candidates for grant funding. This report becomes the foundation of your grant narrative—you're not just proposing programs you think might work, you're demonstrating data-driven portfolio strategy.
         </p>
 
         <h3 className="font-bold text-gray-900 mb-3" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"1.1rem"}}>
@@ -224,7 +224,7 @@ export default function Article() {
         </p>
 
         <p className="text-gray-700 leading-relaxed mb-6">
-          If you already have specific program concepts in mind—maybe faculty have been advocating for a particular credential, or employer partners have requested specific training—<Link href="/validate" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">Program Validation</Link> provides the labor market validation those concepts need. You get the occupational data, wage information, and competitive landscape analysis that turns "we think this would be good" into "here's why this is strategically necessary."
+          If you already have specific program concepts in mind—maybe faculty have been advocating for a particular credential, or employer partners have requested specific training—<Link href="/validate" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">Feasibility Report</Link> provides the labor market validation those concepts need. You get the occupational data, wage information, and competitive landscape analysis that turns "we think this would be good" into "here's why this is strategically necessary."
         </p>
 
         <h3 className="font-bold text-gray-900 mb-3" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"1.1rem"}}>

@@ -113,7 +113,7 @@ export function generateReport(input: ReportInput): string {
     }
   }
 
-  const report = `# Program Validation Report
+  const report = `# Feasibility Report Report
 
 ---
 

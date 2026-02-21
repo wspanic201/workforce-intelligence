@@ -1,5 +1,5 @@
 /**
- * Compliance Gap: Regulatory Scanner Agent
+ * Catalog Gap: Regulatory Scanner Agent
  *
  * Enhanced version of the pell-audit regulatory scanner.
  * For a given state, identifies ALL occupations that require

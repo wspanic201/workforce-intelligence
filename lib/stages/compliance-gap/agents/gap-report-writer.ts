@@ -1,5 +1,5 @@
 /**
- * Compliance Gap: Gap Analyzer + Report Writer Agent
+ * Catalog Gap: Gap Analyzer + Report Writer Agent
  *
  * Takes current programs offered by a college and the full list of
  * state-mandated programs, cross-references them, sizes the revenue
@@ -360,7 +360,7 @@ export async function analyzeGapsAndWriteReport(
 
 CONTEXT:
 - Institution: ${collegeName}${city ? `, ${city}` : ''}, ${state}
-- Report type: Compliance Gap Analysis — state-mandated training programs not currently offered
+- Report type: Catalog Gap Analysis — state-mandated training programs not currently offered
 - Total mandated programs in ${state}: ${mandated.length}
 - Currently offered by this institution: ${offeredMandates.length}
 - Compliance gaps identified: ${gaps.length}
@@ -412,7 +412,7 @@ HEADER FORMAT:
 \`\`\`
 ---
 **WAVELENGTH WORKFORCE INTELLIGENCE**
-Compliance Gap Analysis
+Catalog Gap Analysis
 ${collegeName} | ${state} | ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
 *Confidential — Prepared for Institutional Leadership*
 ---

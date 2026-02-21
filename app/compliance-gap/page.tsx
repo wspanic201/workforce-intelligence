@@ -260,7 +260,7 @@ export default function ComplianceGapPage() {
                 What you receive
               </h2>
               <p className="mt-4 text-theme-secondary max-w-xl mx-auto">
-                A complete Compliance Gap Report — specific to your institution and your state's regulatory landscape.
+                A complete Catalog Gap Analysis — specific to your institution and your state's regulatory landscape.
               </p>
             </div>
           </AnimateOnScroll>

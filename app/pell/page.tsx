@@ -181,7 +181,7 @@ const DELIVERABLES = [
 
 const UPSELL_PRODUCTS = [
   {
-    name: 'Compliance Gap Report',
+    name: 'Catalog Gap Analysis',
     price: '$295',
     description:
       "Find every state-mandated training program your institution doesn't offer — sized by revenue, cited to the statute.",
@@ -255,7 +255,7 @@ export default function PellPage() {
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"
               style={{ fontSize: 'clamp(2.5rem, 5.5vw + 0.5rem, 4.75rem)' }}
             >
-              Is your institution Pell ready?
+              Is your institution ready for Workforce Pell?
             </h1>
           </AnimateOnScroll>
 

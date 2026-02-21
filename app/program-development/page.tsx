@@ -6,7 +6,7 @@ import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
 
 export const metadata: Metadata = {
-  title: 'Program Validation for Community Colleges | Wavelength',
+  title: 'Feasibility Report for Community Colleges | Wavelength',
   description: 'Validate new program ideas with real market data before you invest in curriculum, advisory boards, and approvals — by Wavelength, the workforce program intelligence platform for community colleges.',
   alternates: { canonical: 'https://withwavelength.com/program-development' },
 };
@@ -32,7 +32,7 @@ export default function ProgramDevelopmentPage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200}>
             <p className="text-theme-secondary text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
-              A Market Scan tells you what to build. Program Validation tells you whether a specific idea is worth the investment — with a full financial model, competitive analysis, and accreditation pathway mapped out before you write a single course objective.
+              A Market Scan tells you what to build. Feasibility Report tells you whether a specific idea is worth the investment — with a full financial model, competitive analysis, and accreditation pathway mapped out before you write a single course objective.
             </p>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={300}>
@@ -78,7 +78,7 @@ export default function ProgramDevelopmentPage() {
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 mb-4">
                 <span className="text-emerald-300 text-[10px] font-bold uppercase tracking-wider">$2,000</span>
               </div>
-              <h3 className="font-heading font-bold text-theme-primary text-2xl mb-3">Program Validation</h3>
+              <h3 className="font-heading font-bold text-theme-primary text-2xl mb-3">Feasibility Report</h3>
               <p className="text-theme-secondary text-sm leading-relaxed mb-6">
                 Full feasibility analysis for a specific program idea — market validation, financial model, competitive intelligence, and a Go/No-Go recommendation.
               </p>
@@ -101,7 +101,7 @@ export default function ProgramDevelopmentPage() {
               </ul>
               <Link href="/validate">
                 <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
-                  Learn More About Program Validation
+                  Learn More About Feasibility Report
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>
@@ -118,13 +118,13 @@ export default function ProgramDevelopmentPage() {
               How it connects
             </h2>
             <p className="text-theme-secondary mt-4 max-w-2xl mx-auto">
-              Program Validation is most powerful when it follows Market Research. A Program Opportunity Scan identifies what your region needs — Validation confirms that one specific program is worth building. After validation, Grant Alignment finds funding.
+              Feasibility Report is most powerful when it follows Market Research. A Program Finder identifies what your region needs — Validation confirms that one specific program is worth building. After validation, Grant Alignment finds funding.
             </p>
           </AnimateOnScroll>
           <StaggerChildren stagger={100} variant="fade-up" className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               { step: '1', label: 'Market Research', desc: 'Find what to build', href: '/market-research', active: false },
-              { step: '2', label: 'Program Validation', desc: 'Confirm demand is real', href: '/program-development', active: true },
+              { step: '2', label: 'Feasibility Report', desc: 'Confirm demand is real', href: '/program-development', active: true },
               { step: '3', label: 'Grant Alignment', desc: 'Find the funding', href: '/grant-alignment', active: false },
             ].map(({ step, label, desc, href, active }) => (
               <Link key={step} href={href} className={`block p-5 rounded-xl border ${active ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-theme-subtle bg-white/[0.02]'} hover:bg-white/[0.04] transition-colors`}>
@@ -146,13 +146,13 @@ export default function ProgramDevelopmentPage() {
             </h2>
             <Link href="/contact">
               <button className="btn-cosmic btn-cosmic-primary text-sm">
-                Order Program Validation — $2,000
+                Order Feasibility Report — $2,000
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </Link>
             <div className="mt-4">
               <Link href="/market-research" className="text-sm text-theme-tertiary hover:text-theme-secondary transition-colors">
-                Start with a Program Opportunity Scan first →
+                Start with a Program Finder first →
               </Link>
             </div>
           </AnimateOnScroll>
