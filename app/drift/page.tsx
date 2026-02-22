@@ -120,7 +120,7 @@ export default function DriftPage() {
 
           <AnimateOnScroll variant="fade-up" delay={50} duration={800}>
             <div className="mb-6">
-              <Link href="/program-health" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity group">
+              <Link href="/drift" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity group">
                 <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
                 Program Health
               </Link>
@@ -649,7 +649,7 @@ export default function DriftPage() {
           </AnimateOnScroll>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <AnimateOnScroll variant="fade-up" delay={100}>
-              <Link href="/market-research" className="block card-cosmic rounded-2xl p-7 border-violet-500/20 hover:bg-white/[0.03] transition-colors group h-full">
+              <Link href="/discover" className="block card-cosmic rounded-2xl p-7 border-violet-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="font-heading font-bold text-theme-primary text-lg">Market Research</h3>
                   <span className="text-xs font-semibold text-theme-muted">From $1,500</span>

@@ -51,7 +51,7 @@ export default function DiscoverPage() {
 
           <AnimateOnScroll variant="fade-up" delay={50} duration={800}>
             <div className="mb-6 mt-4">
-              <Link href="/market-research" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity group">
+              <Link href="/discover" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity group">
                 <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
                 Market Research
               </Link>
@@ -437,7 +437,7 @@ export default function DiscoverPage() {
               </Link>
             </AnimateOnScroll>
             <AnimateOnScroll variant="fade-up" delay={200}>
-              <Link href="/grant-alignment" className="block card-cosmic rounded-2xl p-7 border-green-500/20 hover:bg-white/[0.03] transition-colors group h-full">
+              <Link href="/grants" className="block card-cosmic rounded-2xl p-7 border-green-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="font-heading font-bold text-theme-primary text-lg">Grant Finder</h3>
                   <span className="text-xs font-semibold text-theme-muted">$495</span>

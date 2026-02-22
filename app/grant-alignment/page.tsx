@@ -154,7 +154,7 @@ export default function GrantAlignmentPage() {
               </button>
             </Link>
             <div className="mt-4">
-              <Link href="/market-research" className="text-sm text-theme-tertiary hover:text-theme-secondary transition-colors">
+              <Link href="/discover" className="text-sm text-theme-tertiary hover:text-theme-secondary transition-colors">
                 Not sure what to build yet? Start with Market Research →
               </Link>
             </div>

@@ -31,7 +31,7 @@ export default function GrantsPage() {
 
           <AnimateOnScroll variant="fade-up" delay={50} duration={800}>
             <div className="mb-6 mt-4">
-              <Link href="/grant-alignment" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity group">
+              <Link href="/grants" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity group">
                 <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
                 Grant Alignment
               </Link>
@@ -593,7 +593,7 @@ export default function GrantsPage() {
           </AnimateOnScroll>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <AnimateOnScroll variant="fade-up" delay={100}>
-              <Link href="/market-research" className="block card-cosmic rounded-2xl p-7 border-violet-500/20 hover:bg-white/[0.03] transition-colors group h-full">
+              <Link href="/discover" className="block card-cosmic rounded-2xl p-7 border-violet-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="font-heading font-bold text-theme-primary text-lg">Program Finder</h3>
                   <span className="text-xs font-semibold text-theme-muted">$1,500</span>

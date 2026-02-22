@@ -151,7 +151,7 @@ export default function ProgramDevelopmentPage() {
               </button>
             </Link>
             <div className="mt-4">
-              <Link href="/market-research" className="text-sm text-theme-tertiary hover:text-theme-secondary transition-colors">
+              <Link href="/discover" className="text-sm text-theme-tertiary hover:text-theme-secondary transition-colors">
                 Start with a Program Finder first →
               </Link>
             </div>

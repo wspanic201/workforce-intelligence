@@ -8,6 +8,21 @@ const nextConfig: NextConfig = {
         destination: '/report/wake-tech-program-opportunity-scan',
         permanent: true,
       },
+      {
+        source: '/grant-alignment',
+        destination: '/grants',
+        permanent: true,
+      },
+      {
+        source: '/market-research',
+        destination: '/discover',
+        permanent: true,
+      },
+      {
+        source: '/program-health',
+        destination: '/drift',
+        permanent: true,
+      },
     ];
   },
 };
