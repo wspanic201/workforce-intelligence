@@ -12,6 +12,7 @@ const TABS = [
   { href: '/admin/intelligence/employers', label: 'Employers' },
   { href: '/admin/intelligence/sources', label: 'Sources' },
   { href: '/admin/intelligence/review', label: 'Review Queue' },
+  { href: '/admin/intelligence/import', label: '📥 Import' },
 ];
 
 export default function IntelligenceLayout({ children }: { children: React.ReactNode }) {
