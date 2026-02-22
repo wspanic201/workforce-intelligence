@@ -29,15 +29,6 @@ export default function GrantsPage() {
             <span className="overline">Fund</span>
           </AnimateOnScroll>
 
-          <AnimateOnScroll variant="fade-up" delay={50} duration={800}>
-            <div className="mb-6 mt-4">
-              <Link href="/grants" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity group">
-                <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
-                Grant Alignment
-              </Link>
-            </div>
-          </AnimateOnScroll>
-
           <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
             <h1
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl mt-4"
