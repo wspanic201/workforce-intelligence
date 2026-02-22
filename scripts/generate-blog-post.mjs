@@ -195,17 +195,22 @@ function parseAndSave(generatedContent) {
 
 function updateBlogIndex(slug, pageContent) {
   // Extract title and description from metadata
-  const titleMatch = pageContent.match(/title:\s*["'](.+?)["']/);
-  const descMatch = pageContent.match(/description:\s*["'](.+?)["']/s);
-  const title = titleMatch ? titleMatch[1] : slug;
+  // Use backtick-delimited strings in output to avoid apostrophe/quote issues
+  const titleMatch = pageContent.match(/title:\s*['"](.+?)\s*\|[^'"]*['"]/) || pageContent.match(/title:\s*['"`]([^'"`]+)['"`]/);
+  const descMatch = pageContent.match(/description:\s*['"`]([\s\S]+?)['"`]\s*,/);
+  let title = titleMatch ? titleMatch[1].trim() : slug;
+  title = title.replace(/\s*\|\s*Wavelength$/, ''); // strip " | Wavelength" suffix
   const excerpt = descMatch ? descMatch[1].replace(/\s+/g, ' ').trim().slice(0, 200) : '';
+
+  // Escape for JS template: backticks and ${
+  const esc = (s) => s.replace(/`/g, '\\`').replace(/\$/g, '\\$');
 
   const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
   const newPostEntry = `  {
     slug: "${slug}",
-    title: "${title.replace(/"/g, '\\"')}",
-    excerpt: "${excerpt.replace(/"/g, '\\"')}",
+    title: \`${esc(title)}\`,
+    excerpt: \`${esc(excerpt)}\`,
     date: "${today}",
     readTime: "7 min read",
     category: "Workforce Intelligence",

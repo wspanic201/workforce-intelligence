@@ -116,6 +116,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     },
+    {
+      url: `${siteUrl}/blog/leadership-occupation-growth-community-college-management-programs-2026`,
+      lastModified: new Date("2026-02-22"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+
 
   ];
 }

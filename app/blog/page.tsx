@@ -17,6 +17,15 @@ export const metadata: Metadata = {
 
 export const posts = [
   {
+    slug: "leadership-occupation-growth-community-college-management-programs-2026",
+    title: "Leadership Job Growth in 2026: Why Community Colleges Need Management Programs Now",
+    excerpt: "BLS data shows 9 of 10 fastest-growing leadership occupations pay above $67,920. Here's why community colleges should be building management credential programs right now.",
+    date: "February 22, 2026",
+    readTime: "7 min read",
+    category: "Workforce Intelligence",
+    dot: "bg-teal-400",
+  },
+  {
     slug: "reshoring-immigration-structural-workforce-shortages-2026",
     title: "Reshoring + Immigration Restrictions = Structural Workforce Shortages",
     excerpt:
