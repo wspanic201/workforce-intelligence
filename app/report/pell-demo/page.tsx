@@ -55,7 +55,7 @@ const programs: Program[] = [
     occupation: 'Emergency Medical Technicians',
     clockHours: 405,
     credentialType: 'Certificate',
-    medianWage: 36730,
+    medianWage: 41340,
     score: 91,
     status: 'eligible',
     criteria: {
@@ -66,7 +66,7 @@ const programs: Program[] = [
       wageThreshold: 'pass',
     },
     actions: [],
-    note: 'Strong candidate at 405 clock hours. EMT certification is nationally recognized and stackable toward Paramedic AAS. Median wage of $36,730 clears the federal threshold. Arizona DHS approves this credential type.',
+    note: 'Strong candidate at 405 clock hours. EMT certification is nationally recognized and stackable toward Paramedic AAS. Median wage of $41,340 (BLS May 2024) clears the federal threshold. Arizona DHS approves this credential type.',
   },
   {
     id: 2,
@@ -75,7 +75,7 @@ const programs: Program[] = [
     occupation: 'Industrial Machinery Mechanics',
     clockHours: 405,
     credentialType: 'Certificate',
-    medianWage: 52710,
+    medianWage: 63510,
     score: 94,
     status: 'eligible',
     criteria: {
@@ -86,7 +86,7 @@ const programs: Program[] = [
       wageThreshold: 'pass',
     },
     actions: [],
-    note: 'High-value program with strong wage outcomes ($52,710 median). Industrial machinery mechanics are in high demand across Tucson\'s manufacturing and defense sectors. Stackable to Level II and AAS. Priority program for Pell conversion.',
+    note: 'High-value program with strong wage outcomes ($63,510 median). Industrial machinery mechanics are in high demand across Tucson\'s manufacturing and defense sectors. Stackable to Level II and AAS. Priority program for Pell conversion.',
   },
   {
     id: 3,
@@ -95,7 +95,7 @@ const programs: Program[] = [
     occupation: 'Heavy and Tractor-Trailer Truck Drivers',
     clockHours: 270,
     credentialType: 'Certificate',
-    medianWage: 47230,
+    medianWage: 57440,
     score: 88,
     status: 'eligible',
     criteria: {
@@ -106,7 +106,7 @@ const programs: Program[] = [
       wageThreshold: 'pass',
     },
     actions: [],
-    note: 'At 270 hours and $47,230 median wage, this program clears all thresholds comfortably. CDL is a federally recognized credential with FMCSA ELDT compliance. High regional demand along I-10/I-19 corridor logistics routes.',
+    note: 'At 270 hours and $57,440 median wage, this program clears all thresholds comfortably. CDL is a federally recognized credential with FMCSA ELDT compliance. High regional demand along I-10/I-19 corridor logistics routes.',
   },
   {
     id: 4,
@@ -115,7 +115,7 @@ const programs: Program[] = [
     occupation: 'Pharmacy Technicians',
     clockHours: 405,
     credentialType: 'Certificate',
-    medianWage: 36920,
+    medianWage: 43460,
     score: 86,
     status: 'eligible',
     criteria: {
@@ -126,7 +126,7 @@ const programs: Program[] = [
       wageThreshold: 'pass',
     },
     actions: [],
-    note: 'Meets all criteria. PTCB certification alignment supports credential recognition. Median wage of $36,920 clears the threshold. Stackable toward health sciences pathways.',
+    note: 'Meets all criteria. PTCB certification alignment supports credential recognition. Median wage of $43,460 (BLS May 2024) clears the threshold. Stackable toward health sciences pathways.',
   },
   {
     id: 5,
@@ -155,7 +155,7 @@ const programs: Program[] = [
     occupation: 'Medical Assistants',
     clockHours: 405,
     credentialType: 'Certificate',
-    medianWage: 37610,
+    medianWage: 44200,
     score: 84,
     status: 'eligible',
     criteria: {
@@ -166,7 +166,7 @@ const programs: Program[] = [
       wageThreshold: 'pass',
     },
     actions: [],
-    note: 'At 405 hours, this program fits cleanly within the Workforce Pell window. CMA/RMA certification is nationally portable. Median wage of $37,610 meets the threshold. Strong healthcare labor market demand in Pima County.',
+    note: 'At 405 hours, this program fits cleanly within the Workforce Pell window. CMA/RMA certification is nationally portable. Median wage of $44,200 meets the threshold. Strong healthcare labor market demand in Pima County.',
   },
   {
     id: 7,
@@ -175,7 +175,7 @@ const programs: Program[] = [
     occupation: 'Nursing Assistants',
     clockHours: 270,
     credentialType: 'Certificate',
-    medianWage: 36260,
+    medianWage: 39530,
     score: 79,
     status: 'adjustment',
     criteria: {
@@ -199,7 +199,7 @@ const programs: Program[] = [
     occupation: 'Childcare Workers',
     clockHours: 405,
     credentialType: 'Certificate',
-    medianWage: 28000,
+    medianWage: 32050,
     score: 42,
     status: 'ineligible',
     criteria: {

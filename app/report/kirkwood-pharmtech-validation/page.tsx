@@ -87,7 +87,7 @@ const findings = [
   {
     num: 2,
     title: 'BLS Data: 487,920 Pharmacy Technicians Nationally, Median $36,920',
-    text: 'Bureau of Labor Statistics data for SOC 29-2052 (Pharmacy Technicians, 2024) shows national employment of 487,920 with a median annual wage of $36,920. Iowa entry-level wages are estimated at $32,000–$36,000, advancing to $40,000–$60,000 with PTCB certification and specialty experience. This wage progression ($24,000–$28,000 for retail clerks to $32,000–$42,000 as certified pharmacy technicians) creates a compelling ROI narrative for the target learner segment — career changers and retail workers seeking healthcare entry points.',
+    text: 'Bureau of Labor Statistics data for SOC 29-2052 (Pharmacy Technicians, May 2024) shows national employment of 487,920 with a median annual wage of $43,460. Iowa entry-level wages are estimated at $34,000–$38,000, advancing to $45,000–$60,000 with PTCB certification and specialty experience. This wage progression ($24,000–$28,000 for retail clerks to $34,000–$45,000 as certified pharmacy technicians) creates a compelling ROI narrative for the target learner segment — career changers and retail workers seeking healthcare entry points.',
   },
   {
     num: 3,
@@ -172,7 +172,7 @@ const dimensionDeepDives = [
     weight: '25%',
     status: 'CAUTION',
     dotColor: 'bg-amber-500',
-    rationale: 'Moderate demand with 10 current openings from major healthcare employers confirmed via live Google Jobs analysis. BLS data for SOC 29-2052 shows national employment of 487,920 and median wage of $36,920, with Iowa regional wages in the $32,000–$60,000 range. However, the pipeline flagged that some O*NET competency data returned anomalous technical skills (AWS, React) suggesting data retrieval issues — the analyst appropriately disregarded those entries and relied on standard pharmacy technician competency profiles. Score of 6.5 reflects genuine hiring activity tempered by wage compression and uncertainty around Cedar Rapids MSA-specific growth projections versus national trends.',
+    rationale: 'Moderate demand with 10 current openings from major healthcare employers confirmed via live Google Jobs analysis. BLS data for SOC 29-2052 (May 2024) shows national employment of 487,920 and median wage of $43,460, with Iowa regional wages in the $34,000–$60,000 range. However, the pipeline flagged that some O*NET competency data returned anomalous technical skills (AWS, React) suggesting data retrieval issues — the analyst appropriately disregarded those entries and relied on standard pharmacy technician competency profiles. Score of 6.5 reflects genuine hiring activity tempered by wage compression and uncertainty around Cedar Rapids MSA-specific growth projections versus national trends.',
   },
   {
     name: 'Financial Viability',
@@ -188,7 +188,7 @@ const dimensionDeepDives = [
     weight: '15%',
     status: 'PASS',
     dotColor: 'bg-amber-500',
-    rationale: 'Moderate-to-strong learner demand based on: combined service area population of approximately 300,000 (Linn and Johnson counties) with demonstrated healthcare pathway interest; strong career-change motivation driven by stable employment and clear wage progression ($30,000–$40,000 entry from retail clerk wages); target demographics align well with community college mission (working adults, career changers, recent high school graduates); manageable barriers through hybrid delivery. Peer benchmarks from DMACC (18–22 per cohort), Hawkeye (15–18), and Scott Community College (14–20) validate realistic enrollment projections of 16 per cohort scaling to 36 annually by Year 3. Score held below 8.0 due to tuition cost barriers for lower-income segments, competition from incumbent employer-sponsored training (Walgreens/CVS), and need for sustained marketing investment.',
+    rationale: 'Moderate-to-strong learner demand based on: combined service area population of approximately 383,000 (Linn and Johnson counties, Census 2023 estimates) with demonstrated healthcare pathway interest; strong career-change motivation driven by stable employment and clear wage progression ($34,000–$43,000 entry with PTCB certification); target demographics align well with community college mission (working adults, career changers, recent high school graduates); manageable barriers through hybrid delivery. Peer benchmarks from DMACC (18–22 per cohort), Hawkeye (15–18), and Scott Community College (14–20) validate realistic enrollment projections of 16 per cohort scaling to 36 annually by Year 3. Score held below 8.0 due to tuition cost barriers for lower-income segments, competition from incumbent employer-sponsored training (Walgreens/CVS), and need for sustained marketing investment.',
   },
   {
     name: 'Employer Demand & Partnerships',
