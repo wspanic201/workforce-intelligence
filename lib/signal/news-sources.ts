@@ -266,9 +266,9 @@ export async function checkNewsSourcesHealth(): Promise<{
   cache: boolean;
 }> {
   const [brave, newsapi, google] = await Promise.all([
-    fetchFromBrave().then(r => r.items.length > 0),
-    fetchFromNewsAPI().then(r => r.items.length > 0),
-    fetchFromGoogleNewsRSS().then(r => r.items.length > 0),
+    fetchFromBrave().then(r => r.items.length > 0).catch(() => false),
+    fetchFromNewsAPI().then(r => r.items.length > 0).catch(() => false),
+    fetchFromGoogleNewsRSS().then(r => r.items.length > 0).catch(() => false),
   ]);
 
   return {
