@@ -42,10 +42,6 @@ export default function GrantsPage() {
             <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed font-medium">
               Months of grant research compressed into one prioritized action plan — scored against your programs, capacity, and strengths. Delivered in 48 hours.
             </p>
-            <p className="mt-3 text-base md:text-lg text-theme-tertiary max-w-2xl mx-auto leading-relaxed">
-              Federal, state, and foundation grants researched, scored for your institution, and ranked into a prioritized action plan — with deadlines, effort estimates, and past award data.
-            </p>
-          </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={350} duration={800}>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
