@@ -8,6 +8,7 @@
  */
 
 import { getSupabaseServerClient } from '@/lib/supabase/client';
+import type { NewsItem } from './news-sources';
 
 const TABLE = 'signal_used_articles';
 const MAX_AGE_DAYS = 14; // Articles older than 2 weeks can be reused
@@ -17,8 +18,8 @@ const MAX_AGE_DAYS = 14; // Articles older than 2 weeks can be reused
  * Returns only articles whose URLs haven't been seen in the last MAX_AGE_DAYS.
  */
 export async function filterUsedArticles(
-  articles: { url: string; [key: string]: any }[]
-): Promise<typeof articles> {
+  articles: NewsItem[]
+): Promise<NewsItem[]> {
   try {
     const supabase = getSupabaseServerClient();
     const urls = articles.map(a => a.url).filter(Boolean);
