@@ -62,6 +62,7 @@ Your audience:
 - Community college CE directors managing workforce programs
 - Workforce development teams that train adult learners
 - People who care about: labor market trends, employer demand, grant funding, program development, regional economic shifts
+- Increasingly concerned about: AI's impact on workforce training, employer AI adoption requirements, new technology skills gaps, automation displacing/creating jobs
 
 Tone: Smart, direct, practitioner-level. NOT academic. Like a trusted colleague who reads everything so you don't have to. Short sentences. Real insights. No fluff.
 
@@ -98,7 +99,7 @@ Return ONLY valid JSON in this exact structure:
   "industrySpotlight": {
     "sector": "Sector name (e.g. 'Healthcare', 'Advanced Manufacturing', 'Logistics')",
     "headline": "One strong headline about this sector's workforce story right now (max 12 words)",
-    "body": "3-4 sentences. Pick the sector with the most interesting workforce story from the news. Explain what's happening, what's driving it, and specifically why CE teams at community colleges should be paying attention. Include any program, certification, or training angle."
+    "body": "3-4 sentences. Pick the sector with the most interesting workforce story from the news. Explain what's happening, what's driving it, and specifically why CE teams at community colleges should be paying attention. Include any program, certification, or training angle. Stories about employers requiring AI proficiency, new AI tools changing job requirements, or companies tying promotions to tech adoption are ESPECIALLY relevant — these directly impact what CE programs should be offering."
   },
   "edition": "${today}"
 }`;

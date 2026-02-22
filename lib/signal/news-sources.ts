@@ -31,6 +31,8 @@ async function fetchFromBrave(): Promise<NewsSourceResult> {
     'workforce development community college training programs',
     'labor market trends jobs hiring skills shortage',
     'community college continuing education enrollment',
+    'AI workforce training upskilling employer requirements',
+    'skills gap technology jobs automation workforce',
   ];
 
   const allResults: NewsItem[] = [];
@@ -200,17 +202,40 @@ function updateCache(items: NewsItem[]) {
 export async function fetchNewsWithFallback(): Promise<NewsSourceResult> {
   console.log('[Signal] Starting news fetch with fallback chain...');
 
+  // Import dedup (lazy to avoid issues if Supabase isn't configured)
+  let filterUsedArticles: ((articles: NewsItem[]) => Promise<NewsItem[]>) | null = null;
+  try {
+    const dedup = await import('./dedup');
+    filterUsedArticles = dedup.filterUsedArticles;
+    // Clean up old entries while we're at it
+    await dedup.cleanupOldArticles();
+  } catch {
+    console.log('[Signal] Dedup module unavailable, continuing without');
+  }
+
+  // Helper: apply dedup filter if available
+  async function dedup(result: NewsSourceResult): Promise<NewsSourceResult> {
+    if (!filterUsedArticles) return result;
+    const filtered = await filterUsedArticles(result.items);
+    if (filtered.length < result.items.length) {
+      console.log(`[Signal] Dedup: ${result.items.length} → ${filtered.length} articles after removing previously used`);
+    }
+    return { ...result, items: filtered };
+  }
+
   // Try Brave first
-  const braveResult = await fetchFromBrave();
+  let braveResult = await fetchFromBrave();
+  braveResult = await dedup(braveResult);
   if (braveResult.items.length >= 5) {
     updateCache(braveResult.items);
     return braveResult;
   }
 
-  console.log('[Signal] Brave insufficient, trying NewsAPI...');
+  console.log('[Signal] Brave insufficient after dedup, trying NewsAPI...');
   
   // Try NewsAPI
-  const newsApiResult = await fetchFromNewsAPI();
+  let newsApiResult = await fetchFromNewsAPI();
+  newsApiResult = await dedup(newsApiResult);
   if (newsApiResult.items.length >= 5) {
     updateCache(newsApiResult.items);
     return newsApiResult;
@@ -219,15 +244,16 @@ export async function fetchNewsWithFallback(): Promise<NewsSourceResult> {
   console.log('[Signal] NewsAPI insufficient, trying Google News RSS...');
 
   // Try Google News RSS
-  const googleResult = await fetchFromGoogleNewsRSS();
+  let googleResult = await fetchFromGoogleNewsRSS();
+  googleResult = await dedup(googleResult);
   if (googleResult.items.length >= 5) {
     updateCache(googleResult.items);
     return googleResult;
   }
 
-  console.log('[Signal] All sources failed, falling back to cache...');
+  console.log('[Signal] All sources insufficient after dedup, falling back to cache...');
 
-  // Last resort: use cache
+  // Last resort: use cache (no dedup on cache — better to repeat than send nothing)
   return getCachedNews();
 }
 

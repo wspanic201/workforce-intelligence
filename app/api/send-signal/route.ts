@@ -27,6 +27,7 @@ import {
   notifyWarning,
   type SendAttempt 
 } from '@/lib/signal/send-tracker';
+import { markArticlesUsed } from '@/lib/signal/dedup';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -201,6 +202,11 @@ async function handleSendSignal(testMode = false): Promise<{
     
     if (!testMode) {
       await notifySuccess(attempt);
+      // Mark article URLs as used so they won't repeat in future editions
+      const usedUrls = newsResult.items.map(item => item.url).filter(Boolean);
+      await markArticlesUsed(usedUrls).catch(err => 
+        console.warn('[Signal] Failed to mark articles as used (non-fatal):', err)
+      );
     }
 
     return {
