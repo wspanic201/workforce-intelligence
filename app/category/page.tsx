@@ -186,14 +186,8 @@ export default function CategoryPage() {
             <span className="overline">Real Results</span>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-12">
-            <h2
-              className="font-heading font-bold text-theme-primary"
-              style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
-            >
-              Business &amp; Professional Development — Iowa Community College
-            </h2>
             <p className="text-theme-secondary text-base mt-4 max-w-2xl mx-auto leading-relaxed">
-              We ran a Category Deep Dive in the Business &amp; Professional Development category for an Iowa community college in the Cedar Rapids–Iowa City corridor. Here&apos;s what we found.
+              We ran a Category Deep Dive in the Business &amp; Professional Development category for an Iowa community college. Here&apos;s what we found.
             </p>
           </AnimateOnScroll>
 
