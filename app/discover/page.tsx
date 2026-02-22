@@ -60,21 +60,12 @@ export default function DiscoverPage() {
 
           <AnimateOnScroll variant="fade-up" delay={200} duration={800}>
             <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed font-medium">
-              The Program Finder maps regional demand, employer needs, and competitive gaps into a clear action plan — before you invest a dollar in development.
-            </p>
-            <p className="mt-3 text-base md:text-lg text-theme-tertiary max-w-2xl mx-auto leading-relaxed">
-              A 25+ page report with scored opportunities, competitive gaps, employer demand signals, grant alignment, and hidden opportunities your competitors will miss. All from 50+ verified sources.
+              Map regional demand, employer needs, and competitive gaps into a clear action plan.
             </p>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={350} duration={800}>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="/#hero">
-                <button className="btn-cosmic btn-cosmic-ghost">
-                  Start Free — Pell Readiness Check
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </button>
-              </a>
               <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary">
                   Order a Program Finder — $1,500
@@ -271,31 +262,16 @@ export default function DiscoverPage() {
             </h2>
           </AnimateOnScroll>
 
-          <StaggerChildren stagger={100} variant="fade-up" className="space-y-6">
+          <StaggerChildren stagger={100} variant="fade-up" className="space-y-4">
             {[
-              {
-                title: 'Every claim is sourced',
-                desc: 'No made-up statistics. Every data point links back to verified sources. Your VP of Instruction can verify anything.',
-              },
-              {
-                title: 'We find what standard tools miss',
-                desc: 'Standard LMI tools only know about occupations already categorized. Our Blue Ocean Scanner finds demand from live signals — employer pain points, supply chain gaps, economic development announcements — before they show up in any database.',
-              },
-              {
-                title: 'Scored and ranked, not just listed',
-                desc: 'Every opportunity is scored across demand evidence, competitive gap, revenue viability, wage outcomes, and launch speed. You get a clear priority order — not a 50-page PDF where everything looks equally important.',
-              },
-              {
-                title: 'Built for action, not the shelf',
-                desc: 'Each program section includes specific barriers, grant alignment, and "What Validation Would Confirm" questions. This is a decision document, not a research paper.',
-              },
-            ].map(({ title, desc }) => (
-              <div key={title} className="flex gap-4">
-                <CheckCircle2 className="h-5 w-5 text-purple-400 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-heading font-semibold text-theme-primary mb-1">{title}</h3>
-                  <p className="text-theme-secondary text-sm leading-relaxed">{desc}</p>
-                </div>
+              'Every claim is sourced',
+              'We find what standard tools miss',
+              'Scored and ranked, not just listed',
+              'Built for action, not the shelf',
+            ].map((title) => (
+              <div key={title} className="flex items-center gap-3">
+                <CheckCircle2 className="h-5 w-5 text-purple-400 flex-shrink-0" />
+                <h3 className="font-heading font-semibold text-theme-primary">{title}</h3>
               </div>
             ))}
           </StaggerChildren>
@@ -305,65 +281,11 @@ export default function DiscoverPage() {
       {/* ===== FREE ENTRY POINT + PAID PRODUCT ===== */}
       <section className="relative py-20 md:py-28" id="get-started">
         <div className="max-w-[900px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up" className="text-center mb-12">
-            <span className="overline">Get Started</span>
-            <h2
-              className="font-heading font-bold text-theme-primary mt-4"
-              style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
-            >
-              Start free. Go deeper when you&apos;re ready.
-            </h2>
-            <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
-              The Pell Readiness Check is free and gets you started in 60 seconds. When you&apos;re ready for full market intelligence, a Program Finder is the next step.
-            </p>
-          </AnimateOnScroll>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Free tier */}
+          <div className="max-w-md mx-auto">
             <AnimateOnScroll variant="scale" delay={100}>
-              <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-teal-500/20 h-full flex flex-col">
-                <p className="label-brand mb-5 text-center">
-                  <span className="text-gradient-cosmic">∿ ·</span> Free — No Credit Card
-                </p>
-
-                <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Pell Readiness Check</h3>
-                <p className="text-theme-secondary text-sm mb-5">
-                  Find out if your programs qualify for Workforce Pell before July 1, 2026.
-                </p>
-
-                <div className="mb-5">
-                  <span className="font-heading font-bold text-4xl text-theme-primary">$0</span>
-                </div>
-
-                <ul className="text-left max-w-xs mx-auto space-y-3 mb-7 flex-1">
-                  {[
-                    'Program eligibility assessment',
-                    'Clock-hour compliance review',
-                    'Pell gap identification',
-                    'Delivered in ~48 hours',
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-sm text-theme-secondary">
-                      <CheckCircle2 className="h-4 w-4 text-teal-400 flex-shrink-0 mt-0.5" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-
-                <a href="/">
-                  <button className="btn-cosmic btn-cosmic-ghost w-full sm:w-auto">
-                    Get Free Pell Check
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </button>
-                </a>
-                <p className="text-theme-secondary text-xs mt-3">No login required.</p>
-              </div>
-            </AnimateOnScroll>
-
-            {/* Paid tier */}
-            <AnimateOnScroll variant="scale" delay={200}>
               <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-purple-500/20 h-full flex flex-col relative">
                 <div>
-                  <p className="overline mb-4">PROGRAM OPPORTUNITY SCAN</p>
+                  <p className="overline mb-4">PROGRAM FINDER</p>
                   <p className="text-theme-secondary text-sm mb-5">
                     Full market intelligence — 25+ pages, 50+ sources, programs scored and ranked.
                   </p>
@@ -405,41 +327,7 @@ export default function DiscoverPage() {
               </div>
             </AnimateOnScroll>
           </div>
-        </div>
-      </section>
 
-      {/* ═══════════════ CROSS-SELL ═══════════════ */}
-      <section className="relative py-16 md:py-20">
-        <div className="max-w-[900px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up" className="text-center mb-8">
-            <span className="overline">Where to go next</span>
-          </AnimateOnScroll>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <AnimateOnScroll variant="fade-up" delay={100}>
-              <Link href="/program-development" className="block card-cosmic rounded-2xl p-7 border-emerald-500/20 hover:bg-white/[0.03] transition-colors group h-full">
-                <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-theme-primary text-lg">Feasibility Report</h3>
-                  <span className="text-xs font-semibold text-theme-muted">$2,000</span>
-                </div>
-                <p className="text-theme-secondary text-sm mb-4">Validate a specific program idea with a full financial model, competitive analysis, and Go/No-Go recommendation.</p>
-                <span className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-300 group-hover:gap-2 transition-all">
-                  Learn More <ArrowRight className="h-4 w-4" />
-                </span>
-              </Link>
-            </AnimateOnScroll>
-            <AnimateOnScroll variant="fade-up" delay={200}>
-              <Link href="/grants" className="block card-cosmic rounded-2xl p-7 border-green-500/20 hover:bg-white/[0.03] transition-colors group h-full">
-                <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-theme-primary text-lg">Grant Finder</h3>
-                  <span className="text-xs font-semibold text-theme-muted">$495</span>
-                </div>
-                <p className="text-theme-secondary text-sm mb-4">Find and prioritize the grants your programs qualify for — scored, ranked, and ready to pursue.</p>
-                <span className="inline-flex items-center gap-1 text-sm font-semibold text-green-300 group-hover:gap-2 transition-all">
-                  Learn More <ArrowRight className="h-4 w-4" />
-                </span>
-              </Link>
-            </AnimateOnScroll>
-          </div>
         </div>
       </section>
 
