@@ -162,7 +162,7 @@ const HOW_IT_WORKS = [
     step: '03',
     title: 'Get Your Gap Report',
     description:
-      'Within 24 hours, you receive a complete State-Mandated Program Gap Analysis — every mandate you\'re missing, sized by revenue, cited to the statute.',
+      'Within 48 hours, you receive a complete State-Mandated Program Gap Analysis — every mandate you\'re missing, sized by revenue, cited to the statute.',
   },
 ];
 
