@@ -132,7 +132,7 @@ export default function DriftPage() {
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"
               style={{ fontSize: 'clamp(2.5rem, 5.5vw + 0.5rem, 4.75rem)' }}
             >
-              The market doesn&apos;t wait for your next curriculum review cycle.
+              Your curriculum was built for yesterday&apos;s job market.
             </h1>
           </AnimateOnScroll>
 
