@@ -114,7 +114,7 @@ export default function DriftPage() {
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={600}>
             <p className="label-brand mb-5 text-center">
-              <span className="text-gradient-cosmic">∿ ·</span> Program Health &amp; Maintenance
+              <span className="text-gradient-cosmic">∿ ·</span> Monitor
             </p>
           </AnimateOnScroll>
 
@@ -132,13 +132,13 @@ export default function DriftPage() {
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"
               style={{ fontSize: 'clamp(2.5rem, 5.5vw + 0.5rem, 4.75rem)' }}
             >
-              Your curriculum was built for yesterday&apos;s job market.
+              The market doesn&apos;t wait for your next curriculum review cycle.
             </h1>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={220} duration={800}>
             <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed">
-              Curriculum Drift Analysis tracks what employers are actually hiring for — and tells you exactly where your programs are falling behind.
+              We scan live job postings against your course outcomes and show you exactly where programs are falling behind.
             </p>
           </AnimateOnScroll>
 

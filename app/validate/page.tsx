@@ -36,7 +36,7 @@ export default function ValidatePage() {
           <AnimateOnScroll variant="fade-up" duration={800}>
             <div className="flex items-center justify-center gap-3 mb-6">
               <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/60" />
-              <span className="overline">Stage 2</span>
+              <span className="overline">Validate</span>
               <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-purple-500/60" />
             </div>
           </AnimateOnScroll>
@@ -55,13 +55,13 @@ export default function ValidatePage() {
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"
               style={{ fontSize: 'clamp(2.5rem, 5vw + 0.5rem, 4.5rem)' }}
             >
-              Feasibility Report
+              A semester of feasibility research. Delivered in a week.
             </h1>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={200} duration={800}>
             <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed font-medium">
-              Confirm feasibility before you invest. Before you hire faculty, build curriculum, or seek approval — know with certainty that your program will succeed.
+              Before you hire instructors, write curriculum, or request approval — get the labor market data, financial model, and competitive analysis that turns a hunch into a business case.
             </p>
             <p className="mt-3 text-base md:text-lg text-theme-tertiary max-w-2xl mx-auto leading-relaxed">
               Seven specialist analyses. Financial projections grounded in comparable program data. A definitive GO&nbsp;/&nbsp;NO-GO recommendation — not a maybe.

@@ -202,7 +202,7 @@ export default function ComplianceGapPage() {
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={800}>
             <p className="overline mb-4 tracking-widest">
-              WAVELENGTH COMPLIANCE INTELLIGENCE
+              AUDIT
             </p>
             <div className="mb-6">
               <Link href="/program-analysis" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity group">

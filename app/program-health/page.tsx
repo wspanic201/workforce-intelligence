@@ -20,19 +20,19 @@ export default function ProgramHealthPage() {
         <Aurora className="opacity-75" />
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up">
-            <span className="overline">Program Health</span>
+            <span className="overline">Monitor</span>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100}>
             <h1
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl mt-4"
               style={{ fontSize: 'clamp(2.5rem, 5vw + 0.5rem, 4.5rem)' }}
             >
-              Your programs were built for the right market. Keep them there.
+              The market doesn&apos;t wait for your next curriculum review cycle.
             </h1>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200}>
             <p className="text-theme-secondary text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
-              Employer skill requirements shift every 12–18 months. Most curriculum review cycles run every 3–5 years. Curriculum Drift Analysis bridges that gap — quarterly scans, live job posting analysis, and a Drift Score that tells you exactly where your programs are falling behind.
+              We scan live job postings against your course outcomes and show you exactly where programs are falling behind.
             </p>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={300}>

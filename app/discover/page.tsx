@@ -46,7 +46,7 @@ export default function DiscoverPage() {
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={800}>
-            <span className="overline">Market Intelligence</span>
+            <span className="overline">Discover</span>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={50} duration={800}>

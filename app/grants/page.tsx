@@ -26,7 +26,7 @@ export default function GrantsPage() {
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={800}>
-            <span className="overline">Grant Intelligence</span>
+            <span className="overline">Fund</span>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={50} duration={800}>
@@ -43,13 +43,13 @@ export default function GrantsPage() {
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl mt-4"
               style={{ fontSize: 'clamp(2.5rem, 5vw + 0.5rem, 4.5rem)' }}
             >
-              Grant Finder
+              The grants are there. You just don&apos;t have time to find them.
             </h1>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={200} duration={800}>
             <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed font-medium">
-              Tune into funding opportunities your competitors are missing.
+              Months of grant research compressed into one prioritized action plan — scored against your programs, capacity, and strengths. Delivered in 48 hours.
             </p>
             <p className="mt-3 text-base md:text-lg text-theme-tertiary max-w-2xl mx-auto leading-relaxed">
               30+ federal and foundation grants scanned, scored for your institution, and ranked into a prioritized action plan — with deadlines, effort estimates, and past award data.

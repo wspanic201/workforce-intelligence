@@ -237,7 +237,7 @@ export default function PellPage() {
           {/* Urgency overline */}
           <AnimateOnScroll variant="fade-up" duration={600}>
             <p className="label-brand mb-5 text-center">
-              <span className="text-gradient-cosmic">∿ ·</span> July 1, 2026 — Workforce Pell launches
+              <span className="text-gradient-cosmic">∿ ·</span> Qualify
             </p>
           </AnimateOnScroll>
 

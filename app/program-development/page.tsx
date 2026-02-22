@@ -20,19 +20,19 @@ export default function ProgramDevelopmentPage() {
         <Aurora className="opacity-75" />
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up">
-            <span className="overline">Program Development</span>
+            <span className="overline">Platform</span>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100}>
             <h1
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl mt-4"
               style={{ fontSize: 'clamp(2.5rem, 5vw + 0.5rem, 4.5rem)' }}
             >
-              Validate demand before you invest in development.
+              From opportunity to outcomes. One connected system.
             </h1>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200}>
             <p className="text-theme-secondary text-lg md:text-xl max-w-3xl mx-auto mt-6 leading-relaxed">
-              A Market Scan tells you what to build. Feasibility Report tells you whether a specific idea is worth the investment — with a full financial model, competitive analysis, and accreditation pathway mapped out before you write a single course objective.
+              Wavelength discovers, analyzes, and develops local market opportunities for your workforce development team to serve your community as quickly as your local industry demands.
             </p>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={300}>
