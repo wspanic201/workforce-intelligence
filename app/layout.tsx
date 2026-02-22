@@ -106,9 +106,9 @@ export default function RootLayout({
         <PublicChrome>
         <footer className="border-t border-theme-subtle bg-theme-page">
           <div className="mx-auto max-w-[1200px] px-6 py-12">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-10 lg:gap-8">
               {/* Brand */}
-              <div className="sm:col-span-2 lg:col-span-1">
+              <div className="sm:col-span-2 lg:col-span-2">
                 <p className="font-heading font-bold text-theme-primary inline-flex items-center gap-2">
                   <WavelengthMark className="w-5 h-5" />
                   Wavelength
@@ -116,39 +116,49 @@ export default function RootLayout({
                 <p className="text-sm text-theme-muted mt-2 leading-relaxed max-w-xs">
                   Workforce program intelligence for community colleges. From opportunity discovery through program launch.
                 </p>
+                <div className="mt-5">
+                  <FooterNewsletter />
+                </div>
               </div>
 
-              {/* Services */}
+              {/* Market Research */}
               <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-4">Services</p>
-                <p className="text-[9px] font-bold uppercase tracking-widest text-theme-muted mb-2 mt-3">Core Program Intelligence Services</p>
-                <div className="space-y-2.5 mb-4">
-                  <Link href="/discover" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    <span>Program Finder</span>
-                    <span className="text-purple-400/70 text-[10px] font-mono">$1,500</span>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-4">Market Research</p>
+                <div className="space-y-2.5">
+                  <Link href="/discover" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    Program Finder
                   </Link>
-                  <Link href="/validate" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    <span>Feasibility Report</span>
-                    <span className="text-purple-400/70 text-[10px] font-mono">$3,500</span>
+                  <Link href="/category" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    Category Deep Dive
                   </Link>
                 </div>
-                <p className="text-[9px] font-bold uppercase tracking-widest text-theme-muted mb-2">Add-Ons</p>
+              </div>
+
+              {/* Program Analysis */}
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-4">Program Analysis</p>
                 <div className="space-y-2.5">
-                  <Link href="/pell" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    <span>Pell Readiness Check</span>
-                    <span className="text-teal-400/70 text-[10px] font-mono">Free</span>
+                  <Link href="/validate" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    Feasibility Report
                   </Link>
-                  <Link href="/compliance-gap" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    <span>Program Gap Audit</span>
-                    <span className="text-teal-400/70 text-[10px] font-mono">$295</span>
+                  <Link href="/compliance-gap" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    Program Gap Analysis
                   </Link>
-                  <Link href="/grants" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    <span>Grant Finder</span>
-                    <span className="text-teal-400/70 text-[10px] font-mono">$495</span>
+                  <Link href="/drift" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    Curriculum Drift Analysis
                   </Link>
-                  <Link href="/drift" className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    <span>Curriculum Drift Analysis</span>
-                    <span className="text-teal-400/70 text-[10px] font-mono">$495</span>
+                </div>
+              </div>
+
+              {/* Funding & Grants */}
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-4">Funding & Grants</p>
+                <div className="space-y-2.5">
+                  <Link href="/grants" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    Grant Finder
+                  </Link>
+                  <Link href="/pell" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    Pell Readiness Check
                   </Link>
                 </div>
               </div>
@@ -167,20 +177,10 @@ export default function RootLayout({
                     The Signal Newsletter
                   </Link>
                   <Link href="/contact" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    Contact Us
+                    Contact
                   </Link>
-                </div>
-              </div>
-
-              {/* Get in Touch */}
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-4">Get in Touch</p>
-                <div className="mb-5">
-                  <FooterNewsletter />
-                </div>
-                <div className="space-y-2.5">
-                  <Link href="/pell" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    Start Free →
+                  <Link href="/pricing" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
+                    Pricing
                   </Link>
                 </div>
               </div>
