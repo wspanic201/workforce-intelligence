@@ -51,25 +51,25 @@ const SAMPLE_GAPS = [
     hours: 75,
     authority: 'State Health Services Division',
     demand: 'High',
-    revenue: '$186,000',
+    revenue: '$96,000',
     demandColor: 'text-emerald-400',
     insight: 'Required by state law for all residential care facilities. Perpetual hiring demand.',
   },
   {
-    program: 'Cosmetology Pre-Licensing',
-    hours: 1500,
-    authority: 'State Board of Cosmetology',
+    program: 'Real Estate Salesperson Pre-Licensing',
+    hours: 60,
+    authority: 'State Real Estate Commission',
     demand: 'High',
-    revenue: '$312,000',
+    revenue: '$84,000',
     demandColor: 'text-emerald-400',
-    insight: 'One of the most searched vocational programs in the state. Guaranteed exam pipeline.',
+    insight: 'Required before exam. 36-hour CE renewal every 3 years creates recurring revenue.',
   },
   {
     program: 'CDL Class A Training',
     hours: 160,
     authority: 'State DOT / FMCSA',
     demand: 'High',
-    revenue: '$270,000',
+    revenue: '$144,000',
     demandColor: 'text-emerald-400',
     insight: 'Federal shortage designation. Employers actively seeking approved training providers.',
   },
@@ -78,18 +78,18 @@ const SAMPLE_GAPS = [
     hours: 120,
     authority: 'State Board of Pharmacy',
     demand: 'Medium',
-    revenue: '$108,000',
+    revenue: '$72,000',
     demandColor: 'text-amber-400',
     insight: 'Licensing board requires approved coursework. Retail and hospital placement strong.',
   },
   {
-    program: 'Real Estate Pre-Licensing',
-    hours: 75,
-    authority: 'State Real Estate Commission',
-    demand: 'Medium',
-    revenue: '$90,000',
-    demandColor: 'text-amber-400',
-    insight: 'Recurring CE cohorts plus initial licensing. Low overhead, high margins.',
+    program: 'Medication Aide',
+    hours: 40,
+    authority: 'State Health Department',
+    demand: 'High',
+    revenue: '$72,000',
+    demandColor: 'text-emerald-400',
+    insight: 'State-mandated for assisted living and long-term care staff. Perpetual demand.',
   },
   {
     program: 'Security Guard Pre-Licensing',
@@ -373,7 +373,7 @@ export default function ComplianceGapPage() {
                   Sample data — actual findings vary by state and institution.
                 </span>
                 <span className="font-heading font-bold text-theme-secondary">
-                  $1,026,000 / yr — just these 6 programs
+                  $528,000 / yr — just these 6 programs
                 </span>
               </div>
             </div>
