@@ -9,23 +9,23 @@ const CATEGORIES = [
   {
     label: 'Market Research',
     services: [
-      { label: 'Program Finder', tagline: 'Full regional market intelligence', href: '/discover', price: '$1,500' },
-      { label: 'Category Deep Dive',       tagline: 'Focused scan for one program area', href: '/category', price: '$795' },
+      { label: 'Program Finder', tagline: 'Scored program opportunities backed by employer demand data', href: '/discover', price: '$1,500' },
+      { label: 'Category Deep Dive',       tagline: 'Deep scan within one program area — healthcare, business, trades, etc.', href: '/category', price: '$795' },
     ],
   },
   {
     label: 'Program Analysis',
     services: [
-      { label: 'Feasibility Study',       tagline: 'Feasibility analysis with GO/NO-GO', href: '/validate', price: '$2,995' },
-      { label: 'Program Gap Analysis', tagline: 'Find required programs you aren\'t offering', href: '/compliance-gap', price: '$295' },
-      { label: 'Curriculum Drift Analysis', tagline: 'Annual content alignment review', href: '/drift', price: '$495' },
+      { label: 'Feasibility Study',       tagline: 'Seven-specialist analysis with financial projections and GO / NO-GO', href: '/validate', price: '$2,995' },
+      { label: 'Program Gap Analysis', tagline: 'State-mandated programs your institution isn\'t offering yet', href: '/compliance-gap', price: '$295' },
+      { label: 'Curriculum Drift Analysis', tagline: 'Where your courses have fallen behind employer expectations', href: '/drift', price: '$495' },
     ],
   },
   {
     label: 'Funding & Grants',
     services: [
-      { label: 'Grant Finder',  tagline: 'Federal, state & foundation grant research', href: '/grants', price: '$749' },
-      { label: 'Pell Readiness Check',      tagline: 'Workforce Pell eligibility scoring', href: '/pell', price: 'Free' },
+      { label: 'Grant Finder',  tagline: 'Grants researched, scored, and ranked for your institution', href: '/grants', price: '$749' },
+      { label: 'Pell Readiness Check',      tagline: 'Every program scored against Workforce Pell clock-hour thresholds', href: '/pell', price: 'Free' },
     ],
   },
 ];

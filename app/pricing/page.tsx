@@ -32,7 +32,7 @@ const SERVICES: Service[] = [
     name: 'Pell Readiness Check',
     slug: 'pell',
     price: 'Free',
-    description: 'Score your noncredit programs against Workforce Pell eligibility criteria before you apply.',
+    description: 'Every short-term program in your catalog scored against Workforce Pell clock-hour and duration thresholds — before you apply.',
     turnaround: '< 24 hours',
     features: [
       'Full program catalog classification',
@@ -49,7 +49,7 @@ const SERVICES: Service[] = [
     name: 'Program Finder',
     slug: 'discover',
     price: '$1,500',
-    description: 'Identify the highest-potential new programs for your region — scored, ranked, and backed by real employer demand data.',
+    description: '25+ pages of scored program opportunities, employer demand signals, competitive gaps, and grant alignment for your region.',
     turnaround: '5–7 business days',
     features: [
       '8–12 program opportunities scored & ranked',
@@ -68,7 +68,7 @@ const SERVICES: Service[] = [
     name: 'Category Deep Dive',
     slug: 'category',
     price: '$795',
-    description: 'Focused intelligence scan for a specific program area — healthcare, business, manufacturing, or any category you choose.',
+    description: 'Deep intelligence scan within one program area — healthcare, business, manufacturing, trades, or any category you choose.',
     turnaround: '3–5 business days',
     features: [
       'Deep scan within one program category',
@@ -87,7 +87,7 @@ const SERVICES: Service[] = [
     name: 'Feasibility Study',
     slug: 'validate',
     price: '$2,995',
-    description: 'Seven-specialist feasibility analysis with financial projections and a definitive GO / NO-GO recommendation.',
+    description: 'A semester of feasibility research delivered in a week. Seven-specialist analysis with financial projections and a definitive GO / NO-GO recommendation.',
     turnaround: '7–10 business days',
     features: [
       'Market demand validation (BLS + real postings)',
@@ -107,7 +107,7 @@ const SERVICES: Service[] = [
     name: 'Program Gap Audit',
     slug: 'compliance-gap',
     price: '$295',
-    description: 'Compare your program catalog against state mandates and identify compliance gaps with revenue estimates.',
+    description: 'Every program your state requires by statute that your institution doesn\'t currently offer — with revenue estimates per gap.',
     turnaround: '3–5 business days',
     features: [
       'Full catalog scan vs. state requirements',
@@ -125,7 +125,7 @@ const SERVICES: Service[] = [
     name: 'Grant Finder',
     slug: 'grants',
     price: '$749',
-    description: 'Federal, state, and foundation grants — researched, scored, and ranked for your institution.',
+    description: 'Federal, state, and foundation grants researched, scored across 5 dimensions, and ranked by fit for your institution.',
     turnaround: '48 hours',
     features: [
       'Federal, state & foundation grants researched',
@@ -145,7 +145,7 @@ const SERVICES: Service[] = [
     slug: 'drift',
     price: '$495',
     priceNote: 'per program',
-    description: 'Annual review that flags where course content has fallen behind employer expectations and industry standards.',
+    description: 'Find out where your curriculum has drifted from what employers actually need. Scored gap report with specific update recommendations.',
     turnaround: '5–7 business days',
     features: [
       'Employer skill demand analysis (real job postings)',
