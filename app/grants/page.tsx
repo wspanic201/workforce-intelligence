@@ -52,7 +52,7 @@ export default function GrantsPage() {
               Months of grant research compressed into one prioritized action plan — scored against your programs, capacity, and strengths. Delivered in 48 hours.
             </p>
             <p className="mt-3 text-base md:text-lg text-theme-tertiary max-w-2xl mx-auto leading-relaxed">
-              30+ federal and foundation grants researched, scored for your institution, and ranked into a prioritized action plan — with deadlines, effort estimates, and past award data.
+              Federal, state, and foundation grants researched, scored for your institution, and ranked into a prioritized action plan — with deadlines, effort estimates, and past award data.
             </p>
           </AnimateOnScroll>
 
@@ -119,7 +119,7 @@ export default function GrantsPage() {
             {[
               {
                 icon: Search,
-                title: '30+ Grants Researched',
+                title: 'Federal, State & Foundation',
                 desc: 'Federal agencies, DOL programs, foundation grants, and workforce-specific opportunities — all checked against your institution profile.',
                 color: 'from-green-500/20 to-emerald-500/20',
                 iconColor: 'text-green-400',
@@ -197,8 +197,8 @@ export default function GrantsPage() {
               },
               {
                 step: '02',
-                title: 'We match you to real funding',
-                desc: 'Federal agencies, private foundations, and workforce-specific programs — researched, scored for eligibility and fit, and ranked by how well they match your institution\u2019s actual programs and capacity.',
+                title: 'We research every funding source',
+                desc: 'Federal agencies, state grants, private foundations, and workforce-specific programs — all researched for your region, scored for eligibility and fit, and ranked by how well they match your institution.',
                 accent: 'text-blue-400',
               },
               {
@@ -233,7 +233,7 @@ export default function GrantsPage() {
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   {[
-                    { stat: '30+', label: 'Grants Researched', color: 'text-green-400' },
+                    { stat: '✓', label: 'Federal, State & Foundation', color: 'text-green-400' },
                     { stat: '5-dim', label: 'Fit Scoring', color: 'text-blue-400' },
                     { stat: '5–9', label: 'Top Opportunities', color: 'text-purple-400' },
                     { stat: '1 wk', label: 'Turnaround', color: 'text-teal-400' },
@@ -353,7 +353,7 @@ export default function GrantsPage() {
                 <div>
                   <p className="overline mb-4">GRANT FINDER</p>
                   <p className="text-theme-secondary text-sm mb-5">
-                    30+ grants researched, scored, and ranked for your institution.
+                    Federal, state, and foundation grants — researched, scored, and ranked for your institution.
                   </p>
 
                   <div className="mb-1">
@@ -364,7 +364,7 @@ export default function GrantsPage() {
 
                   <ul className="text-left max-w-xs mx-auto space-y-3 mb-7 flex-1">
                     {[
-                      '30+ federal & foundation grants researched',
+                      'Federal, state & foundation grants researched',
                       '5-dimension fit scoring for each grant',
                       'Past award recipient research',
                       'Requirements analysis for top opportunities',
@@ -629,10 +629,10 @@ export default function GrantsPage() {
               className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.75rem, 3vw + 0.5rem, 2.75rem)' }}
             >
-              Start tuning in to your funding landscape.
+              Stop leaving money on the table.
             </h2>
             <p className="mt-4 text-theme-tertiary text-lg leading-relaxed">
-              30+ grants researched. Your best opportunities ranked. A clear action plan in one week.
+              Your best grant opportunities — federal, state, and foundation — researched, ranked, and delivered in 48 hours.
             </p>
             <div className="mt-8">
               <Link href="/contact">
