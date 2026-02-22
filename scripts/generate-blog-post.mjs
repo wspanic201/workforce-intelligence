@@ -64,6 +64,22 @@ async function generatePost(newsItems) {
   const today = new Date().toISOString().split('T')[0];
   const newsContext = newsItems.map(n => `- ${n.title}: ${n.snippet} (${n.url})`).join('\n');
 
+  // Gather existing post slugs/titles to avoid duplicate topics
+  const existingSlugs = [];
+  try {
+    const entries = (await import('fs')).readdirSync(BLOG_DIR, { withFileTypes: true });
+    for (const e of entries) {
+      if (e.isDirectory()) {
+        const pagePath = join(BLOG_DIR, e.name, 'page.tsx');
+        if (existsSync(pagePath)) {
+          const src = readFileSync(pagePath, 'utf8');
+          const m = src.match(/title:\s*["'`](.+?)["'`]/);
+          existingSlugs.push({ slug: e.name, title: m ? m[1] : e.name });
+        }
+      }
+    }
+  } catch (_) { /* ignore */ }
+
   console.log('Generating blog post...');
 
   const systemPrompt = `You are a workforce intelligence writer for Wavelength (withwavelength.com) — a platform that helps community colleges develop and maintain programs aligned to labor market demand.
@@ -104,14 +120,20 @@ IMPORTANT: Posts must be written as complete Next.js page.tsx files with:
 - Import Link from 'next/link'
 - External links to .gov or authoritative sources (BLS, DOL, AACC, etc.) should use <a href="..." target="_blank" rel="noopener noreferrer" className="text-teal-400 underline underline-offset-2 hover:text-teal-300">...</a>`;
 
+  const existingPostsList = existingSlugs.map(p => `- "${p.title}" (/${p.slug})`).join('\n');
+
   const userPrompt = `Today is ${today}. Here are recent workforce/labor/education news items from the past week:
 
 ${newsContext}
 
-Pick the SINGLE most relevant topic for Wavelength's community college audience. Choose based on:
+EXISTING BLOG POSTS (DO NOT write about topics already covered — pick something DIFFERENT):
+${existingPostsList}
+
+Pick the SINGLE most relevant topic for Wavelength's community college audience that is NOT already covered by an existing post. Choose based on:
 1. Recency and newsworthiness
 2. Direct relevance to community college program development or workforce alignment
 3. Opportunity to upsell a Wavelength product naturally
+4. MUST be a genuinely different topic from all existing posts above — no overlap in subject matter
 
 Then write a complete Next.js page.tsx blog post file. The post should:
 - Have a keyword-optimized slug (e.g., "bls-job-openings-community-college-programs-2026")
