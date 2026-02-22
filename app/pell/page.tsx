@@ -181,8 +181,8 @@ const DELIVERABLES = [
 
 const UPSELL_PRODUCTS = [
   {
-    name: 'State-Mandated Program Gap Analysis',
-    price: '$295',
+    name: 'Program Gap Analysis',
+    price: '$495',
     description:
       "Find every state-mandated training program your institution doesn't offer — sized by revenue, cited to the statute.",
     href: '/compliance-gap',
@@ -190,10 +190,10 @@ const UPSELL_PRODUCTS = [
     border: 'border-violet-500/20',
   },
   {
-    name: 'Market Scan',
-    price: '$1,500',
+    name: 'Program Finder',
+    price: '$495',
     description:
-      'Full market intelligence before you build — 25+ pages of scored opportunities, employer demand signals, competitive gaps, and grant alignment.',
+      'Full market intelligence before you build — scored opportunities, employer demand signals, competitive gaps, and grant alignment for your region.',
     href: '/discover',
     color: 'from-teal-500/20 to-teal-500/5',
     border: 'border-teal-500/20',
@@ -255,13 +255,13 @@ export default function PellPage() {
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"
               style={{ fontSize: 'clamp(2.5rem, 5.5vw + 0.5rem, 4.75rem)' }}
             >
-              Is your institution ready for Workforce Pell?
+              Workforce Pell goes live July 1, 2026. Your catalog isn&apos;t ready.
             </h1>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={220} duration={800}>
             <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed">
-              Starting July 1, 2026, short-term workforce programs can qualify for federal Pell Grants for the first time in history. This free check tells you exactly which of your programs qualify — and what to do before the deadline.
+              Short-term programs can qualify for federal Pell Grants for the first time. This free check tells you exactly which of your programs qualify — and what to fix before the deadline.
             </p>
           </AnimateOnScroll>
 
@@ -288,7 +288,6 @@ export default function PellPage() {
               {[
                 { value: 'Free', label: 'No cost, ever' },
                 { value: '48h', label: 'Turnaround' },
-                { value: '50+', label: 'Sources verified' },
               ].map((stat) => (
                 <div key={stat.label} className="text-center">
                   <div className="text-3xl md:text-4xl font-heading font-black text-gradient-cosmic">
@@ -675,8 +674,7 @@ export default function PellPage() {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-heading font-bold text-theme-primary text-lg">Program Gap Audit</h3>
-                    <span className="text-xs font-semibold text-theme-muted">$295</span>
+                    <h3 className="font-heading font-bold text-theme-primary text-lg">Program Gap Analysis</h3>
                   </div>
                   <p className="text-theme-secondary text-sm">Find every state-mandated program your institution isn&apos;t offering — with revenue estimates for each gap.</p>
                 </div>
