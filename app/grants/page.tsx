@@ -52,7 +52,7 @@ export default function GrantsPage() {
               Months of grant research compressed into one prioritized action plan — scored against your programs, capacity, and strengths. Delivered in 48 hours.
             </p>
             <p className="mt-3 text-base md:text-lg text-theme-tertiary max-w-2xl mx-auto leading-relaxed">
-              30+ federal and foundation grants scanned, scored for your institution, and ranked into a prioritized action plan — with deadlines, effort estimates, and past award data.
+              30+ federal and foundation grants researched, scored for your institution, and ranked into a prioritized action plan — with deadlines, effort estimates, and past award data.
             </p>
           </AnimateOnScroll>
 
@@ -119,7 +119,7 @@ export default function GrantsPage() {
             {[
               {
                 icon: Search,
-                title: '30+ Grants Scanned',
+                title: '30+ Grants Researched',
                 desc: 'Federal agencies, DOL programs, foundation grants, and workforce-specific opportunities — all checked against your institution profile.',
                 color: 'from-green-500/20 to-emerald-500/20',
                 iconColor: 'text-green-400',
@@ -198,7 +198,7 @@ export default function GrantsPage() {
               {
                 step: '02',
                 title: 'We match you to real funding',
-                desc: 'Federal agencies, private foundations, and workforce-specific programs — scanned, scored for eligibility and fit, and ranked by how well they match your institution\u2019s actual programs and capacity.',
+                desc: 'Federal agencies, private foundations, and workforce-specific programs — researched, scored for eligibility and fit, and ranked by how well they match your institution\u2019s actual programs and capacity.',
                 accent: 'text-blue-400',
               },
               {
@@ -233,7 +233,7 @@ export default function GrantsPage() {
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   {[
-                    { stat: '30+', label: 'Grants Scanned', color: 'text-green-400' },
+                    { stat: '30+', label: 'Grants Researched', color: 'text-green-400' },
                     { stat: '5-dim', label: 'Fit Scoring', color: 'text-blue-400' },
                     { stat: '5–9', label: 'Top Opportunities', color: 'text-purple-400' },
                     { stat: '1 wk', label: 'Turnaround', color: 'text-teal-400' },
@@ -280,7 +280,7 @@ export default function GrantsPage() {
                   ))}
                 </div>
                 <p className="text-theme-muted text-xs mt-4 text-center">
-                  Illustrative example — actual results scanned and scored for your specific institution
+                  Illustrative example — actual results researched and scored for your specific institution
                 </p>
               </div>
             </div>
@@ -296,7 +296,7 @@ export default function GrantsPage() {
               className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              Grants fund the programs. A clear scan saves weeks.
+              Grants fund the programs. Clear research saves weeks.
             </h2>
           </AnimateOnScroll>
 
@@ -339,10 +339,10 @@ export default function GrantsPage() {
               className="font-heading font-bold text-theme-primary mt-4"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              One scan. Clear ROI.
+              One report. Clear ROI.
             </h2>
             <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
-              A single grant award often covers $250,000–$2,000,000 in program funding. The scan pays for itself if it helps you win one.
+              A single grant award often covers $250,000–$2,000,000 in program funding. The report pays for itself if it helps you win one.
             </p>
           </AnimateOnScroll>
 
@@ -353,7 +353,7 @@ export default function GrantsPage() {
                 <div>
                   <p className="overline mb-4">GRANT FINDER</p>
                   <p className="text-theme-secondary text-sm mb-5">
-                    30+ grants scanned, scored, and ranked for your institution.
+                    30+ grants researched, scored, and ranked for your institution.
                   </p>
 
                   <div className="mb-1">
@@ -364,7 +364,7 @@ export default function GrantsPage() {
 
                   <ul className="text-left max-w-xs mx-auto space-y-3 mb-7 flex-1">
                     {[
-                      '30+ federal & foundation grants scanned',
+                      '30+ federal & foundation grants researched',
                       '5-dimension fit scoring for each grant',
                       'Past award recipient research',
                       'Requirements analysis for top opportunities',
@@ -402,7 +402,7 @@ export default function GrantsPage() {
 
                 <h3 className="font-heading font-bold text-theme-primary text-xl mb-2">Grant Finder</h3>
                 <p className="text-theme-secondary text-sm mb-5">
-                  Same complete scan at the standard rate after founding slots fill.
+                  Same complete report at the standard rate after founding slots fill.
                 </p>
 
                 <div className="mb-5">
@@ -449,7 +449,7 @@ export default function GrantsPage() {
               className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              From scan to submission — we can help.
+              From research to submission — we can help.
             </h2>
             <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
               The Grant Finder identifies your opportunities. If you want help actually pursuing them, Wavelength offers two ways to go deeper.
@@ -501,7 +501,7 @@ export default function GrantsPage() {
               </p>
               <ul className="space-y-2 mb-6 flex-1">
                 {[
-                  'Continuous scanning for new opportunities',
+                  'Continuous monitoring for new opportunities',
                   'Deadline tracking & calendar management',
                   'Monthly opportunity briefings',
                   'Quarterly grant strategy sessions',
@@ -632,7 +632,7 @@ export default function GrantsPage() {
               Start tuning in to your funding landscape.
             </h2>
             <p className="mt-4 text-theme-tertiary text-lg leading-relaxed">
-              30+ grants scanned. Your best opportunities ranked. A clear action plan in one week.
+              30+ grants researched. Your best opportunities ranked. A clear action plan in one week.
             </p>
             <div className="mt-8">
               <Link href="/contact">
