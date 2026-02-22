@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { href: '/admin/signal', label: 'The Signal' },
   { href: '/admin/reports', label: 'Reports' },
   { href: '/admin/chat', label: 'Chat' },
+  { href: '/admin/intelligence', label: 'Intelligence' },
   { href: '/admin/config', label: 'Config' },
 ];
 
