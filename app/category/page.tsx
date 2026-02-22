@@ -57,7 +57,7 @@ export default function CategoryPage() {
 
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={800}>
-            <span className="overline">Focused Intelligence</span>
+            <span className="overline">Discover</span>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
@@ -65,28 +65,18 @@ export default function CategoryPage() {
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl mt-4"
               style={{ fontSize: 'clamp(2.5rem, 5vw + 0.5rem, 4.5rem)' }}
             >
-              Category Deep Dive
+              Every new program opportunity researched, mapped, and ranked for a specific industry.
             </h1>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={200} duration={800}>
             <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed font-medium">
-              Pick a program area. Get every opportunity within it — scored, ranked, and ready to act on.
-            </p>
-            <p className="mt-3 text-base md:text-lg text-theme-tertiary max-w-2xl mx-auto leading-relaxed">
-              A focused deep dive into a single category like Business, Healthcare, or Manufacturing.
-              Same rigor as our full scan, laser-focused on the programs your department cares about.
+              Same research depth as the Program Finder, focused on the industry your team cares about most.
             </p>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={350} duration={800}>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="/#hero">
-                <button className="btn-cosmic btn-cosmic-ghost">
-                  Start Free — Pell Readiness Check
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </button>
-              </a>
               <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary">
                   Order a Category Deep Dive — $795
@@ -180,7 +170,7 @@ export default function CategoryPage() {
             {CATEGORIES.map((cat) => (
               <div
                 key={cat}
-                className="card-cosmic rounded-xl p-4 text-center"
+                className="card-cosmic rounded-xl p-4 text-center flex items-center justify-center min-h-[80px]"
               >
                 <p className="text-sm font-medium text-theme-secondary">{cat}</p>
               </div>
@@ -202,8 +192,8 @@ export default function CategoryPage() {
             >
               Business &amp; Professional Development — Iowa Community College
             </h2>
-            <p className="text-theme-secondary text-sm mt-2">
-              Cedar Rapids–Iowa City Corridor · Real data, real analysis
+            <p className="text-theme-secondary text-base mt-4 max-w-2xl mx-auto leading-relaxed">
+              We ran a Category Deep Dive in the Business &amp; Professional Development category for an Iowa community college in the Cedar Rapids–Iowa City corridor. Here&apos;s what we found.
             </p>
           </AnimateOnScroll>
 
