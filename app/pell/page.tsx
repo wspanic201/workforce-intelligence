@@ -449,7 +449,7 @@ export default function PellPage() {
                   Medical Billing &amp; Coding Certificate
                 </h3>
                 <p className="text-theme-tertiary text-sm mt-1">
-                  Riverside Community College · Des Moines, IA
+                  Sample program evaluation
                 </p>
               </div>
 
