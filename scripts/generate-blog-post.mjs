@@ -84,19 +84,23 @@ Write long-form (1,500–2,500 word) SEO blog posts that lead with real data, ex
 IMPORTANT: Posts must be written as complete Next.js page.tsx files with:
 - TypeScript metadata export (title, description, canonical, openGraph with article tags, twitter card)
 - Schema.org Article + BreadcrumbList JSON-LD
-- JSX using these exact Tailwind classes for the Wavelength dark theme:
-  - Article wrapper: <article className="max-w-4xl mx-auto px-4 py-12">
+- JSX using these exact Tailwind theme classes (these adapt to light/dark mode automatically):
+  - Outer wrapper: <div className="overflow-x-hidden bg-theme-page">
+  - Article wrapper: <article className="max-w-4xl mx-auto px-4 pt-36 lg:pt-40 pb-16">
+  - Back link (before header): <Link href="/blog" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity mb-6">← Back to Blog</Link>
   - Accent bar: <div className="h-1 w-full rounded-full bg-gradient-to-r from-violet-500 via-blue-500 to-teal-500 mb-10" />
-  - H1: className="font-bold leading-tight mb-5 text-white" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.8rem, 3.5vw, 2.8rem)"}}
-  - H2: className="font-bold text-white mb-4" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}
-  - Body text: className="text-white/80 leading-relaxed mb-6"
-  - Lists: className="list-disc list-outside pl-6 space-y-2 text-white/80 mb-6"
-  - Stat grid: className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8" with cards: className="bg-white/5 border border-teal-500/20 rounded-xl p-5 text-center"
-  - Callout box: className="bg-white/5 border border-white/10 rounded-xl p-6 mb-8"
-  - CTA section: className="bg-gradient-to-r from-violet-900/40 to-teal-900/40 border border-white/10 rounded-2xl p-8 mt-12 text-center"
+  - H1: className="font-bold leading-tight mb-5 text-theme-primary" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.8rem, 3.5vw, 2.8rem)"}}
+  - H2: className="font-bold text-theme-primary mb-4" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}
+  - Body text: className="text-theme-secondary leading-relaxed mb-6"
+  - Lists: className="list-disc list-outside pl-6 space-y-2 text-theme-secondary mb-6"
+  - Stat grid: className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8" with cards: className="bg-theme-surface border border-teal-500/20 rounded-xl p-5 text-center"
+  - Callout box: className="bg-theme-surface border border-theme-subtle rounded-xl p-6 mb-8"
+  - CTA section: className="bg-gradient-to-r from-violet-900/40 to-teal-900/40 border border-theme-subtle rounded-2xl p-8 mt-12 text-center"
   - Category badge: className="text-xs font-mono text-violet-400 border border-violet-400/30 px-3 py-1 rounded-full"
-  - Date/read time: className="text-white/30 text-sm"
-  - Lead paragraph: className="text-white/60 text-xl leading-relaxed"
+  - Date/read time: className="text-theme-muted text-sm"
+  - Lead paragraph: className="text-theme-tertiary text-xl leading-relaxed"
+  - Callout/secondary text: className="text-theme-tertiary leading-relaxed"
+  - Footer/metadata text: className="text-theme-muted text-sm"
 - Import Link from 'next/link'
 - External links to .gov or authoritative sources (BLS, DOL, AACC, etc.) should use <a href="..." target="_blank" rel="noopener noreferrer" className="text-teal-400 underline underline-offset-2 hover:text-teal-300">...</a>`;
 
@@ -180,6 +184,7 @@ function updateBlogIndex(slug, pageContent) {
     date: "${today}",
     readTime: "7 min read",
     category: "Workforce Intelligence",
+    dot: "bg-teal-400",
     accent: "from-teal-500/20 to-blue-500/10",
     border: "border-teal-500/30",
     tag: "bg-teal-500/10 text-teal-300",
