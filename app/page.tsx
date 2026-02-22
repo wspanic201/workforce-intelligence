@@ -70,8 +70,8 @@ const ADDONS = [
   },
   {
     name: 'Grant Finder',
-    description: 'Surface and prioritize every grant your programs qualify for — scored and ready to pursue.',
-    price: '$495',
+    description: 'Federal, state, and foundation grants — researched, scored, and ranked for your institution.',
+    price: '$749',
     href: '/grants',
   },
   {

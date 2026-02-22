@@ -124,11 +124,11 @@ const SERVICES: Service[] = [
   {
     name: 'Grant Finder',
     slug: 'grants',
-    price: '$495',
-    description: 'Surface and prioritize every federal grant your programs qualify for — scored, ranked, and ready to pursue.',
-    turnaround: '5–7 business days',
+    price: '$749',
+    description: 'Federal, state, and foundation grants — researched, scored, and ranked for your institution.',
+    turnaround: '48 hours',
     features: [
-      '20+ grants from Grants.gov + web sources',
+      'Federal, state & foundation grants researched',
       '5-dimension fit scoring per grant',
       'Past award intelligence & success rates',
       'Application requirements analysis',

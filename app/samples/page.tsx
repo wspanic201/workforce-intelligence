@@ -108,7 +108,7 @@ const services = [
   {
     id: 'grant-intelligence',
     name: 'Grant Finder',
-    price: '$495',
+    price: '$749',
     liveDemo: true,
     format: 'Interactive web report + PDF download',
     formatDot: 'bg-green-400',
