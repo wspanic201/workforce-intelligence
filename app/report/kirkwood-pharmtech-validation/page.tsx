@@ -97,7 +97,7 @@ const findings = [
   {
     num: 4,
     title: 'Competitive Market Requires Clear Differentiation — DMACC is Closest Competitor',
-    text: 'DMACC operates 45 miles away in Ankeny with $2,995–$4,000 tuition (potentially 17–20% cheaper than Kirkwood\'s projected $4,800), multiple campus locations, and established brand recognition. Hawkeye Community College (Waterloo) and Indian Hills (Ottumwa) operate 90–110 miles away. Online programs Penn Foster ($1,079) and Ashworth College ($899–$1,200) provide self-paced alternatives at 75–80% lower cost. Kirkwood\'s defensible advantage is geographic proximity to Cedar Rapids, but it must be reinforced with deliberate differentiators: evening cohorts for incumbent workers, Spanish-language track, and named employer partnerships.',
+    text: 'DMACC operates 85 miles away in Ankeny with $2,995–$4,000 tuition (potentially 17–20% cheaper than Kirkwood\'s projected $4,800), multiple campus locations, and established brand recognition. Hawkeye Community College (Waterloo) and Indian Hills (Ottumwa) operate 65–110 miles away. Online programs Penn Foster ($1,079) and Ashworth College ($899–$1,200) provide self-paced alternatives at 75–80% lower cost. Kirkwood\'s defensible advantage is geographic proximity to Cedar Rapids, but it must be reinforced with deliberate differentiators: evening cohorts for incumbent workers, Spanish-language track, and named employer partnerships.',
   },
   {
     num: 5,
@@ -204,7 +204,7 @@ const dimensionDeepDives = [
     weight: '10%',
     status: 'CAUTION',
     dotColor: 'bg-amber-500',
-    rationale: 'Moderate competition in Iowa market with several established programs. DMACC (Ankeny, 45 miles) is the primary in-state competitor with lower tuition ($2,995–$4,000 vs. projected $4,800), established ASHP accreditation, and multiple campus locations. Hawkeye Community College (Waterloo, 65 miles) and Indian Hills Community College (Ottumwa, 100+ miles) serve adjacent markets. Online programs Penn Foster ($1,079) and Ashworth College ($899–$1,200) compete aggressively on price for self-directed learners. Kirkwood\'s competitive advantages: geographic proximity as the only Cedar Rapids option, institutional employer relationships, evening/weekend scheduling potential, and Spanish-language track opportunity. Differentiation must be deliberate — geographic convenience alone is insufficient.',
+    rationale: 'Moderate competition in Iowa market with several established programs. DMACC (Ankeny, 85 miles) is the primary in-state competitor with lower tuition ($2,995–$4,000 vs. projected $4,800), established ASHP accreditation, and multiple campus locations. Hawkeye Community College (Waterloo, 65 miles) and Indian Hills Community College (Ottumwa, 100+ miles) serve adjacent markets. Online programs Penn Foster ($1,079) and Ashworth College ($899–$1,200) compete aggressively on price for self-directed learners. Kirkwood\'s competitive advantages: geographic proximity as the only Cedar Rapids option, institutional employer relationships, evening/weekend scheduling potential, and Spanish-language track opportunity. Differentiation must be deliberate — geographic convenience alone is insufficient.',
   },
   {
     name: 'Institutional Fit & Capacity',
@@ -631,7 +631,7 @@ export default function KirkwoodPharmTechValidationPage() {
                 <div>
                   <p className="font-bold text-theme-primary mb-1">Geographic Advantage is Real</p>
                   <p>
-                    DMACC (45 miles), Hawkeye (65 miles), and Indian Hills (100+ miles) all require
+                    DMACC (85 miles), Hawkeye (65 miles), and Indian Hills (100+ miles) all require
                     significant commutes for Cedar Rapids-area learners. Kirkwood&apos;s &ldquo;only local
                     option&rdquo; positioning is legitimate and powerful for the working-adult demographic
                     that skews toward this certificate. Geographic convenience is the primary defensible moat.
