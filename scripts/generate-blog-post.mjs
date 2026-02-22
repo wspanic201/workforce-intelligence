@@ -65,7 +65,10 @@ async function generatePost(newsItems) {
   const newsContext = newsItems.map(n => `- ${n.title}: ${n.snippet} (${n.url})`).join('\n');
 
   // Gather existing post slugs/titles to avoid duplicate topics
-  const existingSlugs = [];
+  // Include retired/removed posts so we never regenerate them
+  const existingSlugs = [
+    { slug: "dol-65-million-workforce-pell-grants-community-colleges-2026", title: "$65M DOL Workforce Pell Grants: What Community Colleges Need to Know (RETIRED)" },
+  ];
   try {
     const entries = (await import('fs')).readdirSync(BLOG_DIR, { withFileTypes: true });
     for (const e of entries) {
