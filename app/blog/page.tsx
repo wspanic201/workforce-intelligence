@@ -17,6 +17,33 @@ export const metadata: Metadata = {
 
 export const posts = [
   {
+    slug: "iowa-roi-reporting-community-college-program-accountability-2026",
+    title: `Iowa's New ROI Reporting Requirements: What CE Directors Need to Know`,
+    excerpt: `Iowa legislation would require unit-level wage data sharing and ROI reporting for community college programs. Here's what continuing education directors should prepare for.`,
+    date: "February 22, 2026",
+    readTime: "7 min read",
+    category: "State Policy",
+    dot: "bg-violet-400",
+  },
+  {
+    slug: "states-investing-short-term-workforce-training-2026",
+    title: `States Are Betting Big on Short-Term Workforce Training. Here's What's Working`,
+    excerpt: `From New York's $200M ON-RAMP program to Wisconsin's record apprenticeship enrollment, states are pouring unprecedented funding into short-term workforce training. What it means for program leaders.`,
+    date: "February 22, 2026",
+    readTime: "9 min read",
+    category: "State Investment",
+    dot: "bg-teal-400",
+  },
+  {
+    slug: "short-term-programs-workforce-pell-eligibility-gaps-2026",
+    title: `Most Short-Term Programs Won't Qualify for Workforce Pell. Here's How to Fix Yours`,
+    excerpt: `Early data from North Carolina suggests only a fraction of existing short-term programs will meet Workforce Pell eligibility. Here's what CE directors need to change before July 1.`,
+    date: "February 22, 2026",
+    readTime: "8 min read",
+    category: "Workforce Pell",
+    dot: "bg-teal-400",
+  },
+  {
     slug: "leadership-occupation-growth-community-college-management-programs-2026",
     title: "Leadership Job Growth in 2026: Why Community Colleges Need Management Programs Now",
     excerpt: "BLS data shows 9 of 10 fastest-growing leadership occupations pay above $67,920. Here's why community colleges should be building management credential programs right now.",

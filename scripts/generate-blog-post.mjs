@@ -68,6 +68,9 @@ async function generatePost(newsItems) {
   // Include retired/removed posts so we never regenerate them
   const existingSlugs = [
     { slug: "dol-65-million-workforce-pell-grants-community-colleges-2026", title: "$65M DOL Workforce Pell Grants: What Community Colleges Need to Know (RETIRED)" },
+    { slug: "short-term-programs-workforce-pell-eligibility-gaps-2026", title: "Most Short-Term Programs Won't Qualify for Workforce Pell (RETIRED)" },
+    { slug: "states-investing-short-term-workforce-training-2026", title: "States Are Betting Big on Short-Term Workforce Training (RETIRED)" },
+    { slug: "iowa-roi-reporting-community-college-program-accountability-2026", title: "Iowa's New ROI Reporting Requirements (RETIRED)" },
   ];
   try {
     const entries = (await import('fs')).readdirSync(BLOG_DIR, { withFileTypes: true });

@@ -122,7 +122,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     },
-
-
+    {
+      url: `${siteUrl}/blog/short-term-programs-workforce-pell-eligibility-gaps-2026`,
+      lastModified: new Date("2026-02-22"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/blog/states-investing-short-term-workforce-training-2026`,
+      lastModified: new Date("2026-02-22"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/blog/iowa-roi-reporting-community-college-program-accountability-2026`,
+      lastModified: new Date("2026-02-22"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
   ];
 }
