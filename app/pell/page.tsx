@@ -241,15 +241,6 @@ export default function PellPage() {
             </p>
           </AnimateOnScroll>
 
-          <AnimateOnScroll variant="fade-up" delay={50} duration={800}>
-            <div className="mb-6">
-              <Link href="/program-analysis" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity group">
-                <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
-                Program Analysis
-              </Link>
-            </div>
-          </AnimateOnScroll>
-
           <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
             <h1
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"
