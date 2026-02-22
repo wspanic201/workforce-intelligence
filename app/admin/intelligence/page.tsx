@@ -94,6 +94,9 @@ export default function IntelligenceDashboard() {
           <Link href="/admin/intelligence/sources" className="flex items-center gap-2 px-4 py-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors text-sm font-medium text-slate-700">
             <span>📰</span> Clip Source
           </Link>
+          <Link href="/admin/intelligence/import" className="flex items-center gap-2 px-4 py-3 rounded-lg bg-purple-50 hover:bg-purple-100 transition-colors text-sm font-medium text-purple-700">
+            <span>📥</span> Import Data
+          </Link>
         </div>
       </div>
     </div>
