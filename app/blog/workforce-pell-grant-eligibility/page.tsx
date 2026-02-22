@@ -142,7 +142,7 @@ export default function WorkforcePellEligibilityPage() {
               ["#who-qualifies", "2. Which Programs Qualify — and Which Don't"],
               ["#july-2026", "3. The July 2026 Deadline: What It Actually Means"],
               ["#requirements", "4. Federal Requirements Your Programs Must Meet"],
-              ["#gaps", "5. Common Catalog Gaps We See at Community Colleges"],
+              ["#gaps", "5. Common State-Mandated Program Gaps We See at Community Colleges"],
               ["#action-steps", "6. Action Steps Before the Deadline"],
               ["#how-wavelength-helps", "7. How to Check Your Readiness Now"],
             ].map(([href, label]) => (
@@ -398,7 +398,7 @@ export default function WorkforcePellEligibilityPage() {
             className="text-2xl font-bold mb-4 text-theme-primary"
             style={{ fontFamily: "var(--font-space-grotesk)" }}
           >
-            Common Catalog Gaps We See at Community Colleges
+            Common State-Mandated Program Gaps We See at Community Colleges
           </h2>
           <p className="text-theme-tertiary leading-relaxed mb-6">
             Based on our institutional assessments, these are the most frequently
@@ -499,7 +499,7 @@ export default function WorkforcePellEligibilityPage() {
               href="/compliance-gap"
               className="text-violet-400 underline hover:no-underline"
             >
-              Catalog Gap Analysis ($295)
+              State-Mandated Program Gap Analysis ($295)
             </Link>{" "}
             provides a line-by-line assessment against federal requirements, with specific
             remediation guidance for each gap identified.
@@ -571,7 +571,7 @@ export default function WorkforcePellEligibilityPage() {
                 href="/compliance-gap"
                 className="border border-white/20 text-theme-primary hover:border-white/40 px-6 py-3 rounded-xl font-semibold transition-colors"
               >
-                Get Catalog Gap Analysis — $295
+                Get State-Mandated Program Gap Analysis — $295
               </Link>
             </div>
           </div>

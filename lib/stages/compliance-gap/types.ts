@@ -1,5 +1,5 @@
 /**
- * Catalog Gap Analysis — Type Definitions
+ * State-Mandated Program Gap Analysis — Type Definitions
  *
  * A standalone product that scans a state's regulatory codes for ALL
  * mandated training/licensing programs, compares against what a given

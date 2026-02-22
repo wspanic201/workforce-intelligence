@@ -1,7 +1,7 @@
 /**
  * POST /api/compliance-gap
  *
- * Triggers a Catalog Gap Analysis for a community college.
+ * Triggers a State-Mandated Program Gap Analysis for a community college.
  * Scans state regulatory mandates, cross-references current offerings,
  * and returns a professional gap report with revenue sizing.
  *
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
     }
 
     console.log(
-      `[Catalog Gap API] Starting for ${collegeName} (${state}) at ${new Date().toISOString()}`,
+      `[State-Mandated Program Gap API] Starting for ${collegeName} (${state}) at ${new Date().toISOString()}`,
     );
 
     const result = await runComplianceGap({
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     if (!result.report && result.metadata.errors.length > 0) {
       return NextResponse.json(
         {
-          error: 'Catalog Gap Analysis failed',
+          error: 'State-Mandated Program Gap Analysis failed',
           details: result.metadata.errors,
         },
         { status: 500 },
@@ -65,7 +65,7 @@ export async function POST(request: NextRequest) {
       metadata: result.metadata,
     });
   } catch (error) {
-    console.error('[Catalog Gap API] Fatal error:', error);
+    console.error('[State-Mandated Program Gap API] Fatal error:', error);
     return NextResponse.json(
       {
         error: 'Internal server error',

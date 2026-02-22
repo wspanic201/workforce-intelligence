@@ -204,7 +204,7 @@ export default function Article() {
         </p>
 
         <p className="text-gray-700 leading-relaxed mb-6">
-          For institutions that need a more comprehensive view, the <Link href="/compliance-gap" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">Catalog Gap Analysis</Link> ($295) provides a detailed analysis of your entire program portfolio, identifying not just Pell eligibility status but also where programs cluster, where coverage gaps exist relative to labor market demand, and which programs represent the strongest candidates for grant funding. This report becomes the foundation of your grant narrative—you're not just proposing programs you think might work, you're demonstrating data-driven portfolio strategy.
+          For institutions that need a more comprehensive view, the <Link href="/compliance-gap" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">State-Mandated Program Gap Analysis</Link> ($295) provides a detailed analysis of your entire program portfolio, identifying not just Pell eligibility status but also where programs cluster, where coverage gaps exist relative to labor market demand, and which programs represent the strongest candidates for grant funding. This report becomes the foundation of your grant narrative—you're not just proposing programs you think might work, you're demonstrating data-driven portfolio strategy.
         </p>
 
         <h3 className="font-bold text-gray-900 mb-3" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"1.1rem"}}>

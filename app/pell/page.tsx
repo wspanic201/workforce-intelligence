@@ -181,7 +181,7 @@ const DELIVERABLES = [
 
 const UPSELL_PRODUCTS = [
   {
-    name: 'Catalog Gap Analysis',
+    name: 'State-Mandated Program Gap Analysis',
     price: '$295',
     description:
       "Find every state-mandated training program your institution doesn't offer — sized by revenue, cited to the statute.",

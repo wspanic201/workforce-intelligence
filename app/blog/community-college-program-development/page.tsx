@@ -602,7 +602,7 @@ export default function ProgramDevelopmentPage() {
                 labelColor: "text-purple-400",
               },
               {
-                name: "Catalog Gap Analysis",
+                name: "State-Mandated Program Gap Analysis",
                 href: "/compliance-gap",
                 desc: "A detailed written analysis of your institution's Workforce Pell compliance exposure, with specific remediation recommendations for each identified gap.",
                 color: "border-indigo-500/20 bg-indigo-900/10",

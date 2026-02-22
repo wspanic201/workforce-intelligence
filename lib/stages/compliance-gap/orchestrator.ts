@@ -1,7 +1,7 @@
 /**
- * Catalog Gap Analysis Orchestrator
+ * State-Mandated Program Gap Analysis Orchestrator
  *
- * Runs 3 agents sequentially to produce a Catalog Gap Analysis:
+ * Runs 3 agents sequentially to produce a State-Mandated Program Gap Analysis:
  *   Agent 1: Catalog Scanner     — find all programs the college currently offers
  *   Agent 2: Regulatory Scanner  — find all state-mandated training programs
  *   Agent 3: Gap Analyzer + Report Writer — cross-reference, size revenue, write report
@@ -53,7 +53,7 @@ export async function runComplianceGap(
     message: string,
   ) {
     console.log(
-      `[Catalog Gap] Agent ${agent}: ${name} — ${status} (${elapsed()}s) ${message}`,
+      `[State-Mandated Program Gap] Agent ${agent}: ${name} — ${status} (${elapsed()}s) ${message}`,
     );
     onProgress?.({ agent, agentName: name, status, message, elapsed: elapsed() });
   }
@@ -148,7 +148,7 @@ export async function runComplianceGap(
   console.log(`  Duration: ${durationSeconds}s`);
   console.log(`  Mandated Programs Found: ${regulatory.mandatedPrograms.length}`);
   console.log(`  Currently Offered: ${reportResult.stats.currentlyOffered}`);
-  console.log(`  Catalog Gaps: ${reportResult.stats.gaps}`);
+  console.log(`  State-Mandated Program Gaps: ${reportResult.stats.gaps}`);
   console.log(`  Est. Revenue Opportunity: $${reportResult.stats.estimatedAnnualRevenue.toLocaleString()}`);
   console.log(`  High-Priority Gaps: ${reportResult.stats.highPriorityGaps}`);
   if (errors.length > 0) console.log(`  Errors: ${errors.length}`);

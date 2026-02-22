@@ -973,7 +973,7 @@ async function runGrantFinder(flags: CLIFlags) {
   success(`Grant Finder complete in ${formatDuration(duration)}`);
 }
 
-// ── Catalog Gap Command ──
+// ── State-Mandated Program Gap Command ──
 
 async function runComplianceGap(flags: CLIFlags) {
   header('COMPLIANCE GAP REPORT');
@@ -1002,7 +1002,7 @@ async function runComplianceGap(flags: CLIFlags) {
   log('└─────────────────────────────────────────────');
   console.log('');
 
-  const confirmed = await askConfirm('Run Catalog Gap Analysis?');
+  const confirmed = await askConfirm('Run State-Mandated Program Gap Analysis?');
   if (!confirmed) {
     log('Cancelled.');
     return;
@@ -1014,7 +1014,7 @@ async function runComplianceGap(flags: CLIFlags) {
   }
 
   console.log('');
-  log('Starting Catalog Gap pipeline...');
+  log('Starting State-Mandated Program Gap pipeline...');
   console.log('');
 
   const { runComplianceGap: runGap } = await import('./lib/stages/compliance-gap/orchestrator');
@@ -1040,7 +1040,7 @@ async function runComplianceGap(flags: CLIFlags) {
   header('RESULTS');
 
   if (!result.report) {
-    fail('Catalog Gap Analysis failed. Check errors above.');
+    fail('State-Mandated Program Gap Analysis failed. Check errors above.');
     if (result.metadata.errors.length > 0) {
       for (const err of result.metadata.errors) warn(`  - ${err}`);
     }
@@ -1075,7 +1075,7 @@ async function runComplianceGap(flags: CLIFlags) {
   log(`│ Duration:              ${formatDuration(duration)}`);
   log(`│ Mandated Programs:     ${result.stats.totalMandated}`);
   log(`│ Already Offered:       ${result.stats.currentlyOffered}`);
-  log(`│ Catalog Gaps:       ${result.stats.gaps}`);
+  log(`│ State-Mandated Program Gaps:       ${result.stats.gaps}`);
   log(`│ High-Priority Gaps:    ${result.stats.highPriorityGaps}`);
   log(`│ Est. Revenue Gap:      $${result.stats.estimatedAnnualRevenue.toLocaleString()}/yr`);
   log(`│ Errors:                ${result.metadata.errors.length}`);
@@ -1099,7 +1099,7 @@ async function runComplianceGap(flags: CLIFlags) {
   }
 
   console.log('');
-  success(`Catalog Gap Analysis complete in ${formatDuration(duration)}`);
+  success(`State-Mandated Program Gap Analysis complete in ${formatDuration(duration)}`);
 }
 
 // ── Main ──
