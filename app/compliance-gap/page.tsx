@@ -235,9 +235,7 @@ export default function ComplianceGapPage() {
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={450} duration={800}>
-            <p className="mt-5 text-sm text-theme-muted">
-              One-time fee · No subscription · Delivered to your inbox
-            </p>
+            <span />
           </AnimateOnScroll>
         </div>
       </section>
