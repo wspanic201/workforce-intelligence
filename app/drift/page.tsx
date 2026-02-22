@@ -481,7 +481,7 @@ export default function DriftPage() {
                 <div className="mb-6">
                   <p className="overline mb-2">Essentials</p>
                   <div className="flex items-end gap-1 mb-1">
-                    <span className="font-heading font-black text-6xl text-theme-primary">$495</span>
+                    <span className="font-heading font-black text-6xl text-theme-primary">$500</span>
                     <span className="text-theme-tertiary text-sm mb-1">/scan</span>
                   </div>
                   <p className="text-theme-tertiary text-xs">One program, one comprehensive scan</p>
@@ -655,7 +655,7 @@ export default function DriftPage() {
               <Link href="/program-analysis" className="block card-cosmic rounded-2xl p-7 border-blue-500/20 hover:bg-white/[0.03] transition-colors group h-full">
                 <div className="flex items-center gap-3 mb-2">
                   <h3 className="font-heading font-bold text-theme-primary text-lg">Program Analysis</h3>
-                  <span className="text-xs font-semibold text-theme-muted">$295</span>
+                  <span className="text-xs font-semibold text-theme-muted">$300</span>
                 </div>
                 <p className="text-theme-secondary text-sm mb-4">Audit your existing portfolio for Workforce Pell eligibility and state compliance gaps you may be missing.</p>
                 <span className="inline-flex items-center gap-1 text-sm font-semibold text-blue-300 group-hover:gap-2 transition-all">

@@ -39,7 +39,7 @@ const services = [
   {
     id: 'program-validation',
     name: 'Feasibility Study',
-    price: '$2,995',
+    price: '$3,000',
     liveDemo: true,
     format: 'PDF report — delivered by email within 5 business days',
     formatDot: 'bg-blue-400',
@@ -86,7 +86,7 @@ const services = [
   {
     id: 'program-gap-audit',
     name: 'Program Gap Audit',
-    price: '$295',
+    price: '$300',
     liveDemo: true,
     format: 'Interactive web report + PDF download',
     formatDot: 'bg-orange-400',
@@ -108,7 +108,7 @@ const services = [
   {
     id: 'grant-intelligence',
     name: 'Grant Finder',
-    price: '$749',
+    price: '$750',
     liveDemo: true,
     format: 'Interactive web report + PDF download',
     formatDot: 'bg-green-400',
@@ -131,7 +131,7 @@ const services = [
   {
     id: 'curriculum-drift',
     name: 'Curriculum Drift Analysis',
-    price: '$495/scan',
+    price: '$500/scan',
     liveDemo: true,
     format: 'Interactive web report + PDF download — delivered quarterly',
     formatDot: 'bg-pink-400',

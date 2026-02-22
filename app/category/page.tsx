@@ -25,7 +25,7 @@ const categoryProductJsonLd = {
   brand: { "@type": "Brand", name: "Wavelength" },
   offers: {
     "@type": "Offer",
-    price: "795",
+    price: "800",
     priceCurrency: "USD",
     availability: "https://schema.org/InStock",
     url: "https://withwavelength.com/category",
@@ -79,7 +79,7 @@ export default function CategoryPage() {
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary">
-                  Order a Category Deep Dive — $795
+                  Order a Category Deep Dive — $800
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>
@@ -294,7 +294,7 @@ export default function CategoryPage() {
               },
               {
                 title: 'You want to test before going all-in',
-                desc: 'Start with a $795 Deep Dive. If the opportunities are strong, upgrade to a full $1,500 Program Finder across all sectors.',
+                desc: 'Start with a $800 Deep Dive. If the opportunities are strong, upgrade to a full $1,500 Program Finder across all sectors.',
               },
             ].map(({ title, desc }) => (
               <div key={title} className="flex gap-4">
@@ -332,7 +332,7 @@ export default function CategoryPage() {
                 </p>
 
                 <div className="mb-1">
-                  <span className="font-heading font-black text-6xl text-theme-primary">$795</span>
+                  <span className="font-heading font-black text-6xl text-theme-primary">$800</span>
                 </div>
                 <p className="text-theme-secondary text-xs mb-2">Founding rate</p>
                 <p className="text-theme-tertiary text-xs mb-5">Eligible for Perkins V and state workforce grant funding</p>

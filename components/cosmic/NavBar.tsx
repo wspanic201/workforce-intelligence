@@ -10,21 +10,21 @@ const CATEGORIES = [
     label: 'Market Research',
     services: [
       { label: 'Program Finder', tagline: 'Find your next high-demand program before competitors do', href: '/discover', price: '$1,500' },
-      { label: 'Category Deep Dive',       tagline: 'Zero in on the best opportunity in one program area', href: '/category', price: '$795' },
+      { label: 'Category Deep Dive',       tagline: 'Zero in on the best opportunity in one program area', href: '/category', price: '$800' },
     ],
   },
   {
     label: 'Program Analysis',
     services: [
-      { label: 'Feasibility Study',       tagline: 'Know if a program will succeed before you build it', href: '/validate', price: '$2,995' },
-      { label: 'Program Gap Analysis', tagline: 'Find required programs you aren\'t offering yet', href: '/compliance-gap', price: '$295' },
-      { label: 'Curriculum Drift Analysis', tagline: 'See where your programs have fallen behind the job market', href: '/drift', price: '$495' },
+      { label: 'Feasibility Study',       tagline: 'Know if a program will succeed before you build it', href: '/validate', price: '$3,000' },
+      { label: 'Program Gap Analysis', tagline: 'Find required programs you aren\'t offering yet', href: '/compliance-gap', price: '$300' },
+      { label: 'Curriculum Drift Analysis', tagline: 'See where your programs have fallen behind the job market', href: '/drift', price: '$500' },
     ],
   },
   {
     label: 'Funding & Grants',
     services: [
-      { label: 'Grant Finder',  tagline: 'Find grants you qualify for and haven\'t applied to yet', href: '/grants', price: '$749' },
+      { label: 'Grant Finder',  tagline: 'Find grants you qualify for and haven\'t applied to yet', href: '/grants', price: '$750' },
       { label: 'Pell Readiness Check',      tagline: 'See which programs are Workforce Pell eligible right now', href: '/pell', price: 'Free' },
     ],
   },

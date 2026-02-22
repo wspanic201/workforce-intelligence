@@ -192,9 +192,9 @@ export default function ContactPage() {
                 <div className="space-y-2">
                   {[
                     { label: 'Program Finder', href: '/discover', price: '$1,500' },
-                    { label: 'Feasibility Study', href: '/validate', price: '$2,995' },
-                    { label: 'Grant Finder', href: '/grants', price: '$495' },
-                    { label: 'Curriculum Drift Analysis', href: '/drift', price: '$495' },
+                    { label: 'Feasibility Study', href: '/validate', price: '$3,000' },
+                    { label: 'Grant Finder', href: '/grants', price: '$500' },
+                    { label: 'Curriculum Drift Analysis', href: '/drift', price: '$500' },
                   ].map((s) => (
                     <Link key={s.href} href={s.href} className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors group">
                       <span className="group-hover:text-gradient-cosmic transition-colors">{s.label}</span>

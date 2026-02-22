@@ -26,7 +26,7 @@ const LIFECYCLE_STAGES = [
   {
     stage: '2',
     name: 'Feasibility Study',
-    price: '$2,995',
+    price: '$3,000',
     available: true,
     href: '/validate',
     description: 'Seven-specialist feasibility analysis with financial projections and a definitive GO / NO-GO recommendation.',
@@ -67,19 +67,19 @@ const ADDONS = [
   {
     name: 'Program Gap Audit',
     description: 'Identify compliance gaps, curriculum drift, and accreditor alignment issues in existing programs.',
-    price: '$295',
+    price: '$300',
     href: '/compliance-gap',
   },
   {
     name: 'Grant Finder',
     description: 'Federal, state, and foundation grants — researched, scored, and ranked for your institution.',
-    price: '$749',
+    price: '$750',
     href: '/grants',
   },
   {
     name: 'Curriculum Drift Analysis',
     description: 'Annual review that flags where course content has fallen behind employer expectations and industry standards.',
-    price: '$495',
+    price: '$500',
     href: '/drift',
   },
 ];
@@ -197,7 +197,7 @@ export default function ServicesPage() {
             <div className="grid md:grid-cols-[120px_1fr] gap-6 items-start">
               <div className="text-center md:text-right pt-1">
                 <span className="font-mono text-xs text-theme-muted tracking-widest uppercase">Stage 2</span>
-                <div className="font-mono font-bold text-gradient-cosmic text-sm mt-0.5">$2,995</div>
+                <div className="font-mono font-bold text-gradient-cosmic text-sm mt-0.5">$3,000</div>
               </div>
               <div className="card-cosmic rounded-2xl p-6">
                 <h3 className="font-heading font-semibold text-theme-primary text-base mb-2">

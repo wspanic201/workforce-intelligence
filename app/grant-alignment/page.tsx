@@ -37,7 +37,7 @@ export default function GrantAlignmentPage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={300}>
             <div className="flex flex-wrap justify-center gap-3 mt-8">
-              {['30+ grants scanned', '$495 one-time', '~1 week turnaround'].map(s => (
+              {['30+ grants scanned', '$500 one-time', '~1 week turnaround'].map(s => (
                 <span key={s} className="inline-flex items-center px-4 py-2 rounded-full bg-green-500/10 border border-green-500/30 text-sm text-green-300 font-medium">
                   {s}
                 </span>
@@ -76,7 +76,7 @@ export default function GrantAlignmentPage() {
           <AnimateOnScroll variant="fade-up">
             <div className="card-cosmic rounded-2xl p-8 md:p-10 border-green-500/20">
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-green-500/10 border border-green-500/30 mb-4">
-                <span className="text-green-300 text-[10px] font-bold uppercase tracking-wider">$495</span>
+                <span className="text-green-300 text-[10px] font-bold uppercase tracking-wider">$500</span>
               </div>
               <h3 className="font-heading font-bold text-theme-primary text-2xl mb-3">Grant Finder</h3>
               <p className="text-theme-secondary text-sm leading-relaxed mb-6">
@@ -149,7 +149,7 @@ export default function GrantAlignmentPage() {
             </h2>
             <Link href="/contact">
               <button className="btn-cosmic btn-cosmic-primary text-sm">
-                Order Grant Finder — $495
+                Order Grant Finder — $500
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </Link>

@@ -1327,7 +1327,7 @@ export default function DemoReportPage() {
               },
               {
                 num: 3,
-                title: 'Engage Wavelength Feasibility Study ($2,995)',
+                title: 'Engage Wavelength Feasibility Study ($3,000)',
                 body: 'Feasibility Study confirms employer demand, models enrollment and revenue, conducts detailed feasibility analysis, and delivers a go/no-go recommendation with full supporting data. This is the critical step before committing development resources.',
               },
               {

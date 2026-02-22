@@ -67,7 +67,7 @@ const SERVICES: Service[] = [
   {
     name: 'Category Deep Dive',
     slug: 'category',
-    price: '$795',
+    price: '$800',
     description: 'Zero in on the best opportunity in one program area — healthcare, business, manufacturing, trades, or any category you choose.',
     turnaround: '3–5 business days',
     features: [
@@ -86,7 +86,7 @@ const SERVICES: Service[] = [
   {
     name: 'Feasibility Study',
     slug: 'validate',
-    price: '$2,995',
+    price: '$3,000',
     description: 'Know if a program will succeed before you invest in building it. Full feasibility analysis with financial projections and a GO / NO-GO recommendation.',
     turnaround: '7–10 business days',
     features: [
@@ -106,7 +106,7 @@ const SERVICES: Service[] = [
   {
     name: 'Program Gap Audit',
     slug: 'compliance-gap',
-    price: '$295',
+    price: '$300',
     description: 'Find required programs you aren\'t offering yet — with revenue estimates for each gap and a prioritized launch roadmap.',
     turnaround: '3–5 business days',
     features: [
@@ -124,7 +124,7 @@ const SERVICES: Service[] = [
   {
     name: 'Grant Finder',
     slug: 'grants',
-    price: '$749',
+    price: '$750',
     description: 'Find grants you qualify for and haven\'t applied to yet — researched, scored, and ranked by fit for your institution.',
     turnaround: '48 hours',
     features: [
@@ -143,7 +143,7 @@ const SERVICES: Service[] = [
   {
     name: 'Curriculum Drift Analysis',
     slug: 'drift',
-    price: '$495',
+    price: '$500',
     priceNote: 'per program',
     description: 'See where your programs have fallen behind the job market — with specific recommendations on what to update.',
     turnaround: '5–7 business days',

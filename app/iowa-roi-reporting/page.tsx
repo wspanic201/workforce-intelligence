@@ -177,7 +177,7 @@ export default function IowaROIPage() {
                     Baseline your current portfolio against new ROI requirements
                   </p>
                 </div>
-                <span className="font-mono text-sm font-semibold text-purple-600">$295</span>
+                <span className="font-mono text-sm font-semibold text-purple-600">$300</span>
               </div>
               <p className="text-gray-700 leading-relaxed mb-4">
                 Scan your entire program catalog for compliance gaps, curriculum drift, and ROI risk factors. Get ahead of the state's audit.
@@ -202,7 +202,7 @@ export default function IowaROIPage() {
                     Full financial model + wage outcome projections for new programs
                   </p>
                 </div>
-                <span className="font-mono text-sm font-semibold text-purple-600">$2,995</span>
+                <span className="font-mono text-sm font-semibold text-purple-600">$3,000</span>
               </div>
               <p className="text-gray-700 leading-relaxed mb-4">
                 Before you invest in curriculum development or faculty hires, validate that the program will deliver strong ROI — completion rates, wage outcomes, and financial viability.

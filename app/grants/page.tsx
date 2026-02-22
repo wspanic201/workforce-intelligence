@@ -48,7 +48,7 @@ export default function GrantsPage() {
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary">
-                  Order Grant Finder — $749
+                  Order Grant Finder — $750
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>
@@ -60,7 +60,7 @@ export default function GrantsPage() {
               </a>
             </div>
             <p className="mt-4 text-sm text-theme-muted">
-              Founding rate — $749 now, $1,495 at standard pricing. We&apos;ll follow up within 48 hours.
+              Founding rate — $750 now, $1,500 at standard pricing. We&apos;ll follow up within 48 hours.
             </p>
           </AnimateOnScroll>
         </div>
@@ -345,8 +345,8 @@ export default function GrantsPage() {
                   </p>
 
                   <div className="mb-1">
-                    <span className="font-heading font-black text-6xl text-theme-primary">$749</span>
-                    <span className="text-theme-secondary text-sm ml-2 line-through">$1,495</span>
+                    <span className="font-heading font-black text-6xl text-theme-primary">$750</span>
+                    <span className="text-theme-secondary text-sm ml-2 line-through">$1,500</span>
                   </div>
                   <p className="text-theme-secondary text-xs mb-5">Founding rate — limited availability</p>
 
@@ -394,7 +394,7 @@ export default function GrantsPage() {
                 </p>
 
                 <div className="mb-5">
-                  <span className="font-heading font-black text-6xl text-theme-primary">$1,495</span>
+                  <span className="font-heading font-black text-6xl text-theme-primary">$1,500</span>
                 </div>
 
                 <ul className="text-left max-w-xs mx-auto space-y-3 mb-7 flex-1">
@@ -418,7 +418,7 @@ export default function GrantsPage() {
                   </button>
                 </Link>
                 <p className="text-theme-muted text-xs mt-3">
-                  Lock in the founding rate now — $749
+                  Lock in the founding rate now — $750
                 </p>
               </div>
             </AnimateOnScroll>
@@ -451,7 +451,7 @@ export default function GrantsPage() {
                 <FileText className="h-5 w-5 text-purple-400" />
               </div>
               <h3 className="font-heading font-semibold text-theme-primary text-lg mb-1">Grant Application Package</h3>
-              <p className="text-purple-300/80 text-sm font-semibold mb-3">$2,995 – $7,500</p>
+              <p className="text-purple-300/80 text-sm font-semibold mb-3">$3,000 – $7,500</p>
               <p className="text-theme-tertiary text-sm leading-relaxed mb-4">
                 We help write and assemble the full grant application — so your team can focus on running the college, not writing narrative prose.
               </p>
@@ -625,7 +625,7 @@ export default function GrantsPage() {
             <div className="mt-8">
               <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary text-base py-3 px-8">
-                  Order Grant Finder — $749
+                  Order Grant Finder — $750
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </button>
               </Link>

@@ -304,7 +304,7 @@ export default function ValidatePage() {
 
               <div className="mb-6">
                 <div className="flex items-baseline justify-center gap-3">
-                  <span className="font-heading font-black text-6xl text-theme-primary">$2,995</span>
+                  <span className="font-heading font-black text-6xl text-theme-primary">$3,000</span>
                   <span className="text-theme-secondary text-sm line-through">$4,995</span>
                 </div>
                 <p className="text-theme-secondary text-sm mt-2">

@@ -644,7 +644,7 @@ export default function BellevueCybersecurityDriftPage() {
           <AnimateOnScroll variant="fade-up" delay={180}>
             <div className="mt-8 card-cosmic rounded-xl p-6 text-left">
               <p className="text-sm text-theme-secondary leading-relaxed">
-                <span className="font-semibold text-theme-primary">Pricing:</span> Curriculum Drift Analysis is $495 per scan. Includes:
+                <span className="font-semibold text-theme-primary">Pricing:</span> Curriculum Drift Analysis is $500 per scan. Includes:
               </p>
               <ul className="mt-3 space-y-1.5 text-sm text-theme-secondary">
                 <li className="flex items-start gap-2">

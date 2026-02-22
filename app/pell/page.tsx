@@ -153,7 +153,7 @@ const DELIVERABLES = [
 const UPSELL_PRODUCTS = [
   {
     name: 'Program Gap Analysis',
-    price: '$495',
+    price: '$500',
     description:
       "Find every state-mandated training program your institution doesn't offer — sized by revenue, cited to the statute.",
     href: '/compliance-gap',
@@ -162,7 +162,7 @@ const UPSELL_PRODUCTS = [
   },
   {
     name: 'Program Finder',
-    price: '$495',
+    price: '$500',
     description:
       'Full market intelligence before you build — scored opportunities, employer demand signals, competitive gaps, and grant alignment for your region.',
     href: '/discover',

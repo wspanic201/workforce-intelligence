@@ -1040,7 +1040,7 @@ export default function HawkeyeGapAuditPage() {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                $295
+                $300
               </div>
               <span className="text-theme-muted text-sm">per institution · delivered within 48 hours</span>
             </div>

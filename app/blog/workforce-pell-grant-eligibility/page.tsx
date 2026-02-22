@@ -499,7 +499,7 @@ export default function WorkforcePellEligibilityPage() {
               href="/compliance-gap"
               className="text-violet-400 underline hover:no-underline"
             >
-              State-Mandated Program Gap Analysis ($295)
+              State-Mandated Program Gap Analysis ($300)
             </Link>{" "}
             provides a line-by-line assessment against federal requirements, with specific
             remediation guidance for each gap identified.
@@ -571,7 +571,7 @@ export default function WorkforcePellEligibilityPage() {
                 href="/compliance-gap"
                 className="border border-white/20 text-theme-primary hover:border-white/40 px-6 py-3 rounded-xl font-semibold transition-colors"
               >
-                Get State-Mandated Program Gap Analysis — $295
+                Get State-Mandated Program Gap Analysis — $300
               </Link>
             </div>
           </div>

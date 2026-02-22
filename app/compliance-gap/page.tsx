@@ -178,7 +178,7 @@ const complianceProductJsonLd = {
   brand: { "@type": "Brand", name: "Wavelength" },
   offers: {
     "@type": "Offer",
-    price: "295",
+    price: "300",
     priceCurrency: "USD",
     availability: "https://schema.org/InStock",
     url: "https://withwavelength.com/compliance-gap",
@@ -222,7 +222,7 @@ export default function ComplianceGapPage() {
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/contact">
                 <button className="btn-cosmic btn-cosmic-primary">
-                  Get My Gap Report — $295
+                  Get My Gap Report — $300
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>
@@ -399,7 +399,7 @@ export default function ComplianceGapPage() {
               <p className="overline mb-4">ONE-TIME REPORT</p>
 
               <div className="flex items-end justify-center gap-2 mb-2">
-                <span className="text-6xl font-heading font-black text-theme-primary">$295</span>
+                <span className="text-6xl font-heading font-black text-theme-primary">$300</span>
                 <span className="text-theme-secondary mb-3 text-lg">one-time</span>
               </div>
               <p className="text-theme-secondary text-sm mb-8">

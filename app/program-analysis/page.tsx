@@ -37,7 +37,7 @@ export default function ProgramAnalysisPage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={300}>
             <div className="flex flex-wrap justify-center gap-3 mt-8">
-              {['Free Pell check', '$295 gap audit', '48–72hr turnaround'].map(s => (
+              {['Free Pell check', '$300 gap audit', '48–72hr turnaround'].map(s => (
                 <span key={s} className="inline-flex items-center px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/30 text-sm text-blue-300 font-medium">
                   {s}
                 </span>
@@ -109,7 +109,7 @@ export default function ProgramAnalysisPage() {
             <AnimateOnScroll variant="fade-up" delay={100}>
               <div className="card-cosmic rounded-2xl p-8 border-blue-500/20 h-full">
                 <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-blue-500/10 border border-blue-500/30 mb-4">
-                  <span className="text-blue-300 text-[10px] font-bold uppercase tracking-wider">$295</span>
+                  <span className="text-blue-300 text-[10px] font-bold uppercase tracking-wider">$300</span>
                 </div>
                 <h3 className="font-heading font-bold text-theme-primary text-xl mb-3">Program Gap Audit</h3>
                 <p className="text-theme-secondary text-sm leading-relaxed mb-6">
@@ -132,7 +132,7 @@ export default function ProgramAnalysisPage() {
                 </ul>
                 <Link href="/compliance-gap">
                   <button className="btn-cosmic btn-cosmic-primary w-full text-sm">
-                    Order Program Gap Audit — $295
+                    Order Program Gap Audit — $300
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </button>
                 </Link>
@@ -184,7 +184,7 @@ export default function ProgramAnalysisPage() {
             </Link>
             <div className="mt-4">
               <Link href="/compliance-gap" className="text-sm text-theme-tertiary hover:text-theme-secondary transition-colors">
-                Order a Program Gap Audit — $295 →
+                Order a Program Gap Audit — $300 →
               </Link>
             </div>
           </AnimateOnScroll>
