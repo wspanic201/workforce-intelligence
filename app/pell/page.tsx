@@ -139,26 +139,6 @@ const WHY_ACT_NOW = [
       'Short-term programs are price-sensitive. Pell eligibility removes the biggest barrier for working adults — cost. Qualifying programs routinely see enrollment lift once Pell is available.',
   },
 
-const HOW_IT_WORKS = [
-  {
-    step: '01',
-    title: 'Tell Us Your Institution',
-    description:
-      'Email us your college name and state. We locate your current program catalog and document every short-term offering you list.',
-  },
-  {
-    step: '02',
-    title: 'We Evaluate Against Pell Criteria',
-    description:
-      'Our team cross-references your programs against federal clock-hour thresholds, state high-skill/high-wage occupation lists, completion and placement benchmarks, and earnings data.',
-  },
-  {
-    step: '03',
-    title: 'Get Your Readiness Report in 48 Hours',
-    description:
-      'You receive a complete Pell Readiness Check — which programs qualify, which need changes, and exactly what steps to take before July 1, 2026.',
-  },
-];
 
 const DELIVERABLES = [
   'Complete program catalog reviewed against Pell criteria',
@@ -447,45 +427,6 @@ export default function PellPage() {
         </div>
       </section>
 
-      <WaveDivider />
-
-      {/* ═══════════════ HOW IT WORKS ═══════════════ */}
-      <section className="relative py-20 px-6">
-        <div className="max-w-[900px] mx-auto">
-          <AnimateOnScroll variant="fade-up">
-            <div className="text-center mb-14">
-              <SectionLabel>THE PROCESS</SectionLabel>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-theme-primary mt-4">
-                How it works
-              </h2>
-            </div>
-          </AnimateOnScroll>
-
-          <div className="space-y-8">
-            {HOW_IT_WORKS.map((step, idx) => (
-              <AnimateOnScroll key={step.step} variant="fade-left" delay={idx * 100}>
-                <div className="card-cosmic rounded-xl p-7 flex gap-6 items-start">
-                  <div className="shrink-0 text-4xl font-heading font-black text-gradient-cosmic opacity-40 leading-none">
-                    {step.step}
-                  </div>
-                  <div>
-                    <h3 className="font-heading font-semibold text-theme-primary text-lg mb-2">
-                      {step.title}
-                    </h3>
-                    <p className="text-theme-secondary leading-relaxed text-sm">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              </AnimateOnScroll>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <WaveDivider />
-
-      {/* ═══════════════ SAMPLE REPORT ═══════════════ */}
       <section className="relative py-20 px-6">
         <div className="max-w-[900px] mx-auto">
           <AnimateOnScroll variant="fade-up">
