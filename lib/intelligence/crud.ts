@@ -44,7 +44,10 @@ export async function handleList(req: NextRequest, opts: ListOptions) {
       }
     }
 
-    query = query.order(opts.defaultOrder || 'created_at', { ascending: false })
+    // Sorting
+    const sortBy = url.searchParams.get('sort') || opts.defaultOrder || 'created_at';
+    const sortDir = url.searchParams.get('dir') || (opts.defaultOrder ? 'asc' : 'desc');
+    query = query.order(sortBy, { ascending: sortDir === 'asc' })
                  .range(offset, offset + limit - 1);
 
     const { data, error, count } = await query;

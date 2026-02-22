@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { IntelInstitution } from '@/lib/intelligence/types';
-import { IntelSearch, IntelFilter, Badge, Modal, Field, Input, Select, Btn, Pagination, useIntelData, US_STATES } from '../components';
+import { IntelSearch, IntelFilter, Badge, Modal, Field, Input, Select, Btn, Pagination, SortHeader, useIntelData, US_STATES } from '../components';
 
 const TYPES = [
   { value: 'community_college', label: 'Community College' },
@@ -30,7 +30,7 @@ export default function InstitutionsPage() {
   if (filterState) params.state = filterState;
   if (filterType) params.type = filterType;
 
-  const { data, total, page, totalPages, loading, setPage, refetch } = useIntelData<IntelInstitution>('institutions', params);
+  const { data, total, page, totalPages, loading, setPage, sort, dir, toggleSort, refetch } = useIntelData<IntelInstitution>('institutions', params);
 
   const handleSave = async () => {
     const body = { ...form, last_verified: new Date().toISOString(), verified_by: 'matt' };
@@ -53,31 +53,34 @@ export default function InstitutionsPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-100 bg-slate-50">
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Institution</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Location</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Type</th>
-              <th className="text-right px-4 py-3 font-medium text-slate-600">Enrollment</th>
-              <th className="text-right px-4 py-3 font-medium text-slate-600">Programs</th>
+              <SortHeader label="Institution" column="name" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="State" column="state" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="City" column="city" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="County" column="county" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Type" column="type" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Enrollment" column="total_enrollment" sort={sort} dir={dir} onSort={toggleSort} align="right" />
+              <SortHeader label="IPEDS" column="ipeds_id" sort={sort} dir={dir} onSort={toggleSort} />
               <th className="text-right px-4 py-3 font-medium text-slate-600">Actions</th>
             </tr>
           </thead>
           <tbody>
             {loading ? (
-              <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-400">Loading...</td></tr>
+              <tr><td colSpan={8} className="px-4 py-8 text-center text-slate-400">Loading...</td></tr>
             ) : data.length === 0 ? (
-              <tr><td colSpan={6} className="px-4 py-8 text-center text-slate-400">No institutions found.</td></tr>
+              <tr><td colSpan={8} className="px-4 py-8 text-center text-slate-400">No institutions found.</td></tr>
             ) : data.map(inst => (
               <tr key={inst.id} className="border-b border-slate-50 hover:bg-slate-50">
                 <td className="px-4 py-3">
                   <Link href={`/admin/intelligence/institutions/${inst.id}`} className="text-purple-700 hover:text-purple-900 font-semibold">
                     {inst.short_name || inst.name}
                   </Link>
-                  {inst.ipeds_id && <span className="text-xs text-slate-400 ml-2">#{inst.ipeds_id}</span>}
                 </td>
-                <td className="px-4 py-3 text-slate-600">{inst.city}, {inst.state}</td>
+                <td className="px-4 py-3 font-semibold text-slate-700">{inst.state}</td>
+                <td className="px-4 py-3 text-slate-600">{inst.city}</td>
+                <td className="px-4 py-3 text-slate-500">{inst.county || '—'}</td>
                 <td className="px-4 py-3"><Badge>{inst.type.replace(/_/g, ' ')}</Badge></td>
                 <td className="px-4 py-3 text-right text-slate-900">{inst.total_enrollment?.toLocaleString() || '—'}</td>
-                <td className="px-4 py-3 text-right text-slate-600">{inst.program_count || '—'}</td>
+                <td className="px-4 py-3 text-slate-400 font-mono text-xs">{inst.ipeds_id || '—'}</td>
                 <td className="px-4 py-3 text-right">
                   <Link href={`/admin/intelligence/institutions/${inst.id}`} className="text-purple-600 hover:text-purple-800">View →</Link>
                 </td>

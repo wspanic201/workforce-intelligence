@@ -177,11 +177,24 @@ export function useIntelData<T>(endpoint: string, params: Record<string, string>
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [sort, setSort] = useState('');
+  const [dir, setDir] = useState<'asc' | 'desc'>('asc');
+
+  const toggleSort = useCallback((col: string) => {
+    if (sort === col) {
+      setDir(d => d === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSort(col);
+      setDir('asc');
+    }
+    setPage(1);
+  }, [sort]);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const qs = new URLSearchParams({ page: String(page), limit: '25', ...params });
+      if (sort) { qs.set('sort', sort); qs.set('dir', dir); }
       Object.keys(params).forEach(k => { if (!params[k]) qs.delete(k); });
       const res = await fetch(`/api/admin/intelligence/${endpoint}?${qs}`);
       const json = await res.json();
@@ -190,11 +203,32 @@ export function useIntelData<T>(endpoint: string, params: Record<string, string>
       setTotalPages(json.totalPages ?? 1);
     } catch (e) { console.error(e); }
     setLoading(false);
-  }, [endpoint, page, JSON.stringify(params)]);
+  }, [endpoint, page, sort, dir, JSON.stringify(params)]);
 
   useEffect(() => { fetchData(); }, [fetchData]);
 
-  return { data, total, page, totalPages, loading, setPage, refetch: fetchData };
+  return { data, total, page, totalPages, loading, setPage, sort, dir, toggleSort, refetch: fetchData };
+}
+
+// ── Sortable Header ────────────────────────────────────
+
+export function SortHeader({ label, column, sort, dir, onSort, align }: {
+  label: string; column: string; sort: string; dir: 'asc' | 'desc'; onSort: (col: string) => void; align?: 'left' | 'right';
+}) {
+  const active = sort === column;
+  return (
+    <th
+      className={`${align === 'right' ? 'text-right' : 'text-left'} px-4 py-3 font-medium text-slate-600 cursor-pointer select-none hover:text-purple-700 transition-colors`}
+      onClick={() => onSort(column)}
+    >
+      <span className="inline-flex items-center gap-1">
+        {label}
+        <span className={`text-xs ${active ? 'text-purple-600' : 'text-slate-300'}`}>
+          {active ? (dir === 'asc' ? '▲' : '▼') : '⇅'}
+        </span>
+      </span>
+    </th>
+  );
 }
 
 // ── US States ──────────────────────────────────────────
