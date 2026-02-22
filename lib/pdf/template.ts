@@ -23,7 +23,7 @@ export function wrapInTemplate(htmlContent: string, options: PDFOptions): string
   const toc = extractTOC(htmlContent);
   const reportTypeLabel = options.reportType === 'discovery'
     ? 'Program Market Scan'
-    : 'Feasibility Report Report';
+    : 'Feasibility Study Report';
   const date = options.date || new Date().toLocaleDateString('en-US', {
     year: 'numeric', month: 'long', day: 'numeric'
   });

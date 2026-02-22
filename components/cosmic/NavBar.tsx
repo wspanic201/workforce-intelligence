@@ -16,7 +16,7 @@ const CATEGORIES = [
   {
     label: 'Program Analysis',
     services: [
-      { label: 'Feasibility Report',       tagline: 'Feasibility analysis with GO/NO-GO', href: '/validate', price: '$3,500' },
+      { label: 'Feasibility Study',       tagline: 'Feasibility analysis with GO/NO-GO', href: '/validate', price: '$3,500' },
       { label: 'Program Gap Analysis', tagline: 'Find required programs you aren\'t offering', href: '/compliance-gap', price: '$295' },
       { label: 'Curriculum Drift Analysis', tagline: 'Annual content alignment review', href: '/drift', price: '$495' },
     ],

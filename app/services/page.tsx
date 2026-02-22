@@ -25,7 +25,7 @@ const LIFECYCLE_STAGES = [
   },
   {
     stage: '2',
-    name: 'Feasibility Report',
+    name: 'Feasibility Study',
     price: '$3,500',
     available: true,
     href: '/validate',

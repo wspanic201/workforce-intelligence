@@ -1,6 +1,6 @@
 // =============================================================================
 // O*NET Web Services API Integration
-// Powers Curriculum Drift Analysis and Feasibility Report reports
+// Powers Curriculum Drift Analysis and Feasibility Study reports
 // =============================================================================
 
 // --- Legacy interfaces (preserved for backward compatibility) ---

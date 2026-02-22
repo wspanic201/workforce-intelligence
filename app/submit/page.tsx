@@ -131,7 +131,7 @@ export default function SubmitPage() {
   return (
     <div className="container mx-auto py-8 px-4 max-w-3xl">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Feasibility Report Request</h1>
+        <h1 className="text-4xl font-bold mb-2">Feasibility Study Request</h1>
         <p className="text-muted-foreground mb-4">
           Submit your program idea for a comprehensive 7-stage validation analysis.
           Our framework evaluates labor market demand, competitive landscape, learner demand,

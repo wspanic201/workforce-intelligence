@@ -9,7 +9,7 @@ import { InstitutionTypeahead } from '@/components/ui/InstitutionTypeahead';
 
 const SUBJECTS = [
   'Program Finder',
-  'Feasibility Report',
+  'Feasibility Study',
   'Pell Readiness Check',
   'Program Gap Audit',
   'Grant Finder',
@@ -192,7 +192,7 @@ export default function ContactPage() {
                 <div className="space-y-2">
                   {[
                     { label: 'Program Finder', href: '/discover', price: '$1,500' },
-                    { label: 'Feasibility Report', href: '/validate', price: '$3,500' },
+                    { label: 'Feasibility Study', href: '/validate', price: '$3,500' },
                     { label: 'Grant Finder', href: '/grants', price: '$495' },
                     { label: 'Curriculum Drift Analysis', href: '/drift', price: '$495' },
                   ].map((s) => (

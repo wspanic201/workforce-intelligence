@@ -42,7 +42,7 @@ export default function TermsPage() {
               </p>
               <ul className="text-theme-secondary leading-relaxed space-y-2 list-disc pl-6">
                 <li><strong className="text-theme-primary">Program Finders:</strong> Identification and analysis of potential workforce program opportunities based on labor market data</li>
-                <li><strong className="text-theme-primary">Feasibility Report:</strong> In-depth validation of specific program concepts through market research and competitive analysis</li>
+                <li><strong className="text-theme-primary">Feasibility Study:</strong> In-depth validation of specific program concepts through market research and competitive analysis</li>
                 <li><strong className="text-theme-primary">Pell Readiness Checks:</strong> Analysis of institutional programs against Workforce Pell eligibility criteria</li>
                 <li><strong className="text-theme-primary">Add-on services:</strong> Including program gap audits, grant intelligence scans, and curriculum drift analysis</li>
               </ul>

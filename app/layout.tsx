@@ -139,7 +139,7 @@ export default function RootLayout({
                 <p className="text-[10px] font-bold uppercase tracking-widest text-theme-muted mb-4">Program Analysis</p>
                 <div className="space-y-2.5">
                   <Link href="/validate" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
-                    Feasibility Report
+                    Feasibility Study
                   </Link>
                   <Link href="/compliance-gap" className="block text-sm text-theme-secondary hover:text-theme-primary transition-colors">
                     Program Gap Analysis

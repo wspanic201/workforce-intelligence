@@ -117,13 +117,13 @@ export default function MarketResearchPage() {
               How it connects
             </h2>
             <p className="text-theme-secondary mt-4 max-w-2xl mx-auto">
-              Market Research is the starting point. Once you know what to build, Feasibility Report confirms the demand is deep enough to justify investment. Grant Alignment finds the funding to build it.
+              Market Research is the starting point. Once you know what to build, Feasibility Study confirms the demand is deep enough to justify investment. Grant Alignment finds the funding to build it.
             </p>
           </AnimateOnScroll>
           <StaggerChildren stagger={100} variant="fade-up" className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               { step: '1', label: 'Market Research', desc: 'Find what to build', href: '/market-research', active: true },
-              { step: '2', label: 'Feasibility Report', desc: 'Confirm demand is real', href: '/program-development', active: false },
+              { step: '2', label: 'Feasibility Study', desc: 'Confirm demand is real', href: '/program-development', active: false },
               { step: '3', label: 'Grant Alignment', desc: 'Find the funding', href: '/grant-alignment', active: false },
             ].map(({ step, label, desc, href, active }) => (
               <Link key={step} href={href} className={`block p-5 rounded-xl border ${active ? 'border-violet-500/30 bg-violet-500/5' : 'border-theme-subtle bg-white/[0.02]'} hover:bg-white/[0.04] transition-colors`}>

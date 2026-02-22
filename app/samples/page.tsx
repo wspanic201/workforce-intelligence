@@ -38,7 +38,7 @@ const services = [
   },
   {
     id: 'program-validation',
-    name: 'Feasibility Report',
+    name: 'Feasibility Study',
     price: '$3,500',
     liveDemo: true,
     format: 'PDF report — delivered by email within 5 business days',

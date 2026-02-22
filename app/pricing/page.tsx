@@ -84,7 +84,7 @@ const SERVICES: Service[] = [
     sampleReport: '/report/kirkwood-business-category-deep-dive',
   },
   {
-    name: 'Feasibility Report',
+    name: 'Feasibility Study',
     slug: 'validate',
     price: '$3,500',
     description: 'Seven-specialist feasibility analysis with financial projections and a definitive GO / NO-GO recommendation.',
@@ -354,7 +354,7 @@ export default function PricingPage() {
               />
               <FaqItem
                 q="How long does delivery take?"
-                a="Most add-on reports deliver in 3–7 business days. Core services (Opportunity Scan, Feasibility Report) take 5–10 business days depending on scope. We'll confirm your timeline during onboarding."
+                a="Most add-on reports deliver in 3–7 business days. Core services (Opportunity Scan, Feasibility Study) take 5–10 business days depending on scope. We'll confirm your timeline during onboarding."
               />
               <FaqItem
                 q="Do you offer volume discounts?"

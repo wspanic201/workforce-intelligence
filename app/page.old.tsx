@@ -103,7 +103,7 @@ export default function HomePage() {
             <div className="rounded-2xl bg-[#FAFAFA] shadow-[0_2px_40px_-12px_rgba(0,0,0,0.12)] p-8 sm:p-10">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6 pb-6 border-b border-gray-200">
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-widest text-[#4C4C4C] mb-1">Feasibility Report Report</p>
+                  <p className="text-xs font-medium uppercase tracking-widest text-[#4C4C4C] mb-1">Feasibility Study Report</p>
                   <p className="heading-display text-xl">Industrial Coatings Specialist Certificate</p>
                 </div>
                 <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 border border-emerald-200 px-4 py-1.5">
@@ -476,7 +476,7 @@ export default function HomePage() {
               <div className="p-6 md:p-8 border-b border-gray-200">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                   <div>
-                    <p className="text-xs font-medium uppercase tracking-widest text-[#4C4C4C] mb-1">Feasibility Report Report</p>
+                    <p className="text-xs font-medium uppercase tracking-widest text-[#4C4C4C] mb-1">Feasibility Study Report</p>
                     <p className="heading-display text-xl">Industrial Coatings Specialist Certificate</p>
                   </div>
                   <div className="inline-flex items-center gap-2 rounded-full bg-emerald-50 border border-emerald-200 px-4 py-1.5 w-fit">

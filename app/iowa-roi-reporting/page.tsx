@@ -196,7 +196,7 @@ export default function IowaROIPage() {
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h3 className="font-semibold text-gray-900 text-lg">
-                    Feasibility Report
+                    Feasibility Study
                   </h3>
                   <p className="text-sm text-gray-600 mt-1">
                     Full financial model + wage outcome projections for new programs

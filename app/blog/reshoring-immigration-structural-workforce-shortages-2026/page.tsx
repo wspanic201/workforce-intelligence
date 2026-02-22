@@ -200,7 +200,7 @@ export default function Article() {
 
         <div className="bg-white border border-gray-200 rounded-xl p-6">
           <h3 className="font-semibold text-gray-900 text-lg mb-2">
-            Feasibility Report
+            Feasibility Study
           </h3>
           <p className="text-gray-700 leading-relaxed mb-3">
             Full market analysis, financial model, and GO/NO-GO recommendation — with explicit macro context for why this program is strategic, not just opportunistic.

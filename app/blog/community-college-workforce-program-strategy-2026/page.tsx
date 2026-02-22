@@ -486,7 +486,7 @@ export default function ProgramStrategy2026Page() {
             href="/validate"
             className="inline-block bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-theme-primary px-6 py-3 rounded-xl font-semibold transition-all"
           >
-            Learn About Feasibility Report →
+            Learn About Feasibility Study →
           </Link>
         </div>
       </article>

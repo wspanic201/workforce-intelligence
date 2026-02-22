@@ -350,7 +350,7 @@ export default function DiscoverPage() {
             {[
               {
                 stage: '2',
-                name: 'Feasibility Report',
+                name: 'Feasibility Study',
                 desc: 'Deep-dive feasibility analysis with financial projections, employer verification, and a GO / NO-GO recommendation.',
               },
               {
@@ -379,7 +379,7 @@ export default function DiscoverPage() {
           <AnimateOnScroll variant="fade-up" delay={300} className="text-center mt-10">
             <Link href="/validate">
               <button className="btn-cosmic btn-cosmic-ghost text-sm">
-                Learn About Feasibility Report
+                Learn About Feasibility Study
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </Link>
