@@ -97,7 +97,7 @@ const findings = [
   {
     num: 4,
     title: 'Competitive Market Requires Clear Differentiation — DMACC is Closest Competitor',
-    text: 'DMACC operates 45 miles away in Ankeny with $3,500–$4,000 tuition (potentially 17–20% cheaper than Kirkwood\'s projected $4,800), multiple campus locations, and established brand recognition. Hawkeye Community College (Waterloo) and Indian Hills (Ottumwa) operate 90–110 miles away. Online programs Penn Foster ($1,079) and Ashworth College ($899–$1,200) provide self-paced alternatives at 75–80% lower cost. Kirkwood\'s defensible advantage is geographic proximity to Cedar Rapids, but it must be reinforced with deliberate differentiators: evening cohorts for incumbent workers, Spanish-language track, and named employer partnerships.',
+    text: 'DMACC operates 45 miles away in Ankeny with $2,995–$4,000 tuition (potentially 17–20% cheaper than Kirkwood\'s projected $4,800), multiple campus locations, and established brand recognition. Hawkeye Community College (Waterloo) and Indian Hills (Ottumwa) operate 90–110 miles away. Online programs Penn Foster ($1,079) and Ashworth College ($899–$1,200) provide self-paced alternatives at 75–80% lower cost. Kirkwood\'s defensible advantage is geographic proximity to Cedar Rapids, but it must be reinforced with deliberate differentiators: evening cohorts for incumbent workers, Spanish-language track, and named employer partnerships.',
   },
   {
     num: 5,
@@ -150,7 +150,7 @@ const pharmtechFinancialModel = {
     { item: 'Sections per Year', value: '2 sections (fall + spring)', source: 'CE program scheduling standard — annual cohort planning', refinesAt: 'Stage 3 — program calendar' },
     { item: 'Instructor Cost (annual)', value: '$8,960 (160 hrs × $28/hr × 2 sections)', source: 'Seat-hour model — BLS rate × contact hours × sections/yr', refinesAt: 'Stage 3 — finalized curriculum + instructor contract' },
     { item: 'Target Cohort Size', value: '18 students', source: 'Peer benchmark — DMACC, Hawkeye CC program data', refinesAt: 'Launch — enrollment actuals' },
-    { item: 'Tuition (per student)', value: '$4,800', source: 'Iowa CE market analysis — credit programs $7,035–$7,242 (DMACC, WITcc); CE programs typically $3,500–$5,500', refinesAt: 'Stage 3 — pricing committee approval' },
+    { item: 'Tuition (per student)', value: '$4,800', source: 'Iowa CE market analysis — credit programs $7,035–$7,242 (DMACC, WITcc); CE programs typically $2,995–$5,500', refinesAt: 'Stage 3 — pricing committee approval' },
     { item: 'Lab Setup Cost', value: '$30,000 (one-time, Year 1)', source: 'PTCB / ASHP pharmacy tech program standards', refinesAt: 'Stage 3 — vendor quotes + space plan' },
     { item: 'Lab Supplies', value: '$150/student/yr', source: 'ASHP pharmacy program cost surveys', refinesAt: 'Stage 3 — curriculum materials list' },
     { item: 'Coordinator Cost', value: '$11,250/yr (0.25 FTE)', source: 'CUPA-HR Admin Salary Survey, Iowa median $45K', refinesAt: 'Launch — job posting + hire' },
@@ -204,7 +204,7 @@ const dimensionDeepDives = [
     weight: '10%',
     status: 'CAUTION',
     dotColor: 'bg-amber-500',
-    rationale: 'Moderate competition in Iowa market with several established programs. DMACC (Ankeny, 45 miles) is the primary in-state competitor with lower tuition ($3,500–$4,000 vs. projected $4,800), established ASHP accreditation, and multiple campus locations. Hawkeye Community College (Waterloo, 65 miles) and Indian Hills Community College (Ottumwa, 100+ miles) serve adjacent markets. Online programs Penn Foster ($1,079) and Ashworth College ($899–$1,200) compete aggressively on price for self-directed learners. Kirkwood\'s competitive advantages: geographic proximity as the only Cedar Rapids option, institutional employer relationships, evening/weekend scheduling potential, and Spanish-language track opportunity. Differentiation must be deliberate — geographic convenience alone is insufficient.',
+    rationale: 'Moderate competition in Iowa market with several established programs. DMACC (Ankeny, 45 miles) is the primary in-state competitor with lower tuition ($2,995–$4,000 vs. projected $4,800), established ASHP accreditation, and multiple campus locations. Hawkeye Community College (Waterloo, 65 miles) and Indian Hills Community College (Ottumwa, 100+ miles) serve adjacent markets. Online programs Penn Foster ($1,079) and Ashworth College ($899–$1,200) compete aggressively on price for self-directed learners. Kirkwood\'s competitive advantages: geographic proximity as the only Cedar Rapids option, institutional employer relationships, evening/weekend scheduling potential, and Spanish-language track opportunity. Differentiation must be deliberate — geographic convenience alone is insufficient.',
   },
   {
     name: 'Institutional Fit & Capacity',
@@ -440,7 +440,7 @@ export default function KirkwoodPharmTechValidationPage() {
                 First, enrollment demand is entirely unvalidated — no primary research confirms
                 willingness to pay $4,800. Second, clinical site capacity is assumed, not contracted
                 — the financial model depends on zero-cost placements with no executed MOUs. Third,
-                competitive differentiation is weak against DMACC ($3,500–$4,000 tuition), Hawkeye,
+                competitive differentiation is weak against DMACC ($2,995–$4,000 tuition), Hawkeye,
                 and online programs at $899–$1,079. The three conditions attached to this CONDITIONAL
                 GO exist specifically to close these gaps before committing capital.
               </p>
@@ -640,7 +640,7 @@ export default function KirkwoodPharmTechValidationPage() {
                 <div>
                   <p className="font-bold text-theme-primary mb-1">Price Competition is Severe</p>
                   <p>
-                    DMACC charges $3,500–$4,000 (vs. Kirkwood&apos;s projected $4,800 — 20% premium).
+                    DMACC charges $2,995–$4,000 (vs. Kirkwood&apos;s projected $4,800 — 20% premium).
                     Penn Foster and Ashworth offer self-paced online options at $899–$1,079 (78–81% cheaper).
                     Kirkwood&apos;s value proposition must be brutally explicit: hands-on clinical experience
                     with named employer partners, PTCB pass rate guarantees, and local placement support
@@ -760,7 +760,7 @@ export default function KirkwoodPharmTechValidationPage() {
               <div className="space-y-3 text-sm text-theme-secondary leading-relaxed">
                 <p>
                   <span className="font-bold text-theme-primary">Impact:</span> DMACC&apos;s lower
-                  tuition ($3,500–$4,000), established ASHP accreditation, and regional brand
+                  tuition ($2,995–$4,000), established ASHP accreditation, and regional brand
                   recognition could capture market share — particularly from price-sensitive learners
                   willing to commute. Online programs at $899–$1,079 compete for self-directed learners.
                 </p>
@@ -1125,7 +1125,7 @@ export default function KirkwoodPharmTechValidationPage() {
               your institution, your region, and your program.
             </p>
             <p className="mt-4 font-mono text-gradient-cosmic font-bold text-lg">
-              $3,500 · Delivered within 5 business days
+              $2,995 · Delivered within 5 business days
             </p>
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/validate">

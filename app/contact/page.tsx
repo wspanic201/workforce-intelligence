@@ -192,7 +192,7 @@ export default function ContactPage() {
                 <div className="space-y-2">
                   {[
                     { label: 'Program Finder', href: '/discover', price: '$1,500' },
-                    { label: 'Feasibility Study', href: '/validate', price: '$3,500' },
+                    { label: 'Feasibility Study', href: '/validate', price: '$2,995' },
                     { label: 'Grant Finder', href: '/grants', price: '$495' },
                     { label: 'Curriculum Drift Analysis', href: '/drift', price: '$495' },
                   ].map((s) => (

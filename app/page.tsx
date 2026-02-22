@@ -24,7 +24,7 @@ const LIFECYCLE_STAGES = [
   {
     stage: '2',
     name: 'Feasibility Study',
-    price: '$3,500',
+    price: '$2,995',
     available: true,
     href: '/validate',
     description: 'Seven-specialist feasibility analysis with financial projections and a definitive GO / NO-GO recommendation.',
@@ -253,7 +253,7 @@ export default function HomePage() {
             <div className="grid md:grid-cols-[120px_1fr] gap-6 items-start">
               <div className="text-center md:text-right pt-1">
                 <span className="font-mono text-xs text-theme-muted tracking-widest uppercase">Stage 2</span>
-                <div className="font-mono font-bold text-gradient-cosmic text-sm mt-0.5">$3,500</div>
+                <div className="font-mono font-bold text-gradient-cosmic text-sm mt-0.5">$2,995</div>
               </div>
               <div className="card-cosmic rounded-2xl p-6">
                 <h3 className="font-heading font-semibold text-theme-primary text-base mb-2">

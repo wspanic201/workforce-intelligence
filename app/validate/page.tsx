@@ -54,9 +54,6 @@ export default function ValidatePage() {
             <p className="mt-6 text-lg md:text-xl text-theme-secondary max-w-2xl mx-auto leading-relaxed font-medium">
               Before you hire instructors, write curriculum, or request approval — get the labor market data, financial model, and competitive analysis that turns a hunch into a business case.
             </p>
-            <p className="mt-3 text-base md:text-lg text-theme-tertiary max-w-2xl mx-auto leading-relaxed">
-              Seven specialist analyses. Financial projections grounded in comparable program data. A definitive GO&nbsp;/&nbsp;NO-GO recommendation — not a maybe.
-            </p>
           </AnimateOnScroll>
 
           <AnimateOnScroll variant="fade-up" delay={350} duration={800}>
@@ -92,56 +89,50 @@ export default function ValidatePage() {
               className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              Seven specialist analyses, working in sequence.
+              Seven dimensions of analysis. One clear recommendation.
             </h2>
-            <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
-              Each discipline produces an independent finding. Together they build the complete picture.
-            </p>
           </AnimateOnScroll>
 
           <StaggerChildren stagger={80} variant="fade-up" className="relative">
-            {/* Vertical connector line */}
-            <div className="absolute left-[19px] top-6 bottom-6 w-px bg-gradient-to-b from-purple-500/40 via-blue-500/30 to-teal-500/20 hidden md:block" aria-hidden="true" />
-
             <div className="space-y-4">
               {[
                 {
                   icon: TrendingUp,
-                  role: 'Market Analyst',
-                  desc: 'Verifies employment demand signals, cross-references BLS projections, and quantifies the local hiring pipeline.',
+                  title: 'Labor Market Demand',
+                  desc: 'Is the hiring pipeline real?',
                 },
                 {
                   icon: DollarSign,
-                  role: 'Financial Analyst',
-                  desc: 'Builds the 5-year financial model: enrollment curves, tuition modeling, cost structure, break-even point, and ROI benchmarks from comparable programs.',
+                  title: 'Financial Viability Assessment',
+                  desc: 'Will it pay for itself?',
                 },
                 {
                   icon: Building2,
-                  role: 'Employer Analyst',
-                  desc: "Maps the specific employer landscape — not just industry categories. Which companies, how many positions, what wages, and who's open to partnership.",
+                  title: 'Employer Landscape',
+                  desc: 'Which companies are hiring, how many positions, what wages.',
                 },
                 {
                   icon: Shield,
-                  role: 'Regulatory Analyst',
-                  desc: 'Navigates state approval pathways, accreditor requirements, certification body alignments, and scores Workforce Pell grant eligibility.',
+                  title: 'Regulatory & Accreditation',
+                  desc: 'State approval, certifications, Pell eligibility.',
                 },
                 {
                   icon: Swords,
-                  role: 'Competitor Analyst',
-                  desc: 'Performs a surgical competitive analysis: competitor enrollment data, pricing, program gaps, and positioning vulnerabilities.',
+                  title: 'Competitive Analysis',
+                  desc: 'Who else offers this? Where are the gaps?',
                 },
                 {
                   icon: Briefcase,
-                  role: 'Institutional Fit Analyst',
-                  desc: "Evaluates how the program aligns with your college's mission, existing infrastructure, budget capacity, and strategic priorities.",
+                  title: 'Institutional Fit',
+                  desc: 'Does it align with your capacity, budget, and mission?',
                 },
                 {
                   icon: BookOpen,
-                  role: 'Implementation Analyst',
-                  desc: 'Scopes what the program actually requires to launch: faculty, equipment, space, timeline from approval to first cohort, and realistic startup costs.',
+                  title: 'Implementation Roadmap',
+                  desc: 'Faculty, equipment, timeline, startup costs.',
                 },
-              ].map(({ icon: Icon, role, desc }, i) => (
-                <div key={role} className="flex gap-5 p-5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-theme-strong transition-colors">
+              ].map(({ icon: Icon, title, desc }, i) => (
+                <div key={title} className="flex gap-5 p-5 rounded-xl bg-white/[0.02] border border-white/[0.04] hover:border-theme-strong transition-colors">
                   <div className="relative flex-shrink-0">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 border border-theme-strong flex items-center justify-center z-10 relative">
                       <Icon className="h-4 w-4 text-purple-400" />
@@ -150,7 +141,7 @@ export default function ValidatePage() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="font-mono text-[10px] text-theme-muted tracking-widest">0{i + 1}</span>
-                      <h3 className="font-heading font-semibold text-theme-primary text-sm">{role}</h3>
+                      <h3 className="font-heading font-semibold text-theme-primary text-sm">{title}</h3>
                     </div>
                     <p className="text-theme-secondary text-sm leading-relaxed">{desc}</p>
                   </div>
@@ -269,35 +260,20 @@ export default function ValidatePage() {
               className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              Not a feasibility study. A decision.
+              Not a report. A decision.
             </h2>
           </AnimateOnScroll>
 
-          <StaggerChildren stagger={100} variant="fade-up" className="space-y-6">
+          <StaggerChildren stagger={100} variant="fade-up" className="space-y-4">
             {[
-              {
-                title: 'Every number is verified',
-                desc: "Financial projections are anchored to comparable program data — actual enrollment figures, actual cost structures from programs like yours. No spreadsheet fantasies.",
-              },
-              {
-                title: 'GO / NO-GO, not a maybe',
-                desc: "We commit to a recommendation. If the program isn't viable, we say so clearly — and explain exactly why, so you can redirect resources confidently.",
-              },
-              {
-                title: 'Implementation-ready, not theoretical',
-                desc: "The roadmap tells you what faculty to hire, what equipment to budget, and what your marketing plan should look like — before you write a single course.",
-              },
-              {
-                title: 'Seven independent analyses, cross-checked',
-                desc: "Each specialist works from the same base data but reaches their conclusions independently. Conflicts surface and get resolved. You get a coherent, internally consistent picture.",
-              },
-            ].map(({ title, desc }) => (
-              <div key={title} className="flex gap-4">
-                <CheckCircle2 className="h-5 w-5 text-purple-400 flex-shrink-0 mt-1" />
-                <div>
-                  <h3 className="font-heading font-semibold text-theme-primary mb-1">{title}</h3>
-                  <p className="text-theme-secondary text-sm leading-relaxed">{desc}</p>
-                </div>
+              'Every data point is sourced and verified',
+              'GO / NO-GO recommendation, not a maybe',
+              'Implementation-ready with real costs and timelines',
+              'Seven dimensions of analysis, cross-checked',
+            ].map((title) => (
+              <div key={title} className="flex items-center gap-3">
+                <CheckCircle2 className="h-5 w-5 text-purple-400 flex-shrink-0" />
+                <h3 className="font-heading font-semibold text-theme-primary">{title}</h3>
               </div>
             ))}
           </StaggerChildren>
@@ -321,15 +297,15 @@ export default function ValidatePage() {
 
           <AnimateOnScroll variant="scale" delay={100}>
             <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center">
-              <p className="overline mb-4">ONE-TIME VALIDATION</p>
+              <p className="overline mb-4">FEASIBILITY STUDY</p>
               <p className="label-brand mb-6 text-center">
                 <span className="text-gradient-cosmic">∿ ·</span> Founding rate — limited availability
               </p>
 
               <div className="mb-6">
                 <div className="flex items-baseline justify-center gap-3">
-                  <span className="font-heading font-black text-6xl text-theme-primary">$2,000</span>
-                  <span className="text-theme-secondary text-sm line-through">$5,500</span>
+                  <span className="font-heading font-black text-6xl text-theme-primary">$2,995</span>
+                  <span className="text-theme-secondary text-sm line-through">$4,995</span>
                 </div>
                 <p className="text-theme-secondary text-sm mt-2">
                   Full Validation — includes Market Scan deliverables
@@ -376,41 +352,6 @@ export default function ValidatePage() {
               Delivered as: PDF report + executive summary — typically within 5 business days
             </p>
           </AnimateOnScroll>
-        </div>
-      </section>
-
-      {/* ═══════════════ CROSS-SELL ═══════════════ */}
-      <section className="relative py-16 md:py-20">
-        <div className="max-w-[900px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up" className="text-center mb-8">
-            <span className="overline">Where to go next</span>
-          </AnimateOnScroll>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <AnimateOnScroll variant="fade-up" delay={100}>
-              <Link href="/discover" className="block card-cosmic rounded-2xl p-7 border-violet-500/20 hover:bg-white/[0.03] transition-colors group h-full">
-                <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-theme-primary text-lg">Program Finder</h3>
-                  <span className="text-xs font-semibold text-theme-muted">$1,500</span>
-                </div>
-                <p className="text-theme-secondary text-sm mb-4">Discover 7–10 validated program opportunities for your region — scored, ranked, and backed by real employer demand.</p>
-                <span className="inline-flex items-center gap-1 text-sm font-semibold text-violet-300 group-hover:gap-2 transition-all">
-                  Learn More <ArrowRight className="h-4 w-4" />
-                </span>
-              </Link>
-            </AnimateOnScroll>
-            <AnimateOnScroll variant="fade-up" delay={200}>
-              <Link href="/grants" className="block card-cosmic rounded-2xl p-7 border-green-500/20 hover:bg-white/[0.03] transition-colors group h-full">
-                <div className="flex items-center gap-3 mb-2">
-                  <h3 className="font-heading font-bold text-theme-primary text-lg">Grant Finder</h3>
-                  <span className="text-xs font-semibold text-theme-muted">$495</span>
-                </div>
-                <p className="text-theme-secondary text-sm mb-4">Find and prioritize the grants your programs qualify for — scored, ranked, and ready to pursue.</p>
-                <span className="inline-flex items-center gap-1 text-sm font-semibold text-green-300 group-hover:gap-2 transition-all">
-                  Learn More <ArrowRight className="h-4 w-4" />
-                </span>
-              </Link>
-            </AnimateOnScroll>
-          </div>
         </div>
       </section>
 

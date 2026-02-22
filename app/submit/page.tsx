@@ -112,7 +112,7 @@ export default function SubmitPage() {
       target_learner_profile: 'career_changers',
       delivery_format: 'hybrid',
       estimated_program_length: '16 weeks',
-      estimated_tuition: '$3,500',
+      estimated_tuition: '$2,995',
       institutional_capacity: 'Existing computer labs available. IT department has adjunct instructors with cybersecurity experience.',
       employer_interest: 'Collins Aerospace and UnityPoint Health have expressed general interest in cybersecurity training for employees.',
       strategic_context: 'Aligns with college strategic plan to expand IT and healthcare IT programs. No existing cybersecurity offering.',
@@ -309,7 +309,7 @@ export default function SubmitPage() {
                       id="estimated_tuition"
                       value={formData.estimated_tuition}
                       onChange={(e) => setFormData({ ...formData, estimated_tuition: e.target.value })}
-                      placeholder="e.g., $3,500"
+                      placeholder="e.g., $2,995"
                     />
                   </div>
 

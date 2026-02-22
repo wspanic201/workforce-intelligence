@@ -292,7 +292,7 @@ export default function DiscoverPage() {
 
                   <div className="mb-1">
                     <span className="font-heading font-black text-6xl text-theme-primary">$1,500</span>
-                    <span className="text-theme-secondary text-sm ml-2 line-through">$3,500</span>
+                    <span className="text-theme-secondary text-sm ml-2 line-through">$2,995</span>
                   </div>
                   <p className="text-theme-secondary text-xs mb-2">Founding rate — first 5 institutions</p>
                   <p className="text-theme-tertiary text-xs mb-5">Eligible for Perkins V, WIOA, and state workforce grant funding</p>

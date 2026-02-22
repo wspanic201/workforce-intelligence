@@ -86,7 +86,7 @@ const SERVICES: Service[] = [
   {
     name: 'Feasibility Study',
     slug: 'validate',
-    price: '$3,500',
+    price: '$2,995',
     description: 'Seven-specialist feasibility analysis with financial projections and a definitive GO / NO-GO recommendation.',
     turnaround: '7–10 business days',
     features: [

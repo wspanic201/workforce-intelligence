@@ -454,7 +454,7 @@ export default function GrantsPage() {
                 <FileText className="h-5 w-5 text-purple-400" />
               </div>
               <h3 className="font-heading font-semibold text-theme-primary text-lg mb-1">Grant Application Package</h3>
-              <p className="text-purple-300/80 text-sm font-semibold mb-3">$3,500 – $7,500</p>
+              <p className="text-purple-300/80 text-sm font-semibold mb-3">$2,995 – $7,500</p>
               <p className="text-theme-tertiary text-sm leading-relaxed mb-4">
                 We help write and assemble the full grant application — so your team can focus on running the college, not writing narrative prose.
               </p>

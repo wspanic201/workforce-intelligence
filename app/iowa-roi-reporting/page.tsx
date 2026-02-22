@@ -202,7 +202,7 @@ export default function IowaROIPage() {
                     Full financial model + wage outcome projections for new programs
                   </p>
                 </div>
-                <span className="font-mono text-sm font-semibold text-purple-600">$3,500</span>
+                <span className="font-mono text-sm font-semibold text-purple-600">$2,995</span>
               </div>
               <p className="text-gray-700 leading-relaxed mb-4">
                 Before you invest in curriculum development or faculty hires, validate that the program will deliver strong ROI — completion rates, wage outcomes, and financial viability.
