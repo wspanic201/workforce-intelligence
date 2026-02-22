@@ -191,20 +191,20 @@ export default function GrantsPage() {
             {[
               {
                 step: '01',
-                title: 'Submit your college profile',
-                desc: 'Tell us about your institution — programs, region, strategic priorities, and capacity. A short intake form takes under 10 minutes.',
+                title: 'Tell us your institution',
+                desc: 'That\u2019s it. We pull your program catalog, region, accreditation, and institutional profile automatically. No lengthy intake forms.',
                 accent: 'text-green-400',
               },
               {
                 step: '02',
-                title: 'We scan 30+ grant databases',
-                desc: 'We research federal agencies (DOL, ED, NSF, HHS and more), private foundations, and workforce-specific programs. Every opportunity is checked for eligibility and fit.',
+                title: 'We match you to real funding',
+                desc: 'Federal agencies, private foundations, and workforce-specific programs — scanned, scored for eligibility and fit, and ranked by how well they match your institution\u2019s actual programs and capacity.',
                 accent: 'text-blue-400',
               },
               {
                 step: '03',
-                title: 'Get your prioritized report',
-                desc: 'A ranked list of your best grant opportunities, complete with scoring, past award data, requirements analysis, deadlines, and strategic recommendations. Delivered as a professional PDF report.',
+                title: 'Get your prioritized action plan',
+                desc: 'A ranked report with scoring, past award data, requirements, deadlines, effort estimates, and strategic recommendations. Delivered as a professional PDF in 48 hours.',
                 accent: 'text-purple-400',
               },
             ].map(({ step, title, desc, accent }) => (
@@ -351,7 +351,7 @@ export default function GrantsPage() {
             <AnimateOnScroll variant="scale" delay={100}>
               <div className="card-cosmic rounded-2xl p-8 md:p-10 text-center border-green-500/20 h-full flex flex-col relative">
                 <div>
-                  <p className="overline mb-4">GRANT INTELLIGENCE SCAN</p>
+                  <p className="overline mb-4">GRANT FINDER</p>
                   <p className="text-theme-secondary text-sm mb-5">
                     30+ grants scanned, scored, and ranked for your institution.
                   </p>
