@@ -17,6 +17,17 @@ export const metadata: Metadata = {
 
 export const posts = [
   {
+    slug: "dol-65-million-workforce-pell-grants-community-colleges-2026",
+    title: "$65M DOL Workforce Pell Grants: What Community Colleges Need to Know",
+    excerpt: "The U.S. Department of Labor announced $65 million in grants for community colleges developing Workforce Pell-eligible programs. Strategic analysis for program leaders.",
+    date: "February 22, 2026",
+    readTime: "9 min read",
+    category: "Federal Funding",
+    accent: "from-teal-500/20 to-blue-500/10",
+    border: "border-teal-500/30",
+    dot: "bg-teal-400",
+  },
+  {
     slug: "reshoring-immigration-structural-workforce-shortages-2026",
     title: "Reshoring + Immigration Restrictions = Structural Workforce Shortages",
     excerpt:

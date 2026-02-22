@@ -138,7 +138,7 @@ const WHY_ACT_NOW = [
     description:
       'Short-term programs are price-sensitive. Pell eligibility removes the biggest barrier for working adults — cost. Qualifying programs routinely see enrollment lift once Pell is available.',
   },
-
+];
 
 const DELIVERABLES = [
   'Complete program catalog reviewed against Pell criteria',

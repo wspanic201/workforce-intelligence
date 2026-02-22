@@ -2,37 +2,37 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: '$65M in DOL Grants for Workforce Pell: What Community Colleges Need to Know | Wavelength',
-  description: 'The U.S. Department of Labor just opened $65 million in funding for community college short-term training programs. Here\'s what your institution needs to do to compete—and win.',
-  alternates: {
-    canonical: 'https://withwavelength.com/blog/dol-65-million-workforce-pell-grants-community-colleges-2026',
-  },
+  title: '$65M DOL Workforce Pell Grants: What Community Colleges Need to Know | Wavelength',
+  description: 'The U.S. Department of Labor announced $65 million in grants for community colleges developing Workforce Pell-eligible programs. Here\'s how to position your institution for funding and what the money really means for program strategy.',
+  keywords: 'Workforce Pell grants, DOL community college funding, short-term credential programs, Pell-eligible workforce training, community college grants 2026',
   openGraph: {
-    title: '$65M in DOL Grants for Workforce Pell: What Community Colleges Need to Know',
-    description: 'The U.S. Department of Labor just opened $65 million in funding for community college short-term training programs. Here\'s what your institution needs to do to compete—and win.',
+    title: '$65M DOL Workforce Pell Grants: What Community Colleges Need to Know',
+    description: 'DOL announces $65M in grants for Workforce Pell program development. Strategic analysis for community college leaders.',
     type: 'article',
-    publishedTime: '2026-02-20T00:00:00Z',
-    authors: ['Wavelength'],
-    tags: ['Workforce Pell', 'DOL Grants', 'Community College Funding', 'Short-Term Programs', 'Program Development'],
-    url: 'https://withwavelength.com/blog/dol-65-million-workforce-pell-grants-community-colleges-2026',
+    publishedTime: '2026-02-22T09:00:00Z',
+    authors: ['Wavelength Team'],
+    tags: ['Workforce Pell', 'Federal Funding', 'Program Development', 'Community Colleges', 'DOL Grants'],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '$65M in DOL Grants for Workforce Pell: What Community Colleges Need to Know',
-    description: 'The U.S. Department of Labor just opened $65 million in funding for community college short-term training programs. Here\'s what your institution needs to do to compete—and win.',
+    title: '$65M DOL Workforce Pell Grants: What Community Colleges Need to Know',
+    description: 'Strategic analysis of DOL\'s $65M grant opportunity for Workforce Pell program development.',
+  },
+  alternates: {
+    canonical: 'https://withwavelength.com/blog/dol-65-million-workforce-pell-grants-community-colleges-2026',
   },
 }
 
-export default function Article() {
+export default function BlogPost() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
       {
         '@type': 'Article',
-        headline: '$65M in DOL Grants for Workforce Pell: What Community Colleges Need to Know',
-        description: 'The U.S. Department of Labor just opened $65 million in funding for community college short-term training programs. Here\'s what your institution needs to do to compete—and win.',
-        datePublished: '2026-02-20T00:00:00Z',
-        dateModified: '2026-02-20T00:00:00Z',
+        headline: '$65M DOL Workforce Pell Grants: What Community Colleges Need to Know',
+        description: 'The U.S. Department of Labor announced $65 million in grants for community colleges developing Workforce Pell-eligible programs. Strategic analysis for program leaders.',
+        datePublished: '2026-02-22T09:00:00Z',
+        dateModified: '2026-02-22T09:00:00Z',
         author: {
           '@type': 'Organization',
           name: 'Wavelength',
@@ -43,7 +43,7 @@ export default function Article() {
           name: 'Wavelength',
           url: 'https://withwavelength.com',
         },
-        keywords: 'Workforce Pell, DOL grants, community college funding, short-term training programs, program development',
+        keywords: 'Workforce Pell grants, DOL community college funding, short-term credential programs',
       },
       {
         '@type': 'BreadcrumbList',
@@ -63,7 +63,7 @@ export default function Article() {
           {
             '@type': 'ListItem',
             position: 3,
-            name: '$65M in DOL Grants for Workforce Pell',
+            name: '$65M DOL Workforce Pell Grants',
             item: 'https://withwavelength.com/blog/dol-65-million-workforce-pell-grants-community-colleges-2026',
           },
         ],
@@ -79,249 +79,274 @@ export default function Article() {
       />
       <article className="max-w-4xl mx-auto px-4 py-12">
         <div className="mb-8">
-          <span className="text-xs font-mono text-violet-600 border border-violet-600/30 px-3 py-1 rounded-full">
-            FEDERAL FUNDING
+          <span className="text-xs font-mono text-violet-400 border border-violet-400/30 px-3 py-1 rounded-full">
+            Federal Funding
           </span>
         </div>
 
         <div className="h-1 w-full rounded-full bg-gradient-to-r from-violet-500 via-blue-500 to-teal-500 mb-10" />
 
-        <h1 className="font-bold leading-tight mb-5 text-gray-900" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.8rem, 3.5vw, 2.8rem)"}}>
-          $65M in DOL Grants for Workforce Pell: What Community Colleges Need to Know
+        <h1 className="font-bold leading-tight mb-5 text-white" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.8rem, 3.5vw, 2.8rem)"}}>
+          DOL Announces $65M in Workforce Pell Grants: What Community Colleges Need to Know Right Now
         </h1>
 
-        <div className="flex items-center gap-4 mb-10 text-gray-500 text-sm">
-          <time dateTime="2026-02-20">February 20, 2026</time>
-          <span>•</span>
-          <span>9 min read</span>
+        <div className="flex items-center gap-4 mb-8">
+          <span className="text-white/30 text-sm">February 22, 2026</span>
+          <span className="text-white/30 text-sm">•</span>
+          <span className="text-white/30 text-sm">9 min read</span>
         </div>
 
-        <p className="text-gray-700 text-xl leading-relaxed mb-10">
-          On February 17, 2026, the U.S. Department of Labor announced the availability of $65 million in funding specifically designed to help community colleges develop short-term training programs that qualify for Workforce Pell grants. This isn't theoretical future funding—applications are open now, and the clock is ticking. For VPs of Academic Affairs and Workforce Development Directors, this represents a rare convergence of federal money, policy momentum, and institutional need. But it also raises a critical question: Is your institution actually ready to compete?
+        <p className="text-white/60 text-xl leading-relaxed mb-8">
+          On February 17, 2026, the U.S. Department of Labor announced the availability of $65 million in competitive grants specifically designed to help community colleges develop short-term training programs eligible for Workforce Pell funding. Individual institutions can receive awards up to $11 million. This isn't just another federal funding announcement—it's the clearest signal yet that DOL is betting on community colleges as the primary delivery vehicle for high-quality, labor-market-aligned credential programs under the expanded Pell framework.
         </p>
 
-        <h2 className="font-bold text-gray-900 mb-4" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
-          What the DOL Announcement Actually Says
+        <p className="text-white/80 leading-relaxed mb-6">
+          But here's what most institutions are missing: the availability of funding doesn't solve the strategic question of <em>which programs to develop</em>. With Workforce Pell eligibility tied to occupation-specific criteria, labor market demand thresholds, and wage outcomes, community colleges face a portfolio strategy problem before they face a funding problem. This post breaks down what the DOL announcement really means, what it reveals about federal priorities, and how to position your institution for both grant success and sustainable program growth.
+        </p>
+
+        <h2 className="font-bold text-white mb-4 mt-12" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
+          The $65M Breakdown: What DOL Is Actually Funding
         </h2>
 
-        <p className="text-gray-700 leading-relaxed mb-6">
-          According to the <a href="https://www.dol.gov/newsroom/releases/eta/eta20260217" target="_blank" rel="noopener noreferrer" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">official DOL press release</a>, the Employment and Training Administration is making $65 million available through a competitive grant process aimed at expanding access to "high-quality, short-term training programs" at community colleges. The grant program explicitly targets programs that meet Workforce Pell eligibility criteria—meaning programs between 150 and 600 clock hours that lead to recognized postsecondary credentials in high-demand occupations.
+        <p className="text-white/80 leading-relaxed mb-6">
+          According to the <a href="https://www.dol.gov/newsroom/releases/eta/eta20260217" target="_blank" rel="noopener noreferrer" className="text-teal-400 underline underline-offset-2 hover:text-teal-300">official DOL press release</a>, the $65 million allocation is structured through the Employment and Training Administration (ETA) to support programs that help community colleges meet the Workforce Pell eligibility requirements established in the most recent federal budget appropriations. The grants are designed to fund:
         </p>
 
-        <p className="text-gray-700 leading-relaxed mb-6">
-          This funding builds on the Workforce Pell pilot program authorized under previous appropriations bills, which has been testing whether financial aid can effectively support accelerated credential programs outside traditional semester structures. Early results have been promising enough that DOL is now putting serious money behind scaling these programs nationally.
+        <ul className="list-disc list-outside pl-6 space-y-2 text-white/80 mb-6">
+          <li><strong>Curriculum development and alignment</strong> for programs between 150 and 600 clock hours that lead to recognized postsecondary credentials</li>
+          <li><strong>Labor market analysis and employer partnership development</strong> to demonstrate demand and wage outcomes meet Workforce Pell thresholds</li>
+          <li><strong>Institutional capacity building</strong> including data systems, credential tracking infrastructure, and compliance documentation</li>
+          <li><strong>Student support services</strong> tailored to short-term credential seekers, including advising, wraparound services, and job placement assistance</li>
+        </ul>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          The upper limit of $11 million per institution is significant. For context, that's enough to fund comprehensive program portfolio redesign, multi-year employer engagement strategies, and the data infrastructure necessary to maintain compliance across multiple credential pathways. DOL is not funding pilot projects—they're funding institutional transformation.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-gray-50 border border-teal-500/20 rounded-xl p-5 text-center">
-            <div className="text-3xl font-bold text-teal-600 mb-2">$65M</div>
-            <div className="text-gray-600 text-sm">Total Available Funding</div>
+          <div className="bg-white/5 border border-teal-500/20 rounded-xl p-5 text-center">
+            <div className="text-3xl font-bold text-teal-400 mb-2">$65M</div>
+            <div className="text-white/60 text-sm">Total DOL Allocation</div>
           </div>
-          <div className="bg-gray-50 border border-teal-500/20 rounded-xl p-5 text-center">
-            <div className="text-3xl font-bold text-violet-600 mb-2">150-600</div>
-            <div className="text-gray-600 text-sm">Clock Hours for Eligibility</div>
+          <div className="bg-white/5 border border-teal-500/20 rounded-xl p-5 text-center">
+            <div className="text-3xl font-bold text-teal-400 mb-2">$11M</div>
+            <div className="text-white/60 text-sm">Max Award Per Institution</div>
           </div>
-          <div className="bg-gray-50 border border-teal-500/20 rounded-xl p-5 text-center">
-            <div className="text-3xl font-bold text-blue-600 mb-2">Feb 2026</div>
-            <div className="text-gray-600 text-sm">Application Window Opens</div>
+          <div className="bg-white/5 border border-teal-500/20 rounded-xl p-5 text-center">
+            <div className="text-3xl font-bold text-teal-400 mb-2">150-600</div>
+            <div className="text-white/60 text-sm">Clock Hours for Eligibility</div>
           </div>
         </div>
 
-        <h2 className="font-bold text-gray-900 mb-4" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
-          Why This Matters More Than Previous Grant Rounds
+        <h2 className="font-bold text-white mb-4 mt-12" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
+          What This Reveals About Federal Workforce Strategy
         </h2>
 
-        <p className="text-gray-700 leading-relaxed mb-6">
-          Federal grant announcements are common enough to be background noise in higher ed. But this DOL funding represents something structurally different: it's the first major investment explicitly tied to making Workforce Pell operationally viable at scale. Previous rounds of workforce development funding often supported one-off training initiatives or pilot programs that struggled to sustain themselves after grant dollars ran out. This round is different because it's designed to build institutional capacity for programs that will be Pell-eligible on an ongoing basis.
+        <p className="text-white/80 leading-relaxed mb-6">
+          The timing and structure of this funding tells us three important things about where federal workforce policy is headed:
         </p>
 
-        <p className="text-gray-700 leading-relaxed mb-6">
-          The timing matters, too. As reported by <a href="https://www.insidehighered.com/news/quick-takes/2026/02/18/labor-give-65m-community-colleges-workforce-pell" target="_blank" rel="noopener noreferrer" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">Inside Higher Ed</a>, this announcement comes as the Workforce Pell pilot program transitions from experimental phase to operational implementation. Institutions that can demonstrate readiness now—through strong labor market alignment, curriculum infrastructure, and student support systems—will have a significant advantage in both securing grant funding and positioning themselves for long-term Pell eligibility when the pilot becomes permanent.
+        <p className="text-white/80 leading-relaxed mb-6">
+          <strong>1. Short-term credentials are now infrastructure, not innovation.</strong> The grant language doesn't treat 150-600 hour programs as experimental pilot initiatives. DOL is funding at scale because the federal government has decided that stackable, short-term credentials aligned to in-demand occupations are the primary pathway for workforce development. Community colleges that continue to think of these programs as "non-credit" or "continuing education" are misreading the policy environment.
         </p>
 
-        <p className="text-gray-700 leading-relaxed mb-6">
-          But here's the catch: competitive federal grants reward institutions that can demonstrate not just intent, but execution capability. Your application needs to show that you've already done the market research, identified the occupational demand, validated the credential pathway, and mapped the student support infrastructure. In other words, you need to show up ready, not aspirational.
+        <p className="text-white/80 leading-relaxed mb-6">
+          <strong>2. Labor market alignment is now a compliance requirement.</strong> Workforce Pell eligibility hinges on demonstrable demand and wage outcomes. DOL isn't funding program creation in a vacuum—they're funding the institutional capacity to prove ongoing alignment. This means community colleges need real-time labor market intelligence, not annual environmental scans. The grant application will almost certainly require evidence of demand verification methodology.
         </p>
 
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8">
-          <h3 className="font-bold text-gray-900 mb-3" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"1.1rem"}}>
-            What Makes a Workforce Pell Program Competitive
+        <p className="text-white/80 leading-relaxed mb-6">
+          <strong>3. The federal government expects institutional capacity gaps.</strong> The inclusion of funding for data systems, compliance infrastructure, and employer partnership development signals that DOL knows most community colleges aren't operationally ready for Workforce Pell at scale. This is a capacity-building investment, which means institutions that can demonstrate readiness—or a clear plan to achieve it—have a competitive advantage in the application process.
+        </p>
+
+        <div className="bg-white/5 border border-white/10 rounded-xl p-6 mb-8">
+          <h3 className="font-bold text-white mb-3" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.1rem, 1.5vw, 1.3rem)"}}>
+            The Portfolio Strategy Problem
           </h3>
-          <p className="text-gray-600 mb-4">
-            Based on DOL guidance and early pilot program results, winning proposals typically demonstrate:
+          <p className="text-white/60 leading-relaxed mb-4">
+            Here's the strategic tension: Most community colleges have dozens of existing certificate and diploma programs, some of which might already fall within the 150-600 hour range. But Workforce Pell eligibility isn't just about clock hours—it requires programs to align with occupations that meet specific labor market demand and wage thresholds.
           </p>
-          <ul className="list-disc list-outside pl-6 space-y-2 text-gray-700">
-            <li>Clear alignment with regional labor market demand, backed by BLS or state workforce data</li>
-            <li>Established employer partnerships with documented hiring commitments</li>
-            <li>Curriculum mapped to industry-recognized credentials (not just proprietary certificates)</li>
-            <li>Student support infrastructure designed for working adult learners</li>
-            <li>Explicit pathways from short-term credentials to longer degree programs</li>
-            <li>Assessment and outcome tracking systems already in place or clearly planned</li>
-          </ul>
+          <p className="text-white/60 leading-relaxed">
+            That means institutions need to answer two questions simultaneously: (1) Which of our existing programs can be modified to meet Workforce Pell criteria? and (2) Which new programs should we develop in occupational areas with unmet demand? The $65M grants are designed to fund both, but the application will require a coherent portfolio strategy, not a list of program ideas.
+          </p>
         </div>
 
-        <h2 className="font-bold text-gray-900 mb-4" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
-          The Readiness Gap Most Institutions Face
+        <h2 className="font-bold text-white mb-4 mt-12" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
+          What Makes a Competitive Grant Application
         </h2>
 
-        <p className="text-gray-700 leading-relaxed mb-6">
-          Here's the uncomfortable truth: most community colleges aren't actually ready to write competitive applications for this funding. Not because they lack capable faculty or institutional commitment, but because they're missing the foundational workforce intelligence infrastructure that federal reviewers expect to see.
+        <p className="text-white/80 leading-relaxed mb-6">
+          While the full Request for Proposals (RFP) hasn't been published yet, we can reverse-engineer what DOL will prioritize based on the grant's stated objectives and the broader Workforce Pell framework. Strong applications will demonstrate:
         </p>
 
-        <p className="text-gray-700 leading-relaxed mb-6">
-          When we talk to workforce development directors about grant readiness, we consistently hear the same challenges:
-        </p>
-
-        <ul className="list-disc list-outside pl-6 space-y-2 text-gray-700 mb-6">
-          <li><strong className="text-gray-900">Labor market data is fragmented and inconsistent.</strong> Faculty know anecdotally what local employers need, but can't quickly produce the quantitative occupational demand data that grant reviewers require.</li>
-          <li><strong className="text-gray-900">Program portfolios evolved organically over decades.</strong> Nobody has a comprehensive view of which programs actually meet Workforce Pell criteria, which ones are close, and which gaps exist in the portfolio.</li>
-          <li><strong className="text-gray-900">Curriculum drift is invisible until it's catastrophic.</strong> Programs launched five years ago based on solid labor market data may no longer align with current occupational requirements—but institutions don't have systematic ways to detect this drift.</li>
-          <li><strong className="text-gray-900">New program development is resource-intensive and slow.</strong> Identifying, validating, and launching a new short-term credential program typically takes 12-18 months, which is longer than most grant application cycles allow.</li>
+        <ul className="list-disc list-outside pl-6 space-y-2 text-white/80 mb-6">
+          <li><strong>Evidence-based program selection.</strong> Applications will need to show that proposed programs target occupations with verified demand, not historical enrollment patterns or faculty expertise. Expect DOL to favor institutions that can cite Bureau of Labor Statistics occupational projections, state-level labor market data, and employer surveys or letters of commitment.</li>
+          <li><strong>Existing employer partnerships.</strong> The grant announcement emphasizes employer engagement and job placement. Institutions with established advisory boards, apprenticeship partnerships, or work-based learning infrastructure have a material advantage. If you're starting from zero on employer relationships, your application needs to explain how grant funds will build that capacity quickly.</li>
+          <li><strong>Clear compliance infrastructure.</strong> Workforce Pell requires ongoing documentation of outcomes, including credential attainment rates, job placement in related fields, and wage gains. DOL will want to see that you have—or can build—the data systems to track these metrics at the program level, not just institutional aggregates.</li>
+          <li><strong>Equity and access strategies.</strong> Federal workforce grants increasingly require explicit attention to underserved populations. Your application should address how proposed programs will serve students from low-income backgrounds, communities of color, rural areas, or other populations with historical barriers to credential attainment.</li>
+          <li><strong>Sustainability plans.</strong> Grant funding is temporary. DOL will favor applications that demonstrate how new or redesigned programs will be sustained after grant funds expire, including tuition models, ongoing employer partnerships, and integration into the institution's academic planning cycle.</li>
         </ul>
 
-        <p className="text-gray-700 leading-relaxed mb-6">
-          These aren't capability problems—they're infrastructure problems. And they're exactly what Wavelength was built to solve.
+        <p className="text-white/80 leading-relaxed mb-6">
+          The most common mistake institutions make with large federal grants is treating the application as a funding request rather than a strategic plan. DOL wants to see institutional transformation, not project execution.
         </p>
 
-        <h2 className="font-bold text-gray-900 mb-4" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
-          How to Position Your Institution for Success
+        <h2 className="font-bold text-white mb-4 mt-12" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
+          The Pre-Application Strategic Questions
         </h2>
 
-        <p className="text-gray-700 leading-relaxed mb-6">
-          If your institution wants to compete for this DOL funding—or position itself for future Workforce Pell eligibility even without the grant—you need to move quickly through three distinct phases: assessment, validation, and implementation planning.
+        <p className="text-white/80 leading-relaxed mb-6">
+          Before you can write a competitive grant application, your institution needs to answer five strategic questions. These aren't RFP requirements—they're the foundational decisions that determine whether you have a coherent case for funding:
         </p>
 
-        <h3 className="font-bold text-gray-900 mb-3" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"1.1rem"}}>
-          Phase 1: Know Your Current Position
-        </h3>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          Before you can write a compelling grant proposal, you need a clear-eyed assessment of where your institution actually stands. This means understanding two things: which of your existing programs already meet or nearly meet Workforce Pell criteria, and where the gaps are in your program portfolio relative to regional workforce demand.
+        <p className="text-white/80 leading-relaxed mb-6">
+          <strong>1. Which of our existing programs are already Workforce Pell-eligible or could be modified to qualify?</strong> Many institutions have certificate programs in healthcare, IT, advanced manufacturing, or business that fall within the 150-600 hour range but haven't been mapped against Workforce Pell occupation and wage criteria. Before proposing new programs, you need an audit of what's already in your portfolio and where the gaps exist.
         </p>
 
-        <p className="text-gray-700 leading-relaxed mb-6">
-          This is where Wavelength's <Link href="/pell" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">free Pell Readiness Check</Link> becomes valuable. It scans your current program portfolio against Workforce Pell eligibility criteria—clock hour requirements, credential recognition, occupational alignment—and gives you an immediate snapshot of which programs are ready, which ones need minor adjustments, and which ones aren't viable candidates. This takes what would normally be weeks of manual cross-referencing and compresses it into minutes.
-        </p>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          For institutions that need a more comprehensive view, the <Link href="/compliance-gap" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">State-Mandated Program Gap Analysis</Link> ($295) provides a detailed analysis of your entire program portfolio, identifying not just Pell eligibility status but also where programs cluster, where coverage gaps exist relative to labor market demand, and which programs represent the strongest candidates for grant funding. This report becomes the foundation of your grant narrative—you're not just proposing programs you think might work, you're demonstrating data-driven portfolio strategy.
-        </p>
-
-        <h3 className="font-bold text-gray-900 mb-3" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"1.1rem"}}>
-          Phase 2: Validate Your Program Concepts
-        </h3>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          Once you understand your current position, the next question is: which new programs should you propose? This is where most grant applications fail—they propose programs based on institutional capacity or faculty interest rather than demonstrable labor market demand.
-        </p>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          Federal grant reviewers want to see evidence that the programs you're proposing actually align with occupational demand in your region. They want to see BLS occupational codes, projected job openings, median wages, credential requirements, and competitive program benchmarks. Gathering this data manually across multiple BLS databases, state workforce agencies, and occupational information systems typically takes weeks and produces inconsistent results.
-        </p>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          Wavelength's <Link href="/discover" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">Market Scan</Link> ($1,500) solves this by delivering 7-10 fully vetted program opportunities that meet Workforce Pell criteria and demonstrate strong labor market alignment in your specific region. Each opportunity includes occupational demand data, credential pathway mapping, competitive benchmarks, and implementation considerations. This isn't just data—it's grant-ready program justification.
-        </p>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          If you already have specific program concepts in mind—maybe faculty have been advocating for a particular credential, or employer partners have requested specific training—<Link href="/validate" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">Feasibility Study</Link> provides the labor market validation those concepts need. You get the occupational data, wage information, and competitive landscape analysis that turns "we think this would be good" into "here's why this is strategically necessary."
-        </p>
-
-        <h3 className="font-bold text-gray-900 mb-3" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"1.1rem"}}>
-          Phase 3: Build Ongoing Monitoring Systems
-        </h3>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          Here's something that separates winning grant applications from merely adequate ones: sustainability planning. DOL doesn't just want to fund programs for the grant period—they want to fund programs that will continue to serve students and employers after grant funding ends. That means demonstrating that you have systems in place to monitor program relevance over time and make curriculum adjustments as labor market conditions change.
-        </p>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          This is exactly what <Link href="/drift" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">Curriculum Drift Analysis</Link> was designed to address. Quarterly scans of your program curriculum against current occupational requirements ensure that the programs you're proposing won't become obsolete before students even graduate. In your grant proposal, this becomes evidence of institutional capacity for ongoing quality assurance—a significant competitive advantage.
-        </p>
-
-        <div className="bg-gradient-to-r from-violet-50 to-teal-50 border border-violet-200 rounded-2xl p-8 mt-12 mb-12 text-center">
-          <h3 className="font-bold text-gray-900 mb-4" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"1.4rem"}}>
-            Need to Move Fast on Grant Readiness?
-          </h3>
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-            Start with our free Pell Readiness Check to see where your programs stand today, then schedule a call to discuss which Wavelength products will strengthen your grant application before the deadline.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/pell"
-              className="inline-block bg-teal-500 text-white font-semibold px-6 py-3 rounded-lg hover:bg-teal-400 transition-colors"
-            >
-              Run Free Pell Check
-            </Link>
-            <Link
-              href="/contact"
-              className="inline-block bg-gray-100 text-gray-900 font-semibold px-6 py-3 rounded-lg hover:bg-gray-200 transition-colors border border-gray-300"
-            >
-              Schedule Strategy Call
-            </Link>
-          </div>
-        </div>
-
-        <h2 className="font-bold text-gray-900 mb-4" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
-          What Happens If You Don't Win the Grant
-        </h2>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          Here's the strategic reality: not every institution that applies for this DOL funding will receive it. Federal grants are competitive by design, and $65 million spread across the community college system means most applicants won't get funded. But that doesn't make the preparation work wasted.
-        </p>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          The infrastructure you build to compete for this grant—the portfolio analysis, the labor market validation, the curriculum alignment systems—becomes the foundation for institutional transformation whether or not you receive DOL funding. Because Workforce Pell itself is moving from pilot to permanent program, institutions that develop this capacity now will be positioned to access federal financial aid for short-term programs regardless of additional grant funding.
-        </p>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          As <a href="https://workforcepell.substack.com/p/workforce-pell-funding-opportunities" target="_blank" rel="noopener noreferrer" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">recent analysis from workforce policy experts notes</a>, Workforce Pell is transitioning from policy design to operational detail. The institutions that will succeed in this environment aren't the ones waiting for perfect guidance documents or hoping for future funding—they're the ones building operational capacity right now.
-        </p>
-
-        <h2 className="font-bold text-gray-900 mb-4" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
-          The Broader Context: Why Short-Term Credentials Matter Now
-        </h2>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          This DOL funding push for short-term programs arrives at a moment when the relationship between credentials and employment is being fundamentally rethought. Recent <a href="https://finance.yahoo.com/news/many-college-graduates-really-underemployed-050000342.html" target="_blank" rel="noopener noreferrer" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">research on bachelor's degree underemployment</a> has challenged simplistic narratives about four-year degrees always being the best pathway to career success, revealing significant educational diversity within occupations that were previously assumed to require bachelor's degrees.
-        </p>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          At the same time, labor force participation data shows significant populations—including the 27.1% of people with work-limiting health conditions or disabilities <a href="https://www.bls.gov/opub/ted/2026/27-1-percent-of-people-with-a-work-limiting-difficulty-participated-in-the-labor-force-in-july-2024.htm" target="_blank" rel="noopener noreferrer" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">who participated in the labor force as of July 2024</a>—who need flexible, accelerated pathways to recognized credentials that lead to family-sustaining wages.
-        </p>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          Short-term credential programs that meet Workforce Pell criteria represent a strategic response to both of these realities. They provide faster, more affordable pathways to recognized credentials in occupations with demonstrated labor market demand. And when designed properly—with clear stackability toward longer credentials—they don't represent dead ends, but rather entry points into lifelong learning pathways.
-        </p>
-
-        <h2 className="font-bold text-gray-900 mb-4" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
-          What to Do This Week
-        </h2>
-
-        <p className="text-gray-700 leading-relaxed mb-6">
-          If you're a VP of Academic Affairs, Workforce Development Director, or Department Chair at a community college, here's what the next week should look like:
-        </p>
-
-        <ol className="list-decimal list-outside pl-6 space-y-3 text-gray-700 mb-8">
-          <li><strong className="text-gray-900">Run a Pell Readiness Check on your current programs.</strong> This takes five minutes and gives you immediate clarity on where you actually stand. <Link href="/pell" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">Start here</Link>.</li>
-          <li><strong className="text-gray-900">Review the full DOL grant announcement.</strong> Understand the eligibility criteria, application requirements, and timeline. <a href="https://www.dol.gov/newsroom/releases/eta/eta20260217" target="_blank" rel="noopener noreferrer" className="text-teal-600 underline underline-offset-2 hover:text-teal-700">Read the official release</a>.</li>
-          <li><strong className="text-gray-900">Convene your grant writing team.</strong> Whether or not you ultimately apply, start the conversation about institutional readiness for Workforce Pell with the people who will actually execute the work.</li>
-          <li><strong className="text-gray-900">Assess your data infrastructure.</strong> Can you quickly produce labor market alignment data for your programs? Do you know which occupational codes your credentials map to? If the answer is no, that's the infrastructure gap you need to address first.</li>
-          <li><strong className="text-gray-900">Look at your program development pipeline.</strong> If you were to receive this grant, could you actually launch new programs in a reasonable timeframe? Do you have curriculum development capacity? Student support systems? Employer partnership infrastructure?</li>
-        </ol>
-
-        <div className="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8">
-          <h3 className="font-bold text-gray-900 mb-3" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"1.1rem"}}>
-            The Strategic Opportunity
-          </h3>
-          <p className="text-gray-700 leading-relaxed">
-            The $65 million DOL announcement isn't just about this specific grant round—it's a signal of where federal workforce development policy is headed. Institutions that build the infrastructure to respond effectively to this opportunity will be better positioned for every future funding stream, every Workforce Pell expansion, and every labor market shift that requires agile program development. The question isn't whether your institution can afford to invest in this infrastructure. It's whether you can afford not to.
+        <div className="bg-white/5 border border-white/10 rounded-xl p-6 mb-8">
+          <p className="text-white/60 leading-relaxed mb-4">
+            This is exactly what Wavelength's <Link href="/pell" className="text-teal-400 underline underline-offset-2 hover:text-teal-300">free Pell Readiness Check</Link> does—it scans your existing program portfolio against Workforce Pell eligibility criteria and identifies which programs are ready, which need modification, and which occupational areas have unmet demand in your labor market. Most institutions discover they're closer to Workforce Pell readiness than they realized, but they have blind spots in 2-3 high-demand occupational clusters.
           </p>
         </div>
 
-        <div className="pt-8 mt-12 border-t border-gray-200">
-          <p className="text-gray-500 text-sm">
-            <Link href="/blog" className="text-teal-600 hover:text-teal-700">← Back to all articles</Link>
+        <p className="text-white/80 leading-relaxed mb-6">
+          <strong>2. What are the highest-demand occupational areas in our regional labor market that we're not currently serving with short-term credentials?</strong> This is the program development opportunity. DOL grants fund new program creation, but only if those programs align with verified demand. You need occupation-specific data on projected job openings, wage thresholds, and employer hiring patterns—not just industry sector trends.
+        </p>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          <strong>3. Do we have the institutional capacity to manage Workforce Pell compliance at scale?</strong> Compliance isn't just about meeting eligibility criteria once—it's about maintaining ongoing documentation of outcomes, wage data, and employer partnerships. If your institution doesn't have automated credential tracking, integrated student information and financial aid systems, or dedicated staff for outcomes reporting, your grant application needs to allocate significant resources to capacity building.
+        </p>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          <strong>4. Which employer partnerships can we leverage or develop to support job placement and wage outcome verification?</strong> DOL will prioritize institutions with letters of commitment from regional employers. If you don't have those relationships yet, your application needs a concrete plan for building them, including specific employer targets, partnership models, and timelines.
+        </p>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          <strong>5. How does Workforce Pell program development fit into our broader institutional strategy?</strong> This is the question most institutions skip. If your strategic plan emphasizes bachelor's degree completion, but you're applying for grants to develop 300-hour certificates, you have a coherence problem. DOL wants to fund institutions that see short-term workforce credentials as central to their mission, not as a side project or revenue diversification strategy.
+        </p>
+
+        <h2 className="font-bold text-white mb-4 mt-12" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
+          The Timing Challenge: Workforce Pell Launch vs. Grant Funding
+        </h2>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          According to recent reporting in <a href="https://workforcepell.substack.com/p/workforce-pell-funding-opportunities" target="_blank" rel="noopener noreferrer" className="text-teal-400 underline underline-offset-2 hover:text-teal-300">Workforce Pell newsletters</a>, the formal launch of Workforce Pell as a federal financial aid program faces continued uncertainty around appropriations and regulatory finalization. That creates a strategic timing question for community colleges: Do you wait for full Workforce Pell implementation to develop programs, or do you use DOL grants to build capacity now?
+        </p>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          The answer is obvious: build capacity now. Here's why:
+        </p>
+
+        <ul className="list-disc list-outside pl-6 space-y-2 text-white/80 mb-6">
+          <li>Program development takes 12-18 months even with dedicated funding. Curriculum design, faculty recruitment, employer partnership development, and state approval processes don't happen quickly.</li>
+          <li>Institutions that have Workforce Pell-eligible programs ready at launch will capture first-mover enrollment advantages. Students don't wait for institutional readiness—they go where programs exist.</li>
+          <li>DOL grants provide non-dilutive funding for strategic investments your institution needs to make anyway. Even if Workforce Pell implementation is delayed, short-term workforce credentials aligned to labor market demand remain a core institutional mission.</li>
+          <li>Grant-funded capacity building creates operational infrastructure—data systems, employer partnerships, compliance processes—that benefits all workforce programs, not just Workforce Pell-eligible credentials.</li>
+        </ul>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          The institutions that will succeed with Workforce Pell are the ones positioning themselves now, not waiting for regulatory clarity. The $65M DOL grants are designed to de-risk that timing problem by funding the transition period.
+        </p>
+
+        <h2 className="font-bold text-white mb-4 mt-12" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
+          What Happens If You Don't Pursue Grant Funding?
+        </h2>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          Not every institution will pursue the DOL grants, and that's a strategic choice. But it's important to understand the competitive implications. Community colleges that receive these grants will have:
+        </p>
+
+        <ul className="list-disc list-outside pl-6 space-y-2 text-white/80 mb-6">
+          <li>Portfolio of Workforce Pell-eligible programs ready at launch</li>
+          <li>Established employer partnerships and job placement pipelines</li>
+          <li>Proven compliance infrastructure and outcomes tracking systems</li>
+          <li>Marketing head start and regional brand recognition for workforce credentials</li>
+          <li>Data-driven program development processes that enable faster iteration</li>
+        </ul>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          If your institution doesn't pursue DOL funding, you're not just forgoing $11M in grant support—you're ceding first-mover advantage to regional competitors who are using federal dollars to build operational capacity you'll eventually need to fund from institutional budgets or tuition revenue.
+        </p>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          The strategic alternative isn't "wait and see"—it's to build Workforce Pell readiness through other means, whether that's reallocating institutional resources, partnering with third-party curriculum providers, or using state workforce development funds. The timeline doesn't change; only the funding source does.
+        </p>
+
+        <div className="bg-gradient-to-r from-violet-900/40 to-teal-900/40 border border-white/10 rounded-2xl p-8 mt-12 text-center">
+          <h3 className="font-bold text-white mb-4" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.2rem, 1.8vw, 1.5rem)"}}>
+            Need to Identify Your Workforce Pell Program Gaps?
+          </h3>
+          <p className="text-white/70 leading-relaxed mb-6 max-w-2xl mx-auto">
+            Before writing a grant application, you need to know which programs in your portfolio are already Workforce Pell-eligible and which occupational areas represent the biggest opportunities in your regional labor market. Wavelength's <strong>Compliance Gap Report</strong> ($295) provides a comprehensive scan of your existing program portfolio against Workforce Pell criteria, identifies modification opportunities, and highlights 3-5 high-priority occupational areas with unmet demand. It's the foundation for a data-driven grant strategy.
+          </p>
+          <Link 
+            href="/compliance-gap" 
+            className="inline-block bg-gradient-to-r from-violet-500 to-teal-500 text-white font-semibold px-8 py-3 rounded-lg hover:opacity-90 transition-opacity"
+          >
+            Learn More About Compliance Gap Report →
+          </Link>
+        </div>
+
+        <h2 className="font-bold text-white mb-4 mt-12" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
+          Three Strategic Moves to Make This Month
+        </h2>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          Whether you pursue DOL grant funding or not, February 2026 marks an inflection point for community college workforce strategy. Here are three moves your institution should make before the end of the month:
+        </p>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          <strong>1. Audit your existing program portfolio for Workforce Pell readiness.</strong> You can't make strategic decisions about new program development until you know what's already in your portfolio and where the gaps exist. Map every certificate and diploma program between 150-600 hours against CIP codes, associated SOC occupations, and your regional labor market demand data. Identify quick wins—programs that are 80% aligned and could be modified to meet full eligibility criteria with minor curriculum adjustments.
+        </p>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          <strong>2. Convene your academic leadership team for a Workforce Pell strategy session.</strong> This isn't a task force or committee—it's a working session with VPs of Academic Affairs, Workforce Development Directors, Department Chairs, and Institutional Research leads in the same room. The agenda: What is our portfolio strategy for Workforce Pell? Which occupational clusters do we prioritize? What institutional capacity do we need to build? Who owns program development, employer partnerships, and outcomes tracking? Strategic clarity now determines execution success later.
+        </p>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          <strong>3. Identify 3-5 high-value employer partners in your region and schedule meetings.</strong> DOL grants will prioritize institutions with employer commitments. Even if you're not pursuing the grant, employer partnerships are foundational to any short-term workforce credential strategy. Target employers in sectors with high projected demand: healthcare systems, advanced manufacturing firms, tech companies, logistics operations, skilled trades contractors. Ask one question: If we could develop a 300-400 hour credential program that produces job-ready graduates in [specific occupation], would you commit to interviewing every graduate for open positions?
+        </p>
+
+        <h2 className="font-bold text-white mb-4 mt-12" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.3rem, 2vw, 1.6rem)"}}>
+          The Bigger Picture: What This Means for Community College Strategy
+        </h2>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          The $65M DOL announcement is significant not because of the dollar amount—$65M spread across the entire community college system isn't transformational funding at scale—but because it reveals the federal government's theory of change for workforce development. That theory is:
+        </p>
+
+        <ul className="list-disc list-outside pl-6 space-y-2 text-white/80 mb-6">
+          <li>Short-term, stackable credentials aligned to in-demand occupations are the primary pathway for workforce training</li>
+          <li>Community colleges are the institutions best positioned to deliver those credentials at scale</li>
+          <li>Most community colleges need capacity-building support to transition from traditional academic program models to data-driven, employer-aligned workforce program portfolios</li>
+          <li>Labor market alignment must be provable and ongoing, not aspirational or historical</li>
+        </ul>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          This theory of change has implications far beyond Workforce Pell. It signals that federal and state workforce funding will increasingly flow to institutions that can demonstrate real-time alignment between programs offered and labor market demand. It suggests that traditional metrics like enrollment trends and completion rates will be supplemented—or replaced—by job placement rates, wage outcomes, and employer satisfaction measures. And it clarifies that community colleges with sophisticated labor market intelligence, employer partnership infrastructure, and outcomes tracking systems have a structural competitive advantage.
+        </p>
+
+        <p className="text-white/80 leading-relaxed mb-6">
+          The institutions that understand this shift aren't just preparing for Workforce Pell—they're repositioning their entire academic strategy around labor market responsiveness as a core institutional competency. That's the opportunity the $65M grants represent, and it's the strategic question every community college leadership team needs to answer in 2026.
+        </p>
+
+        <div className="bg-gradient-to-r from-violet-900/40 to-teal-900/40 border border-white/10 rounded-2xl p-8 mt-12 text-center">
+          <h3 className="font-bold text-white mb-4" style={{fontFamily:"var(--font-space-grotesk)",fontSize:"clamp(1.2rem, 1.8vw, 1.5rem)"}}>
+            Ready to Build Your Workforce Program Portfolio?
+          </h3>
+          <p className="text-white/70 leading-relaxed mb-6 max-w-2xl mx-auto">
+            Wavelength's <strong>Market Scan</strong> ($1,500) identifies 7-10 vetted new program opportunities in your regional labor market, each with verified demand data, wage thresholds, employer insights, and Workforce Pell eligibility assessment. It's the strategic foundation for grant applications, academic planning, and portfolio development. Get the data you need to make confident program decisions.
+          </p>
+          <Link 
+            href="/discover" 
+            className="inline-block bg-gradient-to-r from-violet-500 to-teal-500 text-white font-semibold px-8 py-3 rounded-lg hover:opacity-90 transition-opacity"
+          >
+            Explore Market Scan →
+          </Link>
+        </div>
+
+        <div className="mt-12 pt-8 border-t border-white/10">
+          <p className="text-white/40 text-sm leading-relaxed">
+            <strong>About Wavelength:</strong> We help community colleges develop and maintain workforce programs aligned to labor market demand. Our platform provides real-time labor market intelligence, Workforce Pell eligibility scanning, and program validation tools designed specifically for community college academic leaders. Learn more at <Link href="/" className="text-teal-400 hover:text-teal-300">withwavelength.com</Link>.
           </p>
         </div>
       </article>
