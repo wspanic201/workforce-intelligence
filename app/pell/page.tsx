@@ -138,15 +138,6 @@ const WHY_ACT_NOW = [
     description:
       'Short-term programs are price-sensitive. Pell eligibility removes the biggest barrier for working adults — cost. Qualifying programs routinely see enrollment lift once Pell is available.',
   },
-  {
-    icon: DollarSign,
-    color: 'text-emerald-400',
-    bg: 'bg-emerald-500/10 border-emerald-500/20',
-    title: '$200K–$500K+ per eligible program',
-    description:
-      'Each Pell-eligible program that fills cohorts generates significant new federal aid revenue. Multiply that across your catalog — the financial upside is substantial.',
-  },
-];
 
 const HOW_IT_WORKS = [
   {
