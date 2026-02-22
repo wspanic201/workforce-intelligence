@@ -154,15 +154,15 @@ const HOW_IT_WORKS = [
   },
   {
     step: '02',
-    title: 'We Scan State Requirements',
+    title: 'We Research State Requirements',
     description:
-      'Our research team cross-references your state\'s licensing boards, administrative codes, and regulatory statutes to identify every training program required by law.',
+      'We research your state\'s licensing boards, administrative codes, and regulatory statutes to identify every training program required by law.',
   },
   {
     step: '03',
     title: 'Get Your Gap Report',
     description:
-      'Within 24 hours, you receive a complete Program Gap Audit — every mandate you\'re missing, sized by revenue, cited to the statute.',
+      'Within 24 hours, you receive a complete State-Mandated Program Gap Analysis — every mandate you\'re missing, sized by revenue, cited to the statute.',
   },
 ];
 
@@ -171,7 +171,7 @@ const HOW_IT_WORKS = [
 const complianceProductJsonLd = {
   "@context": "https://schema.org",
   "@type": "Product",
-  name: "Program Gap Audit",
+  name: "State-Mandated Program Gap Analysis",
   description:
     "Find every state-mandated training program your institution does not offer — sized by revenue potential and cited to the statute.",
   url: "https://withwavelength.com/compliance-gap",
@@ -204,12 +204,6 @@ export default function ComplianceGapPage() {
             <p className="overline mb-4 tracking-widest">
               AUDIT
             </p>
-            <div className="mb-6">
-              <Link href="/program-analysis" className="inline-flex items-center gap-1.5 text-sm font-semibold text-gradient-cosmic hover:opacity-80 transition-opacity group">
-                <span className="group-hover:-translate-x-0.5 transition-transform">←</span>
-                Program Analysis
-              </Link>
-            </div>
             <h1
               className="text-gradient-cosmic font-heading font-bold leading-[1.05] mx-auto max-w-4xl"
               style={{ fontSize: 'clamp(2.5rem, 5.5vw + 0.5rem, 4.5rem)' }}
@@ -411,7 +405,7 @@ export default function ComplianceGapPage() {
                 <span className="text-theme-secondary mb-3 text-lg">one-time</span>
               </div>
               <p className="text-theme-secondary text-sm mb-8">
-                Full Program Gap Audit · State-specific · No subscription
+                Full State-Mandated Program Gap Analysis · State-specific · No subscription
               </p>
 
               <div className="space-y-3 mb-10 text-left max-w-sm mx-auto">
@@ -445,46 +439,6 @@ export default function ComplianceGapPage() {
         </div>
       </section>
 
-      {/* ═══════════════ CROSS-SELL ═══════════════ */}
-      <section className="relative py-16 md:py-20">
-        <div className="max-w-[800px] mx-auto px-6">
-          <AnimateOnScroll variant="fade-up" className="text-center mb-8">
-            <span className="overline">Also in Program Analysis</span>
-          </AnimateOnScroll>
-          <AnimateOnScroll variant="fade-up" delay={100}>
-            <Link href="/pell" className="block card-cosmic rounded-2xl p-7 border-blue-500/20 hover:bg-white/[0.03] transition-colors group">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="font-heading font-bold text-theme-primary text-lg">Pell Readiness Check</h3>
-                    <span className="text-xs font-semibold text-theme-muted">Free</span>
-                  </div>
-                  <p className="text-theme-secondary text-sm">Find out which of your programs qualify for Workforce Pell — and which need adjustments before the July 1 deadline.</p>
-                </div>
-                <span className="inline-flex items-center gap-1 text-sm font-semibold text-blue-300 group-hover:gap-2 transition-all flex-shrink-0">
-                  Learn More <ArrowRight className="h-4 w-4" />
-                </span>
-              </div>
-            </Link>
-          </AnimateOnScroll>
-        </div>
-      </section>
-
-      {/* ═══════════════ FOOTER NOTE ═══════════════ */}
-      <footer className="py-10 px-6 text-center border-t border-theme-subtle">
-        <p className="text-theme-secondary text-sm">
-          Wavelength Workforce Intelligence ·{' '}
-          <Link
-            href="/contact"
-            className="hover:text-theme-secondary transition-colors"
-          >
-            Contact Us
-          </Link>
-        </p>
-        <p className="mt-2 text-theme-muted text-xs">
-          Program Gap Audit reports are research deliverables based on publicly available regulatory data and do not constitute legal advice.
-        </p>
-      </footer>
     </div>
   );
 }
