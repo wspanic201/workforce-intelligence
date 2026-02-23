@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAdmin } from '@/lib/admin/auth';
+import { verifyAdminSession } from '@/lib/auth/admin';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 
 /** GET /api/admin/pipeline-runs — List pipeline runs with project info */
 export async function GET(req: NextRequest) {
-  const unauthorized = await requireAdmin();
-  if (unauthorized) return unauthorized;
+  const isAdmin = await verifyAdminSession();
+  if (!isAdmin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const supabase = getSupabaseServerClient();
   const { searchParams } = new URL(req.url);
@@ -40,8 +40,8 @@ export async function GET(req: NextRequest) {
 
 /** POST /api/admin/pipeline-runs — Create a new pipeline run */
 export async function POST(req: NextRequest) {
-  const unauthorized = await requireAdmin();
-  if (unauthorized) return unauthorized;
+  const isAdmin = await verifyAdminSession();
+  if (!isAdmin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
     const body = await req.json();
