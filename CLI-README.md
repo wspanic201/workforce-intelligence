@@ -1,6 +1,6 @@
-# WorkforceOS CLI
+# Wavelength CLI
 
-Command-line tool for running the WorkforceOS program intelligence pipeline.
+Command-line tool for running the Wavelength program intelligence pipeline.
 
 ## Quick Start
 
@@ -97,7 +97,7 @@ npm run wos -- report
 
 ## Cache
 
-Discovery results are cached at `~/.workforceos/<institution-slug>.json`.
+Discovery results are cached at `~/.wavelength/<institution-slug>.json`.
 
 This lets you:
 - Run Discovery once, then validate different programs without re-running

@@ -1,4 +1,4 @@
-# Workforce Intelligence
+# Wavelength
 
 AI-Powered Program Validation System for Community Colleges
 
@@ -387,9 +387,9 @@ Before deploying:
 
 ## Support
 
-**Contact**: Workforce Intelligence  
-**Email**: hello@workforceintel.com
+**Contact**: Wavelength  
+**Email**: hello@withwavelength.com
 
 ---
 
-© 2026 Workforce Intelligence
+© 2026 Wavelength

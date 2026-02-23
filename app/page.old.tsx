@@ -53,7 +53,7 @@ export default function HomePage() {
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={100} duration={800}>
             <p className="mt-6 text-lg text-[#4C4C4C] max-w-2xl mx-auto">
-              Workforce Intelligence helps institutions turn program concepts into confident launch decisions with comprehensive market analysis, financial projections, and strategic recommendations.
+              Wavelength helps institutions turn program concepts into confident launch decisions with comprehensive market analysis, financial projections, and strategic recommendations.
             </p>
           </AnimateOnScroll>
           <AnimateOnScroll variant="fade-up" delay={200} duration={800}>
@@ -241,7 +241,7 @@ export default function HomePage() {
             <div>
               <AnimateOnScroll variant="fade-up">
                 <h2 className="heading-display text-[clamp(1.75rem,3vw,2.25rem)] max-w-lg">
-                  Why institutions choose Workforce Intelligence
+                  Why institutions choose Wavelength
                 </h2>
               </AnimateOnScroll>
             </div>
@@ -343,7 +343,7 @@ export default function HomePage() {
             {[
               { title: 'Self-service validation', desc: 'Submit your program concept and receive a comprehensive validation report in 48 hours.', cta: 'Start Validation', href: '/submit' },
               { title: 'Partner with experts', desc: 'Standard plan includes a 1-hour consultation call to walk through findings and next steps.', cta: 'Learn More', href: '#pricing' },
-              { title: 'Dedicated partnerships', desc: 'Annual plans with up to 5 validations, quarterly market updates, and priority support.', cta: 'Contact Us', href: 'mailto:hello@workforceintel.com' },
+              { title: 'Dedicated partnerships', desc: 'Annual plans with up to 5 validations, quarterly market updates, and priority support.', cta: 'Contact Us', href: 'mailto:hello@withwavelength.com' },
             ].map(({ title, desc, cta, href }) => (
               <div key={title} className="rounded-2xl bg-[#FAFAFA] p-8 shadow-sm flex flex-col">
                 <h3 className="heading-display text-lg mb-3">{title}</h3>
@@ -548,7 +548,7 @@ export default function HomePage() {
           <AnimateOnScroll variant="fade-up">
             <div className="mx-auto max-w-3xl text-center">
               <h2 className="heading-display text-[clamp(1.75rem,3.5vw,2.75rem)]">
-                Workforce Intelligence is for teams that plan. Make your move.
+                Wavelength is for teams that plan. Make your move.
               </h2>
               <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/submit">
@@ -564,8 +564,8 @@ export default function HomePage() {
               </div>
               <p className="mt-6 text-sm text-[#4C4C4C]">
                 Questions?{' '}
-                <a href="mailto:hello@workforceintel.com" className="text-[#1F2023] hover:underline underline-offset-2">
-                  hello@workforceintel.com
+                <a href="mailto:hello@withwavelength.com" className="text-[#1F2023] hover:underline underline-offset-2">
+                  hello@withwavelength.com
                 </a>
               </p>
             </div>

@@ -633,7 +633,7 @@ export default function PellPage() {
       {/* ═══════════════ FOOTER ═══════════════ */}
       <footer className="py-10 px-6 text-center border-t border-theme-subtle">
         <p className="text-theme-secondary text-sm">
-          Wavelength Workforce Intelligence ·{' '}
+          Wavelength ·{' '}
           <Link
             href="/contact"
             className="hover:text-theme-secondary transition-colors"

@@ -23,7 +23,7 @@ async function main() {
     .from('validation_projects')
     .insert({
       client_name: 'Kirkwood Community College',
-      client_email: 'hello@workforceintel.com',
+      client_email: 'hello@withwavelength.com',
       program_name: 'Pharmacy Technician Certificate',
       program_type: 'certificate',
       target_audience: 'Career changers, recent high school graduates, and current retail workers seeking healthcare careers',
@@ -68,6 +68,9 @@ async function main() {
     instructor_type: 'adjunct', // 'adjunct' | 'full-time' | 'industry-expert'
   };
 
+  // Import pipeline tracking
+  const { startPipelineRun, completePipelineRun, hashMarkdown } = await import('../lib/pipeline/track-run');
+
   // Import agents
   const { runMarketAnalysis } = await import('../lib/agents/researchers/market-analyst');
   const { runCompetitiveAnalysis } = await import('../lib/agents/researchers/competitor-analyst');
@@ -76,9 +79,11 @@ async function main() {
   const { runInstitutionalFit } = await import('../lib/agents/researchers/institutional-fit');
   const { runRegulatoryCompliance } = await import('../lib/agents/researchers/regulatory-analyst');
   const { runEmployerDemand } = await import('../lib/agents/researchers/employer-analyst');
+  const { runCitationAgent } = await import('../lib/agents/researchers/citation-agent');
   const { runTigerTeam } = await import('../lib/agents/tiger-team');
   const { calculateProgramScore, buildDimensionScore } = await import('../lib/scoring/program-scorer');
   const { generateReport } = await import('../lib/reports/report-generator');
+  const { getAgentIntelligenceContext } = await import('../lib/intelligence/agent-context');
 
   // Update status
   await supabase.from('validation_projects').update({ status: 'researching', updated_at: new Date().toISOString() }).eq('id', projectId);
@@ -103,6 +108,33 @@ async function main() {
     if (data) componentIds[agent.type] = data.id;
   }
 
+  // Build Verified Intelligence Context (shared by all agents, used by report generator)
+  console.log('\n🧠 Building verified intelligence context...');
+  try {
+    const intelContext = await getAgentIntelligenceContext(enrichedProject as any);
+    (enrichedProject as any)._intelContext = intelContext;
+    console.log(`  ✅ Intel context: ${intelContext.tablesUsed.length} data sources, ${intelContext.promptBlock.length} chars`);
+  } catch (err: any) {
+    console.warn(`  ⚠️ Intel context build failed (non-fatal): ${err.message}`);
+  }
+
+  // Start pipeline run tracking
+  let pipelineRunId: string | null = null;
+  try {
+    pipelineRunId = await startPipelineRun(projectId, {
+      model: 'claude-sonnet-4-6',
+      pipelineVersion: 'v2.0',
+      reportTemplate: 'professional-v2',
+      agentsEnabled: agents.map(a => a.type),
+      tigerTeamEnabled: true,
+      citationAgentEnabled: true,
+      intelContextEnabled: !!(enrichedProject as any)._intelContext,
+    });
+    console.log(`  📊 Pipeline run: ${pipelineRunId}`);
+  } catch (e: any) {
+    console.warn(`  ⚠️ Pipeline tracking failed to start: ${e.message}`);
+  }
+
   console.log(`\n🚀 Launching 7 research agents in parallel...\n`);
   const start = Date.now();
 
@@ -120,6 +152,7 @@ async function main() {
         await supabase.from('research_components').update({
           status: 'completed',
           content: { ...data, _score: score, _scoreRationale: rationale },
+          markdown_output: markdown,
         }).eq('id', compId);
         
         console.log(`  ✅ ${agent.label} complete${score ? ` (${score}/10)` : ''}`);
@@ -148,6 +181,46 @@ async function main() {
   const { data: completedComponents } = await supabase
     .from('research_components').select('*').eq('project_id', projectId).eq('status', 'completed');
 
+  // Run citation agent for fact-checking + corrections
+  let citationResults: any = null;
+  try {
+    console.log('\n🔍 Running citation agent for fact-checking...');
+    const componentsByType = (completedComponents || []).reduce((acc: any, c: any) => {
+      const key = c.component_type.replace('_', '');
+      acc[key] = c.markdown_output || '';
+      return acc;
+    }, {} as Record<string, string>);
+
+    citationResults = await runCitationAgent({
+      projectId,
+      occupation: enrichedProject.target_occupation || enrichedProject.program_name || 'Unknown',
+      state: enrichedProject.geographic_area || 'United States',
+      regulatoryAnalysis: componentsByType['regulatorycompliance'],
+      marketAnalysis: componentsByType['labormarket'],
+      employerAnalysis: componentsByType['employerdemand'],
+      financialAnalysis: componentsByType['financialviability'],
+      academicAnalysis: componentsByType['institutionalfit'],
+      demographicAnalysis: componentsByType['learnerdemand'],
+      competitiveAnalysis: componentsByType['competitivelandscape'],
+    });
+
+    console.log(`  ✅ Citation agent: ${citationResults.verifiedClaims.length} claims verified, ${citationResults.corrections?.length || 0} corrections, ${citationResults.dataSources?.length || 0} data sources`);
+
+    // Apply corrections to component markdown
+    if (citationResults.corrections && citationResults.corrections.length > 0) {
+      console.log(`  🔧 Applying ${citationResults.corrections.length} corrections...`);
+      for (const correction of citationResults.corrections) {
+        const comp = completedComponents?.find((c: any) => c.component_type === correction.componentType);
+        if (comp && comp.markdown_output && comp.markdown_output.includes(correction.original)) {
+          comp.markdown_output = comp.markdown_output.replace(correction.original, correction.corrected);
+          console.log(`    ✓ Fixed [${correction.componentType}]: ${correction.reason}`);
+        }
+      }
+    }
+  } catch (e: any) {
+    console.warn(`  ⚠️ Citation agent failed: ${e.message}`);
+  }
+
   // Calculate scores
   console.log('\n📈 Calculating program scores...');
   const dimensionScores = agents.map(agent => {
@@ -175,6 +248,16 @@ async function main() {
     console.warn(`  ⚠️ Tiger team failed: ${e.message}`);
   }
 
+  // Apply citation corrections to tiger team markdown
+  if (citationResults?.corrections && citationResults.corrections.length > 0 && tigerTeamMarkdown) {
+    for (const correction of citationResults.corrections) {
+      if (tigerTeamMarkdown.includes(correction.original)) {
+        tigerTeamMarkdown = tigerTeamMarkdown.replace(correction.original, correction.corrected);
+        console.log(`  🔧 Tiger team corrected: ${correction.reason}`);
+      }
+    }
+  }
+
   // Generate report
   console.log('\n📝 Generating final report...');
   const fullReport = generateReport({
@@ -182,6 +265,7 @@ async function main() {
     components: completedComponents as any,
     programScore,
     tigerTeamMarkdown,
+    citations: citationResults || undefined,
   });
 
   // Save report
@@ -198,6 +282,32 @@ async function main() {
     },
     version: 1,
   });
+
+  // Complete pipeline run tracking
+  if (pipelineRunId) {
+    try {
+      const agentScores: Record<string, number> = {};
+      for (const agent of agents) {
+        const comp = completedComponents?.find((c: any) => c.component_type === agent.type);
+        const score = comp?.content?._score ?? comp?.content?.score;
+        if (score != null) agentScores[agent.type] = score;
+      }
+      await completePipelineRun(pipelineRunId, {
+        runtimeSeconds: (Date.now() - start) / 1000,
+        agentScores,
+        compositeScore: programScore.compositeScore,
+        recommendation: programScore.recommendation,
+        citationCorrections: citationResults?.corrections?.length ?? 0,
+        citationWarnings: citationResults?.warnings?.length ?? 0,
+        intelTablesUsed: (enrichedProject as any)._intelContext?.tablesUsed?.length ?? 0,
+        reportMarkdownHash: hashMarkdown(fullReport),
+        reportSizeKb: Math.round(Buffer.from(fullReport).length / 1024),
+      });
+      console.log('  📊 Pipeline run tracking complete');
+    } catch (e: any) {
+      console.warn(`  ⚠️ Pipeline tracking failed to complete: ${e.message}`);
+    }
+  }
 
   // Update project
   await supabase.from('validation_projects').update({ status: 'review', updated_at: new Date().toISOString() }).eq('id', projectId);

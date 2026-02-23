@@ -1,5 +1,5 @@
 /**
- * Focused Markdown → HTML converter for WorkforceOS reports.
+ * Focused Markdown → HTML converter for Wavelength reports.
  * Handles the exact structures our Market Scans and Validation Reports produce.
  * No external dependencies.
  */

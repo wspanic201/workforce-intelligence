@@ -1,5 +1,5 @@
 /**
- * WorkforceOS Database Service
+ * Wavelength Database Service
  * CRUD operations for the multi-tenant schema.
  * Uses service role client (bypasses RLS) for agent operations.
  */

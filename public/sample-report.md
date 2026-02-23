@@ -1,7 +1,7 @@
 ---
 title: "Workforce Program Validation Report"
 subtitle: "Industrial Coatings Specialist Certificate Program"
-author: "Workforce Intelligence"
+author: "Wavelength"
 date: "February 2026"
 geometry: margin=1in
 fontsize: 11pt
@@ -16,7 +16,7 @@ fontsize: 11pt
 Prepared for: Regional Community College  
 Region: Midwest Region  
 Date: February 2026  
-Prepared by: Workforce Intelligence
+Prepared by: Wavelength
 
 ---
 
@@ -307,6 +307,6 @@ Achievable with modest marketing investment and strong employer partnerships.
 
 ---
 
-*This report was prepared by Workforce Intelligence using our proprietary multi-lens validation methodology. All data sourced from federal databases, industry associations, and real-time labor market intelligence.*
+*This report was prepared by Wavelength using our proprietary multi-lens validation methodology. All data sourced from federal databases, industry associations, and real-time labor market intelligence.*
 
-*© 2026 Workforce Intelligence. All rights reserved.*
+*© 2026 Wavelength. All rights reserved.*

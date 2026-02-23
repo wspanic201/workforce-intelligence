@@ -1,8 +1,8 @@
 #!/usr/bin/env npx tsx
 /**
- * WorkforceOS CLI
+ * Wavelength CLI
  * 
- * Client-facing command-line tool for running the WorkforceOS pipeline.
+ * Client-facing command-line tool for running the Wavelength pipeline.
  * 
  * Usage:
  *   npx tsx cli.ts discover                    # Interactive discovery
@@ -55,7 +55,7 @@ interface CLIFlags {
 // ── Constants ──
 
 const VERSION = '0.1.0';
-const CACHE_DIR = join(homedir(), '.workforceos');
+const CACHE_DIR = join(homedir(), '.wavelength');
 const DEFAULT_OUTPUT = join(homedir(), 'Desktop');
 
 const BANNER = `
@@ -68,7 +68,7 @@ const BANNER = `
 ║   ╚███╔███╔╝╚██████╔╝███████║                    ║
 ║    ╚══╝╚══╝  ╚═════╝ ╚══════╝                    ║
 ║                                                  ║
-║   WorkforceOS — Program Intelligence Platform    ║
+║   Wavelength — Program Intelligence Platform    ║
 ║   v${VERSION}                                         ║
 ║                                                  ║
 ╚══════════════════════════════════════════════════╝
@@ -666,7 +666,7 @@ async function showReports(flags: CLIFlags) {
 
     log(`📋 ${college}`);
     log(`   Date: ${ts} | Programs: ${opps} scored + ${bo} blue ocean | Validations: ${validationCount}`);
-    log(`   Cache: ~/.workforceos/${key}.json`);
+    log(`   Cache: ~/.wavelength/${key}.json`);
     console.log('');
   }
 
@@ -805,7 +805,7 @@ async function runPellAudit(flags: CLIFlags) {
       output: result,
       timestamp: new Date().toISOString(),
     });
-    success(`Cached: ~/.workforceos/${key}.json`);
+    success(`Cached: ~/.wavelength/${key}.json`);
   }
 
   // Summary
@@ -932,7 +932,7 @@ async function runGrantFinder(flags: CLIFlags) {
     output: result,
     timestamp: new Date().toISOString(),
   });
-  success(`Cached: ~/.workforceos/${key}.json`);
+  success(`Cached: ~/.wavelength/${key}.json`);
 
   // Summary
   console.log('');
@@ -1066,7 +1066,7 @@ async function runComplianceGap(flags: CLIFlags) {
     output: result,
     timestamp: new Date().toISOString(),
   });
-  success(`Cached: ~/.workforceos/${key}.json`);
+  success(`Cached: ~/.wavelength/${key}.json`);
 
   // Summary
   console.log('');

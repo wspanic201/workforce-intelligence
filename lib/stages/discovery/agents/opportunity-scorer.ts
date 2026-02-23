@@ -115,7 +115,7 @@ export async function scoreOpportunities(
   const categoryConstraint = getCategoryConstraint(category);
 
   const scoringResult = await callClaude(
-    `${categoryConstraint}You are a Senior Workforce Intelligence Analyst scoring program opportunities for ${institution.name} in ${institution.serviceArea}, ${institution.state}${category ? `.\n\nThis is a **${category} Category Deep Dive** — ONLY score and recommend programs within the ${category} domain` : ''}.
+    `${categoryConstraint}You are a Senior Wavelength Intelligence Analyst scoring program opportunities for ${institution.name} in ${institution.serviceArea}, ${institution.state}${category ? `.\n\nThis is a **${category} Category Deep Dive** — ONLY score and recommend programs within the ${category} domain` : ''}.
 
 ## SCORING MATRIX
 Score each candidate 1-10 on these dimensions:

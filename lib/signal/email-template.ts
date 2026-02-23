@@ -91,7 +91,7 @@ export function renderSignalEmail(content: SignalContent): string {
                         color: #7b9cce;
                         letter-spacing: 1px;
                         font-weight: 500;
-                      ">by Wavelength · Workforce Intelligence</div>
+                      ">by Wavelength · Wavelength</div>
                     </td>
                     <td align="right" valign="middle">
                       <div style="

@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import BlogClient from "./BlogClient";
 
 export const metadata: Metadata = {
-  title: "Workforce Intelligence Blog | Wavelength",
+  title: "Wavelength Blog | Wavelength",
   description:
     "Practical guides on Workforce Pell eligibility, community college program strategy, compliance gaps, and labor market data. For higher education leaders who move fast.",
   alternates: { canonical: "https://withwavelength.com/blog" },
   openGraph: {
-    title: "Workforce Intelligence Blog | Wavelength",
+    title: "Wavelength Blog | Wavelength",
     description:
       "Guides on Workforce Pell, compliance, and program development for community college leaders.",
     url: "https://withwavelength.com/blog",
@@ -49,7 +49,7 @@ export const posts = [
     excerpt: "BLS data shows 9 of 10 fastest-growing leadership occupations pay above $67,920. Here's why community colleges should be building management credential programs right now.",
     date: "February 22, 2026",
     readTime: "7 min read",
-    category: "Workforce Intelligence",
+    category: "Wavelength",
     dot: "bg-teal-400",
   },
   {

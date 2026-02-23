@@ -1,7 +1,7 @@
 /**
  * Full Pipeline Orchestrator: Discovery → Handoff → Validation
  * 
- * Runs the complete WorkforceOS pipeline:
+ * Runs the complete Wavelength pipeline:
  *   1. Discovery (6 phases, ~55-80 web searches, 7-15 min)
  *   2. Program selection (user picks or auto-select)
  *   3. Validation (7 agents + tiger team per program)

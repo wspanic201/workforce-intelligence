@@ -192,7 +192,7 @@ export async function fetchGrantDetails(grantId: string): Promise<GrantDetails |
   try {
     const response = await fetch(pageUrl, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; WorkforceOS/1.0; research)',
+        'User-Agent': 'Mozilla/5.0 (compatible; Wavelength/1.0; research)',
         Accept: 'text/html,application/xhtml+xml',
       },
     });

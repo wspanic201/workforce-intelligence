@@ -1,6 +1,6 @@
 /**
- * WorkforceOS Database Types
- * Matches the schema in supabase/migrations/001_workforceos_schema.sql
+ * Wavelength Database Types
+ * Matches the schema in supabase/migrations/
  */
 
 // ── Enums ──

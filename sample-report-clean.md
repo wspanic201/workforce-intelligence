@@ -2,7 +2,7 @@
 pdf_options:
   format: Letter
   margin: 25mm
-  headerTemplate: '<div style="font-size:8px;width:100%;text-align:center;color:#999;">Workforce Intelligence — Industrial Coatings Specialist Certificate Validation</div>'
+  headerTemplate: '<div style="font-size:8px;width:100%;text-align:center;color:#999;">Wavelength — Industrial Coatings Specialist Certificate Validation</div>'
   footerTemplate: '<div style="font-size:8px;width:100%;text-align:center;color:#999;"><span class="pageNumber"></span> / <span class="totalPages"></span></div>'
   displayHeaderFooter: true
 stylesheet: []
@@ -24,8 +24,8 @@ body_class: report
 
 **Report Date:** February 15, 2026
 
-**Prepared by:** Workforce Intelligence  
-hello@workforceintel.com
+**Prepared by:** Wavelength  
+hello@withwavelength.com
 
 </div>
 
@@ -427,7 +427,7 @@ A comprehensive scan of cybersecurity education offerings within a 75-mile radiu
 
 ## Methodology
 
-This validation report was produced using Workforce Intelligence's research methodology combining multi-perspective analysis, real labor market data, and workforce program development expertise.
+This validation report was produced using Wavelength's research methodology combining multi-perspective analysis, real labor market data, and workforce program development expertise.
 
 ## Assumptions
 
@@ -440,9 +440,9 @@ This validation report was produced using Workforce Intelligence's research meth
 
 ## Disclaimer
 
-This report provides strategic guidance based on available data at time of preparation. Financial projections are estimates and should be validated through institutional budgeting. Workforce Intelligence is not responsible for implementation outcomes.
+This report provides strategic guidance based on available data at time of preparation. Financial projections are estimates and should be validated through institutional budgeting. Wavelength is not responsible for implementation outcomes.
 
 ---
 
-*© 2026 Workforce Intelligence. All rights reserved.*  
-*hello@workforceintel.com*
+*© 2026 Wavelength. All rights reserved.*  
+*hello@withwavelength.com*

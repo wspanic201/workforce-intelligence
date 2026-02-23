@@ -15,6 +15,7 @@ import { generateReport } from '@/lib/reports/report-generator';
 import { enrichProject } from './project-enricher';
 import type { DiscoveryContext } from '@/lib/stages/handoff';
 import { getAgentIntelligenceContext, type AgentIntelligenceContext } from '@/lib/intelligence/agent-context';
+import { startPipelineRun, completePipelineRun, hashMarkdown, type PipelineConfig } from '@/lib/pipeline/track-run';
 
 // Timeout wrapper for research agents
 function withTimeout<T>(promise: Promise<T>, timeoutMs: number, taskName: string): Promise<T> {
@@ -81,6 +82,8 @@ const AGENT_CONFIG = [
 
 export async function orchestrateValidation(projectId: string): Promise<void> {
   const supabase = getSupabaseServerClient();
+  const orchestratorStart = Date.now();
+  let pipelineRunId: string | null = null;
 
   try {
     console.log(`[Orchestrator] Starting 7-stage validation for project ${projectId}`);
@@ -133,6 +136,22 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       (projectToValidate as any)._intelContext = intelContext;
     } catch (err) {
       console.warn('[Orchestrator] Intelligence context build failed (non-fatal):', (err as Error).message);
+    }
+
+    // 2.9. Start pipeline run tracking
+    try {
+      const pipelineConfig: PipelineConfig = {
+        model: 'claude-sonnet-4-6',
+        pipelineVersion: 'v2.0',
+        reportTemplate: 'professional-v2',
+        agentsEnabled: AGENT_CONFIG.map(a => a.type),
+        tigerTeamEnabled: true,
+        citationAgentEnabled: true,
+        intelContextEnabled: !!intelContext,
+      };
+      pipelineRunId = await startPipelineRun(projectId, pipelineConfig);
+    } catch (e) {
+      console.warn('[Orchestrator] Pipeline run tracking failed to start (non-fatal):', e);
     }
 
     // 3. Update status to researching
@@ -295,6 +314,19 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       });
 
       console.log(`[Orchestrator] ✓ Citation agent complete — ${citationResults.verifiedClaims.length} claims verified`);
+
+      // Apply citation corrections to component markdown before report generation
+      if (citationResults.corrections && citationResults.corrections.length > 0) {
+        console.log(`[Orchestrator] Applying ${citationResults.corrections.length} citation corrections...`);
+        for (const correction of citationResults.corrections) {
+          // Find matching component by type
+          const comp = completedComponents.find(c => c.component_type === correction.componentType);
+          if (comp && comp.markdown_output && comp.markdown_output.includes(correction.original)) {
+            comp.markdown_output = comp.markdown_output.replace(correction.original, correction.corrected);
+            console.log(`[Orchestrator]   ✓ Corrected [${correction.componentType}]: ${correction.reason}`);
+          }
+        }
+      }
     } catch (e) {
       console.warn('[Orchestrator] Citation agent failed, continuing without citation verification:', e);
     }
@@ -356,6 +388,16 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       });
     } catch (e) {
       console.warn('[Orchestrator] Tiger team synthesis failed, continuing with report generation:', e);
+    }
+
+    // 9.5. Apply citation corrections to tiger team markdown
+    if (citationResults?.corrections && citationResults.corrections.length > 0 && tigerTeamMarkdown) {
+      for (const correction of citationResults.corrections) {
+        if (tigerTeamMarkdown.includes(correction.original)) {
+          tigerTeamMarkdown = tigerTeamMarkdown.replace(correction.original, correction.corrected);
+          console.log(`[Orchestrator]   ✓ Tiger team corrected: ${correction.reason}`);
+        }
+      }
     }
 
     // 10. Generate report FIRST (so a crash during QA doesn't lose everything)
@@ -429,6 +471,31 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
         }
       } catch (e) {
         console.warn('[Orchestrator] QA review failed — report already saved without QA:', e);
+      }
+    }
+
+    // 11.5. Complete pipeline run tracking
+    if (pipelineRunId) {
+      try {
+        const runtimeSeconds = (Date.now() - orchestratorStart) / 1000;
+        const agentScores: Record<string, number> = {};
+        for (const comp of completedComponents || []) {
+          const score = comp.dimension_score ?? (comp.content as any)?._score ?? (comp.content as any)?.score;
+          if (score != null) agentScores[comp.component_type] = score;
+        }
+        await completePipelineRun(pipelineRunId, {
+          runtimeSeconds,
+          agentScores,
+          compositeScore: programScore.compositeScore,
+          recommendation: programScore.recommendation,
+          citationCorrections: citationResults?.corrections?.length ?? 0,
+          citationWarnings: citationResults?.warnings?.length ?? 0,
+          intelTablesUsed: intelContext?.tablesUsed?.length ?? 0,
+          reportMarkdownHash: hashMarkdown(fullReport),
+          reportSizeKb: Math.round(Buffer.from(fullReport).length / 1024),
+        });
+      } catch (e) {
+        console.warn('[Orchestrator] Pipeline run tracking failed to complete (non-fatal):', e);
       }
     }
 
@@ -562,7 +629,7 @@ export async function orchestrateValidationInMemory(
     id: `inmemory-${Date.now()}`,
     program_name: projectData.program_name || projectData.title,
     client_name: projectData.client_name || projectData.collegeName || 'Unknown Institution',
-    client_email: 'pipeline@workforceos.local',
+    client_email: 'pipeline@wavelength.local',
     program_type: projectData.program_type || projectData.level || 'certificate',
     target_audience: projectData.target_audience || 'Adult learners and career changers',
     target_occupation: projectData.target_occupation || projectData.occupation || '',
@@ -600,6 +667,23 @@ export async function orchestrateValidationInMemory(
     } catch (err) {
       console.warn('[Orchestrator:InMemory] Enrichment failed, continuing with provided data:', err);
     }
+  }
+
+  // Start pipeline run tracking (best-effort, don't break in-memory flow)
+  let pipelineRunId: string | null = null;
+  try {
+    const pipelineConfig: PipelineConfig = {
+      model: 'claude-sonnet-4-6',
+      pipelineVersion: 'v2.0',
+      reportTemplate: 'professional-v2',
+      agentsEnabled: AGENT_CONFIG.map(a => a.type),
+      tigerTeamEnabled: true,
+      citationAgentEnabled: true,
+      intelContextEnabled: false,
+    };
+    pipelineRunId = await startPipelineRun(project.id, pipelineConfig);
+  } catch (e) {
+    console.warn('[Orchestrator:InMemory] Pipeline run tracking failed to start (non-fatal):', e);
   }
 
   // Run all 7 research agents sequentially
@@ -692,6 +776,18 @@ export async function orchestrateValidationInMemory(
     );
 
     console.log(`[Orchestrator:InMemory] ✓ Citation agent complete — ${citationResults.verifiedClaims.length} claims verified`);
+
+    // Apply citation corrections to component markdown before report generation
+    if (citationResults.corrections && citationResults.corrections.length > 0) {
+      console.log(`[Orchestrator:InMemory] Applying ${citationResults.corrections.length} citation corrections...`);
+      for (const correction of citationResults.corrections) {
+        const comp = completedComponents.find(c => c.type === correction.componentType);
+        if (comp && comp.markdown && comp.markdown.includes(correction.original)) {
+          comp.markdown = comp.markdown.replace(correction.original, correction.corrected);
+          console.log(`[Orchestrator:InMemory]   ✓ Corrected [${correction.componentType}]: ${correction.reason}`);
+        }
+      }
+    }
   } catch (e) {
     console.warn('[Orchestrator:InMemory] Citation agent failed:', e);
   }
@@ -754,6 +850,16 @@ export async function orchestrateValidationInMemory(
     console.warn('[Orchestrator:InMemory] Tiger team failed:', e);
   }
 
+  // Apply citation corrections to tiger team markdown
+  if (citationResults?.corrections && citationResults.corrections.length > 0 && tigerTeamMarkdown) {
+    for (const correction of citationResults.corrections) {
+      if (tigerTeamMarkdown.includes(correction.original)) {
+        tigerTeamMarkdown = tigerTeamMarkdown.replace(correction.original, correction.corrected);
+        console.log(`[Orchestrator:InMemory]   ✓ Tiger team corrected: ${correction.reason}`);
+      }
+    }
+  }
+
   // Generate report
   console.log(`[Orchestrator:InMemory] Generating report...`);
 
@@ -779,6 +885,29 @@ export async function orchestrateValidationInMemory(
   const totalDuration = Date.now() - startTime;
   console.log(`[Orchestrator:InMemory] ✓ Validation complete in ${Math.round(totalDuration / 1000)}s`);
   console.log(`[Orchestrator:InMemory] Final: ${programScore.recommendation} (${programScore.compositeScore}/10)`);
+
+  // Complete pipeline run tracking
+  if (pipelineRunId) {
+    try {
+      const agentScores: Record<string, number> = {};
+      for (const c of completedComponents) {
+        if (c.score != null) agentScores[c.type] = c.score;
+      }
+      await completePipelineRun(pipelineRunId, {
+        runtimeSeconds: totalDuration / 1000,
+        agentScores,
+        compositeScore: programScore.compositeScore,
+        recommendation: programScore.recommendation,
+        citationCorrections: citationResults?.corrections?.length ?? 0,
+        citationWarnings: citationResults?.warnings?.length ?? 0,
+        intelTablesUsed: 0,
+        reportMarkdownHash: hashMarkdown(fullReport),
+        reportSizeKb: Math.round(Buffer.from(fullReport).length / 1024),
+      });
+    } catch (e) {
+      console.warn('[Orchestrator:InMemory] Pipeline run tracking failed to complete (non-fatal):', e);
+    }
+  }
 
   return {
     project,

@@ -36,7 +36,7 @@ npm run dev
 
 Visit: http://localhost:3000
 
-You should see the home page with "Workforce Intelligence" header.
+You should see the home page with "Wavelength" header.
 
 ## Test Scenario 1: Sample Project (Warm-Up)
 

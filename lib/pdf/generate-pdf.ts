@@ -1,5 +1,5 @@
 /**
- * PDF generation for WorkforceOS Market Scans and Validation Reports.
+ * PDF generation for Wavelength Market Scans and Validation Reports.
  * 
  * Pipeline: Markdown → HTML → Branded Template → Puppeteer → PDF
  * 
