@@ -104,6 +104,7 @@ export default function ReportDetailPage() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [reportToken, setReportToken] = useState<string | null>(null);
   const [scores, setScores] = useState<ReviewScores>({
     accuracy: 3, narrative: 3, actionability: 3, citations: 3, formatting: 3, overall: 3,
   });
@@ -135,6 +136,13 @@ export default function ReportDetailPage() {
         const errText = await runsRes.text();
         console.error('[Detail] API error:', runsRes.status, errText);
         setError(`API returned ${runsRes.status}: ${errText}`);
+      }
+
+      // Check if a report exists for this project
+      const reportRes = await fetch(`/api/admin/pipeline-runs/${id}/report-token`);
+      if (reportRes.ok) {
+        const { hasReport } = await reportRes.json();
+        if (hasReport) setReportToken(id as string); // Use project ID as token for admin view
       }
     } catch (e: any) {
       console.error('[Detail] Fetch error:', e);
@@ -223,6 +231,16 @@ export default function ReportDetailPage() {
             <div className="flex items-center gap-3">
               <CompositeScoreBadge score={run.composite_score} />
               <RecommendationBadge rec={run.recommendation} />
+              {reportToken && (
+                <Link
+                  href={`/admin/reports/${id}/view`}
+                  target="_blank"
+                  className="text-sm font-medium text-white px-4 py-2 rounded-lg transition-all hover:-translate-y-0.5"
+                  style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #14b8a6 100%)' }}
+                >
+                  View Report ↗
+                </Link>
+              )}
             </div>
           </div>
 
