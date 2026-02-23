@@ -315,37 +315,87 @@ export async function getDashboardStats() {
 export async function getDataInventory() {
   const s = supabase();
 
-  // Get counts + most recent updated_at for each table
-  const tables = [
-    { table: 'intel_institutions', label: 'Community Colleges', icon: '🏫', source: 'IPEDS 2022', sourceYear: '2022', category: 'credit' as const, description: 'Public 2-year institutions with enrollment, location, Pell rates' },
-    { table: 'intel_completions', label: 'Program Completions', icon: '🎓', source: 'IPEDS 2021', sourceYear: '2021', category: 'credit' as const, description: 'Awards by CIP code, institution, and award level' },
-    { table: 'intel_financial_aid', label: 'Financial Aid & Tuition', icon: '💳', source: 'College Scorecard', sourceYear: '2023', category: 'credit' as const, description: 'Pell grant rates, tuition, median earnings 10yr post-entry' },
-    { table: 'intel_employers', label: 'Employers by Industry', icon: '🏢', source: 'Census CBP 2021', sourceYear: '2021', category: 'both' as const, description: 'Employer counts by NAICS industry by county' },
-    { table: 'intel_occupation_projections', label: 'Job Projections (10yr)', icon: '📈', source: 'BLS Projections', sourceYear: '2022-2032', category: 'both' as const, description: '10-year growth, annual openings, education requirements' },
-    { table: 'intel_wages', label: 'Occupation Wages', icon: '💰', source: 'BLS OES', sourceYear: '—', category: 'both' as const, description: 'Median/mean annual wages, percentiles, employment by SOC' },
-    { table: 'intel_occupation_skills', label: 'Skills & Knowledge', icon: '🧠', source: 'O*NET', sourceYear: '—', category: 'both' as const, description: 'Skills, knowledge, abilities, technology per occupation' },
-    { table: 'intel_statutes', label: 'State Statutes', icon: '📜', source: 'Manual + AI', sourceYear: '—', category: 'both' as const, description: 'State codes, admin rules, regulatory requirements' },
-    { table: 'intel_credentials', label: 'Credentials & Licenses', icon: '📋', source: 'CareerOneStop / Manual', sourceYear: '—', category: 'noncredit' as const, description: 'License/cert requirements, CE hours, regulatory bodies' },
-    { table: 'intel_training_providers', label: 'Training Providers', icon: '🏭', source: 'ETPL / FMCSA / Manual', sourceYear: '—', category: 'noncredit' as const, description: 'Noncredit providers: CDL schools, trade schools, bootcamps' },
-    { table: 'intel_apprenticeships', label: 'Apprenticeships', icon: '🔧', source: 'DOL RAPIDS', sourceYear: '—', category: 'noncredit' as const, description: 'Registered apprenticeship programs, sponsors, completion data' },
-    { table: 'intel_license_counts', label: 'Licensee Counts', icon: '🔢', source: 'State Boards', sourceYear: '—', category: 'noncredit' as const, description: 'Active licensees per occupation per state' },
-    { table: 'intel_distances', label: 'Institution Distances', icon: '📏', source: 'Computed', sourceYear: '—', category: 'reference' as const, description: 'Driving distance/time between institutions' },
-    { table: 'intel_sources', label: 'Clipped Sources', icon: '📰', source: 'Manual', sourceYear: '—', category: 'reference' as const, description: 'Research articles, gov reports, industry data you\'ve saved' },
-  ];
+  // Icon + category mapping (not stored in DB — UI concern)
+  const TABLE_META: Record<string, { icon: string; category: string }> = {
+    intel_institutions: { icon: '🏫', category: 'credit' },
+    intel_completions: { icon: '🎓', category: 'credit' },
+    intel_financial_aid: { icon: '💳', category: 'credit' },
+    intel_employers: { icon: '🏢', category: 'both' },
+    intel_occupation_projections: { icon: '📈', category: 'both' },
+    intel_wages: { icon: '💰', category: 'both' },
+    intel_occupation_skills: { icon: '🧠', category: 'both' },
+    intel_statutes: { icon: '📜', category: 'both' },
+    intel_credentials: { icon: '📋', category: 'noncredit' },
+    intel_training_providers: { icon: '🏭', category: 'noncredit' },
+    intel_apprenticeships: { icon: '🔧', category: 'noncredit' },
+    intel_license_counts: { icon: '🔢', category: 'noncredit' },
+    intel_distances: { icon: '📏', category: 'reference' },
+    intel_sources: { icon: '📰', category: 'reference' },
+  };
 
+  // Pull freshness metadata from DB
+  const { data: freshness } = await s
+    .from('intel_data_freshness')
+    .select('*')
+    .order('table_name');
+
+  if (!freshness) return [];
+
+  // Get live record counts for each table
   const results = await Promise.all(
-    tables.map(async (t) => {
-      const [countRes, latestRes] = await Promise.all([
-        s.from(t.table).select('id', { count: 'exact', head: true }),
-        s.from(t.table).select('updated_at').order('updated_at', { ascending: false }).limit(1),
-      ]);
+    freshness.map(async (f) => {
+      const meta = TABLE_META[f.table_name] || { icon: '📦', category: 'reference' };
+      const countRes = await s.from(f.table_name).select('id', { count: 'exact', head: true });
+
       return {
-        ...t,
+        table: f.table_name,
+        label: f.dataset_label,
+        icon: meta.icon,
+        category: meta.category,
         count: countRes.count ?? 0,
-        lastUpdated: latestRes.data?.[0]?.updated_at ?? null,
+        // Source info
+        source: f.source_name,
+        sourceUrl: f.source_url,
+        dataPeriod: f.data_period,
+        dataReleaseDate: f.data_release_date,
+        nextExpectedRelease: f.next_expected_release,
+        // Our refresh info
+        recordsLoaded: f.records_loaded,
+        lastRefreshedAt: f.last_refreshed_at,
+        refreshedBy: f.refreshed_by,
+        refreshMethod: f.refresh_method,
+        // Citation
+        citationText: f.citation_text,
+        citationUrl: f.citation_url,
+        coverageNotes: f.coverage_notes,
+        knownLimitations: f.known_limitations,
+        // Staleness
+        isStale: f.is_stale,
+        staleReason: f.stale_reason,
+        description: f.coverage_notes || '',
       };
     })
   );
 
   return results;
+}
+
+export async function getDataFreshness(tableName: string) {
+  const { data, error } = await supabase()
+    .from('intel_data_freshness')
+    .select('*')
+    .eq('table_name', tableName)
+    .single();
+  if (error || !data) return null;
+  return data;
+}
+
+export async function getCitationForTable(tableName: string): Promise<{ text: string; url: string | null; period: string } | null> {
+  const f = await getDataFreshness(tableName);
+  if (!f || !f.citation_text) return null;
+  return {
+    text: f.citation_text,
+    url: f.citation_url,
+    period: f.data_period,
+  };
 }
