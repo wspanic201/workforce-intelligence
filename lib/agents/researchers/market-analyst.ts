@@ -310,12 +310,21 @@ Example (Bad): "Pharmacy tech demand is strong and growing."
 
 Make it strategic, not just descriptive. Connect local data to national/policy trends.
 
+GO BEYOND THE DATA PROVIDED. The verified intelligence data gives you the baseline. Now investigate:
+- Search for actual current job postings in the specific region. Name the employers.
+- Look for industry trend reports, workforce development news, policy changes affecting this occupation.
+- Check if major employers in the area have announced expansions, closures, or hiring freezes.
+- If something doesn't add up (like AWS being listed as a pharmacy tech skill), call it out and investigate why.
+
+Write with authority. You're not summarizing a database — you're telling the client whether the labor market supports their investment.
+
 Rules:
 - Cite specific numbers from the data above (not vague claims)
-- Label estimates clearly: "ESTIMATE: [reasoning]"
 - If data is missing, say so — don't fabricate
 - Be specific about employers, wages, and regional factors
-- Use markdown headers for structure`;
+- Use markdown headers for structure
+
+LENGTH: 800–1,200 words. Every sentence earns its space.`;
 
     // 5. Call Claude for analysis
     const { content, tokensUsed } = await callClaude(prompt, {

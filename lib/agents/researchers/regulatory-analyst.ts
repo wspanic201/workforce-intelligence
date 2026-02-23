@@ -327,6 +327,10 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Kee
   "dataSources": ["Source 1 - must be .gov or official state source"]
 }
 
+Don't just list requirements. Create a clear regulatory roadmap: what approvals are needed, in what order, with realistic timelines. If there are regulatory risks or recent policy changes that affect this program, highlight them.
+
+LENGTH: 600–800 words.
+
 NOTE: For licensure fields, only populate initialLicensure OR continuingEducation based on what this program actually is. Include stateLawReference with specific statute/rule citations.`;
 
     const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 12000 });

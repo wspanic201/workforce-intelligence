@@ -142,6 +142,10 @@ OUTPUT FORMAT (JSON):
   "dataSources": ["Source 1"]
 }
 
+Write this from the perspective of someone who knows community colleges. Don't list facilities and check boxes — assess whether this institution can actually pull this off. What's their track record with similar programs? What are the real barriers?
+
+LENGTH: 600–800 words.
+
 IMPORTANT: Return ONLY valid JSON. No markdown outside JSON. Keep string values concise. Do NOT include a markdownReport field.`;
 
     const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 12000 });

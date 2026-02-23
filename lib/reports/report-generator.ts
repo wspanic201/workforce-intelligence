@@ -1011,6 +1011,15 @@ function cleanAgentMarkdown(md: string, programName?: string): string {
   // 9. Trim leading/trailing whitespace
   out = out.trim();
 
+  // 10. Length discipline: agents should write 800-1,200 words but if they ramble, cap at ~6K chars
+  if (out.length > 6000) {
+    const truncated = out.substring(0, 6000);
+    const lastParagraph = truncated.lastIndexOf('\n\n');
+    if (lastParagraph > 3000) {
+      out = truncated.substring(0, lastParagraph).trim();
+    }
+  }
+
   return out;
 }
 

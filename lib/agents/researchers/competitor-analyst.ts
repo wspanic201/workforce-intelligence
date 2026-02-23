@@ -185,10 +185,19 @@ ${verifiedIntelBlock}
 
 Identify 3-5 competing programs, market gaps, and differentiation opportunities.
 
+Build a competitive comparison. For each competitor, investigate:
+- What do actual students say about the program? (Check Google reviews, Reddit, Indeed)
+- What are their actual completion/placement rates? (Check IPEDS, program websites)
+- What are their specific weaknesses that the client could exploit?
+
+Don't just list competitors — tell the client how to beat them. End with a clear positioning recommendation: "You should position as [X] because [Y]."
+
 SCORING: Rate the competitive landscape 1-10 for program viability.
 8-10 = Few/weak competitors, strong differentiation potential
 5-7 = Moderate competition, some differentiation possible
 1-4 = Saturated market, difficult to differentiate
+
+LENGTH: 800–1,000 words.
 
 IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Keep values concise.
 

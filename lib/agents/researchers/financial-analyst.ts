@@ -118,7 +118,15 @@ ${model.assumptions ? model.assumptions.map(a => `  - ${a.item}: ${a.value} [${a
 
 ═══════════════════════════════════════════════════════════
 YOUR TASK:
-Write a brief narrative interpretation of these model results. Then identify 3-5 key financial risks with mitigations, and 3-5 strategic recommendations.
+Don't just explain the numbers. Tell the client if this is a good investment or not. Be direct.
+
+If there's an unresolved cost assumption (like 160 vs 1,500 contact hours), don't present both — investigate which is correct and present your conclusion. If you can't determine which is right, flag it as a CRITICAL RISK that must be resolved before launch, and model the impact of both scenarios.
+
+Score honestly. If there's a major unresolved cost variable, it's not a 10/10.
+
+Write a brief narrative interpretation, then identify 3-5 key financial risks with mitigations, and 3-5 strategic recommendations.
+
+LENGTH: 800–1,000 words.
 
 You MUST return ONLY the following JSON — no preamble, no questions:
 

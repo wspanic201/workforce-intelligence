@@ -125,7 +125,18 @@ OUTPUT FORMAT (JSON):
   "dataSources": ["Source 1"]
 }
 
-IMPORTANT: Return ONLY valid JSON. No markdown outside JSON. Keep string values concise. Do NOT include a markdownReport field. Be conservative in estimates.`;
+Don't just cite demographics. Tell the story of who will enroll and why.
+
+INVESTIGATE:
+- What's the local unemployment rate? What industries are shedding workers who might retrain?
+- Are there large retail employers (Walmart, Target, Amazon) with workers seeking healthcare career paths?
+- What does the Census data reveal about the specific population segments most likely to enroll?
+
+Make specific enrollment projections with reasoning, not ranges. If you think 15 students will enroll Year 1, say 15 and explain why.
+
+LENGTH: 600–800 words.
+
+IMPORTANT: Return ONLY valid JSON. No markdown outside JSON. Keep string values concise. Do NOT include a markdownReport field.`;
 
     const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 16000 });
     const data = extractJSON(content) as LearnerDemandData;

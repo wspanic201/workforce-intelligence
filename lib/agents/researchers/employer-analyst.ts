@@ -165,7 +165,18 @@ ANALYSIS REQUIRED:
 5. Key partnership opportunities
 6. Skills employers want most
 
+Don't just count job postings — analyze them. Who is actually hiring? What are they paying? What do the job descriptions reveal about employer needs?
+
+INVESTIGATE BEYOND THE DATA:
+- Check employer websites for hiring pages, workforce development partnerships, tuition reimbursement programs
+- Look for news about major employers in the region (expansions, closures, mergers)
+- Check if any employers offer their own training programs that compete with or complement a certificate program
+
+Name names. If UnityPoint Health has 3 openings, say so. If CVS has a national pharmacy tech training program, that's relevant competitive intelligence.
+
 SCORING: 8-10 = strong multi-employer demand; 5-7 = moderate; 1-4 = weak/concentrated
+
+LENGTH: 800–1,000 words.
 
 IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Keep all string values concise (1-2 sentences max). Do NOT include a markdownReport field.
 
