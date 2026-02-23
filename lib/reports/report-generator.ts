@@ -314,17 +314,31 @@ function buildExecutiveSummary(
   // Try to extract narrative exec summary from synthesis markdown
   let narrative = '';
   if (tigerTeamMarkdown) {
-    const execMatch = tigerTeamMarkdown.match(/# Executive Summary\s+([\s\S]*?)(?=\n# )/);
+    // Match exec summary section (any heading level, any case)
+    const execMatch = tigerTeamMarkdown.match(/#{1,3}\s+(?:EXECUTIVE SUMMARY|Executive Summary)\s*\n([\s\S]*?)(?=\n#{1,2}\s+(?:RECOMMENDATION|Recommendation|DECISION|Decision|KEY FINDINGS|Key Findings|CONDITIONS|Conditions))/i);
     if (execMatch) {
       narrative = execMatch[1].trim();
-    } else {
-      const recMatch = tigerTeamMarkdown.match(/# Recommendation\s+([\s\S]*?)(?=\n# )/);
+    }
+    // Also try to grab the recommendation section
+    if (narrative) {
+      const recMatch = tigerTeamMarkdown.match(/#{1,3}\s+(?:RECOMMENDATION|Recommendation|DECISION|Decision)[^\n]*\n([\s\S]*?)(?=\n#{1,2}\s+(?:KEY FINDINGS|Key Findings|CONDITIONS|Conditions|CONDITION))/i);
       if (recMatch) {
-        narrative = recMatch[1].trim();
+        narrative += '\n\n' + recMatch[1].trim();
+      }
+    }
+    // Fallback: if no exec summary found, try to grab everything between the first --- and the KEY FINDINGS
+    if (!narrative) {
+      const fallbackMatch = tigerTeamMarkdown.match(/---\s*\n([\s\S]*?)(?=\n#{1,3}\s+(?:KEY FINDINGS|Key Findings|CONDITIONS|Conditions))/i);
+      if (fallbackMatch) {
+        // Strip any sub-headers from the fallback
+        narrative = fallbackMatch[1].replace(/^#{1,3}\s+.*$/gm, '').trim();
       }
     }
     if (narrative) {
       narrative = replaceTigerTeam(narrative);
+      // Strip raw score formulas that shouldn't be in narrative
+      narrative = narrative.replace(/[≥≤]+\s*\d+%?\s*threshold\s*\(\+\d+\)/g, '');
+      narrative = narrative.replace(/\(\+\d+\)/g, '');
     }
   }
 
@@ -381,7 +395,14 @@ function buildNarrativeFromScores(
   }
 
   for (const s of strengths) {
-    parts.push(`- **${s.dimension}** scored ${s.score}/10 \u2014 ${s.rationale.substring(0, 200)}`);
+    // Clean up raw scoring formula from rationale text
+    let cleanRationale = s.rationale
+      .replace(/[≥≤]+\s*[\d.]+%?\s*threshold\s*\(\+\d+\)/g, '')
+      .replace(/\(\+\d+\)/g, '')
+      .replace(/^\*+\s*/, '')
+      .trim();
+    if (cleanRationale.length > 200) cleanRationale = cleanRationale.substring(0, 200) + '...';
+    parts.push(`- **${s.dimension}** scored ${s.score}/10 \u2014 ${cleanRationale}`);
   }
 
   if (concerns.length > 0) {
@@ -971,6 +992,24 @@ function cleanAgentMarkdown(md: string, programName?: string): string {
   // 0. Replace Tiger Team references
   out = replaceTigerTeam(out);
 
+  // 0.1 Strip raw job data blocks that come from the prompt (not agent analysis)
+  // These are the structured sections like "### Current Market Conditions", "### Job Demand", etc.
+  out = out.replace(/### Current Market Conditions[\s\S]*?(?=### Strategic Analysis|### 1\.|## )/i, '');
+  out = out.replace(/### Job Demand[\s\S]*?(?=### |## )/i, '');
+  out = out.replace(/### Salary Ranges[\s\S]*?(?=### |## )/i, '');
+  out = out.replace(/### Top Employers Hiring[\s\S]*?(?=### |## )/i, '');
+  out = out.replace(/### Most Requested Skills[\s\S]*?(?=### |## )/i, '');
+  out = out.replace(/### Industry Certifications[\s\S]*?(?=### |## )/i, '');
+  out = out.replace(/### Occupational Standards \(O\*NET\)[\s\S]*?(?=### Strategic|### 1\.|## )/i, '');
+  out = out.replace(/### Core Competencies[\s\S]*?(?=### |## )/i, '');
+  out = out.replace(/\*\*Analysis Date:\*\*[^\n]*\n/g, '');
+
+  // 0.2 Filter out bogus skills that are job scraper artifacts
+  out = out.replace(/- \*\*AWS\*\*:.*\n/g, '');
+  out = out.replace(/- \*\*React\*\*:.*\n/g, '');
+  out = out.replace(/- \*\*Lean\*\*:.*\n/g, '');
+  out = out.replace(/- \*\*Leadership\*\*:.*(?:job postings).*\n/g, '');
+
   // 1. Strip agent H1 headers that duplicate template sections
   if (programName) {
     const escaped = programName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -999,6 +1038,13 @@ function cleanAgentMarkdown(md: string, programName?: string): string {
 
   // 7. Trim excessive blank lines (3+ consecutive -> 2)
   out = out.replace(/\n{3,}/g, '\n\n');
+
+  // 7.1 Strip empty section headers (header followed by another header or nothing)
+  out = out.replace(/^### (?:Key Risks|Mitigations|Recommendations)\s*\n(?=\n|$|#|---)/gm, '');
+
+  // 7.2 Strip citation agent correction text that leaked into tables (bracketed corrections)
+  out = out.replace(/\[[\d/hr).]+\s*A \$[\d.]+\/hr rate implies[^\]]*\]/g, '');
+  out = out.replace(/\[\d+\/hr\)\.\s*A[^\]]*\]/g, '');
 
   // 8. Strip agent-level Data Sources blocks (appendix has the consolidated list)
   // Match "---\n**Data Sources" or just "**Data Sources" through end of string or next heading
