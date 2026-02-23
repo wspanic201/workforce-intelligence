@@ -155,7 +155,11 @@ NOTE: Live employer data unavailable. Use your knowledge of the
 occupation and region to identify top employers by sector.
 `}
 
+${verifiedEmployerSection ? `═══ VERIFIED BASELINE DATA (BLS, O*NET, Census, IPEDS — confirmed government sources, cite directly) ═══
 ${verifiedEmployerSection}
+═══ END VERIFIED BASELINE ═══
+
+This data confirms what exists. Your job is to explain what it means right now — find current job postings, recent employer news, industry reports, regulatory updates, and competitor moves that bring the baseline to life. The intel above is your floor. External research is what makes this worth reading.` : ''}
 
 ANALYSIS REQUIRED:
 1. Employer demand signals (top 3-5)

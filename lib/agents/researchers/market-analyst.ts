@@ -245,7 +245,11 @@ AUDIENCE: ${project.target_audience || 'Not specified'}
 OCCUPATION: ${targetOccupation}
 REGION: ${rawLocation}
 SOC CODE: ${resolvedSOC || 'Not found'} ${resolvedSOC ? `(${getSOCTitle(resolvedSOC) || 'validated'}, source: ${socSource})` : ''}
+${verifiedPromptBlock ? `═══ VERIFIED BASELINE DATA (BLS, O*NET, Census, IPEDS — confirmed government sources, cite directly) ═══
 ${verifiedPromptBlock}
+═══ END VERIFIED BASELINE ═══
+
+This data confirms what exists. Your job is to explain what it means right now — find current job postings, recent employer news, industry reports, regulatory updates, and competitor moves that bring the baseline to life. The intel above is your floor. External research is what makes this worth reading.` : ''}
 ${jobsSection}
 
 ${blsData ? `

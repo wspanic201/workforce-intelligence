@@ -279,7 +279,10 @@ export async function runFinancialAnalysis(
 
     const persona = await loadPersona('cfo');
     const verifiedIntelBlock = (project as any)._intelContext?.promptBlock || '';
-    const prompt = buildInterpretationPrompt(financialModel, project, persona) + '\n' + verifiedIntelBlock;
+    const intelSection = verifiedIntelBlock
+      ? `\n═══ VERIFIED BASELINE (BLS, O*NET, Census — cite directly) ═══\n${verifiedIntelBlock}\n═══ END BASELINE ═══\nUse the above as your confirmed foundation. Note any assumptions in the financial model that conflict with verified data.`
+      : '';
+    const prompt = buildInterpretationPrompt(financialModel, project, persona) + intelSection;
 
     const { content, tokensUsed } = await callClaude(prompt, {
       maxTokens: 2000,

@@ -71,7 +71,11 @@ ${(project as any).delivery_format ? `- Delivery Format: ${(project as any).deli
 ${(project as any).estimated_tuition ? `- Estimated Tuition: ${(project as any).estimated_tuition}` : ''}
 ${(project as any).target_learner_profile ? `- Learner Profile: ${(project as any).target_learner_profile}` : ''}
 
+${verifiedIntelBlock ? `═══ VERIFIED BASELINE DATA (BLS, O*NET, Census, IPEDS — confirmed government sources, cite directly) ═══
 ${verifiedIntelBlock}
+═══ END VERIFIED BASELINE ═══
+
+This data confirms what exists. Your job is to explain what it means right now — find current job postings, recent employer news, industry reports, regulatory updates, and competitor moves that bring the baseline to life. The intel above is your floor. External research is what makes this worth reading.` : ''}
 
 ANALYSIS REQUIRED:
 1. Estimate target learner population size in the service area

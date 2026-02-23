@@ -193,7 +193,11 @@ ${project.constraints ? `- Constraints: ${project.constraints}` : ''}
 ${(project as any).funding_sources ? `- Funding Sources: ${(project as any).funding_sources}` : ''}
 ${(project as any).stackable_credential ? `- Stackable Intent: Yes` : ''}
 
+${verifiedRegulatorySection ? `═══ VERIFIED BASELINE DATA (BLS, O*NET, Census, IPEDS — confirmed government sources, cite directly) ═══
 ${verifiedRegulatorySection}
+═══ END VERIFIED BASELINE ═══
+
+This data confirms what exists. Your job is to explain what it means right now — find current job postings, recent employer news, industry reports, regulatory updates, and competitor moves that bring the baseline to life. The intel above is your floor. External research is what makes this worth reading.` : ''}
 
 CRITICAL INSTRUCTION — LICENSURE VS. CONTINUING EDUCATION:
 For licensed occupations, you MUST distinguish between:
