@@ -331,6 +331,9 @@ export async function getDataInventory() {
     intel_license_counts: { icon: '🔢', category: 'noncredit' },
     intel_distances: { icon: '📏', category: 'reference' },
     intel_sources: { icon: '📰', category: 'reference' },
+    intel_state_priorities: { icon: '🏛️', category: 'both' },
+    intel_county_demographics: { icon: '🏘️', category: 'reference' },
+    intel_h1b_demand: { icon: '🛂', category: 'both' },
   };
 
   // Pull freshness metadata from DB
