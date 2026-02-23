@@ -30,6 +30,12 @@ export interface PipelineResults {
   reportPageCount?: number;
   reportSizeKb?: number;
   reportMarkdownHash: string;
+  /** Full citation agent output for admin review (never shown to clients) */
+  citationDetails?: {
+    corrections: Array<{ componentType: string; original: string; corrected: string; reason: string }>;
+    warnings: string[];
+    dataSources: string[];
+  };
 }
 
 /**
@@ -91,6 +97,7 @@ export async function completePipelineRun(
       citation_corrections: results.citationCorrections,
       citation_warnings: results.citationWarnings,
       intel_tables_used: results.intelTablesUsed,
+      config: results.citationDetails ? { citationDetails: results.citationDetails } : undefined,
       report_version: 1,
       report_markdown_hash: results.reportMarkdownHash,
       report_page_count: results.reportPageCount || null,

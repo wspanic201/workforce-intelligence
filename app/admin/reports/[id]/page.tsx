@@ -344,6 +344,45 @@ export default function ReportDetailPage() {
                 </CardContent>
               </Card>
 
+              {/* Citation Details — Internal Only */}
+              {run.config?.citationDetails && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="text-sm font-medium text-slate-500">
+                      Citation Review <span className="text-xs text-red-400 ml-2">INTERNAL ONLY</span>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    {run.config.citationDetails.corrections?.length > 0 && (
+                      <div>
+                        <h4 className="text-xs font-semibold text-amber-600 uppercase mb-2">Corrections Applied ({run.config.citationDetails.corrections.length})</h4>
+                        <div className="space-y-2">
+                          {run.config.citationDetails.corrections.map((c: any, i: number) => (
+                            <div key={i} className="text-xs bg-amber-50 border border-amber-100 rounded-lg p-3">
+                              <div className="font-medium text-slate-700 mb-1">[{c.componentType}] {c.reason}</div>
+                              <div className="text-slate-400"><span className="line-through">{c.original?.slice(0, 100)}...</span></div>
+                              <div className="text-slate-600 mt-1">→ {c.corrected?.slice(0, 100)}...</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    {run.config.citationDetails.warnings?.length > 0 && (
+                      <div>
+                        <h4 className="text-xs font-semibold text-red-600 uppercase mb-2">Warnings ({run.config.citationDetails.warnings.length})</h4>
+                        <div className="space-y-1">
+                          {run.config.citationDetails.warnings.map((w: string, i: number) => (
+                            <div key={i} className="text-xs text-red-700 bg-red-50 border border-red-100 rounded p-2">
+                              {w}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              )}
+
               {/* Quality Review Form */}
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between">

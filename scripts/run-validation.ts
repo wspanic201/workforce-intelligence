@@ -299,6 +299,11 @@ async function main() {
         recommendation: programScore.recommendation,
         citationCorrections: citationResults?.corrections?.length ?? 0,
         citationWarnings: citationResults?.warnings?.length ?? 0,
+        citationDetails: citationResults ? {
+          corrections: citationResults.corrections || [],
+          warnings: citationResults.warnings || [],
+          dataSources: citationResults.dataSources || [],
+        } : undefined,
         intelTablesUsed: (enrichedProject as any)._intelContext?.tablesUsed?.length ?? 0,
         reportMarkdownHash: hashMarkdown(fullReport),
         reportSizeKb: Math.round(Buffer.from(fullReport).length / 1024),

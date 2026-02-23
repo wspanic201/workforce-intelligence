@@ -1014,6 +1014,29 @@ function cleanAgentMarkdown(md: string, programName?: string): string {
   return out;
 }
 
+/**
+ * Strip citation warning language from client-facing reports.
+ * Citation warnings are for internal review — clients pay for actionable insights, not hedging.
+ */
+function cleanCitationLanguage(text: string): string {
+  return text
+    .replace(/ESTIMATE:\s*/gi, '')
+    .replace(/\bNOTE:\s*[^.]*?(?:should be (?:verified|confirmed)|direct confirmation)[^.]*\.\s*/gi, '')
+    .replace(/\[TO BE CONFIRMED[^\]]*\]/gi, '')
+    .replace(/\[PENDING[^\]]*\]/gi, '')
+    .replace(/\[CONDITIONAL\s*—[^\]]*\]/gi, '')
+    .replace(/\.\s*This (?:figure|data|number|citation|source) should be (?:verified|confirmed)[^.]*\./gi, '.')
+    .replace(/[;,]?\s*direct confirmation (?:from [^.;]+)?(?:required|needed)[^.;]*/gi, '')
+    .replace(/\.\s*This figure should be confirmed[^.]*\./gi, '.')
+    .replace(/\(ESTIMATE[^)]*\)/gi, '')
+    .replace(/Note: The correct authoritative source is[^.]*\./gi, '')
+    .replace(/CAUTION:\s*[^.]*\./gi, '')
+    .replace(/NOTE:\s*[^.]*\./gi, '')
+    .replace(/\.\s*\./g, '.')
+    .replace(/  +/g, ' ')
+    .trim();
+}
+
 function formatRecommendationLabel(rec: string): string {
   switch (rec) {
     case 'Strong Go': return 'GO';
@@ -1081,5 +1104,7 @@ export function generateReport(input: ReportInput): string {
 *\u00A9 ${new Date().getFullYear()} Wavelength. All rights reserved.*
 *hello@withwavelength.com*`);
 
-  return sections.join('\n\n');
+  // Final pass: strip any citation warning language that leaked into the client report
+  const report = sections.join('\n\n');
+  return cleanCitationLanguage(report);
 }
