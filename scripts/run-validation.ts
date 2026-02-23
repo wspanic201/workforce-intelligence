@@ -18,7 +18,9 @@ async function main() {
   console.log('🧪 Pharmacy Technician Certificate — Kirkwood Community College');
   console.log('📍 Cedar Rapids & Iowa City, Iowa\n');
 
-  // Create project in DB with only existing columns
+  // Create project in DB with MINIMAL inputs — only what a real client would provide.
+  // Everything else (target audience, delivery format, tuition, learner profile, etc.)
+  // should be DISCOVERED by the research agents, not pre-loaded as assumptions.
   const { data: dbProject, error } = await supabase
     .from('validation_projects')
     .insert({
@@ -26,8 +28,6 @@ async function main() {
       client_email: 'hello@withwavelength.com',
       program_name: 'Pharmacy Technician Certificate',
       program_type: 'certificate',
-      target_audience: 'Career changers, recent high school graduates, and current retail workers seeking healthcare careers',
-      constraints: 'Must meet Iowa Board of Pharmacy requirements. Clinical rotation sites needed. Lab equipment investment required.',
       status: 'intake',
     })
     .select()
@@ -41,31 +41,25 @@ async function main() {
   const projectId = dbProject.id;
   console.log(`Project ID: ${projectId}`);
 
-  // Build enriched project object that agents will receive
+  // Enriched project: ONLY provide what the system needs to route research,
+  // NOT conclusions the agents should discover independently.
   const enrichedProject = {
     ...dbProject,
-    program_description: 'A certificate program preparing students for entry-level pharmacy technician positions in retail, hospital, and specialty pharmacy settings. Program would include pharmacy law, pharmacology, sterile and non-sterile compounding, medication dispensing, and pharmacy calculations. Prepares students for the PTCB (Pharmacy Technician Certification Board) national exam.',
+    // Routing context (system needs these to run the right lookups)
     target_occupation: 'Pharmacy Technician',
     geographic_area: 'Cedar Rapids and Iowa City, Iowa (Linn and Johnson Counties)',
-    target_learner_profile: 'Adults 18-45 seeking stable healthcare career with relatively short training period. Mix of recent grads and career changers. Many working part-time or in retail.',
-    delivery_format: 'hybrid',
-    estimated_program_length: '9-12 months (2 semesters)',
-    estimated_tuition: '$4,500-$6,000',
-    institutional_capacity: 'Kirkwood has existing health sciences infrastructure including lab space and clinical partnerships. Would need dedicated pharmacy lab setup.',
-    employer_interest: 'Regional pharmacies (CVS, Walgreens, Hy-Vee) and hospital systems (UnityPoint, UIHC) have expressed informal interest in pipeline programs.',
-    strategic_context: 'Kirkwood CC serves a 7-county area in Eastern Iowa. Strong existing health programs (nursing, medical assisting). Pharmacy tech would complement the health sciences pathway and meet growing regional demand.',
     soc_codes: '29-2052',
     onet_codes: '29-2052.00',
-    stackable_credential: true,
-    funding_sources: ['perkins_v', 'wioa', 'self_pay'],
-    // Financial model inputs (used by financial-analyst agent)
-    // CE model: seat hours (contact hours), not credit hours
-    has_existing_lab_space: false,
-    target_cohort_size: 18,
-    total_seat_hours: 160,  // Iowa Board of Pharmacy minimum training hours for pharmacy technician programs
-    total_seat_hours_source: 'Iowa Board of Pharmacy Rule 657 IAC 8.19 — minimum training hours for pharmacy technician',
-    sections_per_year: 2,
-    instructor_type: 'adjunct', // 'adjunct' | 'full-time' | 'industry-expert'
+    // Everything below is intentionally EMPTY — agents must discover these
+    // target_audience: NOT PROVIDED — learner demand agent discovers this
+    // program_description: NOT PROVIDED — curriculum agent determines this
+    // target_learner_profile: NOT PROVIDED — learner demand agent discovers this
+    // delivery_format: NOT PROVIDED — institutional fit agent recommends this
+    // estimated_tuition: NOT PROVIDED — financial agent models this
+    // employer_interest: NOT PROVIDED — employer agent discovers this
+    // constraints: NOT PROVIDED — regulatory agent identifies these
+    // institutional_capacity: NOT PROVIDED — institutional fit agent assesses this
+    // strategic_context: NOT PROVIDED — tiger team synthesizes this
   };
 
   // Import pipeline tracking
