@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { IntelSource } from '@/lib/intelligence/types';
-import { IntelSearch, IntelFilter, Badge, Modal, Field, Input, TextArea, Select, Btn, Pagination, useIntelData } from '../components';
+import { IntelSearch, IntelFilter, Badge, Modal, Field, Input, TextArea, Select, Btn, Pagination, SortHeader, useIntelData } from '../components';
 
 const SOURCE_TYPES = [
   { value: 'government', label: '🏛️ Government' }, { value: 'research', label: '🎓 Research' },
@@ -26,7 +26,7 @@ export default function SourcesPage() {
   if (search) params.q = search;
   if (filterType) params.source_type = filterType;
 
-  const { data, total, page, totalPages, loading, setPage, refetch } = useIntelData<IntelSource>('sources', params);
+  const { data, total, page, totalPages, loading, setPage, sort, dir, toggleSort, refetch } = useIntelData<IntelSource>('sources', params);
 
   const handleSave = async () => {
     const method = editing ? 'PUT' : 'POST';
@@ -52,7 +52,26 @@ export default function SourcesPage() {
         <IntelFilter value={filterType} onChange={setFilterType} options={SOURCE_TYPES} placeholder="All Types" />
         <Btn onClick={() => { setForm(empty()); setEditing(null); setShowAdd(true); }}>+ Clip Source</Btn>
       </div>
-      <p className="text-sm text-slate-500 mb-4">{total} sources</p>
+      <div className="flex items-center gap-4 text-sm text-slate-500 mb-4">
+        <span>{total} sources</span>
+        <span className="text-slate-300">|</span>
+        <span className="text-xs text-slate-400">Sort by:</span>
+        {[
+          { label: 'Title', col: 'title' },
+          { label: 'Publisher', col: 'publisher' },
+          { label: 'Date', col: 'published_date' },
+          { label: 'Type', col: 'source_type' },
+          { label: 'Reliability', col: 'reliability' },
+        ].map(s => (
+          <button
+            key={s.col}
+            onClick={() => toggleSort(s.col)}
+            className={`text-xs px-2 py-1 rounded transition-colors ${sort === s.col ? 'bg-purple-100 text-purple-700 font-semibold' : 'text-slate-500 hover:text-purple-600'}`}
+          >
+            {s.label} {sort === s.col ? (dir === 'asc' ? '▲' : '▼') : ''}
+          </button>
+        ))}
+      </div>
       <div className="space-y-3">
         {loading ? <div className="text-center text-slate-400 py-8">Loading...</div> :
         data.length === 0 ? <div className="bg-white rounded-xl border border-slate-200 p-8 text-center text-slate-400">No sources yet. Clip your first one!</div> :

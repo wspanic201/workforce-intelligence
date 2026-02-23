@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { IntelWage } from '@/lib/intelligence/types';
-import { IntelSearch, IntelFilter, Badge, Modal, Field, Input, Select, Btn, Pagination, useIntelData, US_STATES } from '../components';
+import { IntelSearch, IntelFilter, Badge, Modal, Field, Input, Select, Btn, Pagination, SortHeader, useIntelData, US_STATES } from '../components';
 
 const GEO_LEVELS = [
   { value: 'national', label: 'National' },
@@ -29,7 +29,7 @@ export default function WagesPage() {
   if (filterState) params.geo_code = filterState;
   if (filterGeo) params.geo_level = filterGeo;
 
-  const { data, total, page, totalPages, loading, setPage, refetch } = useIntelData<IntelWage>('wages', params);
+  const { data, total, page, totalPages, loading, setPage, sort, dir, toggleSort, refetch } = useIntelData<IntelWage>('wages', params);
 
   const handleSave = async () => {
     const method = editing ? 'PUT' : 'POST';
@@ -68,12 +68,12 @@ export default function WagesPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-100 bg-slate-50">
-              <th className="text-left px-4 py-3 font-medium text-slate-600">SOC</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Occupation</th>
-              <th className="text-right px-4 py-3 font-medium text-slate-600">Median</th>
-              <th className="text-right px-4 py-3 font-medium text-slate-600">Employment</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Geo</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Release</th>
+              <SortHeader label="SOC" column="soc_code" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Occupation" column="occupation_title" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Median" column="median_annual" sort={sort} dir={dir} onSort={toggleSort} align="right" />
+              <SortHeader label="Employment" column="employment" sort={sort} dir={dir} onSort={toggleSort} align="right" />
+              <SortHeader label="Geo" column="geo_name" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Release" column="bls_release" sort={sort} dir={dir} onSort={toggleSort} />
               <th className="text-right px-4 py-3 font-medium text-slate-600">Actions</th>
             </tr>
           </thead>

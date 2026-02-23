@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { IntelCredential } from '@/lib/intelligence/types';
-import { IntelSearch, IntelFilter, Badge, Modal, Field, Input, Select, Btn, Pagination, useIntelData, US_STATES } from '../components';
+import { IntelSearch, IntelFilter, Badge, Modal, Field, Input, Select, Btn, Pagination, SortHeader, useIntelData, US_STATES } from '../components';
 
 const CRED_TYPES = [
   { value: 'license', label: 'License' }, { value: 'certification', label: 'Certification' },
@@ -26,7 +26,7 @@ export default function CredentialsPage() {
   if (search) params.q = search;
   if (filterState) params.state = filterState;
 
-  const { data, total, page, totalPages, loading, setPage, refetch } = useIntelData<IntelCredential>('credentials', params);
+  const { data, total, page, totalPages, loading, setPage, sort, dir, toggleSort, refetch } = useIntelData<IntelCredential>('credentials', params);
 
   const handleSave = async () => {
     const method = editing ? 'PUT' : 'POST';
@@ -47,12 +47,12 @@ export default function CredentialsPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-100 bg-slate-50">
-              <th className="text-left px-4 py-3 font-medium text-slate-600">State</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Credential</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Type</th>
-              <th className="text-right px-4 py-3 font-medium text-slate-600">Hours</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Exam</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Regulatory Body</th>
+              <SortHeader label="State" column="state" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Credential" column="credential_name" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Type" column="credential_type" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Hours" column="required_hours" sort={sort} dir={dir} onSort={toggleSort} align="right" />
+              <SortHeader label="Exam" column="exam_required" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Regulatory Body" column="regulatory_body" sort={sort} dir={dir} onSort={toggleSort} />
               <th className="text-right px-4 py-3 font-medium text-slate-600">Actions</th>
             </tr>
           </thead>

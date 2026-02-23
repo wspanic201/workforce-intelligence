@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { IntelStatute } from '@/lib/intelligence/types';
-import { IntelSearch, IntelFilter, Badge, Modal, Field, Input, TextArea, Select, Btn, Pagination, useIntelData, US_STATES } from '../components';
+import { IntelSearch, IntelFilter, Badge, Modal, Field, Input, TextArea, Select, Btn, Pagination, SortHeader, useIntelData, US_STATES } from '../components';
 
 const STATUSES = [
   { value: 'active', label: 'Active' }, { value: 'repealed', label: 'Repealed' },
@@ -37,7 +37,7 @@ export default function StatutesPage() {
   if (filterStatus) params.status = filterStatus;
   if (filterCategory) params.category = filterCategory;
 
-  const { data, total, page, totalPages, loading, setPage, refetch } = useIntelData<IntelStatute>('statutes', params);
+  const { data, total, page, totalPages, loading, setPage, sort, dir, toggleSort, refetch } = useIntelData<IntelStatute>('statutes', params);
 
   const handleSave = async () => {
     const method = editing ? 'PUT' : 'POST';
@@ -72,12 +72,12 @@ export default function StatutesPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-100 bg-slate-50">
-              <th className="text-left px-4 py-3 font-medium text-slate-600">State</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Chapter</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Title</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Regulatory Body</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Status</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Category</th>
+              <SortHeader label="State" column="state" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Chapter" column="code_chapter" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Title" column="title" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Regulatory Body" column="regulatory_body" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Status" column="status" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Category" column="category" sort={sort} dir={dir} onSort={toggleSort} />
               <th className="text-right px-4 py-3 font-medium text-slate-600">Actions</th>
             </tr>
           </thead>

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { IntelEmployer } from '@/lib/intelligence/types';
-import { IntelSearch, IntelFilter, Badge, Modal, Field, Input, Select, Btn, Pagination, useIntelData, US_STATES } from '../components';
+import { IntelSearch, IntelFilter, Badge, Modal, Field, Input, Select, Btn, Pagination, SortHeader, useIntelData, US_STATES } from '../components';
 
 const empty = (): Partial<IntelEmployer> => ({
   employer_name: '', industry: '', naics_code: '', state: '', city: '', msa: '',
@@ -21,7 +21,7 @@ export default function EmployersPage() {
   if (search) params.q = search;
   if (filterState) params.state = filterState;
 
-  const { data, total, page, totalPages, loading, setPage, refetch } = useIntelData<IntelEmployer>('employers', params);
+  const { data, total, page, totalPages, loading, setPage, sort, dir, toggleSort, refetch } = useIntelData<IntelEmployer>('employers', params);
 
   const handleSave = async () => {
     const method = editing ? 'PUT' : 'POST';
@@ -50,10 +50,10 @@ export default function EmployersPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-100 bg-slate-50">
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Employer</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Industry</th>
-              <th className="text-left px-4 py-3 font-medium text-slate-600">Location</th>
-              <th className="text-right px-4 py-3 font-medium text-slate-600">Est. Employees</th>
+              <SortHeader label="Employer" column="employer_name" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Industry" column="industry" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Location" column="state" sort={sort} dir={dir} onSort={toggleSort} />
+              <SortHeader label="Est. Employees" column="estimated_employees" sort={sort} dir={dir} onSort={toggleSort} align="right" />
               <th className="text-left px-4 py-3 font-medium text-slate-600">Hiring For</th>
               <th className="text-right px-4 py-3 font-medium text-slate-600">Actions</th>
             </tr>
