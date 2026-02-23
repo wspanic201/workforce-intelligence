@@ -8,10 +8,12 @@ import { Badge, Modal, Field, Input, Select, TextArea, Btn } from '../../compone
 export default function InstitutionDetail() {
   const { id } = useParams();
   const router = useRouter();
-  const [tab, setTab] = useState<'profile' | 'programs' | 'custom'>('profile');
+  const [tab, setTab] = useState<'profile' | 'programs' | 'custom' | 'economy'>('profile');
   const [inst, setInst] = useState<IntelInstitution | null>(null);
   const [programs, setPrograms] = useState<IntelInstitutionProgram[]>([]);
   const [custom, setCustom] = useState<IntelInstitutionCustom[]>([]);
+  const [economy, setEconomy] = useState<any>(null);
+  const [ecoLoading, setEcoLoading] = useState(false);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState<Partial<IntelInstitution>>({});
@@ -68,10 +70,22 @@ export default function InstitutionDetail() {
   if (loading) return <div className="text-slate-400 py-8 text-center">Loading...</div>;
   if (!inst) return <div className="text-red-500 py-8 text-center">Institution not found.</div>;
 
+  // Load economy data when tab is selected
+  useEffect(() => {
+    if (tab === 'economy' && !economy && !ecoLoading) {
+      setEcoLoading(true);
+      fetch(`/api/admin/intelligence/institutions/${id}/economy`)
+        .then(r => r.json())
+        .then(d => { setEconomy(d); setEcoLoading(false); })
+        .catch(() => setEcoLoading(false));
+    }
+  }, [tab, economy, ecoLoading, id]);
+
   const TABS = [
     { key: 'profile', label: 'Profile' },
     { key: 'programs', label: `Programs (${programs.length})` },
     { key: 'custom', label: `Custom Data (${custom.length})` },
+    { key: 'economy', label: '🌐 Economy' },
   ] as const;
 
   return (
@@ -218,6 +232,123 @@ export default function InstitutionDetail() {
               <Btn onClick={addCustom}>Add Data</Btn>
             </div>
           </Modal>
+        </div>
+      )}
+
+      {/* Economy Tab */}
+      {tab === 'economy' && (
+        <div>
+          {ecoLoading ? (
+            <div className="text-slate-400 py-8 text-center">Loading economy profile...</div>
+          ) : economy?.error ? (
+            <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 text-center">
+              <p className="text-amber-800 font-semibold mb-2">No Service Area Defined</p>
+              <p className="text-amber-700 text-sm">Map counties to this institution&apos;s service area to see economy data. Contact admin to add county mappings.</p>
+            </div>
+          ) : economy ? (
+            <div className="space-y-6">
+              {/* Service Area Summary */}
+              <div className="bg-white rounded-xl border border-slate-200 p-6">
+                <h3 className="font-semibold text-slate-900 mb-4">Service Area — {economy.service_area.counties} Counties</h3>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {economy.service_area.county_list.map((c: any) => (
+                    <span key={c.fips} className={`px-3 py-1 rounded-full text-xs font-medium ${c.is_primary ? 'bg-purple-100 text-purple-800 ring-1 ring-purple-300' : 'bg-slate-100 text-slate-700'}`}>
+                      {c.name}{c.is_primary ? ' ★' : ''}
+                    </span>
+                  ))}
+                </div>
+                <p className="text-xs text-slate-400">★ = Primary campus county</p>
+              </div>
+
+              {/* Demographics Overview */}
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-4">
+                {[
+                  { label: 'Population', value: economy.demographics.total_population?.toLocaleString(), icon: '👥' },
+                  { label: 'Avg Median Income', value: economy.demographics.avg_median_household_income ? `$${economy.demographics.avg_median_household_income.toLocaleString()}` : '—', icon: '💰' },
+                  { label: 'Avg Poverty Rate', value: economy.demographics.avg_poverty_rate ? `${economy.demographics.avg_poverty_rate}%` : '—', icon: '📊' },
+                  { label: 'Avg Bachelor\'s+', value: economy.demographics.avg_bachelors_or_higher_pct ? `${economy.demographics.avg_bachelors_or_higher_pct}%` : '—', icon: '🎓' },
+                  { label: 'Avg Unemployment', value: economy.demographics.avg_unemployment_rate ? `${economy.demographics.avg_unemployment_rate}%` : '—', icon: '📋' },
+                ].map(stat => (
+                  <div key={stat.label} className="bg-white rounded-xl border border-slate-200 p-4">
+                    <div className="text-lg mb-1">{stat.icon}</div>
+                    <div className="text-xl font-bold text-slate-900">{stat.value || '—'}</div>
+                    <div className="text-xs text-slate-500">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Industry Breakdown */}
+              <div className="bg-white rounded-xl border border-slate-200 p-6">
+                <h3 className="font-semibold text-slate-900 mb-2">Industry Employment</h3>
+                <p className="text-sm text-slate-500 mb-4">
+                  {economy.economy.total_establishments.toLocaleString()} establishments • {economy.economy.total_employees.toLocaleString()} employees
+                </p>
+                <div className="space-y-3">
+                  {economy.economy.top_industries.map((ind: any) => {
+                    const pct = economy.economy.total_employees > 0
+                      ? Math.round((ind.employees / economy.economy.total_employees) * 100)
+                      : 0;
+                    return (
+                      <div key={ind.naics_code} className="flex items-center gap-4">
+                        <div className="w-12 text-right font-mono text-xs text-purple-600">{ind.naics_code}</div>
+                        <div className="flex-1">
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-sm font-medium text-slate-800">{ind.name}</span>
+                            <span className="text-sm text-slate-600">{ind.employees.toLocaleString()} employees ({pct}%)</span>
+                          </div>
+                          <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                            <div className="h-full bg-purple-500 rounded-full" style={{ width: `${Math.max(pct, 1)}%` }} />
+                          </div>
+                        </div>
+                        <div className="w-20 text-right text-xs text-slate-500">
+                          {ind.establishments.toLocaleString()} est.
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* County Demographics Detail */}
+              {economy.demographics.county_details.length > 0 && (
+                <div className="bg-white rounded-xl border border-slate-200 overflow-hidden">
+                  <div className="px-6 pt-4 pb-2">
+                    <h3 className="font-semibold text-slate-900">County Demographics Detail</h3>
+                  </div>
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-slate-100 bg-slate-50">
+                        <th className="text-left px-4 py-3 font-medium text-slate-600">County</th>
+                        <th className="text-right px-4 py-3 font-medium text-slate-600">Population</th>
+                        <th className="text-right px-4 py-3 font-medium text-slate-600">Median Income</th>
+                        <th className="text-right px-4 py-3 font-medium text-slate-600">Poverty</th>
+                        <th className="text-right px-4 py-3 font-medium text-slate-600">Bachelor&apos;s+</th>
+                        <th className="text-right px-4 py-3 font-medium text-slate-600">Unemployment</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {economy.demographics.county_details.sort((a: any, b: any) => (b.total_population || 0) - (a.total_population || 0)).map((d: any) => (
+                        <tr key={d.county_name} className="border-b border-slate-50 hover:bg-slate-50">
+                          <td className="px-4 py-2 font-medium text-slate-900">{d.county_name}</td>
+                          <td className="px-4 py-2 text-right">{d.total_population?.toLocaleString() || '—'}</td>
+                          <td className="px-4 py-2 text-right">{d.median_household_income ? `$${d.median_household_income.toLocaleString()}` : '—'}</td>
+                          <td className="px-4 py-2 text-right">{d.poverty_rate ? `${d.poverty_rate}%` : '—'}</td>
+                          <td className="px-4 py-2 text-right">{d.bachelors_or_higher_pct ? `${d.bachelors_or_higher_pct}%` : '—'}</td>
+                          <td className="px-4 py-2 text-right">{d.unemployment_rate ? `${d.unemployment_rate}%` : '—'}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {/* Data Sources */}
+              <div className="text-xs text-slate-400 flex gap-4">
+                <span>📊 {economy.source.employers}</span>
+                <span>👥 {economy.source.demographics}</span>
+              </div>
+            </div>
+          ) : null}
         </div>
       )}
     </div>
