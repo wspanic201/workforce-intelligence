@@ -8,7 +8,7 @@
 import { supabase } from './env-helper.mjs';
 import { readFileSync } from 'fs';
 
-const ONET_DIR = '/tmp/onet/db_29_0_text';
+const ONET_DIR = '/tmp/onet/db_30_1_text';
 
 function parseTSV(filePath) {
   const content = readFileSync(filePath, 'utf-8');
@@ -73,7 +73,7 @@ async function main() {
       importance,
       level: level && !isNaN(level) ? level : null,
       category: row['Element ID']?.split('.').slice(0, 3).join('.'),
-      source: 'onet_29.0',
+      source: 'onet_30.1',
     });
   }
   console.log(`  ${skillRows.length} skill records prepared`);
@@ -108,7 +108,7 @@ async function main() {
       importance,
       level: level && !isNaN(level) ? level : null,
       category: row['Element ID']?.split('.').slice(0, 3).join('.'),
-      source: 'onet_29.0',
+      source: 'onet_30.1',
     });
   }
   console.log(`  ${knowledgeRows.length} knowledge records prepared`);
@@ -141,7 +141,7 @@ async function main() {
       importance: isHot ? 5.0 : 3.0, // Hot tech = high importance
       level: null,
       category: category || null,
-      source: 'onet_29.0',
+      source: 'onet_30.1',
     });
   }
   console.log(`  ${techRows.length} technology records prepared`);
@@ -169,14 +169,14 @@ async function main() {
 
   // Update freshness
   await supabase.from('intel_data_freshness').update({
-    data_period: 'O*NET 29.0 (August 2024)',
+    data_period: 'O*NET 30.1 (February 2025)',
     data_release_date: '2024-08-05',
-    next_expected_release: 'February 2025 (O*NET 30.0)',
+    next_expected_release: 'August 2025 (O*NET 31.0)',
     records_loaded: totalInserted,
     last_refreshed_at: new Date().toISOString(),
     refreshed_by: 'cassidy',
     refresh_method: 'api_bulk',
-    citation_text: 'O*NET OnLine, National Center for O*NET Development, Database Version 29.0',
+    citation_text: 'O*NET OnLine, National Center for O*NET Development, Database Version 30.1',
     citation_url: 'https://www.onetcenter.org/database.html',
     coverage_notes: `${Object.keys(titles).length} occupations — skills, knowledge, and technology`,
     known_limitations: 'Technology skills use hot-tech flag as importance proxy (5.0=hot, 3.0=standard)',

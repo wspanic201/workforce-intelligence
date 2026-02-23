@@ -7,8 +7,8 @@
 
 import { supabase } from './env-helper.mjs';
 
-const ACS_BASE = 'https://api.census.gov/data/2022/acs/acs5';
-const ACS_YEAR = '2022';
+const ACS_BASE = 'https://api.census.gov/data/2023/acs/acs5';
+const ACS_YEAR = '2023';
 
 // Variables we need:
 // B01003_001E = Total population
