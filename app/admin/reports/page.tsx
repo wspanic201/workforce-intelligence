@@ -85,33 +85,36 @@ export default async function ReportsAdminPage({
       </div>
 
       {/* Reports Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <table className="min-w-full divide-y divide-slate-100">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
+        <table className="w-full divide-y divide-slate-100 text-sm">
           <thead>
             <tr className="bg-slate-50">
-              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
+              <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
                 Program
               </th>
-              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
+              <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
                 Client
               </th>
-              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
+              <th className="px-3 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
                 Status
               </th>
-              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
-                Pipeline
+              <th className="px-3 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
+                Score
               </th>
-              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
+              <th className="px-3 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
+                Model
+              </th>
+              <th className="px-3 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
                 Quality
               </th>
-              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
-                Runtime
+              <th className="px-3 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
+                Time
               </th>
-              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
-                Created
+              <th className="px-3 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
+                Date
               </th>
-              <th className="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
-                Actions
+              <th className="px-3 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
+                
               </th>
             </tr>
           </thead>
@@ -120,50 +123,56 @@ export default async function ReportsAdminPage({
               const run = pipelineRunMap[report.id];
               return (
                 <tr key={report.id} className="hover:bg-slate-50/50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-slate-900">
+                  <td className="px-4 py-3 max-w-[200px] truncate">
+                    <span className="font-medium text-slate-900">
                       {report.program_name || 'Untitled'}
-                    </div>
+                    </span>
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-slate-500">
-                      {report.client_name || 'Unknown'}
-                    </div>
+                  <td className="px-4 py-3 max-w-[160px] truncate text-slate-500">
+                    {report.client_name || 'Unknown'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-3 py-3 whitespace-nowrap">
                     <StatusBadge status={report.status} />
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {run ? (
-                      <div className="text-xs">
-                        <span className="text-slate-700 font-medium">{run.model.replace('claude-', '')}</span>
-                        <span className="text-slate-400 ml-1">{run.pipeline_version}</span>
-                      </div>
+                  <td className="px-3 py-3 whitespace-nowrap">
+                    {run?.composite_score != null ? (
+                      <span className={`text-xs font-bold ${
+                        run.composite_score >= 7 ? 'text-emerald-600' :
+                        run.composite_score >= 5 ? 'text-amber-600' :
+                        'text-red-600'
+                      }`}>{run.composite_score}/10</span>
                     ) : (
                       <span className="text-xs text-slate-300">--</span>
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-3 py-3 whitespace-nowrap">
+                    {run ? (
+                      <span className="text-xs text-slate-600">{run.model.replace('claude-', '')}</span>
+                    ) : (
+                      <span className="text-xs text-slate-300">--</span>
+                    )}
+                  </td>
+                  <td className="px-3 py-3 whitespace-nowrap">
                     {run?.reviewed_at ? (
                       <QualityBadge score={run.review_scores?.overall ?? null} />
                     ) : run ? (
-                      <span className="text-xs text-slate-400">Unreviewed</span>
+                      <span className="text-xs text-slate-400">—</span>
                     ) : (
                       <span className="text-xs text-slate-300">--</span>
                     )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                  <td className="px-3 py-3 whitespace-nowrap text-xs text-slate-500">
                     {run?.runtime_seconds ? `${Math.round(run.runtime_seconds)}s` : '--'}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
+                  <td className="px-3 py-3 whitespace-nowrap text-xs text-slate-500">
                     {new Date(report.created_at).toLocaleDateString()}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm space-x-3">
+                  <td className="px-3 py-3 whitespace-nowrap">
                     <Link
                       href={`/admin/reports/${report.id}`}
-                      className="text-purple-600 hover:text-purple-900 font-medium"
+                      className="text-xs text-purple-600 hover:text-purple-900 font-medium"
                     >
-                      View
+                      Review →
                     </Link>
                   </td>
                 </tr>
