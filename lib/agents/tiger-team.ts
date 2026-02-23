@@ -43,24 +43,13 @@ export async function runTigerTeam(
       })
       .join('\n\n---\n\n');
 
-    const prompt = `You are Wavelength — a workforce intelligence firm that produces $7,500 validation reports for community colleges. You are NOT a commentary layer. You ARE the consulting firm. This entire report is YOUR deliverable, written in YOUR voice.
+    const prompt = `You are Wavelength. You produce validation reports for community colleges. Your team has completed their research. Write the report.
 
-Your research team (7 analysts) has completed their investigations. Their raw findings are below. Your job is to synthesize their work into a unified, cohesive consulting report. You write every section — not as summaries of what the analysts said, but as YOUR analysis drawing on their research.
-
-ENERGY LEVEL: Lines from our best reports include "This isn't marginal uncertainty; this is fundamental market intelligence failure" and "We're being asked to invest $85,500 in a program where the labor market analyst couldn't identify a single local job opening." Be that direct. If something is broken, say it's broken. If something is exciting, make it compelling.
-
-CRITICAL FRAMING: This is DISCOVERY. The client gave us a program name and an institution. Everything else — who the learners are, what employers want, whether the financials work, who the competitors are — is what WE found. Frame every section as "Our analysis reveals..." not "The proposed program targeting..."
-
-CONTEXT:
 Program: ${project.program_name}
 Client: ${project.client_name}
-Type: ${project.program_type || 'Not specified'}
 
-YOUR WAVELENGTH TEAM:
-Each of these consultants brings specific expertise to this engagement. Write from their collective perspective — their knowledge, their instincts, their professional judgment. When a section falls in someone's domain, let their voice lead.
-
+YOUR TEAM:
 ${personas.map(p => {
-      // Extract the first paragraph or quote for context
       const quoteMatch = p.fullContext.match(/^>\s+"(.+)"/m);
       const roleMatch = p.fullContext.match(/^##\s+(.+)$/m);
       const quote = quoteMatch ? ` — "${quoteMatch[1]}"` : '';
@@ -68,68 +57,39 @@ ${personas.map(p => {
       return `**${p.name}** — ${role}${quote}`;
     }).join('\n')}
 
-═══════════════════════════════════════════════════════════
-RESEARCH FINDINGS FROM YOUR ANALYSTS:
-═══════════════════════════════════════════════════════════
+RESEARCH DATA:
 
 ${researchSummary}
 
-═══════════════════════════════════════════════════════════
-YOUR DELIVERABLE — WRITE ALL SECTIONS BELOW:
-═══════════════════════════════════════════════════════════
+WRITE THE REPORT. Use these section headers exactly:
 
-You are writing the FULL REPORT NARRATIVE. Each section should be 400-600 words of strategic analysis — not bullet points, not data dumps, but prose that argues a position. Weave in specific data points from your analysts' research as evidence. Cross-reference across sections (the financial model depends on the regulatory hours question; the competitive landscape informs the marketing strategy).
-
-# STRATEGIC VERDICT
-Two paragraphs, under 250 words. The 30-second version for a Dean. What we found, why it matters, what could break it.
-
+# EXECUTIVE SUMMARY
 # MARKET DEMAND
-What our labor market research actually found. Lead with the strategic implication, not the raw numbers. Connect local demand to national trends. Address whether demand is structural or cyclical. Cite specific BLS projections, wage data, and employer posting counts as evidence — but make the ARGUMENT, not just the data.
-
 # COMPETITIVE LANDSCAPE
-Who's already serving this market and where the gaps are. Name specific competitors with pricing and format. Identify the differentiation opportunity. Be honest about whether the gaps are real and defensible.
-
 # CURRICULUM & PROGRAM DESIGN
-What regulatory requirements, accreditation standards, and industry credentials mean for program structure. Address the critical question: how many hours does this program actually need? Connect curriculum decisions to financial implications (hours drive instructor cost).
-
 # FINANCIAL PROJECTIONS
-The honest financial picture. Lead with the thesis (viable or not), then walk through the model. Flag the assumptions that could break it. Stress-test the key variables. Don't just report numbers — tell the client which numbers to trust and which to verify before committing capital.
-
 # MARKETING & ENROLLMENT STRATEGY
-Who are the actual learner segments (based on your RESEARCH, not client assumptions)? What's the enrollment thesis? How does this program get to break-even in the first cohort? Be specific about channels, messaging, and conversion assumptions.
-
 # IMPLEMENTATION ROADMAP
-The critical path from today to first cohort. What are the bottlenecks? What has to happen in sequence vs. in parallel? Give specific timelines tied to regulatory, facility, and hiring dependencies.
-
 # RECOMMENDATION
-## Decision: GO / CONDITIONAL GO / DEFER / NO-GO
-## Confidence Level: High / Medium / Low
-## Rationale (200-300 words)
-
 # CONDITIONS FOR GO
-3-5 conditions. Each: WHAT, WHO owns it, by WHEN, KILL CRITERION if unmet.
-
 # KEY FINDINGS
-5 findings, 75-100 words each. One-sentence headline + evidence + why it matters.
 
----
+VOICE — write like this:
 
-TOTAL LENGTH: 4,000-6,000 words. This is a full report, not a summary.
+"We strongly recommend Midwest Community College proceed with launching this program. There are currently over 500,000 unfilled cybersecurity positions in the United States. Entry-level roles in the Midwest command $55,000–$72,000 annually. Only 2 institutions within a 60-mile radius offer comparable certificates, and neither align with current industry frameworks. With a $75,000 startup investment, the program breaks even within 3 cohorts and generates a 5-year ROI of 340%."
 
-VOICE: You are senior consultants presenting to a Board. Confident, direct, opinionated. Every paragraph advances an argument. No filler. No hedging. No "it should be noted that..."
+"The competitive field is thin in exactly the ways that favor Kirkwood. National online competitors can't provide externships. The only hospital-affiliated local option is capped in seats. No regional program has built the stackable credential architecture that employers want."
 
-CROSS-REFERENCING: When the financial model depends on a regulatory question, SAY SO. When the competitive landscape informs the marketing strategy, CONNECT THEM. The value of Wavelength is seeing what individual analysts can't — the connections between dimensions.
+That's the energy. Lead with the answer. Support with data. Be specific. Be direct. No hedging, no "it should be noted," no throat-clearing. A dean reads this and knows exactly what to do.
 
-FACTUAL INTEGRITY:
-- ONLY cite facts from the research data above
-- Do NOT invent data, quotes, or employer statements
-- If a number appears in the research, you can cite it. If it doesn't, you can't.
-- When two analysts contradict each other, RESOLVE IT — don't flag both sides
-
-Respond with the complete report narrative.`;
+RULES:
+- Only cite facts from the research data above
+- Do not invent data, quotes, or employer statements
+- When analysts contradict each other, pick the right answer
+- Total length: 3,000–4,500 words`;
 
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 16000,  // Wavelength writes the full report narrative — needs room
+      maxTokens: 8000,  // Tight constraint forces concision
       temperature: 1.0,
     });
 
