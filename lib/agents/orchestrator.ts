@@ -499,6 +499,63 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       }
     }
 
+    // 11.6. Generate PDF and upload to Supabase Storage
+    try {
+      console.log(`[Orchestrator] Generating PDF...`);
+      const { generatePDF } = await import('@/lib/pdf/generate-pdf');
+
+      // Clean markdown for PDF pipeline
+      let pdfMarkdown = fullReport;
+      pdfMarkdown = pdfMarkdown.replace(/^---[\s\S]*?---\n/, '');
+      pdfMarkdown = pdfMarkdown.replace(/<div style="text-align:center[^>]*>[\s\S]*?<\/div>\s*<div style="page-break-after:\s*always;?\s*"><\/div>/i, '');
+      pdfMarkdown = pdfMarkdown.replace(/^# Table of Contents\n[\s\S]*?<div style="page-break-after:\s*always;?\s*"><\/div>/m, '');
+      pdfMarkdown = pdfMarkdown.replace(/<div style="page-break-after:\s*always;?\s*"><\/div>\s*/g, '');
+      pdfMarkdown = pdfMarkdown.replace(/^### /gm, '#### ');
+      pdfMarkdown = pdfMarkdown.replace(/^## /gm, '### ');
+      pdfMarkdown = pdfMarkdown.replace(/^# /gm, '## ');
+      pdfMarkdown = pdfMarkdown.replace(/\n{4,}/g, '\n\n').trim();
+
+      const tmpPath = `/tmp/wavelength-${projectId.slice(0, 8)}-${Date.now()}.pdf`;
+      const pdfResult = await generatePDF(pdfMarkdown, {
+        title: projectToValidate.program_name || 'Program',
+        subtitle: 'Program Validation Report',
+        preparedFor: projectToValidate.client_name || '',
+        date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+        reportType: 'validation',
+        outputPath: tmpPath,
+      });
+
+      // Upload to Supabase Storage
+      const { readFileSync, unlinkSync } = await import('fs');
+      const pdfBuffer = readFileSync(tmpPath);
+      const storagePath = `reports/${projectId}/validation-report.pdf`;
+
+      await supabase.storage.from('reports').upload(storagePath, pdfBuffer, {
+        contentType: 'application/pdf',
+        upsert: true,
+      });
+
+      // Update report record with storage path
+      if (reportRow?.id) {
+        await supabase.from('validation_reports')
+          .update({ pdf_url: storagePath })
+          .eq('id', reportRow.id);
+      }
+
+      // Update pipeline run with page count and size
+      if (pipelineRunId) {
+        await supabase.from('pipeline_runs')
+          .update({ report_page_count: pdfResult.pageCount, report_size_kb: pdfResult.sizeKB })
+          .eq('id', pipelineRunId);
+      }
+
+      // Clean up temp file
+      try { unlinkSync(tmpPath); } catch {}
+      console.log(`[Orchestrator] ✓ PDF uploaded (${pdfResult.pageCount} pages, ${pdfResult.sizeKB}KB)`);
+    } catch (pdfErr: any) {
+      console.warn(`[Orchestrator] PDF generation failed (non-fatal):`, pdfErr.message);
+    }
+
     // 12. Update project status
     await supabase
       .from('validation_projects')
