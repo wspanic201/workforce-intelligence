@@ -49,10 +49,13 @@ export default async function ReportsAdminPage({
           <h1 className="text-2xl font-heading font-bold text-slate-900">Reports</h1>
           <p className="text-slate-500 mt-1 text-sm">Validation reports and pipeline runs</p>
         </div>
-        <button className="font-heading font-semibold text-sm py-2.5 px-5 rounded-xl text-white transition-all hover:-translate-y-0.5"
-          style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #14b8a6 100%)' }}>
+        <Link
+          href="/admin/intake"
+          className="font-heading font-semibold text-sm py-2.5 px-5 rounded-xl text-white transition-all hover:-translate-y-0.5 inline-block"
+          style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #14b8a6 100%)' }}
+        >
           + New Report
-        </button>
+        </Link>
       </div>
 
       {/* Stats */}
