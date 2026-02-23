@@ -1107,9 +1107,11 @@ function buildAppendix(
 
   // B. Methodology
   parts.push('', '## Methodology', '');
-  parts.push('This validation report was produced using Wavelength\'s multi-perspective research methodology combining real labor market data, competitive intelligence, financial modeling, and workforce program development expertise.');
+  parts.push('This validation report was produced by the Wavelength advisory team using a multi-perspective research methodology. Seven specialized research analysts independently investigated labor market conditions, competitive landscape, curriculum requirements, financial viability, institutional fit, learner demand, and employer demand. Their findings were then synthesized by Wavelength\'s senior advisory team into a unified strategic assessment.');
   parts.push('');
   parts.push('Each research dimension is scored 1\u201310 by specialized analysis, with weights reflecting relative importance to program success. A composite weighted score determines the overall recommendation. Override rules apply when critical dimensions (Financial Viability, Labor Market Demand) score below threshold.');
+  parts.push('');
+  parts.push('All claims are fact-checked against verified government data sources (BLS, Census, O*NET, IPEDS) before publication. External sources (employer postings, competitor programs, industry reports) are cited with access dates and verified against primary sources where possible.');
 
   // C. Assumptions
   parts.push('', '## Assumptions', '');

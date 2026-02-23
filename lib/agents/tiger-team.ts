@@ -1,4 +1,4 @@
-import { loadMultiplePersonas } from '@/lib/confluence-labs/loader';
+import { loadMultiplePersonas, WAVELENGTH_TEAMS } from '@/lib/confluence-labs/loader';
 import { callClaude } from '@/lib/ai/anthropic';
 import { ValidationProject, ResearchComponent } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
@@ -29,13 +29,12 @@ export async function runTigerTeam(
   const supabase = getSupabaseServerClient();
 
   try {
-    // Load tiger team personas
-    const personas = await loadMultiplePersonas([
-      'product-manager',
-      'cfo',
-      'cmo',
-      'coo',
-    ]);
+    // Load Wavelength advisory team — curated for program validation engagements
+    const teamSlugs = WAVELENGTH_TEAMS['program-validation'] || [
+      'education-vp', 'financial-analyst', 'strategy-director',
+      'market-analyst', 'adult-learning', 'cmo',
+    ];
+    const personas = await loadMultiplePersonas(teamSlugs);
 
     // Compile all research findings
     const researchSummary = researchComponents
@@ -57,8 +56,17 @@ Program: ${project.program_name}
 Client: ${project.client_name}
 Type: ${project.program_type || 'Not specified'}
 
-WAVELENGTH TEAM:
-${personas.map(p => `**${p.name}** (${p.division})`).join('\n')}
+YOUR WAVELENGTH TEAM:
+Each of these consultants brings specific expertise to this engagement. Write from their collective perspective — their knowledge, their instincts, their professional judgment. When a section falls in someone's domain, let their voice lead.
+
+${personas.map(p => {
+      // Extract the first paragraph or quote for context
+      const quoteMatch = p.fullContext.match(/^>\s+"(.+)"/m);
+      const roleMatch = p.fullContext.match(/^##\s+(.+)$/m);
+      const quote = quoteMatch ? ` — "${quoteMatch[1]}"` : '';
+      const role = roleMatch ? roleMatch[1] : p.division;
+      return `**${p.name}** — ${role}${quote}`;
+    }).join('\n')}
 
 ═══════════════════════════════════════════════════════════
 RESEARCH FINDINGS FROM YOUR ANALYSTS:
