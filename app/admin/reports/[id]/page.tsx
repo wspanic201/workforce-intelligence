@@ -103,6 +103,7 @@ export default function ReportDetailPage() {
   const [allRuns, setAllRuns] = useState<PipelineRun[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [scores, setScores] = useState<ReviewScores>({
     accuracy: 3, narrative: 3, actionability: 3, citations: 3, formatting: 3, overall: 3,
   });
@@ -114,20 +115,30 @@ export default function ReportDetailPage() {
 
   const fetchData = async () => {
     setLoading(true);
+    setError(null);
 
-    // Fetch latest pipeline run for this project
-    const runsRes = await fetch(`/api/admin/pipeline-runs?project_id=${id}&limit=20`);
-    if (runsRes.ok) {
-      const runs: PipelineRun[] = await runsRes.json();
-      setAllRuns(runs);
-      if (runs.length > 0) {
-        const latest = runs[0];
-        setRun(latest);
-        if (latest.review_scores) {
-          setScores(latest.review_scores);
+    try {
+      // Fetch latest pipeline run for this project
+      const runsRes = await fetch(`/api/admin/pipeline-runs?project_id=${id}&limit=20`);
+      if (runsRes.ok) {
+        const runs: PipelineRun[] = await runsRes.json();
+        setAllRuns(runs);
+        if (runs.length > 0) {
+          const latest = runs[0];
+          setRun(latest);
+          if (latest.review_scores) {
+            setScores(latest.review_scores);
+          }
+          setNotes(latest.review_notes || '');
         }
-        setNotes(latest.review_notes || '');
+      } else {
+        const errText = await runsRes.text();
+        console.error('[Detail] API error:', runsRes.status, errText);
+        setError(`API returned ${runsRes.status}: ${errText}`);
       }
+    } catch (e: any) {
+      console.error('[Detail] Fetch error:', e);
+      setError(e.message);
     }
 
     setLoading(false);
@@ -182,13 +193,22 @@ export default function ReportDetailPage() {
         <span className="text-slate-700 font-medium">{project?.program_name || 'Report'}</span>
       </div>
 
-      {!run ? (
+      {error && (
+        <Card>
+          <CardContent className="py-6 text-center text-red-500 text-sm">
+            Error loading pipeline data: {error}
+          </CardContent>
+        </Card>
+      )}
+
+      {!run && !error ? (
         <Card>
           <CardContent className="py-12 text-center text-slate-400">
             No pipeline runs found for this project. Run the validation pipeline first.
+            <div className="text-xs mt-2 text-slate-300">Project ID: {id}</div>
           </CardContent>
         </Card>
-      ) : (
+      ) : run ? (
         <>
           {/* Top: Report Overview */}
           <div className="flex items-start justify-between">
@@ -444,7 +464,7 @@ export default function ReportDetailPage() {
             </div>
           </div>
         </>
-      )}
+      ) : null}
     </div>
   );
 }
