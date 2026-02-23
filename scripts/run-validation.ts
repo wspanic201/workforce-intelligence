@@ -268,20 +268,19 @@ async function main() {
     citations: citationResults || undefined,
   });
 
-  // Save report
-  await supabase.from('validation_reports').insert({
+  // Save report (only columns that exist in validation_reports table)
+  const { data: reportRow, error: reportError } = await supabase.from('validation_reports').insert({
     project_id: projectId,
-    executive_summary: `Recommendation: ${programScore.recommendation} (${programScore.compositeScore}/10)`,
+    executive_summary: `Recommendation: ${programScore.recommendation} (${programScore.compositeScore}/10)\n\nDimensions: ${programScore.dimensions.map((d: any) => `${d.dimension}: ${d.score}/10`).join(', ')}`,
     full_report_markdown: fullReport,
-    composite_score: programScore.compositeScore,
-    recommendation: programScore.recommendation,
-    scorecard: {
-      dimensions: programScore.dimensions,
-      compositeScore: programScore.compositeScore,
-      recommendation: programScore.recommendation,
-    },
     version: 1,
-  });
+  }).select('id').single();
+
+  if (reportError) {
+    console.error(`  ❌ Report save failed:`, reportError.message);
+  } else {
+    console.log(`  ✅ Report saved to DB (${(fullReport.length / 1024).toFixed(0)}KB)`);
+  }
 
   // Complete pipeline run tracking
   if (pipelineRunId) {
@@ -361,9 +360,11 @@ async function main() {
     });
 
     // Update report record with storage path
-    await supabase.from('validation_reports')
-      .update({ pdf_url: storagePath })
-      .eq('project_id', projectId);
+    if (reportRow?.id) {
+      await supabase.from('validation_reports')
+        .update({ pdf_url: storagePath })
+        .eq('id', reportRow.id);
+    }
 
     // Clean up temp file
     try { fs.unlinkSync(pdfPath); } catch {}
