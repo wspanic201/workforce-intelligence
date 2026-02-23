@@ -35,7 +35,7 @@ interface ReportInput {
 }
 
 // ════════════════════════════════════════════════════════
-// INTEL DATA → UNICODE VISUALIZATION HELPERS
+// INTEL DATA ACCESSOR
 // ════════════════════════════════════════════════════════
 
 function getIntelContext(project: ValidationProject): AgentIntelligenceContext['raw'] | null {
@@ -43,11 +43,48 @@ function getIntelContext(project: ValidationProject): AgentIntelligenceContext['
   return ctx?.raw || null;
 }
 
+// ════════════════════════════════════════════════════════
+// HTML VISUALIZATION HELPERS
+// ════════════════════════════════════════════════════════
+
+function scoreColor(score: number): string {
+  if (score >= 8) return '#059669';
+  if (score >= 6) return '#d97706';
+  return '#dc2626';
+}
+
+function scoreGradient(score: number): string {
+  if (score >= 8) return 'linear-gradient(90deg,#10b981,#059669)';
+  if (score >= 6) return 'linear-gradient(90deg,#fbbf24,#d97706)';
+  return 'linear-gradient(90deg,#f87171,#dc2626)';
+}
+
 /**
- * Unicode horizontal bar chart for wage data.
- * Replaces the old formatWagesTable().
+ * HTML progress bars for dimension scores.
  */
-function formatWageChart(raw: AgentIntelligenceContext['raw']): string {
+function htmlScoreBars(dimensions: ProgramScore['dimensions']): string {
+  const sorted = [...dimensions].sort((a, b) => b.score * b.weight - a.score * a.weight);
+  const rows = sorted.map(d => {
+    const pct = Math.round((d.score / 10) * 100);
+    const color = scoreColor(d.score);
+    const gradient = scoreGradient(d.score);
+    const weightPct = `${(d.weight * 100).toFixed(0)}%`;
+    return `  <div style="display:flex;align-items:center;margin:6px 0;">
+    <span style="width:220px;font-size:13px;color:#334155;">${d.dimension}</span>
+    <div style="flex:1;background:#e2e8f0;border-radius:4px;height:20px;margin:0 12px;overflow:hidden;">
+      <div style="width:${pct}%;height:100%;background:${gradient};border-radius:4px;"></div>
+    </div>
+    <span style="font-size:13px;font-weight:600;color:${color};width:50px;">${d.score}/10</span>
+    <span style="font-size:11px;color:#94a3b8;width:40px;text-align:right;">${weightPct}</span>
+  </div>`;
+  });
+  return `<div style="margin:12px 0;">\n${rows.join('\n')}\n</div>`;
+}
+
+/**
+ * HTML horizontal bar chart for wage data.
+ */
+function htmlWageChart(raw: AgentIntelligenceContext['raw']): string {
   const occ = raw.occupation;
   if (!occ?.wages) return '';
 
@@ -62,154 +99,153 @@ function formatWageChart(raw: AgentIntelligenceContext['raw']): string {
   if (tiers.length === 0) return '';
 
   const maxVal = Math.max(...tiers.map(t => t.value));
-  const barWidth = 24;
-  const lines = tiers.map(t => {
-    const filled = Math.round((t.value / maxVal) * barWidth);
-    const empty = barWidth - filled;
-    const bar = '\u2588'.repeat(filled) + '\u2591'.repeat(empty);
-    const label = t.label.padEnd(12);
-    const val = `$${t.value.toLocaleString()}`;
-    const marker = t.label === 'Median' ? `  \u2190 ${w.geo_name} median` : '';
-    return `${label} ${val.padStart(8)}  ${bar}${marker}`;
+  const rows = tiers.map(t => {
+    const pct = Math.round((t.value / maxVal) * 100);
+    const isMedian = t.label === 'Median';
+    const barColor = isMedian ? '#7c3aed' : '#a78bfa';
+    const fontWeight = isMedian ? '700' : '600';
+    return `  <div style="margin:8px 0;">
+    <div style="display:flex;align-items:center;">
+      <span style="width:100px;font-size:12px;color:#64748b;">${t.label}</span>
+      <div style="flex:1;background:#e2e8f0;border-radius:3px;height:16px;overflow:hidden;">
+        <div style="width:${pct}%;height:100%;background:${barColor};border-radius:3px;"></div>
+      </div>
+      <span style="width:80px;text-align:right;font-size:12px;font-weight:${fontWeight};color:#334155;">$${t.value.toLocaleString()}</span>
+    </div>
+  </div>`;
   });
 
-  return `\`\`\`
-${lines.join('\n')}
-\`\`\`
-*Source: BLS OES ${w.bls_release} \u2014 ${w.occupation_title} (SOC ${w.soc_code}), ${w.geo_name}*`;
+  const title = `${w.geo_name} ${w.occupation_title} Wages (BLS OES ${w.bls_release})`;
+  return `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:16px 0;">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;margin-bottom:12px;">${title}</div>
+${rows.join('\n')}
+</div>`;
 }
 
 /**
- * Single-line trend indicator for employment projections.
- * Replaces the old formatProjectionsTable().
+ * HTML colored cards for financial scenarios.
  */
-function formatProjectionsBadge(raw: AgentIntelligenceContext['raw']): string {
-  const occ = raw.occupation;
-  if (!occ?.projections) return '';
-
-  const p = occ.projections;
-  const emoji = (p.change_percent ?? 0) >= 10 ? '\uD83D\uDCC8' : (p.change_percent ?? 0) >= 5 ? '\u2197\uFE0F' : '\u27A1\uFE0F';
-  const parts: string[] = [`${emoji} **${p.change_percent}% growth** (${p.base_year}\u2013${p.projected_year})`];
-  if (p.annual_openings) parts.push(`**${p.annual_openings.toLocaleString()} annual openings**`);
-  if (p.growth_category) parts.push(p.growth_category);
-
-  return `> ${parts.join(' \u00B7 ')}`;
-}
-
-/**
- * Horizontal bar chart for employer hiring distribution.
- */
-function formatEmployerBars(employers: Array<{ name: string; openings: number }>): string {
-  if (!employers || employers.length === 0) return '';
-
-  const total = employers.reduce((sum, e) => sum + e.openings, 0);
-  const maxOpenings = Math.max(...employers.map(e => e.openings));
-  const barWidth = 12;
-
-  const lines = employers.map(e => {
-    const filled = Math.round((e.openings / maxOpenings) * barWidth);
-    const bar = '\u2588'.repeat(filled);
-    const pct = total > 0 ? Math.round((e.openings / total) * 100) : 0;
-    const name = e.name.padEnd(20);
-    return `${name} ${bar.padEnd(barWidth)}  ${e.openings} opening${e.openings > 1 ? 's' : ''} (${pct}%)`;
-  });
-
-  return `\`\`\`
-${lines.join('\n')}
-\`\`\``;
-}
-
-/**
- * Visual score bars for the appendix scorecard.
- * Replaces the old scorecard table.
- */
-function formatScoreVisualization(dimensions: ProgramScore['dimensions']): string {
-  const sorted = [...dimensions].sort((a, b) => b.score * b.weight - a.score * a.weight);
-  const barWidth = 10;
-
-  const lines = sorted.map(d => {
-    const filled = Math.round((d.score / 10) * barWidth);
-    const empty = barWidth - filled;
-    const bar = '\u2588'.repeat(filled) + '\u2591'.repeat(empty);
-    const status = d.score >= 8 ? '\u25CF' : d.score >= 5 ? '\u25CB' : '\u25CB';
-    const label = d.dimension.padEnd(24);
-    const weightPct = `${(d.weight * 100).toFixed(0)}%`.padStart(4);
-    return `${label} ${bar}  ${d.score}/10  ${weightPct}  ${status}`;
-  });
-
-  return `\`\`\`
-${lines.join('\n')}
-\`\`\``;
-}
-
-/**
- * Financial scenario comparison as visual bars.
- */
-function formatScenarioBars(scenarios: Array<{ label: string; students: number; net: number }>): string {
+function htmlScenarioCards(scenarios: Array<{ label: string; students: number; net: number }>): string {
   if (scenarios.length === 0) return '';
-  const maxNet = Math.max(...scenarios.map(s => Math.abs(s.net)));
-  const barWidth = 10;
 
-  const lines = scenarios.map(s => {
-    const filled = maxNet > 0 ? Math.round((Math.max(0, s.net) / maxNet) * barWidth) : 0;
-    const empty = barWidth - filled;
-    const bar = '\u2588'.repeat(filled) + '\u2591'.repeat(empty);
-    const label = `${s.label} (${s.students} students)`.padEnd(30);
-    const netStr = s.net >= 0 ? `$${s.net.toLocaleString()} net` : `-$${Math.abs(s.net).toLocaleString()} net`;
-    return `${label} ${bar}  ${netStr}`;
+  const colorMap: Record<string, { bg: string; border: string; text: string }> = {
+    pessimistic: { bg: '#fef2f2', border: '#fecaca', text: '#dc2626' },
+    conservative: { bg: '#fef2f2', border: '#fecaca', text: '#dc2626' },
+    base: { bg: '#f0fdf4', border: '#bbf7d0', text: '#16a34a' },
+    optimistic: { bg: '#eff6ff', border: '#bfdbfe', text: '#2563eb' },
+    aggressive: { bg: '#eff6ff', border: '#bfdbfe', text: '#2563eb' },
+  };
+  const defaultColor = { bg: '#f8fafc', border: '#e2e8f0', text: '#475569' };
+
+  const cards = scenarios.map(s => {
+    const key = s.label.toLowerCase();
+    const c = colorMap[key] || defaultColor;
+    const netStr = s.net >= 0 ? `$${s.net.toLocaleString()}` : `-$${Math.abs(s.net).toLocaleString()}`;
+    return `  <div style="flex:1;background:${c.bg};border:1px solid ${c.border};border-radius:8px;padding:12px;text-align:center;">
+    <div style="font-size:11px;color:${c.text};text-transform:uppercase;">${s.label}</div>
+    <div style="font-size:20px;font-weight:700;color:${c.text};margin:4px 0;">${netStr}</div>
+    <div style="font-size:11px;color:#64748b;">${s.students} students</div>
+  </div>`;
   });
 
-  return `\`\`\`
-${lines.join('\n')}
-\`\`\``;
+  return `<div style="display:flex;gap:12px;margin:16px 0;">\n${cards.join('\n')}\n</div>`;
 }
 
 /**
- * Compact regional economy callout (inline stats, not a table).
+ * HTML styled comparison table.
  */
-function formatRegionalCallout(raw: AgentIntelligenceContext['raw']): string {
-  const sa = raw.serviceArea;
-  if (!sa?.found || !sa.data) return '';
+function htmlCompetitorMatrix(headers: string[], rows: Array<{ feature: string; values: string[] }>): string {
+  if (rows.length === 0) return '';
 
-  const d = sa.data;
-  const parts: string[] = [];
+  const thCells = headers.map((h, i) => {
+    const style = i === 1
+      ? 'padding:10px 12px;text-align:center;color:#7c3aed;font-weight:700;border-bottom:2px solid #e2e8f0;'
+      : i === 0
+        ? 'padding:10px 12px;text-align:left;color:#475569;border-bottom:2px solid #e2e8f0;'
+        : 'padding:10px 12px;text-align:center;color:#475569;border-bottom:2px solid #e2e8f0;';
+    return `<th style="${style}">${h}</th>`;
+  });
 
-  if (d.counties?.length > 0 && d.totalPopulation > 0) {
-    parts.push(`> \uD83C\uDFD9\uFE0F **Service Area:** ${d.counties.length} counties \u00B7 ${d.totalPopulation.toLocaleString()} population \u00B7 ${d.totalEstablishments.toLocaleString()} establishments \u00B7 ${d.totalEmployees.toLocaleString()} employees`);
-  } else if (d.counties?.length > 0) {
-    parts.push(`> \uD83C\uDFD9\uFE0F **Service Area:** ${d.counties.length} counties \u00B7 ${d.totalEstablishments.toLocaleString()} establishments \u00B7 ${d.totalEmployees.toLocaleString()} employees`);
-  }
+  const trs = rows.map(r => {
+    const tds = [
+      `<td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">${r.feature}</td>`,
+      ...r.values.map(v => `<td style="padding:8px 12px;text-align:center;border-bottom:1px solid #f1f5f9;">${v}</td>`),
+    ];
+    return `    <tr>${tds.join('')}</tr>`;
+  });
 
-  const econ: string[] = [];
-  if (d.avgMedianIncome) econ.push(`Median income $${d.avgMedianIncome.toLocaleString()}`);
-  if (d.avgUnemployment) econ.push(`${d.avgUnemployment}% unemployment`);
-  if (d.avgPovertyRate) econ.push(`${d.avgPovertyRate}% poverty rate`);
-  if (d.avgBachelorsRate) econ.push(`${d.avgBachelorsRate}% bachelor's+`);
-  if (econ.length > 0) {
-    parts.push(`> ${econ.join(' \u00B7 ')}`);
-  }
-
-  if (d.topIndustries?.length > 0) {
-    const topThree = d.topIndustries.slice(0, 3).map((ind: any) => {
-      const pct = d.totalEmployees > 0 ? Math.round((ind.employees / d.totalEmployees) * 100) : 0;
-      return `${ind.name} (${pct}%)`;
-    });
-    parts.push(`> **Top industries:** ${topThree.join(', ')}`);
-  }
-
-  return parts.join('\n');
+  return `<div style="margin:16px 0;overflow:hidden;border-radius:8px;border:1px solid #e2e8f0;">
+  <table style="width:100%;border-collapse:collapse;font-size:12px;">
+    <thead>
+      <tr style="background:#f1f5f9;">${thCells.join('')}</tr>
+    </thead>
+    <tbody>
+${trs.join('\n')}
+    </tbody>
+  </table>
+</div>`;
 }
 
 /**
- * State priority status as inline callout.
+ * HTML callout box for key findings.
  */
-function formatStatePriorityCallout(raw: AgentIntelligenceContext['raw']): string {
-  if (!raw.occupation?.statePriority?.isPriority) return '';
-  const sp = raw.occupation.statePriority;
-  const tags: string[] = ['State In-Demand Occupation'];
-  if (sp.wioaFundable) tags.push('WIOA Fundable');
-  if (sp.scholarshipEligible) tags.push('Scholarship Eligible');
-  return `> \u2705 **${tags.join(' \u00B7 ')}**`;
+function htmlKeyFinding(text: string): string {
+  return `<div style="background:linear-gradient(135deg,#7c3aed11,#3b82f611);border-left:4px solid #7c3aed;border-radius:0 8px 8px 0;padding:12px 16px;margin:16px 0;">
+  <span style="font-size:13px;font-weight:600;color:#7c3aed;">Key Finding:</span>
+  <span style="font-size:13px;color:#334155;"> ${text}</span>
+</div>`;
+}
+
+/**
+ * HTML visual timeline for implementation milestones.
+ */
+function htmlTimelineVisual(milestones: Array<{ month: string; title: string; detail: string; color?: string }>): string {
+  const items = milestones.map(m => {
+    const dotColor = m.color || '#7c3aed';
+    return `  <div style="display:flex;margin-bottom:16px;">
+    <div style="display:flex;flex-direction:column;align-items:center;margin-right:16px;">
+      <div style="width:12px;height:12px;border-radius:50%;background:${dotColor};flex-shrink:0;"></div>
+      <div style="width:2px;flex:1;background:#e2e8f0;margin-top:4px;"></div>
+    </div>
+    <div style="flex:1;padding-bottom:8px;">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;">${m.month}</div>
+      <div style="font-size:14px;font-weight:600;color:#334155;margin:2px 0;">${m.title}</div>
+      <div style="font-size:12px;color:#64748b;">${m.detail}</div>
+    </div>
+  </div>`;
+  });
+
+  return `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:20px;margin:16px 0;">\n${items.join('\n')}\n</div>`;
+}
+
+/**
+ * HTML single stat metric card.
+ */
+function htmlMetricCard(label: string, value: string, subtitle?: string): string {
+  const sub = subtitle ? `\n  <div style="font-size:11px;color:#64748b;">${subtitle}</div>` : '';
+  return `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center;min-width:140px;">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;">${label}</div>
+  <div style="font-size:24px;font-weight:700;color:#334155;margin:4px 0;">${value}</div>${sub}
+</div>`;
+}
+
+/**
+ * Inline HTML composite score bar (replaces the Unicode version).
+ */
+function htmlCompositeScore(score: number, recommendation: string): string {
+  const pct = Math.round((score / 10) * 100);
+  const color = scoreColor(score);
+  const gradient = scoreGradient(score);
+  return `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:16px 0;">
+  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;margin-bottom:8px;">Composite Score</div>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div style="flex:1;background:#e2e8f0;border-radius:4px;height:24px;overflow:hidden;">
+      <div style="width:${pct}%;height:100%;background:${gradient};border-radius:4px;"></div>
+    </div>
+    <span style="font-size:18px;font-weight:700;color:${color};">${score}/10</span>
+    <span style="font-size:13px;font-weight:600;color:#475569;">${recommendation}</span>
+  </div>
+</div>`;
 }
 
 // ════════════════════════════════════════════════════════
@@ -255,12 +291,14 @@ function buildTableOfContents(): string {
   return `# Table of Contents
 
 1. [Executive Summary](#executive-summary)
-2. [Market Demand Analysis](#market-demand-analysis)
-3. [Competitive Landscape](#competitive-landscape)
-4. [Curriculum Design](#curriculum-design)
-5. [Financial Projections](#financial-projections)
-6. [Marketing Strategy](#marketing-strategy)
-7. [Appendix](#appendix)
+2. [Conditions for Go](#conditions-for-go)
+3. [Market Demand Analysis](#market-demand-analysis)
+4. [Competitive Landscape](#competitive-landscape)
+5. [Curriculum Design](#curriculum-design)
+6. [Financial Projections](#financial-projections)
+7. [Marketing Strategy](#marketing-strategy)
+8. [Implementation Timeline](#implementation-timeline)
+9. [Appendix](#appendix)
 
 <div style="page-break-after: always;"></div>`;
 }
@@ -285,7 +323,6 @@ function buildExecutiveSummary(
         narrative = recMatch[1].trim();
       }
     }
-    // Replace Tiger Team references in narrative
     if (narrative) {
       narrative = replaceTigerTeam(narrative);
     }
@@ -296,7 +333,7 @@ function buildExecutiveSummary(
     narrative = buildNarrativeFromScores(project, programScore, raw);
   }
 
-  // Build investment summary as visual instead of table
+  // Build investment summary as HTML visual
   const investmentVisual = buildInvestmentVisual(programScore);
 
   const parts = [
@@ -376,19 +413,115 @@ function buildInvestmentVisual(programScore: ProgramScore): string {
   const strongest = [...programScore.dimensions].sort((a, b) => b.score - a.score)[0];
   const weakest = [...programScore.dimensions].sort((a, b) => a.score - b.score)[0];
 
-  const barWidth = 10;
-  const filled = Math.round((programScore.compositeScore / 10) * barWidth);
-  const empty = barWidth - filled;
-  const bar = '\u2588'.repeat(filled) + '\u2591'.repeat(empty);
+  const cards = [
+    htmlMetricCard('Composite Score', `${programScore.compositeScore}/10`, formatRecommendationLabel(programScore.recommendation)),
+    htmlMetricCard('Strongest', `${strongest?.score}/10`, strongest?.dimension || 'N/A'),
+    htmlMetricCard('Weakest', `${weakest?.score}/10`, weakest?.dimension || 'N/A'),
+    htmlMetricCard('Dimensions', `${programScore.dimensions.length}`, 'evaluated'),
+  ];
 
   return `### Validation Summary
 
-\`\`\`
-Composite Score    ${bar}  ${programScore.compositeScore}/10  ${formatRecommendationLabel(programScore.recommendation)}
-Strongest          ${strongest?.dimension || 'N/A'} (${strongest?.score}/10)
-Weakest            ${weakest?.dimension || 'N/A'} (${weakest?.score}/10)
-Dimensions         ${programScore.dimensions.length} evaluated
-\`\`\``;
+<div style="display:flex;gap:12px;margin:16px 0;flex-wrap:wrap;">
+${cards.join('\n')}
+</div>`;
+}
+
+/**
+ * Conditions for Go section — numbered gates with owner, timeline, and kill criteria.
+ * Extracts conditions from programScore and synthesis markdown.
+ */
+function buildConditionsForGo(
+  programScore: ProgramScore,
+  tigerTeamMarkdown: string | undefined,
+  project: ValidationProject,
+): string {
+  const parts: string[] = ['# Conditions for Go'];
+  parts.push('');
+  parts.push(`Before ${project.client_name} commits budget or opens enrollment, the following gates must be cleared. Each represents a specific validation step with a clear owner and decision point.`);
+  parts.push('');
+
+  // Try to extract conditions from synthesis markdown
+  const conditions: Array<{ question: string; owner: string; timeline: string; kill: string }> = [];
+
+  // Build default conditions from score dimensions
+  const weakDims = [...programScore.dimensions].sort((a, b) => a.score - b.score);
+  const dimNames = weakDims.map(d => d.dimension.toLowerCase());
+
+  // Always include regulatory/compliance gate
+  conditions.push({
+    question: 'Has the state board approved the program curriculum and clinical site plan?',
+    owner: 'Program Director + Compliance Office',
+    timeline: 'Months 2\u20134',
+    kill: 'If state board requires changes that increase program length beyond 12 months or cost beyond budget, defer launch.',
+  });
+
+  // Financial validation gate
+  conditions.push({
+    question: 'Does validated instructor cost (actual contact hours) confirm Year 1 net positive at base enrollment?',
+    owner: 'Finance Office + Program Director',
+    timeline: 'Month 1\u20132',
+    kill: 'If actual instructor cost pushes break-even above 80% of base enrollment target, restructure cost model before proceeding.',
+  });
+
+  // Employer commitment gate
+  conditions.push({
+    question: 'Are signed clinical rotation MOUs in place with at least 2 employer partners?',
+    owner: 'Workforce Partnerships + Program Director',
+    timeline: 'Months 4\u20138',
+    kill: 'If fewer than 2 signed MOUs by month 8, delay enrollment open by one semester.',
+  });
+
+  // Enrollment validation gate
+  conditions.push({
+    question: 'Has direct prospective student outreach confirmed minimum viable enrollment interest?',
+    owner: 'Marketing + Admissions',
+    timeline: 'Months 6\u201310',
+    kill: 'If inquiry-to-enrollment pipeline shows fewer than break-even students at 60 days before cohort start, postpone launch.',
+  });
+
+  // Capital readiness gate
+  if (dimNames.some(d => d.includes('institutional') || d.includes('capacity'))) {
+    conditions.push({
+      question: 'Is lab/facility buildout complete and equipment operational?',
+      owner: 'Facilities + IT + Program Director',
+      timeline: 'Months 8\u201312',
+      kill: 'If facility not ready 30 days before cohort start, push launch date.',
+    });
+  }
+
+  // Override with synthesis conditions if available
+  if (tigerTeamMarkdown) {
+    const cleaned = replaceTigerTeam(tigerTeamMarkdown);
+    const condMatch = cleaned.match(/# (?:Conditions|Prerequisites|Go Conditions)[^\n]*\s+([\s\S]*?)(?=\n# )/i);
+    if (condMatch) {
+      parts.push(condMatch[1].trim());
+      parts.push('');
+    }
+  }
+
+  // Build the numbered conditions table
+  const rows = conditions.map((c, i) => {
+    const num = i + 1;
+    const colors = ['#7c3aed', '#2563eb', '#059669', '#d97706', '#dc2626'];
+    const color = colors[i % colors.length];
+    return `<div style="display:flex;gap:16px;margin-bottom:16px;padding:16px;background:#f8fafc;border-left:4px solid ${color};border-radius:0 8px 8px 0;">
+  <div style="font-size:20px;font-weight:700;color:${color};min-width:28px;">${num}</div>
+  <div style="flex:1;">
+    <div style="font-size:14px;font-weight:600;color:#334155;margin-bottom:6px;">${c.question}</div>
+    <div style="display:flex;gap:24px;flex-wrap:wrap;font-size:12px;">
+      <span><strong style="color:#475569;">Owner:</strong> <span style="color:#64748b;">${c.owner}</span></span>
+      <span><strong style="color:#475569;">Timeline:</strong> <span style="color:#64748b;">${c.timeline}</span></span>
+    </div>
+    <div style="font-size:12px;margin-top:6px;color:#dc2626;"><strong>Kill criterion:</strong> ${c.kill}</div>
+  </div>
+</div>`;
+  });
+
+  parts.push(rows.join('\n'));
+  parts.push('', '<div style="page-break-after: always;"></div>');
+
+  return parts.join('\n');
 }
 
 function buildMarketDemandSection(
@@ -398,11 +531,10 @@ function buildMarketDemandSection(
 ): string {
   const parts: string[] = ['# Market Demand Analysis'];
 
-  // Agent narrative LEADS — find both labor market and employer demand components
+  // Agent narrative LEADS
   const laborComp = components.find(c => c.component_type === 'labor_market');
   const employerComp = components.find(c => c.component_type === 'employer_demand');
 
-  // Lead with agent narrative
   if (laborComp) {
     const md = laborComp.markdown_output || formatComponentContent('labor_market', laborComp.content);
     if (md) {
@@ -418,29 +550,44 @@ function buildMarketDemandSection(
 
   if (raw?.occupation) {
     // Wage chart — only if agent didn't discuss specific BLS wage figures
-    const wageChart = formatWageChart(raw);
+    const wageChart = htmlWageChart(raw);
     if (wageChart && !agentText.includes('BLS OES') && !agentText.match(/\$\d{2},\d{3}.*percentile/i)) {
-      parts.push('', '> \uD83D\uDCCA **Wage Distribution**', '', wageChart);
+      parts.push('', wageChart);
     }
 
-    // Projections badge — only if agent didn't quote specific projection numbers
-    const badge = formatProjectionsBadge(raw);
-    if (badge && !agentText.match(/\d+%\s*growth.*20\d{2}/)) {
-      parts.push('', badge);
+    // Projections key finding — only if agent didn't quote specific projection numbers
+    if (raw.occupation.projections && !agentText.match(/\d+%\s*growth.*20\d{2}/)) {
+      const p = raw.occupation.projections;
+      const findingParts: string[] = [];
+      if (p.change_percent) findingParts.push(`${p.change_percent}% growth (${p.base_year}\u2013${p.projected_year})`);
+      if (p.annual_openings) findingParts.push(`${p.annual_openings.toLocaleString()} annual openings`);
+      if (p.growth_category) findingParts.push(p.growth_category);
+      if (findingParts.length > 0) {
+        parts.push('', htmlKeyFinding(findingParts.join(' \u2014 ')));
+      }
     }
 
     // State priority callout
-    const priorityCallout = formatStatePriorityCallout(raw);
-    if (priorityCallout && !agentText.toLowerCase().includes('wioa fundable')) {
-      parts.push('', priorityCallout);
+    if (raw.occupation.statePriority?.isPriority && !agentText.toLowerCase().includes('wioa fundable')) {
+      const sp = raw.occupation.statePriority;
+      const tags: string[] = ['State In-Demand Occupation'];
+      if (sp.wioaFundable) tags.push('WIOA Fundable');
+      if (sp.scholarshipEligible) tags.push('Scholarship Eligible');
+      parts.push('', htmlKeyFinding(tags.join(' \u00B7 ')));
     }
   }
 
-  // Regional economy callout — only if not covered
+  // Regional economy callout
   if (raw?.serviceArea?.found && raw.serviceArea.data && !agentText.includes('service area')) {
-    const regionalCallout = formatRegionalCallout(raw);
-    if (regionalCallout) {
-      parts.push('', regionalCallout);
+    const d = raw.serviceArea.data;
+    const stats: string[] = [];
+    if (d.counties?.length > 0 && d.totalPopulation > 0) {
+      stats.push(`${d.counties.length} counties`, `${d.totalPopulation.toLocaleString()} population`, `${d.totalEstablishments.toLocaleString()} establishments`);
+    }
+    if (d.avgMedianIncome) stats.push(`Median income $${d.avgMedianIncome.toLocaleString()}`);
+    if (d.avgUnemployment) stats.push(`${d.avgUnemployment}% unemployment`);
+    if (stats.length > 0) {
+      parts.push('', htmlKeyFinding(`Service Area: ${stats.join(' \u00B7 ')}`));
     }
   }
 
@@ -454,6 +601,13 @@ function buildMarketDemandSection(
       }
     }
   }
+
+  // ACTION ITEMS
+  parts.push('', buildActionItems([
+    'Conduct direct employer outreach to validate projected hiring volume and confirm willingness to host clinical rotations.',
+    'Request written letters of support or intent from at least 3 regional employers to strengthen the demand case.',
+    'Cross-reference BLS wage data with regional job posting salary ranges to validate compensation narrative for marketing materials.',
+  ]));
 
   parts.push('', '<div style="page-break-after: always;"></div>');
   return parts.join('\n');
@@ -478,16 +632,23 @@ function buildCompetitiveLandscapeSection(
     }
   }
 
-  // Completions data as supporting callout — only if agent didn't cover it
+  // Completions data as supporting callout
   const agentText = compComp?.markdown_output || '';
   if (raw?.completions?.found && raw.completions.data?.length > 0 && !agentText.toLowerCase().includes('ipeds')) {
     const comp = raw.completions;
     const topPrograms = comp.data.slice(0, 5);
     const totalCompletions = topPrograms.reduce((sum: number, c: any) => sum + ((c as any).total_completions || 0), 0);
     if (totalCompletions > 0) {
-      parts.push('', `> \uD83C\uDF93 **Regional Program Completions (IPEDS):** ${totalCompletions} annual completions across ${topPrograms.length} regional programs`);
+      parts.push('', htmlKeyFinding(`Regional Program Completions (IPEDS): ${totalCompletions} annual completions across ${topPrograms.length} regional programs`));
     }
   }
+
+  // ACTION ITEMS
+  parts.push('', buildActionItems([
+    'Mystery-shop the top 2 competitor programs to validate tuition, format, and schedule claims before finalizing program design.',
+    'Survey prospective students on feature preferences (online vs. hybrid, evening vs. weekend) to confirm differentiation strategy.',
+    'Identify 2\u20133 specific differentiators (e.g., employer partnerships, hybrid format, PTCB pass rate guarantee) and build them into the program proposal.',
+  ]));
 
   parts.push('', '<div style="page-break-after: always;"></div>');
   return parts.join('\n');
@@ -499,7 +660,7 @@ function buildCurriculumDesignSection(
 ): string {
   const parts: string[] = ['# Curriculum Design'];
 
-  // Institutional fit — agent narrative leads
+  // Institutional fit
   const instComp = components.find(c => c.component_type === 'institutional_fit');
   if (instComp) {
     const md = instComp.markdown_output || formatComponentContent('institutional_fit', instComp.content);
@@ -511,7 +672,7 @@ function buildCurriculumDesignSection(
     }
   }
 
-  // Regulatory compliance — agent narrative leads
+  // Regulatory compliance
   const regComp = components.find(c => c.component_type === 'regulatory_compliance');
   if (regComp) {
     const md = regComp.markdown_output || formatComponentContent('regulatory_compliance', regComp.content);
@@ -523,6 +684,13 @@ function buildCurriculumDesignSection(
     }
   }
 
+  // ACTION ITEMS
+  parts.push('', buildActionItems([
+    'Schedule a pre-submission consultation with the state board to confirm hour requirements and clinical site standards before drafting the curriculum.',
+    'Map every course module to certification exam content domains and document alignment for accreditation reviewers.',
+    'Begin clinical site MOU negotiations immediately \u2014 these are the longest-lead item and gate enrollment.',
+  ]));
+
   parts.push('', '<div style="page-break-after: always;"></div>');
   return parts.join('\n');
 }
@@ -533,7 +701,7 @@ function buildFinancialProjectionsSection(
 ): string {
   const parts: string[] = ['# Financial Projections'];
 
-  // Financial viability — agent narrative leads (this section is already good)
+  // Financial viability
   const finComp = components.find(c => c.component_type === 'financial_viability');
   if (finComp) {
     const md = finComp.markdown_output || formatComponentContent('financial_viability', finComp.content);
@@ -545,6 +713,13 @@ function buildFinancialProjectionsSection(
     }
   }
 
+  // ACTION ITEMS
+  parts.push('', buildActionItems([
+    'Validate instructor cost assumptions against actual contact hour requirements from the state board \u2014 this is the single largest cost uncertainty.',
+    'Get facility/lab buildout quotes from at least 2 vendors to confirm or update the capital cost estimate.',
+    'Model a "delayed start" scenario (one semester later) to understand the financial impact of a regulatory timeline slip.',
+  ]));
+
   parts.push('', '<div style="page-break-after: always;"></div>');
   return parts.join('\n');
 }
@@ -555,7 +730,7 @@ function buildMarketingStrategySection(
 ): string {
   const parts: string[] = ['# Marketing Strategy'];
 
-  // Learner demand — agent narrative leads
+  // Learner demand
   const learnerComp = components.find(c => c.component_type === 'learner_demand');
   if (learnerComp) {
     const md = learnerComp.markdown_output || formatComponentContent('learner_demand', learnerComp.content);
@@ -566,6 +741,75 @@ function buildMarketingStrategySection(
       }
     }
   }
+
+  // ACTION ITEMS
+  parts.push('', buildActionItems([
+    'Run a 2-week digital ad test ($200\u2013$500) targeting the primary audience to validate click-through and inquiry conversion rates before committing the full marketing budget.',
+    'Develop a "career changer" landing page with a salary comparison and ROI calculator \u2014 this is the single highest-converting asset for workforce programs.',
+    'Establish employer referral pipeline: provide partner employers with program flyers and referral links for their current uncredentialed staff.',
+  ]));
+
+  parts.push('', '<div style="page-break-after: always;"></div>');
+  return parts.join('\n');
+}
+
+/**
+ * Builds HTML-formatted action items subsection.
+ */
+function buildActionItems(items: string[]): string {
+  const listItems = items.map(item =>
+    `  <div style="display:flex;gap:8px;margin:8px 0;">
+    <span style="color:#7c3aed;font-weight:700;flex-shrink:0;">&#x25B6;</span>
+    <span style="font-size:13px;color:#334155;">${item}</span>
+  </div>`
+  );
+  return `<div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:8px;padding:16px;margin:16px 0;">
+  <div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#7c3aed;font-weight:600;margin-bottom:8px;">Action Items</div>
+${listItems.join('\n')}
+</div>`;
+}
+
+/**
+ * Implementation Timeline section — visual milestone timeline.
+ */
+function buildImplementationTimeline(
+  project: ValidationProject,
+  programScore: ProgramScore,
+  tigerTeamMarkdown: string | undefined,
+): string {
+  const parts: string[] = ['# Implementation Timeline'];
+  parts.push('');
+  parts.push(`The following timeline outlines the critical path from today to first cohort enrollment, assuming a **${formatRecommendationLabel(programScore.recommendation)}** decision.`);
+  parts.push('');
+
+  // Try to extract timeline from synthesis
+  let usedSynthesis = false;
+  if (tigerTeamMarkdown) {
+    const cleaned = replaceTigerTeam(tigerTeamMarkdown);
+    const timelineMatch = cleaned.match(/# (?:Implementation Timeline|Launch Timeline|Timeline)[^\n]*\s+([\s\S]*?)(?=\n# )/i);
+    if (timelineMatch) {
+      parts.push(timelineMatch[1].trim());
+      usedSynthesis = true;
+    }
+  }
+
+  // Default milestone timeline
+  const milestones = [
+    { month: 'Month 1\u20132', title: 'Financial Validation & Go/No-Go', detail: 'Validate instructor cost model, confirm lab buildout budget, secure institutional approval to proceed.', color: '#dc2626' },
+    { month: 'Month 2\u20134', title: 'Regulatory Submission', detail: 'Submit curriculum and facility plan to state board for review. Initiate HLC substantive change notification.', color: '#d97706' },
+    { month: 'Month 3\u20136', title: 'Employer Partnership Development', detail: 'Execute clinical rotation MOUs with minimum 2 employer partners. Establish advisory committee.', color: '#d97706' },
+    { month: 'Month 4\u20138', title: 'Curriculum Finalization', detail: 'Map all course modules to certification exam domains. Develop lab exercises and simulation protocols.', color: '#2563eb' },
+    { month: 'Month 6\u201310', title: 'Facility & Equipment Readiness', detail: 'Complete lab buildout, install pharmacy simulation software, procure supplies and reference materials.', color: '#2563eb' },
+    { month: 'Month 8\u201312', title: 'Marketing Launch & Enrollment Open', detail: 'Launch digital marketing campaign, activate employer referral pipeline, begin accepting applications.', color: '#7c3aed' },
+    { month: 'Month 10\u201314', title: 'Faculty Hiring & Onboarding', detail: 'Recruit and onboard lead instructor. Confirm adjunct/guest instructor commitments from employer partners.', color: '#7c3aed' },
+    { month: 'Month 12\u201318', title: 'First Cohort Enrolls', detail: 'Orientation, first day of instruction. Begin tracking outcome metrics from Day 1 for accreditation.', color: '#059669' },
+  ];
+
+  if (!usedSynthesis) {
+    parts.push(htmlTimelineVisual(milestones));
+  }
+
+  parts.push('', htmlKeyFinding(`Total estimated timeline: 12\u201318 months from go decision to first cohort. Key risk: regulatory approval and clinical site agreements are the longest-lead items and should begin immediately.`));
 
   parts.push('', '<div style="page-break-after: always;"></div>');
   return parts.join('\n');
@@ -599,26 +843,30 @@ function buildAppendix(
   parts.push('- Technology costs leverage existing institutional infrastructure');
   parts.push('- Instructor costs at regional adjunct rates');
 
-  // D. Validation Scorecard — visual bars instead of table
+  // D. Validation Scorecard — HTML bars
   parts.push('', '## Validation Scorecard', '');
-  parts.push(formatScoreVisualization(programScore.dimensions));
-
-  const compositeBarWidth = 10;
-  const compositeFilled = Math.round((programScore.compositeScore / 10) * compositeBarWidth);
-  const compositeEmpty = compositeBarWidth - compositeFilled;
-  const compositeBar = '\u2588'.repeat(compositeFilled) + '\u2591'.repeat(compositeEmpty);
+  parts.push(htmlScoreBars(programScore.dimensions));
   parts.push('');
-  parts.push(`**COMPOSITE: ${compositeBar} ${programScore.compositeScore}/10 \u2014 ${programScore.recommendation}**`);
+  parts.push(htmlCompositeScore(programScore.compositeScore, programScore.recommendation));
 
   // E. Scoring Detail
   parts.push('', '## Scoring Detail', '');
   for (const d of programScore.dimensions) {
-    const barW = 10;
-    const f = Math.round((d.score / 10) * barW);
-    const e = barW - f;
-    const bar = '\u2588'.repeat(f) + '\u2591'.repeat(e);
-    parts.push(`**${d.dimension}** (${(d.weight * 100).toFixed(0)}% weight) \u2014 ${bar} ${d.score}/10`);
-    parts.push(`${d.rationale}`);
+    const pct = Math.round((d.score / 10) * 100);
+    const color = scoreColor(d.score);
+    const gradient = scoreGradient(d.score);
+    const weightPct = `${(d.weight * 100).toFixed(0)}%`;
+    parts.push(`<div style="margin:12px 0;">
+  <div style="display:flex;align-items:center;margin-bottom:4px;">
+    <span style="font-size:14px;font-weight:600;color:#334155;">${d.dimension}</span>
+    <span style="font-size:12px;color:#94a3b8;margin-left:8px;">(${weightPct} weight)</span>
+    <span style="margin-left:auto;font-size:14px;font-weight:700;color:${color};">${d.score}/10</span>
+  </div>
+  <div style="background:#e2e8f0;border-radius:4px;height:12px;overflow:hidden;margin-bottom:6px;">
+    <div style="width:${pct}%;height:100%;background:${gradient};border-radius:4px;"></div>
+  </div>
+  <div style="font-size:12px;color:#64748b;">${d.rationale}</div>
+</div>`);
     parts.push('');
   }
 
@@ -633,11 +881,11 @@ function buildAppendix(
     if (d.avgUnemployment) stats.push(`Unemployment: ${d.avgUnemployment}%`);
     if (d.avgPovertyRate) stats.push(`Poverty: ${d.avgPovertyRate}%`);
     if (d.avgBachelorsRate) stats.push(`Bachelor's+: ${d.avgBachelorsRate}%`);
-    parts.push(`> ${stats.join(' \u00B7 ')}`);
+    parts.push(htmlKeyFinding(stats.join(' \u00B7 ')));
     parts.push('');
   }
 
-  // G. Risks & Critical Success Factors from synthesis (if available)
+  // G. Risks & Critical Success Factors from synthesis
   if (tigerTeamMarkdown) {
     const cleaned = replaceTigerTeam(tigerTeamMarkdown);
     const risksMatch = cleaned.match(/# Top Risks & Mitigation Strategies\s+([\s\S]*?)(?=\n# )/);
@@ -715,7 +963,7 @@ function replaceTigerTeam(text: string): string {
  * Clean agent markdown before inserting into the report template.
  * Strips duplicate headers, dimension scores, section prefixes,
  * agent executive summaries, downgrades remaining headings,
- * and replaces Tiger Team references.
+ * replaces Tiger Team references, and removes agent-level Data Sources blocks.
  */
 function cleanAgentMarkdown(md: string, programName?: string): string {
   let out = md;
@@ -752,7 +1000,15 @@ function cleanAgentMarkdown(md: string, programName?: string): string {
   // 7. Trim excessive blank lines (3+ consecutive -> 2)
   out = out.replace(/\n{3,}/g, '\n\n');
 
-  // 8. Trim leading/trailing whitespace
+  // 8. Strip agent-level Data Sources blocks (appendix has the consolidated list)
+  // Match "---\n**Data Sources" or just "**Data Sources" through end of string or next heading
+  out = out.replace(/\n---\n\*\*Data Sources[\s\S]*?(?=\n#|$)/g, '');
+  out = out.replace(/\n\*\*Data Sources[\s\S]*?(?=\n#|$)/g, '');
+  // Broader patterns: handle colons/asterisks in header, <div> boundaries, italic variants
+  out = out.replace(/\n\*\*Data Sources[:\*]*\*\*[\s\S]*?(?=\n#|\n<div|$)/gi, '');
+  out = out.replace(/\n---\n\*[^*]*Data Sources[^*]*\*[\s\S]*$/gi, '');
+
+  // 9. Trim leading/trailing whitespace
   out = out.trim();
 
   return out;
@@ -791,25 +1047,31 @@ export function generateReport(input: ReportInput): string {
   // 2. Table of Contents
   sections.push(buildTableOfContents());
 
-  // 3. Executive Summary (narrative prose, Wavelength-branded)
+  // 3. Executive Summary
   sections.push(buildExecutiveSummary(project, programScore, tigerTeamMarkdown, raw));
 
-  // 4. Market Demand Analysis (agent narrative leads, data supports)
+  // 4. Conditions for Go (NEW)
+  sections.push(buildConditionsForGo(programScore, tigerTeamMarkdown, project));
+
+  // 5. Market Demand Analysis
   sections.push(buildMarketDemandSection(components, raw, project.program_name));
 
-  // 5. Competitive Landscape (agent narrative leads)
+  // 6. Competitive Landscape
   sections.push(buildCompetitiveLandscapeSection(components, raw, project.program_name));
 
-  // 6. Curriculum Design (institutional fit + regulatory)
+  // 7. Curriculum Design
   sections.push(buildCurriculumDesignSection(components, project.program_name));
 
-  // 7. Financial Projections
+  // 8. Financial Projections
   sections.push(buildFinancialProjectionsSection(components, project.program_name));
 
-  // 8. Marketing Strategy (learner demand)
+  // 9. Marketing Strategy
   sections.push(buildMarketingStrategySection(components, project.program_name));
 
-  // 9. Appendix (data sources, methodology, visual scorecard, assumptions)
+  // 10. Implementation Timeline (NEW)
+  sections.push(buildImplementationTimeline(project, programScore, tigerTeamMarkdown));
+
+  // 11. Appendix
   sections.push(buildAppendix(project, programScore, citations, raw, tigerTeamMarkdown));
 
   // Footer
