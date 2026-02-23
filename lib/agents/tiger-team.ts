@@ -1,4 +1,4 @@
-import { loadMultiplePersonas, WAVELENGTH_TEAMS } from '@/lib/confluence-labs/loader';
+import { loadMultiplePersonas } from '@/lib/confluence-labs/loader';
 import { callClaude } from '@/lib/ai/anthropic';
 import { ValidationProject, ResearchComponent } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
@@ -29,12 +29,13 @@ export async function runTigerTeam(
   const supabase = getSupabaseServerClient();
 
   try {
-    // Load Wavelength advisory team — curated for program validation engagements
-    const teamSlugs = WAVELENGTH_TEAMS['program-validation'] || [
-      'education-vp', 'financial-analyst', 'strategy-director',
-      'market-analyst', 'adult-learning', 'cmo',
-    ];
-    const personas = await loadMultiplePersonas(teamSlugs);
+    // Load tiger team personas
+    const personas = await loadMultiplePersonas([
+      'product-manager',
+      'cfo',
+      'cmo',
+      'coo',
+    ]);
 
     // Compile all research findings
     const researchSummary = researchComponents
@@ -43,53 +44,89 @@ export async function runTigerTeam(
       })
       .join('\n\n---\n\n');
 
-    const prompt = `You are Wavelength. You produce validation reports for community colleges. Your team has completed their research. Write the report.
+    const prompt = `You are Wavelength's senior advisory team. This is your $7,500 deliverable. Write with the conviction and authority of partners who have reviewed hundreds of program proposals. Have a point of view. Argue it.
 
+The old version of this report had lines like "This isn't marginal uncertainty; this is fundamental market intelligence failure" and "We're being asked to invest $85,500 in a program where the labor market analyst couldn't identify a single local job opening." THAT is the energy level. Be that direct. If something is broken, say it's broken. If something is exciting, make it exciting.
+
+CONTEXT:
 Program: ${project.program_name}
 Client: ${project.client_name}
+Type: ${project.program_type || 'Not specified'}
+Target Audience: ${project.target_audience || 'Not specified'}
 
-YOUR TEAM:
-${personas.map(p => {
-      const quoteMatch = p.fullContext.match(/^>\s+"(.+)"/m);
-      const roleMatch = p.fullContext.match(/^##\s+(.+)$/m);
-      const quote = quoteMatch ? ` — "${quoteMatch[1]}"` : '';
-      const role = roleMatch ? roleMatch[1] : p.division;
-      return `**${p.name}** — ${role}${quote}`;
-    }).join('\n')}
+PERSONAS IN THE ROOM:
 
-RESEARCH DATA:
+${personas.map(p => `**${p.name}** (${p.division})`).join('\n')}
+
+RESEARCH FINDINGS:
 
 ${researchSummary}
 
-WRITE THE REPORT. Use these section headers exactly:
+═══════════════════════════════════════════════════════════
+DELIVERABLES:
+═══════════════════════════════════════════════════════════
 
-# EXECUTIVE SUMMARY
-# MARKET DEMAND
-# COMPETITIVE LANDSCAPE
-# CURRICULUM & PROGRAM DESIGN
-# FINANCIAL PROJECTIONS
-# MARKETING & ENROLLMENT STRATEGY
-# IMPLEMENTATION ROADMAP
-# RECOMMENDATION
-# CONDITIONS FOR GO
-# KEY FINDINGS
+# Executive Summary (800-1,000 words MAX)
 
-VOICE — write like this:
+Write a NARRATIVE executive summary, not bullet points. Tell the story of this program opportunity.
 
-"We strongly recommend Midwest Community College proceed with launching this program. There are currently over 500,000 unfilled cybersecurity positions in the United States. Entry-level roles in the Midwest command $55,000–$72,000 annually. Only 2 institutions within a 60-mile radius offer comparable certificates, and neither align with current industry frameworks. With a $75,000 startup investment, the program breaks even within 3 cohorts and generates a 5-year ROI of 340%."
+**Structure:**
+- **Opening:** What is this program and why is the institution considering it? (2-3 sentences)
+- **The Opportunity:** What makes this strategically attractive? Paint the picture of success. (2-3 paragraphs)
+- **The Challenges:** What are the critical execution risks? What could go wrong? (2-3 paragraphs)
+- **The Verdict:** What's the recommendation and why? What needs to happen next? (1-2 paragraphs)
 
-"The competitive field is thin in exactly the ways that favor Kirkwood. National online competitors can't provide externships. The only hospital-affiliated local option is capped in seats. No regional program has built the stackable credential architecture that employers want."
+**Tone:** Write like a consulting partner presenting to a Board. Be confident but honest. If the program is risky, say it directly. If it's a strong opportunity, make the case compellingly.
 
-That's the energy. Lead with the answer. Support with data. Be specific. Be direct. No hedging, no "it should be noted," no throat-clearing. A dean reads this and knows exactly what to do.
+# Recommendation (600-800 words MAX)
 
-RULES:
-- Only cite facts from the research data above
-- Do not invent data, quotes, or employer statements
-- When analysts contradict each other, pick the right answer
-- Total length: 3,000–4,500 words`;
+## Decision: GO / CONDITIONAL GO / DEFER / NO-GO
+
+## Confidence Level: High / Medium / Low
+
+## Rationale
+Explain WHY this recommendation was reached. Connect it to the research data. What tipped the scales?
+
+## Conditions (if CONDITIONAL GO)
+List 3-5 SPECIFIC conditions with WHAT must happen, by WHEN, and HOW to verify.
+
+## Timeline for Revisiting (if DEFER)
+When to revisit and what would need to change.
+
+## Alternative Approaches (if NO-GO)
+2-3 alternative approaches that could work.
+
+# Key Findings
+
+Provide 3-5 key findings (100-150 words each) that synthesize across all research dimensions. Each finding: one-sentence statement, the evidence, and why it matters for the launch decision.
+
+# Conditions for Go
+
+If applicable, provide 3-5 conditions (50-100 words each) with clear deadlines and kill criteria. Each condition specifies: WHAT must happen, WHO owns it, by WHEN, and what triggers a no-go if unmet.
+
+---
+
+Length discipline: Every paragraph must advance the argument. No filler. No repeating what the research agents already said — synthesize and add insight.
+
+CRITICAL REQUIREMENTS:
+- Be brutally honest - this client is paying for TRUTH, not cheerleading
+- Challenge assumptions aggressively
+- If data is weak, say so
+- If the program looks risky, recommend NO-GO
+- Only recommend GO if you genuinely believe it will succeed
+
+FACTUAL INTEGRITY RULES (MANDATORY):
+- ONLY cite facts, statistics, and events that appear in the research data above
+- Do NOT invent competitor histories unless explicitly stated in the source data
+- Do NOT write in present tense about actions that haven't happened
+- If you reference a specific number, it MUST come from the source data
+- Do NOT fabricate quotes, survey results, or employer statements
+- Clearly distinguish between SOURCE DATA FINDINGS and YOUR ANALYSIS/RECOMMENDATIONS
+
+Respond with the complete markdown document above.`;
 
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 8000,  // Tight constraint forces concision
+      maxTokens: 4000,  // 4k — synthesis should be concise, not repeat agent findings
       temperature: 1.0,
     });
 

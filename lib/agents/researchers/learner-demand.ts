@@ -138,7 +138,7 @@ LENGTH: 600–800 words.
 
 IMPORTANT: Return ONLY valid JSON. No markdown outside JSON. Keep string values concise. Do NOT include a markdownReport field.`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 4000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 16000 });
     const data = extractJSON(content) as LearnerDemandData;
 
     // Generate markdown if not provided by AI
