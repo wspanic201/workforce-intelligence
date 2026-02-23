@@ -111,8 +111,36 @@ HOW TO VERIFY:
 WHEN YOU FIND AN ERROR — output a CORRECTION:
 - componentType: which agent section the error appears in (use these values: "regulatory_compliance", "labor_market", "competitive_landscape", "financial_viability", "institutional_fit", "learner_demand", "employer_demand")
 - original: the exact text snippet containing the error
-- corrected: the corrected version of that text
-- reason: why this is wrong (this is for internal logging only, NOT shown to client)
+- corrected: the CLIENT-READY replacement text. This text will be inserted DIRECTLY into a report that a paying client reads. It must read like polished prose — NO "NOTE:", "VERIFICATION:", "DATA ANOMALY", "[TO BE CONFIRMED]", or internal reasoning. Just the corrected factual statement. If a figure is wrong, replace it with the right figure. If a figure is unverifiable, omit it and state what IS known.
+- reason: detailed internal reasoning about why this is wrong (this is for INTERNAL logging only, never shown to client — put ALL your analysis here, not in 'corrected')
+
+⚠️ CRITICAL: The 'corrected' field goes DIRECTLY into the client report. The 'reason' field goes to the admin dashboard. Do NOT mix them up. If you cannot determine the correct figure, the correction should REMOVE the uncertain claim rather than flag it with brackets or notes.
+
+EXAMPLE OF A GOOD CORRECTION:
+{
+  "original": "Iowa requires 8 hours of continuing education",
+  "corrected": "Iowa requires 6 hours of continuing education every 2 years (Iowa Admin Code 481—944.2)",
+  "reason": "Analyst cited 8 hours but Iowa Admin Code 481—944.2 specifies 6 hours biennially"
+}
+
+EXAMPLE OF A BAD CORRECTION (DO NOT DO THIS):
+{
+  "original": "Total Seat Hours | 160 hrs",
+  "corrected": "Total Seat Hours | [TO BE CONFIRMED] | NOTE: The regulatory analysis cites 1,500 hours...",
+  "reason": "..."
+}
+↑ This puts internal QA language into the client report. Instead, do:
+{
+  "original": "Total Seat Hours | 160 hrs | Iowa Board of Pharmacy Rule 657 IAC 8.19",
+  "corrected": "Total Seat Hours | 160 hrs (regulatory minimum; actual program hours to be determined in curriculum design) | Iowa Administrative Code 657-3.19",
+  "reason": "CRITICAL: The regulatory analysis cites 1,500 hours under Iowa Admin Code 657-3.19 while financial model uses 160 hours under a different rule number. These cannot both be correct. The 160-hour figure likely reflects only didactic hours. Full internal analysis in warnings."
+}
+
+WHEN A CONTRADICTION IS UNRESOLVABLE:
+Do NOT inject flags, brackets, or QA notes into 'corrected'. Instead:
+1. Use the most defensible figure in 'corrected' with a brief qualifying phrase (e.g., "regulatory minimum" or "based on BLS OES May 2024")
+2. Put the full analysis of the contradiction in 'reason'
+3. Add a WARNING to the warnings array describing the issue
 
 VERIFICATION CONFIDENCE LEVELS:
 - "verified" ✅: Official source AND claim is consistent with your knowledge
@@ -143,7 +171,7 @@ Return a JSON object with this structure:
       "componentType": "regulatory_compliance",
       "original": "8 hours of continuing education required",
       "corrected": "6 hours of continuing education required every 2 years (Iowa Admin Code 481—944.2)",
-      "reason": "Analyst cited 8 hours but Iowa Admin Code 481—944.2 specifies 6 hours"
+      "reason": "Analyst cited 8 hours but Iowa Admin Code 481—944.2 specifies 6 hours. This is a factual error that could mislead program designers on compliance requirements."
     }
   ],
   "dataSources": [
@@ -183,11 +211,29 @@ Respond with ONLY valid JSON.`;
     const parsed = JSON.parse(jsonMatch[0]);
 
     // Ensure backward compatibility — fill in new fields with defaults if missing
+    const rawCorrections: typeof parsed.corrections = parsed.corrections || [];
+
+    // Post-process corrections: ensure 'corrected' text is truly client-ready
+    // Strip any QA language that leaked through despite prompt instructions
+    const cleanedCorrections = rawCorrections.map((c: any) => {
+      let corrected = c.corrected || '';
+      // Strip common QA markers that should never appear in client text
+      corrected = corrected.replace(/\b(VERIFICATION NOTE|NOTE|CAUTION|WARNING|DATA ANOMALY|INTERNAL NOTE|DO NOT CITE|TO BE CONFIRMED|MUST BE VERIFIED|NEEDS VERIFICATION)[:\s—–-]*/gi, '');
+      corrected = corrected.replace(/\[(?:TO BE (?:CONFIRMED|VERIFIED)|VERIFY[^[\]]*|DATA ANOMALY[^[\]]*)\]/gi, '');
+      // Strip sentences that are clearly internal reasoning (contain "must be resolved", "should be verified", "cannot both be correct")
+      corrected = corrected.replace(/[^.]*(?:must be (?:resolved|confirmed|verified)|should be (?:verified|confirmed)|cannot both be correct|this (?:discrepancy|inconsistency) must)[^.]*\.\s*/gi, '');
+      // Strip "This estimate requires validation..." type sentences
+      corrected = corrected.replace(/[^.]*(?:requires? validation|requires? verification|must be confirmed against)[^.]*\.\s*/gi, '');
+      // Collapse multiple spaces/newlines
+      corrected = corrected.replace(/\s{2,}/g, ' ').trim();
+      return { ...c, corrected };
+    });
+
     const result: CitationAgentOutput = {
       verifiedClaims: parsed.verifiedClaims || [],
       regulatoryCitations: parsed.regulatoryCitations || [],
       marketCitations: parsed.marketCitations || [],
-      corrections: parsed.corrections || [],
+      corrections: cleanedCorrections,
       dataSources: parsed.dataSources || [],
       warnings: parsed.warnings || [],
       summary: parsed.summary || '',

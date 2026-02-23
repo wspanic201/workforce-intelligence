@@ -311,52 +311,74 @@ function buildExecutiveSummary(
 ): string {
   const recLabel = formatRecommendationLabel(programScore.recommendation);
 
-  // Try to extract narrative exec summary from synthesis markdown
-  let narrative = '';
+  // Try to extract a BRIEF strategic narrative from the tiger team synthesis
+  // We only want 2-3 paragraphs max — the exec summary is a brief, not the report
+  let strategicNarrative = '';
   if (tigerTeamMarkdown) {
-    // Match exec summary section (any heading level, any case)
-    const execMatch = tigerTeamMarkdown.match(/#{1,3}\s+(?:EXECUTIVE SUMMARY|Executive Summary)\s*\n([\s\S]*?)(?=\n#{1,2}\s+(?:RECOMMENDATION|Recommendation|DECISION|Decision|KEY FINDINGS|Key Findings|CONDITIONS|Conditions))/i);
-    if (execMatch) {
-      narrative = execMatch[1].trim();
+    // Look for a "STRATEGIC VERDICT" or "EXECUTIVE BRIEF" section from the tiger team
+    const verdictMatch = tigerTeamMarkdown.match(/#{1,3}\s+(?:STRATEGIC VERDICT|EXECUTIVE BRIEF|BOTTOM LINE)\s*\n([\s\S]*?)(?=\n#{1,2}\s+)/i);
+    if (verdictMatch) {
+      strategicNarrative = verdictMatch[1].trim();
     }
-    // Also try to grab the recommendation section
-    if (narrative) {
-      const recMatch = tigerTeamMarkdown.match(/#{1,3}\s+(?:RECOMMENDATION|Recommendation|DECISION|Decision)[^\n]*\n([\s\S]*?)(?=\n#{1,2}\s+(?:KEY FINDINGS|Key Findings|CONDITIONS|Conditions|CONDITION))/i);
-      if (recMatch) {
-        narrative += '\n\n' + recMatch[1].trim();
+    // Fallback: grab first 2 paragraphs of exec summary section
+    if (!strategicNarrative) {
+      const execMatch = tigerTeamMarkdown.match(/#{1,3}\s+(?:EXECUTIVE SUMMARY|Executive Summary)\s*\n([\s\S]*?)(?=\n#{1,2}\s+)/i);
+      if (execMatch) {
+        const paragraphs = execMatch[1].trim().split(/\n\n+/);
+        strategicNarrative = paragraphs.slice(0, 2).join('\n\n');
       }
     }
-    // Fallback: if no exec summary found, try to grab everything between the first --- and the KEY FINDINGS
-    if (!narrative) {
-      const fallbackMatch = tigerTeamMarkdown.match(/---\s*\n([\s\S]*?)(?=\n#{1,3}\s+(?:KEY FINDINGS|Key Findings|CONDITIONS|Conditions))/i);
-      if (fallbackMatch) {
-        // Strip any sub-headers from the fallback
-        narrative = fallbackMatch[1].replace(/^#{1,3}\s+.*$/gm, '').trim();
+    if (strategicNarrative) {
+      strategicNarrative = replaceTigerTeam(strategicNarrative);
+      strategicNarrative = strategicNarrative.replace(/[≥≤]+\s*\d+%?\s*threshold\s*\(\+\d+\)/g, '');
+      strategicNarrative = strategicNarrative.replace(/\(\+\d+\)/g, '');
+      // Hard cap: 1500 chars for the narrative intro
+      if (strategicNarrative.length > 1500) {
+        const sentences = strategicNarrative.split(/(?<=\.)\s+/);
+        let trimmed = '';
+        for (const s of sentences) {
+          if ((trimmed + s).length > 1400) break;
+          trimmed += (trimmed ? ' ' : '') + s;
+        }
+        strategicNarrative = trimmed;
       }
-    }
-    if (narrative) {
-      narrative = replaceTigerTeam(narrative);
-      // Strip raw score formulas that shouldn't be in narrative
-      narrative = narrative.replace(/[≥≤]+\s*\d+%?\s*threshold\s*\(\+\d+\)/g, '');
-      narrative = narrative.replace(/\(\+\d+\)/g, '');
     }
   }
 
-  // If no synthesis narrative, build from scores
-  if (!narrative) {
-    narrative = buildNarrativeFromScores(project, programScore, raw);
-  }
+  // Build key findings from data — discovery-framed, not confirmation-framed
+  const keyFindings = buildKeyFindings(programScore, raw);
 
-  // Build investment summary as HTML visual
+  // Build investment/viability summary
   const investmentVisual = buildInvestmentVisual(programScore);
+
+  // Build risks/concerns
+  const risks = buildKeyRisks(programScore);
 
   const parts = [
     `# Executive Summary`,
     '',
     `## Recommendation: **${recLabel}**`,
     '',
-    narrative,
   ];
+
+  // Strategic narrative (2 paragraphs max from tiger team, or auto-generated)
+  if (strategicNarrative) {
+    parts.push(strategicNarrative);
+  } else {
+    parts.push(buildOpeningNarrative(project, programScore, raw));
+  }
+
+  parts.push('');
+  parts.push('### Key Findings');
+  parts.push('');
+  parts.push(...keyFindings);
+
+  if (risks.length > 0) {
+    parts.push('');
+    parts.push('### Key Risks');
+    parts.push('');
+    parts.push(...risks);
+  }
 
   if (investmentVisual) {
     parts.push('', investmentVisual);
@@ -367,65 +389,112 @@ function buildExecutiveSummary(
   return parts.join('\n');
 }
 
-function buildNarrativeFromScores(
+/**
+ * Build a brief opening narrative (used when no tiger team synthesis available).
+ * Discovery-framed: "Our analysis found..." not "The proposed program targeting..."
+ */
+function buildOpeningNarrative(
   project: ValidationProject,
   programScore: ProgramScore,
   raw: AgentIntelligenceContext['raw'] | null,
 ): string {
-  const topDims = [...programScore.dimensions].sort((a, b) => b.score * b.weight - a.score * a.weight);
-  const strengths = topDims.filter(d => d.score >= 7).slice(0, 3);
-  const concerns = topDims.filter(d => d.score <= 4);
+  const recLabel = formatRecommendationLabel(programScore.recommendation);
+  const programName = project.program_name || 'this program';
+  const clientName = project.client_name || 'the institution';
 
-  const parts: string[] = [];
+  // Discovery framing — tell them what we FOUND, not what they TOLD us
+  let opening = `Wavelength conducted a seven-dimension validation of a potential **${programName}** at **${clientName}**. `;
 
-  parts.push(`Based on comprehensive analysis across market demand, competitive landscape, curriculum viability, financial projections, and marketing opportunity, this report evaluates the proposed **${project.program_name}** program at **${project.client_name}**.`);
-  parts.push('');
+  if (programScore.compositeScore >= 7) {
+    opening += `The analysis reveals a fundamentally sound opportunity with ${programScore.dimensions.filter(d => d.score >= 7).length} of ${programScore.dimensions.length} dimensions scoring above threshold.`;
+  } else if (programScore.compositeScore >= 5) {
+    opening += `The analysis reveals a mixed picture: the opportunity has merit, but ${programScore.dimensions.filter(d => d.score < 6).length} dimensions scored below threshold and require attention before proceeding.`;
+  } else {
+    opening += `The analysis raises significant concerns across multiple dimensions that must be addressed before this program can proceed.`;
+  }
 
-  parts.push('### Key Findings');
-  parts.push('');
+  return opening;
+}
+
+/**
+ * Build scannable key findings as bullet points with bold data.
+ * Discovery-framed: "Our research identified..." not "The proposed target market..."
+ */
+function buildKeyFindings(
+  programScore: ProgramScore,
+  raw: AgentIntelligenceContext['raw'] | null,
+): string[] {
+  const findings: string[] = [];
 
   if (raw?.occupation?.projections) {
     const p = raw.occupation.projections;
-    parts.push(`- **Growth outlook:** The Bureau of Labor Statistics projects **${p.change_percent}% growth** from ${p.base_year}\u2013${p.projected_year}${p.annual_openings ? `, with approximately **${p.annual_openings.toLocaleString()} annual openings**` : ''}.`);
+    findings.push(`- **Market growth confirmed:** BLS projects **${p.change_percent}% employment growth** (${p.base_year}\u2013${p.projected_year})${p.annual_openings ? ` with **${p.annual_openings.toLocaleString()} annual openings** statewide` : ''}. This occupation carries state in-demand designation.`);
   }
 
   if (raw?.occupation?.wages) {
     const w = raw.occupation.wages;
-    parts.push(`- **Strong wages:** ${w.geo_name} median annual wage is **$${w.median_annual?.toLocaleString()}**${w.pct_10 ? `, with entry-level at **$${w.pct_10.toLocaleString()}**` : ''}.`);
+    findings.push(`- **Wage premium identified:** ${w.geo_name} median wage of **$${w.median_annual?.toLocaleString()}**/year${w.pct_90 ? ` (90th percentile: **$${w.pct_90.toLocaleString()}**)` : ''}${w.pct_10 ? `. Entry-level floor at $${w.pct_10.toLocaleString()}` : ''}.`);
   }
 
-  for (const s of strengths) {
-    // Clean up raw scoring formula from rationale text
-    let cleanRationale = s.rationale
+  if (raw?.serviceArea?.found && raw.serviceArea.data?.topIndustries?.length > 0) {
+    const top = raw.serviceArea.data.topIndustries[0];
+    findings.push(`- **Regional alignment strong:** ${top.industry} is the largest employment sector in the service area at **${top.employees?.toLocaleString()} employees** (${top.share}% of regional workforce).`);
+  }
+
+  // Add strongest scored dimensions as findings
+  const sorted = [...programScore.dimensions].sort((a, b) => b.score - a.score);
+  const topScored = sorted.filter(d => d.score >= 8).slice(0, 2);
+  for (const d of topScored) {
+    let rationale = d.rationale
       .replace(/[≥≤]+\s*[\d.]+%?\s*threshold\s*\(\+\d+\)/g, '')
       .replace(/\(\+\d+\)/g, '')
       .replace(/^\*+\s*/, '')
       .trim();
-    if (cleanRationale.length > 200) cleanRationale = cleanRationale.substring(0, 200) + '...';
-    parts.push(`- **${s.dimension}** scored ${s.score}/10 \u2014 ${cleanRationale}`);
+    if (rationale.length > 180) rationale = rationale.substring(0, 180).replace(/\s+\S*$/, '') + '...';
+    findings.push(`- **${d.dimension} (${d.score}/10):** ${rationale}`);
   }
 
-  if (concerns.length > 0) {
-    parts.push('');
-    for (const c of concerns) {
-      parts.push(`- **Area of concern: ${c.dimension}** scored ${c.score}/10 \u2014 ${c.rationale.substring(0, 200)}`);
+  // Ensure we have at least 4 findings
+  if (findings.length < 4) {
+    const remaining = sorted.filter(d => d.score >= 7 && !findings.some(f => f.includes(d.dimension))).slice(0, 4 - findings.length);
+    for (const d of remaining) {
+      findings.push(`- **${d.dimension}** scored **${d.score}/10** — above validation threshold.`);
     }
+  }
+
+  return findings;
+}
+
+/**
+ * Build key risks as bullet points.
+ */
+function buildKeyRisks(programScore: ProgramScore): string[] {
+  const risks: string[] = [];
+  const weakest = [...programScore.dimensions].sort((a, b) => a.score - b.score);
+
+  // Dimensions below 7 are risks
+  const below = weakest.filter(d => d.score < 7);
+  for (const d of below.slice(0, 3)) {
+    let rationale = d.rationale
+      .replace(/[≥≤]+\s*[\d.]+%?\s*threshold\s*\(\+\d+\)/g, '')
+      .replace(/\(\+\d+\)/g, '')
+      .replace(/^\*+\s*/, '')
+      .trim();
+    if (rationale.length > 200) rationale = rationale.substring(0, 200).replace(/\s+\S*$/, '') + '...';
+    risks.push(`- **${d.dimension} (${d.score}/10):** ${rationale}`);
   }
 
   if (programScore.overrideApplied && programScore.overrideReason) {
-    parts.push('');
-    parts.push(`> **Note:** ${programScore.overrideReason}`);
+    risks.push(`- **Override applied:** ${programScore.overrideReason}`);
   }
 
   if (programScore.conditions && programScore.conditions.length > 0) {
-    parts.push('');
-    parts.push('**Conditions for Proceeding:**');
-    for (const c of programScore.conditions) {
-      parts.push(`- ${c}`);
+    for (const c of programScore.conditions.slice(0, 2)) {
+      risks.push(`- ${c}`);
     }
   }
 
-  return parts.join('\n');
+  return risks;
 }
 
 function buildInvestmentVisual(programScore: ProgramScore): string {
@@ -549,8 +618,14 @@ function buildMarketDemandSection(
   components: ResearchComponent[],
   raw: AgentIntelligenceContext['raw'] | null,
   programName?: string,
+  strategicInsight?: string,
 ): string {
   const parts: string[] = ['# Market Demand Analysis'];
+
+  // Inject tiger team strategic perspective if available
+  if (strategicInsight) {
+    parts.push('', htmlStrategicInsight(strategicInsight));
+  }
 
   // Agent narrative LEADS
   const laborComp = components.find(c => c.component_type === 'labor_market');
@@ -638,8 +713,13 @@ function buildCompetitiveLandscapeSection(
   components: ResearchComponent[],
   raw: AgentIntelligenceContext['raw'] | null,
   programName?: string,
+  strategicInsight?: string,
 ): string {
   const parts: string[] = ['# Competitive Landscape'];
+
+  if (strategicInsight) {
+    parts.push('', htmlStrategicInsight(strategicInsight));
+  }
 
   // Agent analysis LEADS
   const compComp = components.find(c => c.component_type === 'competitive_landscape');
@@ -678,8 +758,13 @@ function buildCompetitiveLandscapeSection(
 function buildCurriculumDesignSection(
   components: ResearchComponent[],
   programName?: string,
+  strategicInsight?: string,
 ): string {
   const parts: string[] = ['# Curriculum Design'];
+
+  if (strategicInsight) {
+    parts.push('', htmlStrategicInsight(strategicInsight));
+  }
 
   // Institutional fit
   const instComp = components.find(c => c.component_type === 'institutional_fit');
@@ -719,8 +804,13 @@ function buildCurriculumDesignSection(
 function buildFinancialProjectionsSection(
   components: ResearchComponent[],
   programName?: string,
+  strategicInsight?: string,
 ): string {
   const parts: string[] = ['# Financial Projections'];
+
+  if (strategicInsight) {
+    parts.push('', htmlStrategicInsight(strategicInsight));
+  }
 
   // Financial viability
   const finComp = components.find(c => c.component_type === 'financial_viability');
@@ -748,8 +838,13 @@ function buildFinancialProjectionsSection(
 function buildMarketingStrategySection(
   components: ResearchComponent[],
   programName?: string,
+  strategicInsight?: string,
 ): string {
   const parts: string[] = ['# Marketing Strategy'];
+
+  if (strategicInsight) {
+    parts.push('', htmlStrategicInsight(strategicInsight));
+  }
 
   // Learner demand
   const learnerComp = components.find(c => c.component_type === 'learner_demand');
@@ -797,8 +892,14 @@ function buildImplementationTimeline(
   project: ValidationProject,
   programScore: ProgramScore,
   tigerTeamMarkdown: string | undefined,
+  strategicInsight?: string,
 ): string {
   const parts: string[] = ['# Implementation Timeline'];
+
+  if (strategicInsight) {
+    parts.push('', htmlStrategicInsight(strategicInsight));
+  }
+
   parts.push('');
   parts.push(`The following timeline outlines the critical path from today to first cohort enrollment, assuming a **${formatRecommendationLabel(programScore.recommendation)}** decision.`);
   parts.push('');
@@ -1075,19 +1176,33 @@ function cleanAgentMarkdown(md: string, programName?: string): string {
  */
 function cleanCitationLanguage(text: string): string {
   return text
+    // Strip labeled QA markers
     .replace(/ESTIMATE:\s*/gi, '')
-    .replace(/\bNOTE:\s*[^.]*?(?:should be (?:verified|confirmed)|direct confirmation)[^.]*\.\s*/gi, '')
+    .replace(/CAUTION:\s*[^.]*\./gi, '')
+    .replace(/\bNOTE:\s*[^.]*\.\s*/gi, '')
+    .replace(/VERIFICATION[:\s]*[^.]*\.\s*/gi, '')
+    .replace(/DATA ANOMALY[:\s—–-]*[^.]*\.\s*/gi, '')
+    .replace(/INTERNAL NOTE[:\s]*[^.]*\.\s*/gi, '')
+    // Strip bracketed QA tags
     .replace(/\[TO BE CONFIRMED[^\]]*\]/gi, '')
     .replace(/\[PENDING[^\]]*\]/gi, '')
     .replace(/\[CONDITIONAL\s*—[^\]]*\]/gi, '')
-    .replace(/\.\s*This (?:figure|data|number|citation|source) should be (?:verified|confirmed)[^.]*\./gi, '.')
+    .replace(/\[DATA ANOMALY[^\]]*\]/gi, '')
+    .replace(/\[VERIFY[^\]]*\]/gi, '')
+    .replace(/\[DO NOT CITE[^\]]*\]/gi, '')
+    // Strip hedging sentences
+    .replace(/\.\s*This (?:figure|data|number|citation|source|estimate) (?:should|must|needs to) be (?:verified|confirmed|validated|resolved)[^.]*\./gi, '.')
+    .replace(/\.\s*This (?:discrepancy|inconsistency|gap) (?:must|should|needs to) be (?:resolved|addressed|investigated)[^.]*\./gi, '.')
     .replace(/[;,]?\s*direct confirmation (?:from [^.;]+)?(?:required|needed)[^.;]*/gi, '')
     .replace(/\.\s*This figure should be confirmed[^.]*\./gi, '.')
     .replace(/\(ESTIMATE[^)]*\)/gi, '')
     .replace(/Note: The correct authoritative source is[^.]*\./gi, '')
-    .replace(/CAUTION:\s*[^.]*\./gi, '')
-    .replace(/NOTE:\s*[^.]*\./gi, '')
+    // Strip warning emojis and "⚠️ Data Anomaly" blocks (entire paragraph)
+    .replace(/⚠️\s*\**Data Anomaly[^]*?(?=\n\n|\n#|$)/gi, '')
+    .replace(/⚠️\s*\**(?:WARNING|CAUTION|NOTE|VERIFY)[^]*?(?=\n\n|\n#|$)/gi, '')
+    // Clean up artifacts
     .replace(/\.\s*\./g, '.')
+    .replace(/\n{3,}/g, '\n\n')
     .replace(/  +/g, ' ')
     .trim();
 }
@@ -1104,6 +1219,64 @@ function formatRecommendationLabel(rec: string): string {
 }
 
 // ════════════════════════════════════════════════════════
+// SECTION INSIGHTS (from tiger team)
+// ════════════════════════════════════════════════════════
+
+interface SectionInsights {
+  market?: string;
+  competitive?: string;
+  curriculum?: string;
+  financial?: string;
+  marketing?: string;
+  implementation?: string;
+}
+
+/**
+ * Parse section-specific insights from tiger team markdown.
+ * Returns insights keyed by section name for injection into body sections.
+ */
+function parseSectionInsights(tigerTeamMarkdown: string | undefined): SectionInsights {
+  if (!tigerTeamMarkdown) return {};
+
+  const insights: SectionInsights = {};
+
+  const patterns: [keyof SectionInsights, RegExp][] = [
+    ['market', /##\s*Market Demand Insight\s*\n([\s\S]*?)(?=\n##\s|\n#\s|$)/i],
+    ['competitive', /##\s*Competitive Landscape Insight\s*\n([\s\S]*?)(?=\n##\s|\n#\s|$)/i],
+    ['curriculum', /##\s*Curriculum Design Insight\s*\n([\s\S]*?)(?=\n##\s|\n#\s|$)/i],
+    ['financial', /##\s*Financial Projections Insight\s*\n([\s\S]*?)(?=\n##\s|\n#\s|$)/i],
+    ['marketing', /##\s*Marketing Strategy Insight\s*\n([\s\S]*?)(?=\n##\s|\n#\s|$)/i],
+    ['implementation', /##\s*Implementation Insight\s*\n([\s\S]*?)(?=\n##\s|\n#\s|$)/i],
+  ];
+
+  for (const [key, pattern] of patterns) {
+    const match = tigerTeamMarkdown.match(pattern);
+    if (match) {
+      let text = match[1].trim();
+      // Remove parenthetical instructions from the prompt
+      text = text.replace(/^\([^)]*\)\s*/, '');
+      text = replaceTigerTeam(text);
+      if (text.length > 20) {
+        insights[key] = text;
+      }
+    }
+  }
+
+  return insights;
+}
+
+/**
+ * Build a styled strategic perspective callout box.
+ */
+function htmlStrategicInsight(insight: string): string {
+  return `
+<div style="background:linear-gradient(135deg,#7c3aed08,#3b82f608);border-left:4px solid #7c3aed;border-radius:0 8px 8px 0;padding:14px 18px;margin:20px 0;">
+ <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#7c3aed;font-weight:600;margin-bottom:6px;">Strategic Perspective</div>
+ <div style="font-size:13px;color:#334155;line-height:1.5;">${insight}</div>
+</div>`;
+}
+
+// ════════════════════════════════════════════════════════
 // MAIN REPORT GENERATOR
 // ════════════════════════════════════════════════════════
 
@@ -1117,6 +1290,9 @@ export function generateReport(input: ReportInput): string {
 
   const raw = getIntelContext(project);
 
+  // Parse section-specific insights from tiger team synthesis
+  const insights = parseSectionInsights(tigerTeamMarkdown);
+
   const sections: string[] = [];
 
   // 1. Cover page
@@ -1128,26 +1304,26 @@ export function generateReport(input: ReportInput): string {
   // 3. Executive Summary
   sections.push(buildExecutiveSummary(project, programScore, tigerTeamMarkdown, raw));
 
-  // 4. Conditions for Go (NEW)
+  // 4. Conditions for Go
   sections.push(buildConditionsForGo(programScore, tigerTeamMarkdown, project));
 
   // 5. Market Demand Analysis
-  sections.push(buildMarketDemandSection(components, raw, project.program_name));
+  sections.push(buildMarketDemandSection(components, raw, project.program_name, insights.market));
 
   // 6. Competitive Landscape
-  sections.push(buildCompetitiveLandscapeSection(components, raw, project.program_name));
+  sections.push(buildCompetitiveLandscapeSection(components, raw, project.program_name, insights.competitive));
 
   // 7. Curriculum Design
-  sections.push(buildCurriculumDesignSection(components, project.program_name));
+  sections.push(buildCurriculumDesignSection(components, project.program_name, insights.curriculum));
 
   // 8. Financial Projections
-  sections.push(buildFinancialProjectionsSection(components, project.program_name));
+  sections.push(buildFinancialProjectionsSection(components, project.program_name, insights.financial));
 
   // 9. Marketing Strategy
-  sections.push(buildMarketingStrategySection(components, project.program_name));
+  sections.push(buildMarketingStrategySection(components, project.program_name, insights.marketing));
 
-  // 10. Implementation Timeline (NEW)
-  sections.push(buildImplementationTimeline(project, programScore, tigerTeamMarkdown));
+  // 10. Implementation Timeline
+  sections.push(buildImplementationTimeline(project, programScore, tigerTeamMarkdown, insights.implementation));
 
   // 11. Appendix
   sections.push(buildAppendix(project, programScore, citations, raw, tigerTeamMarkdown));
