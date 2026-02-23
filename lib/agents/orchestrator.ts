@@ -14,6 +14,7 @@ import { calculateProgramScore, buildDimensionScore, DIMENSION_WEIGHTS } from '@
 import { generateReport } from '@/lib/reports/report-generator';
 import { enrichProject } from './project-enricher';
 import type { DiscoveryContext } from '@/lib/stages/handoff';
+import { getAgentIntelligenceContext, type AgentIntelligenceContext } from '@/lib/intelligence/agent-context';
 
 // Timeout wrapper for research agents
 function withTimeout<T>(promise: Promise<T>, timeoutMs: number, taskName: string): Promise<T> {
@@ -122,6 +123,17 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
     const projectToValidate = enrichedProject || project;
     
     console.log(`[Orchestrator] ✓ Enriched: Occupation="${enrichment.target_occupation}", SOC=${enrichment.soc_codes || 'none'}, Region="${enrichment.geographic_area}"`);
+
+    // 2.5. Build Verified Intelligence Context (shared by all agents)
+    let intelContext: AgentIntelligenceContext | null = null;
+    try {
+      intelContext = await getAgentIntelligenceContext(projectToValidate as ValidationProject);
+      console.log(`[Orchestrator] ✓ Intelligence context: ${intelContext.tablesUsed.length} data sources, ${intelContext.promptBlock.length} chars`);
+      // Store on project for agents to access
+      (projectToValidate as any)._intelContext = intelContext;
+    } catch (err) {
+      console.warn('[Orchestrator] Intelligence context build failed (non-fatal):', (err as Error).message);
+    }
 
     // 3. Update status to researching
     await supabase

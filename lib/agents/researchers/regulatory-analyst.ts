@@ -3,13 +3,7 @@ import { ValidationProject } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { PROGRAM_VALIDATOR_SYSTEM_PROMPT } from '@/lib/prompts/program-validator';
 import { searchWeb } from '@/lib/apis/web-research';
-import {
-  getStateStatutes,
-  getStateCredentials,
-  getStatePriorities,
-  isStatePriority,
-  getFrameworksForContext,
-} from '@/lib/intelligence/lookup';
+// Intelligence context is injected by orchestrator via (project as any)._intelContext
 
 export interface RegulatoryComplianceData {
   score: number;
@@ -178,52 +172,11 @@ export async function runRegulatoryCompliance(
       console.log(`[Regulatory] Found ${govSources.length} official .gov sources`);
     }
 
-    // Query Verified Intelligence Layer
-    let verifiedRegulatorySection = '';
-    try {
-      if (state) {
-        const statutes = await getStateStatutes(state, occupation || undefined);
-        if (statutes.found && statutes.data && statutes.data.length > 0) {
-          verifiedRegulatorySection += `\n═══════════════════════════════════════════════════════════\nVERIFIED REGULATORY DATA:\n═══════════════════════════════════════════════════════════\n`;
-          verifiedRegulatorySection += `\n📜 STATE STATUTES (${state}):\n`;
-          for (const s of statutes.data.slice(0, 5)) {
-            verifiedRegulatorySection += `  • ${(s as any).code_chapter}: ${(s as any).title} — ${(s as any).regulatory_body || 'N/A'}\n`;
-          }
-        }
-
-        const credentials = await getStateCredentials(state, occupation || undefined);
-        if (credentials.found && credentials.data && credentials.data.length > 0) {
-          verifiedRegulatorySection += `\n📋 CREDENTIAL REQUIREMENTS (${state}):\n`;
-          for (const c of credentials.data.slice(0, 5)) {
-            verifiedRegulatorySection += `  • ${(c as any).credential_name}: ${(c as any).required_hours || '?'} hours, Exam: ${(c as any).exam_required ? 'Yes' : 'No'}, Body: ${(c as any).regulatory_body || 'N/A'}\n`;
-          }
-        }
-
-        // Check state priority status
-        const socCode = (project as any).soc_codes;
-        if (socCode) {
-          const priority = await isStatePriority(socCode, state);
-          if (priority.isPriority) {
-            verifiedRegulatorySection += `\n🏛️ STATE PRIORITY: ✅ This occupation IS on ${state}'s in-demand list\n`;
-            verifiedRegulatorySection += `  WIOA Fundable: ${priority.wioaFundable ? 'YES' : 'No'} | Scholarship Eligible: ${priority.scholarshipEligible ? 'YES' : 'No'}\n`;
-          }
-        }
-
-        // Get WIOA framework
-        const frameworks = await getFrameworksForContext(['WIOA', 'regulatory', 'licensing', 'Perkins']);
-        if (frameworks.found && frameworks.data) {
-          verifiedRegulatorySection += `\n📚 RELEVANT COMPLIANCE FRAMEWORKS:\n`;
-          for (const fw of frameworks.data.slice(0, 2)) {
-            verifiedRegulatorySection += `  • ${fw.short_name || fw.framework_name}\n`;
-            const principles = fw.key_principles?.slice(0, 3) || [];
-            for (const p of principles) {
-              verifiedRegulatorySection += `    - ${p}\n`;
-            }
-          }
-        }
-      }
-    } catch (err) {
-      console.warn('[Regulatory] Verified intelligence lookup failed:', (err as Error).message);
+    // Get shared intelligence context
+    const sharedContext = (project as any)._intelContext;
+    const verifiedRegulatorySection = sharedContext?.promptBlock || '';
+    if (sharedContext) {
+      console.log(`[Regulatory] Using shared intelligence context (${sharedContext.tablesUsed.length} sources)`);
     }
 
     const prompt = `${PROGRAM_VALIDATOR_SYSTEM_PROMPT}

@@ -5,13 +5,7 @@ import { PROGRAM_VALIDATOR_SYSTEM_PROMPT } from '@/lib/prompts/program-validator
 import { searchGoogleJobs } from '@/lib/apis/serpapi';
 import { searchWeb } from '@/lib/apis/web-research';
 import { withCache } from '@/lib/apis/cache';
-import {
-  getInstitution,
-  getServiceAreaEconomy,
-  getH1BDemand,
-  getOccupationProjections,
-  getFrameworksForContext,
-} from '@/lib/intelligence/lookup';
+// Intelligence context is injected by orchestrator via (project as any)._intelContext
 
 export interface EmployerDemandData {
   score: number;
@@ -121,55 +115,11 @@ export async function runEmployerDemand(
       }
     }
 
-    // Query Verified Intelligence Layer
-    let verifiedEmployerSection = '';
-    try {
-      const inst = await getInstitution(project.client_name);
-      if (inst.found && inst.data) {
-        const econ = await getServiceAreaEconomy(inst.data.id);
-        if (econ.found && econ.data) {
-          const d = econ.data;
-          verifiedEmployerSection += `\n═══════════════════════════════════════════════════════════\nVERIFIED SERVICE AREA ECONOMY (${d.counties.length} counties, Census CBP 2022):\n═══════════════════════════════════════════════════════════\n`;
-          verifiedEmployerSection += `Total: ${d.totalEstablishments.toLocaleString()} establishments, ${d.totalEmployees.toLocaleString()} employees\n`;
-          verifiedEmployerSection += `Population: ${d.totalPopulation.toLocaleString()} | Median Income: $${d.avgMedianIncome?.toLocaleString() || 'N/A'} | Unemployment: ${d.avgUnemployment || 'N/A'}%\n\n`;
-          verifiedEmployerSection += `Industry Breakdown:\n`;
-          verifiedEmployerSection += d.topIndustries.slice(0, 10).map((i: any) => `  ${i.naics} ${i.name}: ${i.employees.toLocaleString()} employees, ${i.establishments.toLocaleString()} establishments`).join('\n');
-          verifiedEmployerSection += `\nSource: Census County Business Patterns 2022 + Census ACS 2023\n`;
-          console.log(`[Employer Analyst] ✓ Verified service area: ${d.totalEstablishments.toLocaleString()} establishments`);
-        }
-      }
-
-      // H-1B demand for this occupation
-      const socCode = (project as any).soc_codes;
-      if (socCode) {
-        const h1b = await getH1BDemand(socCode);
-        if (h1b.found && h1b.data && h1b.data.length > 0) {
-          verifiedEmployerSection += `\n🛂 H-1B EMPLOYER DEMAND (FY2025 Q4, SOC ${socCode}):\n`;
-          for (const h of h1b.data.slice(0, 5)) {
-            verifiedEmployerSection += `  ${(h as any).state || 'US'}: ${(h as any).total_applications} applications, ${(h as any).unique_employers} employers, avg wage $${(h as any).avg_wage?.toLocaleString() || 'N/A'}\n`;
-          }
-          verifiedEmployerSection += `Source: DOL H-1B LCA Disclosure Data\n`;
-        }
-
-        // Projections
-        const proj = await getOccupationProjections(socCode, 'IA'); // TODO: dynamic state
-        if (proj.found && proj.data) {
-          verifiedEmployerSection += `\n📈 EMPLOYMENT PROJECTIONS (${proj.data.base_year}-${proj.data.projected_year}):\n`;
-          verifiedEmployerSection += `  Annual Openings: ${proj.data.annual_openings?.toLocaleString() || 'N/A'} | Growth: ${proj.data.change_percent}% (${proj.data.growth_category})\n`;
-          verifiedEmployerSection += `Source: BLS/State Projections via Projections Central\n`;
-        }
-      }
-
-      // Partnership frameworks
-      const frameworks = await getFrameworksForContext(['sector partnership', 'employer', 'advisory committee', 'work-based learning']);
-      if (frameworks.found && frameworks.data) {
-        verifiedEmployerSection += `\n📚 RELEVANT FRAMEWORKS:\n`;
-        for (const fw of frameworks.data.slice(0, 3)) {
-          verifiedEmployerSection += `  • ${fw.short_name || fw.framework_name}: ${(fw.when_to_use || '').slice(0, 120)}\n`;
-        }
-      }
-    } catch (err) {
-      console.warn('[Employer Analyst] Verified intelligence lookup failed:', (err as Error).message);
+    // Get shared intelligence context
+    const sharedContext = (project as any)._intelContext;
+    const verifiedEmployerSection = sharedContext?.promptBlock || '';
+    if (sharedContext) {
+      console.log(`[Employer Analyst] Using shared intelligence context (${sharedContext.tablesUsed.length} sources)`);
     }
 
     const prompt = `${PROGRAM_VALIDATOR_SYSTEM_PROMPT}

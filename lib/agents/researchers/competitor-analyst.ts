@@ -167,6 +167,9 @@ export async function runCompetitiveAnalysis(
       ? `\nIPEDS PROGRAM COMPLETIONS (actual graduates from competing institutions, CIP ${cipCode} - ${cipTitle}):\n${competitorCompletions.map(c => `- ${c.institution} (${c.city}): ${c.completions} completers`).join('\n')}\n`
       : '';
 
+    // Get shared verified intelligence context
+    const verifiedIntelBlock = (project as any)._intelContext?.promptBlock || '';
+
     const prompt = `You are a competitive landscape analyst for workforce education programs.
 
 Analyze the competitive landscape for this program and return ONLY valid JSON.
@@ -178,6 +181,7 @@ CLIENT: ${project.client_name}
 ${project.constraints ? `CONSTRAINTS: ${project.constraints}` : ''}
 ${cipCode ? `CIP CODE: ${cipCode} (${cipTitle})` : ''}
 ${ipedsSection}
+${verifiedIntelBlock}
 
 Identify 3-5 competing programs, market gaps, and differentiation opportunities.
 

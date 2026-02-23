@@ -60,6 +60,9 @@ export async function runInstitutionalFit(
   try {
     console.log(`[Institutional Fit] Starting for "${project.program_name}"`);
 
+    // Get shared verified intelligence context
+    const verifiedIntelBlock = (project as any)._intelContext?.promptBlock || '';
+
     const prompt = `${PROGRAM_VALIDATOR_SYSTEM_PROMPT}
 
 ROLE: You are conducting Stage 5 — Institutional Fit & Capacity Assessment.
@@ -74,8 +77,10 @@ ${(project as any).institutional_capacity ? `- Known Capacity: ${(project as any
 ${(project as any).delivery_format ? `- Delivery Format: ${(project as any).delivery_format}` : ''}
 ${(project as any).strategic_context ? `- Strategic Context: ${(project as any).strategic_context}` : ''}
 
+${verifiedIntelBlock}
+
 ANALYSIS REQUIRED:
-1. Faculty/instructor availability and recruitment feasibility
+1. Faculty/instructor availability and recruitment feasibility (NOTE: check faculty wage gap data above if available)
 2. Facilities and equipment adequacy
 3. Technology infrastructure readiness
 4. Support services (advising, career, tutoring)

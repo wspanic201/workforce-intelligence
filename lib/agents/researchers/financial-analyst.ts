@@ -270,7 +270,8 @@ export async function runFinancialAnalysis(
     // ── Step 3: Claude interprets the model (does NOT invent numbers) ─────────
 
     const persona = await loadPersona('cfo');
-    const prompt = buildInterpretationPrompt(financialModel, project, persona);
+    const verifiedIntelBlock = (project as any)._intelContext?.promptBlock || '';
+    const prompt = buildInterpretationPrompt(financialModel, project, persona) + '\n' + verifiedIntelBlock;
 
     const { content, tokensUsed } = await callClaude(prompt, {
       maxTokens: 2000,

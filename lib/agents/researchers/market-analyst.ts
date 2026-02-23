@@ -8,12 +8,7 @@ import { withCache } from '@/lib/apis/cache';
 import { getBLSData } from '@/lib/apis/bls';
 import { fetchONETOnline, searchJobsBrave } from '@/lib/apis/web-fallbacks';
 import { findSOCCode, onetToSOC, isValidSOCCode, getSOCTitle } from '@/lib/mappings/soc-codes';
-import {
-  getFullOccupationBrief,
-  getServiceAreaEconomy,
-  getInstitution,
-  getFrameworksForContext,
-} from '@/lib/intelligence/lookup';
+// Intelligence context is injected by orchestrator via (project as any)._intelContext
 
 /**
  * Clean a geographic area string for SerpAPI location parameter.
@@ -118,40 +113,11 @@ export async function runMarketAnalysis(
       console.warn(`[Market Analyst] ⚠️  No valid SOC code found for "${targetOccupation}" — BLS data unavailable`);
     }
     
-    // Step 2.5: Query Verified Intelligence Layer
-    const stateMatch = rawLocation.match(/\b([A-Z]{2})\b/) || rawLocation.match(/\b(Iowa|Illinois|Texas|California|New York|Florida|Ohio|Michigan|Minnesota|Wisconsin|Indiana|Missouri|Kansas|Nebraska|South Dakota|North Dakota)\b/i);
-    const stateNameMap: Record<string, string> = {
-      'iowa':'IA','illinois':'IL','texas':'TX','california':'CA','new york':'NY','florida':'FL',
-      'ohio':'OH','michigan':'MI','minnesota':'MN','wisconsin':'WI','indiana':'IN','missouri':'MO',
-      'kansas':'KS','nebraska':'NE','south dakota':'SD','north dakota':'ND'
-    };
-    const stateCode = stateMatch ? (stateMatch[1].length === 2 ? stateMatch[1] : stateNameMap[stateMatch[1].toLowerCase()] || null) : null;
-
-    let verifiedIntel: Awaited<ReturnType<typeof getFullOccupationBrief>> | null = null;
-    let serviceAreaData: any = null;
-    if (resolvedSOC && isValidSOCCode(resolvedSOC)) {
-      try {
-        verifiedIntel = await getFullOccupationBrief(resolvedSOC, stateCode || undefined);
-        if (verifiedIntel.wages || verifiedIntel.projections) {
-          console.log(`[Market Analyst] ✓ Verified Intelligence: wages=${verifiedIntel.wages ? 'yes' : 'no'}, projections=${verifiedIntel.projections ? 'yes' : 'no'}, skills=${verifiedIntel.skills?.length || 0}, h1b=${verifiedIntel.h1bDemand?.length || 0}, priority=${verifiedIntel.statePriority.isPriority}`);
-        }
-      } catch (err) {
-        console.warn('[Market Analyst] Verified Intelligence lookup failed, continuing:', (err as Error).message);
-      }
-    }
-
-    // Try to get service area economy for the institution
-    try {
-      const inst = await getInstitution(project.client_name);
-      if (inst.found && inst.data) {
-        const econ = await getServiceAreaEconomy(inst.data.id);
-        if (econ.found) {
-          serviceAreaData = econ.data;
-          console.log(`[Market Analyst] ✓ Service area economy: ${econ.data?.counties.length} counties, ${econ.data?.totalEmployees.toLocaleString()} employees`);
-        }
-      }
-    } catch (err) {
-      console.warn('[Market Analyst] Service area lookup failed:', (err as Error).message);
+    // Step 2.5: Get Verified Intelligence (from shared context or fetch fresh)
+    const sharedContext = (project as any)._intelContext;
+    const verifiedPromptBlock = sharedContext?.promptBlock || '';
+    if (sharedContext) {
+      console.log(`[Market Analyst] Using shared intelligence context (${sharedContext.tablesUsed.length} sources)`);
     }
 
     // Step 3: Fetch live jobs data
@@ -268,99 +234,6 @@ the occupation${resolvedSOC ? ` (SOC ${resolvedSOC}: ${getSOCTitle(resolvedSOC)}
 a comprehensive labor market analysis for ${rawLocation}.
 ═══════════════════════════════════════════════════════════`;
 
-    // Build verified intelligence section for prompt
-    let verifiedSection = '';
-    if (verifiedIntel) {
-      const parts: string[] = [];
-      parts.push(`\n═══════════════════════════════════════════════════════════`);
-      parts.push(`VERIFIED INTELLIGENCE LAYER (Government Sources — cite these):`);
-      parts.push(`═══════════════════════════════════════════════════════════`);
-
-      if (verifiedIntel.wages) {
-        const w = verifiedIntel.wages;
-        parts.push(`\n📊 WAGES — ${w.geo_name} (${w.bls_release}):`);
-        parts.push(`  Median Annual: $${w.median_annual?.toLocaleString() || 'N/A'}`);
-        parts.push(`  Mean Annual: $${w.mean_annual?.toLocaleString() || 'N/A'}`);
-        parts.push(`  10th pct: $${w.pct_10?.toLocaleString() || 'N/A'} | 25th: $${w.pct_25?.toLocaleString() || 'N/A'} | 75th: $${w.pct_75?.toLocaleString() || 'N/A'} | 90th: $${w.pct_90?.toLocaleString() || 'N/A'}`);
-        parts.push(`  Employment: ${w.employment?.toLocaleString() || 'N/A'}`);
-        parts.push(`  Source: Bureau of Labor Statistics, OES ${w.bls_release}`);
-      }
-
-      if (verifiedIntel.projections) {
-        const p = verifiedIntel.projections;
-        parts.push(`\n📈 EMPLOYMENT PROJECTIONS — ${p.geo_code} (${p.base_year}-${p.projected_year}):`);
-        parts.push(`  Base Employment: ${p.employment_base?.toLocaleString() || 'N/A'}`);
-        parts.push(`  Projected Employment: ${p.employment_projected?.toLocaleString() || 'N/A'}`);
-        parts.push(`  Change: ${p.change_number?.toLocaleString() || 'N/A'} (${p.change_percent}%)`);
-        parts.push(`  Annual Openings: ${p.annual_openings?.toLocaleString() || 'N/A'}`);
-        parts.push(`  Growth Category: ${p.growth_category || 'N/A'}`);
-        parts.push(`  Source: BLS/State Labor Market Projections, via Projections Central`);
-      }
-
-      if (verifiedIntel.skills && verifiedIntel.skills.length > 0) {
-        parts.push(`\n🧠 TOP SKILLS/KNOWLEDGE (O*NET v30.1):`);
-        const skills = verifiedIntel.skills.filter((s: any) => s.skill_type === 'skill').slice(0, 5);
-        const knowledge = verifiedIntel.skills.filter((s: any) => s.skill_type === 'knowledge').slice(0, 5);
-        const tech = verifiedIntel.skills.filter((s: any) => s.skill_type === 'technology').slice(0, 5);
-        if (skills.length) parts.push(`  Skills: ${skills.map((s: any) => s.skill_name).join(', ')}`);
-        if (knowledge.length) parts.push(`  Knowledge: ${knowledge.map((s: any) => s.skill_name).join(', ')}`);
-        if (tech.length) parts.push(`  Technology: ${tech.map((s: any) => s.skill_name).join(', ')}`);
-        parts.push(`  Source: O*NET v30.1 (February 2025)`);
-      }
-
-      if (verifiedIntel.h1bDemand && verifiedIntel.h1bDemand.length > 0) {
-        const h = verifiedIntel.h1bDemand[0] as any;
-        parts.push(`\n🛂 H-1B VISA DEMAND (FY2025 Q4):`);
-        parts.push(`  Applications: ${h.total_applications?.toLocaleString() || 'N/A'} | Certified: ${h.total_certified?.toLocaleString() || 'N/A'}`);
-        parts.push(`  Avg Wage on Applications: $${h.avg_wage?.toLocaleString() || 'N/A'}`);
-        parts.push(`  Unique Employers Filing: ${h.unique_employers || 'N/A'}`);
-        parts.push(`  Source: DOL H-1B LCA Disclosure Data, FY2025 Q4`);
-      }
-
-      if (verifiedIntel.statePriority.isPriority) {
-        const sp = verifiedIntel.statePriority;
-        parts.push(`\n🏛️ STATE PRIORITY STATUS:`);
-        parts.push(`  ✅ This occupation IS on the state in-demand list`);
-        parts.push(`  Scholarship Eligible: ${sp.scholarshipEligible ? 'YES' : 'No'}`);
-        parts.push(`  WIOA Fundable: ${sp.wioaFundable ? 'YES' : 'No'}`);
-        if (sp.data) parts.push(`  Source: ${sp.data.designation_source || 'State WIOA Plan'}`);
-      }
-
-      if (verifiedIntel.wageGap) {
-        const g = verifiedIntel.wageGap;
-        parts.push(`\n⚠️ FACULTY WAGE GAP:`);
-        parts.push(`  Industry Median: $${g.industryWage.median_annual?.toLocaleString()}`);
-        parts.push(`  Instructor Median: $${g.facultyWage.median_annual?.toLocaleString()}`);
-        parts.push(`  Gap: $${g.gap.toLocaleString()} (${g.gapPercent}%) — ${g.industryPaysMore ? 'industry pays MORE than teaching' : 'teaching pays MORE than industry'}`);
-        parts.push(`  Implication: ${g.industryPaysMore ? 'Faculty recruitment may be challenging' : 'Faculty recruitment should be feasible'}`);
-      }
-
-      if (verifiedIntel.citations) {
-        parts.push(`\n${verifiedIntel.citations}`);
-      }
-      
-      verifiedSection = parts.join('\n');
-    }
-
-    // Service area economy section
-    let serviceAreaSection = '';
-    if (serviceAreaData) {
-      serviceAreaSection = `
-═══════════════════════════════════════════════════════════
-SERVICE AREA ECONOMY (${serviceAreaData.counties.length} counties):
-═══════════════════════════════════════════════════════════
-Population: ${serviceAreaData.totalPopulation.toLocaleString()}
-Avg Median Income: $${serviceAreaData.avgMedianIncome?.toLocaleString() || 'N/A'}
-Avg Poverty Rate: ${serviceAreaData.avgPovertyRate || 'N/A'}%
-Avg Bachelor's+: ${serviceAreaData.avgBachelorsRate || 'N/A'}%
-Avg Unemployment: ${serviceAreaData.avgUnemployment || 'N/A'}%
-Total Employers: ${serviceAreaData.totalEstablishments.toLocaleString()} establishments, ${serviceAreaData.totalEmployees.toLocaleString()} employees
-
-Top Industries:
-${serviceAreaData.topIndustries.slice(0, 8).map((i: any) => `  ${i.naics} ${i.name}: ${i.employees.toLocaleString()} employees (${i.establishments.toLocaleString()} establishments)`).join('\n')}
-Source: Census County Business Patterns 2022 + Census ACS 2023`;
-    }
-
     const prompt = `${persona.name}
 
 TASK: Analyze labor market data and provide strategic insights.
@@ -372,8 +245,7 @@ AUDIENCE: ${project.target_audience || 'Not specified'}
 OCCUPATION: ${targetOccupation}
 REGION: ${rawLocation}
 SOC CODE: ${resolvedSOC || 'Not found'} ${resolvedSOC ? `(${getSOCTitle(resolvedSOC) || 'validated'}, source: ${socSource})` : ''}
-${verifiedSection}
-${serviceAreaSection}
+${verifiedPromptBlock}
 ${jobsSection}
 
 ${blsData ? `

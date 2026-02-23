@@ -53,6 +53,9 @@ export async function runLearnerDemand(
   try {
     console.log(`[Learner Demand] Starting for "${project.program_name}"`);
 
+    // Get shared verified intelligence context
+    const verifiedIntelBlock = (project as any)._intelContext?.promptBlock || '';
+
     const prompt = `${PROGRAM_VALIDATOR_SYSTEM_PROMPT}
 
 ROLE: You are conducting Stage 3 — Target Learner Demand Assessment.
@@ -67,6 +70,8 @@ ${project.constraints ? `- Constraints: ${project.constraints}` : ''}
 ${(project as any).delivery_format ? `- Delivery Format: ${(project as any).delivery_format}` : ''}
 ${(project as any).estimated_tuition ? `- Estimated Tuition: ${(project as any).estimated_tuition}` : ''}
 ${(project as any).target_learner_profile ? `- Learner Profile: ${(project as any).target_learner_profile}` : ''}
+
+${verifiedIntelBlock}
 
 ANALYSIS REQUIRED:
 1. Estimate target learner population size in the service area
