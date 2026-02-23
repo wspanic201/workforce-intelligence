@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAdminSession } from '@/lib/auth/admin';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
-import { generatePDF } from '@/lib/pdf/generate-pdf';
-import { readFileSync, unlinkSync } from 'fs';
-import { tmpdir } from 'os';
-import { join } from 'path';
+import { generatePDFBuffer } from '@/lib/pdf/generate-pdf-serverless';
 
-/** GET /api/admin/pipeline-runs/[id]/download-pdf — Generate and download PDF for a project */
+/** Vercel serverless config — needs more memory + time for PDF generation */
+export const maxDuration = 60;
+
+/** GET /api/admin/pipeline-runs/[id]/download-pdf — Generate and download PDF */
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -33,7 +33,7 @@ export async function GET(
   // Fetch project info for PDF metadata
   const { data: project } = await supabase
     .from('validation_projects')
-    .select('program_name, client_name, created_at')
+    .select('program_name, client_name')
     .eq('id', projectId)
     .single();
 
@@ -55,20 +55,15 @@ export async function GET(
   // Strip inline page break divs
   markdown = markdown.replace(/<div style="page-break-after:\s*always;?\s*"><\/div>\s*/g, '');
   
-  // Downgrade headers for PDF template (H1→H2, H2→H3, H3→H4)
+  // Downgrade headers for PDF template
   markdown = markdown.replace(/^### /gm, '#### ');
   markdown = markdown.replace(/^## /gm, '### ');
   markdown = markdown.replace(/^# /gm, '## ');
   
-  // Clean excessive blank lines
-  markdown = markdown.replace(/\n{4,}/g, '\n\n');
-  markdown = markdown.trim();
+  markdown = markdown.replace(/\n{4,}/g, '\n\n').trim();
 
-  // Generate PDF
-  const tmpPath = join(tmpdir(), `wavelength-report-${projectId.slice(0, 8)}-${Date.now()}.pdf`);
-  
   try {
-    const result = await generatePDF(markdown, {
+    const pdfBuffer = await generatePDFBuffer(markdown, {
       title: programName,
       subtitle: 'Program Validation Report',
       preparedFor: clientName,
@@ -76,18 +71,11 @@ export async function GET(
         year: 'numeric', month: 'long', day: 'numeric',
       }),
       reportType: 'validation',
-      outputPath: tmpPath,
     });
-
-    // Read PDF and return as download
-    const pdfBuffer = readFileSync(tmpPath);
-    
-    // Clean up temp file
-    try { unlinkSync(tmpPath); } catch {}
 
     const filename = `${programName.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '-')}-Validation-Report.pdf`;
 
-    return new NextResponse(pdfBuffer, {
+    return new NextResponse(new Uint8Array(pdfBuffer), {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
@@ -97,8 +85,6 @@ export async function GET(
     });
   } catch (err: any) {
     console.error('[PDF Download] Generation failed:', err);
-    // Clean up temp file on error
-    try { unlinkSync(tmpPath); } catch {}
     return NextResponse.json({ error: `PDF generation failed: ${err.message}` }, { status: 500 });
   }
 }
