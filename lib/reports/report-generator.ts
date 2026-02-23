@@ -296,8 +296,8 @@ function buildTableOfContents(): string {
 4. [Competitive Landscape](#competitive-landscape)
 5. [Curriculum Design](#curriculum-design)
 6. [Financial Projections](#financial-projections)
-7. [Marketing Strategy](#marketing-strategy)
-8. [Implementation Timeline](#implementation-timeline)
+7. [Marketing & Enrollment Strategy](#marketing--enrollment-strategy)
+8. [Implementation Roadmap](#implementation-roadmap)
 9. [Appendix](#appendix)
 
 <div style="page-break-after: always;"></div>`;
@@ -633,6 +633,141 @@ function buildConditionsForGo(
   return parts.join('\n');
 }
 
+// ════════════════════════════════════════════════════════
+// UNIFIED BODY SECTION BUILDER
+// ════════════════════════════════════════════════════════
+
+/**
+ * Build a body section using Wavelength narrative as PRIMARY content.
+ * Agent research is used as supplementary data exhibits when Wavelength
+ * narrative is available. Falls back to agent markdown if no Wavelength content.
+ */
+function buildBodySection(
+  title: string,
+  wavelengthNarrative: string | undefined,
+  components: ResearchComponent[],
+  componentType: string,
+  raw: AgentIntelligenceContext['raw'] | null,
+  programName?: string,
+): string {
+  const parts: string[] = [`# ${title}`];
+  parts.push('');
+
+  if (wavelengthNarrative && wavelengthNarrative.length > 100) {
+    // Wavelength narrative is the primary content
+    // Clean it: downgrade any H1/H2 from Wavelength to H3 since we're under a H1
+    let narrative = wavelengthNarrative
+      .replace(/^## /gm, '### ')
+      .replace(/^# /gm, '### ');
+    parts.push(narrative);
+
+    // Add relevant data exhibits from agent research as supplementary
+    const agentComp = components.find(c => c.component_type === componentType);
+    if (agentComp) {
+      const agentMd = cleanAgentMarkdown(agentComp.markdown_output || '');
+      // Extract just tables and structured data from agent output (not narrative)
+      const dataExhibits = extractDataExhibits(agentMd);
+      if (dataExhibits) {
+        parts.push('');
+        parts.push(dataExhibits);
+      }
+    }
+
+    // Add intel data tables for market section
+    if (componentType === 'labor_market' && raw) {
+      const intelTables = buildIntelDataTables(raw, programName);
+      if (intelTables) {
+        parts.push('', intelTables);
+      }
+    }
+  } else {
+    // No Wavelength narrative — fall back to agent output
+    const agentComp = components.find(c => c.component_type === componentType);
+    if (agentComp) {
+      parts.push(cleanAgentMarkdown(agentComp.markdown_output || ''));
+    } else {
+      parts.push('*Analysis pending.*');
+    }
+
+    // Add intel data tables for market section
+    if (componentType === 'labor_market' && raw) {
+      const intelTables = buildIntelDataTables(raw, programName);
+      if (intelTables) {
+        parts.push('', intelTables);
+      }
+    }
+  }
+
+  parts.push('');
+  parts.push('<div style="page-break-after: always;"></div>');
+
+  return parts.join('\n');
+}
+
+/**
+ * Extract data exhibits (tables, structured data) from agent markdown.
+ * Strips narrative prose and returns only tables, lists with data, etc.
+ */
+function extractDataExhibits(agentMd: string): string | null {
+  const exhibits: string[] = [];
+
+  // Extract markdown tables
+  const tablePattern = /(?:^|\n)((?:\|[^\n]+\|\n){2,})/g;
+  let match;
+  while ((match = tablePattern.exec(agentMd)) !== null) {
+    exhibits.push(match[1].trim());
+  }
+
+  // Extract HTML visualizations (styled divs, SVG charts)
+  const htmlPattern = /<div[^>]*style[^>]*>[\s\S]*?<\/div>/g;
+  while ((match = htmlPattern.exec(agentMd)) !== null) {
+    // Only include if it looks like a data visualization (has numbers or charts)
+    if (match[0].length > 100 && (match[0].includes('width:') || match[0].includes('background'))) {
+      exhibits.push(match[0]);
+    }
+  }
+
+  if (exhibits.length === 0) return null;
+
+  return exhibits.join('\n\n');
+}
+
+/**
+ * Build intel data tables (wages, projections, etc.) for inclusion in market section.
+ */
+function buildIntelDataTables(raw: AgentIntelligenceContext['raw'] | null, programName?: string): string | null {
+  if (!raw) return null;
+  const parts: string[] = [];
+
+  if (raw.occupation?.wages) {
+    const w = raw.occupation.wages;
+    parts.push(`### Wage Data (BLS OES ${w.bls_release || 'Latest'})\n`);
+    parts.push(`| Percentile | Annual Wage |`);
+    parts.push(`|---|---|`);
+    if (w.pct_10) parts.push(`| Entry (10th) | $${w.pct_10.toLocaleString()} |`);
+    if (w.pct_25) parts.push(`| 25th | $${w.pct_25.toLocaleString()} |`);
+    if (w.median_annual) parts.push(`| **Median** | **$${w.median_annual.toLocaleString()}** |`);
+    if (w.pct_75) parts.push(`| 75th | $${w.pct_75.toLocaleString()} |`);
+    if (w.pct_90) parts.push(`| 90th | $${w.pct_90.toLocaleString()} |`);
+    if (w.geo_name) parts.push(`\n*Source: BLS OES, ${w.geo_name}*`);
+  }
+
+  if (raw.occupation?.projections) {
+    const p = raw.occupation.projections;
+    parts.push(`### Employment Projections (${p.base_year}–${p.projected_year})\n`);
+    parts.push(`| Metric | Value |`);
+    parts.push(`|---|---|`);
+    if (p.change_percent) parts.push(`| Growth Rate | ${p.change_percent}% |`);
+    if (p.annual_openings) parts.push(`| Annual Openings | ${p.annual_openings.toLocaleString()} |`);
+  }
+
+  return parts.length > 0 ? parts.join('\n\n') : null;
+}
+
+// ════════════════════════════════════════════════════════
+// LEGACY SECTION BUILDERS (kept as fallbacks)
+// ════════════════════════════════════════════════════════
+
 function buildMarketDemandSection(
   components: ResearchComponent[],
   raw: AgentIntelligenceContext['raw'] | null,
@@ -643,7 +778,7 @@ function buildMarketDemandSection(
 
   // Inject tiger team strategic perspective if available
   if (strategicInsight) {
-    parts.push('', htmlStrategicInsight(strategicInsight));
+    // Legacy: strategic insight removed
   }
 
   // Agent narrative LEADS
@@ -737,7 +872,7 @@ function buildCompetitiveLandscapeSection(
   const parts: string[] = ['# Competitive Landscape'];
 
   if (strategicInsight) {
-    parts.push('', htmlStrategicInsight(strategicInsight));
+    // Legacy: strategic insight removed
   }
 
   // Agent analysis LEADS
@@ -782,7 +917,7 @@ function buildCurriculumDesignSection(
   const parts: string[] = ['# Curriculum Design'];
 
   if (strategicInsight) {
-    parts.push('', htmlStrategicInsight(strategicInsight));
+    // Legacy: strategic insight removed
   }
 
   // Institutional fit
@@ -828,7 +963,7 @@ function buildFinancialProjectionsSection(
   const parts: string[] = ['# Financial Projections'];
 
   if (strategicInsight) {
-    parts.push('', htmlStrategicInsight(strategicInsight));
+    // Legacy: strategic insight removed
   }
 
   // Financial viability
@@ -862,7 +997,7 @@ function buildMarketingStrategySection(
   const parts: string[] = ['# Marketing Strategy'];
 
   if (strategicInsight) {
-    parts.push('', htmlStrategicInsight(strategicInsight));
+    // Legacy: strategic insight removed
   }
 
   // Learner demand
@@ -916,7 +1051,7 @@ function buildImplementationTimeline(
   const parts: string[] = ['# Implementation Timeline'];
 
   if (strategicInsight) {
-    parts.push('', htmlStrategicInsight(strategicInsight));
+    // Legacy: strategic insight removed
   }
 
   parts.push('');
@@ -1238,61 +1373,60 @@ function formatRecommendationLabel(rec: string): string {
 }
 
 // ════════════════════════════════════════════════════════
-// SECTION INSIGHTS (from tiger team)
+// WAVELENGTH SECTION NARRATIVES
 // ════════════════════════════════════════════════════════
 
-interface SectionInsights {
+interface WavelengthSections {
+  verdict?: string;
   market?: string;
   competitive?: string;
   curriculum?: string;
   financial?: string;
   marketing?: string;
   implementation?: string;
+  recommendation?: string;
+  conditions?: string;
+  findings?: string;
 }
 
 /**
- * Parse section-specific insights from tiger team markdown.
- * Returns insights keyed by section name for injection into body sections.
+ * Parse full section narratives from Wavelength's synthesis.
+ * These are the PRIMARY body text — agents provide supplementary data.
  */
-function parseSectionInsights(tigerTeamMarkdown: string | undefined): SectionInsights {
+function parseWavelengthSections(tigerTeamMarkdown: string | undefined): WavelengthSections {
   if (!tigerTeamMarkdown) return {};
 
-  const insights: SectionInsights = {};
+  const sections: WavelengthSections = {};
 
-  const patterns: [keyof SectionInsights, RegExp][] = [
-    ['market', /##\s*Market Demand Insight\s*\n([\s\S]*?)(?=\n##\s|\n#\s|$)/i],
-    ['competitive', /##\s*Competitive Landscape Insight\s*\n([\s\S]*?)(?=\n##\s|\n#\s|$)/i],
-    ['curriculum', /##\s*Curriculum Design Insight\s*\n([\s\S]*?)(?=\n##\s|\n#\s|$)/i],
-    ['financial', /##\s*Financial Projections Insight\s*\n([\s\S]*?)(?=\n##\s|\n#\s|$)/i],
-    ['marketing', /##\s*Marketing Strategy Insight\s*\n([\s\S]*?)(?=\n##\s|\n#\s|$)/i],
-    ['implementation', /##\s*Implementation Insight\s*\n([\s\S]*?)(?=\n##\s|\n#\s|$)/i],
+  // Each section is a # heading that runs until the next # heading
+  const patterns: [keyof WavelengthSections, RegExp][] = [
+    ['verdict', /^#\s+STRATEGIC VERDICT\s*\n([\s\S]*?)(?=\n#\s)/m],
+    ['market', /^#\s+MARKET DEMAND\s*\n([\s\S]*?)(?=\n#\s)/m],
+    ['competitive', /^#\s+COMPETITIVE LANDSCAPE\s*\n([\s\S]*?)(?=\n#\s)/m],
+    ['curriculum', /^#\s+CURRICULUM[^\n]*\n([\s\S]*?)(?=\n#\s)/m],
+    ['financial', /^#\s+FINANCIAL[^\n]*\n([\s\S]*?)(?=\n#\s)/m],
+    ['marketing', /^#\s+MARKETING[^\n]*\n([\s\S]*?)(?=\n#\s)/m],
+    ['implementation', /^#\s+IMPLEMENTATION[^\n]*\n([\s\S]*?)(?=\n#\s)/m],
+    ['recommendation', /^#\s+RECOMMENDATION\s*\n([\s\S]*?)(?=\n#\s)/m],
+    ['conditions', /^#\s+CONDITIONS[^\n]*\n([\s\S]*?)(?=\n#\s)/m],
+    ['findings', /^#\s+KEY FINDINGS\s*\n([\s\S]*?)(?=\n#\s|$)/m],
   ];
 
   for (const [key, pattern] of patterns) {
     const match = tigerTeamMarkdown.match(pattern);
     if (match) {
       let text = match[1].trim();
-      // Remove parenthetical instructions from the prompt
-      text = text.replace(/^\([^)]*\)\s*/, '');
       text = replaceTigerTeam(text);
-      if (text.length > 20) {
-        insights[key] = text;
+      // Strip raw score formulas
+      text = text.replace(/[≥≤]+\s*\d+%?\s*threshold\s*\(\+\d+\)/g, '');
+      text = text.replace(/\(\+\d+\)/g, '');
+      if (text.length > 50) {
+        sections[key] = text;
       }
     }
   }
 
-  return insights;
-}
-
-/**
- * Build a styled strategic perspective callout box.
- */
-function htmlStrategicInsight(insight: string): string {
-  return `
-<div style="background:linear-gradient(135deg,#7c3aed08,#3b82f608);border-left:4px solid #7c3aed;border-radius:0 8px 8px 0;padding:14px 18px;margin:20px 0;">
- <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#7c3aed;font-weight:600;margin-bottom:6px;">Strategic Perspective</div>
- <div style="font-size:13px;color:#334155;line-height:1.5;">${insight}</div>
-</div>`;
+  return sections;
 }
 
 // ════════════════════════════════════════════════════════
@@ -1309,8 +1443,8 @@ export function generateReport(input: ReportInput): string {
 
   const raw = getIntelContext(project);
 
-  // Parse section-specific insights from tiger team synthesis
-  const insights = parseSectionInsights(tigerTeamMarkdown);
+  // Parse Wavelength's section narratives (primary body text)
+  const wl = parseWavelengthSections(tigerTeamMarkdown);
 
   const sections: string[] = [];
 
@@ -1320,29 +1454,19 @@ export function generateReport(input: ReportInput): string {
   // 2. Table of Contents
   sections.push(buildTableOfContents());
 
-  // 3. Executive Summary
+  // 3. Executive Summary — uses Wavelength verdict + key findings
   sections.push(buildExecutiveSummary(project, programScore, tigerTeamMarkdown, raw));
 
-  // 4. Conditions for Go
+  // 4. Conditions for Go — from Wavelength conditions
   sections.push(buildConditionsForGo(programScore, tigerTeamMarkdown, project));
 
-  // 5. Market Demand Analysis
-  sections.push(buildMarketDemandSection(components, raw, project.program_name, insights.market));
-
-  // 6. Competitive Landscape
-  sections.push(buildCompetitiveLandscapeSection(components, raw, project.program_name, insights.competitive));
-
-  // 7. Curriculum Design
-  sections.push(buildCurriculumDesignSection(components, project.program_name, insights.curriculum));
-
-  // 8. Financial Projections
-  sections.push(buildFinancialProjectionsSection(components, project.program_name, insights.financial));
-
-  // 9. Marketing Strategy
-  sections.push(buildMarketingStrategySection(components, project.program_name, insights.marketing));
-
-  // 10. Implementation Timeline
-  sections.push(buildImplementationTimeline(project, programScore, tigerTeamMarkdown, insights.implementation));
+  // 5-10. Body sections — Wavelength narrative is PRIMARY, agent data is supplementary
+  sections.push(buildBodySection('Market Demand Analysis', wl.market, components, 'labor_market', raw, project.program_name));
+  sections.push(buildBodySection('Competitive Landscape', wl.competitive, components, 'competitive_landscape', raw, project.program_name));
+  sections.push(buildBodySection('Curriculum Design', wl.curriculum, components, 'academic_analysis', raw, project.program_name));
+  sections.push(buildBodySection('Financial Projections', wl.financial, components, 'financial_viability', raw, project.program_name));
+  sections.push(buildBodySection('Marketing & Enrollment Strategy', wl.marketing, components, 'learner_demand', raw, project.program_name));
+  sections.push(buildBodySection('Implementation Roadmap', wl.implementation, components, 'regulatory_compliance', raw, project.program_name));
 
   // 11. Appendix
   sections.push(buildAppendix(project, programScore, citations, raw, tigerTeamMarkdown));
