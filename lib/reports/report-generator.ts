@@ -438,7 +438,9 @@ function buildKeyFindings(
 
   if (raw?.serviceArea?.found && raw.serviceArea.data?.topIndustries?.length > 0) {
     const top = raw.serviceArea.data.topIndustries[0];
-    findings.push(`- **Regional alignment strong:** ${top.industry} is the largest employment sector in the service area at **${top.employees?.toLocaleString()} employees** (${top.share}% of regional workforce).`);
+    const totalEmp = raw.serviceArea.data.totalEmployees || 0;
+    const shareStr = totalEmp > 0 ? ` (${Math.round((top.employees / totalEmp) * 100)}% of regional employment)` : '';
+    findings.push(`- **Regional alignment strong:** ${top.name} is the largest employment sector in the service area with **${top.employees?.toLocaleString()} employees**${shareStr}.`);
   }
 
   // Add strongest scored dimensions as findings
@@ -450,7 +452,16 @@ function buildKeyFindings(
       .replace(/\(\+\d+\)/g, '')
       .replace(/^\*+\s*/, '')
       .trim();
-    if (rationale.length > 180) rationale = rationale.substring(0, 180).replace(/\s+\S*$/, '') + '...';
+    // Truncate to the last complete sentence within 200 chars
+    if (rationale.length > 200) {
+      const sentences = rationale.match(/[^.!?]+[.!?]+/g) || [rationale];
+      let truncated = '';
+      for (const s of sentences) {
+        if ((truncated + s).length > 200) break;
+        truncated += s;
+      }
+      rationale = truncated.trim() || rationale.substring(0, 200).replace(/\s+\S*$/, '') + '...';
+    }
     findings.push(`- **${d.dimension} (${d.score}/10):** ${rationale}`);
   }
 
@@ -480,7 +491,15 @@ function buildKeyRisks(programScore: ProgramScore): string[] {
       .replace(/\(\+\d+\)/g, '')
       .replace(/^\*+\s*/, '')
       .trim();
-    if (rationale.length > 200) rationale = rationale.substring(0, 200).replace(/\s+\S*$/, '') + '...';
+    if (rationale.length > 200) {
+      const sentences = rationale.match(/[^.!?]+[.!?]+/g) || [rationale];
+      let truncated = '';
+      for (const s of sentences) {
+        if ((truncated + s).length > 200) break;
+        truncated += s;
+      }
+      rationale = truncated.trim() || rationale.substring(0, 200).replace(/\s+\S*$/, '') + '...';
+    }
     risks.push(`- **${d.dimension} (${d.score}/10):** ${rationale}`);
   }
 
