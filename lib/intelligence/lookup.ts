@@ -274,7 +274,8 @@ export async function lookupSources(
 export async function getDashboardStats() {
   const s = supabase();
 
-  const [wages, statutes, institutions, sources, credentials, employers, distances, review] = await Promise.all([
+  const [wages, statutes, institutions, sources, credentials, employers, distances, review,
+         completions, financial_aid, projections, skills, training_providers, apprenticeships, license_counts] = await Promise.all([
     s.from('intel_wages').select('id', { count: 'exact', head: true }),
     s.from('intel_statutes').select('id', { count: 'exact', head: true }),
     s.from('intel_institutions').select('id', { count: 'exact', head: true }),
@@ -283,6 +284,13 @@ export async function getDashboardStats() {
     s.from('intel_employers').select('id', { count: 'exact', head: true }),
     s.from('intel_distances').select('id', { count: 'exact', head: true }),
     s.from('intel_review_queue').select('id', { count: 'exact', head: true }).eq('verification_status', 'flagged'),
+    s.from('intel_completions').select('id', { count: 'exact', head: true }),
+    s.from('intel_financial_aid').select('id', { count: 'exact', head: true }),
+    s.from('intel_occupation_projections').select('id', { count: 'exact', head: true }),
+    s.from('intel_occupation_skills').select('id', { count: 'exact', head: true }),
+    s.from('intel_training_providers').select('id', { count: 'exact', head: true }),
+    s.from('intel_apprenticeships').select('id', { count: 'exact', head: true }),
+    s.from('intel_license_counts').select('id', { count: 'exact', head: true }),
   ]);
 
   return {
@@ -294,5 +302,50 @@ export async function getDashboardStats() {
     employers: { count: employers.count ?? 0, verified_pct: 100 },
     distances: { count: distances.count ?? 0 },
     review_queue: { flagged: review.count ?? 0, total: 0 },
+    completions: { count: completions.count ?? 0 },
+    financial_aid: { count: financial_aid.count ?? 0 },
+    projections: { count: projections.count ?? 0 },
+    skills: { count: skills.count ?? 0 },
+    training_providers: { count: training_providers.count ?? 0 },
+    apprenticeships: { count: apprenticeships.count ?? 0 },
+    license_counts: { count: license_counts.count ?? 0 },
   };
+}
+
+export async function getDataInventory() {
+  const s = supabase();
+
+  // Get counts + most recent updated_at for each table
+  const tables = [
+    { table: 'intel_institutions', label: 'Community Colleges', icon: '🏫', source: 'IPEDS 2022', sourceYear: '2022', category: 'credit' as const, description: 'Public 2-year institutions with enrollment, location, Pell rates' },
+    { table: 'intel_completions', label: 'Program Completions', icon: '🎓', source: 'IPEDS 2021', sourceYear: '2021', category: 'credit' as const, description: 'Awards by CIP code, institution, and award level' },
+    { table: 'intel_financial_aid', label: 'Financial Aid & Tuition', icon: '💳', source: 'College Scorecard', sourceYear: '2023', category: 'credit' as const, description: 'Pell grant rates, tuition, median earnings 10yr post-entry' },
+    { table: 'intel_employers', label: 'Employers by Industry', icon: '🏢', source: 'Census CBP 2021', sourceYear: '2021', category: 'both' as const, description: 'Employer counts by NAICS industry by county' },
+    { table: 'intel_occupation_projections', label: 'Job Projections (10yr)', icon: '📈', source: 'BLS Projections', sourceYear: '2022-2032', category: 'both' as const, description: '10-year growth, annual openings, education requirements' },
+    { table: 'intel_wages', label: 'Occupation Wages', icon: '💰', source: 'BLS OES', sourceYear: '—', category: 'both' as const, description: 'Median/mean annual wages, percentiles, employment by SOC' },
+    { table: 'intel_occupation_skills', label: 'Skills & Knowledge', icon: '🧠', source: 'O*NET', sourceYear: '—', category: 'both' as const, description: 'Skills, knowledge, abilities, technology per occupation' },
+    { table: 'intel_statutes', label: 'State Statutes', icon: '📜', source: 'Manual + AI', sourceYear: '—', category: 'both' as const, description: 'State codes, admin rules, regulatory requirements' },
+    { table: 'intel_credentials', label: 'Credentials & Licenses', icon: '📋', source: 'CareerOneStop / Manual', sourceYear: '—', category: 'noncredit' as const, description: 'License/cert requirements, CE hours, regulatory bodies' },
+    { table: 'intel_training_providers', label: 'Training Providers', icon: '🏭', source: 'ETPL / FMCSA / Manual', sourceYear: '—', category: 'noncredit' as const, description: 'Noncredit providers: CDL schools, trade schools, bootcamps' },
+    { table: 'intel_apprenticeships', label: 'Apprenticeships', icon: '🔧', source: 'DOL RAPIDS', sourceYear: '—', category: 'noncredit' as const, description: 'Registered apprenticeship programs, sponsors, completion data' },
+    { table: 'intel_license_counts', label: 'Licensee Counts', icon: '🔢', source: 'State Boards', sourceYear: '—', category: 'noncredit' as const, description: 'Active licensees per occupation per state' },
+    { table: 'intel_distances', label: 'Institution Distances', icon: '📏', source: 'Computed', sourceYear: '—', category: 'reference' as const, description: 'Driving distance/time between institutions' },
+    { table: 'intel_sources', label: 'Clipped Sources', icon: '📰', source: 'Manual', sourceYear: '—', category: 'reference' as const, description: 'Research articles, gov reports, industry data you\'ve saved' },
+  ];
+
+  const results = await Promise.all(
+    tables.map(async (t) => {
+      const [countRes, latestRes] = await Promise.all([
+        s.from(t.table).select('id', { count: 'exact', head: true }),
+        s.from(t.table).select('updated_at').order('updated_at', { ascending: false }).limit(1),
+      ]);
+      return {
+        ...t,
+        count: countRes.count ?? 0,
+        lastUpdated: latestRes.data?.[0]?.updated_at ?? null,
+      };
+    })
+  );
+
+  return results;
 }

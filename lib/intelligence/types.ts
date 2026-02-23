@@ -269,6 +269,25 @@ export interface IntelDashboardStats {
   employers: { count: number; verified_pct: number };
   distances: { count: number };
   review_queue: { flagged: number; total: number };
+  completions: { count: number };
+  financial_aid: { count: number };
+  projections: { count: number };
+  skills: { count: number };
+  training_providers: { count: number };
+  apprenticeships: { count: number };
+  license_counts: { count: number };
+}
+
+export interface DataInventoryItem {
+  table: string;
+  label: string;
+  icon: string;
+  count: number;
+  source: string;
+  sourceYear: string;
+  category: 'credit' | 'noncredit' | 'both' | 'reference';
+  description: string;
+  lastUpdated: string | null;
 }
 
 // ── Query Filters ──────────────────────────────────────
