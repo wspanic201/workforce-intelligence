@@ -170,13 +170,22 @@ export default async function ReportsAdminPage({
                   <td className="px-3 py-3 whitespace-nowrap text-xs text-slate-500">
                     {new Date(report.created_at).toLocaleDateString()}
                   </td>
-                  <td className="px-3 py-3 whitespace-nowrap">
+                  <td className="px-3 py-3 whitespace-nowrap space-x-2">
                     <Link
                       href={`/admin/reports/${report.id}`}
                       className="text-xs text-purple-600 hover:text-purple-900 font-medium"
                     >
-                      Review →
+                      Review
                     </Link>
+                    {run && (
+                      <a
+                        href={`/api/admin/pipeline-runs/${report.id}/download-pdf`}
+                        className="text-xs text-slate-400 hover:text-slate-700"
+                        title="Download PDF"
+                      >
+                        ↓ PDF
+                      </a>
+                    )}
                   </td>
                 </tr>
               );

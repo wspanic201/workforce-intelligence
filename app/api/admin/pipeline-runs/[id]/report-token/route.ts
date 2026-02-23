@@ -13,13 +13,31 @@ export async function GET(
   const { id: projectId } = await params;
   const supabase = getSupabaseServerClient();
 
+  // Check validation_reports
   const { data: report } = await supabase
     .from('validation_reports')
-    .select('id')
+    .select('id, pdf_url')
     .eq('project_id', projectId)
     .order('created_at', { ascending: false })
     .limit(1)
     .single();
 
-  return NextResponse.json({ hasReport: !!report });
+  if (report) {
+    return NextResponse.json({ hasReport: true, hasPdf: !!report.pdf_url });
+  }
+
+  // Fallback: check if pipeline_run exists with a report hash (meaning report was generated)
+  const { data: run } = await supabase
+    .from('pipeline_runs')
+    .select('id, report_markdown_hash, report_size_kb')
+    .eq('project_id', projectId)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .single();
+
+  if (run?.report_markdown_hash) {
+    return NextResponse.json({ hasReport: true, hasPdf: false });
+  }
+
+  return NextResponse.json({ hasReport: false, hasPdf: false });
 }
