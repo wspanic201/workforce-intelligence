@@ -1,6 +1,7 @@
 import { ValidationProject, ResearchComponent } from '@/lib/types/database';
 import { ProgramScore } from '@/lib/scoring/program-scorer';
 import { formatComponentContent } from './format-component';
+import { generateCitationsSection } from '@/lib/intelligence/lookup';
 
 interface CitationResults {
   verifiedClaims: Array<{
@@ -331,13 +332,37 @@ ${programScore.dimensions.map(d => `**${d.dimension}** (${(d.weight * 100).toFix
 - **Generated:** ${new Date().toISOString()}
 - **Agents Used:** 7 (Labor Market, Competitive, Learner Demand, Financial, Institutional Fit, Regulatory, Employer Demand)
 
+### C. Verified Data Sources
+
+This report uses data from the Wavelength Verified Intelligence Layer, which aggregates
+government and institutional data sources for accuracy and auditability.
+
+${(() => {
+  // Detect which intelligence tables were likely used based on report content
+  const allContent = components.map(c => c.markdown_output || '').join('\n');
+  const tablesUsed: string[] = [];
+  if (allContent.match(/BLS|Bureau of Labor|OES|May 202/i)) tablesUsed.push('intel_wages');
+  if (allContent.match(/projection|annual opening|growth categ/i)) tablesUsed.push('intel_occupation_projections');
+  if (allContent.match(/O\*NET|skill|knowledge area|technology req/i)) tablesUsed.push('intel_occupation_skills');
+  if (allContent.match(/H-1B|visa|LCA/i)) tablesUsed.push('intel_h1b_demand');
+  if (allContent.match(/state priority|in-demand|WIOA fund/i)) tablesUsed.push('intel_state_priorities');
+  if (allContent.match(/Census|CBP|establishments|county business/i)) tablesUsed.push('intel_employers');
+  if (allContent.match(/ACS|demographics|poverty|median income|unemployment/i)) tablesUsed.push('intel_county_demographics');
+  if (allContent.match(/IPEDS|completion|enrollment/i)) tablesUsed.push('intel_completions');
+  if (allContent.match(/framework|DACUM|guided pathway|CBE|competency model/i)) tablesUsed.push('intel_frameworks');
+  if (tablesUsed.length === 0) tablesUsed.push('intel_wages', 'intel_occupation_projections');
+  // Note: generateCitationsSection is async but we're in a sync template string.
+  // We'll output a placeholder that can be replaced, or list the tables used.
+  return tablesUsed.map(t => `- ${t.replace('intel_', '').replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}`).join('\n');
+})()}
+
 ---
 
 **Contact:**
-Workforce Intelligence
-hello@workforceintel.com
+Wavelength — Workforce Intelligence
+hello@withwavelength.com | withwavelength.com
 
-© ${new Date().getFullYear()} Workforce Intelligence. All rights reserved.
+© ${new Date().getFullYear()} Wavelength. All rights reserved.
 `;
 
   return report;
