@@ -62,14 +62,14 @@ export async function GET(
     // Also link generated order reports
     const { data: orders } = await supabase
       .from('orders')
-      .select('id, institution_name, program_name, order_status, created_at, report_markdown, service_tier')
+      .select('id, institution_name, order_status, created_at, report_markdown, service_tier, validation_project_id, pipeline_run_id, validation_report_id')
       .or(`institution_name.ilike.%${instName}%,institution_name.ilike.%${shortName}%`)
       .order('created_at', { ascending: false })
       .limit(12);
 
     const orderReports = (orders || []).map((o: any) => ({
       id: o.id,
-      program_name: o.program_name || `${o.service_tier || 'Order'} report`,
+      program_name: `${(o.service_tier || 'Order').toString().replace(/_/g,' ')} report`,
       status: o.order_status,
       created_at: o.created_at,
       run: {
@@ -78,6 +78,11 @@ export async function GET(
         recommendation: o.report_markdown ? 'Report Generated' : 'No report markdown',
       },
       source: 'order',
+      links: {
+        validation_project_id: o.validation_project_id || null,
+        pipeline_run_id: o.pipeline_run_id || null,
+        validation_report_id: o.validation_report_id || null,
+      },
     }));
 
     const allReports = [...reports, ...orderReports].sort((a: any, b: any) =>

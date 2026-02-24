@@ -44,6 +44,7 @@ export async function PATCH(
       'order_status', 'payment_status', 'admin_notes',
       'pipeline_started_at', 'pipeline_completed_at', 'pipeline_metadata',
       'discovery_cache_key', 'report_storage_path', 'report_markdown',
+      'validation_project_id', 'pipeline_run_id', 'validation_report_id',
       'delivered_at', 'contact_name', 'contact_email', 'contact_phone',
       'contact_title', 'institution_name', 'institution_data',
       'service_tier', 'amount_cents',
