@@ -257,11 +257,16 @@ export function registerMcpTools(server: McpServer): void {
 
         const lines = rows.slice(0, 15).map((row, index) => {
           const occupations = row.key_occupations?.slice(0, 3).join(', ') || 'N/A';
-          return `${index + 1}. ${row.employer_name ?? 'Unknown employer'} (${row.city ?? 'Unknown city'}, ${row.state ?? stateFips.toUpperCase()}) | NAICS ${row.naics_code ?? 'N/A'} | Employees ${formatNumber(row.estimated_employees)} | Hiring: ${row.is_hiring ? 'Yes' : 'No'} | Occupations: ${occupations}`;
+          const isCountyAggregate = /county$/i.test((row.employer_name || '').trim());
+          const displayName = isCountyAggregate
+            ? `${row.city || row.employer_name} — County/NAICS aggregate`
+            : (row.employer_name ?? 'Unknown employer');
+          return `${index + 1}. ${displayName} (${row.city ?? 'Unknown city'}, ${row.state ?? stateFips.toUpperCase()}) | NAICS ${row.naics_code ?? 'N/A'} | Employees ${formatNumber(row.estimated_employees)} | Hiring: ${row.is_hiring ? 'Yes' : 'No'} | Occupations: ${occupations}`;
         });
 
         return text([
-          `Top employers for ${stateFips.toUpperCase()}${naicsPrefix ? ` (NAICS ${naicsPrefix}*)` : ''}:`,
+          `Top employer records for ${stateFips.toUpperCase()}${naicsPrefix ? ` (NAICS ${naicsPrefix}*)` : ''}:`,
+          `Note: current intel_employers dataset is county/industry aggregate-first (CBP-based), not fully normalized company-level entities.`,
           ...lines,
         ].join('\n'));
       } catch {
