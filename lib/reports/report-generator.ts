@@ -298,15 +298,21 @@ hello@withwavelength.com
 function buildTableOfContents(): string {
   return `# Table of Contents
 
+**Advisory Report**
 1. [Executive Summary](#executive-summary)
-2. [Conditions for Go](#conditions-for-go)
-3. [Market Demand Analysis](#market-demand-analysis)
-4. [Competitive Landscape](#competitive-landscape)
-5. [Curriculum Design](#curriculum-design)
-6. [Financial Projections](#financial-projections)
-7. [Marketing Strategy](#marketing-strategy)
-8. [Implementation Timeline](#implementation-timeline)
-9. [Appendix](#appendix)
+2. [Advisory Assessment](#advisory-assessment)
+3. [Key Findings](#key-findings)
+4. [Conditions for Go](#conditions-for-go)
+5. [Recommended Next Steps](#recommended-next-steps)
+
+**Supporting Research**
+6. [Market Demand & Employment](#market-demand-analysis)
+7. [Competitive Landscape](#competitive-landscape)
+8. [Curriculum Design](#curriculum-design)
+9. [Financial Projections](#financial-projections)
+10. [Marketing Strategy](#marketing-strategy)
+11. [Implementation Timeline](#implementation-timeline)
+12. [Appendix](#appendix)
 
 <div style="page-break-after: always;"></div>`;
 }
@@ -1109,8 +1115,8 @@ function cleanAgentMarkdown(md: string, programName?: string): string {
   out = out.trim();
 
   // 10. Length discipline: target 20-25 page report — cap each agent section at ~4K chars
-  if (out.length > 3000) {
-    const truncated = out.substring(0, 3000);
+  if (out.length > 2000) {
+    const truncated = out.substring(0, 2000);
     const lastParagraph = truncated.lastIndexOf('\n\n');
     if (lastParagraph > 2000) {
       out = truncated.substring(0, lastParagraph).trim();
@@ -1205,6 +1211,12 @@ export async function generateReport(input: ReportInput): Promise<string> {
   sections.push(buildNextSteps(tigerTeamMarkdown, project));
 
   // ── SUPPORTING RESEARCH ──────────────────────────────────────────────────
+
+  sections.push(`<div style="page-break-before: always; display:flex; flex-direction:column; justify-content:center; align-items:center; height:80vh; text-align:center;">
+<p style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#94a3b8;margin-bottom:16px">Supporting Research</p>
+<h1 style="font-size:28px;font-weight:700;color:#1e293b;margin:0">Research Basis</h1>
+<p style="color:#64748b;margin-top:16px;max-width:420px;font-size:14px">The following sections document the primary research findings underlying the advisory assessment. Data drawn from BLS, O*NET, IPEDS, Census, and direct employer analysis.</p>
+</div>`);
 
   // 8. Market Demand — DB data tables + agent analysis
   sections.push(buildMarketDemandSection(components, raw, project.program_name, preRendered));
