@@ -10,7 +10,9 @@ import { verifyAdminSession } from '@/lib/auth/admin';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { generatePDFBuffer } from '@/lib/pdf/generate-pdf-serverless';
 
-export const maxDuration = 60;
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+export const maxDuration = 120;
 
 export async function GET(
   request: NextRequest,

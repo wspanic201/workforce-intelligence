@@ -3,6 +3,10 @@ import { verifyAdminSession } from '@/lib/auth/admin';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { generatePDFServerless } from '@/lib/pdf/generate-pdf-serverless';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+export const maxDuration = 120;
+
 /** GET /api/admin/pipeline-runs/[id]/download-pdf — Download or generate PDF */
 export async function GET(
   req: NextRequest,
