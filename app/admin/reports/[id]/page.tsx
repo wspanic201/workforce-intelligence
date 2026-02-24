@@ -52,6 +52,25 @@ interface ReviewScores {
   overall: number;
 }
 
+interface ResearchComponent {
+  id: string;
+  project_id: string;
+  component_type: string;
+  agent_persona: string;
+  markdown_output: string | null;
+  status: string;
+  error_message: string | null;
+  created_at: string;
+  completed_at: string | null;
+}
+
+interface ProjectMeta {
+  program_name: string | null;
+  client_name: string | null;
+  status: string;
+  created_at: string;
+}
+
 const REVIEW_DIMENSIONS = [
   { key: 'accuracy', label: 'Data Accuracy', help: 'Were BLS/IPEDS/O*NET numbers correct?' },
   { key: 'narrative', label: 'Narrative Quality', help: 'Did the exec summary read like a consultant wrote it?' },
@@ -69,6 +88,8 @@ const AGENT_LABELS: Record<string, string> = {
   institutional_fit: 'Institutional Fit',
   regulatory_compliance: 'Regulatory',
   employer_demand: 'Employer Demand',
+  tiger_team_synthesis: 'Tiger Team Synthesis',
+  citation_verification: 'Citation Verification',
 };
 
 function ScoreBadge({ score }: { score: number | null | undefined }) {
@@ -109,6 +130,9 @@ export default function ReportDetailPage() {
     accuracy: 3, narrative: 3, actionability: 3, citations: 3, formatting: 3, overall: 3,
   });
   const [notes, setNotes] = useState('');
+  const [components, setComponents] = useState<ResearchComponent[]>([]);
+  const [projectMeta, setProjectMeta] = useState<ProjectMeta | null>(null);
+  const [expandedComponents, setExpandedComponents] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     fetchData();
@@ -121,10 +145,12 @@ export default function ReportDetailPage() {
     try {
       // Fetch latest pipeline run for this project
       const runsRes = await fetch(`/api/admin/pipeline-runs?project_id=${id}&limit=20`);
+      let hasRuns = false;
       if (runsRes.ok) {
         const runs: PipelineRun[] = await runsRes.json();
         setAllRuns(runs);
         if (runs.length > 0) {
+          hasRuns = true;
           const latest = runs[0];
           setRun(latest);
           if (latest.review_scores) {
@@ -136,6 +162,16 @@ export default function ReportDetailPage() {
         const errText = await runsRes.text();
         console.error('[Detail] API error:', runsRes.status, errText);
         setError(`API returned ${runsRes.status}: ${errText}`);
+      }
+
+      // If no pipeline runs, fall back to research_components
+      if (!hasRuns) {
+        const compRes = await fetch(`/api/admin/research-components?project_id=${id}`);
+        if (compRes.ok) {
+          const result = await compRes.json();
+          setComponents(result.components || []);
+          if (result.project) setProjectMeta(result.project);
+        }
       }
 
       // Check if a report exists for this project
@@ -191,6 +227,17 @@ export default function ReportDetailPage() {
   }
 
   const project = run?.validation_projects;
+  const displayName = project?.program_name || projectMeta?.program_name || 'Report';
+  const displayClient = project?.client_name || projectMeta?.client_name || 'Unknown';
+
+  const toggleComponent = (compId: string) => {
+    setExpandedComponents(prev => {
+      const next = new Set(prev);
+      if (next.has(compId)) next.delete(compId);
+      else next.add(compId);
+      return next;
+    });
+  };
 
   return (
     <div className="space-y-6 max-w-5xl">
@@ -198,7 +245,7 @@ export default function ReportDetailPage() {
       <div className="flex items-center gap-2 text-sm text-slate-500">
         <Link href="/admin/reports" className="hover:text-slate-900">Reports</Link>
         <span>/</span>
-        <span className="text-slate-700 font-medium">{project?.program_name || 'Report'}</span>
+        <span className="text-slate-700 font-medium">{displayName}</span>
       </div>
 
       {error && (
@@ -209,13 +256,100 @@ export default function ReportDetailPage() {
         </Card>
       )}
 
-      {!run && !error ? (
+      {!run && !error && components.length === 0 ? (
         <Card>
           <CardContent className="py-12 text-center text-slate-400">
             No pipeline runs found for this project. Run the validation pipeline first.
             <div className="text-xs mt-2 text-slate-300">Project ID: {id}</div>
           </CardContent>
         </Card>
+      ) : !run && components.length > 0 ? (
+        <>
+          {/* Partial report banner */}
+          <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 flex items-center gap-3">
+            <span className="text-amber-600 text-lg">&#9888;</span>
+            <div>
+              <p className="text-sm font-medium text-amber-800">Pipeline incomplete — showing raw agent outputs</p>
+              <p className="text-xs text-amber-600 mt-0.5">
+                {components.filter(c => c.status === 'completed').length} of {components.length} agents completed.
+                No final report was generated.
+              </p>
+            </div>
+          </div>
+
+          {/* Project header */}
+          <div>
+            <h1 className="font-heading text-2xl font-bold text-slate-900">{displayName}</h1>
+            <p className="text-slate-500 mt-1 text-sm">
+              {displayClient}
+              {projectMeta?.created_at && <> &middot; {new Date(projectMeta.created_at).toLocaleDateString()}</>}
+              {projectMeta?.status && (
+                <span className="ml-2 px-2.5 py-0.5 text-xs font-semibold rounded-full bg-amber-100 text-amber-700">
+                  {projectMeta.status}
+                </span>
+              )}
+            </p>
+          </div>
+
+          {/* Agent output cards */}
+          <div className="space-y-3">
+            {components.map((comp) => (
+              <Card key={comp.id} className="overflow-hidden">
+                <button
+                  onClick={() => toggleComponent(comp.id)}
+                  className="w-full text-left px-5 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors"
+                >
+                  <div className="flex items-center gap-3">
+                    <span className={`w-2 h-2 rounded-full ${
+                      comp.status === 'completed' ? 'bg-emerald-500' :
+                      comp.status === 'error' ? 'bg-red-500' :
+                      'bg-slate-300'
+                    }`} />
+                    <div>
+                      <span className="text-sm font-medium text-slate-900">
+                        {AGENT_LABELS[comp.component_type] || comp.component_type}
+                      </span>
+                      <span className="text-xs text-slate-400 ml-2">{comp.agent_persona}</span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${
+                      comp.status === 'completed' ? 'bg-emerald-50 text-emerald-700' :
+                      comp.status === 'error' ? 'bg-red-50 text-red-700' :
+                      'bg-slate-100 text-slate-600'
+                    }`}>
+                      {comp.status}
+                    </span>
+                    <span className="text-slate-400 text-sm">
+                      {expandedComponents.has(comp.id) ? '▾' : '▸'}
+                    </span>
+                  </div>
+                </button>
+                {expandedComponents.has(comp.id) && (
+                  <CardContent className="border-t border-slate-100 pt-4">
+                    {comp.error_message && (
+                      <div className="mb-3 text-xs text-red-600 bg-red-50 border border-red-100 rounded p-2">
+                        {comp.error_message}
+                      </div>
+                    )}
+                    {comp.markdown_output ? (
+                      <div className="prose prose-sm prose-slate max-w-none text-sm whitespace-pre-wrap">
+                        {comp.markdown_output}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-slate-400 italic">No markdown output available</p>
+                    )}
+                    {comp.completed_at && (
+                      <p className="text-xs text-slate-400 mt-3">
+                        Completed {new Date(comp.completed_at).toLocaleString()}
+                      </p>
+                    )}
+                  </CardContent>
+                )}
+              </Card>
+            ))}
+          </div>
+        </>
       ) : run ? (
         <>
           {/* Top: Report Overview */}

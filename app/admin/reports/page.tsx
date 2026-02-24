@@ -30,7 +30,7 @@ export default async function ReportsAdminPage({
 }) {
   const { filter } = await searchParams;
   const activeFilter = filter || 'all';
-  const { reports, pipelineRunMap } = await getReportsWithRuns();
+  const { reports, pipelineRunMap, partialProjectIds } = await getReportsWithRuns();
 
   // Apply filter
   const filteredReports = reports.filter((r) => {
@@ -38,6 +38,7 @@ export default async function ReportsAdminPage({
     const run = pipelineRunMap[r.id];
     if (activeFilter === 'reviewed') return !!run?.reviewed_at;
     if (activeFilter === 'unreviewed') return run && !run.reviewed_at;
+    if (activeFilter === 'partial') return partialProjectIds.has(r.id);
     return true;
   });
 
@@ -72,6 +73,7 @@ export default async function ReportsAdminPage({
           { key: 'all', label: 'All' },
           { key: 'unreviewed', label: 'Unreviewed' },
           { key: 'reviewed', label: 'Reviewed' },
+          { key: 'partial', label: `Partial (${partialProjectIds.size})` },
         ].map(tab => (
           <Link
             key={tab.key}
@@ -144,6 +146,8 @@ export default async function ReportsAdminPage({
                         run.composite_score >= 5 ? 'text-amber-600' :
                         'text-red-600'
                       }`}>{run.composite_score}/10</span>
+                    ) : partialProjectIds.has(report.id) ? (
+                      <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-amber-100 text-amber-700">Partial</span>
                     ) : (
                       <span className="text-xs text-slate-300">--</span>
                     )}
@@ -258,26 +262,28 @@ async function getReportsWithRuns() {
   try {
     const supabase = getSupabaseServerClient();
 
-    // Fetch reports
-    const { data: reports, error: reportsError } = await supabase
-      .from('validation_projects')
-      .select('id, program_name, client_name, status, created_at')
-      .order('created_at', { ascending: false })
-      .limit(50);
+    // Fetch reports, pipeline runs, and research component counts in parallel
+    const [reportsResult, runsResult, componentsResult] = await Promise.all([
+      supabase
+        .from('validation_projects')
+        .select('id, program_name, client_name, status, created_at')
+        .order('created_at', { ascending: false })
+        .limit(50),
+      supabase
+        .from('pipeline_runs')
+        .select('project_id, model, pipeline_version, runtime_seconds, composite_score, review_scores, reviewed_at')
+        .order('created_at', { ascending: false }),
+      supabase
+        .from('research_components')
+        .select('project_id, status'),
+    ]);
 
-    if (reportsError) throw reportsError;
-
-    // Fetch latest pipeline run per project
-    const { data: runs, error: runsError } = await supabase
-      .from('pipeline_runs')
-      .select('project_id, model, pipeline_version, runtime_seconds, composite_score, review_scores, reviewed_at')
-      .order('created_at', { ascending: false });
+    if (reportsResult.error) throw reportsResult.error;
 
     // Build a map of project_id -> latest run
     const pipelineRunMap: Record<string, PipelineRunSummary> = {};
-    if (!runsError && runs) {
-      for (const run of runs) {
-        // Only keep the first (latest) run per project
+    if (!runsResult.error && runsResult.data) {
+      for (const run of runsResult.data) {
         if (!pipelineRunMap[run.project_id]) {
           pipelineRunMap[run.project_id] = {
             model: run.model,
@@ -291,10 +297,26 @@ async function getReportsWithRuns() {
       }
     }
 
-    return { reports: reports || [], pipelineRunMap };
+    // Build set of project IDs that have research_components but no pipeline_runs
+    const partialProjectIds = new Set<string>();
+    if (!componentsResult.error && componentsResult.data) {
+      const componentsByProject: Record<string, number> = {};
+      for (const comp of componentsResult.data) {
+        if (comp.status === 'completed') {
+          componentsByProject[comp.project_id] = (componentsByProject[comp.project_id] || 0) + 1;
+        }
+      }
+      for (const [projectId, count] of Object.entries(componentsByProject)) {
+        if (count > 0 && !pipelineRunMap[projectId]) {
+          partialProjectIds.add(projectId);
+        }
+      }
+    }
+
+    return { reports: reportsResult.data || [], pipelineRunMap, partialProjectIds };
   } catch (error) {
     console.error('[Admin Reports] Failed to fetch:', error);
-    return { reports: [], pipelineRunMap: {} };
+    return { reports: [], pipelineRunMap: {}, partialProjectIds: new Set<string>() };
   }
 }
 
