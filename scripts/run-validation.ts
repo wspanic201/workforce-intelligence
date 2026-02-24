@@ -95,6 +95,13 @@ async function main() {
     if (data) componentIds[agent.type] = data.id;
   }
 
+  // Fetch shared MCP intel once — all agents read from enrichedProject._mcpIntelBlock
+  console.log(`\n🧠 Fetching verified intelligence via MCP (${process.env.MCP_BASE_URL || 'http://localhost:3000'})...`);
+  const { getProjectIntel, formatIntelBlock } = await import('../lib/intelligence/mcp-client');
+  const mcpIntel = await getProjectIntel(enrichedProject as any).catch(() => ({ available: false, wages: '', projections: '', skills: '', statePriority: '', employers: '', h1bDemand: '' }));
+  (enrichedProject as any)._mcpIntelBlock = formatIntelBlock(mcpIntel);
+  console.log(`  MCP intel: ${mcpIntel.available ? '✅ loaded' : '⚠️ unavailable (agents use fallback APIs)'}\n`);
+
   console.log(`\n🚀 Launching 7 research agents in parallel...\n`);
   const start = Date.now();
 

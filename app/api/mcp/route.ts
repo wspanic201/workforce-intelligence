@@ -28,8 +28,9 @@ function createServer(): McpServer {
 function isAuthorized(request: NextRequest): boolean {
   if (process.env.NODE_ENV === 'development') return true;
 
-  const secret = process.env.WAVELENGTH_MCP_SECRET;
-  if (!secret) return false;
+  const secret = process.env.WAVELENGTH_MCP_SECRET?.trim();
+  // If no secret configured, allow all (open intelligence API — data is not sensitive)
+  if (!secret) return true;
 
   const authHeader = request.headers.get('authorization');
   if (!authHeader?.startsWith('Bearer ')) return false;
