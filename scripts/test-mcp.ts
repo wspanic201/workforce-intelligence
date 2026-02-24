@@ -33,6 +33,7 @@ async function fetchWithTimeout(input: string, init: RequestInit): Promise<Respo
 function getHeaders(sessionId?: string): HeadersInit {
   const headers: Record<string, string> = {
     'content-type': 'application/json',
+    'accept': 'application/json, text/event-stream',
     'mcp-protocol-version': '2025-03-26',
   };
 
@@ -47,6 +48,22 @@ function getHeaders(sessionId?: string): HeadersInit {
   return headers;
 }
 
+async function parseResponseBody(httpResponse: Response): Promise<JsonRpcResponse> {
+  const ct = httpResponse.headers.get('content-type') ?? '';
+  if (ct.includes('text/event-stream')) {
+    // SSE: read stream, extract the first `data:` line with a jsonrpc response
+    const text = await httpResponse.text();
+    for (const line of text.split('\n')) {
+      if (line.startsWith('data:')) {
+        const json = line.slice(5).trim();
+        if (json) return JSON.parse(json) as JsonRpcResponse;
+      }
+    }
+    throw new Error('SSE response contained no data lines');
+  }
+  return httpResponse.json() as Promise<JsonRpcResponse>;
+}
+
 async function postMessage(message: JsonRpcRequest, sessionId?: string): Promise<{ response: JsonRpcResponse; sessionId?: string }> {
   const httpResponse = await fetchWithTimeout(baseUrl, {
     method: 'POST',
@@ -54,12 +71,12 @@ async function postMessage(message: JsonRpcRequest, sessionId?: string): Promise
     body: JSON.stringify(message),
   });
 
-  const body = (await httpResponse.json()) as JsonRpcResponse;
-
   if (!httpResponse.ok) {
-    const detail = body.error?.message ?? JSON.stringify(body);
-    throw new Error(`HTTP ${httpResponse.status}: ${detail}`);
+    const text = await httpResponse.text();
+    throw new Error(`HTTP ${httpResponse.status}: ${text}`);
   }
+
+  const body = await parseResponseBody(httpResponse);
 
   if (body.error) {
     throw new Error(`MCP error ${body.error.code}: ${body.error.message}`);
