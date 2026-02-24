@@ -124,14 +124,13 @@ export async function getOccupationIntel(
     return { wages: '', projections: '', skills: '', statePriority: '', employers: '', h1bDemand: '' };
   }
 
-  const [wages, projections, skills, statePriority, employers, h1bDemand] = await Promise.all([
-    callMCPTool(sessionId, 'get_wages', { socCode: socCode, stateCode: stateCode }),
-    callMCPTool(sessionId, 'get_projections', { socCode: socCode, stateFips: stateFips }),
-    onetCode ? callMCPTool(sessionId, 'get_skills', { onetCode: onetCode }) : Promise.resolve(''),
-    callMCPTool(sessionId, 'get_state_priority', { socCode: socCode, stateFips: stateFips }),
-    callMCPTool(sessionId, 'get_employers', { stateFips: stateFips }),
-    callMCPTool(sessionId, 'get_h1b_demand', { socCode: socCode }),
-  ]);
+  // Sequential calls — MCP sessions don't reliably support concurrent requests
+  const wages = await callMCPTool(sessionId, 'get_wages', { socCode: socCode, stateCode: stateCode });
+  const projections = await callMCPTool(sessionId, 'get_projections', { socCode: socCode, stateFips: stateFips });
+  const skills = onetCode ? await callMCPTool(sessionId, 'get_skills', { onetCode: onetCode }) : '';
+  const statePriority = await callMCPTool(sessionId, 'get_state_priority', { socCode: socCode, stateFips: stateFips });
+  const employers = await callMCPTool(sessionId, 'get_employers', { stateFips: stateFips });
+  const h1bDemand = await callMCPTool(sessionId, 'get_h1b_demand', { socCode: socCode });
 
   return { wages, projections, skills, statePriority, employers, h1bDemand };
 }
