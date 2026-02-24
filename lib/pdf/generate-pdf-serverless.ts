@@ -5,7 +5,10 @@
  * Works on Vercel, AWS Lambda, etc.
  */
 
-import PDFDocument from 'pdfkit';
+// Use PDFKit standalone build so font metrics are bundled (fixes Vercel ENOENT Helvetica.afm)
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import PDFDocument from 'pdfkit/js/pdfkit.standalone';
 
 interface PDFOptions {
   title: string;
