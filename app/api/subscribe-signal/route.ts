@@ -12,6 +12,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { getSupabaseServerClient } from '@/lib/supabase/client';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -92,6 +93,15 @@ export async function POST(request: NextRequest) {
     }
 
     console.log(`[Subscribe Signal] Subscribed: ${cleanEmail} (contact ID: ${data?.id})`);
+
+    // Track in Supabase for lead monitoring
+    const supabase = getSupabaseServerClient();
+    await supabase.from('signal_subscribers').upsert({
+      email: cleanEmail,
+      first_name: firstName?.trim() || null,
+      institution: institution?.trim() || null,
+      source: 'website',
+    }, { onConflict: 'email', ignoreDuplicates: true }).then(null, () => {});
 
     // Send confirmation email with welcome signals
     const displayName = firstName ? firstName.trim() : 'there';

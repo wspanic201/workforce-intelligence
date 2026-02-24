@@ -24,6 +24,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { runPellAudit } from '@/lib/stages/pell-audit/orchestrator';
+import { getSupabaseServerClient } from '@/lib/supabase/client';
 
 export const maxDuration = 300; // 5 min timeout (Vercel Hobby max)
 
@@ -40,10 +41,15 @@ export async function POST(request: NextRequest) {
     }
 
     console.log(`[Pell Audit API] Starting audit for ${collegeName} (${state})`);
-    if (email) {
-      console.log(`[Pell Audit API] Lead email: ${email}`);
-      // TODO: Save lead to database / email list
-    }
+    // Track in Supabase for lead monitoring
+    const supabase = getSupabaseServerClient();
+    await supabase.from('pell_checks').insert({
+      institution_name: collegeName,
+      state,
+      city: city || null,
+      email: email || null,
+    }).then(null, () => {});
+    if (email) console.log(`[Pell Audit API] Lead captured: ${email}`);
 
     const result = await runPellAudit({
       collegeName,
