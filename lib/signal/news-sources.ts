@@ -2,7 +2,7 @@
  * Multi-source news fetching with automatic fallback chain
  * for The Signal newsletter.
  * 
- * Priority: Brave Search → NewsAPI → Google News RSS → Cached fallback
+ * Priority: Brave Search → NewsAPI → Google News RSS → Intelligence DB → Cached fallback
  */
 
 export interface NewsItem {
@@ -13,8 +13,10 @@ export interface NewsItem {
   source?: string;
 }
 
+import { getSupabaseServerClient } from '@/lib/supabase/client';
+
 export interface NewsSourceResult {
-  source: 'brave' | 'newsapi' | 'google-rss' | 'cache';
+  source: 'brave' | 'newsapi' | 'google-rss' | 'intel' | 'cache';
   items: NewsItem[];
   error?: string;
 }
@@ -174,6 +176,44 @@ async function fetchFromGoogleNewsRSS(): Promise<NewsSourceResult> {
   }
 }
 
+// ── Intelligence DB fallback (#3) ────────────────────────────────────────
+
+async function fetchFromIntelligenceSources(): Promise<NewsSourceResult> {
+  try {
+    const supabase = getSupabaseServerClient();
+    const { data, error } = await supabase
+      .from('intel_sources')
+      .select('title,url,summary,publisher,updated_at,source_type')
+      .in('source_type', ['news', 'research', 'industry'])
+      .order('updated_at', { ascending: false })
+      .limit(20);
+
+    if (error) {
+      return { source: 'intel', items: [], error: error.message };
+    }
+
+    const items: NewsItem[] = (data || [])
+      .filter((r: any) => r.title && (r.url || r.summary))
+      .map((r: any) => ({
+        title: r.title,
+        url: r.url || 'https://withwavelength.com/admin/intelligence/sources',
+        snippet: r.summary || `Source: ${r.publisher || 'Intelligence Hub'}`,
+        date: r.updated_at,
+        source: r.publisher || 'Intelligence Hub',
+      }))
+      .slice(0, 10);
+
+    if (items.length === 0) {
+      return { source: 'intel', items: [], error: 'No intelligence sources available' };
+    }
+
+    console.log(`[Signal:Intel] ✓ Fetched ${items.length} items from intelligence sources`);
+    return { source: 'intel', items };
+  } catch (err) {
+    return { source: 'intel', items: [], error: String(err) };
+  }
+}
+
 // ── Cached fallback (last resort) ────────────────────────────────────────
 
 let lastSuccessfulFetch: NewsItem[] = [];
@@ -251,6 +291,16 @@ export async function fetchNewsWithFallback(): Promise<NewsSourceResult> {
     return googleResult;
   }
 
+  console.log('[Signal] Google RSS insufficient, trying Intelligence DB...');
+
+  // Try intelligence sources from Supabase
+  let intelResult = await fetchFromIntelligenceSources();
+  intelResult = await dedup(intelResult);
+  if (intelResult.items.length >= 3) {
+    updateCache(intelResult.items);
+    return intelResult;
+  }
+
   console.log('[Signal] All sources insufficient after dedup, falling back to cache...');
 
   // Last resort: use cache (no dedup on cache — better to repeat than send nothing)
@@ -263,18 +313,21 @@ export async function checkNewsSourcesHealth(): Promise<{
   brave: boolean;
   newsapi: boolean;
   googleRss: boolean;
+  intel: boolean;
   cache: boolean;
 }> {
-  const [brave, newsapi, google] = await Promise.all([
+  const [brave, newsapi, google, intel] = await Promise.all([
     fetchFromBrave().then(r => r.items.length > 0).catch(() => false),
     fetchFromNewsAPI().then(r => r.items.length > 0).catch(() => false),
     fetchFromGoogleNewsRSS().then(r => r.items.length > 0).catch(() => false),
+    fetchFromIntelligenceSources().then(r => r.items.length > 0).catch(() => false),
   ]);
 
   return {
     brave,
     newsapi,
     googleRss: google,
+    intel,
     cache: lastSuccessfulFetch.length > 0,
   };
 }

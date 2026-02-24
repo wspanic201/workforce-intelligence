@@ -14,6 +14,7 @@ export default function InstitutionDetail() {
   const [custom, setCustom] = useState<IntelInstitutionCustom[]>([]);
   const [economy, setEconomy] = useState<any>(null);
   const [ecoLoading, setEcoLoading] = useState(false);
+  const [intel, setIntel] = useState<{ total: number; byType: Record<string, number>; recent: any[] } | null>(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState<Partial<IntelInstitution>>({});
@@ -29,10 +30,12 @@ export default function InstitutionDetail() {
       fetch(`/api/admin/intelligence/institutions/${id}`).then(r => r.json()),
       fetch(`/api/admin/intelligence/institutions/${id}/programs`).then(r => r.json()),
       fetch(`/api/admin/intelligence/institutions/${id}/custom`).then(r => r.json()),
-    ]).then(([instData, progData, customData]) => {
+      fetch(`/api/admin/intelligence/institutions/${id}/intelligence`).then(r => r.json()).catch(() => null),
+    ]).then(([instData, progData, customData, intelData]) => {
       setInst(instData); setForm(instData);
       setPrograms(progData.data ?? []);
       setCustom(customData.data ?? []);
+      if (intelData && !intelData.error) setIntel({ total: intelData.total || 0, byType: intelData.byType || {}, recent: intelData.recent || [] });
       setLoading(false);
     }).catch(() => setLoading(false));
   }, [id]);
@@ -107,12 +110,13 @@ export default function InstitutionDetail() {
 
       {/* Profile Tab */}
       {tab === 'profile' && (
-        <div className="bg-white rounded-xl border border-slate-200 p-6">
-          <div className="flex justify-between mb-4">
-            <h3 className="font-semibold text-slate-900">Institution Profile</h3>
-            <Btn variant={editing ? 'primary' : 'secondary'} onClick={() => editing ? saveProfile() : setEditing(true)}>{editing ? 'Save' : 'Edit'}</Btn>
-          </div>
-          <div className="grid grid-cols-2 gap-4 text-sm">
+        <div className="space-y-6">
+          <div className="bg-white rounded-xl border border-slate-200 p-6">
+            <div className="flex justify-between mb-4">
+              <h3 className="font-semibold text-slate-900">Institution Profile</h3>
+              <Btn variant={editing ? 'primary' : 'secondary'} onClick={() => editing ? saveProfile() : setEditing(true)}>{editing ? 'Save' : 'Edit'}</Btn>
+            </div>
+            <div className="grid grid-cols-2 gap-4 text-sm">
             {[
               ['Name', 'name'], ['Short Name', 'short_name'], ['State', 'state'], ['City', 'city'],
               ['County', 'county'], ['ZIP', 'zip'], ['IPEDS ID', 'ipeds_id'], ['Accreditor', 'accreditor'],
@@ -131,6 +135,39 @@ export default function InstitutionDetail() {
             ))}
           </div>
         </div>
+
+        <div className="bg-white rounded-xl border border-slate-200 p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="font-semibold text-slate-900">Related Intelligence</h3>
+            <span className="text-sm text-slate-500">{intel?.total || 0} linked items</span>
+          </div>
+
+          <div className="flex flex-wrap gap-2 mb-4">
+            {Object.entries(intel?.byType || {}).map(([k, v]) => (
+              <Badge key={k} color="purple">{k}: {String(v)}</Badge>
+            ))}
+            {!intel || Object.keys(intel.byType || {}).length === 0 ? (
+              <span className="text-sm text-slate-400">No linked intelligence yet. Tag sources to this institution to surface them here.</span>
+            ) : null}
+          </div>
+
+          {(intel?.recent || []).length > 0 && (
+            <div className="space-y-3">
+              {intel!.recent.slice(0, 8).map((s: any) => (
+                <div key={s.id} className="border border-slate-100 rounded-lg p-3">
+                  <div className="flex items-center gap-2 mb-1">
+                    <Badge>{s.source_type || 'source'}</Badge>
+                    <span className="text-xs text-slate-500">{s.publisher || 'Unknown publisher'}</span>
+                  </div>
+                  <div className="font-medium text-slate-900 text-sm">{s.title || 'Untitled source'}</div>
+                  {s.summary && <div className="text-xs text-slate-600 mt-1 line-clamp-2">{s.summary}</div>}
+                  {s.url && <a className="text-xs text-purple-600 hover:underline" href={s.url} target="_blank" rel="noreferrer">Open source →</a>}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
       )}
 
       {/* Programs Tab */}

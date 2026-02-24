@@ -10,7 +10,7 @@ import { checkNewsSourcesHealth } from '@/lib/signal/news-sources';
 export default async function SignalAdminPage() {
   let sendHealth = { healthy: false, daysSinceSuccess: 999, recentFailures: 0 } as Awaited<ReturnType<typeof checkSendHealth>>;
   let recentSends: Awaited<ReturnType<typeof getRecentSends>> = [];
-  let newsHealth = { brave: false, newsapi: false, googleRss: false, cache: false } as Awaited<ReturnType<typeof checkNewsSourcesHealth>>;
+  let newsHealth = { brave: false, newsapi: false, googleRss: false, intel: false, cache: false } as Awaited<ReturnType<typeof checkNewsSourcesHealth>>;
 
   try {
     [sendHealth, recentSends, newsHealth] = await Promise.all([
@@ -49,10 +49,11 @@ export default async function SignalAdminPage() {
       </div>
 
       {/* News Sources Status */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         <SourceStatusCard title="Brave Search" status={newsHealth.brave} primary />
         <SourceStatusCard title="NewsAPI" status={newsHealth.newsapi} />
         <SourceStatusCard title="Google RSS" status={newsHealth.googleRss} />
+        <SourceStatusCard title="Intelligence DB" status={newsHealth.intel} />
         <SourceStatusCard title="Cache" status={newsHealth.cache} />
       </div>
 
