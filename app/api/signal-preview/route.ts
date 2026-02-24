@@ -15,14 +15,75 @@ export const maxDuration = 60;
 
 import { generateSignalContent } from '@/lib/signal/generate-content';
 import { renderSignalEmail } from '@/lib/signal/email-template';
-import { fetchNewsWithFallback } from '@/lib/signal/news-sources';
+import { fetchNewsWithFallback, type NewsItem } from '@/lib/signal/news-sources';
+import { getSupabaseServerClient } from '@/lib/supabase/client';
 
 function isAuthorized(request: NextRequest): boolean {
   const cronSecret = process.env.CRON_SECRET;
   if (!cronSecret) return false;
-  
+
   const querySecret = request.nextUrl.searchParams.get('secret');
   return querySecret === cronSecret;
+}
+
+async function emergencyBackfillNews(existing: NewsItem[]): Promise<NewsItem[]> {
+  const items = [...existing];
+
+  // 1) Pull from intelligence DB without strict source-type filters
+  try {
+    const supabase = getSupabaseServerClient();
+    const { data } = await supabase
+      .from('intel_sources')
+      .select('title,url,summary,publisher,updated_at')
+      .order('updated_at', { ascending: false })
+      .limit(10);
+
+    for (const row of data || []) {
+      if (items.length >= 3) break;
+      if (!row.title) continue;
+      items.push({
+        title: row.title,
+        url: row.url || 'https://withwavelength.com/admin/intelligence/sources',
+        snippet: row.summary || `Source: ${row.publisher || 'Intelligence Hub'}`,
+        date: row.updated_at || new Date().toISOString(),
+        source: row.publisher || 'Intelligence Hub',
+      } as NewsItem);
+    }
+  } catch {
+    // ignore
+  }
+
+  // 2) Absolute last resort: evergreen seeds so preview still renders
+  const seeds: NewsItem[] = [
+    {
+      title: 'AI skill requirements are being added to frontline job descriptions',
+      url: 'https://withwavelength.com/signal',
+      snippet: 'Employers are signaling that practical AI fluency is becoming baseline across admin and technical roles.',
+      date: new Date().toISOString(),
+      source: 'Wavelength',
+    },
+    {
+      title: 'Community colleges are expanding short-cycle workforce credentials',
+      url: 'https://withwavelength.com/signal',
+      snippet: 'Programs tied directly to employer demand are accelerating due to faster hiring cycles and skills gaps.',
+      date: new Date().toISOString(),
+      source: 'Wavelength',
+    },
+    {
+      title: 'Grant and public funding is increasingly tied to measurable outcomes',
+      url: 'https://withwavelength.com/signal',
+      snippet: 'Institutions are expected to show placement, completion, and wage impact in workforce program proposals.',
+      date: new Date().toISOString(),
+      source: 'Wavelength',
+    },
+  ];
+
+  for (const seed of seeds) {
+    if (items.length >= 3) break;
+    items.push(seed);
+  }
+
+  return items.slice(0, 10);
 }
 
 export async function GET(request: NextRequest) {
@@ -37,12 +98,19 @@ export async function GET(request: NextRequest) {
 
     // Fetch news
     const newsResult = await fetchNewsWithFallback();
-    
-    if (newsResult.items.length < 3) {
+    let previewItems = newsResult.items;
+    let degradedMode = false;
+
+    if (previewItems.length < 3) {
+      degradedMode = true;
+      previewItems = await emergencyBackfillNews(previewItems);
+    }
+
+    if (previewItems.length < 3) {
       return new NextResponse(
         `<html><body style="font-family: sans-serif; padding: 40px;">
           <h1>⚠️ Preview Generation Failed</h1>
-          <p>Insufficient news items: ${newsResult.items.length} found (minimum 3 required)</p>
+          <p>Insufficient news items: ${previewItems.length} found (minimum 3 required)</p>
           <p>Source attempted: ${newsResult.source}</p>
           <p>Error: ${newsResult.error || 'Unknown'}</p>
           <p><a href="/api/signal-health?secret=${request.nextUrl.searchParams.get('secret')}">Check health status</a></p>
@@ -52,7 +120,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Generate content
-    const signalContent = await generateSignalContent(newsResult.items);
+    const signalContent = await generateSignalContent(previewItems);
     const html = renderSignalEmail(signalContent);
 
     if (raw) {
@@ -148,9 +216,10 @@ export async function GET(request: NextRequest) {
         </span>
       </div>
       <div>
-        <strong>Stories:</strong> ${newsResult.items.length}
+        <strong>Stories:</strong> ${previewItems.length}
       </div>
     </div>
+    ${degradedMode ? `<p style="margin-top:10px;color:#92400e;background:#FEF3C7;padding:8px 10px;border-radius:6px;font-size:13px;">⚠️ Degraded preview mode: external news sources were light, so intelligence DB/seed items were used to generate this preview.</p>` : ''}
     <div class="preview-actions">
       <a href="/api/send-signal?secret=${request.nextUrl.searchParams.get('secret')}&test=true" 
          class="btn btn-primary">
