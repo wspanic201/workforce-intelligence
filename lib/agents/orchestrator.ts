@@ -650,8 +650,8 @@ export async function orchestrateValidationInMemory(
 
   console.log(`[Orchestrator:InMemory] Starting validation for "${projectData.program_name || projectData.title}"`);
 
-  // Build the project object that agents expect (matches ValidationProject shape)
-  const projectFields = {
+  // Build the full project object that agents expect
+  const projectData_ = {
     program_name: projectData.program_name || projectData.title,
     client_name: projectData.client_name || projectData.collegeName || 'Unknown Institution',
     client_email: 'pipeline@wavelength.local',
@@ -666,13 +666,21 @@ export async function orchestrateValidationInMemory(
     status: 'researching' as const,
   };
 
-  // Persist to Supabase so results show in admin dashboard
+  // Persist to Supabase — only include columns that exist in validation_projects table
   let projectId = `inmemory-${Date.now()}`;
   try {
     const supabase = getSupabaseServerClient();
     const { data: dbProject, error: dbError } = await supabase
       .from('validation_projects')
-      .insert(projectFields)
+      .insert({
+        program_name: projectData_.program_name,
+        client_name: projectData_.client_name,
+        client_email: projectData_.client_email,
+        program_type: projectData_.program_type,
+        target_audience: projectData_.target_audience,
+        constraints: projectData_.constraints,
+        status: projectData_.status,
+      })
       .select('id')
       .single();
     if (dbProject && !dbError) {
@@ -687,7 +695,7 @@ export async function orchestrateValidationInMemory(
 
   const project: Record<string, any> = {
     id: projectId,
-    ...projectFields,
+    ...projectData_,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   };
