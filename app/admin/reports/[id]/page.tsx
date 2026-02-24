@@ -14,6 +14,7 @@ interface PipelineRun {
   created_at: string;
   pipeline_version: string;
   model: string;
+  report_id: string | null;
   prompt_version: string | null;
   report_template: string;
   config: Record<string, any>;
@@ -266,15 +267,23 @@ export default function ReportDetailPage() {
       ) : !run && components.length > 0 ? (
         <>
           {/* Partial report banner */}
-          <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 flex items-center gap-3">
-            <span className="text-amber-600 text-lg">&#9888;</span>
-            <div>
-              <p className="text-sm font-medium text-amber-800">Pipeline incomplete — showing raw agent outputs</p>
-              <p className="text-xs text-amber-600 mt-0.5">
-                {components.filter(c => c.status === 'completed').length} of {components.length} agents completed.
-                No final report was generated.
-              </p>
+          <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <span className="text-amber-600 text-lg">&#9888;</span>
+              <div>
+                <p className="text-sm font-medium text-amber-800">Pipeline incomplete — showing raw agent outputs</p>
+                <p className="text-xs text-amber-600 mt-0.5">
+                  {components.filter(c => c.status === 'completed').length} of {components.length} agents completed.
+                  No final report was generated.
+                </p>
+              </div>
             </div>
+            <a
+              href={`/api/admin/reports/${id}/export-raw`}
+              className="text-sm font-medium text-amber-700 px-4 py-2 rounded-lg border border-amber-300 bg-white hover:bg-amber-50 transition-colors whitespace-nowrap"
+            >
+              ↓ Export Raw
+            </a>
           </div>
 
           {/* Project header */}
@@ -358,6 +367,11 @@ export default function ReportDetailPage() {
               <h1 className="font-heading text-2xl font-bold text-slate-900">
                 {project?.program_name || 'Report'}
               </h1>
+              {run.report_id && (
+                <span className="font-mono text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded ml-3 align-middle">
+                  {run.report_id}
+                </span>
+              )}
               <p className="text-slate-500 mt-1 text-sm">
                 {project?.client_name || 'Unknown'} &middot; {new Date(run.created_at).toLocaleDateString()}
               </p>
@@ -600,7 +614,11 @@ export default function ReportDetailPage() {
                     >
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-medium text-slate-700">
-                          {r.pipeline_version} &middot; {r.model.replace('claude-', '')}
+                          {r.report_id ? (
+                            <span className="font-mono">{r.report_id}</span>
+                          ) : (
+                            <>{r.pipeline_version} &middot; {r.model.replace('claude-', '')}</>
+                          )}
                         </span>
                         {r.reviewed_at ? (
                           <QualityBadge score={r.review_scores?.overall ?? null} />

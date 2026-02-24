@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAdminSession } from '@/lib/auth/admin';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
+import { generateReportId } from '@/lib/utils/report-id';
 
 /** GET /api/admin/pipeline-runs — List pipeline runs with project info */
 export async function GET(req: NextRequest) {
@@ -45,6 +46,8 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json();
+    const model = body.model || 'claude-sonnet-4-6';
+    const reportId = await generateReportId(model, new Date());
 
     const supabase = getSupabaseServerClient();
     const { data, error } = await supabase
@@ -52,7 +55,8 @@ export async function POST(req: NextRequest) {
       .insert({
         project_id: body.project_id,
         pipeline_version: body.pipeline_version || 'v2.0',
-        model: body.model || 'claude-sonnet-4-6',
+        model,
+        report_id: reportId,
         prompt_version: body.prompt_version || null,
         report_template: body.report_template || 'professional-v2',
         config: body.config || {},

@@ -95,6 +95,9 @@ export default async function ReportsAdminPage({
           <thead>
             <tr className="bg-slate-50">
               <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
+                Report ID
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
                 Program
               </th>
               <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">
@@ -128,6 +131,13 @@ export default async function ReportsAdminPage({
               const run = pipelineRunMap[report.id];
               return (
                 <tr key={report.id} className="hover:bg-slate-50/50 transition-colors">
+                  <td className="px-4 py-3 whitespace-nowrap">
+                    {run?.report_id ? (
+                      <span className="font-mono text-xs text-slate-600">{run.report_id}</span>
+                    ) : (
+                      <span className="text-xs text-slate-300">--</span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 max-w-[200px] truncate">
                     <span className="font-medium text-slate-900">
                       {report.program_name || 'Untitled'}
@@ -181,7 +191,7 @@ export default async function ReportsAdminPage({
                     >
                       Review
                     </Link>
-                    {run && (
+                    {run ? (
                       <a
                         href={`/api/admin/pipeline-runs/${report.id}/download-pdf`}
                         className="text-xs text-slate-400 hover:text-slate-700"
@@ -189,14 +199,22 @@ export default async function ReportsAdminPage({
                       >
                         ↓ PDF
                       </a>
-                    )}
+                    ) : partialProjectIds.has(report.id) ? (
+                      <a
+                        href={`/api/admin/reports/${report.id}/export-raw`}
+                        className="text-xs text-amber-500 hover:text-amber-700"
+                        title="Export raw agent outputs"
+                      >
+                        ↓ Raw
+                      </a>
+                    ) : null}
                   </td>
                 </tr>
               );
             })}
             {filteredReports.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-6 py-12 text-center text-slate-400">
+                <td colSpan={9} className="px-6 py-12 text-center text-slate-400">
                   No reports found
                 </td>
               </tr>
@@ -256,6 +274,7 @@ interface PipelineRunSummary {
   composite_score: number | null;
   review_scores: { overall: number } | null;
   reviewed_at: string | null;
+  report_id: string | null;
 }
 
 async function getReportsWithRuns() {
@@ -271,7 +290,7 @@ async function getReportsWithRuns() {
         .limit(50),
       supabase
         .from('pipeline_runs')
-        .select('project_id, model, pipeline_version, runtime_seconds, composite_score, review_scores, reviewed_at')
+        .select('project_id, model, pipeline_version, runtime_seconds, composite_score, review_scores, reviewed_at, report_id')
         .order('created_at', { ascending: false }),
       supabase
         .from('research_components')
@@ -292,6 +311,7 @@ async function getReportsWithRuns() {
             composite_score: run.composite_score,
             review_scores: run.review_scores as PipelineRunSummary['review_scores'],
             reviewed_at: run.reviewed_at,
+            report_id: run.report_id,
           };
         }
       }

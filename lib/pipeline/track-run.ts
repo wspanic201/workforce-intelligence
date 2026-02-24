@@ -5,6 +5,7 @@
 
 import crypto from 'crypto';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
+import { generateReportId } from '@/lib/utils/report-id';
 
 export interface PipelineConfig {
   model: string;
@@ -47,6 +48,7 @@ export async function startPipelineRun(
   config: PipelineConfig
 ): Promise<string> {
   const supabase = getSupabaseServerClient();
+  const reportId = await generateReportId(config.model, new Date());
 
   const { data, error } = await supabase
     .from('pipeline_runs')
@@ -63,6 +65,7 @@ export async function startPipelineRun(
       },
       agents_run: config.agentsEnabled,
       tiger_team_enabled: config.tigerTeamEnabled,
+      report_id: reportId,
     })
     .select('id')
     .single();
