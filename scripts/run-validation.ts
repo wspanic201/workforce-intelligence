@@ -206,40 +206,18 @@ async function main() {
   const reportPath = '/Users/matt/Desktop/Kirkwood-PharmTech-Validation-Report.md';
   fs.writeFileSync(reportPath, fullReport);
 
-  // Generate PDF and upload to Supabase Storage
+  // Generate PDF → Supabase Storage + Desktop copy
   try {
     console.log('\n🖨️  Generating PDF...');
-    const { generatePDF } = await import('../lib/pdf/generate-pdf');
-
-    let pdfMarkdown = fullReport;
-    pdfMarkdown = pdfMarkdown.replace(/^---[\s\S]*?---\n/, '');
-    pdfMarkdown = pdfMarkdown.replace(/<div style="text-align:center[^>]*>[\s\S]*?<\/div>\s*<div style="page-break-after:\s*always;?\s*"><\/div>/i, '');
-    pdfMarkdown = pdfMarkdown.replace(/^# Table of Contents\n[\s\S]*?<div style="page-break-after:\s*always;?\s*"><\/div>/m, '');
-    pdfMarkdown = pdfMarkdown.replace(/<div style="page-break-after:\s*always;?\s*"><\/div>\s*/g, '');
-    pdfMarkdown = pdfMarkdown.replace(/^### /gm, '#### ');
-    pdfMarkdown = pdfMarkdown.replace(/^## /gm, '### ');
-    pdfMarkdown = pdfMarkdown.replace(/^# /gm, '## ');
-    pdfMarkdown = pdfMarkdown.replace(/\n{4,}/g, '\n\n').trim();
-
-    const pdfPath = `/tmp/wavelength-${projectId.slice(0, 8)}.pdf`;
-    const pdfResult = await generatePDF(pdfMarkdown, {
-      title: enrichedProject.program_name || 'Program',
-      subtitle: 'Program Validation Report',
-      preparedFor: enrichedProject.client_name || '',
-      date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-      reportType: 'validation',
-      outputPath: pdfPath,
+    const { buildValidationPDF } = await import('../lib/reports/build-pdf');
+    const pdfResult = await buildValidationPDF(supabase, {
+      projectId,
+      programName: enrichedProject.program_name || 'Program',
+      clientName: enrichedProject.client_name || '',
+      fullReport,
+      desktopPath: '/Users/matt/Desktop/Kirkwood-PharmTech-Validation-Report.pdf',
     });
-
-    const desktopPdf = '/Users/matt/Desktop/Kirkwood-PharmTech-Validation-Report.pdf';
-    fs.copyFileSync(pdfPath, desktopPdf);
-
-    const pdfBuffer = fs.readFileSync(pdfPath);
-    const storagePath = `reports/${projectId}/validation-report.pdf`;
-    await supabase.storage.from('reports').upload(storagePath, pdfBuffer, { contentType: 'application/pdf', upsert: true });
-    await supabase.from('validation_reports').update({ pdf_url: storagePath }).eq('project_id', projectId);
-    try { fs.unlinkSync(pdfPath); } catch {}
-
+    await supabase.from('validation_reports').update({ pdf_url: pdfResult.storagePath }).eq('project_id', projectId);
     console.log(`  ✅ PDF: ${pdfResult.pageCount} pages, ${pdfResult.sizeKB}KB → Supabase Storage + Desktop`);
   } catch (pdfErr: unknown) {
     console.warn(`  ⚠️ PDF generation failed:`, (pdfErr as Error).message);
