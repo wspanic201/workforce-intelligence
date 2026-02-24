@@ -651,8 +651,7 @@ export async function orchestrateValidationInMemory(
   console.log(`[Orchestrator:InMemory] Starting validation for "${projectData.program_name || projectData.title}"`);
 
   // Build the project object that agents expect (matches ValidationProject shape)
-  const project: Record<string, any> = {
-    id: `inmemory-${Date.now()}`,
+  const projectFields = {
     program_name: projectData.program_name || projectData.title,
     client_name: projectData.client_name || projectData.collegeName || 'Unknown Institution',
     client_email: 'pipeline@wavelength.local',
@@ -665,6 +664,30 @@ export async function orchestrateValidationInMemory(
     program_level: projectData.program_level || projectData.level || 'certificate',
     constraints: projectData.constraints || '',
     status: 'researching' as const,
+  };
+
+  // Persist to Supabase so results show in admin dashboard
+  let projectId = `inmemory-${Date.now()}`;
+  try {
+    const supabase = getSupabaseServerClient();
+    const { data: dbProject, error: dbError } = await supabase
+      .from('validation_projects')
+      .insert(projectFields)
+      .select('id')
+      .single();
+    if (dbProject && !dbError) {
+      projectId = dbProject.id;
+      console.log(`[Orchestrator:InMemory] ✓ Created validation_project: ${projectId}`);
+    } else {
+      console.warn('[Orchestrator:InMemory] Failed to create DB project (non-fatal):', dbError?.message);
+    }
+  } catch (e) {
+    console.warn('[Orchestrator:InMemory] DB insert failed (non-fatal):', e);
+  }
+
+  const project: Record<string, any> = {
+    id: projectId,
+    ...projectFields,
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
   };
@@ -746,6 +769,24 @@ export async function orchestrateValidationInMemory(
         scoreRationale,
         status: 'completed',
       });
+
+      // Persist to Supabase for admin dashboard visibility
+      if (!projectId.startsWith('inmemory-')) {
+        try {
+          const supabase = getSupabaseServerClient();
+          await supabase.from('research_components').insert({
+            project_id: projectId,
+            component_type: agent.type,
+            agent_persona: agent.persona,
+            content: data,
+            markdown_output: markdown,
+            status: 'completed',
+            completed_at: new Date().toISOString(),
+          });
+        } catch (e) {
+          console.warn(`[Orchestrator:InMemory] Failed to persist ${agent.type} to DB (non-fatal)`);
+        }
+      }
 
       console.log(`[Orchestrator:InMemory] ✓ ${agent.label} completed${score ? ` — Score: ${score}/10` : ''}`);
     } catch (error) {
@@ -931,6 +972,43 @@ export async function orchestrateValidationInMemory(
       });
     } catch (e) {
       console.warn('[Orchestrator:InMemory] Pipeline run tracking failed to complete (non-fatal):', e);
+    }
+  }
+
+  // Save final report and update project status in Supabase
+  if (!projectId.startsWith('inmemory-')) {
+    try {
+      const supabase = getSupabaseServerClient();
+
+      // Save validation_reports row
+      await supabase.from('validation_reports').insert({
+        project_id: projectId,
+        full_report_markdown: fullReport,
+        version: 1,
+      });
+
+      // Save tiger team as research_component
+      if (tigerTeamMarkdown) {
+        await supabase.from('research_components').insert({
+          project_id: projectId,
+          component_type: 'tiger_team_synthesis',
+          agent_persona: 'tiger-team',
+          content: { programScore },
+          markdown_output: tigerTeamMarkdown,
+          status: 'completed',
+          completed_at: new Date().toISOString(),
+        });
+      }
+
+      // Update project status to 'review'
+      await supabase
+        .from('validation_projects')
+        .update({ status: 'review' })
+        .eq('id', projectId);
+
+      console.log(`[Orchestrator:InMemory] ✓ Report saved to DB, project status → review`);
+    } catch (e) {
+      console.warn('[Orchestrator:InMemory] Failed to save report to DB (non-fatal):', e);
     }
   }
 
