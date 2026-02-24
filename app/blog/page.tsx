@@ -17,6 +17,15 @@ export const metadata: Metadata = {
 
 export const posts = [
   {
+    slug: "community-colleges-launching-programs-based-on-vibes",
+    title: `Community Colleges Are Launching Programs Based on Vibes. It's Costing Them Everything.`,
+    excerpt: `A local employer calls the dean. "We need welders." The dean nods. An advisory committee meets, agrees it sounds right. Someone pulls a Lightcast report. Six months later, a new program launches in a saturated market. Nobody checked.`,
+    date: "February 24, 2026",
+    readTime: "8 min read",
+    category: "Program Strategy",
+    dot: "bg-orange-400",
+  },
+  {
     slug: "iowa-roi-reporting-community-college-program-accountability-2026",
     title: `Iowa's New ROI Reporting Requirements: What CE Directors Need to Know`,
     excerpt: `Iowa legislation would require unit-level wage data sharing and ROI reporting for community college programs. Here's what continuing education directors should prepare for.`,
