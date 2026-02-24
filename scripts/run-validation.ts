@@ -254,7 +254,7 @@ async function main() {
 
   // Generate report
   console.log('\n📝 Generating final report...');
-  const fullReport = generateReport({
+  const fullReport = await generateReport({
     project: enrichedProject as any,
     components: completedComponents as any,
     programScore,

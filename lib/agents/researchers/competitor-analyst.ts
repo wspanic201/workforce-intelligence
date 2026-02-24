@@ -172,8 +172,6 @@ export async function runCompetitiveAnalysis(
 
     const prompt = `You are a competitive landscape analyst for workforce education programs.
 
-Analyze the competitive landscape for this program and return ONLY valid JSON.
-
 PROGRAM: ${project.program_name}
 TYPE: ${project.program_type || 'Not specified'}
 AUDIENCE: ${project.target_audience || 'Not specified'}
@@ -181,44 +179,37 @@ CLIENT: ${project.client_name}
 ${project.constraints ? `CONSTRAINTS: ${project.constraints}` : ''}
 ${cipCode ? `CIP CODE: ${cipCode} (${cipTitle})` : ''}
 ${ipedsSection}
-${verifiedIntelBlock ? `═══ VERIFIED BASELINE DATA (BLS, O*NET, Census, IPEDS — confirmed government sources, cite directly) ═══
-${verifiedIntelBlock}
-═══ END VERIFIED BASELINE ═══
+${verifiedIntelBlock ? `VERIFIED BASELINE DATA (confirmed from government sources — treat as established fact):
+${verifiedIntelBlock}` : ''}
 
-This data confirms what exists. Your job is to explain what it means right now — find current job postings, recent employer news, industry reports, regulatory updates, and competitor moves that bring the baseline to life. The intel above is your floor. External research is what makes this worth reading.` : ''}
+Your job is NOT to repeat this data or generate tables. The data above is confirmed.
+Your job is to analyze it:
+- Who are the real competitors and what are their structural weaknesses?
+- What does IPEDS completions intensity imply about crowding and defensibility?
+- What makes Kirkwood structurally different from online, employer-based, and self-study alternatives?
+- What strategic position is most defensible and why?
 
-Identify 3-5 competing programs, market gaps, and differentiation opportunities.
+Include all competitive alternatives:
+1. Academic programs (local, regional, online)
+2. Employer-based internal training pathways
+3. Online/self-study certification paths
+4. Apprenticeship or military pathways when relevant
 
-COMPETITIVE LANDSCAPE IS BROADER THAN ACADEMIC PROGRAMS:
-Identify ALL alternatives a prospective student might choose instead — not just competing college programs:
-1. **Academic competitors** — community colleges, technical colleges, online programs (Penn Foster, Ashworth, Purdue Global, etc.)
-2. **Employer-based training** — major employers in this field who train their own staff:
-   - Walgreens: documented internal pharmacy technician training pathway for existing retail employees
-   - CVS: similar in-store training programs
-   - Hospital systems: often prefer to train internally rather than hire credentialed
-   Note: Employer-based alternatives represent a real learner segment who will choose "get hired at Walgreens and get trained" over paying tuition. This must appear in the analysis.
-3. **Online/self-study paths** — PTCB exam prep courses, YouTube, self-study without a formal program
-4. **Military/apprenticeship** — relevant for some healthcare occupations
+OUTPUT FORMAT:
+- 600-900 words of analytical narrative (put the narrative in "scoreRationale")
+- NO markdown tables
+- NO bullet-point lists of statistics already provided
+- YES specific references to verified baseline data
+- YES direct recommendation language
+- Keep array fields concise strategic summaries, not data dumps
 
-For each academic competitor, investigate:
-- What do students actually say? Search Reddit, Google reviews, Indeed, Glassdoor for program-specific feedback — cite these as "online student community feedback"
-- Specific weaknesses in student reviews (externship availability, curriculum currency, instructor quality)
-- IPEDS completion data (note: reports annual completions, not per-cohort enrollment — distinguish when inferring cohort size)
+SCORING: 8-10 strong differentiable position; 5-7 moderate pressure; 1-4 highly saturated.
 
-Don't just list competitors — tell the client how to beat them. End with a clear positioning recommendation: "You should position as [X] because [Y]."
-
-SCORING: Rate the competitive landscape 1-10 for program viability.
-8-10 = Few/weak competitors, strong differentiation potential
-5-7 = Moderate competition, some differentiation possible
-1-4 = Saturated market, difficult to differentiate
-
-LENGTH: 800–1,000 words.
-
-IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Keep values concise.
+IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON.
 
 {
   "score": 7,
-  "scoreRationale": "Brief explanation of competitive landscape score",
+  "scoreRationale": "600-900 word narrative analysis and positioning argument",
   "competitors": [
     {
       "institution": "College Name",
@@ -237,7 +228,7 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Kee
 }`;
 
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 12000,
+      maxTokens: 5000,
     });
 
     const data = extractJSON(content) as CompetitiveAnalysisData;

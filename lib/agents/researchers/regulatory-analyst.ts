@@ -193,79 +193,36 @@ ${project.constraints ? `- Constraints: ${project.constraints}` : ''}
 ${(project as any).funding_sources ? `- Funding Sources: ${(project as any).funding_sources}` : ''}
 ${(project as any).stackable_credential ? `- Stackable Intent: Yes` : ''}
 
-${verifiedRegulatorySection ? `═══ VERIFIED BASELINE DATA (BLS, O*NET, Census, IPEDS — confirmed government sources, cite directly) ═══
-${verifiedRegulatorySection}
-═══ END VERIFIED BASELINE ═══
+${verifiedRegulatorySection ? `VERIFIED BASELINE DATA (confirmed from government sources — treat as established fact):
+${verifiedRegulatorySection}` : ''}
+${govSources.length > 0 ? `OFFICIAL .GOV SOURCES FOUND:
+${govSources.map((url, i) => `${i + 1}. ${url}`).join('\n')}` : ''}
 
-This data confirms what exists. Your job is to explain what it means right now — find current job postings, recent employer news, industry reports, regulatory updates, and competitor moves that bring the baseline to life. The intel above is your floor. External research is what makes this worth reading.` : ''}
+Your job is NOT to generate tables or restate statistics. The baseline data is confirmed.
+Your job is analysis:
+- What is required by law versus optional quality standards?
+- What is mandatory under Iowa law/state rules versus accreditation expectations?
+- What is the minimum viable compliance path and what is the recommended path?
+- Which constraints are true blockers versus manageable sequencing work?
 
-CRITICAL INSTRUCTION — LICENSURE VS. CONTINUING EDUCATION:
-For licensed occupations, you MUST distinguish between:
-1. **Initial Licensure Programs** — Full training to obtain a new license (e.g., 1600-hour cosmetology program)
-2. **Continuing Education/Re-Licensure** — Short courses to maintain an existing license (e.g., 6-hour CEU for license renewal)
+CRITICAL SOURCE RULE:
+- For licensure hour and renewal requirements, use official state government sources only (.gov and official state code sites).
+- If official source evidence is missing, state that explicitly instead of guessing.
 
-These are fundamentally different programs with different:
-- Scope (hundreds vs. single-digit hours)
-- Tuition ($8,000+ vs. $150)
-- Target market (new entrants vs. licensed professionals)
-- Financial models (high tuition/low volume vs. low cost/high volume)
+OUTPUT FORMAT:
+- 600-900 words in scoreRationale as narrative analysis
+- NO markdown tables
+- NO bullet-point list of repeated statistics
+- YES direct references to governing authorities and citations
+- Keep supporting fields concise and action-oriented
 
-Determine which type applies to this program and structure your analysis accordingly.
+SCORING: 8-10 strong alignment/minimal hurdles; 5-7 moderate; 1-4 complex/high-risk pathway.
 
-DATA SOURCE REQUIREMENTS - CRITICAL:
-- ALL licensure data MUST come from OFFICIAL GOVERNMENT SOURCES ONLY:
-  - ✅ ALLOWED: .gov domains ONLY (state licensing boards, state legislature websites)
-  - ✅ ALLOWED: Official state administrative code websites (e.g., legis.iowa.gov/docs/iac/)
-  - ❌ FORBIDDEN: Third-party training providers (.com, .org, .edu)
-  - ❌ FORBIDDEN: Cosmetology schools, CE provider websites
-  - ❌ FORBIDDEN: Wikipedia, blogs, general education sites
-  - ❌ FORBIDDEN: Any site that is NOT an official state government website
-
-VERIFICATION PROTOCOL:
-1. Search for "[state] [occupation] license requirements site:.gov"
-2. Locate the official state licensing board page (.gov)
-3. Find the specific statute/administrative code citation
-4. Fetch and READ the actual statute text from legis.[state].gov or equivalent
-5. Quote the EXACT hour requirement from the statute
-6. Cite the statute number (e.g., "Iowa Code §157.10" or "Iowa Admin Code 645-60.18")
-7. If you CANNOT find a .gov source with the exact requirement, return "Unable to locate official requirement from state government source" instead of guessing
-
-EXAMPLE (Iowa Cosmetology):
-- Correct source: dial.iowa.gov (Iowa Department of Inspections, Appeals & Licensing)
-- Correct source: legis.iowa.gov (Iowa Legislature official code)
-- WRONG source: rocketcert.com (training provider)
-- WRONG source: rossbeautyacademy.com (school)
-
-DO NOT GUESS. DO NOT ESTIMATE. DO NOT USE NON-.GOV SOURCES FOR LICENSURE REQUIREMENTS.
-
-${govSources.length > 0 ? `
-OFFICIAL .GOV SOURCES FOUND (use these first):
-${govSources.map((url, i) => `${i + 1}. ${url}`).join('\n')}
-
-You MUST verify licensure requirements using these .gov sources before responding.
-If these sources don't contain the information, search for additional .gov sources.
-DO NOT use any non-.gov websites for licensure hour requirements.
-` : ''}
-
-ANALYSIS REQUIRED:
-1. Program type classification (initial licensure vs. continuing ed vs. non-licensed)
-2. If licensed occupation:
-   a. Initial licensure requirements (hours, exams, state board approval, state law reference)
-   b. Continuing education requirements (renewal cycle, required hours, state law reference)
-3. State approval requirements
-4. Perkins V alignment — eligible CIP codes, funding potential
-5. WIOA alignment — ETPL eligibility
-6. Industry certification mapping (top 2-3 certifications)
-7. Accreditor expectations
-8. Key compliance milestones (top 3-5)
-
-SCORING: 8-10 = strong alignment, minimal hurdles; 5-7 = moderate; 1-4 = weak alignment, complex approval
-
-IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Keep all string values concise (1-2 sentences max). Do NOT include a markdownReport field.
+IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Do NOT include a markdownReport field.
 
 {
   "score": <1-10>,
-  "scoreRationale": "Brief explanation",
+  "scoreRationale": "600-900 word narrative compliance analysis",
   "programType": "initial_licensure|continuing_education|non_licensed|unclear",
   "programTypeRationale": "1-2 sentence explanation of classification",
   "licensure": {
@@ -331,13 +288,9 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Kee
   "dataSources": ["Source 1 - must be .gov or official state source"]
 }
 
-Don't just list requirements. Create a clear regulatory roadmap: what approvals are needed, in what order, with realistic timelines. If there are regulatory risks or recent policy changes that affect this program, highlight them.
+For licensure fields, populate initialLicensure or continuingEducation based on actual program type and include specific statute/rule citations in stateLawReference.`;
 
-LENGTH: 600–800 words.
-
-NOTE: For licensure fields, only populate initialLicensure OR continuingEducation based on what this program actually is. Include stateLawReference with specific statute/rule citations.`;
-
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 6000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 5000 });
     const data = extractJSON(content) as RegulatoryComplianceData;
 
     if (!data.markdownReport) {

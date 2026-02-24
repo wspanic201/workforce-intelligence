@@ -2,6 +2,14 @@ import { ValidationProject, ResearchComponent } from '@/lib/types/database';
 import { ProgramScore } from '@/lib/scoring/program-scorer';
 import { formatComponentContent } from './format-component';
 import type { AgentIntelligenceContext } from '@/lib/intelligence/agent-context';
+import {
+  renderWageBlock,
+  renderProjectionsBlock,
+  renderSkillsBlock,
+  renderStatePriorityBlock,
+  renderCompletionsBlock,
+  renderDemographicsBlock,
+} from './data-renderer';
 
 interface VerifiedClaim {
   claim: string;
@@ -530,85 +538,56 @@ function buildMarketDemandSection(
   components: ResearchComponent[],
   raw: AgentIntelligenceContext['raw'] | null,
   programName?: string,
+  preRendered?: { wages: string; projections: string; skills: string; statePriority: string; demographics: string },
 ): string {
   const parts: string[] = ['# Market Demand Analysis'];
-
-  // Agent narrative LEADS
   const laborComp = components.find(c => c.component_type === 'labor_market');
   const employerComp = components.find(c => c.component_type === 'employer_demand');
 
+  // ── 1. VERIFIED DATA TABLES (from DB — no agent contamination) ──────────
+  parts.push('', '## Wage Data', '');
+  parts.push(preRendered?.wages ?? renderWageBlock(raw));
+
+  parts.push('', '## Employment Outlook', '');
+  parts.push(preRendered?.projections ?? renderProjectionsBlock(raw));
+
+  const spBlock = preRendered?.statePriority ?? renderStatePriorityBlock(raw);
+  if (spBlock) {
+    parts.push('', '## Workforce Funding Status', '');
+    parts.push(spBlock);
+  }
+
+  // ── 2. AGENT ANALYSIS (narrative only — tables stripped) ────────────────
   if (laborComp) {
     const md = laborComp.markdown_output || formatComponentContent('labor_market', laborComp.content);
     if (md) {
-      const cleaned = cleanAgentMarkdown(md, programName);
-      if (cleaned) {
-        parts.push('', cleaned);
+      const stripped = stripDataTables(cleanAgentMarkdown(md, programName));
+      if (stripped.length > 100) {
+        parts.push('', '## Market Analysis', '', stripped);
       }
     }
   }
 
-  // Add data callouts ONLY if agent didn't already cover them
-  const agentText = (laborComp?.markdown_output || '') + (employerComp?.markdown_output || '');
-
-  if (raw?.occupation) {
-    // Wage chart — only if agent didn't discuss specific BLS wage figures
-    const wageChart = htmlWageChart(raw);
-    if (wageChart && !agentText.includes('BLS OES') && !agentText.match(/\$\d{2},\d{3}.*percentile/i)) {
-      parts.push('', wageChart);
-    }
-
-    // Projections key finding — only if agent didn't quote specific projection numbers
-    if (raw.occupation.projections && !agentText.match(/\d+%\s*growth.*20\d{2}/)) {
-      const p = raw.occupation.projections;
-      const findingParts: string[] = [];
-      if (p.change_percent) findingParts.push(`${p.change_percent}% growth (${p.base_year}\u2013${p.projected_year})`);
-      if (p.annual_openings) findingParts.push(`${p.annual_openings.toLocaleString()} annual openings`);
-      if (p.growth_category) findingParts.push(p.growth_category);
-      if (findingParts.length > 0) {
-        parts.push('', htmlKeyFinding(findingParts.join(' \u2014 ')));
-      }
-    }
-
-    // State priority callout
-    if (raw.occupation.statePriority?.isPriority && !agentText.toLowerCase().includes('wioa fundable')) {
-      const sp = raw.occupation.statePriority;
-      const tags: string[] = ['State In-Demand Occupation'];
-      if (sp.wioaFundable) tags.push('WIOA Fundable');
-      if (sp.scholarshipEligible) tags.push('Scholarship Eligible');
-      parts.push('', htmlKeyFinding(tags.join(' \u00B7 ')));
-    }
-  }
-
-  // Regional economy callout
-  if (raw?.serviceArea?.found && raw.serviceArea.data && !agentText.includes('service area')) {
-    const d = raw.serviceArea.data;
-    const stats: string[] = [];
-    if (d.counties?.length > 0 && d.totalPopulation > 0) {
-      stats.push(`${d.counties.length} counties`, `${d.totalPopulation.toLocaleString()} population`, `${d.totalEstablishments.toLocaleString()} establishments`);
-    }
-    if (d.avgMedianIncome) stats.push(`Median income $${d.avgMedianIncome.toLocaleString()}`);
-    if (d.avgUnemployment) stats.push(`${d.avgUnemployment}% unemployment`);
-    if (stats.length > 0) {
-      parts.push('', htmlKeyFinding(`Service Area: ${stats.join(' \u00B7 ')}`));
-    }
-  }
-
-  // Employer demand section
+  // ── 3. EMPLOYER DEMAND ──────────────────────────────────────────────────
   if (employerComp) {
     const md = employerComp.markdown_output || formatComponentContent('employer_demand', employerComp.content);
     if (md) {
-      const cleaned = cleanAgentMarkdown(md, programName);
-      if (cleaned) {
-        parts.push('', '## Employer Partnerships & Demand', '', cleaned);
+      const stripped = stripDataTables(cleanAgentMarkdown(md, programName));
+      if (stripped.length > 100) {
+        parts.push('', '## Employer Demand', '', stripped);
       }
     }
   }
 
-  // ACTION ITEMS
+  // ── 4. SKILLS (O*NET — verified, no web-scraping) ───────────────────────
+  const skillsBlock = preRendered?.skills ?? renderSkillsBlock(raw);
+  if (skillsBlock && !skillsBlock.startsWith('_Skills data not available')) {
+    parts.push('', '## Required Skills & Competencies', '', skillsBlock);
+  }
+
   parts.push('', buildActionItems([
     'Conduct direct employer outreach to validate projected hiring volume and confirm willingness to host clinical rotations.',
     'Request written letters of support or intent from at least 3 regional employers to strengthen the demand case.',
-    'Cross-reference BLS wage data with regional job posting salary ranges to validate compensation narrative for marketing materials.',
   ]));
 
   parts.push('', '<div style="page-break-after: always;"></div>');
@@ -845,6 +824,64 @@ function buildPerspectiveAssessments(
 }
 
 /**
+ * Key Findings — extract from tiger team markdown or build from scores.
+ */
+function buildKeyFindings(
+  tigerTeamMarkdown: string | undefined,
+  programScore: ProgramScore,
+): string {
+  const parts: string[] = ['# Key Findings', ''];
+
+  if (tigerTeamMarkdown) {
+    const cleaned = replaceTigerTeam(tigerTeamMarkdown);
+    const match = cleaned.match(/# Key Findings\s+([\s\S]*?)(?=\n# (?!#)|$)/);
+    if (match && match[1].trim().length > 50) {
+      parts.push(match[1].trim());
+      parts.push('', '<div style="page-break-after: always;"></div>');
+      return parts.join('\n');
+    }
+  }
+
+  // Fallback: build from dimension scores
+  const dims = programScore.dimensions || [];
+  for (const d of dims.slice(0, 5)) {
+    const icon = d.score >= 7 ? '✅' : d.score >= 5 ? '⚠️' : '❌';
+    parts.push(`${icon} **${d.dimension}** (${d.score}/10) — ${d.rationale || ''}`);
+    parts.push('');
+  }
+
+  parts.push('', '<div style="page-break-after: always;"></div>');
+  return parts.join('\n');
+}
+
+/**
+ * Next Steps — extract from tiger team markdown.
+ */
+function buildNextSteps(
+  tigerTeamMarkdown: string | undefined,
+  project: ValidationProject,
+): string {
+  const parts: string[] = ['# Recommended Next Steps', ''];
+
+  if (tigerTeamMarkdown) {
+    const cleaned = replaceTigerTeam(tigerTeamMarkdown);
+    const match = cleaned.match(/# (?:Next Steps|Recommended Next Steps|Recommendations)[^\n]*\s+([\s\S]*?)(?=\n# (?!#)|---\s*$|$)/i);
+    if (match && match[1].trim().length > 50) {
+      parts.push(match[1].trim());
+      parts.push('', '<div style="page-break-after: always;"></div>');
+      return parts.join('\n');
+    }
+  }
+
+  // Fallback
+  parts.push(`1. **Validate contact hour requirements** — Confirm total program hours with Iowa Board of Pharmacy and align curriculum design with PTCB exam blueprint.`);
+  parts.push(`2. **Secure employer commitments** — Obtain written letters of support from minimum 2 regional employers; formalize externship MOUs.`);
+  parts.push(`3. **Rebuild financial model** — Update instructor cost and contact hour assumptions with verified figures before capital commitment.`);
+  parts.push('', '<div style="page-break-after: always;"></div>');
+  return parts.join('\n');
+}
+
+/**
  * Implementation Timeline section — visual milestone timeline.
  */
 function buildImplementationTimeline(
@@ -1008,6 +1045,23 @@ function replaceTigerTeam(text: string): string {
  * agent executive summaries, downgrades remaining headings,
  * replaces Tiger Team references, and removes agent-level Data Sources blocks.
  */
+/**
+ * Strip data tables from agent markdown — leaves narrative prose only.
+ * Used when data tables are already rendered from DB (data-renderer.ts).
+ */
+function stripDataTables(md: string): string {
+  let out = md;
+  // Remove markdown pipe tables (| col | col | ... )
+  out = out.replace(/^\|.+\|[\s\S]*?(?=\n[^|]|\n*$)/gm, '');
+  // Remove table headers/separators that might be orphaned
+  out = out.replace(/^[\s|:-]+\|[\s|:-]*$/gm, '');
+  // Remove HTML table tags
+  out = out.replace(/<table[\s\S]*?<\/table>/gi, '');
+  // Clean up resulting blank lines
+  out = out.replace(/\n{3,}/g, '\n\n').trim();
+  return out;
+}
+
 function cleanAgentMarkdown(md: string, programName?: string): string {
   let out = md;
 
@@ -1104,7 +1158,7 @@ function formatRecommendationLabel(rec: string): string {
 // MAIN REPORT GENERATOR
 // ════════════════════════════════════════════════════════
 
-export function generateReport(input: ReportInput): string {
+export async function generateReport(input: ReportInput): Promise<string> {
   const { project, components, programScore, tigerTeamMarkdown, citations } = input;
   const reportDate = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
@@ -1114,7 +1168,19 @@ export function generateReport(input: ReportInput): string {
 
   const raw = getIntelContext(project);
 
+  // Pre-render all verified data blocks from DB (synchronous — data already in raw)
+  const preRendered = {
+    wages: renderWageBlock(raw),
+    projections: renderProjectionsBlock(raw),
+    skills: renderSkillsBlock(raw),
+    statePriority: renderStatePriorityBlock(raw),
+    completions: renderCompletionsBlock(raw),
+    demographics: renderDemographicsBlock(raw),
+  };
+
   const sections: string[] = [];
+
+  // ── NARRATIVE FIRST ──────────────────────────────────────────────────────
 
   // 1. Cover page
   sections.push(buildCoverPage(project, reportDate));
@@ -1125,32 +1191,40 @@ export function generateReport(input: ReportInput): string {
   // 3. Executive Summary
   sections.push(buildExecutiveSummary(project, programScore, tigerTeamMarkdown, raw));
 
-  // 4. Conditions for Go (NEW)
+  // 4. Advisory Assessment (unified consulting voice)
+  const advisorySection = buildPerspectiveAssessments(tigerTeamMarkdown);
+  if (advisorySection) sections.push(advisorySection);
+
+  // 5. Key Findings
+  sections.push(buildKeyFindings(tigerTeamMarkdown, programScore));
+
+  // 6. Conditions for Go
   sections.push(buildConditionsForGo(programScore, tigerTeamMarkdown, project));
 
-  const perspectiveSection = buildPerspectiveAssessments(tigerTeamMarkdown);
-  if (perspectiveSection) sections.push(perspectiveSection);
+  // 7. Recommended Next Steps
+  sections.push(buildNextSteps(tigerTeamMarkdown, project));
 
+  // ── SUPPORTING RESEARCH ──────────────────────────────────────────────────
 
-  // 5. Market Demand Analysis
-  sections.push(buildMarketDemandSection(components, raw, project.program_name));
+  // 8. Market Demand — DB data tables + agent analysis
+  sections.push(buildMarketDemandSection(components, raw, project.program_name, preRendered));
 
-  // 6. Competitive Landscape
+  // 9. Competitive Landscape
   sections.push(buildCompetitiveLandscapeSection(components, raw, project.program_name));
 
-  // 7. Curriculum Design
+  // 10. Curriculum Design
   sections.push(buildCurriculumDesignSection(components, project.program_name));
 
-  // 8. Financial Projections
+  // 11. Financial Projections
   sections.push(buildFinancialProjectionsSection(components, project.program_name));
 
-  // 9. Marketing Strategy
+  // 12. Marketing Strategy
   sections.push(buildMarketingStrategySection(components, project.program_name));
 
-  // 10. Implementation Timeline (NEW)
+  // 13. Implementation Timeline
   sections.push(buildImplementationTimeline(project, programScore, tigerTeamMarkdown));
 
-  // 11. Appendix
+  // 14. Appendix
   sections.push(buildAppendix(project, programScore, citations, raw, tigerTeamMarkdown));
 
   // Footer

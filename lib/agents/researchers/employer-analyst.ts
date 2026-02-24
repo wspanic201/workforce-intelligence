@@ -136,57 +136,38 @@ PROGRAM DETAILS:
 ${project.constraints ? `- Constraints: ${project.constraints}` : ''}
 ${(project as any).employer_interest ? `- Known Employer Interest: ${(project as any).employer_interest}` : ''}
 
+${verifiedEmployerSection ? `VERIFIED BASELINE DATA (confirmed from government sources — treat as established fact):
+${verifiedEmployerSection}` : ''}
 ${employerList.length > 0 ? `
-═══════════════════════════════════════════════════════════
-REAL DATA FROM GOOGLE JOBS (${new Date().toLocaleDateString()}):
-═══════════════════════════════════════════════════════════
-
-Current Job Openings: ${jobsData!.count}
-
-Top Employers Currently Hiring:
-${employerList.map((e, i) => `${i + 1}. ${e.name} — ${e.openings} active openings`).join('\n')}
-
-NOTE: Use this real employer data as the foundation for your analysis.
-Identify which employers are actively hiring, their sectors (hospital,
-retail pharmacy, specialty clinic, etc.), and estimated annual demand.
-═══════════════════════════════════════════════════════════
+CURRENT EMPLOYER SNAPSHOT (${new Date().toLocaleDateString()}):
+- Openings observed: ${jobsData!.count}
+- Employers observed: ${employerList.map(e => `${e.name} (${e.openings})`).join(', ')}
 ` : `
-NOTE: Live employer data unavailable. Use your knowledge of the
-occupation and region to identify top employers by sector.
+CURRENT EMPLOYER SNAPSHOT:
+- Live posting snapshot unavailable in this run.
 `}
 
-${verifiedEmployerSection ? `═══ VERIFIED BASELINE DATA (BLS, O*NET, Census, IPEDS — confirmed government sources, cite directly) ═══
-${verifiedEmployerSection}
-═══ END VERIFIED BASELINE ═══
+Your job is NOT to generate tables or restate baseline stats. The data above is confirmed.
+Your job is analysis:
+- What do employer data points and postings imply about real demand quality?
+- Which named employers matter most in this market and what are they actually signaling?
+- What would make employers partner with this program versus hire from the open market?
+- Where are concentration risks, partnership leverage points, and design implications?
 
-This data confirms what exists. Your job is to explain what it means right now — find current job postings, recent employer news, industry reports, regulatory updates, and competitor moves that bring the baseline to life. The intel above is your floor. External research is what makes this worth reading.` : ''}
+OUTPUT FORMAT:
+- 600-900 words in scoreRationale as narrative analysis
+- NO markdown tables
+- NO bullet-point list of statistics already provided
+- YES specific references to the baseline data and employer snapshot
+- Keep supporting fields concise, strategic, and non-redundant
 
-ANALYSIS REQUIRED:
-1. Employer demand signals (top 3-5)
-2. Top employers in the region for this field (3-5)
-3. Employer investment willingness assessment
-4. Contract training potential
-5. Key partnership opportunities
-6. Skills employers want most
+SCORING: 8-10 strong diversified demand and partnership pull; 5-7 moderate; 1-4 weak/concentrated.
 
-Don't just count job postings — analyze them. Who is actually hiring? What are they paying? What do the job descriptions reveal about employer needs?
-
-INVESTIGATE BEYOND THE DATA:
-- Check employer websites for hiring pages, workforce development partnerships, tuition reimbursement programs
-- Look for news about major employers in the region (expansions, closures, mergers)
-- Check if any employers offer their own training programs that compete with or complement a certificate program
-
-Name names. If UnityPoint Health has 3 openings, say so. If CVS has a national pharmacy tech training program, that's relevant competitive intelligence.
-
-SCORING: 8-10 = strong multi-employer demand; 5-7 = moderate; 1-4 = weak/concentrated
-
-LENGTH: 800–1,000 words.
-
-IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Keep all string values concise (1-2 sentences max). Do NOT include a markdownReport field.
+IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Do NOT include a markdownReport field.
 
 {
   "score": <1-10>,
-  "scoreRationale": "Brief explanation",
+  "scoreRationale": "600-900 word narrative analysis",
   "demandSignals": [
     { "signal": "Description", "source": "Source", "strength": "strong" }
   ],
@@ -225,7 +206,7 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Kee
   "dataSources": ["Source 1"]
 }`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 8000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 5000 });
     const data = extractJSON(content) as EmployerDemandData;
 
     if (!data.markdownReport) {

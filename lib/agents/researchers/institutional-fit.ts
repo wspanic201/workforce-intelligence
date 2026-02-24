@@ -80,32 +80,20 @@ ${(project as any).institutional_capacity ? `- Known Capacity: ${(project as any
 ${(project as any).delivery_format ? `- Delivery Format: ${(project as any).delivery_format}` : ''}
 ${(project as any).strategic_context ? `- Strategic Context: ${(project as any).strategic_context}` : ''}
 
-${verifiedIntelBlock ? `═══ VERIFIED BASELINE DATA (BLS, O*NET, Census, IPEDS — confirmed government sources, cite directly) ═══
-${verifiedIntelBlock}
-═══ END VERIFIED BASELINE ═══
+${verifiedIntelBlock ? `VERIFIED BASELINE DATA (confirmed from government sources — treat as established fact):
+${verifiedIntelBlock}` : ''}
 
-This data confirms what exists. Your job is to explain what it means right now — find current job postings, recent employer news, industry reports, regulatory updates, and competitor moves that bring the baseline to life. The intel above is your floor. External research is what makes this worth reading.` : ''}
-
-ANALYSIS REQUIRED:
-1. Faculty/instructor availability and recruitment feasibility (NOTE: check faculty wage gap data above if available)
-2. Facilities and equipment adequacy
-3. Technology infrastructure readiness
-4. Support services (advising, career, tutoring)
-5. Strategic plan and mission alignment
-6. Portfolio fit — complement or cannibalize existing programs?
-7. Stackable credential pathways
-8. Accreditation/approval requirements and timeline
-9. Overall organizational capacity assessment
-
-SCORING CRITERIA:
-- Strong (8-10): Faculty available, facilities adequate, strong strategic alignment, creates stackable pathways
-- Moderate (5-7): Faculty recruitable with effort, some investment needed, reasonable alignment
-- Weak (1-4): Faculty shortage, significant capital needed, weak alignment
+Your job is NOT to restate data or produce tables. The baseline data is confirmed.
+Your job is analysis:
+- Can Kirkwood execute this program with current infrastructure and staffing?
+- What operational gaps must close for Year 1 success?
+- What are the make-or-break execution risks in faculty, facilities, support, and governance?
+- What should graduates be able to DO on day one, and what does that imply for delivery?
 
 OUTPUT FORMAT (JSON):
 {
   "score": <1-10>,
-  "scoreRationale": "Detailed explanation",
+  "scoreRationale": "600-900 word narrative analysis in paragraph form",
   "faculty": {
     "availability": "available|recruitable|scarce",
     "qualificationsNeeded": ["Qual 1"],
@@ -157,15 +145,17 @@ OUTPUT FORMAT (JSON):
   ]
 }
 
-REQUIRED: Include graduate_competencies — specific, job-performance-level capabilities a graduate demonstrates on day one. Not "understand pharmacy terminology" but "accurately verify prescription orders, identify drug interactions, and compound sterile preparations under pharmacist supervision." These are the product of the program.
-
-Write this from the perspective of someone who knows community colleges. Don't list facilities and check boxes — assess whether this institution can actually pull this off. What's their track record with similar programs? What are the real barriers?
-
-LENGTH: 600–800 words.
+OUTPUT RULES:
+- 600-900 words in scoreRationale
+- NO markdown tables
+- NO bullet-point list of repeated statistics
+- YES direct references to baseline evidence and operational implications
+- Keep supporting fields concise and decision-oriented
+- REQUIRED: Include graduate_competencies as specific day-one performance capabilities
 
 IMPORTANT: Return ONLY valid JSON. No markdown outside JSON. Keep string values concise. Do NOT include a markdownReport field.`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 12000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 5000 });
     const data = extractJSON(content) as InstitutionalFitData;
 
     if (!data.markdownReport) {

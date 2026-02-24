@@ -236,8 +236,6 @@ a comprehensive labor market analysis for ${rawLocation}.
 
     const prompt = `${persona.name}
 
-TASK: Analyze labor market data and provide strategic insights.
-
 PROGRAM: ${project.program_name}
 CLIENT: ${project.client_name}
 TYPE: ${project.program_type || 'Not specified'}
@@ -245,91 +243,39 @@ AUDIENCE: ${project.target_audience || 'Not specified'}
 OCCUPATION: ${targetOccupation}
 REGION: ${rawLocation}
 SOC CODE: ${resolvedSOC || 'Not found'} ${resolvedSOC ? `(${getSOCTitle(resolvedSOC) || 'validated'}, source: ${socSource})` : ''}
-${verifiedPromptBlock ? `═══ VERIFIED BASELINE DATA (BLS, O*NET, Census, IPEDS — confirmed government sources, cite directly) ═══
-${verifiedPromptBlock}
-═══ END VERIFIED BASELINE ═══
-
-This data confirms what exists. Your job is to explain what it means right now — find current job postings, recent employer news, industry reports, regulatory updates, and competitor moves that bring the baseline to life. The intel above is your floor. External research is what makes this worth reading.` : ''}
+${verifiedPromptBlock ? `VERIFIED BASELINE DATA (confirmed from government sources — treat as established fact):
+${verifiedPromptBlock}` : ''}
 ${jobsSection}
-
 ${blsData ? `
-═══════════════════════════════════════════════════════════
-REAL DATA FROM BLS (Bureau of Labor Statistics):
-═══════════════════════════════════════════════════════════
-
-National Employment: ${blsData.employment_total?.toLocaleString() || 'Not available'}
-Median Annual Wage: $${blsData.median_wage?.toLocaleString() || 'Not available'}
-Mean Annual Wage: $${blsData.mean_wage?.toLocaleString() || 'Not available'}
-Wage Percentiles:
-  10th: $${blsData.wage_percentiles.p10?.toLocaleString() || 'N/A'}
-  25th: $${blsData.wage_percentiles.p25?.toLocaleString() || 'N/A'}
-  75th: $${blsData.wage_percentiles.p75?.toLocaleString() || 'N/A'}
-  90th: $${blsData.wage_percentiles.p90?.toLocaleString() || 'N/A'}
-Source: ${blsData.source || 'BLS OEWS'}
+BLS SNAPSHOT:
+- National employment: ${blsData.employment_total?.toLocaleString() || 'Not available'}
+- Median annual wage: $${blsData.median_wage?.toLocaleString() || 'Not available'}
+- Source: ${blsData.source || 'BLS OEWS'}
 ` : ''}
 ${onetData ? `
-═══════════════════════════════════════════════════════════
-REAL DATA FROM O*NET (Occupational Standards):
-═══════════════════════════════════════════════════════════
+O*NET SNAPSHOT:
+- Code: ${onetData.code}
+- Title: ${onetData.title}
+- Typical education: ${onetData.education}
+` : ''}
 
-O*NET Code: ${onetData.code}
-Occupation Title: ${onetData.title}
-Description: ${onetData.description}
+Your job is NOT to regenerate data tables or lists of statistics. The baseline data is already confirmed.
+Your job is analysis only:
+- Given the wage and projection signals above, what is the real local market opportunity?
+- How does statewide demand translate to Linn and Johnson County conditions?
+- What does supply look like relative to annual openings: demand gap, supply gap, or replacement market?
+- What does the data fail to show that is strategically important?
+- What are the strongest risks and strategic implications for launch timing and positioning?
 
-Core Skills (Level 4-5):
-${onetData.skills.filter(s => s.scale_value >= 4).map(s => `- ${s.element_name} (Level ${s.scale_value}/5)`).join('\n')}
+OUTPUT FORMAT:
+- Write exactly one narrative response of 600-900 words
+- Start with: SCORE: X/10 | RATIONALE: one sentence
+- NO markdown tables
+- NO bullet list of repeated statistics
+- YES paragraph-based argument with direct references to specific baseline figures
+- YES explicit recommendation language
 
-Knowledge Areas (Level 4-5):
-${onetData.knowledge.filter(k => k.scale_value >= 4).map(k => `- ${k.element_name} (Level ${k.scale_value}/5)`).join('\n')}
-
-Technology Requirements:
-${onetData.technology.slice(0, 10).map(t => `- ${t.example}${t.hot_technology ? ' (HOT)' : ''}`).join('\n')}
-
-Education Typical: ${onetData.education}
-` : '(O*NET occupation code not found - analysis will rely on job posting data)'}
-
-═══════════════════════════════════════════════════════════
-ANALYSIS TASK:
-═══════════════════════════════════════════════════════════
-
-Write a consulting-grade labor market analysis. Start with SCORE: X/10 | RATIONALE: [one sentence].
-
-Cover these sections using the REAL data above:
-1. **Local Market Demand** — CRITICAL: Localize demand to the specific region (county/metro), not statewide. If you have statewide figures, calculate the local share based on regional employment concentration. "510 statewide openings, Iowa regional employment data suggests Linn + Johnson counties absorb approximately X% of healthcare employment = ~Y local openings annually." Do not report statewide as the local market.
-2. **Supply vs. Demand** — How many graduates do Iowa/regional programs currently produce in this occupation annually? Compare against annual openings. If supply nearly meets demand, the market opportunity is replacement/turnover, not net new — say so.
-3. **Wage Analysis** — Entry/mid/senior wages with BLS percentiles. What is the earnings step-up from current retail/service roles?
-4. **Employer Landscape** — Named employers currently hiring. Search for actual current postings. Note posting volume as "directional signal from snapshot date" — not a rigorous sample.
-5. **Skills & Certifications** — Key skills from O*NET. If job posting data is limited (n<20), label it explicitly: "directional signal from limited sample — not statistically representative."
-6. **5-Year Forecast** — BLS projections with local context. Industry trends, macro drivers (scope of practice changes, aging population, pharmacy expansion).
-7. **Recommendations** — 5-7 specific, actionable recommendations.
-
-REQUIRED: LOCAL SHARE CALCULATION
-The client's institution serves a specific geographic area, not the whole state. You must estimate local demand:
-- Regional healthcare employment as % of state total
-- Apply that % to statewide opening figures
-- Acknowledge uncertainty but provide a range ("Linn + Johnson counties represent approximately 12-15% of Iowa's healthcare employment base, suggesting 60-75 annual pharmacy tech openings in the local market")
-
-REQUIRED: SUPPLY-SIDE MATH
-Demand means nothing without supply context. Research and report:
-- How many pharmacy tech (or equivalent) graduates do Iowa programs produce annually?
-- What is the gap between annual openings and annual graduates?
-- A market where openings = 510 and graduates = 480 is very different from openings = 510 and graduates = 80.
-
-DATA QUALITY RULES:
-- Job posting data from a single-day snapshot: label as "directional signal, n=[X], [date]"
-- Statewide figures used for local estimation: label as "estimated local share"
-- Qualitative signals from online communities (Reddit, forums, student reviews): cite as "online practitioner community feedback" — these are valid triangulating evidence, not primary data
-- Skills from a small posting sample: "directional only" disclaimer required
-
-CRITICAL: Contextualize demand with macro drivers:
-- Aging population → retail pharmacy volume growth
-- Hospital pharmacy expansion → tech pipeline demand
-- Scope of practice changes → increased tech responsibilities
-- Pharmacy closures (CVS, Walgreens national consolidation) → shifts from retail to hospital/specialty
-
-GO BEYOND THE DATA PROVIDED. Search for current postings, industry news, employer expansions in the region.
-
-LENGTH: 800–1,200 words. Every sentence earns its space.`;
+Make this a consulting-grade market interpretation, not a data recap.`;
 
     // 5. Call Claude for analysis
     const { content, tokensUsed } = await callClaude(prompt, {

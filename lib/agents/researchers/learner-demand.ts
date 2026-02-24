@@ -71,30 +71,21 @@ ${(project as any).delivery_format ? `- Delivery Format: ${(project as any).deli
 ${(project as any).estimated_tuition ? `- Estimated Tuition: ${(project as any).estimated_tuition}` : ''}
 ${(project as any).target_learner_profile ? `- Learner Profile: ${(project as any).target_learner_profile}` : ''}
 
-${verifiedIntelBlock ? `═══ VERIFIED BASELINE DATA (BLS, O*NET, Census, IPEDS — confirmed government sources, cite directly) ═══
-${verifiedIntelBlock}
-═══ END VERIFIED BASELINE ═══
+${verifiedIntelBlock ? `VERIFIED BASELINE DATA (confirmed from government sources — treat as established fact):
+${verifiedIntelBlock}` : ''}
 
-This data confirms what exists. Your job is to explain what it means right now — find current job postings, recent employer news, industry reports, regulatory updates, and competitor moves that bring the baseline to life. The intel above is your floor. External research is what makes this worth reading.` : ''}
-
-ANALYSIS REQUIRED:
-1. Estimate target learner population size in the service area
-2. Profile learner motivations (career changers, upskilling, unemployed, incumbent workers)
-3. Identify barriers to enrollment (financial, logistical, awareness)
-4. Research enrollment benchmarks from peer institutions offering similar programs
-5. Assess seasonality and optimal launch timing
-6. Estimate marketing reach and conversion funnel (CE benchmark: 10-20% inquiry-to-enrollment)
-7. Project realistic enrollment per cohort
-
-SCORING CRITERIA:
-- Strong (8-10): Large pool, clear motivation, low barriers, 20+ per cohort achievable
-- Moderate (5-7): Moderate pool, mixed motivation, 12-20 per cohort
-- Weak (1-4): Small/hard-to-reach pool, <12 per cohort
+Your job is NOT to restate baseline data or generate tables. The data above is confirmed.
+Your job is analysis:
+- Who is the actual target learner and what motivates enrollment?
+- Which barriers (cost, schedule, awareness, confidence) are most binding in this market?
+- How does program design reduce those barriers?
+- What would make a prospective student choose this program over alternatives?
+- What critical unknowns remain despite the baseline data?
 
 OUTPUT FORMAT (JSON):
 {
   "score": <1-10>,
-  "scoreRationale": "Detailed explanation of score",
+  "scoreRationale": "600-900 word narrative analysis in paragraph form",
   "targetPopulation": {
     "estimatedSize": <number>,
     "primarySegments": ["Segment 1", "Segment 2"],
@@ -129,20 +120,19 @@ OUTPUT FORMAT (JSON):
   "dataSources": ["Source 1"]
 }
 
-Don't just cite demographics. Tell the story of who will enroll and why.
+OUTPUT RULES:
+- 600-900 words in scoreRationale
+- NO markdown tables
+- NO bullet-point lists of statistics already provided
+- YES direct references to baseline data and strategic implications
+- Keep non-narrative fields concise and decision-oriented
+- Make a clear enrollment thesis for Year 1 with explicit reasoning
 
-INVESTIGATE:
-- What's the local unemployment rate? What industries are shedding workers who might retrain?
-- Are there large retail employers (Walmart, Target, Amazon) with workers seeking healthcare career paths?
-- What does the Census data reveal about the specific population segments most likely to enroll?
-
-Make specific enrollment projections with reasoning, not ranges. If you think 15 students will enroll Year 1, say 15 and explain why.
-
-LENGTH: 600–800 words.
+SCORING: 8-10 strong demand and clear conversion path; 5-7 moderate; 1-4 weak or fragile.
 
 IMPORTANT: Return ONLY valid JSON. No markdown outside JSON. Keep string values concise. Do NOT include a markdownReport field.`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 6000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 5000 });
     const data = extractJSON(content) as LearnerDemandData;
 
     // Generate markdown if not provided by AI

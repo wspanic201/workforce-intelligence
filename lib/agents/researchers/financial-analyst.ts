@@ -82,70 +82,42 @@ function buildInterpretationPrompt(
 
   return `${persona.fullContext}
 
-You are a CFO consultant interpreting a Stage 2 (pre-curriculum) financial model. The numbers are already calculated — your job is to explain them, identify risks, and suggest mitigations. Do NOT invent new numbers.
+You are a CFO consultant interpreting a Stage 2 (pre-curriculum) financial model.
+The numbers are already calculated and should be treated as established fact.
+Do NOT invent or recompute model values.
 
-IMPORTANT CONTEXT: This is a validation-stage estimate. Precise modeling requires curriculum design (Stage 3), when actual seat time, contact-hour breakdown (lecture vs. lab vs. clinical), and materials lists are known. Instruction cost — currently from BLS benchmarks — is the largest variable. Frame your narrative to reflect this honest uncertainty while still giving actionable direction.
+FINANCIAL MODEL OUTPUT — ${project.program_name} (${project.client_name})
+Viability score: ${model.viabilityScore}/10 (${model.viabilityRationale})
+Year 1 pessimistic: ${p.enrollment} students, net ${fmt(p.netPosition)}, margin ${pct(p.margin)}
+Year 1 base: ${b.enrollment} students, net ${fmt(b.netPosition)}, margin ${pct(b.margin)}
+Year 1 optimistic: ${o.enrollment} students, net ${fmt(o.netPosition)}, margin ${pct(o.margin)}
+Year 2 base net: ${fmt(model.year2Base.netPosition)} (${pct(model.year2Base.margin)})
+Year 3 base net: ${fmt(model.year3Base.netPosition)} (${pct(model.year3Base.margin)})
+Break-even: ${model.breakEvenEnrollment} students
+Perkins impact: ${model.perkinsImpact}
+Key cost drivers: instructor ${fmt(b.expenses.instructorCost)}, lab setup ${fmt(b.expenses.labSetup)}, admin ${fmt(b.expenses.adminOverhead)}, coordinator ${fmt(b.expenses.coordinatorCost)}
+Assumptions:
+${model.assumptions ? model.assumptions.map(a => `- ${a.item}: ${a.value} [${a.source}]`).join('\n') : '- CEU model assumptions only'}
 
-═══════════════════════════════════════════════════════════
-FINANCIAL MODEL OUTPUT — ${project.program_name}
-Client: ${project.client_name}
-═══════════════════════════════════════════════════════════
+Your job is analysis only:
+- Is Year 1 viable in practical terms?
+- Which assumptions are fragile and which are robust?
+- What is the real break-even risk and what does it take operationally to hit it?
+- If a sensitivity table is available, interpret what it says about downside risk; do not generate a new table.
+- Give direct recommendations with clear financial implications.
 
-VIABILITY SCORE (from model): ${model.viabilityScore}/10
-Score logic: ${model.viabilityRationale}
+OUTPUT FORMAT:
+- 600-900 words in scoreRationale as narrative analysis
+- NO markdown tables
+- NO bullet-point list of repeated statistics
+- Keep risk/mitigation/recommendation arrays concise and strategic
 
-YEAR 1 P&L:
-  Pessimistic (${p.enrollment} students): Revenue ${fmt(p.revenue.total)} | Expenses ${fmt(p.expenses.total)} | Net ${fmt(p.netPosition)} | Margin ${pct(p.margin)}
-  Base (${b.enrollment} students): Revenue ${fmt(b.revenue.total)} | Expenses ${fmt(b.expenses.total)} | Net ${fmt(b.netPosition)} | Margin ${pct(b.margin)}
-  Optimistic (${o.enrollment} students): Revenue ${fmt(o.revenue.total)} | Expenses ${fmt(o.expenses.total)} | Net ${fmt(o.netPosition)} | Margin ${pct(o.margin)}
-
-YEAR 2 P&L (base: ${model.year2Base.enrollment} students, no lab setup):
-  Net: ${fmt(model.year2Base.netPosition)} | Margin: ${pct(model.year2Base.margin)}
-
-YEAR 3 P&L (base: ${model.year3Base.enrollment} students):
-  Net: ${fmt(model.year3Base.netPosition)} | Margin: ${pct(model.year3Base.margin)}
-
-BREAK-EVEN: ${model.breakEvenEnrollment} students (${((model.breakEvenEnrollment / b.enrollment) * 100).toFixed(0)}% of base enrollment)
-PERKINS V IMPACT: ${model.perkinsImpact}
-
-KEY COST DRIVERS:
-  - Instructor cost (Year 1): ${fmt(b.expenses.instructorCost)} (BLS-sourced adjunct rate)
-  - Lab setup (Year 1, one-time): ${fmt(b.expenses.labSetup)}
-  - Admin overhead (15% of direct): ${fmt(b.expenses.adminOverhead)}
-  - Coordinator (0.25 FTE): ${fmt(b.expenses.coordinatorCost)}
-
-ASSUMPTIONS USED:
-${model.assumptions ? model.assumptions.map(a => `  - ${a.item}: ${a.value} [${a.source}]`).join('\n') : '  - CEU model: minimal assumptions, uses instructor hourly rate + fixed overhead'}
-
-═══════════════════════════════════════════════════════════
-YOUR TASK:
-Don't just explain the numbers. Tell the client if this is a good investment or not. Be direct.
-
-If there's an unresolved cost assumption (like 160 vs 1,500 contact hours), don't present both — investigate which is correct and present your conclusion. If you can't determine which is right, flag it as a CRITICAL RISK that must be resolved before launch, and model the impact of both scenarios.
-
-Score honestly. If there's a major unresolved cost variable, it's not a 10/10.
-
-Write a brief narrative interpretation, then identify 3-5 key financial risks with mitigations, and 3-5 strategic recommendations.
-
-LENGTH: 800–1,000 words.
-
-SENSITIVITY TABLE (REQUIRED):
-If this program has an unresolved contact-hour assumption (e.g., the model uses a regulatory minimum like 160 hours but real ASHP-aligned programs run 600–1,500 hours), you MUST include a sensitivity table showing net income at multiple contact-hour scenarios. Use the instructor hourly rate from the model.
-
-Calculate and include a sensitivityTable in your JSON output showing 4 scenarios:
-- 160 hours (regulatory minimum)
-- 400 hours (short hybrid program)  
-- 600 hours (ASHP minimum)
-- 1,000 hours (full didactic + lab + externship)
-
-For each: annual instructor cost = hours × rate × sections, then recalculate Year 1 net.
-
-You MUST return ONLY the following JSON — no preamble, no questions:
+Return ONLY the following JSON:
 
 {
-  "scoreRationale": "2-3 sentence interpretation of why this score makes sense given the model results",
+  "scoreRationale": "600-900 word narrative interpretation",
   "keyRisks": [
-    "Risk 1 — specific, grounded in the model numbers",
+    "Risk 1 — specific and grounded in model assumptions",
     "Risk 2",
     "Risk 3"
   ],
@@ -160,19 +132,16 @@ You MUST return ONLY the following JSON — no preamble, no questions:
     "Recommendation 3"
   ],
   "funding_sources": [
-    "Perkins V — $8,000–$28,000/yr (eligible based on CIP code)",
-    "WIOA ETPL — per-student funding for eligible participants",
+    "Perkins V",
+    "WIOA ETPL",
     "Employer tuition reimbursement"
   ],
   "sensitivityTable": [
-    { "scenario": "160 hrs (regulatory minimum)", "instructorCost": 10874, "year1Net": 22007, "viable": true },
-    { "scenario": "400 hrs (short hybrid)", "instructorCost": 27185, "year1Net": 5696, "viable": true },
-    { "scenario": "600 hrs (ASHP minimum)", "instructorCost": 40778, "year1Net": -7897, "viable": false },
-    { "scenario": "1,000 hrs (full program)", "instructorCost": 67963, "year1Net": -35082, "viable": false }
+    { "scenario": "Scenario label", "instructorCost": 0, "year1Net": 0, "viable": true }
   ]
 }
 
-CRITICAL: Return ONLY the JSON. No preamble.`;
+CRITICAL: Return ONLY the JSON.`;
 }
 
 // ─── Agent Runner ─────────────────────────────────────────────────────────────
@@ -298,12 +267,12 @@ export async function runFinancialAnalysis(
     const persona = await loadPersona('cfo');
     const verifiedIntelBlock = (project as any)._intelContext?.promptBlock || '';
     const intelSection = verifiedIntelBlock
-      ? `\n═══ VERIFIED BASELINE (BLS, O*NET, Census — cite directly) ═══\n${verifiedIntelBlock}\n═══ END BASELINE ═══\nUse the above as your confirmed foundation. Note any assumptions in the financial model that conflict with verified data.`
+      ? `VERIFIED BASELINE DATA (confirmed from government sources — treat as established fact):\n${verifiedIntelBlock}\n`
       : '';
-    const prompt = buildInterpretationPrompt(financialModel, project, persona) + intelSection;
+    const prompt = `${intelSection}\n${buildInterpretationPrompt(financialModel, project, persona)}`;
 
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 2000,
+      maxTokens: 4000,
       model: 'claude-sonnet-4-6',
     });
 
