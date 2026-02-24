@@ -8,7 +8,7 @@ import { Badge, Modal, Field, Input, Select, TextArea, Btn } from '../../compone
 export default function InstitutionDetail() {
   const { id } = useParams();
   const router = useRouter();
-  const [tab, setTab] = useState<'profile' | 'programs' | 'custom' | 'economy'>('profile');
+  const [tab, setTab] = useState<'command' | 'profile' | 'programs' | 'custom' | 'economy'>('profile');
   const [inst, setInst] = useState<IntelInstitution | null>(null);
   const [programs, setPrograms] = useState<IntelInstitutionProgram[]>([]);
   const [custom, setCustom] = useState<IntelInstitutionCustom[]>([]);
@@ -70,9 +70,9 @@ export default function InstitutionDetail() {
     setCustom(res.data ?? []);
   };
 
-  // Load economy data when tab is selected
+  // Load economy data when economy/command tab is selected
   useEffect(() => {
-    if (tab === 'economy' && !economy && !ecoLoading) {
+    if ((tab === 'economy' || tab === 'command') && !economy && !ecoLoading) {
       setEcoLoading(true);
       fetch(`/api/admin/intelligence/institutions/${id}/economy`)
         .then(r => r.json())
@@ -81,10 +81,17 @@ export default function InstitutionDetail() {
     }
   }, [tab, economy, ecoLoading, id]);
 
+  useEffect(() => {
+    if (inst && (inst.name?.toLowerCase().includes('kirkwood') || inst.short_name?.toLowerCase().includes('kirkwood'))) {
+      setTab('command');
+    }
+  }, [inst]);
+
   if (loading) return <div className="text-slate-400 py-8 text-center">Loading...</div>;
   if (!inst) return <div className="text-red-500 py-8 text-center">Institution not found.</div>;
 
   const TABS = [
+    { key: 'command', label: '🎯 Command Center (Pilot)' },
     { key: 'profile', label: 'Profile' },
     { key: 'programs', label: `Programs (${programs.length})` },
     { key: 'custom', label: `Custom Data (${custom.length})` },
@@ -107,6 +114,59 @@ export default function InstitutionDetail() {
           >{t.label}</button>
         ))}
       </div>
+
+      {/* Command Center Tab */}
+      {tab === 'command' && (
+        <div className="space-y-6">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="bg-white rounded-xl border border-slate-200 p-4">
+              <div className="text-xs text-slate-500">Service Counties</div>
+              <div className="text-2xl font-bold text-slate-900">{economy?.service_area?.counties ?? '—'}</div>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-4">
+              <div className="text-xs text-slate-500">Population</div>
+              <div className="text-2xl font-bold text-slate-900">{economy?.demographics?.total_population?.toLocaleString?.() ?? '—'}</div>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-4">
+              <div className="text-xs text-slate-500">Median Income</div>
+              <div className="text-2xl font-bold text-slate-900">{economy?.demographics?.avg_median_household_income ? `$${economy.demographics.avg_median_household_income.toLocaleString()}` : '—'}</div>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-4">
+              <div className="text-xs text-slate-500">Linked Intel</div>
+              <div className="text-2xl font-bold text-slate-900">{intel?.total ?? 0}</div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl border border-slate-200 p-6">
+              <h3 className="font-semibold text-slate-900 mb-3">Top Industry Employment (Service Area)</h3>
+              {economy?.economy?.top_industries?.slice(0, 8)?.map((ind: any) => (
+                <div key={ind.naics_code} className="flex items-center justify-between py-2 border-b border-slate-100 last:border-b-0">
+                  <div>
+                    <div className="text-sm font-medium text-slate-900">{ind.name}</div>
+                    <div className="text-xs text-slate-500">NAICS {ind.naics_code}</div>
+                  </div>
+                  <div className="text-sm font-semibold text-slate-800">{ind.employees?.toLocaleString?.() || '—'}</div>
+                </div>
+              )) || <div className="text-sm text-slate-400">No economy data loaded yet.</div>}
+            </div>
+
+            <div className="bg-white rounded-xl border border-slate-200 p-6">
+              <h3 className="font-semibold text-slate-900 mb-3">Most Relevant Intelligence</h3>
+              {(intel?.recent || []).slice(0, 8).map((s: any) => (
+                <div key={s.id} className="py-2 border-b border-slate-100 last:border-b-0">
+                  <div className="text-xs text-slate-500 mb-1">{s.publisher || 'Intelligence Source'} • {s.source_type || 'source'}</div>
+                  <div className="text-sm font-medium text-slate-900">{s.title}</div>
+                  {s.url && <a href={s.url} target="_blank" rel="noreferrer" className="text-xs text-purple-600 hover:underline">Open source →</a>}
+                </div>
+              ))}
+              {(intel?.recent || []).length === 0 && (
+                <div className="text-sm text-slate-400">No linked intelligence yet. Tag sources to Kirkwood and they will appear here.</div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Profile Tab */}
       {tab === 'profile' && (
