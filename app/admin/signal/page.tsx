@@ -8,13 +8,21 @@ import { checkSendHealth, getRecentSends } from '@/lib/signal/send-tracker';
 import { checkNewsSourcesHealth } from '@/lib/signal/news-sources';
 
 export default async function SignalAdminPage() {
-  const [sendHealth, recentSends, newsHealth] = await Promise.all([
-    checkSendHealth(),
-    getRecentSends(10),
-    checkNewsSourcesHealth(),
-  ]);
+  let sendHealth = { healthy: false, daysSinceSuccess: 999, recentFailures: 0 } as Awaited<ReturnType<typeof checkSendHealth>>;
+  let recentSends: Awaited<ReturnType<typeof getRecentSends>> = [];
+  let newsHealth = { brave: false, newsapi: false, googleRss: false, cache: false } as Awaited<ReturnType<typeof checkNewsSourcesHealth>>;
 
-  const cronSecret = process.env.CRON_SECRET;
+  try {
+    [sendHealth, recentSends, newsHealth] = await Promise.all([
+      checkSendHealth(),
+      getRecentSends(10),
+      checkNewsSourcesHealth(),
+    ]);
+  } catch (err) {
+    console.error('[SignalAdmin] Failed to load health data:', err);
+  }
+
+  const cronSecret = process.env.CRON_SECRET || '';
 
   return (
     <div className="space-y-8">
@@ -64,23 +72,17 @@ export default async function SignalAdminPage() {
           target="_blank"
           icon="🏥"
         />
-        <ActionCard
-          title="Send Test"
-          description="Send newsletter to subscribers (production)"
-          href="#"
-          onClick="if(confirm('Send newsletter to all subscribers?')) { document.getElementById('send-form').submit(); }"
-          icon="🚀"
-        />
+        <form method="POST" action={`/api/send-signal?secret=${cronSecret}`}>
+          <button
+            type="submit"
+            className="w-full text-left block bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow border border-gray-200 hover:border-purple-500"
+          >
+            <div className="text-3xl mb-3">🚀</div>
+            <h3 className="font-semibold text-gray-900">Send Test</h3>
+            <p className="text-sm text-gray-600 mt-2">Send newsletter to subscribers (production)</p>
+          </button>
+        </form>
       </div>
-
-      {/* Hidden send form */}
-      <form 
-        id="send-form" 
-        method="POST" 
-        action={`/api/send-signal?secret=${cronSecret}`}
-        className="hidden"
-      >
-      </form>
 
       {/* Send History */}
       <div className="bg-white rounded-lg shadow">
@@ -190,12 +192,11 @@ function SourceStatusCard({ title, status, primary = false }: { title: string; s
   );
 }
 
-function ActionCard({ title, description, href, target, icon, onClick }: { title: string; description: string; href: string; target?: string; icon: string; onClick?: string }) {
+function ActionCard({ title, description, href, target, icon }: { title: string; description: string; href: string; target?: string; icon: string }) {
   return (
     <a 
       href={href} 
       target={target}
-      onClick={onClick ? () => eval(onClick) : undefined}
       className="block bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow border border-gray-200 hover:border-purple-500"
     >
       <div className="text-3xl mb-3">{icon}</div>

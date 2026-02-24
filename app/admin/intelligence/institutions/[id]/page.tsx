@@ -67,9 +67,6 @@ export default function InstitutionDetail() {
     setCustom(res.data ?? []);
   };
 
-  if (loading) return <div className="text-slate-400 py-8 text-center">Loading...</div>;
-  if (!inst) return <div className="text-red-500 py-8 text-center">Institution not found.</div>;
-
   // Load economy data when tab is selected
   useEffect(() => {
     if (tab === 'economy' && !economy && !ecoLoading) {
@@ -80,6 +77,9 @@ export default function InstitutionDetail() {
         .catch(() => setEcoLoading(false));
     }
   }, [tab, economy, ecoLoading, id]);
+
+  if (loading) return <div className="text-slate-400 py-8 text-center">Loading...</div>;
+  if (!inst) return <div className="text-red-500 py-8 text-center">Institution not found.</div>;
 
   const TABS = [
     { key: 'profile', label: 'Profile' },
