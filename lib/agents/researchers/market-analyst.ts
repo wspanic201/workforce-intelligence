@@ -6,7 +6,8 @@ import { searchGoogleJobs } from '@/lib/apis/serpapi';
 import { searchONET, getONETCompetencies } from '@/lib/apis/onet';
 import { withCache } from '@/lib/apis/cache';
 import { getBLSData } from '@/lib/apis/bls';
-import { fetchONETOnline, searchJobsBrave } from '@/lib/apis/web-fallbacks';
+import { fetchONETOnline } from '@/lib/apis/web-fallbacks';
+import { searchJobsBraveEnhanced } from '@/lib/apis/brave-jobs';
 import { findSOCCode, onetToSOC, isValidSOCCode, getSOCTitle } from '@/lib/mappings/soc-codes';
 
 /**
@@ -123,21 +124,19 @@ export async function runMarketAnalysis(
       return null; 
     });
 
-    // Fallback: If SerpAPI failed, try Brave Search for job data
+    // Fallback: If SerpAPI failed, try enhanced Brave Search for job data
     let liveJobsData = liveJobsDataResult;
-    if (!liveJobsData) {
-      console.log('[Market Analyst] Trying Brave Search fallback for job data...');
-      const braveResult = await searchJobsBrave(project.program_name, serpApiLocation).catch(() => null);
-      if (braveResult?.estimated_job_count) {
-        console.log(`[Market Analyst] Brave Search found ~${braveResult.estimated_job_count} jobs`);
-        // Create a minimal ProcessedJobData-compatible structure
-        liveJobsData = {
-          count: braveResult.estimated_job_count,
-          salaries: { min: 0, max: 0, median: 0, ranges: { entry: 'Not available', mid: 'Not available', senior: 'Not available' } },
-          topEmployers: [],
-          requiredSkills: [],
-          certifications: [],
-        } as any;
+    if (!liveJobsData || liveJobsData.count === 0) {
+      console.log('[Market Analyst] Trying Brave Search for job data...');
+      const braveResult = await withCache(
+        'brave_jobs',
+        { occupation: targetOccupation, location: serpApiLocation },
+        () => searchJobsBraveEnhanced(targetOccupation, serpApiLocation),
+        24
+      ).catch(() => null);
+      if (braveResult && (braveResult.count > 0 || braveResult.topEmployers.length > 0)) {
+        console.log(`[Market Analyst] Brave Search: ~${braveResult.count} postings, ${braveResult.topEmployers.length} employers`);
+        liveJobsData = braveResult;
       }
     }
 

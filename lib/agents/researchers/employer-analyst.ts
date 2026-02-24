@@ -3,6 +3,7 @@ import { ValidationProject } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { PROGRAM_VALIDATOR_SYSTEM_PROMPT } from '@/lib/prompts/program-validator';
 import { searchGoogleJobs } from '@/lib/apis/serpapi';
+import { searchJobsBraveEnhanced } from '@/lib/apis/brave-jobs';
 import { withCache } from '@/lib/apis/cache';
 
 export interface EmployerDemandData {
@@ -72,13 +73,28 @@ export async function runEmployerDemand(
         () => searchGoogleJobs(targetOccupation, location),
         168 // 7 days
       );
-      
-      if (jobsData && jobsData.topEmployers.length > 0) {
-        employerList = jobsData.topEmployers.slice(0, 10);
-        console.log(`[Employer Demand] Found ${jobsData.count} jobs, top employer: ${employerList[0]?.name} (${employerList[0]?.openings} openings)`);
-      }
     } catch (err) {
-      console.warn('[Employer Demand] Google Jobs failed:', err);
+      console.warn('[Employer Demand] SerpAPI failed, falling back to Brave Search:', (err as Error).message);
+    }
+
+    // Brave fallback if SerpAPI returned nothing or errored
+    if (!jobsData || jobsData.topEmployers.length === 0) {
+      try {
+        jobsData = await withCache(
+          'employer_jobs_brave',
+          { occupation: targetOccupation, location },
+          () => searchJobsBraveEnhanced(targetOccupation, location),
+          24 // 1 day — brave results fresher
+        );
+        if (jobsData) console.log(`[Employer Demand] Brave fallback: ~${jobsData.count} postings`);
+      } catch (braveErr) {
+        console.warn('[Employer Demand] Brave fallback failed:', (braveErr as Error).message);
+      }
+    }
+
+    if (jobsData && jobsData.topEmployers.length > 0) {
+      employerList = jobsData.topEmployers.slice(0, 10);
+      console.log(`[Employer Demand] Top employer: ${employerList[0]?.name} (${employerList[0]?.openings} signal hits)`);
     }
 
     // Read shared MCP intel (fetched once by orchestrator)
