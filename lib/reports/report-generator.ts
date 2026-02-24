@@ -612,7 +612,7 @@ function buildCompetitiveLandscapeSection(
   if (compComp) {
     const md = compComp.markdown_output || formatComponentContent('competitive_landscape', compComp.content);
     if (md) {
-      const cleaned = cleanAgentMarkdown(md, programName);
+      const cleaned = stripDataTables(cleanAgentMarkdown(md, programName));
       if (cleaned) {
         parts.push('', cleaned);
       }
@@ -665,7 +665,7 @@ function buildCurriculumDesignSection(
 
     const md = acadComp.markdown_output || formatComponentContent('academic_analysis', acadComp.content);
     if (md) {
-      const cleaned = cleanAgentMarkdown(md, programName);
+      const cleaned = stripDataTables(cleanAgentMarkdown(md, programName));
       if (cleaned) {
         parts.push('', '## Curriculum Framework', '', cleaned);
       }
@@ -677,7 +677,7 @@ function buildCurriculumDesignSection(
   if (instComp) {
     const md = instComp.markdown_output || formatComponentContent('institutional_fit', instComp.content);
     if (md) {
-      const cleaned = cleanAgentMarkdown(md, programName);
+      const cleaned = stripDataTables(cleanAgentMarkdown(md, programName));
       if (cleaned) {
         parts.push('', '## Institutional Capacity', '', cleaned);
       }
@@ -689,7 +689,7 @@ function buildCurriculumDesignSection(
   if (regComp) {
     const md = regComp.markdown_output || formatComponentContent('regulatory_compliance', regComp.content);
     if (md) {
-      const cleaned = cleanAgentMarkdown(md, programName);
+      const cleaned = stripDataTables(cleanAgentMarkdown(md, programName));
       if (cleaned) {
         parts.push('', '## Regulatory & Compliance Considerations', '', cleaned);
       }
@@ -718,7 +718,7 @@ function buildFinancialProjectionsSection(
   if (finComp) {
     const md = finComp.markdown_output || formatComponentContent('financial_viability', finComp.content);
     if (md) {
-      const cleaned = cleanAgentMarkdown(md, programName);
+      const cleaned = stripDataTables(cleanAgentMarkdown(md, programName));
       if (cleaned) {
         parts.push('', cleaned);
       }
@@ -775,7 +775,7 @@ function buildMarketingStrategySection(
   if (learnerComp) {
     const md = learnerComp.markdown_output || formatComponentContent('learner_demand', learnerComp.content);
     if (md) {
-      const cleaned = cleanAgentMarkdown(md, programName);
+      const cleaned = stripDataTables(cleanAgentMarkdown(md, programName));
       if (cleaned) {
         parts.push('', cleaned);
       }
@@ -1052,18 +1052,46 @@ function replaceTigerTeam(text: string): string {
  * replaces Tiger Team references, and removes agent-level Data Sources blocks.
  */
 /**
- * Strip data tables from agent markdown — leaves narrative prose only.
- * Used when data tables are already rendered from DB (data-renderer.ts).
+ * Strip data tables AND structured data sections from agent markdown.
+ * Leaves narrative prose paragraphs only.
+ * Used when data-renderer.ts already renders verified DB tables.
  */
 function stripDataTables(md: string): string {
   let out = md;
-  // Remove markdown pipe tables (| col | col | ... )
+
+  // Remove markdown pipe tables
   out = out.replace(/^\|.+\|[\s\S]*?(?=\n[^|]|\n*$)/gm, '');
-  // Remove table headers/separators that might be orphaned
   out = out.replace(/^[\s|:-]+\|[\s|:-]*$/gm, '');
+
   // Remove HTML table tags
   out = out.replace(/<table[\s\S]*?<\/table>/gi, '');
-  // Clean up resulting blank lines
+
+  // Remove ### sub-section headers that introduce structured data blocks
+  // (Current Market Conditions, Job Demand, Salary Ranges, etc.)
+  const DATA_HEADERS = [
+    'Current Market Conditions', 'Job Demand', 'Salary Ranges?', 'Top Employers Hiring',
+    'Most Requested Skills?', 'Industry Certifications?', 'Employment Statistics?',
+    'Market Overview', 'Key Statistics', 'Regional (?:Employment|Data|Overview)',
+    'Wage (?:Data|Overview|Analysis)', 'Employment (?:Data|Statistics|Overview)',
+    'Source(?:s)?:', 'Data Sources?', 'Current Regional', 'Analysis Date',
+  ];
+  const headerPattern = new RegExp(
+    `^###?\\s*(?:${DATA_HEADERS.join('|')})[^\\n]*\\n(?:[^#\\n][^\\n]*\\n|\\n)*`,
+    'gmi'
+  );
+  out = out.replace(headerPattern, '');
+
+  // Remove bold-label data lines: **Field:** value  or  **Field** - value
+  out = out.replace(/^\*\*[A-Z][^*]{0,40}\*\*[:\s–-][^\n]{0,120}$/gm, '');
+
+  // Remove numbered employer/competitor lists that are just data
+  out = out.replace(/^\d+\.\s+\*\*[^*]+\*\*\s*[-–]\s*\d+\s+openings?\s*$/gm, '');
+
+  // Remove *Source: ...* lines (citations already in data-renderer output)
+  out = out.replace(/^\*Source[^*]*\*\s*$/gm, '');
+  out = out.replace(/^_Source[^_]*_\s*$/gm, '');
+
+  // Clean up blank lines
   out = out.replace(/\n{3,}/g, '\n\n').trim();
   return out;
 }
@@ -1115,8 +1143,8 @@ function cleanAgentMarkdown(md: string, programName?: string): string {
   out = out.trim();
 
   // 10. Length discipline: target 20-25 page report — cap each agent section at ~4K chars
-  if (out.length > 2000) {
-    const truncated = out.substring(0, 2000);
+  if (out.length > 1500) {
+    const truncated = out.substring(0, 1500);
     const lastParagraph = truncated.lastIndexOf('\n\n');
     if (lastParagraph > 2000) {
       out = truncated.substring(0, lastParagraph).trim();
