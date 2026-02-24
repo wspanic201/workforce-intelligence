@@ -337,7 +337,7 @@ LENGTH: 600–800 words.
 
 NOTE: For licensure fields, only populate initialLicensure OR continuingEducation based on what this program actually is. Include stateLawReference with specific statute/rule citations.`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 12000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 6000 });
     const data = extractJSON(content) as RegulatoryComplianceData;
 
     if (!data.markdownReport) {

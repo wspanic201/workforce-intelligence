@@ -384,6 +384,25 @@ function computeViabilityScore(
     notes.push(`${inputs.deliveryFormat} delivery — lower overhead (+1)`);
   }
 
+  // PENALTY: Unresolved contact-hour assumption
+  // If program uses the regulatory minimum (160 hrs) as a proxy, the financial model
+  // is built on an unverified assumption. ASHP-aligned programs typically run 600–1,500 hrs.
+  // Cap score at 7 to reflect this material uncertainty.
+  const isDefaultHours = inputs.totalSeatHours <= 160;
+  const isHealthcareProgram = (inputs as any)._programType === 'healthcare' ||
+    (inputs as any)._programType === 'allied_health' ||
+    inputs.totalSeatHoursSource?.toLowerCase().includes('minimum') ||
+    inputs.totalSeatHoursSource?.toLowerCase().includes('floor') ||
+    inputs.totalSeatHoursSource?.toLowerCase().includes('regulatory minimum');
+
+  if (isDefaultHours) {
+    const uncappedScore = Math.max(1, Math.min(10, score));
+    if (uncappedScore > 7) {
+      notes.push(`UNRESOLVED: Contact hours use regulatory minimum (${inputs.totalSeatHours} hrs). Score capped at 7 — model must be rebuilt at validated contact-hour count before committing capital.`);
+      return { score: 7, rationale: notes.join('; ') + '. Indicative only — contact-hour validation required.' };
+    }
+  }
+
   const finalScore = Math.max(1, Math.min(10, score));
 
   // Pre-curriculum caveat — score is indicative until Stage 3 seat-time breakdown is available

@@ -48,6 +48,9 @@ export interface InstitutionalFitData {
   };
   dataSources: string[];
   markdownReport: string;
+  // Program competencies — what graduates can do on day one
+  graduate_competencies?: string[];
+  learning_outcomes?: string[];
 }
 
 export async function runInstitutionalFit(
@@ -143,8 +146,18 @@ OUTPUT FORMAT (JSON):
     "constraints": ["Constraint 1"],
     "readinessLevel": "high|moderate|low"
   },
-  "dataSources": ["Source 1"]
+  "dataSources": ["Source 1"],
+  "graduate_competencies": [
+    "What a graduate can DO on day one — specific and measurable job performance capability",
+    "Example: Accurately process 50+ prescription orders per shift using standard pharmacy software"
+  ],
+  "learning_outcomes": [
+    "Academic outcome 1 — measurable",
+    "Academic outcome 2"
+  ]
 }
+
+REQUIRED: Include graduate_competencies — specific, job-performance-level capabilities a graduate demonstrates on day one. Not "understand pharmacy terminology" but "accurately verify prescription orders, identify drug interactions, and compound sterile preparations under pharmacist supervision." These are the product of the program.
 
 Write this from the perspective of someone who knows community colleges. Don't list facilities and check boxes — assess whether this institution can actually pull this off. What's their track record with similar programs? What are the real barriers?
 

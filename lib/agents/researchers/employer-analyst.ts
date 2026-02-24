@@ -225,7 +225,7 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Kee
   "dataSources": ["Source 1"]
 }`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 16000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 8000 });
     const data = extractJSON(content) as EmployerDemandData;
 
     if (!data.markdownReport) {

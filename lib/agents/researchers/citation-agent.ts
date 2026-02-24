@@ -95,12 +95,29 @@ BAD CITATION EXAMPLES (flag these):
    → Third-party website for regulatory data (should be legis.iowa.gov)
 
 SOURCE QUALITY HIERARCHY:
-1. ✅ Official government sources (.gov domains, state codes)
-2. ✅ Federal data (BLS, Census, O*NET)
-3. ✅ State/regional data (state workforce boards)
-4. ⚠️ Industry associations (acceptable with verification)
-5. ⚠️ Competitor websites (acceptable for competitor analysis only)
-6. ❌ Third-party aggregator sites (NOT acceptable for regulatory data)
+1. ✅ Official government sources (.gov domains, state codes) — primary evidence
+2. ✅ Federal data (BLS, Census, O*NET) — primary evidence
+3. ✅ State/regional data (state workforce boards) — primary evidence
+4. ✅ Industry associations (ASHP, NCPA, PTCB) — supporting evidence
+5. ✅ Employer career pages and official postings — active market signal
+6. ⚠️ Reddit, student forums, Indeed/Glassdoor reviews, LinkedIn discussions — QUALITATIVE SIGNAL (see below)
+7. ❌ Third-party aggregator sites for regulatory data (NOT acceptable for regulatory claims)
+
+QUALITATIVE SOURCES — TRANSFORM, DO NOT DELETE:
+Reddit, student forums (r/PharmacyTechnician, etc.), Indeed reviews, Glassdoor, rate-my-professor, LinkedIn discussions are LEGITIMATE market intelligence. They provide qualitative signal that government data cannot — competitor weaknesses, learner concerns, employer culture, real student experiences.
+
+DO NOT strip these citations. Instead, TRANSFORM them:
+❌ "Reddit r/PharmacyTechnician reports externship waitlists at DMACC"
+✅ "Online community feedback among pharmacy technician students and practitioners indicates externship site availability constraints at DMACC"
+
+❌ "According to Indeed reviews, Ashworth's curriculum is outdated"
+✅ "Student and graduate reviews of Ashworth's program indicate concerns about curriculum currency relative to current PTCB exam content"
+
+Rules for qualitative source handling:
+- Change attribution to professional language ("online practitioner community feedback," "student-reported experiences," "publicly available program reviews")
+- Downgrade claim strength: use "indicates," "suggests," "anecdotal reports suggest," not "confirms" or "shows"
+- Only use qualitative signal to TRIANGULATE — it supports a finding from a stronger source, or fills a gap where no government data exists
+- Qualitative signal about COMPETITORS is especially valuable — keep it, transform it
 
 HOW TO VERIFY:
 1. Use your knowledge to check facts

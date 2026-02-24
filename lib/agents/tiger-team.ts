@@ -66,17 +66,20 @@ ${researchSummary}
 DELIVERABLES:
 ═══════════════════════════════════════════════════════════
 
-# Executive Summary (800-1,000 words MAX)
+# Executive Summary (600-800 words MAX)
 
-Write a NARRATIVE executive summary, not bullet points. Tell the story of this program opportunity.
+Write a NARRATIVE executive summary. Discovery-framed: lead with what the research FOUND, not what the client is evaluating.
+
+WRONG: "Kirkwood Community College is evaluating whether to launch a Pharmacy Technician Certificate program targeting career changers..."
+RIGHT: "Our analysis reveals a market with genuine structural demand, a defensible competitive window, and economics that hold — if one critical assumption resolves in the program's favor."
 
 **Structure:**
-- **Opening:** What is this program and why is the institution considering it? (2-3 sentences)
-- **The Opportunity:** What makes this strategically attractive? Paint the picture of success. (2-3 paragraphs)
-- **The Challenges:** What are the critical execution risks? What could go wrong? (2-3 paragraphs)
-- **The Verdict:** What's the recommendation and why? What needs to happen next? (1-2 paragraphs)
+- **Opening:** What did we FIND? Lead with the research verdict. Not "the institution is considering" — "our analysis reveals." (1-2 sentences)
+- **The Opportunity:** What makes this strategically attractive? What did the data show that justifies investment? (2 paragraphs)
+- **The Critical Risk:** What is the one thing that could break this? Be direct. (1 paragraph)
+- **The Verdict:** Recommendation + what must happen next. (1 paragraph)
 
-**Tone:** Write like a consulting partner presenting to a Board. Be confident but honest. If the program is risky, say it directly. If it's a strong opportunity, make the case compellingly.
+**Tone:** Write like a consulting partner presenting to a Board. Be confident but honest. Lead with the answer, support it with evidence.
 
 # Recommendation (600-800 words MAX)
 
@@ -102,7 +105,39 @@ Provide 3-5 key findings (100-150 words each) that synthesize across all researc
 
 # Conditions for Go
 
-If applicable, provide 3-5 conditions (50-100 words each) with clear deadlines and kill criteria. Each condition specifies: WHAT must happen, WHO owns it, by WHEN, and what triggers a no-go if unmet.
+If CONDITIONAL GO: Identify the 1-2 TRUE GATES — conditions that would genuinely change the recommendation if unmet. These are launch blockers. Additional "nice to have" items are implementation tasks, not conditions.
+
+For each true gate (maximum 2): WHAT must happen, WHO owns it, by WHEN, KILL CRITERION if unmet.
+
+Do NOT list 5 conditions when only 1-2 are genuinely make-or-break. A list of 5 kill-criteria conditions is functionally a Defer recommendation and should be called what it is.
+
+# Perspective Assessments
+
+Four members of the Wavelength advisory team weigh in. Each section is 400-500 words, written in FIRST PERSON, as if the advisor is speaking directly. Be opinionated. Challenge each other if you disagree. This is where the consulting value shows.
+
+## Priya Mehta — Head of Strategy
+*Product-market fit, execution risk, strategic positioning*
+
+Write as Priya. First person. Lead with your sharpest observation about this program's strategic positioning. What do you believe about this that the data might not fully capture? Where is the real risk in execution? Example energy: push past the obvious and say what's actually at stake.
+
+## Fatima Al-Rashid — Chief Financial Officer
+*Unit economics, enrollment sensitivity, financial risk*
+
+Write as Fatima. First person. Lead with the CFO's direct take on whether this program is financially defensible. Do NOT hedge. Call the central financial question by its name. Example energy: "Let me be blunt: this program is financially viable IF—and only if—one critical assumption resolves in the program's favor. That assumption is currently unresolved by a factor of four. That's not a rounding error; it's a $30,000 swing in Year 1 instructor costs alone."
+
+## Valentina Rojas-Medina — Chief Marketing Officer
+*Recruitment strategy, brand positioning, employer partnerships*
+
+Write as Valentina. First person. Lead with the go-to-market question you'd ask first. How do you recruit the first cohort? Who is the ideal student and how do you find them before the program goes live? What marketing move would you make in week one?
+
+## Marcy Villanueva-Chen — VP Education Strategy
+*Curriculum defensibility, instructor pipeline, credential value*
+
+Write as Marcy. First person. What's your read on the academic and operational readiness? Is the curriculum design sound — will a graduate have demonstrably employable skills on day one? What will make or break the student experience?
+
+---
+
+Each advisor must feel like a real person with opinions, not a label on a spreadsheet. These sections should read like a roundtable discussion, not four parallel reports. If there's tension between the financial read and the strategic one — name it.
 
 ---
 
@@ -126,7 +161,7 @@ FACTUAL INTEGRITY RULES (MANDATORY):
 Respond with the complete markdown document above.`;
 
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 4000,  // 4k — synthesis should be concise, not repeat agent findings
+      maxTokens: 8000,  // 8k — allows exec summary + recommendation + key findings + 4 persona sections
       temperature: 1.0,
     });
 

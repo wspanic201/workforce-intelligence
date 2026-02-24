@@ -295,38 +295,39 @@ ANALYSIS TASK:
 Write a consulting-grade labor market analysis. Start with SCORE: X/10 | RATIONALE: [one sentence].
 
 Cover these sections using the REAL data above:
-1. **Labor Market Overview** — job openings, wage analysis (entry/mid/senior with BLS percentiles), supply/demand balance, automation risk
-2. **Employer Landscape** — top employers hiring, sectors, typical requirements, retention patterns
-3. **Skills & Certifications** — most-requested skills from postings, O*NET alignment, certification requirements
-4. **5-Year Forecast** — BLS projections, industry trends, risk factors
-5. **Competitive Programs** — competing programs in region, market saturation ratio
-6. **Recommendations** — 5-7 specific, actionable recommendations
+1. **Local Market Demand** — CRITICAL: Localize demand to the specific region (county/metro), not statewide. If you have statewide figures, calculate the local share based on regional employment concentration. "510 statewide openings, Iowa regional employment data suggests Linn + Johnson counties absorb approximately X% of healthcare employment = ~Y local openings annually." Do not report statewide as the local market.
+2. **Supply vs. Demand** — How many graduates do Iowa/regional programs currently produce in this occupation annually? Compare against annual openings. If supply nearly meets demand, the market opportunity is replacement/turnover, not net new — say so.
+3. **Wage Analysis** — Entry/mid/senior wages with BLS percentiles. What is the earnings step-up from current retail/service roles?
+4. **Employer Landscape** — Named employers currently hiring. Search for actual current postings. Note posting volume as "directional signal from snapshot date" — not a rigorous sample.
+5. **Skills & Certifications** — Key skills from O*NET. If job posting data is limited (n<20), label it explicitly: "directional signal from limited sample — not statistically representative."
+6. **5-Year Forecast** — BLS projections with local context. Industry trends, macro drivers (scope of practice changes, aging population, pharmacy expansion).
+7. **Recommendations** — 5-7 specific, actionable recommendations.
 
-CRITICAL: Contextualize demand with macro drivers when relevant. Don't just say "demand is up 15%" — explain WHY:
-- **Reshoring/Nearshoring:** Manufacturing returning from China/Mexico → domestic production labor needs
-- **Immigration Policy:** Restricted immigration → structural labor shortages in traditionally immigrant-heavy occupations
-- **Federal Spending:** Infrastructure bills, CHIPS Act, IRA → construction, semiconductor, clean energy jobs
-- **Workforce Pell Expansion:** Federal policy shift making short-term credentials financially accessible
-- **Regulatory Changes:** New licensing requirements, scope of practice expansions
+REQUIRED: LOCAL SHARE CALCULATION
+The client's institution serves a specific geographic area, not the whole state. You must estimate local demand:
+- Regional healthcare employment as % of state total
+- Apply that % to statewide opening figures
+- Acknowledge uncertainty but provide a range ("Linn + Johnson counties represent approximately 12-15% of Iowa's healthcare employment base, suggesting 60-75 annual pharmacy tech openings in the local market")
 
-Example (Good): "Pharmacy tech demand is up 18% — driven by nationwide pharmacy staffing crisis compounded by immigration restrictions that previously filled these roles with H-1B visa holders."
-Example (Bad): "Pharmacy tech demand is strong and growing."
+REQUIRED: SUPPLY-SIDE MATH
+Demand means nothing without supply context. Research and report:
+- How many pharmacy tech (or equivalent) graduates do Iowa programs produce annually?
+- What is the gap between annual openings and annual graduates?
+- A market where openings = 510 and graduates = 480 is very different from openings = 510 and graduates = 80.
 
-Make it strategic, not just descriptive. Connect local data to national/policy trends.
+DATA QUALITY RULES:
+- Job posting data from a single-day snapshot: label as "directional signal, n=[X], [date]"
+- Statewide figures used for local estimation: label as "estimated local share"
+- Qualitative signals from online communities (Reddit, forums, student reviews): cite as "online practitioner community feedback" — these are valid triangulating evidence, not primary data
+- Skills from a small posting sample: "directional only" disclaimer required
 
-GO BEYOND THE DATA PROVIDED. The verified intelligence data gives you the baseline. Now investigate:
-- Search for actual current job postings in the specific region. Name the employers.
-- Look for industry trend reports, workforce development news, policy changes affecting this occupation.
-- Check if major employers in the area have announced expansions, closures, or hiring freezes.
-- If something doesn't add up (like AWS being listed as a pharmacy tech skill), call it out and investigate why.
+CRITICAL: Contextualize demand with macro drivers:
+- Aging population → retail pharmacy volume growth
+- Hospital pharmacy expansion → tech pipeline demand
+- Scope of practice changes → increased tech responsibilities
+- Pharmacy closures (CVS, Walgreens national consolidation) → shifts from retail to hospital/specialty
 
-Write with authority. You're not summarizing a database — you're telling the client whether the labor market supports their investment.
-
-Rules:
-- Cite specific numbers from the data above (not vague claims)
-- If data is missing, say so — don't fabricate
-- Be specific about employers, wages, and regional factors
-- Use markdown headers for structure
+GO BEYOND THE DATA PROVIDED. Search for current postings, industry news, employer expansions in the region.
 
 LENGTH: 800–1,200 words. Every sentence earns its space.`;
 

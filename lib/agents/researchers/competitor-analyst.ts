@@ -164,7 +164,7 @@ export async function runCompetitiveAnalysis(
     }
 
     const ipedsSection = competitorCompletions.length > 0
-      ? `\nIPEDS PROGRAM COMPLETIONS (actual graduates from competing institutions, CIP ${cipCode} - ${cipTitle}):\n${competitorCompletions.map(c => `- ${c.institution} (${c.city}): ${c.completions} completers`).join('\n')}\n`
+      ? `\nIPEDS PROGRAM COMPLETIONS (annual graduates/completers from competing institutions — NOT enrollment figures; CIP ${cipCode} - ${cipTitle}):\n${competitorCompletions.map(c => `- ${c.institution} (${c.city}): ${c.completions} annual completers`).join('\n')}\nNote: IPEDS reports total annual completions for the program. Do not describe these as "enrollment" figures or infer cohort size without additional context.\n`
       : '';
 
     // Get shared verified intelligence context
@@ -189,10 +189,21 @@ This data confirms what exists. Your job is to explain what it means right now �
 
 Identify 3-5 competing programs, market gaps, and differentiation opportunities.
 
-Build a competitive comparison. For each competitor, investigate:
-- What do actual students say about the program? (Check Google reviews, Reddit, Indeed)
-- What are their actual completion/placement rates? (Check IPEDS, program websites)
-- What are their specific weaknesses that the client could exploit?
+COMPETITIVE LANDSCAPE IS BROADER THAN ACADEMIC PROGRAMS:
+Identify ALL alternatives a prospective student might choose instead — not just competing college programs:
+1. **Academic competitors** — community colleges, technical colleges, online programs (Penn Foster, Ashworth, Purdue Global, etc.)
+2. **Employer-based training** — major employers in this field who train their own staff:
+   - Walgreens: documented internal pharmacy technician training pathway for existing retail employees
+   - CVS: similar in-store training programs
+   - Hospital systems: often prefer to train internally rather than hire credentialed
+   Note: Employer-based alternatives represent a real learner segment who will choose "get hired at Walgreens and get trained" over paying tuition. This must appear in the analysis.
+3. **Online/self-study paths** — PTCB exam prep courses, YouTube, self-study without a formal program
+4. **Military/apprenticeship** — relevant for some healthcare occupations
+
+For each academic competitor, investigate:
+- What do students actually say? Search Reddit, Google reviews, Indeed, Glassdoor for program-specific feedback — cite these as "online student community feedback"
+- Specific weaknesses in student reviews (externship availability, curriculum currency, instructor quality)
+- IPEDS completion data (note: reports annual completions, not per-cohort enrollment — distinguish when inferring cohort size)
 
 Don't just list competitors — tell the client how to beat them. End with a clear positioning recommendation: "You should position as [X] because [Y]."
 
@@ -284,7 +295,7 @@ ${data.competitors.map((comp, i) => `
 - **Format:** ${comp.format}
 - **Duration:** ${comp.duration}
 - **Cost:** ${comp.cost}
-${comp.enrollment ? `- **Enrollment:** ${comp.enrollment}` : ''}
+${comp.enrollment ? `- **Annual Graduates (IPEDS completions):** ${comp.enrollment}` : ''}
 ${comp.website ? `- **Website:** ${comp.website}` : ''}
 
 **Unique Features:**

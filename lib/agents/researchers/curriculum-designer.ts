@@ -49,17 +49,18 @@ PROGRAM DETAILS:
 ${project.constraints ? `- Constraints: ${project.constraints}` : ''}
 
 DESIGN REQUIREMENTS:
-1. Define program-level learning outcomes (career-focused)
-2. Create course sequence (4-8 courses typical for certificate)
-3. For each course:
+1. Define program-level learning outcomes (career-focused, measurable)
+2. Define GRADUATE COMPETENCIES — what can a graduate DO on day one of employment? Not just academic outcomes, but actual job performance capabilities. Example: "Accurately process and verify 50+ prescription orders per shift using standard pharmacy management software" or "Perform sterile and non-sterile compounding under pharmacist supervision." These are the product of the program. Be specific.
+3. Create course sequence (4-8 courses typical for certificate)
+4. For each course:
    - Course code and name
-   - Credit hours
+   - Credit hours or contact hours
    - Description
    - Key competencies covered
-4. Identify industry certifications that can be embedded
-5. List equipment/lab requirements
-6. Define faculty qualifications needed
-7. Note accreditation considerations
+5. Identify industry certifications that can be embedded (PTCB, ExCPT, ASHP)
+6. List equipment/lab requirements
+7. Define faculty qualifications needed
+8. Note accreditation considerations (especially ASHP accreditation pathway vs. non-accredited)
 
 OUTPUT FORMAT (JSON):
 {
@@ -72,6 +73,10 @@ OUTPUT FORMAT (JSON):
   "learning_outcomes": [
     "Outcome 1",
     "Outcome 2"
+  ],
+  "graduate_competencies": [
+    "Day-one job performance capability 1 — specific and measurable",
+    "Day-one job performance capability 2"
   ],
   "courses": [
     {

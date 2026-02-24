@@ -364,10 +364,12 @@ function buildNarrativeFromScores(
 
   const parts: string[] = [];
 
-  parts.push(`Based on comprehensive analysis across market demand, competitive landscape, curriculum viability, financial projections, and marketing opportunity, this report evaluates the proposed **${project.program_name}** program at **${project.client_name}**.`);
+  // Discovery framing: lead with what the research found, not what the client is evaluating
+  const occupationLabel = (project as any).target_occupation || project.program_name;
+  parts.push(`Our analysis of the ${occupationLabel} market at **${project.client_name}** reveals the following picture.`);
   parts.push('');
 
-  parts.push('### Key Findings');
+  parts.push('### What the Research Found');
   parts.push('');
 
   if (raw?.occupation?.projections) {
@@ -660,6 +662,31 @@ function buildCurriculumDesignSection(
 ): string {
   const parts: string[] = ['# Curriculum Design'];
 
+  // Graduate competencies from institutional fit / curriculum component
+  const acadComp = components.find(c => c.component_type === 'institutional_fit');
+  if (acadComp) {
+    const content = acadComp.content as any;
+    const gradCompetencies: string[] = content?.graduate_competencies || content?.data?.graduate_competencies || [];
+    const learningOutcomes: string[] = content?.learning_outcomes || content?.data?.learning_outcomes || [];
+
+    if (gradCompetencies.length > 0) {
+      parts.push('', '## Graduate Competencies', '');
+      parts.push('*A graduate of this program will be able to perform the following on day one of employment:*', '');
+      gradCompetencies.forEach(c => parts.push(`- ${c}`));
+    } else if (learningOutcomes.length > 0) {
+      parts.push('', '## Program Learning Outcomes', '');
+      learningOutcomes.forEach(o => parts.push(`- ${o}`));
+    }
+
+    const md = acadComp.markdown_output || formatComponentContent('academic_analysis', acadComp.content);
+    if (md) {
+      const cleaned = cleanAgentMarkdown(md, programName);
+      if (cleaned) {
+        parts.push('', '## Curriculum Framework', '', cleaned);
+      }
+    }
+  }
+
   // Institutional fit
   const instComp = components.find(c => c.component_type === 'institutional_fit');
   if (instComp) {
@@ -667,7 +694,7 @@ function buildCurriculumDesignSection(
     if (md) {
       const cleaned = cleanAgentMarkdown(md, programName);
       if (cleaned) {
-        parts.push('', cleaned);
+        parts.push('', '## Institutional Capacity', '', cleaned);
       }
     }
   }
@@ -710,6 +737,34 @@ function buildFinancialProjectionsSection(
       if (cleaned) {
         parts.push('', cleaned);
       }
+    }
+
+    // Render sensitivity table if present in component content
+    const content = finComp.content as any;
+    const sensitivityTable = content?.sensitivityTable || content?.data?.sensitivityTable;
+    if (Array.isArray(sensitivityTable) && sensitivityTable.length > 0) {
+      parts.push('', '## Contact-Hour Sensitivity Analysis', '');
+      parts.push('*The financial model is built on an unverified contact-hour assumption. This table shows Year 1 net income across four scenarios. Resolve the actual required hours before committing capital.*', '');
+      parts.push(`<div style="overflow-x:auto;margin:16px 0;">
+<table style="width:100%;border-collapse:collapse;font-size:13px;">
+<thead>
+<tr style="background:#f1f5f9;">
+<th style="text-align:left;padding:10px 14px;border-bottom:2px solid #e2e8f0;color:#475569;">Scenario</th>
+<th style="text-align:right;padding:10px 14px;border-bottom:2px solid #e2e8f0;color:#475569;">Instructor Cost</th>
+<th style="text-align:right;padding:10px 14px;border-bottom:2px solid #e2e8f0;color:#475569;">Year 1 Net</th>
+<th style="text-align:center;padding:10px 14px;border-bottom:2px solid #e2e8f0;color:#475569;">Viable at Base Enrollment</th>
+</tr>
+</thead>
+<tbody>
+${sensitivityTable.map((row: any, i: number) => `<tr style="background:${i % 2 === 0 ? '#fff' : '#f8fafc'};">
+<td style="padding:9px 14px;border-bottom:1px solid #e2e8f0;color:#334155;">${row.scenario}</td>
+<td style="text-align:right;padding:9px 14px;border-bottom:1px solid #e2e8f0;color:#334155;">$${Number(row.instructorCost).toLocaleString()}</td>
+<td style="text-align:right;padding:9px 14px;border-bottom:1px solid #e2e8f0;font-weight:600;color:${row.viable ? '#059669' : '#dc2626'};">$${Number(row.year1Net).toLocaleString()}</td>
+<td style="text-align:center;padding:9px 14px;border-bottom:1px solid #e2e8f0;">${row.viable ? '<span style="color:#059669;font-weight:600;">✓ Yes</span>' : '<span style="color:#dc2626;font-weight:600;">✗ No</span>'}</td>
+</tr>`).join('\n')}
+</tbody>
+</table>
+</div>`);
     }
   }
 
@@ -767,6 +822,28 @@ function buildActionItems(items: string[]): string {
   <div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#7c3aed;font-weight:600;margin-bottom:8px;">Action Items</div>
 ${listItems.join('\n')}
 </div>`;
+}
+
+/**
+ * Perspective Assessments section — 4 named Wavelength advisors, first-person voiced.
+ * Extracted from tiger team markdown output.
+ */
+function buildPerspectiveAssessments(
+  tigerTeamMarkdown: string | undefined,
+): string | null {
+  if (!tigerTeamMarkdown) return null;
+
+  const cleaned = replaceTigerTeam(tigerTeamMarkdown);
+  // Match from "# Perspective Assessments" to the next top-level heading or end of string
+  const match = cleaned.match(/# Perspective Assessments\s+([\s\S]*?)(?=\n# (?!#)|$)/);
+  if (!match || match[1].trim().length < 100) return null;
+
+  const parts: string[] = ['# Perspective Assessments', ''];
+  parts.push('*Four members of the Wavelength advisory team share their individual reads on this opportunity.*');
+  parts.push('');
+  parts.push(match[1].trim());
+  parts.push('', '<div style="page-break-after: always;"></div>');
+  return parts.join('\n');
 }
 
 /**
@@ -835,40 +912,8 @@ function buildAppendix(
   parts.push('');
   parts.push('Each research dimension is scored 1\u201310 by specialized analysis, with weights reflecting relative importance to program success. A composite weighted score determines the overall recommendation. Override rules apply when critical dimensions (Financial Viability, Labor Market Demand) score below threshold.');
 
-  // C. Assumptions
-  parts.push('', '## Assumptions', '');
-  parts.push('- Tuition pricing based on regional market benchmarks');
-  parts.push('- Enrollment projections assume moderate marketing investment');
-  parts.push('- Completion rates based on program format benchmarks');
-  parts.push('- Technology costs leverage existing institutional infrastructure');
-  parts.push('- Instructor costs at regional adjunct rates');
-
-  // D. Validation Scorecard — HTML bars
-  parts.push('', '## Validation Scorecard', '');
-  parts.push(htmlScoreBars(programScore.dimensions));
-  parts.push('');
-  parts.push(htmlCompositeScore(programScore.compositeScore, programScore.recommendation));
-
-  // E. Scoring Detail
-  parts.push('', '## Scoring Detail', '');
-  for (const d of programScore.dimensions) {
-    const pct = Math.round((d.score / 10) * 100);
-    const color = scoreColor(d.score);
-    const gradient = scoreGradient(d.score);
-    const weightPct = `${(d.weight * 100).toFixed(0)}%`;
-    parts.push(`<div style="margin:12px 0;">
-  <div style="display:flex;align-items:center;margin-bottom:4px;">
-    <span style="font-size:14px;font-weight:600;color:#334155;">${d.dimension}</span>
-    <span style="font-size:12px;color:#94a3b8;margin-left:8px;">(${weightPct} weight)</span>
-    <span style="margin-left:auto;font-size:14px;font-weight:700;color:${color};">${d.score}/10</span>
-  </div>
-  <div style="background:#e2e8f0;border-radius:4px;height:12px;overflow:hidden;margin-bottom:6px;">
-    <div style="width:${pct}%;height:100%;background:${gradient};border-radius:4px;"></div>
-  </div>
-  <div style="font-size:12px;color:#64748b;">${d.rationale}</div>
-</div>`);
-    parts.push('');
-  }
+  // D. Validation Scorecard — ADMIN ONLY (available in the Wavelength dashboard, not in client report)
+  // Dimension scores and composite score are surfaced in the admin dashboard quality review UI.
 
   // F. Demographics (if available and not shown in body)
   if (raw?.stateDemographics?.found && raw.stateDemographics.data && !raw.serviceArea?.found) {
@@ -1011,11 +1056,11 @@ function cleanAgentMarkdown(md: string, programName?: string): string {
   // 9. Trim leading/trailing whitespace
   out = out.trim();
 
-  // 10. Length discipline: agents should write 800-1,200 words but if they ramble, cap at ~6K chars
-  if (out.length > 6000) {
-    const truncated = out.substring(0, 6000);
+  // 10. Length discipline: target 20-25 page report — cap each agent section at ~4K chars
+  if (out.length > 3000) {
+    const truncated = out.substring(0, 3000);
     const lastParagraph = truncated.lastIndexOf('\n\n');
-    if (lastParagraph > 3000) {
+    if (lastParagraph > 2000) {
       out = truncated.substring(0, lastParagraph).trim();
     }
   }
@@ -1084,6 +1129,10 @@ export function generateReport(input: ReportInput): string {
 
   // 4. Conditions for Go (NEW)
   sections.push(buildConditionsForGo(programScore, tigerTeamMarkdown, project));
+
+  const perspectiveSection = buildPerspectiveAssessments(tigerTeamMarkdown);
+  if (perspectiveSection) sections.push(perspectiveSection);
+
 
   // 5. Market Demand Analysis
   sections.push(buildMarketDemandSection(components, raw, project.program_name));

@@ -26,6 +26,7 @@ export interface FinancialProjectionsData {
   financialModel: FinancialModelOutput;
   keyRisks: string[];
   mitigations: string[];
+  sensitivityTable?: Array<{ scenario: string; instructorCost: number; year1Net: number; viable: boolean }>;
   assumptions: Array<{ item: string; value: string; source: string }>;
   // Legacy fields preserved for backward compatibility with report renderer
   startup_costs: {
@@ -128,6 +129,17 @@ Write a brief narrative interpretation, then identify 3-5 key financial risks wi
 
 LENGTH: 800–1,000 words.
 
+SENSITIVITY TABLE (REQUIRED):
+If this program has an unresolved contact-hour assumption (e.g., the model uses a regulatory minimum like 160 hours but real ASHP-aligned programs run 600–1,500 hours), you MUST include a sensitivity table showing net income at multiple contact-hour scenarios. Use the instructor hourly rate from the model.
+
+Calculate and include a sensitivityTable in your JSON output showing 4 scenarios:
+- 160 hours (regulatory minimum)
+- 400 hours (short hybrid program)  
+- 600 hours (ASHP minimum)
+- 1,000 hours (full didactic + lab + externship)
+
+For each: annual instructor cost = hours × rate × sections, then recalculate Year 1 net.
+
 You MUST return ONLY the following JSON — no preamble, no questions:
 
 {
@@ -151,6 +163,12 @@ You MUST return ONLY the following JSON — no preamble, no questions:
     "Perkins V — $8,000–$28,000/yr (eligible based on CIP code)",
     "WIOA ETPL — per-student funding for eligible participants",
     "Employer tuition reimbursement"
+  ],
+  "sensitivityTable": [
+    { "scenario": "160 hrs (regulatory minimum)", "instructorCost": 10874, "year1Net": 22007, "viable": true },
+    { "scenario": "400 hrs (short hybrid)", "instructorCost": 27185, "year1Net": 5696, "viable": true },
+    { "scenario": "600 hrs (ASHP minimum)", "instructorCost": 40778, "year1Net": -7897, "viable": false },
+    { "scenario": "1,000 hrs (full program)", "instructorCost": 67963, "year1Net": -35082, "viable": false }
   ]
 }
 
@@ -322,6 +340,7 @@ export async function runFinancialAnalysis(
       keyRisks: Array.isArray(claudeOutput.keyRisks) ? claudeOutput.keyRisks : [],
       mitigations: Array.isArray(claudeOutput.mitigations) ? claudeOutput.mitigations : [],
       assumptions: financialModel.assumptions,
+      sensitivityTable: Array.isArray(claudeOutput.sensitivityTable) ? claudeOutput.sensitivityTable : undefined,
 
       // Legacy fields for backward-compat
       startup_costs: {
