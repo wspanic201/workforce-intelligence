@@ -111,12 +111,12 @@ export async function getOccupationIntel(
   }
 
   const [wages, projections, skills, statePriority, employers, h1bDemand] = await Promise.all([
-    callMCPTool(sessionId, 'get_wages', { soc_code: socCode, state_code: stateCode }),
-    callMCPTool(sessionId, 'get_projections', { soc_code: socCode, state_fips: stateFips }),
-    onetCode ? callMCPTool(sessionId, 'get_skills', { onet_code: onetCode }) : Promise.resolve(''),
-    callMCPTool(sessionId, 'get_state_priority', { soc_code: socCode, state_fips: stateFips }),
-    callMCPTool(sessionId, 'get_employers', { state_fips: stateFips }),
-    callMCPTool(sessionId, 'get_h1b_demand', { soc_code: socCode }),
+    callMCPTool(sessionId, 'get_wages', { socCode: socCode, stateCode: stateCode }),
+    callMCPTool(sessionId, 'get_projections', { socCode: socCode, stateFips: stateFips }),
+    onetCode ? callMCPTool(sessionId, 'get_skills', { onetCode: onetCode }) : Promise.resolve(''),
+    callMCPTool(sessionId, 'get_state_priority', { socCode: socCode, stateFips: stateFips }),
+    callMCPTool(sessionId, 'get_employers', { stateFips: stateFips }),
+    callMCPTool(sessionId, 'get_h1b_demand', { socCode: socCode }),
   ]);
 
   return { wages, projections, skills, statePriority, employers, h1bDemand };
@@ -129,8 +129,8 @@ export async function getProgramCompletions(
   const sessionId = await openMCPSession();
   if (!sessionId) return '';
   return callMCPTool(sessionId, 'get_completions', {
-    cip_code: cipCode,
-    ...(stateFips ? { state_fips: stateFips } : {}),
+    cipCode: cipCode,
+    ...(stateFips ? { stateFips: stateFips } : {}),
   });
 }
 
