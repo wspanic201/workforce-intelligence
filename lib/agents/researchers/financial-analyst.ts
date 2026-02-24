@@ -53,6 +53,12 @@ export async function runFinancialAnalysis(
   try {
     const persona = await loadPersona('cfo');
 
+    // Read shared MCP intel (fetched once by orchestrator)
+
+
+    const mcpIntelBlock: string = (project as any)._mcpIntelBlock || '';
+
+
     const prompt = `${persona.fullContext}
 
 ═══════════════════════════════════════════════════════════
@@ -415,7 +421,7 @@ If you ask ANY clarifying questions or say you cannot estimate, you have failed 
 
 Respond NOW with the JSON:`;
 
-    const { content, tokensUsed } = await callClaude(prompt, {
+    const { content, tokensUsed } = await callClaude(mcpIntelBlock ? mcpIntelBlock + "\n\n" + prompt : prompt, {
       maxTokens: 4000,  // 4k ≈ 1,500 words — balanced depth vs API speed
     });
 

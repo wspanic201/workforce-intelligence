@@ -60,6 +60,12 @@ export async function runInstitutionalFit(
   try {
     console.log(`[Institutional Fit] Starting for "${project.program_name}"`);
 
+    // Read shared MCP intel (fetched once by orchestrator)
+
+
+    const mcpIntelBlock: string = (project as any)._mcpIntelBlock || '';
+
+
     const prompt = `${PROGRAM_VALIDATOR_SYSTEM_PROMPT}
 
 ROLE: You are conducting Stage 5 — Institutional Fit & Capacity Assessment.
@@ -139,7 +145,7 @@ OUTPUT FORMAT (JSON):
 
 IMPORTANT: Return ONLY valid JSON. No markdown outside JSON. Keep string values concise. Do NOT include a markdownReport field.`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 12000 });
+    const { content, tokensUsed } = await callClaude(mcpIntelBlock ? mcpIntelBlock + "\n\n" + prompt : prompt, { maxTokens: 12000 });
     const data = extractJSON(content) as InstitutionalFitData;
 
     if (!data.markdownReport) {

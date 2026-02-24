@@ -14,7 +14,7 @@ import { calculateProgramScore, buildDimensionScore, DIMENSION_WEIGHTS } from '@
 import { generateReport } from '@/lib/reports/report-generator';
 import { enrichProject } from './project-enricher';
 import type { DiscoveryContext } from '@/lib/stages/handoff';
-import { getAgentIntelligenceContext, type AgentIntelligenceContext } from '@/lib/intelligence/agent-context';
+import { getProjectIntel, formatIntelBlock } from '@/lib/intelligence/mcp-client';
 import { startPipelineRun, completePipelineRun, hashMarkdown, type PipelineConfig } from '@/lib/pipeline/track-run';
 
 // Timeout wrapper for research agents
@@ -127,16 +127,12 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
     
     console.log(`[Orchestrator] ✓ Enriched: Occupation="${enrichment.target_occupation}", SOC=${enrichment.soc_codes || 'none'}, Region="${enrichment.geographic_area}"`);
 
-    // 2.5. Build Verified Intelligence Context (shared by all agents)
-    let intelContext: AgentIntelligenceContext | null = null;
-    try {
-      intelContext = await getAgentIntelligenceContext(projectToValidate as ValidationProject);
-      console.log(`[Orchestrator] ✓ Intelligence context: ${intelContext.tablesUsed.length} data sources, ${intelContext.promptBlock.length} chars`);
-      // Store on project for agents to access
-      (projectToValidate as any)._intelContext = intelContext;
-    } catch (err) {
-      console.warn('[Orchestrator] Intelligence context build failed (non-fatal):', (err as Error).message);
-    }
+    // 2.5. Fetch shared intelligence via MCP (one query, all 7 agents share it)
+    const mcpIntel = await getProjectIntel(projectToValidate);
+    const mcpIntelBlock = formatIntelBlock(mcpIntel);
+    (projectToValidate as any)._mcpIntel = mcpIntel;
+    (projectToValidate as any)._mcpIntelBlock = mcpIntelBlock;
+    console.log(`[Orchestrator] MCP intel: available=${mcpIntel.available}, block=${mcpIntelBlock.length} chars`);
 
     // 2.9. Start pipeline run tracking
     try {
@@ -147,7 +143,7 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
         agentsEnabled: AGENT_CONFIG.map(a => a.type),
         tigerTeamEnabled: true,
         citationAgentEnabled: true,
-        intelContextEnabled: !!intelContext,
+        intelContextEnabled: mcpIntel.available,
       };
       pipelineRunId = await startPipelineRun(projectId, pipelineConfig);
     } catch (e) {
@@ -490,7 +486,7 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
           recommendation: programScore.recommendation,
           citationCorrections: citationResults?.corrections?.length ?? 0,
           citationWarnings: citationResults?.warnings?.length ?? 0,
-          intelTablesUsed: intelContext?.tablesUsed?.length ?? 0,
+          intelTablesUsed: mcpIntel.available ? 1 : 0,
           reportMarkdownHash: hashMarkdown(fullReport),
           reportSizeKb: Math.round(Buffer.from(fullReport).length / 1024),
         });

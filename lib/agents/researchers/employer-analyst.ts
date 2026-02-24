@@ -81,6 +81,12 @@ export async function runEmployerDemand(
       console.warn('[Employer Demand] Google Jobs failed:', err);
     }
 
+    // Read shared MCP intel (fetched once by orchestrator)
+
+
+    const mcpIntelBlock: string = (project as any)._mcpIntelBlock || '';
+
+
     const prompt = `${PROGRAM_VALIDATOR_SYSTEM_PROMPT}
 
 ROLE: You are conducting Stage 7 — Employer Demand & Partnership Potential Analysis.
@@ -167,7 +173,7 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Kee
   "dataSources": ["Source 1"]
 }`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 16000 });
+    const { content, tokensUsed } = await callClaude(mcpIntelBlock ? mcpIntelBlock + "\n\n" + prompt : prompt, { maxTokens: 16000 });
     const data = extractJSON(content) as EmployerDemandData;
 
     if (!data.markdownReport) {

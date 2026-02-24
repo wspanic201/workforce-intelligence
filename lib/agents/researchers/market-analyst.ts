@@ -8,7 +8,6 @@ import { withCache } from '@/lib/apis/cache';
 import { getBLSData } from '@/lib/apis/bls';
 import { fetchONETOnline, searchJobsBrave } from '@/lib/apis/web-fallbacks';
 import { findSOCCode, onetToSOC, isValidSOCCode, getSOCTitle } from '@/lib/mappings/soc-codes';
-import { getOccupationIntel } from '@/lib/intelligence/mcp-client';
 
 /**
  * Clean a geographic area string for SerpAPI location parameter.
@@ -188,13 +187,9 @@ export async function runMarketAnalysis(
 
     console.log(`[Market Analyst] Data fetched - Jobs: ${liveJobsData?.count ?? 0}, O*NET: ${onetCode || 'not found'}, BLS: ${blsData ? 'yes' : 'no'}`);
 
-    // Step 5: Query MCP server for verified intelligence database
-    const stateMatch = rawLocation.match(/,\s*([A-Za-z]+)\s*(?:\(|$)/);
-    const stateCode = stateMatch?.[1]?.trim() || '';
-    const STATE_FIPS: Record<string, string> = { Iowa: '19', Texas: '48', Illinois: '17', Ohio: '39', Minnesota: '27', Wisconsin: '55', Missouri: '29', Nebraska: '31', Kansas: '20', Indiana: '18' };
-    const stateFips = STATE_FIPS[stateCode] || '';
-    const mcpIntel = resolvedSOC ? await getOccupationIntel(resolvedSOC, stateCode.substring(0, 2).toUpperCase(), stateFips, onetCode || undefined).catch(() => null) : null;
-    if (mcpIntel?.wages) console.log(`[Market Analyst] ✓ MCP intel loaded for SOC ${resolvedSOC}`);
+    // Step 5: Read shared MCP intel from project (fetched once by orchestrator)
+    const mcpIntelBlock: string = (project as any)._mcpIntelBlock || '';
+    if (mcpIntelBlock) console.log(`[Market Analyst] Using shared MCP intel (${mcpIntelBlock.length} chars)`);
 
     // Gracefully handle missing API data — use placeholder structure
     if (!liveJobsData) {
@@ -284,18 +279,7 @@ ${onetData.technology.slice(0, 10).map(t => `- ${t.example}${t.hot_technology ? 
 Education Typical: ${onetData.education}
 ` : '(O*NET occupation code not found - analysis will rely on job posting data)'}
 
-${(mcpIntel?.wages || mcpIntel?.projections || mcpIntel?.statePriority) ? `
-═══════════════════════════════════════════════════════════
-VERIFIED INTELLIGENCE DATABASE (Wavelength — government sources):
-═══════════════════════════════════════════════════════════
-These figures are drawn directly from BLS OES, Projections Central, O*NET,
-and state workforce data. Treat them as confirmed baselines.
-
-${mcpIntel.wages ? `WAGE DATA:\n${mcpIntel.wages}\n` : ''}
-${mcpIntel.projections ? `EMPLOYMENT PROJECTIONS:\n${mcpIntel.projections}\n` : ''}
-${mcpIntel.statePriority ? `STATE PRIORITY STATUS:\n${mcpIntel.statePriority}\n` : ''}
-${mcpIntel.skills ? `O*NET VERIFIED SKILLS:\n${mcpIntel.skills}\n` : ''}
-` : '(Verified intelligence database unavailable — rely on BLS data above and web research)'}
+${mcpIntelBlock || '(Verified intelligence database unavailable — rely on BLS data above and web research)'}
 
 ═══════════════════════════════════════════════════════════
 ANALYSIS TASK:

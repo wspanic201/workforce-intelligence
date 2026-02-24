@@ -66,6 +66,12 @@ export async function runRegulatoryCompliance(
   try {
     console.log(`[Regulatory] Starting for "${project.program_name}"`);
 
+    // Read shared MCP intel (fetched once by orchestrator)
+
+
+    const mcpIntelBlock: string = (project as any)._mcpIntelBlock || '';
+
+
     const prompt = `${PROGRAM_VALIDATOR_SYSTEM_PROMPT}
 
 ROLE: You are conducting Stage 6 — Regulatory & Compliance Alignment Analysis.
@@ -139,7 +145,7 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Kee
   "dataSources": ["Source 1"]
 }`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 12000 });
+    const { content, tokensUsed } = await callClaude(mcpIntelBlock ? mcpIntelBlock + "\n\n" + prompt : prompt, { maxTokens: 12000 });
     const data = extractJSON(content) as RegulatoryComplianceData;
 
     if (!data.markdownReport) {

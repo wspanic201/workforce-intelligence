@@ -32,6 +32,10 @@ export async function runCompetitiveAnalysis(
   const supabase = getSupabaseServerClient();
 
   try {
+    // Read shared MCP intel (fetched once by orchestrator)
+
+    const mcpIntelBlock: string = (project as any)._mcpIntelBlock || '';
+
     const prompt = `You are a competitive landscape analyst for workforce education programs.
 
 Analyze the competitive landscape for this program and return ONLY valid JSON.
@@ -71,7 +75,7 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Kee
   "recommendations": ["Recommendation 1"]
 }`;
 
-    const { content, tokensUsed } = await callClaude(prompt, {
+    const { content, tokensUsed } = await callClaude(mcpIntelBlock ? mcpIntelBlock + "\n\n" + prompt : prompt, {
       maxTokens: 12000,
     });
 
