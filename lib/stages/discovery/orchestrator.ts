@@ -18,6 +18,7 @@ import { scanCompetitiveLandscape, CompetitiveLandscapeOutput } from './agents/c
 import { scoreOpportunities, OpportunityScorerOutput } from './agents/opportunity-scorer';
 import { scanBlueOcean, BlueOceanScannerOutput } from './agents/blue-ocean-scanner';
 import { writeDiscoveryBrief, DiscoveryBrief } from './agents/brief-writer';
+import { buildRunKey, loadCheckpoints, saveCheckpoint, type Checkpoint } from './checkpoint';
 
 // ── Types ──
 
@@ -111,6 +112,15 @@ export async function runDiscovery(
   let blueOceanResults: BlueOceanScannerOutput | null = null;
   let brief: DiscoveryBrief | null = null;
 
+  // ── Checkpoint: load any previously completed phases ──
+  const runKey = buildRunKey(input.collegeName, region.primaryCity, region.state, input.focusAreas);
+  let checkpoints = new Map<number, Checkpoint>();
+  try {
+    checkpoints = await loadCheckpoints(runKey);
+  } catch (e) {
+    console.warn('[Discovery] Checkpoint loading failed (non-fatal), starting fresh');
+  }
+
   const progress = (phase: number, phaseName: string, status: 'starting' | 'complete' | 'error', message: string) => {
     const elapsed = Math.round((Date.now() - startTime) / 1000);
     console.log(`[Discovery] Phase ${phase}/6 (${phaseName}) — ${status}: ${message} [${elapsed}s]`);
@@ -128,116 +138,147 @@ export async function runDiscovery(
   console.log('═══════════════════════════════════════════════════');
 
   // ── Phase 1: Regional Intelligence ──
-  try {
-    progress(1, 'Regional Intelligence', 'starting', 'Researching institution, employers, and regional economics');
-    const phaseStart = Date.now();
+  if (checkpoints.has(1)) {
+    regionalIntel = checkpoints.get(1)!.phase_output as RegionalIntelligenceOutput;
+    phaseTiming['phase1_regional'] = checkpoints.get(1)!.runtime_seconds;
+    progress(1, 'Regional Intelligence', 'complete', `✓ Restored from checkpoint (${phaseTiming['phase1_regional']}s)`);
+  } else {
+    try {
+      progress(1, 'Regional Intelligence', 'starting', 'Researching institution, employers, and regional economics');
+      const phaseStart = Date.now();
 
-    regionalIntel = await gatherRegionalIntelligence(
-      input.collegeName,
-      region,
-      input.focusAreas,
-      input.category
-    );
+      regionalIntel = await gatherRegionalIntelligence(
+        input.collegeName,
+        region,
+        input.focusAreas,
+        input.category
+      );
 
-    phaseTiming['phase1_regional'] = Math.round((Date.now() - phaseStart) / 1000);
-    progress(1, 'Regional Intelligence', 'complete',
-      `Found ${regionalIntel.topEmployers.length} employers, ${regionalIntel.institution.currentPrograms.length} existing programs, ${regionalIntel.searchesExecuted} searches`
-    );
-  } catch (err) {
-    const msg = `Phase 1 failed: ${err instanceof Error ? err.message : String(err)}`;
-    errors.push(msg);
-    progress(1, 'Regional Intelligence', 'error', msg);
-    // Can't continue without regional intel
-    return buildOutput('error', null, { regionalIntelligence: null, demandSignals: null, competitiveLandscape: null, scoredOpportunities: null, blueOceanResults: null }, startTime, 0, phaseTiming, errors);
+      phaseTiming['phase1_regional'] = Math.round((Date.now() - phaseStart) / 1000);
+      progress(1, 'Regional Intelligence', 'complete',
+        `Found ${regionalIntel.topEmployers.length} employers, ${regionalIntel.institution.currentPrograms.length} existing programs, ${regionalIntel.searchesExecuted} searches`
+      );
+      await saveCheckpoint(runKey, input.collegeName, 1, 'Regional Intelligence', regionalIntel, phaseTiming['phase1_regional'], input);
+    } catch (err) {
+      const msg = `Phase 1 failed: ${err instanceof Error ? err.message : String(err)}`;
+      errors.push(msg);
+      progress(1, 'Regional Intelligence', 'error', msg);
+      return buildOutput('error', null, { regionalIntelligence: null, demandSignals: null, competitiveLandscape: null, scoredOpportunities: null, blueOceanResults: null }, startTime, 0, phaseTiming, errors);
+    }
   }
 
   // ── Phase 2: Demand Signals ──
-  try {
-    progress(2, 'Demand Signals', 'starting', 'Analyzing job postings, BLS data, employer signals, grants');
-    const phaseStart = Date.now();
+  if (checkpoints.has(2)) {
+    demandSignals = checkpoints.get(2)!.phase_output as DemandSignalOutput;
+    phaseTiming['phase2_demand'] = checkpoints.get(2)!.runtime_seconds;
+    progress(2, 'Demand Signals', 'complete', `✓ Restored from checkpoint (${phaseTiming['phase2_demand']}s)`);
+  } else {
+    try {
+      progress(2, 'Demand Signals', 'starting', 'Analyzing job postings, BLS data, employer signals, grants');
+      const phaseStart = Date.now();
 
-    demandSignals = await detectDemandSignals(regionalIntel, region, input.category);
+      demandSignals = await detectDemandSignals(regionalIntel!, region, input.category);
 
-    phaseTiming['phase2_demand'] = Math.round((Date.now() - phaseStart) / 1000);
-    progress(2, 'Demand Signals', 'complete',
-      `${demandSignals.signals.length} signals, ${demandSignals.topIndustries.length} industries, ${demandSignals.searchesExecuted} searches`
-    );
-  } catch (err) {
-    const msg = `Phase 2 failed: ${err instanceof Error ? err.message : String(err)}`;
-    errors.push(msg);
-    progress(2, 'Demand Signals', 'error', msg);
-    // Can't score without demand signals
-    return buildOutput('error', null, { regionalIntelligence: regionalIntel, demandSignals: null, competitiveLandscape: null, scoredOpportunities: null, blueOceanResults: null }, startTime, regionalIntel.searchesExecuted, phaseTiming, errors);
+      phaseTiming['phase2_demand'] = Math.round((Date.now() - phaseStart) / 1000);
+      progress(2, 'Demand Signals', 'complete',
+        `${demandSignals.signals.length} signals, ${demandSignals.topIndustries.length} industries, ${demandSignals.searchesExecuted} searches`
+      );
+      await saveCheckpoint(runKey, input.collegeName, 2, 'Demand Signals', demandSignals, phaseTiming['phase2_demand']);
+    } catch (err) {
+      const msg = `Phase 2 failed: ${err instanceof Error ? err.message : String(err)}`;
+      errors.push(msg);
+      progress(2, 'Demand Signals', 'error', msg);
+      return buildOutput('error', null, { regionalIntelligence: regionalIntel, demandSignals: null, competitiveLandscape: null, scoredOpportunities: null, blueOceanResults: null }, startTime, regionalIntel!.searchesExecuted, phaseTiming, errors);
+    }
   }
 
   // ── Phase 3: Competitive Landscape ──
-  try {
-    progress(3, 'Competitive Landscape', 'starting', 'Mapping educational providers and program gaps');
-    const phaseStart = Date.now();
+  if (checkpoints.has(3)) {
+    competitiveLandscape = checkpoints.get(3)!.phase_output as CompetitiveLandscapeOutput;
+    phaseTiming['phase3_competitive'] = checkpoints.get(3)!.runtime_seconds;
+    progress(3, 'Competitive Landscape', 'complete', `✓ Restored from checkpoint (${phaseTiming['phase3_competitive']}s)`);
+  } else {
+    try {
+      progress(3, 'Competitive Landscape', 'starting', 'Mapping educational providers and program gaps');
+      const phaseStart = Date.now();
 
-    competitiveLandscape = await scanCompetitiveLandscape(regionalIntel, demandSignals, region, input.category);
+      competitiveLandscape = await scanCompetitiveLandscape(regionalIntel!, demandSignals!, region, input.category);
 
-    phaseTiming['phase3_competitive'] = Math.round((Date.now() - phaseStart) / 1000);
-    progress(3, 'Competitive Landscape', 'complete',
-      `${competitiveLandscape.providers.length} providers, ${competitiveLandscape.gaps.length} gaps (${competitiveLandscape.whiteSpaceCount} white space), ${competitiveLandscape.searchesExecuted} searches`
-    );
-  } catch (err) {
-    const msg = `Phase 3 failed: ${err instanceof Error ? err.message : String(err)}`;
-    errors.push(msg);
-    progress(3, 'Competitive Landscape', 'error', msg);
-    // Can continue with partial data — scorer can work without competitive data
+      phaseTiming['phase3_competitive'] = Math.round((Date.now() - phaseStart) / 1000);
+      progress(3, 'Competitive Landscape', 'complete',
+        `${competitiveLandscape.providers.length} providers, ${competitiveLandscape.gaps.length} gaps (${competitiveLandscape.whiteSpaceCount} white space), ${competitiveLandscape.searchesExecuted} searches`
+      );
+      await saveCheckpoint(runKey, input.collegeName, 3, 'Competitive Landscape', competitiveLandscape, phaseTiming['phase3_competitive']);
+    } catch (err) {
+      const msg = `Phase 3 failed: ${err instanceof Error ? err.message : String(err)}`;
+      errors.push(msg);
+      progress(3, 'Competitive Landscape', 'error', msg);
+    }
   }
 
   // ── Phase 4: Opportunity Scoring ──
-  try {
-    progress(4, 'Opportunity Scoring', 'starting', 'Cross-referencing data and scoring opportunities');
-    const phaseStart = Date.now();
+  if (checkpoints.has(4)) {
+    scoredOpportunities = checkpoints.get(4)!.phase_output as OpportunityScorerOutput;
+    phaseTiming['phase4_scoring'] = checkpoints.get(4)!.runtime_seconds;
+    progress(4, 'Opportunity Scoring', 'complete', `✓ Restored from checkpoint (${phaseTiming['phase4_scoring']}s)`);
+  } else {
+    try {
+      progress(4, 'Opportunity Scoring', 'starting', 'Cross-referencing data and scoring opportunities');
+      const phaseStart = Date.now();
 
-    scoredOpportunities = await scoreOpportunities(
-      regionalIntel,
-      demandSignals,
-      competitiveLandscape || { region: '', providers: [], gaps: [], whiteSpaceCount: 0, saturatedCount: 0, searchesExecuted: 0 },
-      input.category
-    );
+      scoredOpportunities = await scoreOpportunities(
+        regionalIntel!,
+        demandSignals!,
+        competitiveLandscape || { region: '', providers: [], gaps: [], whiteSpaceCount: 0, saturatedCount: 0, searchesExecuted: 0 },
+        input.category
+      );
 
-    phaseTiming['phase4_scoring'] = Math.round((Date.now() - phaseStart) / 1000);
-    progress(4, 'Opportunity Scoring', 'complete',
-      `${scoredOpportunities.scoredOpportunities.length} programs scored — ` +
-      `${scoredOpportunities.quickWins.length} quick wins, ` +
-      `${scoredOpportunities.strategicBuilds.length} strategic, ` +
-      `${scoredOpportunities.emergingOpps.length} emerging`
-    );
-  } catch (err) {
-    const msg = `Phase 4 failed: ${err instanceof Error ? err.message : String(err)}`;
-    errors.push(msg);
-    progress(4, 'Opportunity Scoring', 'error', msg);
-    return buildOutput('partial', null, { regionalIntelligence: regionalIntel, demandSignals, competitiveLandscape, scoredOpportunities: null, blueOceanResults: null }, startTime, countSearches(regionalIntel, demandSignals, competitiveLandscape), phaseTiming, errors);
+      phaseTiming['phase4_scoring'] = Math.round((Date.now() - phaseStart) / 1000);
+      progress(4, 'Opportunity Scoring', 'complete',
+        `${scoredOpportunities.scoredOpportunities.length} programs scored — ` +
+        `${scoredOpportunities.quickWins.length} quick wins, ` +
+        `${scoredOpportunities.strategicBuilds.length} strategic, ` +
+        `${scoredOpportunities.emergingOpps.length} emerging`
+      );
+      await saveCheckpoint(runKey, input.collegeName, 4, 'Opportunity Scoring', scoredOpportunities, phaseTiming['phase4_scoring']);
+    } catch (err) {
+      const msg = `Phase 4 failed: ${err instanceof Error ? err.message : String(err)}`;
+      errors.push(msg);
+      progress(4, 'Opportunity Scoring', 'error', msg);
+      return buildOutput('partial', null, { regionalIntelligence: regionalIntel, demandSignals, competitiveLandscape, scoredOpportunities: null, blueOceanResults: null }, startTime, countSearches(regionalIntel, demandSignals, competitiveLandscape), phaseTiming, errors);
+    }
   }
 
   // ── Phase 5: Blue Ocean Scanner (Enhancement — failure won't kill pipeline) ──
-  try {
-    progress(5, 'Blue Ocean Scanner', 'starting', 'Hunting non-obvious hidden opportunities');
-    const phaseStart = Date.now();
+  if (checkpoints.has(5)) {
+    blueOceanResults = checkpoints.get(5)!.phase_output as BlueOceanScannerOutput;
+    phaseTiming['phase5_blue_ocean'] = checkpoints.get(5)!.runtime_seconds;
+    progress(5, 'Blue Ocean Scanner', 'complete', `✓ Restored from checkpoint (${phaseTiming['phase5_blue_ocean']}s)`);
+  } else {
+    try {
+      progress(5, 'Blue Ocean Scanner', 'starting', 'Hunting non-obvious hidden opportunities');
+      const phaseStart = Date.now();
 
-    blueOceanResults = await scanBlueOcean(
-      regionalIntel,
-      demandSignals,
-      competitiveLandscape || { region: '', providers: [], gaps: [], whiteSpaceCount: 0, saturatedCount: 0, searchesExecuted: 0 },
-      scoredOpportunities,
-      region,
-      input.category
-    );
+      blueOceanResults = await scanBlueOcean(
+        regionalIntel!,
+        demandSignals!,
+        competitiveLandscape || { region: '', providers: [], gaps: [], whiteSpaceCount: 0, saturatedCount: 0, searchesExecuted: 0 },
+        scoredOpportunities!,
+        region,
+        input.category
+      );
 
-    phaseTiming['phase5_blue_ocean'] = Math.round((Date.now() - phaseStart) / 1000);
-    progress(5, 'Blue Ocean Scanner', 'complete',
-      `${blueOceanResults.hiddenOpportunities.length} hidden opportunities found, ${blueOceanResults.searchesExecuted} searches`
-    );
-  } catch (err) {
-    const msg = `Phase 5 failed (non-critical): ${err instanceof Error ? err.message : String(err)}`;
-    errors.push(msg);
-    progress(5, 'Blue Ocean Scanner', 'error', msg);
-    // Blue Ocean is enhancement — pipeline continues without it
-    console.warn('[Discovery] Blue Ocean Scanner failed — continuing without hidden opportunities');
+      phaseTiming['phase5_blue_ocean'] = Math.round((Date.now() - phaseStart) / 1000);
+      progress(5, 'Blue Ocean Scanner', 'complete',
+        `${blueOceanResults.hiddenOpportunities.length} hidden opportunities found, ${blueOceanResults.searchesExecuted} searches`
+      );
+      await saveCheckpoint(runKey, input.collegeName, 5, 'Blue Ocean Scanner', blueOceanResults, phaseTiming['phase5_blue_ocean']);
+    } catch (err) {
+      const msg = `Phase 5 failed (non-critical): ${err instanceof Error ? err.message : String(err)}`;
+      errors.push(msg);
+      progress(5, 'Blue Ocean Scanner', 'error', msg);
+      console.warn('[Discovery] Blue Ocean Scanner failed — continuing without hidden opportunities');
+    }
   }
 
   // ── Phase 6: Brief Writing ──

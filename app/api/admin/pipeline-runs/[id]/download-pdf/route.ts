@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAdminSession } from '@/lib/auth/admin';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
+import { generatePDF } from '@/lib/pdf/generate-pdf';
+import { tmpdir } from 'os';
+import { join } from 'path';
+import { readFileSync, unlinkSync } from 'fs';
 
-/** GET /api/admin/pipeline-runs/[id]/download-pdf — Download stored PDF */
+/** GET /api/admin/pipeline-runs/[id]/download-pdf — Download or generate PDF */
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -13,52 +17,90 @@ export async function GET(
   const { id: projectId } = await params;
   const supabase = getSupabaseServerClient();
 
-  // Get report with PDF storage path
+  // Get report
   const { data: report } = await supabase
     .from('validation_reports')
-    .select('pdf_url')
+    .select('pdf_url, full_report_markdown')
     .eq('project_id', projectId)
     .order('created_at', { ascending: false })
     .limit(1)
     .single();
 
-  if (!report?.pdf_url) {
+  if (!report) {
     return NextResponse.json(
-      { error: 'No PDF available. Run the pipeline to generate one.' },
+      { error: 'No report found for this project.' },
       { status: 404 }
     );
   }
 
-  // Download from Supabase Storage
-  const { data: fileData, error } = await supabase.storage
-    .from('reports')
-    .download(report.pdf_url);
-
-  if (error || !fileData) {
-    return NextResponse.json(
-      { error: `Failed to download PDF: ${error?.message}` },
-      { status: 500 }
-    );
-  }
-
-  // Get project name for filename
+  // Get project info for filename and PDF metadata
   const { data: project } = await supabase
     .from('validation_projects')
-    .select('program_name')
+    .select('program_name, client_name, program_type')
     .eq('id', projectId)
     .single();
 
   const programName = project?.program_name || 'Report';
-  const filename = `${programName.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '-')}-Validation-Report.pdf`;
+  const clientName = project?.client_name || 'Institution';
+  const filename = `${programName.replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '-')}-Report.pdf`;
 
-  const buffer = await fileData.arrayBuffer();
+  // Option A: Stored PDF exists — download from storage
+  if (report.pdf_url) {
+    const { data: fileData, error } = await supabase.storage
+      .from('reports')
+      .download(report.pdf_url);
 
-  return new NextResponse(buffer, {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/pdf',
-      'Content-Disposition': `attachment; filename="${filename}"`,
-      'Content-Length': buffer.byteLength.toString(),
-    },
-  });
+    if (!error && fileData) {
+      const buffer = await fileData.arrayBuffer();
+      return new NextResponse(buffer, {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': `attachment; filename="${filename}"`,
+          'Content-Length': buffer.byteLength.toString(),
+        },
+      });
+    }
+    // If storage download fails, fall through to generate from markdown
+  }
+
+  // Option B: No stored PDF — generate from markdown on-the-fly
+  if (!report.full_report_markdown) {
+    return NextResponse.json(
+      { error: 'No PDF or report markdown available.' },
+      { status: 404 }
+    );
+  }
+
+  try {
+    const reportType = (project?.program_type === 'discovery') ? 'discovery' : 'validation';
+    const outputPath = join(tmpdir(), `wavelength-${projectId.slice(0, 8)}-${Date.now()}.pdf`);
+
+    const result = await generatePDF(report.full_report_markdown, {
+      title: programName,
+      preparedFor: clientName,
+      reportType,
+      outputPath,
+    });
+
+    const pdfBuffer = readFileSync(result.path);
+
+    // Clean up temp file
+    try { unlinkSync(result.path); } catch {}
+
+    return new NextResponse(pdfBuffer, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment; filename="${filename}"`,
+        'Content-Length': pdfBuffer.byteLength.toString(),
+      },
+    });
+  } catch (err) {
+    console.error('[PDF Download] Generation failed:', err);
+    return NextResponse.json(
+      { error: `PDF generation failed: ${err instanceof Error ? err.message : String(err)}` },
+      { status: 500 }
+    );
+  }
 }
