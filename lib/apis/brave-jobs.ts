@@ -100,16 +100,20 @@ export async function searchJobsBraveEnhanced(
     return null;
   }
 
-  // Extract state/city from location string
+  // Extract primary city + state from location string
   const locationShort = location
-    .replace(/\s*\([^)]+\)/g, '')       // strip parenthetical "(Linn and Johnson Counties)"
-    .replace(/&[^,]+,/, ',')             // "Cedar Rapids & Iowa City, Iowa" → "Cedar Rapids, Iowa"
+    .replace(/\s*\([^)]+\)/g, '')            // strip "(Linn and Johnson Counties)"
+    .replace(/\s+(?:and|&)\s+[^,]+,/, ',')  // "Cedar Rapids and Iowa City, Iowa" → "Cedar Rapids, Iowa"
+    .replace(/&[^,]+,/, ',')                  // fallback for "&" form
     .trim();
 
+  // Also grab just the state name for broader searches
+  const stateOnly = locationShort.split(',').pop()?.trim() || locationShort;
+
   const queries = [
-    `"${occupation}" jobs ${locationShort} site:indeed.com OR site:ziprecruiter.com OR site:linkedin.com`,
-    `"${occupation}" hiring ${locationShort} 2025`,
-    `${occupation} employers ${locationShort} job openings`,
+    `"${occupation}" jobs "${locationShort}" indeed OR ziprecruiter OR linkedin`,
+    `"${occupation}" hiring ${stateOnly} 2025 employer`,
+    `${occupation} job openings ${stateOnly} healthcare hospital pharmacy`,
   ];
 
   console.log(`[Brave Jobs] Searching: "${occupation}" in "${locationShort}"`);

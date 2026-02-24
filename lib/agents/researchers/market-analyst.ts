@@ -124,9 +124,9 @@ export async function runMarketAnalysis(
       return null; 
     });
 
-    // Fallback: If SerpAPI failed, try enhanced Brave Search for job data
+    // Fallback: If SerpAPI failed or returned thin data (<15 jobs), try Brave
     let liveJobsData = liveJobsDataResult;
-    if (!liveJobsData || liveJobsData.count === 0) {
+    if (!liveJobsData || liveJobsData.count < 15) {
       console.log('[Market Analyst] Trying Brave Search for job data...');
       const braveResult = await withCache(
         'brave_jobs',
