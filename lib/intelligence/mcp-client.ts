@@ -66,6 +66,7 @@ async function openMCPSession(): Promise<string> {
   };
   if (MCP_SECRET) headers['authorization'] = `Bearer ${MCP_SECRET}`;
 
+  // Step 1: initialize
   const res = await fetch(`${MCP_BASE_URL}/api/mcp`, {
     method: 'POST',
     headers,
@@ -81,7 +82,20 @@ async function openMCPSession(): Promise<string> {
     }),
   });
 
-  return res.headers.get('mcp-session-id') ?? '';
+  const sessionId = res.headers.get('mcp-session-id') ?? '';
+  if (!sessionId) return '';
+
+  // Step 2: send initialized notification (required by MCP protocol before tool calls)
+  await fetch(`${MCP_BASE_URL}/api/mcp`, {
+    method: 'POST',
+    headers: { ...headers, 'mcp-session-id': sessionId },
+    body: JSON.stringify({
+      jsonrpc: '2.0',
+      method: 'notifications/initialized',
+    }),
+  }).catch(() => { /* notification failures are non-fatal */ });
+
+  return sessionId;
 }
 
 // ── Public query functions ────────────────────────────────────────────────────
