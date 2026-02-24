@@ -15,6 +15,7 @@ export default function InstitutionDetail() {
   const [economy, setEconomy] = useState<any>(null);
   const [ecoLoading, setEcoLoading] = useState(false);
   const [intel, setIntel] = useState<{ total: number; byType: Record<string, number>; recent: any[] } | null>(null);
+  const [commandData, setCommandData] = useState<{ programCounts: any; programs: any[]; custom: any[]; statePriorities: any[]; reports: any[] } | null>(null);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
   const [form, setForm] = useState<Partial<IntelInstitution>>({});
@@ -31,11 +32,19 @@ export default function InstitutionDetail() {
       fetch(`/api/admin/intelligence/institutions/${id}/programs`).then(r => r.json()),
       fetch(`/api/admin/intelligence/institutions/${id}/custom`).then(r => r.json()),
       fetch(`/api/admin/intelligence/institutions/${id}/intelligence`).then(r => r.json()).catch(() => null),
-    ]).then(([instData, progData, customData, intelData]) => {
+      fetch(`/api/admin/intelligence/institutions/${id}/command-center`).then(r => r.json()).catch(() => null),
+    ]).then(([instData, progData, customData, intelData, ccData]) => {
       setInst(instData); setForm(instData);
       setPrograms(progData.data ?? []);
       setCustom(customData.data ?? []);
       if (intelData && !intelData.error) setIntel({ total: intelData.total || 0, byType: intelData.byType || {}, recent: intelData.recent || [] });
+      if (ccData && !ccData.error) setCommandData({
+        programCounts: ccData.programCounts || {},
+        programs: ccData.programs || [],
+        custom: ccData.custom || [],
+        statePriorities: ccData.statePriorities || [],
+        reports: ccData.reports || [],
+      });
       setLoading(false);
     }).catch(() => setLoading(false));
   }, [id]);
@@ -135,6 +144,22 @@ export default function InstitutionDetail() {
               <div className="text-xs text-slate-500">Linked Intel</div>
               <div className="text-2xl font-bold text-slate-900">{intel?.total ?? 0}</div>
             </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-4">
+              <div className="text-xs text-slate-500">Programs (Active)</div>
+              <div className="text-2xl font-bold text-slate-900">{commandData?.programCounts?.active ?? programs.filter((p:any)=>p.active).length}</div>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-4">
+              <div className="text-xs text-slate-500">Credit / Noncredit</div>
+              <div className="text-lg font-bold text-slate-900">{commandData?.programCounts?.credit ?? 0} / {commandData?.programCounts?.noncredit ?? 0}</div>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-4">
+              <div className="text-xs text-slate-500">State Priorities</div>
+              <div className="text-2xl font-bold text-slate-900">{commandData?.statePriorities?.length ?? '—'}</div>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-4">
+              <div className="text-xs text-slate-500">Recent Reports</div>
+              <div className="text-2xl font-bold text-slate-900">{commandData?.reports?.length ?? 0}</div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -164,6 +189,56 @@ export default function InstitutionDetail() {
                 <div className="text-sm text-slate-400">No linked intelligence yet. Tag sources to Kirkwood and they will appear here.</div>
               )}
             </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white rounded-xl border border-slate-200 p-6">
+              <h3 className="font-semibold text-slate-900 mb-3">County Demographics</h3>
+              {(economy?.demographics?.county_details || []).slice(0, 8).map((c: any) => (
+                <div key={c.county_name} className="flex items-center justify-between py-2 border-b border-slate-100 last:border-b-0">
+                  <div>
+                    <div className="text-sm font-medium text-slate-900">{c.county_name}</div>
+                    <div className="text-xs text-slate-500">Poverty {c.poverty_rate ?? '—'}% • Unemp {c.unemployment_rate ?? '—'}%</div>
+                  </div>
+                  <div className="text-sm font-semibold text-slate-800">{c.total_population?.toLocaleString?.() || '—'}</div>
+                </div>
+              ))}
+              {(economy?.demographics?.county_details || []).length === 0 && (
+                <div className="text-sm text-slate-400">No county demographics available yet.</div>
+              )}
+            </div>
+
+            <div className="bg-white rounded-xl border border-slate-200 p-6">
+              <h3 className="font-semibold text-slate-900 mb-3">State Priority Occupations (Iowa)</h3>
+              {(commandData?.statePriorities || []).slice(0, 8).map((p: any) => (
+                <div key={p.id} className="py-2 border-b border-slate-100 last:border-b-0">
+                  <div className="text-sm font-medium text-slate-900">{p.occupation_title}</div>
+                  <div className="text-xs text-slate-500">SOC {p.soc_code} • {p.sector} • {p.priority_level}</div>
+                </div>
+              ))}
+              {(commandData?.statePriorities || []).length === 0 && (
+                <div className="text-sm text-slate-400">No state priority records found.</div>
+              )}
+            </div>
+          </div>
+
+          <div className="bg-white rounded-xl border border-slate-200 p-6">
+            <h3 className="font-semibold text-slate-900 mb-3">Recent Reports for this Institution</h3>
+            {(commandData?.reports || []).slice(0, 8).map((r: any) => (
+              <div key={r.id} className="flex items-center justify-between py-2 border-b border-slate-100 last:border-b-0">
+                <div>
+                  <div className="text-sm font-medium text-slate-900">{r.program_name}</div>
+                  <div className="text-xs text-slate-500">{new Date(r.created_at).toLocaleDateString()} • {r.status}</div>
+                </div>
+                <div className="text-right">
+                  <div className="text-sm font-semibold text-slate-900">{r.run?.composite_score ? `${r.run.composite_score}/10` : '—'}</div>
+                  <div className="text-xs text-slate-500">{r.run?.report_id || 'No run'}</div>
+                </div>
+              </div>
+            ))}
+            {(commandData?.reports || []).length === 0 && (
+              <div className="text-sm text-slate-400">No reports found yet for this institution.</div>
+            )}
           </div>
         </div>
       )}
