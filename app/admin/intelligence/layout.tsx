@@ -33,28 +33,30 @@ export default function IntelligenceLayout({ children }: { children: React.React
         <p className="text-sm text-slate-500">Verified data that powers every Wavelength report</p>
       </div>
 
-      <div className="flex items-center gap-1 border-b border-slate-200 mb-6 overflow-x-auto">
-        {TABS.map((tab) => {
-          const isActive = tab.exact
-            ? pathname === tab.href
-            : pathname?.startsWith(tab.href);
+      <div className="mb-6">
+        <div className="flex flex-wrap gap-2">
+          {TABS.map((tab) => {
+            const isActive = tab.exact
+              ? pathname === tab.href
+              : pathname?.startsWith(tab.href);
 
-          return (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              className={`
-                text-sm font-medium px-4 py-2.5 border-b-2 transition-colors whitespace-nowrap
-                ${isActive
-                  ? 'border-purple-600 text-purple-700'
-                  : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-                }
-              `}
-            >
-              {tab.label}
-            </Link>
-          );
-        })}
+            return (
+              <Link
+                key={tab.href}
+                href={tab.href}
+                className={`
+                  text-sm font-medium px-3 py-1.5 rounded-lg border transition-colors whitespace-nowrap
+                  ${isActive
+                    ? 'border-purple-600 bg-purple-50 text-purple-700'
+                    : 'border-slate-200 bg-white text-slate-600 hover:text-slate-800 hover:border-slate-300'
+                  }
+                `}
+              >
+                {tab.label}
+              </Link>
+            );
+          })}
+        </div>
       </div>
 
       {children}
