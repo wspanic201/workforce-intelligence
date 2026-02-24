@@ -225,10 +225,16 @@ export default function InstitutionDetail() {
           <div className="bg-white rounded-xl border border-slate-200 p-6">
             <h3 className="font-semibold text-slate-900 mb-3">Recent Reports for this Institution</h3>
             {(commandData?.reports || []).slice(0, 8).map((r: any) => (
-              <div key={r.id} className="flex items-center justify-between py-2 border-b border-slate-100 last:border-b-0">
+              <div key={`${r.source || 'unknown'}-${r.id}`} className="flex items-center justify-between py-2 border-b border-slate-100 last:border-b-0">
                 <div>
                   <div className="text-sm font-medium text-slate-900">{r.program_name}</div>
-                  <div className="text-xs text-slate-500">{new Date(r.created_at).toLocaleDateString()} • {r.status}</div>
+                  <div className="text-xs text-slate-500">{new Date(r.created_at).toLocaleDateString()} • {r.status} • {r.source === 'order' ? 'Order' : 'Validation'}</div>
+                  <a
+                    href={r.source === 'order' ? `/admin/orders/${r.id}` : `/admin/reports/${r.id}`}
+                    className="text-xs text-purple-600 hover:underline"
+                  >
+                    Open in dashboard →
+                  </a>
                 </div>
                 <div className="text-right">
                   <div className="text-sm font-semibold text-slate-900">{r.run?.composite_score ? `${r.run.composite_score}/10` : '—'}</div>

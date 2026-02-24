@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { IntelSource } from '@/lib/intelligence/types';
 import { IntelSearch, IntelFilter, Badge, Modal, Field, Input, TextArea, Select, Btn, Pagination, SortHeader, useIntelData } from '../components';
 
@@ -21,6 +21,7 @@ export default function SourcesPage() {
   const [showAdd, setShowAdd] = useState(false);
   const [editing, setEditing] = useState<IntelSource | null>(null);
   const [form, setForm] = useState<Partial<IntelSource>>(empty());
+  const [institutions, setInstitutions] = useState<Array<{ id: string; name: string; short_name?: string | null }>>([]);
 
   const params: Record<string, string> = {};
   if (search) params.q = search;
@@ -28,11 +29,27 @@ export default function SourcesPage() {
 
   const { data, total, page, totalPages, loading, setPage, sort, dir, toggleSort, refetch } = useIntelData<IntelSource>('sources', params);
 
+  useEffect(() => {
+    fetch('/api/admin/intelligence/institutions?limit=500')
+      .then(r => r.json())
+      .then(res => setInstitutions(res?.data || []))
+      .catch(() => setInstitutions([]));
+  }, []);
+
+  const toggleInstitution = (instId: string) => {
+    const current = Array.isArray(form.institution_ids) ? form.institution_ids : [];
+    const next = current.includes(instId)
+      ? current.filter(id => id !== instId)
+      : [...current, instId];
+    setForm({ ...form, institution_ids: next });
+  };
+
   const handleSave = async () => {
     const method = editing ? 'PUT' : 'POST';
     const url = editing ? `/api/admin/intelligence/sources/${editing.id}` : '/api/admin/intelligence/sources';
     const body = { ...form };
     if (typeof body.topics === 'string') body.topics = (body.topics as string).split(',').map(t => t.trim()).filter(Boolean);
+    if (!Array.isArray(body.institution_ids)) body.institution_ids = [];
     await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     setShowAdd(false); setEditing(null); setForm(empty()); refetch();
   };
@@ -95,7 +112,16 @@ export default function SourcesPage() {
                 </div>
                 {s.summary && <p className="text-sm text-slate-600">{s.summary}</p>}
                 {s.topics?.length > 0 && (
-                  <div className="flex gap-1 mt-2">{s.topics.map(t => <Badge key={t}>{t}</Badge>)}</div>
+                  <div className="flex gap-1 mt-2 flex-wrap">{s.topics.map(t => <Badge key={t}>{t}</Badge>)}</div>
+                )}
+                {s.institution_ids?.length > 0 && (
+                  <div className="flex gap-1 mt-2 flex-wrap">
+                    {s.institution_ids.slice(0, 4).map(instId => {
+                      const inst = institutions.find(i => i.id === instId);
+                      return <Badge key={instId} color="purple">🏫 {inst?.short_name || inst?.name || instId.slice(0, 8)}</Badge>;
+                    })}
+                    {s.institution_ids.length > 4 && <Badge>+{s.institution_ids.length - 4} more</Badge>}
+                  </div>
                 )}
               </div>
               <div className="flex gap-2 ml-4">
@@ -118,6 +144,21 @@ export default function SourcesPage() {
         </div>
         <Field label="Summary"><TextArea value={form.summary || ''} onChange={v => setForm({ ...form, summary: v })} rows={3} placeholder="What this source covers and why it matters..." /></Field>
         <Field label="Topics (comma-separated)"><Input value={Array.isArray(form.topics) ? form.topics.join(', ') : ''} onChange={v => setForm({ ...form, topics: v.split(',').map(t => t.trim()) })} placeholder="BLS, wages, Iowa" /></Field>
+        <Field label="Link to Institutions">
+          <div className="border border-slate-200 rounded-lg p-3 max-h-52 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {institutions.map(inst => {
+              const selected = (form.institution_ids || []).includes(inst.id);
+              return (
+                <label key={inst.id} className={`flex items-center gap-2 text-sm px-2 py-1.5 rounded ${selected ? 'bg-purple-50 text-purple-800' : 'hover:bg-slate-50 text-slate-700'}`}>
+                  <input type="checkbox" checked={selected} onChange={() => toggleInstitution(inst.id)} />
+                  <span>{inst.short_name || inst.name}</span>
+                </label>
+              );
+            })}
+            {institutions.length === 0 && <span className="text-xs text-slate-400">No institutions loaded</span>}
+          </div>
+          <div className="text-xs text-slate-500 mt-1">Tagged institutions get direct relevance in the command center and report context.</div>
+        </Field>
         <div className="flex justify-end gap-3 mt-4"><Btn variant="secondary" onClick={() => { setShowAdd(false); setEditing(null); }}>Cancel</Btn><Btn onClick={handleSave}>{editing ? 'Update' : 'Clip'}</Btn></div>
       </Modal>
     </div>

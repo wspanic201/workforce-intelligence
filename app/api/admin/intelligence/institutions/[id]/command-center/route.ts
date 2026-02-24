@@ -56,8 +56,33 @@ export async function GET(
         .order('created_at', { ascending: false });
 
       const runMap = new Map((runs || []).map((r: any) => [r.project_id, r]));
-      reports = projects.map((p: any) => ({ ...p, run: runMap.get(p.id) || null }));
+      reports = projects.map((p: any) => ({ ...p, run: runMap.get(p.id) || null, source: 'validation_project' }));
     }
+
+    // Also link generated order reports
+    const { data: orders } = await supabase
+      .from('orders')
+      .select('id, institution_name, program_name, order_status, created_at, report_markdown, service_tier')
+      .or(`institution_name.ilike.%${instName}%,institution_name.ilike.%${shortName}%`)
+      .order('created_at', { ascending: false })
+      .limit(12);
+
+    const orderReports = (orders || []).map((o: any) => ({
+      id: o.id,
+      program_name: o.program_name || `${o.service_tier || 'Order'} report`,
+      status: o.order_status,
+      created_at: o.created_at,
+      run: {
+        report_id: `ORD-${o.id.slice(0, 8).toUpperCase()}`,
+        composite_score: null,
+        recommendation: o.report_markdown ? 'Report Generated' : 'No report markdown',
+      },
+      source: 'order',
+    }));
+
+    const allReports = [...reports, ...orderReports].sort((a: any, b: any) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
 
     const programCounts = {
       total: programs?.length || 0,
@@ -73,7 +98,7 @@ export async function GET(
       programs: programs || [],
       custom: custom || [],
       statePriorities: priorities || [],
-      reports,
+      reports: allReports,
     });
   } catch (error: any) {
     return NextResponse.json({ error: error.message || 'Failed to load command center data' }, { status: 500 });
