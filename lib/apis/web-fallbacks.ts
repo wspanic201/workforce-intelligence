@@ -145,15 +145,15 @@ export interface BraveJobSearchResult {
 
 /**
  * Use Brave Search API to estimate job availability when SerpAPI fails.
- * Requires BRAVE_SEARCH_API_KEY env var.
+ * Requires BRAVE_API_KEY env var.
  */
 export async function searchJobsBrave(
   occupation: string,
   location: string
 ): Promise<BraveJobSearchResult | null> {
-  const apiKey = process.env.BRAVE_SEARCH_API_KEY;
+  const apiKey = process.env.BRAVE_API_KEY;
   if (!apiKey) {
-    console.warn('[Brave Fallback] No BRAVE_SEARCH_API_KEY set');
+    console.warn('[Brave Fallback] No BRAVE_API_KEY set');
     return null;
   }
 

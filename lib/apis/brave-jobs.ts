@@ -94,9 +94,9 @@ export async function searchJobsBraveEnhanced(
   occupation: string,
   location: string,
 ): Promise<ProcessedJobData | null> {
-  const apiKey = process.env.BRAVE_SEARCH_API_KEY;
+  const apiKey = process.env.BRAVE_API_KEY;
   if (!apiKey) {
-    console.warn('[Brave Jobs] No BRAVE_SEARCH_API_KEY configured');
+    console.warn('[Brave Jobs] No BRAVE_API_KEY configured');
     return null;
   }
 
