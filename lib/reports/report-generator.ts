@@ -834,13 +834,11 @@ function buildPerspectiveAssessments(
   if (!tigerTeamMarkdown) return null;
 
   const cleaned = replaceTigerTeam(tigerTeamMarkdown);
-  // Match from "# Perspective Assessments" to the next top-level heading or end of string
-  const match = cleaned.match(/# Perspective Assessments\s+([\s\S]*?)(?=\n# (?!#)|$)/);
+  // Match either "# Advisory Assessment" (new unified voice) or "# Perspective Assessments" (legacy)
+  const match = cleaned.match(/# (?:Advisory Assessment|Perspective Assessments)\s+([\s\S]*?)(?=\n# (?!#)|$)/);
   if (!match || match[1].trim().length < 100) return null;
 
-  const parts: string[] = ['# Perspective Assessments', ''];
-  parts.push('*Four members of the Wavelength advisory team share their individual reads on this opportunity.*');
-  parts.push('');
+  const parts: string[] = ['# Advisory Assessment', ''];
   parts.push(match[1].trim());
   parts.push('', '<div style="page-break-after: always;"></div>');
   return parts.join('\n');

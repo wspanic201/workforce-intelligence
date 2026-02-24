@@ -111,33 +111,25 @@ For each true gate (maximum 2): WHAT must happen, WHO owns it, by WHEN, KILL CRI
 
 Do NOT list 5 conditions when only 1-2 are genuinely make-or-break. A list of 5 kill-criteria conditions is functionally a Defer recommendation and should be called what it is.
 
-# Perspective Assessments
+# Advisory Assessment
 
-Four members of the Wavelength advisory team weigh in. Each section is 400-500 words, written in FIRST PERSON, as if the advisor is speaking directly. Be opinionated. Challenge each other if you disagree. This is where the consulting value shows.
+**This is the most important section of the report. 800–1,000 words. ONE unified voice.**
 
-## Priya Mehta — Head of Strategy
-*Product-market fit, execution risk, strategic positioning*
+Do NOT write four separate persona sections. Do NOT use sub-headers for each advisor. Write as a single, cohesive consulting team voice — the way a senior partner would present findings after a full team debrief.
 
-Write as Priya. First person. Lead with your sharpest observation about this program's strategic positioning. What do you believe about this that the data might not fully capture? Where is the real risk in execution? Example energy: push past the obvious and say what's actually at stake.
+The voice is sharp, direct, and earned. It carries the financial caution of a CFO, the strategic edge of a strategist, the market instinct of a CMO, and the academic rigor of an education director — but fused into one perspective, not four parallel monologues. Think: the smartest person in the room who has already heard all the arguments and is now delivering the verdict.
 
-## Fatima Al-Rashid — Chief Financial Officer
-*Unit economics, enrollment sensitivity, financial risk*
+**What this section must do:**
+- Deliver the team's genuine, integrated point of view on this program — not a summary of the research
+- Call out the one or two things that actually determine whether this program succeeds or fails
+- Name the tension, if there is one (e.g., the strategic opportunity is real but the financial model is built on an assumption nobody has verified)
+- Be opinionated. Make a case. Don't hedge every sentence.
+- Speak directly to the decision-maker: what do you need to do, and why does it matter now?
 
-Write as Fatima. First person. Lead with the CFO's direct take on whether this program is financially defensible. Do NOT hedge. Call the central financial question by its name. Example energy: "Let me be blunt: this program is financially viable IF—and only if—one critical assumption resolves in the program's favor. That assumption is currently unresolved by a factor of four. That's not a rounding error; it's a $30,000 swing in Year 1 instructor costs alone."
+**Tone reference (this is the energy level):**
+> "The competitive vacuum is real. No Iowa community college is publishing PTCB pass rates. Penn Foster can't place a student in an Iowa externship. Walgreens is training techs who are permanently capped in retail. UnityPoint Health has three open positions and no community college pipeline partner in Cedar Rapids. That is not a market gap — that is an invitation. The only question is whether Kirkwood shows up with the right program or a minimum-compliance certificate that competes on price with a $999 online product. Those are two very different decisions, and the financial model right now is built for the wrong one."
 
-## Valentina Rojas-Medina — Chief Marketing Officer
-*Recruitment strategy, brand positioning, employer partnerships*
-
-Write as Valentina. First person. Lead with the go-to-market question you'd ask first. How do you recruit the first cohort? Who is the ideal student and how do you find them before the program goes live? What marketing move would you make in week one?
-
-## Marcy Villanueva-Chen — VP Education Strategy
-*Curriculum defensibility, instructor pipeline, credential value*
-
-Write as Marcy. First person. What's your read on the academic and operational readiness? Is the curriculum design sound — will a graduate have demonstrably employable skills on day one? What will make or break the student experience?
-
----
-
-Each advisor must feel like a real person with opinions, not a label on a spreadsheet. These sections should read like a roundtable discussion, not four parallel reports. If there's tension between the financial read and the strategic one — name it.
+That's ONE voice. Not four. Pull the threads together — strategic opportunity, financial reality, market entry, curriculum stakes — and write them as one argument, not four chapters.
 
 ---
 
