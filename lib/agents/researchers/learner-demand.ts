@@ -53,9 +53,6 @@ export async function runLearnerDemand(
   try {
     console.log(`[Learner Demand] Starting for "${project.program_name}"`);
 
-    // Get shared verified intelligence context
-    const verifiedIntelBlock = (project as any)._intelContext?.promptBlock || '';
-
     const prompt = `${PROGRAM_VALIDATOR_SYSTEM_PROMPT}
 
 ROLE: You are conducting Stage 3 — Target Learner Demand Assessment.
@@ -71,21 +68,24 @@ ${(project as any).delivery_format ? `- Delivery Format: ${(project as any).deli
 ${(project as any).estimated_tuition ? `- Estimated Tuition: ${(project as any).estimated_tuition}` : ''}
 ${(project as any).target_learner_profile ? `- Learner Profile: ${(project as any).target_learner_profile}` : ''}
 
-${verifiedIntelBlock ? `VERIFIED BASELINE DATA (confirmed from government sources — treat as established fact):
-${verifiedIntelBlock}` : ''}
+ANALYSIS REQUIRED:
+1. Estimate target learner population size in the service area
+2. Profile learner motivations (career changers, upskilling, unemployed, incumbent workers)
+3. Identify barriers to enrollment (financial, logistical, awareness)
+4. Research enrollment benchmarks from peer institutions offering similar programs
+5. Assess seasonality and optimal launch timing
+6. Estimate marketing reach and conversion funnel (CE benchmark: 10-20% inquiry-to-enrollment)
+7. Project realistic enrollment per cohort
 
-Your job is NOT to restate baseline data or generate tables. The data above is confirmed.
-Your job is analysis:
-- Who is the actual target learner and what motivates enrollment?
-- Which barriers (cost, schedule, awareness, confidence) are most binding in this market?
-- How does program design reduce those barriers?
-- What would make a prospective student choose this program over alternatives?
-- What critical unknowns remain despite the baseline data?
+SCORING CRITERIA:
+- Strong (8-10): Large pool, clear motivation, low barriers, 20+ per cohort achievable
+- Moderate (5-7): Moderate pool, mixed motivation, 12-20 per cohort
+- Weak (1-4): Small/hard-to-reach pool, <12 per cohort
 
 OUTPUT FORMAT (JSON):
 {
   "score": <1-10>,
-  "scoreRationale": "600-900 word narrative analysis in paragraph form",
+  "scoreRationale": "Detailed explanation of score",
   "targetPopulation": {
     "estimatedSize": <number>,
     "primarySegments": ["Segment 1", "Segment 2"],
@@ -120,19 +120,9 @@ OUTPUT FORMAT (JSON):
   "dataSources": ["Source 1"]
 }
 
-OUTPUT RULES:
-- 600-900 words in scoreRationale
-- NO markdown tables
-- NO bullet-point lists of statistics already provided
-- YES direct references to baseline data and strategic implications
-- Keep non-narrative fields concise and decision-oriented
-- Make a clear enrollment thesis for Year 1 with explicit reasoning
+IMPORTANT: Return ONLY valid JSON. No markdown outside JSON. Keep string values concise. Do NOT include a markdownReport field. Be conservative in estimates.`;
 
-SCORING: 8-10 strong demand and clear conversion path; 5-7 moderate; 1-4 weak or fragile.
-
-IMPORTANT: Return ONLY valid JSON. No markdown outside JSON. Keep string values concise. Do NOT include a markdownReport field.`;
-
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 5000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 16000 });
     const data = extractJSON(content) as LearnerDemandData;
 
     // Generate markdown if not provided by AI

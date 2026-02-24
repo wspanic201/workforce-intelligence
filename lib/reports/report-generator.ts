@@ -1,1280 +1,278 @@
 import { ValidationProject, ResearchComponent } from '@/lib/types/database';
 import { ProgramScore } from '@/lib/scoring/program-scorer';
 import { formatComponentContent } from './format-component';
-import type { AgentIntelligenceContext } from '@/lib/intelligence/agent-context';
-import {
-  renderWageBlock,
-  renderProjectionsBlock,
-  renderSkillsBlock,
-  renderStatePriorityBlock,
-  renderCompletionsBlock,
-  renderDemographicsBlock,
-} from './data-renderer';
-
-interface VerifiedClaim {
-  claim: string;
-  source: string;
-  sourceType: string;
-  confidence: string;
-  citation: string;
-}
-
-interface CitationResults {
-  verifiedClaims: VerifiedClaim[];
-  regulatoryCitations: VerifiedClaim[];
-  marketCitations: VerifiedClaim[];
-  corrections: Array<{
-    componentType: string;
-    original: string;
-    corrected: string;
-    reason: string;
-  }>;
-  dataSources: string[];
-  warnings: string[];
-  summary: string;
-}
 
 interface ReportInput {
   project: ValidationProject;
   components: ResearchComponent[];
   programScore: ProgramScore;
   tigerTeamMarkdown?: string;
-  citations?: CitationResults;
 }
 
-// ════════════════════════════════════════════════════════
-// INTEL DATA ACCESSOR
-// ════════════════════════════════════════════════════════
-
-function getIntelContext(project: ValidationProject): AgentIntelligenceContext['raw'] | null {
-  const ctx = (project as any)._intelContext as AgentIntelligenceContext | undefined;
-  return ctx?.raw || null;
-}
-
-// ════════════════════════════════════════════════════════
-// HTML VISUALIZATION HELPERS
-// ════════════════════════════════════════════════════════
-
-function scoreColor(score: number): string {
-  if (score >= 8) return '#059669';
-  if (score >= 6) return '#d97706';
-  return '#dc2626';
-}
-
-function scoreGradient(score: number): string {
-  if (score >= 8) return 'linear-gradient(90deg,#10b981,#059669)';
-  if (score >= 6) return 'linear-gradient(90deg,#fbbf24,#d97706)';
-  return 'linear-gradient(90deg,#f87171,#dc2626)';
-}
-
-/**
- * HTML progress bars for dimension scores.
- */
-function htmlScoreBars(dimensions: ProgramScore['dimensions']): string {
-  const sorted = [...dimensions].sort((a, b) => b.score * b.weight - a.score * a.weight);
-  const rows = sorted.map(d => {
-    const pct = Math.round((d.score / 10) * 100);
-    const color = scoreColor(d.score);
-    const gradient = scoreGradient(d.score);
-    const weightPct = `${(d.weight * 100).toFixed(0)}%`;
-    return `  <div style="display:flex;align-items:center;margin:6px 0;">
-    <span style="width:220px;font-size:13px;color:#334155;">${d.dimension}</span>
-    <div style="flex:1;background:#e2e8f0;border-radius:4px;height:20px;margin:0 12px;overflow:hidden;">
-      <div style="width:${pct}%;height:100%;background:${gradient};border-radius:4px;"></div>
-    </div>
-    <span style="font-size:13px;font-weight:600;color:${color};width:50px;">${d.score}/10</span>
-    <span style="font-size:11px;color:#94a3b8;width:40px;text-align:right;">${weightPct}</span>
-  </div>`;
-  });
-  return `<div style="margin:12px 0;">\n${rows.join('\n')}\n</div>`;
-}
-
-/**
- * HTML horizontal bar chart for wage data.
- */
-function htmlWageChart(raw: AgentIntelligenceContext['raw']): string {
-  const occ = raw.occupation;
-  if (!occ?.wages) return '';
-
-  const w = occ.wages;
-  const tiers: Array<{ label: string; value: number }> = [];
-  if (w.pct_10) tiers.push({ label: 'Entry Level', value: w.pct_10 });
-  if (w.pct_25) tiers.push({ label: '25th %ile', value: w.pct_25 });
-  if (w.median_annual) tiers.push({ label: 'Median', value: w.median_annual });
-  if (w.pct_75) tiers.push({ label: '75th %ile', value: w.pct_75 });
-  if (w.pct_90) tiers.push({ label: '90th %ile', value: w.pct_90 });
-
-  if (tiers.length === 0) return '';
-
-  const maxVal = Math.max(...tiers.map(t => t.value));
-  const rows = tiers.map(t => {
-    const pct = Math.round((t.value / maxVal) * 100);
-    const isMedian = t.label === 'Median';
-    const barColor = isMedian ? '#7c3aed' : '#a78bfa';
-    const fontWeight = isMedian ? '700' : '600';
-    return `  <div style="margin:8px 0;">
-    <div style="display:flex;align-items:center;">
-      <span style="width:100px;font-size:12px;color:#64748b;">${t.label}</span>
-      <div style="flex:1;background:#e2e8f0;border-radius:3px;height:16px;overflow:hidden;">
-        <div style="width:${pct}%;height:100%;background:${barColor};border-radius:3px;"></div>
-      </div>
-      <span style="width:80px;text-align:right;font-size:12px;font-weight:${fontWeight};color:#334155;">$${t.value.toLocaleString()}</span>
-    </div>
-  </div>`;
-  });
-
-  const title = `${w.geo_name} ${w.occupation_title} Wages (BLS OES ${w.bls_release})`;
-  return `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:16px 0;">
-  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;margin-bottom:12px;">${title}</div>
-${rows.join('\n')}
-</div>`;
-}
-
-/**
- * HTML colored cards for financial scenarios.
- */
-function htmlScenarioCards(scenarios: Array<{ label: string; students: number; net: number }>): string {
-  if (scenarios.length === 0) return '';
-
-  const colorMap: Record<string, { bg: string; border: string; text: string }> = {
-    pessimistic: { bg: '#fef2f2', border: '#fecaca', text: '#dc2626' },
-    conservative: { bg: '#fef2f2', border: '#fecaca', text: '#dc2626' },
-    base: { bg: '#f0fdf4', border: '#bbf7d0', text: '#16a34a' },
-    optimistic: { bg: '#eff6ff', border: '#bfdbfe', text: '#2563eb' },
-    aggressive: { bg: '#eff6ff', border: '#bfdbfe', text: '#2563eb' },
-  };
-  const defaultColor = { bg: '#f8fafc', border: '#e2e8f0', text: '#475569' };
-
-  const cards = scenarios.map(s => {
-    const key = s.label.toLowerCase();
-    const c = colorMap[key] || defaultColor;
-    const netStr = s.net >= 0 ? `$${s.net.toLocaleString()}` : `-$${Math.abs(s.net).toLocaleString()}`;
-    return `  <div style="flex:1;background:${c.bg};border:1px solid ${c.border};border-radius:8px;padding:12px;text-align:center;">
-    <div style="font-size:11px;color:${c.text};text-transform:uppercase;">${s.label}</div>
-    <div style="font-size:20px;font-weight:700;color:${c.text};margin:4px 0;">${netStr}</div>
-    <div style="font-size:11px;color:#64748b;">${s.students} students</div>
-  </div>`;
-  });
-
-  return `<div style="display:flex;gap:12px;margin:16px 0;">\n${cards.join('\n')}\n</div>`;
-}
-
-/**
- * HTML styled comparison table.
- */
-function htmlCompetitorMatrix(headers: string[], rows: Array<{ feature: string; values: string[] }>): string {
-  if (rows.length === 0) return '';
-
-  const thCells = headers.map((h, i) => {
-    const style = i === 1
-      ? 'padding:10px 12px;text-align:center;color:#7c3aed;font-weight:700;border-bottom:2px solid #e2e8f0;'
-      : i === 0
-        ? 'padding:10px 12px;text-align:left;color:#475569;border-bottom:2px solid #e2e8f0;'
-        : 'padding:10px 12px;text-align:center;color:#475569;border-bottom:2px solid #e2e8f0;';
-    return `<th style="${style}">${h}</th>`;
-  });
-
-  const trs = rows.map(r => {
-    const tds = [
-      `<td style="padding:8px 12px;border-bottom:1px solid #f1f5f9;">${r.feature}</td>`,
-      ...r.values.map(v => `<td style="padding:8px 12px;text-align:center;border-bottom:1px solid #f1f5f9;">${v}</td>`),
-    ];
-    return `    <tr>${tds.join('')}</tr>`;
-  });
-
-  return `<div style="margin:16px 0;overflow:hidden;border-radius:8px;border:1px solid #e2e8f0;">
-  <table style="width:100%;border-collapse:collapse;font-size:12px;">
-    <thead>
-      <tr style="background:#f1f5f9;">${thCells.join('')}</tr>
-    </thead>
-    <tbody>
-${trs.join('\n')}
-    </tbody>
-  </table>
-</div>`;
-}
-
-/**
- * HTML callout box for key findings.
- */
-function htmlKeyFinding(text: string): string {
-  return `<div style="background:linear-gradient(135deg,#7c3aed11,#3b82f611);border-left:4px solid #7c3aed;border-radius:0 8px 8px 0;padding:12px 16px;margin:16px 0;">
-  <span style="font-size:13px;font-weight:600;color:#7c3aed;">Key Finding:</span>
-  <span style="font-size:13px;color:#334155;"> ${text}</span>
-</div>`;
-}
-
-/**
- * HTML visual timeline for implementation milestones.
- */
-function htmlTimelineVisual(milestones: Array<{ month: string; title: string; detail: string; color?: string }>): string {
-  const items = milestones.map(m => {
-    const dotColor = m.color || '#7c3aed';
-    return `  <div style="display:flex;margin-bottom:16px;">
-    <div style="display:flex;flex-direction:column;align-items:center;margin-right:16px;">
-      <div style="width:12px;height:12px;border-radius:50%;background:${dotColor};flex-shrink:0;"></div>
-      <div style="width:2px;flex:1;background:#e2e8f0;margin-top:4px;"></div>
-    </div>
-    <div style="flex:1;padding-bottom:8px;">
-      <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;">${m.month}</div>
-      <div style="font-size:14px;font-weight:600;color:#334155;margin:2px 0;">${m.title}</div>
-      <div style="font-size:12px;color:#64748b;">${m.detail}</div>
-    </div>
-  </div>`;
-  });
-
-  return `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:20px;margin:16px 0;">\n${items.join('\n')}\n</div>`;
-}
-
-/**
- * HTML single stat metric card.
- */
-function htmlMetricCard(label: string, value: string, subtitle?: string): string {
-  const sub = subtitle ? `\n  <div style="font-size:11px;color:#64748b;">${subtitle}</div>` : '';
-  return `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center;min-width:140px;">
-  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;">${label}</div>
-  <div style="font-size:24px;font-weight:700;color:#334155;margin:4px 0;">${value}</div>${sub}
-</div>`;
-}
-
-/**
- * Inline HTML composite score bar (replaces the Unicode version).
- */
-function htmlCompositeScore(score: number, recommendation: string): string {
-  const pct = Math.round((score / 10) * 100);
-  const color = scoreColor(score);
-  const gradient = scoreGradient(score);
-  return `<div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;margin:16px 0;">
-  <div style="font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;margin-bottom:8px;">Composite Score</div>
-  <div style="display:flex;align-items:center;gap:12px;">
-    <div style="flex:1;background:#e2e8f0;border-radius:4px;height:24px;overflow:hidden;">
-      <div style="width:${pct}%;height:100%;background:${gradient};border-radius:4px;"></div>
-    </div>
-    <span style="font-size:18px;font-weight:700;color:${color};">${score}/10</span>
-    <span style="font-size:13px;font-weight:600;color:#475569;">${recommendation}</span>
-  </div>
-</div>`;
-}
-
-// ════════════════════════════════════════════════════════
-// SECTION BUILDERS
-// ════════════════════════════════════════════════════════
-
-function buildCoverPage(project: ValidationProject, reportDate: string): string {
-  return `---
-pdf_options:
-  format: Letter
-  margin: 25mm
-  headerTemplate: '<div style="font-size:8px;width:100%;text-align:center;color:#999;">Wavelength \u2014 ${project.program_name} Validation</div>'
-  footerTemplate: '<div style="font-size:8px;width:100%;text-align:center;color:#999;"><span class="pageNumber"></span> / <span class="totalPages"></span></div>'
-  displayHeaderFooter: true
-stylesheet: []
-body_class: report
----
-
-<div style="text-align:center; padding-top:120px;">
-
-# Workforce Program Validation Report
-
-## ${project.program_name}
-### ${capitalize(project.program_type || 'Certificate')} Program
-
----
-
-**Prepared for:**
-## ${project.client_name}
-### ${(project as any).geographic_area || ''}
-
-**Report Date:** ${reportDate}
-
-**Prepared by:** Wavelength
-hello@withwavelength.com
-
-</div>
-
-<div style="page-break-after: always;"></div>`;
-}
-
-function buildTableOfContents(): string {
-  return `# Table of Contents
-
-**Advisory Report**
-1. [Executive Summary](#executive-summary)
-2. [Advisory Assessment](#advisory-assessment)
-3. [Key Findings](#key-findings)
-4. [Conditions for Go](#conditions-for-go)
-5. [Recommended Next Steps](#recommended-next-steps)
-
-**Supporting Research**
-6. [Market Demand & Employment](#market-demand-analysis)
-7. [Competitive Landscape](#competitive-landscape)
-8. [Curriculum Design](#curriculum-design)
-9. [Financial Projections](#financial-projections)
-10. [Marketing Strategy](#marketing-strategy)
-11. [Implementation Timeline](#implementation-timeline)
-12. [Appendix](#appendix)
-
-<div style="page-break-after: always;"></div>`;
-}
-
-function buildExecutiveSummary(
-  project: ValidationProject,
-  programScore: ProgramScore,
-  tigerTeamMarkdown: string | undefined,
-  raw: AgentIntelligenceContext['raw'] | null,
-): string {
-  const recLabel = formatRecommendationLabel(programScore.recommendation);
-
-  // Try to extract narrative exec summary from synthesis markdown
-  let narrative = '';
-  if (tigerTeamMarkdown) {
-    const execMatch = tigerTeamMarkdown.match(/# Executive Summary\s+([\s\S]*?)(?=\n# )/);
-    if (execMatch) {
-      narrative = execMatch[1].trim();
-    } else {
-      const recMatch = tigerTeamMarkdown.match(/# Recommendation\s+([\s\S]*?)(?=\n# )/);
-      if (recMatch) {
-        narrative = recMatch[1].trim();
-      }
-    }
-    if (narrative) {
-      narrative = replaceTigerTeam(narrative);
-    }
-  }
-
-  // If no synthesis narrative, build from scores
-  if (!narrative) {
-    narrative = buildNarrativeFromScores(project, programScore, raw);
-  }
-
-  // Build investment summary as HTML visual
-  const investmentVisual = buildInvestmentVisual(programScore);
-
-  const parts = [
-    `# Executive Summary`,
-    '',
-    `## Recommendation: **${recLabel}**`,
-    '',
-    narrative,
-  ];
-
-  if (investmentVisual) {
-    parts.push('', investmentVisual);
-  }
-
-  parts.push('', '<div style="page-break-after: always;"></div>');
-
-  return parts.join('\n');
-}
-
-function buildNarrativeFromScores(
-  project: ValidationProject,
-  programScore: ProgramScore,
-  raw: AgentIntelligenceContext['raw'] | null,
-): string {
-  const topDims = [...programScore.dimensions].sort((a, b) => b.score * b.weight - a.score * a.weight);
-  const strengths = topDims.filter(d => d.score >= 7).slice(0, 3);
-  const concerns = topDims.filter(d => d.score <= 4);
-
-  const parts: string[] = [];
-
-  // Discovery framing: lead with what the research found, not what the client is evaluating
-  const occupationLabel = (project as any).target_occupation || project.program_name;
-  parts.push(`Our analysis of the ${occupationLabel} market at **${project.client_name}** reveals the following picture.`);
-  parts.push('');
-
-  parts.push('### What the Research Found');
-  parts.push('');
-
-  if (raw?.occupation?.projections) {
-    const p = raw.occupation.projections;
-    parts.push(`- **Growth outlook:** The Bureau of Labor Statistics projects **${p.change_percent}% growth** from ${p.base_year}\u2013${p.projected_year}${p.annual_openings ? `, with approximately **${p.annual_openings.toLocaleString()} annual openings**` : ''}.`);
-  }
-
-  if (raw?.occupation?.wages) {
-    const w = raw.occupation.wages;
-    parts.push(`- **Strong wages:** ${w.geo_name} median annual wage is **$${w.median_annual?.toLocaleString()}**${w.pct_10 ? `, with entry-level at **$${w.pct_10.toLocaleString()}**` : ''}.`);
-  }
-
-  for (const s of strengths) {
-    parts.push(`- **${s.dimension}** scored ${s.score}/10 \u2014 ${s.rationale.substring(0, 200)}`);
-  }
-
-  if (concerns.length > 0) {
-    parts.push('');
-    for (const c of concerns) {
-      parts.push(`- **Area of concern: ${c.dimension}** scored ${c.score}/10 \u2014 ${c.rationale.substring(0, 200)}`);
-    }
-  }
-
-  if (programScore.overrideApplied && programScore.overrideReason) {
-    parts.push('');
-    parts.push(`> **Note:** ${programScore.overrideReason}`);
-  }
-
-  if (programScore.conditions && programScore.conditions.length > 0) {
-    parts.push('');
-    parts.push('**Conditions for Proceeding:**');
-    for (const c of programScore.conditions) {
-      parts.push(`- ${c}`);
-    }
-  }
-
-  return parts.join('\n');
-}
-
-function buildInvestmentVisual(programScore: ProgramScore): string {
-  if (programScore.compositeScore < 5) return '';
-
-  const strongest = [...programScore.dimensions].sort((a, b) => b.score - a.score)[0];
-  const weakest = [...programScore.dimensions].sort((a, b) => a.score - b.score)[0];
-
-  const cards = [
-    htmlMetricCard('Composite Score', `${programScore.compositeScore}/10`, formatRecommendationLabel(programScore.recommendation)),
-    htmlMetricCard('Strongest', `${strongest?.score}/10`, strongest?.dimension || 'N/A'),
-    htmlMetricCard('Weakest', `${weakest?.score}/10`, weakest?.dimension || 'N/A'),
-    htmlMetricCard('Dimensions', `${programScore.dimensions.length}`, 'evaluated'),
-  ];
-
-  return `### Validation Summary
-
-<div style="display:flex;gap:12px;margin:16px 0;flex-wrap:wrap;">
-${cards.join('\n')}
-</div>`;
-}
-
-/**
- * Conditions for Go section — numbered gates with owner, timeline, and kill criteria.
- * Extracts conditions from programScore and synthesis markdown.
- */
-function buildConditionsForGo(
-  programScore: ProgramScore,
-  tigerTeamMarkdown: string | undefined,
-  project: ValidationProject,
-): string {
-  const parts: string[] = ['# Conditions for Go'];
-  parts.push('');
-  parts.push(`Before ${project.client_name} commits budget or opens enrollment, the following gates must be cleared. Each represents a specific validation step with a clear owner and decision point.`);
-  parts.push('');
-
-  // Try to extract conditions from synthesis markdown
-  const conditions: Array<{ question: string; owner: string; timeline: string; kill: string }> = [];
-
-  // Build default conditions from score dimensions
-  const weakDims = [...programScore.dimensions].sort((a, b) => a.score - b.score);
-  const dimNames = weakDims.map(d => d.dimension.toLowerCase());
-
-  // Always include regulatory/compliance gate
-  conditions.push({
-    question: 'Has the state board approved the program curriculum and clinical site plan?',
-    owner: 'Program Director + Compliance Office',
-    timeline: 'Months 2\u20134',
-    kill: 'If state board requires changes that increase program length beyond 12 months or cost beyond budget, defer launch.',
-  });
-
-  // Financial validation gate
-  conditions.push({
-    question: 'Does validated instructor cost (actual contact hours) confirm Year 1 net positive at base enrollment?',
-    owner: 'Finance Office + Program Director',
-    timeline: 'Month 1\u20132',
-    kill: 'If actual instructor cost pushes break-even above 80% of base enrollment target, restructure cost model before proceeding.',
-  });
-
-  // Employer commitment gate
-  conditions.push({
-    question: 'Are signed clinical rotation MOUs in place with at least 2 employer partners?',
-    owner: 'Workforce Partnerships + Program Director',
-    timeline: 'Months 4\u20138',
-    kill: 'If fewer than 2 signed MOUs by month 8, delay enrollment open by one semester.',
-  });
-
-  // Enrollment validation gate
-  conditions.push({
-    question: 'Has direct prospective student outreach confirmed minimum viable enrollment interest?',
-    owner: 'Marketing + Admissions',
-    timeline: 'Months 6\u201310',
-    kill: 'If inquiry-to-enrollment pipeline shows fewer than break-even students at 60 days before cohort start, postpone launch.',
-  });
-
-  // Capital readiness gate
-  if (dimNames.some(d => d.includes('institutional') || d.includes('capacity'))) {
-    conditions.push({
-      question: 'Is lab/facility buildout complete and equipment operational?',
-      owner: 'Facilities + IT + Program Director',
-      timeline: 'Months 8\u201312',
-      kill: 'If facility not ready 30 days before cohort start, push launch date.',
-    });
-  }
-
-  // Override with synthesis conditions if available
-  if (tigerTeamMarkdown) {
-    const cleaned = replaceTigerTeam(tigerTeamMarkdown);
-    const condMatch = cleaned.match(/# (?:Conditions|Prerequisites|Go Conditions)[^\n]*\s+([\s\S]*?)(?=\n# )/i);
-    if (condMatch) {
-      parts.push(condMatch[1].trim());
-      parts.push('');
-    }
-  }
-
-  // Build the numbered conditions table
-  const rows = conditions.map((c, i) => {
-    const num = i + 1;
-    const colors = ['#7c3aed', '#2563eb', '#059669', '#d97706', '#dc2626'];
-    const color = colors[i % colors.length];
-    return `<div style="display:flex;gap:16px;margin-bottom:16px;padding:16px;background:#f8fafc;border-left:4px solid ${color};border-radius:0 8px 8px 0;">
-  <div style="font-size:20px;font-weight:700;color:${color};min-width:28px;">${num}</div>
-  <div style="flex:1;">
-    <div style="font-size:14px;font-weight:600;color:#334155;margin-bottom:6px;">${c.question}</div>
-    <div style="display:flex;gap:24px;flex-wrap:wrap;font-size:12px;">
-      <span><strong style="color:#475569;">Owner:</strong> <span style="color:#64748b;">${c.owner}</span></span>
-      <span><strong style="color:#475569;">Timeline:</strong> <span style="color:#64748b;">${c.timeline}</span></span>
-    </div>
-    <div style="font-size:12px;margin-top:6px;color:#dc2626;"><strong>Kill criterion:</strong> ${c.kill}</div>
-  </div>
-</div>`;
-  });
-
-  parts.push(rows.join('\n'));
-  parts.push('', '<div style="page-break-after: always;"></div>');
-
-  return parts.join('\n');
-}
-
-function buildMarketDemandSection(
-  components: ResearchComponent[],
-  raw: AgentIntelligenceContext['raw'] | null,
-  programName?: string,
-  preRendered?: { wages: string; projections: string; skills: string; statePriority: string; demographics: string },
-): string {
-  const parts: string[] = ['# Market Demand Analysis'];
-  const laborComp = components.find(c => c.component_type === 'labor_market');
-  const employerComp = components.find(c => c.component_type === 'employer_demand');
-
-  // ── 1. VERIFIED DATA TABLES (from DB — no agent contamination) ──────────
-  parts.push('', '## Wage Data', '');
-  parts.push(preRendered?.wages ?? renderWageBlock(raw));
-
-  parts.push('', '## Employment Outlook', '');
-  parts.push(preRendered?.projections ?? renderProjectionsBlock(raw));
-
-  const spBlock = preRendered?.statePriority ?? renderStatePriorityBlock(raw);
-  if (spBlock) {
-    parts.push('', '## Workforce Funding Status', '');
-    parts.push(spBlock);
-  }
-
-  // ── 2. AGENT ANALYSIS (narrative only — tables stripped) ────────────────
-  if (laborComp) {
-    const md = laborComp.markdown_output || formatComponentContent('labor_market', laborComp.content);
-    if (md) {
-      const stripped = stripDataTables(cleanAgentMarkdown(md, programName));
-      if (stripped.length > 100) {
-        parts.push('', '## Market Analysis', '', stripped);
-      }
-    }
-  }
-
-  // ── 3. EMPLOYER DEMAND ──────────────────────────────────────────────────
-  if (employerComp) {
-    const md = employerComp.markdown_output || formatComponentContent('employer_demand', employerComp.content);
-    if (md) {
-      const stripped = stripDataTables(cleanAgentMarkdown(md, programName));
-      if (stripped.length > 100) {
-        parts.push('', '## Employer Demand', '', stripped);
-      }
-    }
-  }
-
-  // ── 4. SKILLS (O*NET — verified, no web-scraping) ───────────────────────
-  const skillsBlock = preRendered?.skills ?? renderSkillsBlock(raw);
-  if (skillsBlock && !skillsBlock.startsWith('_Skills data not available')) {
-    parts.push('', '## Required Skills & Competencies', '', skillsBlock);
-  }
-
-  parts.push('', buildActionItems([
-    'Conduct direct employer outreach to validate projected hiring volume and confirm willingness to host clinical rotations.',
-    'Request written letters of support or intent from at least 3 regional employers to strengthen the demand case.',
-  ]));
-
-  parts.push('', '<div style="page-break-after: always;"></div>');
-  return parts.join('\n');
-}
-
-function buildCompetitiveLandscapeSection(
-  components: ResearchComponent[],
-  raw: AgentIntelligenceContext['raw'] | null,
-  programName?: string,
-): string {
-  const parts: string[] = ['# Competitive Landscape'];
-
-  // Agent analysis LEADS
-  const compComp = components.find(c => c.component_type === 'competitive_landscape');
-  if (compComp) {
-    const md = compComp.markdown_output || formatComponentContent('competitive_landscape', compComp.content);
-    if (md) {
-      const cleaned = stripDataTables(cleanAgentMarkdown(md, programName));
-      if (cleaned) {
-        parts.push('', cleaned);
-      }
-    }
-  }
-
-  // Completions data as supporting callout
-  const agentText = compComp?.markdown_output || '';
-  if (raw?.completions?.found && raw.completions.data?.length > 0 && !agentText.toLowerCase().includes('ipeds')) {
-    const comp = raw.completions;
-    const topPrograms = comp.data.slice(0, 5);
-    const totalCompletions = topPrograms.reduce((sum: number, c: any) => sum + ((c as any).total_completions || 0), 0);
-    if (totalCompletions > 0) {
-      parts.push('', htmlKeyFinding(`Regional Program Completions (IPEDS): ${totalCompletions} annual completions across ${topPrograms.length} regional programs`));
-    }
-  }
-
-  // ACTION ITEMS
-  parts.push('', buildActionItems([
-    'Mystery-shop the top 2 competitor programs to validate tuition, format, and schedule claims before finalizing program design.',
-    'Survey prospective students on feature preferences (online vs. hybrid, evening vs. weekend) to confirm differentiation strategy.',
-    'Identify 2\u20133 specific differentiators (e.g., employer partnerships, hybrid format, PTCB pass rate guarantee) and build them into the program proposal.',
-  ]));
-
-  parts.push('', '<div style="page-break-after: always;"></div>');
-  return parts.join('\n');
-}
-
-function buildCurriculumDesignSection(
-  components: ResearchComponent[],
-  programName?: string,
-): string {
-  const parts: string[] = ['# Curriculum Design'];
-
-  // Graduate competencies from institutional fit / curriculum component
-  const acadComp = components.find(c => c.component_type === 'institutional_fit');
-  if (acadComp) {
-    const content = acadComp.content as any;
-    const gradCompetencies: string[] = content?.graduate_competencies || content?.data?.graduate_competencies || [];
-    const learningOutcomes: string[] = content?.learning_outcomes || content?.data?.learning_outcomes || [];
-
-    if (gradCompetencies.length > 0) {
-      parts.push('', '## Graduate Competencies', '');
-      parts.push('*A graduate of this program will be able to perform the following on day one of employment:*', '');
-      gradCompetencies.forEach(c => parts.push(`- ${c}`));
-    } else if (learningOutcomes.length > 0) {
-      parts.push('', '## Program Learning Outcomes', '');
-      learningOutcomes.forEach(o => parts.push(`- ${o}`));
-    }
-
-    const md = acadComp.markdown_output || formatComponentContent('academic_analysis', acadComp.content);
-    if (md) {
-      const cleaned = stripDataTables(cleanAgentMarkdown(md, programName));
-      if (cleaned) {
-        parts.push('', '## Curriculum Framework', '', cleaned);
-      }
-    }
-  }
-
-  // Institutional fit
-  const instComp = components.find(c => c.component_type === 'institutional_fit');
-  if (instComp) {
-    const md = instComp.markdown_output || formatComponentContent('institutional_fit', instComp.content);
-    if (md) {
-      const cleaned = stripDataTables(cleanAgentMarkdown(md, programName));
-      if (cleaned) {
-        parts.push('', '## Institutional Capacity', '', cleaned);
-      }
-    }
-  }
-
-  // Regulatory compliance
-  const regComp = components.find(c => c.component_type === 'regulatory_compliance');
-  if (regComp) {
-    const md = regComp.markdown_output || formatComponentContent('regulatory_compliance', regComp.content);
-    if (md) {
-      const cleaned = stripDataTables(cleanAgentMarkdown(md, programName));
-      if (cleaned) {
-        parts.push('', '## Regulatory & Compliance Considerations', '', cleaned);
-      }
-    }
-  }
-
-  // ACTION ITEMS
-  parts.push('', buildActionItems([
-    'Schedule a pre-submission consultation with the state board to confirm hour requirements and clinical site standards before drafting the curriculum.',
-    'Map every course module to certification exam content domains and document alignment for accreditation reviewers.',
-    'Begin clinical site MOU negotiations immediately \u2014 these are the longest-lead item and gate enrollment.',
-  ]));
-
-  parts.push('', '<div style="page-break-after: always;"></div>');
-  return parts.join('\n');
-}
-
-function buildFinancialProjectionsSection(
-  components: ResearchComponent[],
-  programName?: string,
-): string {
-  const parts: string[] = ['# Financial Projections'];
-
-  // Financial viability
-  const finComp = components.find(c => c.component_type === 'financial_viability');
-  if (finComp) {
-    const md = finComp.markdown_output || formatComponentContent('financial_viability', finComp.content);
-    if (md) {
-      const cleaned = stripDataTables(cleanAgentMarkdown(md, programName));
-      if (cleaned) {
-        parts.push('', cleaned);
-      }
-    }
-
-    // Render sensitivity table if present in component content
-    const content = finComp.content as any;
-    const sensitivityTable = content?.sensitivityTable || content?.data?.sensitivityTable;
-    if (Array.isArray(sensitivityTable) && sensitivityTable.length > 0) {
-      parts.push('', '## Contact-Hour Sensitivity Analysis', '');
-      parts.push('*The financial model is built on an unverified contact-hour assumption. This table shows Year 1 net income across four scenarios. Resolve the actual required hours before committing capital.*', '');
-      parts.push(`<div style="overflow-x:auto;margin:16px 0;">
-<table style="width:100%;border-collapse:collapse;font-size:13px;">
-<thead>
-<tr style="background:#f1f5f9;">
-<th style="text-align:left;padding:10px 14px;border-bottom:2px solid #e2e8f0;color:#475569;">Scenario</th>
-<th style="text-align:right;padding:10px 14px;border-bottom:2px solid #e2e8f0;color:#475569;">Instructor Cost</th>
-<th style="text-align:right;padding:10px 14px;border-bottom:2px solid #e2e8f0;color:#475569;">Year 1 Net</th>
-<th style="text-align:center;padding:10px 14px;border-bottom:2px solid #e2e8f0;color:#475569;">Viable at Base Enrollment</th>
-</tr>
-</thead>
-<tbody>
-${sensitivityTable.map((row: any, i: number) => `<tr style="background:${i % 2 === 0 ? '#fff' : '#f8fafc'};">
-<td style="padding:9px 14px;border-bottom:1px solid #e2e8f0;color:#334155;">${row.scenario}</td>
-<td style="text-align:right;padding:9px 14px;border-bottom:1px solid #e2e8f0;color:#334155;">$${Number(row.instructorCost).toLocaleString()}</td>
-<td style="text-align:right;padding:9px 14px;border-bottom:1px solid #e2e8f0;font-weight:600;color:${row.viable ? '#059669' : '#dc2626'};">$${Number(row.year1Net).toLocaleString()}</td>
-<td style="text-align:center;padding:9px 14px;border-bottom:1px solid #e2e8f0;">${row.viable ? '<span style="color:#059669;font-weight:600;">✓ Yes</span>' : '<span style="color:#dc2626;font-weight:600;">✗ No</span>'}</td>
-</tr>`).join('\n')}
-</tbody>
-</table>
-</div>`);
-    }
-  }
-
-  // ACTION ITEMS
-  parts.push('', buildActionItems([
-    'Validate instructor cost assumptions against actual contact hour requirements from the state board \u2014 this is the single largest cost uncertainty.',
-    'Get facility/lab buildout quotes from at least 2 vendors to confirm or update the capital cost estimate.',
-    'Model a "delayed start" scenario (one semester later) to understand the financial impact of a regulatory timeline slip.',
-  ]));
-
-  parts.push('', '<div style="page-break-after: always;"></div>');
-  return parts.join('\n');
-}
-
-function buildMarketingStrategySection(
-  components: ResearchComponent[],
-  programName?: string,
-): string {
-  const parts: string[] = ['# Marketing Strategy'];
-
-  // Learner demand
-  const learnerComp = components.find(c => c.component_type === 'learner_demand');
-  if (learnerComp) {
-    const md = learnerComp.markdown_output || formatComponentContent('learner_demand', learnerComp.content);
-    if (md) {
-      const cleaned = stripDataTables(cleanAgentMarkdown(md, programName));
-      if (cleaned) {
-        parts.push('', cleaned);
-      }
-    }
-  }
-
-  // ACTION ITEMS
-  parts.push('', buildActionItems([
-    'Run a 2-week digital ad test ($200\u2013$500) targeting the primary audience to validate click-through and inquiry conversion rates before committing the full marketing budget.',
-    'Develop a "career changer" landing page with a salary comparison and ROI calculator \u2014 this is the single highest-converting asset for workforce programs.',
-    'Establish employer referral pipeline: provide partner employers with program flyers and referral links for their current uncredentialed staff.',
-  ]));
-
-  parts.push('', '<div style="page-break-after: always;"></div>');
-  return parts.join('\n');
-}
-
-/**
- * Builds HTML-formatted action items subsection.
- */
-function buildActionItems(items: string[]): string {
-  const listItems = items.map(item =>
-    `  <div style="display:flex;gap:8px;margin:8px 0;">
-    <span style="color:#7c3aed;font-weight:700;flex-shrink:0;">&#x25B6;</span>
-    <span style="font-size:13px;color:#334155;">${item}</span>
-  </div>`
-  );
-  return `<div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:8px;padding:16px;margin:16px 0;">
-  <div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#7c3aed;font-weight:600;margin-bottom:8px;">Action Items</div>
-${listItems.join('\n')}
-</div>`;
-}
-
-/**
- * Perspective Assessments section — 4 named Wavelength advisors, first-person voiced.
- * Extracted from tiger team markdown output.
- */
-function buildPerspectiveAssessments(
-  tigerTeamMarkdown: string | undefined,
-): string | null {
-  if (!tigerTeamMarkdown) return null;
-
-  const cleaned = replaceTigerTeam(tigerTeamMarkdown);
-  // Match either "# Advisory Assessment" (new unified voice) or "# Perspective Assessments" (legacy)
-  const match = cleaned.match(/# (?:Advisory Assessment|Perspective Assessments)\s+([\s\S]*?)(?=\n# (?!#)|$)/);
-  if (!match || match[1].trim().length < 100) return null;
-
-  const parts: string[] = ['# Advisory Assessment', ''];
-  parts.push(match[1].trim());
-  parts.push('', '<div style="page-break-after: always;"></div>');
-  return parts.join('\n');
-}
-
-/**
- * Key Findings — extract from tiger team markdown or build from scores.
- */
-function buildKeyFindings(
-  tigerTeamMarkdown: string | undefined,
-  programScore: ProgramScore,
-): string {
-  const parts: string[] = ['# Key Findings', ''];
-
-  if (tigerTeamMarkdown) {
-    const cleaned = replaceTigerTeam(tigerTeamMarkdown);
-    const match = cleaned.match(/# Key Findings\s+([\s\S]*?)(?=\n# (?!#)|$)/);
-    if (match && match[1].trim().length > 50) {
-      parts.push(match[1].trim());
-      parts.push('', '<div style="page-break-after: always;"></div>');
-      return parts.join('\n');
-    }
-  }
-
-  // Fallback: build from dimension scores
-  const dims = programScore.dimensions || [];
-  for (const d of dims.slice(0, 5)) {
-    const icon = d.score >= 7 ? '✅' : d.score >= 5 ? '⚠️' : '❌';
-    parts.push(`${icon} **${d.dimension}** (${d.score}/10) — ${d.rationale || ''}`);
-    parts.push('');
-  }
-
-  parts.push('', '<div style="page-break-after: always;"></div>');
-  return parts.join('\n');
-}
-
-/**
- * Next Steps — extract from tiger team markdown.
- */
-function buildNextSteps(
-  tigerTeamMarkdown: string | undefined,
-  project: ValidationProject,
-): string {
-  const parts: string[] = ['# Recommended Next Steps', ''];
-
-  if (tigerTeamMarkdown) {
-    const cleaned = replaceTigerTeam(tigerTeamMarkdown);
-    const match = cleaned.match(/# (?:Next Steps|Recommended Next Steps|Recommendations)[^\n]*\s+([\s\S]*?)(?=\n# (?!#)|---\s*$|$)/i);
-    if (match && match[1].trim().length > 50) {
-      parts.push(match[1].trim());
-      parts.push('', '<div style="page-break-after: always;"></div>');
-      return parts.join('\n');
-    }
-  }
-
-  // Fallback
-  parts.push(`1. **Validate contact hour requirements** — Confirm total program hours with Iowa Board of Pharmacy and align curriculum design with PTCB exam blueprint.`);
-  parts.push(`2. **Secure employer commitments** — Obtain written letters of support from minimum 2 regional employers; formalize externship MOUs.`);
-  parts.push(`3. **Rebuild financial model** — Update instructor cost and contact hour assumptions with verified figures before capital commitment.`);
-  parts.push('', '<div style="page-break-after: always;"></div>');
-  return parts.join('\n');
-}
-
-/**
- * Implementation Timeline section — visual milestone timeline.
- */
-function buildImplementationTimeline(
-  project: ValidationProject,
-  programScore: ProgramScore,
-  tigerTeamMarkdown: string | undefined,
-): string {
-  const parts: string[] = ['# Implementation Timeline'];
-  parts.push('');
-  parts.push(`The following timeline outlines the critical path from today to first cohort enrollment, assuming a **${formatRecommendationLabel(programScore.recommendation)}** decision.`);
-  parts.push('');
-
-  // Try to extract timeline from synthesis
-  let usedSynthesis = false;
-  if (tigerTeamMarkdown) {
-    const cleaned = replaceTigerTeam(tigerTeamMarkdown);
-    const timelineMatch = cleaned.match(/# (?:Implementation Timeline|Launch Timeline|Timeline)[^\n]*\s+([\s\S]*?)(?=\n# )/i);
-    if (timelineMatch) {
-      parts.push(timelineMatch[1].trim());
-      usedSynthesis = true;
-    }
-  }
-
-  // Default milestone timeline
-  const milestones = [
-    { month: 'Month 1\u20132', title: 'Financial Validation & Go/No-Go', detail: 'Validate instructor cost model, confirm lab buildout budget, secure institutional approval to proceed.', color: '#dc2626' },
-    { month: 'Month 2\u20134', title: 'Regulatory Submission', detail: 'Submit curriculum and facility plan to state board for review. Initiate HLC substantive change notification.', color: '#d97706' },
-    { month: 'Month 3\u20136', title: 'Employer Partnership Development', detail: 'Execute clinical rotation MOUs with minimum 2 employer partners. Establish advisory committee.', color: '#d97706' },
-    { month: 'Month 4\u20138', title: 'Curriculum Finalization', detail: 'Map all course modules to certification exam domains. Develop lab exercises and simulation protocols.', color: '#2563eb' },
-    { month: 'Month 6\u201310', title: 'Facility & Equipment Readiness', detail: 'Complete lab buildout, install pharmacy simulation software, procure supplies and reference materials.', color: '#2563eb' },
-    { month: 'Month 8\u201312', title: 'Marketing Launch & Enrollment Open', detail: 'Launch digital marketing campaign, activate employer referral pipeline, begin accepting applications.', color: '#7c3aed' },
-    { month: 'Month 10\u201314', title: 'Faculty Hiring & Onboarding', detail: 'Recruit and onboard lead instructor. Confirm adjunct/guest instructor commitments from employer partners.', color: '#7c3aed' },
-    { month: 'Month 12\u201318', title: 'First Cohort Enrolls', detail: 'Orientation, first day of instruction. Begin tracking outcome metrics from Day 1 for accreditation.', color: '#059669' },
-  ];
-
-  if (!usedSynthesis) {
-    parts.push(htmlTimelineVisual(milestones));
-  }
-
-  parts.push('', htmlKeyFinding(`Total estimated timeline: 12\u201318 months from go decision to first cohort. Key risk: regulatory approval and clinical site agreements are the longest-lead items and should begin immediately.`));
-
-  parts.push('', '<div style="page-break-after: always;"></div>');
-  return parts.join('\n');
-}
-
-function buildAppendix(
-  project: ValidationProject,
-  programScore: ProgramScore,
-  citations: CitationResults | undefined,
-  raw: AgentIntelligenceContext['raw'] | null,
-  tigerTeamMarkdown: string | undefined,
-): string {
-  const parts: string[] = ['# Appendix'];
-
-  // A. Data Sources
-  parts.push('', '## Data Sources', '');
-  const dataSources = buildDataSourcesList(citations, raw);
-  parts.push(dataSources);
-
-  // B. Methodology
-  parts.push('', '## Methodology', '');
-  parts.push('This validation report was produced using Wavelength\'s multi-perspective research methodology combining real labor market data, competitive intelligence, financial modeling, and workforce program development expertise.');
-  parts.push('');
-  parts.push('Each research dimension is scored 1\u201310 by specialized analysis, with weights reflecting relative importance to program success. A composite weighted score determines the overall recommendation. Override rules apply when critical dimensions (Financial Viability, Labor Market Demand) score below threshold.');
-
-  // D. Validation Scorecard — ADMIN ONLY (available in the Wavelength dashboard, not in client report)
-  // Dimension scores and composite score are surfaced in the admin dashboard quality review UI.
-
-  // F. Demographics (if available and not shown in body)
-  if (raw?.stateDemographics?.found && raw.stateDemographics.data && !raw.serviceArea?.found) {
-    const d = raw.stateDemographics.data;
-    parts.push('## State Demographics', '');
-    const stats: string[] = [];
-    if (d.totalPopulation) stats.push(`Population: ${d.totalPopulation.toLocaleString()}`);
-    if (d.countyCount) stats.push(`${d.countyCount} counties`);
-    if (d.avgMedianIncome) stats.push(`Median income: $${d.avgMedianIncome.toLocaleString()}`);
-    if (d.avgUnemployment) stats.push(`Unemployment: ${d.avgUnemployment}%`);
-    if (d.avgPovertyRate) stats.push(`Poverty: ${d.avgPovertyRate}%`);
-    if (d.avgBachelorsRate) stats.push(`Bachelor's+: ${d.avgBachelorsRate}%`);
-    parts.push(htmlKeyFinding(stats.join(' \u00B7 ')));
-    parts.push('');
-  }
-
-  // G. Risks & Critical Success Factors from synthesis
-  if (tigerTeamMarkdown) {
-    const cleaned = replaceTigerTeam(tigerTeamMarkdown);
-    const risksMatch = cleaned.match(/# Top Risks & Mitigation Strategies\s+([\s\S]*?)(?=\n# )/);
-    if (risksMatch) {
-      parts.push('', '## Risk Analysis', '', risksMatch[1].trim());
-    }
-
-    const csfMatch = cleaned.match(/# Critical Success Factors\s+([\s\S]*?)(?=\n# )/);
-    if (csfMatch) {
-      parts.push('', '## Critical Success Factors', '', csfMatch[1].trim());
-    }
-  }
-
-  // H. Disclaimer
-  parts.push('', '## Disclaimer', '');
-  parts.push('This report provides strategic guidance based on available data at time of preparation. Financial projections are estimates and should be validated through institutional budgeting. Wavelength is not responsible for implementation outcomes.');
-
-  return parts.join('\n');
-}
-
-function buildDataSourcesList(
-  citations: CitationResults | undefined,
-  raw: AgentIntelligenceContext['raw'] | null,
-): string {
-  if (citations?.dataSources && citations.dataSources.length > 0) {
-    return citations.dataSources.map((s, i) => `${i + 1}. **${s}**`).join('\n');
-  }
-
-  const sources: string[] = [];
-  if (raw?.occupation?.wages) sources.push('U.S. Bureau of Labor Statistics \u2014 Occupational Employment and Wage Statistics (OES)');
-  if (raw?.occupation?.projections) sources.push('U.S. Bureau of Labor Statistics \u2014 Employment Projections');
-  if (raw?.occupation?.skills && raw.occupation.skills.length > 0) sources.push('O*NET OnLine \u2014 Occupation Profiles');
-  if (raw?.occupation?.h1bDemand && raw.occupation.h1bDemand.length > 0) sources.push('U.S. Department of Labor \u2014 H-1B Visa Application Data');
-  if (raw?.occupation?.statePriority?.isPriority) sources.push('State Workforce Development Board \u2014 In-Demand Occupations List');
-  if (raw?.serviceArea?.found) sources.push('U.S. Census Bureau \u2014 County Business Patterns (CBP)');
-  if (raw?.stateDemographics?.found || raw?.serviceArea?.found) sources.push('U.S. Census Bureau \u2014 American Community Survey (ACS)');
-  if (raw?.completions?.found) sources.push('IPEDS \u2014 Program Completions Data');
-  if (raw?.institution?.found) sources.push('IPEDS \u2014 Institutional Characteristics');
-  if (raw?.frameworks?.found) sources.push('Workforce Development Frameworks & Best Practices');
-
-  if (sources.length === 0) {
-    sources.push(
-      'U.S. Bureau of Labor Statistics (BLS)',
-      'O*NET OnLine',
-      'State labor market information systems',
-      'IPEDS \u2014 Program completions data',
-      'Industry certification bodies',
-      'Regional job posting analysis',
-    );
-  }
-
-  return sources.map((s, i) => `${i + 1}. **${s}**`).join('\n');
-}
-
-// ════════════════════════════════════════════════════════
-// UTILITIES
-// ════════════════════════════════════════════════════════
-
-function capitalize(s: string): string {
-  return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
-/**
- * Replace all "Tiger Team" references with Wavelength-branded alternatives.
- */
-function replaceTigerTeam(text: string): string {
-  return text
-    .replace(/\bthe Tiger Team\b/gi, 'Wavelength\'s research team')
-    .replace(/\bTiger Team's\b/gi, 'Wavelength\'s')
-    .replace(/\bTiger Team\b/gi, 'Wavelength')
-    .replace(/\btigerTeam\b/g, 'wavelength');
-}
-
-/**
- * Clean agent markdown before inserting into the report template.
- * Strips duplicate headers, dimension scores, section prefixes,
- * agent executive summaries, downgrades remaining headings,
- * replaces Tiger Team references, and removes agent-level Data Sources blocks.
- */
-/**
- * Strip data tables AND structured data sections from agent markdown.
- * Leaves narrative prose paragraphs only.
- * Used when data-renderer.ts already renders verified DB tables.
- */
-function stripDataTables(md: string): string {
-  let out = md;
-
-  // Remove markdown pipe tables
-  out = out.replace(/^\|.+\|[\s\S]*?(?=\n[^|]|\n*$)/gm, '');
-  out = out.replace(/^[\s|:-]+\|[\s|:-]*$/gm, '');
-
-  // Remove HTML table tags
-  out = out.replace(/<table[\s\S]*?<\/table>/gi, '');
-
-  // Remove ### sub-section headers that introduce structured data blocks
-  // (Current Market Conditions, Job Demand, Salary Ranges, etc.)
-  const DATA_HEADERS = [
-    'Current Market Conditions', 'Job Demand', 'Salary Ranges?', 'Top Employers Hiring',
-    'Most Requested Skills?', 'Industry Certifications?', 'Employment Statistics?',
-    'Market Overview', 'Key Statistics', 'Regional (?:Employment|Data|Overview)',
-    'Wage (?:Data|Overview|Analysis)', 'Employment (?:Data|Statistics|Overview)',
-    'Source(?:s)?:', 'Data Sources?', 'Current Regional', 'Analysis Date',
-  ];
-  const headerPattern = new RegExp(
-    `^###?\\s*(?:${DATA_HEADERS.join('|')})[^\\n]*\\n(?:[^#\\n][^\\n]*\\n|\\n)*`,
-    'gmi'
-  );
-  out = out.replace(headerPattern, '');
-
-  // Remove bold-label data lines: **Field:** value  or  **Field** - value
-  out = out.replace(/^\*\*[A-Z][^*]{0,40}\*\*[:\s–-][^\n]{0,120}$/gm, '');
-
-  // Remove numbered employer/competitor lists that are just data
-  out = out.replace(/^\d+\.\s+\*\*[^*]+\*\*\s*[-–]\s*\d+\s+openings?\s*$/gm, '');
-
-  // Remove *Source: ...* lines (citations already in data-renderer output)
-  out = out.replace(/^\*Source[^*]*\*\s*$/gm, '');
-  out = out.replace(/^_Source[^_]*_\s*$/gm, '');
-
-  // Clean up blank lines
-  out = out.replace(/\n{3,}/g, '\n\n').trim();
-  return out;
-}
-
-function cleanAgentMarkdown(md: string, programName?: string): string {
-  let out = md;
-
-  // 0. Replace Tiger Team references
-  out = replaceTigerTeam(out);
-
-  // 1. Strip agent H1 headers that duplicate template sections
-  if (programName) {
-    const escaped = programName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    out = out.replace(new RegExp(`^# [^\\n]*?:\\s*${escaped}[^\\n]*\\n?`, 'gm'), '');
-  }
-  out = out.replace(/^# (?:Market|Labor Market|Competitive|Financial|Institutional|Regulatory|Target Learner|Employer Demand)[^\n]*\n/gm, '');
-
-  // 2. Strip ALL dimension score blocks
-  out = out.replace(/^##?\s*Dimension Score[:\s][^\n]*\n(?:(?:\*\*Rationale:\*\*|\*\*|>)[^\n]*\n)*/gim, '');
-  out = out.replace(/^>\s*\*\*Dimension Score[^\n]*\n(?:>\s*[^\n]*\n)*/gm, '');
-  out = out.replace(/^\*\*Viability Score:[^\n]*\n/gm, '');
-  out = out.replace(/^\*\*SCORE:[^\n]*\n/gm, '');
-
-  // 3. Strip "## Section N:" prefixes
-  out = out.replace(/^##\s+Section \d+:[^\n]*\n/gm, '');
-
-  // 4. Strip "## Executive Summary" when inside a component
-  out = out.replace(/^## Executive Summary\s*\n/gm, '');
-
-  // 5. Strip agent byline/date lines
-  out = out.replace(/^\*\*[^*]+\|[^*]+\*\*\s*\n\*Prepared by[^\n]*\n/gm, '');
-
-  // 6. Downgrade remaining H1->H2, H2->H3
-  out = out.replace(/^## /gm, '### ');
-  out = out.replace(/^# /gm, '## ');
-
-  // 7. Trim excessive blank lines (3+ consecutive -> 2)
-  out = out.replace(/\n{3,}/g, '\n\n');
-
-  // 8. Strip agent-level Data Sources blocks (appendix has the consolidated list)
-  // Match "---\n**Data Sources" or just "**Data Sources" through end of string or next heading
-  out = out.replace(/\n---\n\*\*Data Sources[\s\S]*?(?=\n#|$)/g, '');
-  out = out.replace(/\n\*\*Data Sources[\s\S]*?(?=\n#|$)/g, '');
-  // Broader patterns: handle colons/asterisks in header, <div> boundaries, italic variants
-  out = out.replace(/\n\*\*Data Sources[:\*]*\*\*[\s\S]*?(?=\n#|\n<div|$)/gi, '');
-  out = out.replace(/\n---\n\*[^*]*Data Sources[^*]*\*[\s\S]*$/gi, '');
-
-  // 9. Trim leading/trailing whitespace
-  out = out.trim();
-
-  // 10. Length discipline: target 20-25 page report — cap each agent section at ~4K chars
-  if (out.length > 1500) {
-    const truncated = out.substring(0, 1500);
-    const lastParagraph = truncated.lastIndexOf('\n\n');
-    if (lastParagraph > 2000) {
-      out = truncated.substring(0, lastParagraph).trim();
-    }
-  }
-
-  return out;
-}
-
-/**
- * Strip citation warning language from client-facing reports.
- * Citation warnings are for internal review — clients pay for actionable insights, not hedging.
- */
-function cleanCitationLanguage(text: string): string {
-  return text
-    .replace(/ESTIMATE:\s*/gi, '')
-    .replace(/\bNOTE:\s*[^.]*?(?:should be (?:verified|confirmed)|direct confirmation)[^.]*\.\s*/gi, '')
-    .replace(/\[TO BE CONFIRMED[^\]]*\]/gi, '')
-    .replace(/\[PENDING[^\]]*\]/gi, '')
-    .replace(/\[CONDITIONAL\s*—[^\]]*\]/gi, '')
-    .replace(/\.\s*This (?:figure|data|number|citation|source) should be (?:verified|confirmed)[^.]*\./gi, '.')
-    .replace(/[;,]?\s*direct confirmation (?:from [^.;]+)?(?:required|needed)[^.;]*/gi, '')
-    .replace(/\.\s*This figure should be confirmed[^.]*\./gi, '.')
-    .replace(/\(ESTIMATE[^)]*\)/gi, '')
-    .replace(/Note: The correct authoritative source is[^.]*\./gi, '')
-    .replace(/CAUTION:\s*[^.]*\./gi, '')
-    .replace(/NOTE:\s*[^.]*\./gi, '')
-    .replace(/\.\s*\./g, '.')
-    .replace(/  +/g, ' ')
-    .trim();
-}
-
-function formatRecommendationLabel(rec: string): string {
-  switch (rec) {
-    case 'Strong Go': return 'GO';
-    case 'Conditional Go': return 'CONDITIONAL GO';
-    case 'Cautious Proceed': return 'CAUTIOUS PROCEED';
-    case 'Defer': return 'DEFER';
-    case 'No Go': return 'NO GO';
-    default: return rec;
-  }
-}
-
-// ════════════════════════════════════════════════════════
-// MAIN REPORT GENERATOR
-// ════════════════════════════════════════════════════════
-
-export async function generateReport(input: ReportInput): Promise<string> {
-  const { project, components, programScore, tigerTeamMarkdown, citations } = input;
+export function generateReport(input: ReportInput): string {
+  const { project, components, programScore, tigerTeamMarkdown } = input;
   const reportDate = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   });
 
-  const raw = getIntelContext(project);
+  const getComponent = (type: string) =>
+    components.find(c => c.component_type === type);
 
-  // Pre-render all verified data blocks from DB (synchronous — data already in raw)
-  const preRendered = {
-    wages: renderWageBlock(raw),
-    projections: renderProjectionsBlock(raw),
-    skills: renderSkillsBlock(raw),
-    statePriority: renderStatePriorityBlock(raw),
-    completions: renderCompletionsBlock(raw),
-    demographics: renderDemographicsBlock(raw),
+  const scoreEmoji = (score: number) => {
+    if (score >= 8) return '🟢';
+    if (score >= 5) return '🟡';
+    return '🔴';
   };
 
-  const sections: string[] = [];
+  const recColor = (rec: string) => {
+    switch (rec) {
+      case 'Strong Go': return '✅ STRONG GO';
+      case 'Conditional Go': return '⚠️ CONDITIONAL GO';
+      case 'Cautious Proceed': return '🟡 CAUTIOUS PROCEED';
+      case 'Defer': return '🟠 DEFER';
+      case 'No Go': return '🔴 NO GO';
+      default: return rec;
+    }
+  };
 
-  // ── NARRATIVE FIRST ──────────────────────────────────────────────────────
+  // Build scorecard table
+  const scorecardRows = programScore.dimensions
+    .sort((a, b) => b.weight - a.weight)
+    .map(d => {
+      const bar = '█'.repeat(Math.round(d.score)) + '░'.repeat(10 - Math.round(d.score));
+      return `| ${d.dimension} | ${(d.weight * 100).toFixed(0)}% | ${d.score}/10 | ${bar} | ${scoreEmoji(d.score)} |`;
+    })
+    .join('\n');
 
-  // 1. Cover page
-  sections.push(buildCoverPage(project, reportDate));
+  // Section ordering
+  const sectionOrder = [
+    { type: 'labor_market', title: 'Section 1: Labor Market Analysis' },
+    { type: 'competitive_landscape', title: 'Section 2: Competitive Landscape' },
+    { type: 'learner_demand', title: 'Section 3: Target Learner Analysis' },
+    { type: 'financial_viability', title: 'Section 4: Financial Model' },
+    { type: 'institutional_fit', title: 'Section 5: Institutional Readiness' },
+    { type: 'regulatory_compliance', title: 'Section 6: Regulatory & Compliance' },
+    { type: 'employer_demand', title: 'Section 7: Employer Demand & Partnerships' },
+  ];
 
-  // 2. Table of Contents
-  sections.push(buildTableOfContents());
+  // Prefer tiger team synthesis (rich prose) over individual component markdown
+  let sections: string;
+  if (tigerTeamMarkdown) {
+    // Tiger team produces comprehensive analysis — use it as primary content
+    // Strip any leading title/header since we add our own structure
+    sections = tigerTeamMarkdown
+      .replace(/^#\s+.*\n/, '')
+      .trim();
+  } else {
+    // Fallback: stitch together individual component outputs
+    sections = sectionOrder
+      .map(s => {
+        const comp = getComponent(s.type);
+        if (!comp) return '';
+        const sectionContent = comp.markdown_output || formatComponentContent(s.type, comp.content);
+        return `---\n\n${sectionContent}`;
+      })
+      .filter(Boolean)
+      .join('\n\n');
+  }
 
-  // 3. Executive Summary
-  sections.push(buildExecutiveSummary(project, programScore, tigerTeamMarkdown, raw));
+  // Build risk register from all component data
+  const risks: string[] = [];
+  for (const dim of programScore.dimensions) {
+    if (dim.score <= 5) {
+      risks.push(`**${dim.dimension}** (Score: ${dim.score}/10): ${dim.rationale}`);
+    }
+  }
 
-  // 4. Advisory Assessment (unified consulting voice)
-  const advisorySection = buildPerspectiveAssessments(tigerTeamMarkdown);
-  if (advisorySection) sections.push(advisorySection);
+  const report = `# Program Validation Report
 
-  // 5. Key Findings
-  sections.push(buildKeyFindings(tigerTeamMarkdown, programScore));
-
-  // 6. Conditions for Go
-  sections.push(buildConditionsForGo(programScore, tigerTeamMarkdown, project));
-
-  // 7. Recommended Next Steps
-  sections.push(buildNextSteps(tigerTeamMarkdown, project));
-
-  // ── SUPPORTING RESEARCH ──────────────────────────────────────────────────
-
-  sections.push(`<div style="page-break-before: always; display:flex; flex-direction:column; justify-content:center; align-items:center; height:80vh; text-align:center;">
-<p style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#94a3b8;margin-bottom:16px">Supporting Research</p>
-<h1 style="font-size:28px;font-weight:700;color:#1e293b;margin:0">Research Basis</h1>
-<p style="color:#64748b;margin-top:16px;max-width:420px;font-size:14px">The following sections document the primary research findings underlying the advisory assessment. Data drawn from BLS, O*NET, IPEDS, Census, and direct employer analysis.</p>
-</div>`);
-
-  // 8. Market Demand — DB data tables + agent analysis
-  sections.push(buildMarketDemandSection(components, raw, project.program_name, preRendered));
-
-  // 9. Competitive Landscape
-  sections.push(buildCompetitiveLandscapeSection(components, raw, project.program_name));
-
-  // 10. Curriculum Design
-  sections.push(buildCurriculumDesignSection(components, project.program_name));
-
-  // 11. Financial Projections
-  sections.push(buildFinancialProjectionsSection(components, project.program_name));
-
-  // 12. Marketing Strategy
-  sections.push(buildMarketingStrategySection(components, project.program_name));
-
-  // 13. Implementation Timeline
-  sections.push(buildImplementationTimeline(project, programScore, tigerTeamMarkdown));
-
-  // 14. Appendix
-  sections.push(buildAppendix(project, programScore, citations, raw, tigerTeamMarkdown));
-
-  // Footer
-  sections.push(`
 ---
 
-*\u00A9 ${new Date().getFullYear()} Wavelength. All rights reserved.*
-*hello@withwavelength.com*`);
+## Cover Page
 
-  // Final pass: strip any citation warning language that leaked into the client report
-  const report = sections.join('\n\n');
-  return cleanCitationLanguage(report);
+**Program:** ${project.program_name}
+**Institution:** ${project.client_name}
+**Program Type:** ${project.program_type || 'Not specified'}
+**Report Date:** ${reportDate}
+**Prepared by:** WorkforceOS
+
+---
+
+## Executive Summary
+
+### Recommendation: ${recColor(programScore.recommendation)}
+
+**Composite Score: ${programScore.compositeScore}/10**
+
+${programScore.overrideApplied ? `> ⚠️ **Override Applied:** ${programScore.overrideReason}\n` : ''}
+${programScore.conditions ? `**Conditions for Proceeding:**\n${programScore.conditions.map(c => `- ${c}`).join('\n')}\n` : ''}
+
+This report presents a comprehensive 7-stage validation analysis for the proposed **${project.program_name}** program at **${project.client_name}**. The analysis evaluates labor market demand, competitive landscape, target learner demand, financial viability, institutional fit, regulatory compliance, and employer demand using a weighted scoring methodology.
+
+**Key Findings:**
+${programScore.dimensions
+  .sort((a, b) => b.score * b.weight - a.score * a.weight)
+  .slice(0, 3)
+  .map(d => `- **${d.dimension}** scored ${d.score}/10 — ${d.rationale.substring(0, 120)}`)
+  .join('\n')}
+
+${programScore.dimensions.filter(d => d.score <= 4).length > 0 ? `
+**Areas of Concern:**
+${programScore.dimensions
+  .filter(d => d.score <= 4)
+  .map(d => `- **${d.dimension}** scored ${d.score}/10 — ${d.rationale.substring(0, 120)}`)
+  .join('\n')}
+` : ''}
+
+---
+
+## Validation Scorecard
+
+| Dimension | Weight | Score | Visual | Status |
+|-----------|--------|-------|--------|--------|
+${scorecardRows}
+| **COMPOSITE** | **100%** | **${programScore.compositeScore}/10** | | **${recColor(programScore.recommendation)}** |
+
+---
+
+${sections}
+
+---
+
+## Risk Register
+
+${risks.length > 0 ? risks.map((r, i) => `${i + 1}. ${r}`).join('\n\n') : 'No critical risks identified. All dimensions scored above threshold.'}
+
+---
+
+## Recommendations & Next Steps
+
+Based on the composite score of **${programScore.compositeScore}/10** and a recommendation of **${programScore.recommendation}**:
+
+${programScore.recommendation === 'Strong Go' ? `
+1. **Proceed to program development** — Begin curriculum design and faculty recruitment
+2. **Form advisory committee** — Engage employers identified in this report
+3. **Submit regulatory applications** — Start state approval and accreditor notification
+4. **Develop marketing plan** — Target identified learner segments
+5. **Secure startup funding** — Apply for identified grant opportunities
+` : programScore.recommendation === 'Conditional Go' ? `
+1. **Address conditions** — Resolve identified weaknesses before full commitment
+2. **Conduct targeted research** — Gather additional data on weak dimensions
+3. **Develop pilot approach** — Consider a smaller initial cohort to test assumptions
+4. **Set decision checkpoint** — Revisit go/no-go in 60-90 days with new data
+5. **Engage stakeholders** — Build support while addressing conditions
+` : programScore.recommendation === 'Cautious Proceed' ? `
+1. **Proceed with caution** — Develop program on a conservative timeline
+2. **Mitigate risks** — Create specific action plans for dimensions scoring below 5
+3. **Pilot first** — Launch with a small cohort before scaling
+4. **Monitor closely** — Set quarterly review milestones
+5. **Have an exit strategy** — Define criteria for discontinuation
+` : `
+1. **Do not proceed at this time** — The analysis does not support program launch
+2. **Identify specific barriers** — Focus on the lowest-scoring dimensions
+3. **Re-evaluate in 6-12 months** — Market conditions may change
+4. **Consider alternatives** — Explore modified program concepts that address weaknesses
+5. **Gather more data** — Commission targeted research on critical unknowns
+`}
+
+---
+
+## Methodology & Data Sources
+
+This validation report was produced using Workforce Intelligence's 7-stage Program Validator framework, which combines:
+
+1. **Multi-Source Analysis:** Seven specialized research dimensions each conducting focused analysis
+2. **Weighted Scoring:** Evidence-based scoring across 7 dimensions with predetermined weights
+3. **Override Rules:** Automatic safety checks that prevent launching programs with critical weaknesses
+4. **Real Data Sources:** All findings grounded in publicly available labor market data, competitor research, and industry standards
+5. **Conservative Methodology:** Estimates favor caution — community colleges operate on thin margins
+
+**Scoring Methodology:**
+- Each dimension scored 1-10 by specialized agent with rationale
+- Weights reflect relative importance to CE program success
+- Composite score = weighted average of all dimensions
+- Override rules apply for critical dimension failures
+
+**Data Sources Referenced:**
+- U.S. Bureau of Labor Statistics (BLS)
+- O*NET OnLine
+- State labor market information systems
+- College and university program catalogs
+- Industry certification bodies
+- Job market aggregators (Google Jobs via SerpAPI)
+- Workforce development board data
+- State regulatory agency guidelines
+
+**Limitations:**
+- This report provides strategic guidance based on available data and AI analysis
+- Financial projections are estimates and should be validated with institutional budgeting
+- Employer demand signals are inferred from public data unless direct engagement is noted
+- Implementation success depends on execution quality and market conditions
+
+---
+
+## Data Quality & Limitations
+
+This section documents any data gaps, API failures, or limitations encountered during the research process.
+
+${components.map(c => {
+  const content = c.content as any;
+  const hasDataIssues = 
+    content?.data_gaps || 
+    content?.api_failures || 
+    (c.markdown_output && (
+      c.markdown_output.includes('data unavailable') ||
+      c.markdown_output.includes('API failed') ||
+      c.markdown_output.includes('data not available')
+    ));
+  
+  if (hasDataIssues) {
+    return `### ${c.component_type.replace(/_/g, ' ').toUpperCase()}
+- Data quality issues detected (see section for details)
+- Analysis based on available data with noted limitations`;
+  }
+  return '';
+}).filter(Boolean).join('\n\n') || '**No significant data quality issues detected.** All research components completed successfully with full data access.'}
+
+**Key Data Sources Status:**
+- Bureau of Labor Statistics (BLS): ${components.some(c => c.markdown_output?.includes('BLS')) ? '✅ Accessed' : '⚠️ Limited/Unavailable'}
+- O*NET OnLine: ${components.some(c => c.markdown_output?.includes('O*NET')) ? '✅ Accessed' : '⚠️ Limited/Unavailable'}
+- Google Jobs (SerpAPI): ${components.some(c => c.markdown_output?.includes('SerpAPI') || c.markdown_output?.includes('job postings')) ? '✅ Accessed' : '⚠️ Limited/Unavailable'}
+- Census Bureau: ${components.some(c => c.markdown_output?.includes('Census')) ? '✅ Accessed' : 'ℹ️ Not Required'}
+
+**Analysis Adjustments:**
+${components.filter(c => (c.content as any)?.score && (c.content as any).score < 5).length > 0 
+  ? `- ${components.filter(c => (c.content as any)?.score && (c.content as any).score < 5).length} dimension(s) scored below threshold due to data limitations or market concerns`
+  : '- No major adjustments required due to data quality'}
+
+---
+
+## Appendix
+
+### A. Scoring Detail
+
+${programScore.dimensions.map(d => `**${d.dimension}** (${(d.weight * 100).toFixed(0)}% weight)
+- Score: ${d.score}/10
+- Rationale: ${d.rationale}
+`).join('\n')}
+
+### B. Report Metadata
+
+- **Report Version:** 1.0
+- **Framework Version:** 7-Stage Program Validator v2.0
+- **Generated:** ${new Date().toISOString()}
+- **Agents Used:** 7 (Labor Market, Competitive, Learner Demand, Financial, Institutional Fit, Regulatory, Employer Demand)
+
+---
+
+**Contact:**
+Workforce Intelligence
+hello@workforceintel.com
+
+© ${new Date().getFullYear()} Workforce Intelligence. All rights reserved.
+`;
+
+  return report;
 }

@@ -18,16 +18,16 @@ async function main() {
   console.log('🧪 Pharmacy Technician Certificate — Kirkwood Community College');
   console.log('📍 Cedar Rapids & Iowa City, Iowa\n');
 
-  // Create project in DB with MINIMAL inputs — only what a real client would provide.
-  // Everything else (target audience, delivery format, tuition, learner profile, etc.)
-  // should be DISCOVERED by the research agents, not pre-loaded as assumptions.
+  // Create project in DB with only existing columns
   const { data: dbProject, error } = await supabase
     .from('validation_projects')
     .insert({
       client_name: 'Kirkwood Community College',
-      client_email: 'hello@withwavelength.com',
+      client_email: 'hello@workforceintel.com',
       program_name: 'Pharmacy Technician Certificate',
       program_type: 'certificate',
+      target_audience: 'Career changers, recent high school graduates, and current retail workers seeking healthcare careers',
+      constraints: 'Must meet Iowa Board of Pharmacy requirements. Clinical rotation sites needed. Lab equipment investment required.',
       status: 'intake',
     })
     .select()
@@ -41,29 +41,24 @@ async function main() {
   const projectId = dbProject.id;
   console.log(`Project ID: ${projectId}`);
 
-  // Enriched project: ONLY provide what the system needs to route research,
-  // NOT conclusions the agents should discover independently.
+  // Build enriched project object that agents will receive
   const enrichedProject = {
     ...dbProject,
-    // Routing context (system needs these to run the right lookups)
+    program_description: 'A certificate program preparing students for entry-level pharmacy technician positions in retail, hospital, and specialty pharmacy settings. Program would include pharmacy law, pharmacology, sterile and non-sterile compounding, medication dispensing, and pharmacy calculations. Prepares students for the PTCB (Pharmacy Technician Certification Board) national exam.',
     target_occupation: 'Pharmacy Technician',
     geographic_area: 'Cedar Rapids and Iowa City, Iowa (Linn and Johnson Counties)',
+    target_learner_profile: 'Adults 18-45 seeking stable healthcare career with relatively short training period. Mix of recent grads and career changers. Many working part-time or in retail.',
+    delivery_format: 'hybrid',
+    estimated_program_length: '9-12 months (2 semesters)',
+    estimated_tuition: '$4,500-$6,000',
+    institutional_capacity: 'Kirkwood has existing health sciences infrastructure including lab space and clinical partnerships. Would need dedicated pharmacy lab setup.',
+    employer_interest: 'Regional pharmacies (CVS, Walgreens, Hy-Vee) and hospital systems (UnityPoint, UIHC) have expressed informal interest in pipeline programs.',
+    strategic_context: 'Kirkwood CC serves a 7-county area in Eastern Iowa. Strong existing health programs (nursing, medical assisting). Pharmacy tech would complement the health sciences pathway and meet growing regional demand.',
     soc_codes: '29-2052',
     onet_codes: '29-2052.00',
-    // Everything below is intentionally EMPTY — agents must discover these
-    // target_audience: NOT PROVIDED — learner demand agent discovers this
-    // program_description: NOT PROVIDED — curriculum agent determines this
-    // target_learner_profile: NOT PROVIDED — learner demand agent discovers this
-    // delivery_format: NOT PROVIDED — institutional fit agent recommends this
-    // estimated_tuition: NOT PROVIDED — financial agent models this
-    // employer_interest: NOT PROVIDED — employer agent discovers this
-    // constraints: NOT PROVIDED — regulatory agent identifies these
-    // institutional_capacity: NOT PROVIDED — institutional fit agent assesses this
-    // strategic_context: NOT PROVIDED — tiger team synthesizes this
+    stackable_credential: true,
+    funding_sources: ['perkins_v', 'wioa', 'self_pay'],
   };
-
-  // Import pipeline tracking
-  const { startPipelineRun, completePipelineRun, hashMarkdown } = await import('../lib/pipeline/track-run');
 
   // Import agents
   const { runMarketAnalysis } = await import('../lib/agents/researchers/market-analyst');
@@ -73,11 +68,9 @@ async function main() {
   const { runInstitutionalFit } = await import('../lib/agents/researchers/institutional-fit');
   const { runRegulatoryCompliance } = await import('../lib/agents/researchers/regulatory-analyst');
   const { runEmployerDemand } = await import('../lib/agents/researchers/employer-analyst');
-  const { runCitationAgent } = await import('../lib/agents/researchers/citation-agent');
   const { runTigerTeam } = await import('../lib/agents/tiger-team');
   const { calculateProgramScore, buildDimensionScore } = await import('../lib/scoring/program-scorer');
   const { generateReport } = await import('../lib/reports/report-generator');
-  const { getAgentIntelligenceContext } = await import('../lib/intelligence/agent-context');
 
   // Update status
   await supabase.from('validation_projects').update({ status: 'researching', updated_at: new Date().toISOString() }).eq('id', projectId);
@@ -102,33 +95,6 @@ async function main() {
     if (data) componentIds[agent.type] = data.id;
   }
 
-  // Build Verified Intelligence Context (shared by all agents, used by report generator)
-  console.log('\n🧠 Building verified intelligence context...');
-  try {
-    const intelContext = await getAgentIntelligenceContext(enrichedProject as any);
-    (enrichedProject as any)._intelContext = intelContext;
-    console.log(`  ✅ Intel context: ${intelContext.tablesUsed.length} data sources, ${intelContext.promptBlock.length} chars`);
-  } catch (err: any) {
-    console.warn(`  ⚠️ Intel context build failed (non-fatal): ${err.message}`);
-  }
-
-  // Start pipeline run tracking
-  let pipelineRunId: string | null = null;
-  try {
-    pipelineRunId = await startPipelineRun(projectId, {
-      model: 'claude-sonnet-4-6',
-      pipelineVersion: 'v2.0',
-      reportTemplate: 'professional-v2',
-      agentsEnabled: agents.map(a => a.type),
-      tigerTeamEnabled: true,
-      citationAgentEnabled: true,
-      intelContextEnabled: !!(enrichedProject as any)._intelContext,
-    });
-    console.log(`  📊 Pipeline run: ${pipelineRunId}`);
-  } catch (e: any) {
-    console.warn(`  ⚠️ Pipeline tracking failed to start: ${e.message}`);
-  }
-
   console.log(`\n🚀 Launching 7 research agents in parallel...\n`);
   const start = Date.now();
 
@@ -146,7 +112,6 @@ async function main() {
         await supabase.from('research_components').update({
           status: 'completed',
           content: { ...data, _score: score, _scoreRationale: rationale },
-          markdown_output: markdown,
         }).eq('id', compId);
         
         console.log(`  ✅ ${agent.label} complete${score ? ` (${score}/10)` : ''}`);
@@ -175,46 +140,6 @@ async function main() {
   const { data: completedComponents } = await supabase
     .from('research_components').select('*').eq('project_id', projectId).eq('status', 'completed');
 
-  // Run citation agent for fact-checking + corrections
-  let citationResults: any = null;
-  try {
-    console.log('\n🔍 Running citation agent for fact-checking...');
-    const componentsByType = (completedComponents || []).reduce((acc: any, c: any) => {
-      const key = c.component_type.replace('_', '');
-      acc[key] = c.markdown_output || '';
-      return acc;
-    }, {} as Record<string, string>);
-
-    citationResults = await runCitationAgent({
-      projectId,
-      occupation: enrichedProject.target_occupation || enrichedProject.program_name || 'Unknown',
-      state: enrichedProject.geographic_area || 'United States',
-      regulatoryAnalysis: componentsByType['regulatorycompliance'],
-      marketAnalysis: componentsByType['labormarket'],
-      employerAnalysis: componentsByType['employerdemand'],
-      financialAnalysis: componentsByType['financialviability'],
-      academicAnalysis: componentsByType['institutionalfit'],
-      demographicAnalysis: componentsByType['learnerdemand'],
-      competitiveAnalysis: componentsByType['competitivelandscape'],
-    });
-
-    console.log(`  ✅ Citation agent: ${citationResults.verifiedClaims.length} claims verified, ${citationResults.corrections?.length || 0} corrections, ${citationResults.dataSources?.length || 0} data sources`);
-
-    // Apply corrections to component markdown
-    if (citationResults.corrections && citationResults.corrections.length > 0) {
-      console.log(`  🔧 Applying ${citationResults.corrections.length} corrections...`);
-      for (const correction of citationResults.corrections) {
-        const comp = completedComponents?.find((c: any) => c.component_type === correction.componentType);
-        if (comp && comp.markdown_output && comp.markdown_output.includes(correction.original)) {
-          comp.markdown_output = comp.markdown_output.replace(correction.original, correction.corrected);
-          console.log(`    ✓ Fixed [${correction.componentType}]: ${correction.reason}`);
-        }
-      }
-    }
-  } catch (e: any) {
-    console.warn(`  ⚠️ Citation agent failed: ${e.message}`);
-  }
-
   // Calculate scores
   console.log('\n📈 Calculating program scores...');
   const dimensionScores = agents.map(agent => {
@@ -242,131 +167,37 @@ async function main() {
     console.warn(`  ⚠️ Tiger team failed: ${e.message}`);
   }
 
-  // Apply citation corrections to tiger team markdown
-  if (citationResults?.corrections && citationResults.corrections.length > 0 && tigerTeamMarkdown) {
-    for (const correction of citationResults.corrections) {
-      if (tigerTeamMarkdown.includes(correction.original)) {
-        tigerTeamMarkdown = tigerTeamMarkdown.replace(correction.original, correction.corrected);
-        console.log(`  🔧 Tiger team corrected: ${correction.reason}`);
-      }
-    }
-  }
-
   // Generate report
   console.log('\n📝 Generating final report...');
-  const fullReport = await generateReport({
+  const fullReport = generateReport({
     project: enrichedProject as any,
     components: completedComponents as any,
     programScore,
     tigerTeamMarkdown,
-    citations: citationResults || undefined,
   });
 
-  // Save report (only columns that exist in validation_reports table)
-  const { data: reportRow, error: reportError } = await supabase.from('validation_reports').insert({
+  // Save report
+  await supabase.from('validation_reports').insert({
     project_id: projectId,
-    executive_summary: `Recommendation: ${programScore.recommendation} (${programScore.compositeScore}/10)\n\nDimensions: ${programScore.dimensions.map((d: any) => `${d.dimension}: ${d.score}/10`).join(', ')}`,
+    executive_summary: `Recommendation: ${programScore.recommendation} (${programScore.compositeScore}/10)`,
     full_report_markdown: fullReport,
+    composite_score: programScore.compositeScore,
+    recommendation: programScore.recommendation,
+    scorecard: {
+      dimensions: programScore.dimensions,
+      compositeScore: programScore.compositeScore,
+      recommendation: programScore.recommendation,
+    },
     version: 1,
-  }).select('id').single();
-
-  if (reportError) {
-    console.error(`  ❌ Report save failed:`, reportError.message);
-  } else {
-    console.log(`  ✅ Report saved to DB (${(fullReport.length / 1024).toFixed(0)}KB)`);
-  }
-
-  // Complete pipeline run tracking
-  if (pipelineRunId) {
-    try {
-      const agentScores: Record<string, number> = {};
-      for (const agent of agents) {
-        const comp = completedComponents?.find((c: any) => c.component_type === agent.type);
-        const score = comp?.content?._score ?? comp?.content?.score;
-        if (score != null) agentScores[agent.type] = score;
-      }
-      await completePipelineRun(pipelineRunId, {
-        runtimeSeconds: (Date.now() - start) / 1000,
-        agentScores,
-        compositeScore: programScore.compositeScore,
-        recommendation: programScore.recommendation,
-        citationCorrections: citationResults?.corrections?.length ?? 0,
-        citationWarnings: citationResults?.warnings?.length ?? 0,
-        citationDetails: citationResults ? {
-          corrections: citationResults.corrections || [],
-          warnings: citationResults.warnings || [],
-          dataSources: citationResults.dataSources || [],
-        } : undefined,
-        intelTablesUsed: (enrichedProject as any)._intelContext?.tablesUsed?.length ?? 0,
-        reportMarkdownHash: hashMarkdown(fullReport),
-        reportSizeKb: Math.round(Buffer.from(fullReport).length / 1024),
-      });
-      console.log('  📊 Pipeline run tracking complete');
-    } catch (e: any) {
-      console.warn(`  ⚠️ Pipeline tracking failed to complete: ${e.message}`);
-    }
-  }
+  });
 
   // Update project
   await supabase.from('validation_projects').update({ status: 'review', updated_at: new Date().toISOString() }).eq('id', projectId);
 
-  // Save markdown to desktop
+  // Save to desktop
   const fs = await import('fs');
   const reportPath = '/Users/matt/Desktop/Kirkwood-PharmTech-Validation-Report.md';
   fs.writeFileSync(reportPath, fullReport);
-
-  // Generate PDF and upload to Supabase Storage
-  try {
-    console.log('\n🖨️  Generating PDF...');
-    const { generatePDF } = await import('../lib/pdf/generate-pdf');
-
-    // Clean markdown for PDF pipeline
-    let pdfMarkdown = fullReport;
-    pdfMarkdown = pdfMarkdown.replace(/^---[\s\S]*?---\n/, '');
-    pdfMarkdown = pdfMarkdown.replace(/<div style="text-align:center[^>]*>[\s\S]*?<\/div>\s*<div style="page-break-after:\s*always;?\s*"><\/div>/i, '');
-    pdfMarkdown = pdfMarkdown.replace(/^# Table of Contents\n[\s\S]*?<div style="page-break-after:\s*always;?\s*"><\/div>/m, '');
-    pdfMarkdown = pdfMarkdown.replace(/<div style="page-break-after:\s*always;?\s*"><\/div>\s*/g, '');
-    pdfMarkdown = pdfMarkdown.replace(/^### /gm, '#### ');
-    pdfMarkdown = pdfMarkdown.replace(/^## /gm, '### ');
-    pdfMarkdown = pdfMarkdown.replace(/^# /gm, '## ');
-    pdfMarkdown = pdfMarkdown.replace(/\n{4,}/g, '\n\n').trim();
-
-    const pdfPath = `/tmp/wavelength-${projectId.slice(0, 8)}.pdf`;
-    const pdfResult = await generatePDF(pdfMarkdown, {
-      title: enrichedProject.program_name || 'Program',
-      subtitle: 'Program Validation Report',
-      preparedFor: enrichedProject.client_name || '',
-      date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
-      reportType: 'validation',
-      outputPath: pdfPath,
-    });
-
-    // Copy to Desktop
-    const desktopPdf = '/Users/matt/Desktop/Kirkwood-PharmTech-Validation-Report.pdf';
-    fs.copyFileSync(pdfPath, desktopPdf);
-
-    // Upload to Supabase Storage
-    const pdfBuffer = fs.readFileSync(pdfPath);
-    const storagePath = `reports/${projectId}/validation-report.pdf`;
-    await supabase.storage.from('reports').upload(storagePath, pdfBuffer, {
-      contentType: 'application/pdf',
-      upsert: true,
-    });
-
-    // Update report record with storage path
-    if (reportRow?.id) {
-      await supabase.from('validation_reports')
-        .update({ pdf_url: storagePath })
-        .eq('id', reportRow.id);
-    }
-
-    // Clean up temp file
-    try { fs.unlinkSync(pdfPath); } catch {}
-
-    console.log(`  ✅ PDF: ${pdfResult.pageCount} pages, ${pdfResult.sizeKB}KB → Supabase Storage + Desktop`);
-  } catch (pdfErr: any) {
-    console.warn(`  ⚠️ PDF generation failed (report markdown still saved):`, pdfErr.message);
-  }
 
   const totalElapsed = ((Date.now() - start) / 1000).toFixed(1);
   console.log(`\n${'='.repeat(60)}`);

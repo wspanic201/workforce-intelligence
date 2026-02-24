@@ -8,7 +8,7 @@ import { withCache } from '@/lib/apis/cache';
 import { getBLSData } from '@/lib/apis/bls';
 import { fetchONETOnline, searchJobsBrave } from '@/lib/apis/web-fallbacks';
 import { findSOCCode, onetToSOC, isValidSOCCode, getSOCTitle } from '@/lib/mappings/soc-codes';
-// Intelligence context is injected by orchestrator via (project as any)._intelContext
+import { getOccupationIntel } from '@/lib/intelligence/mcp-client';
 
 /**
  * Clean a geographic area string for SerpAPI location parameter.
@@ -113,13 +113,6 @@ export async function runMarketAnalysis(
       console.warn(`[Market Analyst] ⚠️  No valid SOC code found for "${targetOccupation}" — BLS data unavailable`);
     }
     
-    // Step 2.5: Get Verified Intelligence (from shared context or fetch fresh)
-    const sharedContext = (project as any)._intelContext;
-    const verifiedPromptBlock = sharedContext?.promptBlock || '';
-    if (sharedContext) {
-      console.log(`[Market Analyst] Using shared intelligence context (${sharedContext.tablesUsed.length} sources)`);
-    }
-
     // Step 3: Fetch live jobs data
     const liveJobsDataResult = await withCache(
       'serpapi_jobs',
@@ -195,6 +188,14 @@ export async function runMarketAnalysis(
 
     console.log(`[Market Analyst] Data fetched - Jobs: ${liveJobsData?.count ?? 0}, O*NET: ${onetCode || 'not found'}, BLS: ${blsData ? 'yes' : 'no'}`);
 
+    // Step 5: Query MCP server for verified intelligence database
+    const stateMatch = rawLocation.match(/,\s*([A-Za-z]+)\s*(?:\(|$)/);
+    const stateCode = stateMatch?.[1]?.trim() || '';
+    const STATE_FIPS: Record<string, string> = { Iowa: '19', Texas: '48', Illinois: '17', Ohio: '39', Minnesota: '27', Wisconsin: '55', Missouri: '29', Nebraska: '31', Kansas: '20', Indiana: '18' };
+    const stateFips = STATE_FIPS[stateCode] || '';
+    const mcpIntel = resolvedSOC ? await getOccupationIntel(resolvedSOC, stateCode.substring(0, 2).toUpperCase(), stateFips, onetCode || undefined).catch(() => null) : null;
+    if (mcpIntel?.wages) console.log(`[Market Analyst] ✓ MCP intel loaded for SOC ${resolvedSOC}`);
+
     // Gracefully handle missing API data — use placeholder structure
     if (!liveJobsData) {
       console.warn('[Market Analyst] No live jobs data available — using AI analysis only');
@@ -236,6 +237,8 @@ a comprehensive labor market analysis for ${rawLocation}.
 
     const prompt = `${persona.name}
 
+TASK: Analyze labor market data and provide strategic insights.
+
 PROGRAM: ${project.program_name}
 CLIENT: ${project.client_name}
 TYPE: ${project.program_type || 'Not specified'}
@@ -243,39 +246,77 @@ AUDIENCE: ${project.target_audience || 'Not specified'}
 OCCUPATION: ${targetOccupation}
 REGION: ${rawLocation}
 SOC CODE: ${resolvedSOC || 'Not found'} ${resolvedSOC ? `(${getSOCTitle(resolvedSOC) || 'validated'}, source: ${socSource})` : ''}
-${verifiedPromptBlock ? `VERIFIED BASELINE DATA (confirmed from government sources — treat as established fact):
-${verifiedPromptBlock}` : ''}
 ${jobsSection}
+
 ${blsData ? `
-BLS SNAPSHOT:
-- National employment: ${blsData.employment_total?.toLocaleString() || 'Not available'}
-- Median annual wage: $${blsData.median_wage?.toLocaleString() || 'Not available'}
-- Source: ${blsData.source || 'BLS OEWS'}
+═══════════════════════════════════════════════════════════
+REAL DATA FROM BLS (Bureau of Labor Statistics):
+═══════════════════════════════════════════════════════════
+
+National Employment: ${blsData.employment_total?.toLocaleString() || 'Not available'}
+Median Annual Wage: $${blsData.median_wage?.toLocaleString() || 'Not available'}
+Mean Annual Wage: $${blsData.mean_wage?.toLocaleString() || 'Not available'}
+Wage Percentiles:
+  10th: $${blsData.wage_percentiles.p10?.toLocaleString() || 'N/A'}
+  25th: $${blsData.wage_percentiles.p25?.toLocaleString() || 'N/A'}
+  75th: $${blsData.wage_percentiles.p75?.toLocaleString() || 'N/A'}
+  90th: $${blsData.wage_percentiles.p90?.toLocaleString() || 'N/A'}
+Source: ${blsData.source || 'BLS OEWS'}
 ` : ''}
 ${onetData ? `
-O*NET SNAPSHOT:
-- Code: ${onetData.code}
-- Title: ${onetData.title}
-- Typical education: ${onetData.education}
-` : ''}
+═══════════════════════════════════════════════════════════
+REAL DATA FROM O*NET (Occupational Standards):
+═══════════════════════════════════════════════════════════
 
-Your job is NOT to regenerate data tables or lists of statistics. The baseline data is already confirmed.
-Your job is analysis only:
-- Given the wage and projection signals above, what is the real local market opportunity?
-- How does statewide demand translate to Linn and Johnson County conditions?
-- What does supply look like relative to annual openings: demand gap, supply gap, or replacement market?
-- What does the data fail to show that is strategically important?
-- What are the strongest risks and strategic implications for launch timing and positioning?
+O*NET Code: ${onetData.code}
+Occupation Title: ${onetData.title}
+Description: ${onetData.description}
 
-OUTPUT FORMAT:
-- Write exactly one narrative response of 600-900 words
-- Start with: SCORE: X/10 | RATIONALE: one sentence
-- NO markdown tables
-- NO bullet list of repeated statistics
-- YES paragraph-based argument with direct references to specific baseline figures
-- YES explicit recommendation language
+Core Skills (Level 4-5):
+${onetData.skills.filter(s => s.scale_value >= 4).map(s => `- ${s.element_name} (Level ${s.scale_value}/5)`).join('\n')}
 
-Make this a consulting-grade market interpretation, not a data recap.`;
+Knowledge Areas (Level 4-5):
+${onetData.knowledge.filter(k => k.scale_value >= 4).map(k => `- ${k.element_name} (Level ${k.scale_value}/5)`).join('\n')}
+
+Technology Requirements:
+${onetData.technology.slice(0, 10).map(t => `- ${t.example}${t.hot_technology ? ' (HOT)' : ''}`).join('\n')}
+
+Education Typical: ${onetData.education}
+` : '(O*NET occupation code not found - analysis will rely on job posting data)'}
+
+${(mcpIntel?.wages || mcpIntel?.projections || mcpIntel?.statePriority) ? `
+═══════════════════════════════════════════════════════════
+VERIFIED INTELLIGENCE DATABASE (Wavelength — government sources):
+═══════════════════════════════════════════════════════════
+These figures are drawn directly from BLS OES, Projections Central, O*NET,
+and state workforce data. Treat them as confirmed baselines.
+
+${mcpIntel.wages ? `WAGE DATA:\n${mcpIntel.wages}\n` : ''}
+${mcpIntel.projections ? `EMPLOYMENT PROJECTIONS:\n${mcpIntel.projections}\n` : ''}
+${mcpIntel.statePriority ? `STATE PRIORITY STATUS:\n${mcpIntel.statePriority}\n` : ''}
+${mcpIntel.skills ? `O*NET VERIFIED SKILLS:\n${mcpIntel.skills}\n` : ''}
+` : '(Verified intelligence database unavailable — rely on BLS data above and web research)'}
+
+═══════════════════════════════════════════════════════════
+ANALYSIS TASK:
+═══════════════════════════════════════════════════════════
+
+Write a consulting-grade labor market analysis. Start with SCORE: X/10 | RATIONALE: [one sentence].
+
+Cover these sections using the REAL data above:
+1. **Labor Market Overview** — job openings, wage analysis (entry/mid/senior with BLS percentiles), supply/demand balance, automation risk
+2. **Employer Landscape** — top employers hiring, sectors, typical requirements, retention patterns
+3. **Skills & Certifications** — most-requested skills from postings, O*NET alignment, certification requirements
+4. **5-Year Forecast** — BLS projections, industry trends, risk factors
+5. **Competitive Programs** — competing programs in region, market saturation ratio
+6. **Recommendations** — 5-7 specific, actionable recommendations
+
+Rules:
+- Cite specific numbers from the data above (not vague claims)
+- Label estimates clearly: "ESTIMATE: [reasoning]"
+- If data is missing, say so — don't fabricate
+- Be specific about employers, wages, and regional factors
+- Use markdown headers for structure`;
 
     // 5. Call Claude for analysis
     const { content, tokensUsed } = await callClaude(prompt, {

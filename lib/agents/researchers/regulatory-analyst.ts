@@ -2,33 +2,10 @@ import { callClaude, extractJSON } from '@/lib/ai/anthropic';
 import { ValidationProject } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { PROGRAM_VALIDATOR_SYSTEM_PROMPT } from '@/lib/prompts/program-validator';
-import { searchWeb } from '@/lib/apis/web-research';
-// Intelligence context is injected by orchestrator via (project as any)._intelContext
 
 export interface RegulatoryComplianceData {
   score: number;
   scoreRationale: string;
-  programType: 'initial_licensure' | 'continuing_education' | 'non_licensed' | 'unclear';
-  programTypeRationale: string;
-  licensure: {
-    isLicensedOccupation: boolean;
-    initialLicensure?: {
-      requiredHours: number;
-      stateBoard: string;
-      examRequired: boolean;
-      examName?: string;
-      practicalHoursRequired: boolean;
-      tuitionRange: string;
-      stateLawReference: string; // Must cite specific statute/rule
-    };
-    continuingEducation?: {
-      renewalCycle: string; // e.g., "every 2 years"
-      requiredHours: number;
-      approvedTopics: string[];
-      typicalCost: string;
-      stateLawReference: string; // Must cite specific statute/rule
-    };
-  };
   stateApproval: {
     required: boolean;
     agency: string;
@@ -79,78 +56,6 @@ export interface RegulatoryComplianceData {
   markdownReport: string;
 }
 
-/**
- * Extract state from geographic area.
- */
-function extractState(project: any): string | null {
-  const geo = (project.geographic_area || '').toLowerCase();
-  
-  const stateMap: Record<string, string> = {
-    'iowa': 'Iowa',
-    'minnesota': 'Minnesota',
-    'illinois': 'Illinois',
-    'wisconsin': 'Wisconsin',
-    'missouri': 'Missouri',
-    'nebraska': 'Nebraska',
-    'kansas': 'Kansas',
-    'california': 'California',
-    'texas': 'Texas',
-    'florida': 'Florida',
-    'new york': 'New York',
-    // Add more as needed
-  };
-
-  for (const [key, value] of Object.entries(stateMap)) {
-    if (geo.includes(key)) return value;
-  }
-
-  return null;
-}
-
-/**
- * Extract occupation from program name.
- */
-function extractOccupation(programName: string): string {
-  // Strip common program qualifiers
-  return programName
-    .replace(/\s*(certificate|diploma|degree|program|associate|bachelor|training|course|license|renewal|continuing education)\s*/gi, '')
-    .trim();
-}
-
-/**
- * Search for official .gov sources for licensure requirements.
- * This pre-filters results to government websites only.
- */
-async function findOfficialGovernmentSources(
-  occupation: string,
-  state: string
-): Promise<string[]> {
-  const queries = [
-    `${occupation} license requirements ${state} site:.gov`,
-    `${occupation} continuing education ${state} site:.gov`,
-    `${state} ${occupation} renewal requirements site:.gov`,
-  ];
-
-  const urls: string[] = [];
-
-  for (const query of queries) {
-    try {
-      const results = await searchWeb(query);
-      // Filter to .gov domains only
-      const govUrls = results.results
-        .filter(r => r.url.includes('.gov'))
-        .map(r => r.url)
-        .slice(0, 3);
-      urls.push(...govUrls);
-    } catch (err) {
-      console.warn(`[Regulatory] .gov search failed for: ${query}`);
-    }
-  }
-
-  // Deduplicate
-  return Array.from(new Set(urls));
-}
-
 export async function runRegulatoryCompliance(
   projectId: string,
   project: ValidationProject
@@ -160,24 +65,6 @@ export async function runRegulatoryCompliance(
 
   try {
     console.log(`[Regulatory] Starting for "${project.program_name}"`);
-
-    // Pre-search for official .gov sources
-    const state = extractState(project as any);
-    const occupation = extractOccupation(project.program_name);
-    
-    let govSources: string[] = [];
-    if (state && occupation) {
-      console.log(`[Regulatory] Pre-searching for .gov sources: ${occupation} in ${state}`);
-      govSources = await findOfficialGovernmentSources(occupation, state);
-      console.log(`[Regulatory] Found ${govSources.length} official .gov sources`);
-    }
-
-    // Get shared intelligence context
-    const sharedContext = (project as any)._intelContext;
-    const verifiedRegulatorySection = sharedContext?.promptBlock || '';
-    if (sharedContext) {
-      console.log(`[Regulatory] Using shared intelligence context (${sharedContext.tablesUsed.length} sources)`);
-    }
 
     const prompt = `${PROGRAM_VALIDATOR_SYSTEM_PROMPT}
 
@@ -193,57 +80,21 @@ ${project.constraints ? `- Constraints: ${project.constraints}` : ''}
 ${(project as any).funding_sources ? `- Funding Sources: ${(project as any).funding_sources}` : ''}
 ${(project as any).stackable_credential ? `- Stackable Intent: Yes` : ''}
 
-${verifiedRegulatorySection ? `VERIFIED BASELINE DATA (confirmed from government sources — treat as established fact):
-${verifiedRegulatorySection}` : ''}
-${govSources.length > 0 ? `OFFICIAL .GOV SOURCES FOUND:
-${govSources.map((url, i) => `${i + 1}. ${url}`).join('\n')}` : ''}
+ANALYSIS REQUIRED:
+1. State approval requirements
+2. Perkins V alignment — eligible CIP codes, funding potential
+3. WIOA alignment — ETPL eligibility
+4. Industry certification mapping (top 2-3 certifications)
+5. Accreditor expectations
+6. Key compliance milestones (top 3-5)
 
-Your job is NOT to generate tables or restate statistics. The baseline data is confirmed.
-Your job is analysis:
-- What is required by law versus optional quality standards?
-- What is mandatory under Iowa law/state rules versus accreditation expectations?
-- What is the minimum viable compliance path and what is the recommended path?
-- Which constraints are true blockers versus manageable sequencing work?
+SCORING: 8-10 = strong alignment, minimal hurdles; 5-7 = moderate; 1-4 = weak alignment, complex approval
 
-CRITICAL SOURCE RULE:
-- For licensure hour and renewal requirements, use official state government sources only (.gov and official state code sites).
-- If official source evidence is missing, state that explicitly instead of guessing.
-
-OUTPUT FORMAT:
-- 600-900 words in scoreRationale as narrative analysis
-- NO markdown tables
-- NO bullet-point list of repeated statistics
-- YES direct references to governing authorities and citations
-- Keep supporting fields concise and action-oriented
-
-SCORING: 8-10 strong alignment/minimal hurdles; 5-7 moderate; 1-4 complex/high-risk pathway.
-
-IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Do NOT include a markdownReport field.
+IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Keep all string values concise (1-2 sentences max). Do NOT include a markdownReport field.
 
 {
   "score": <1-10>,
-  "scoreRationale": "600-900 word narrative compliance analysis",
-  "programType": "initial_licensure|continuing_education|non_licensed|unclear",
-  "programTypeRationale": "1-2 sentence explanation of classification",
-  "licensure": {
-    "isLicensedOccupation": true|false,
-    "initialLicensure": {
-      "requiredHours": 1600,
-      "stateBoard": "State Board name",
-      "examRequired": true,
-      "examName": "Exam name",
-      "practicalHoursRequired": true,
-      "tuitionRange": "$8,000-$12,000",
-      "stateLawReference": "Iowa Code §147.2 or Iowa Admin Code 645-XX.X"
-    },
-    "continuingEducation": {
-      "renewalCycle": "every 2 years",
-      "requiredHours": 6,
-      "approvedTopics": ["Topic 1", "Topic 2"],
-      "typicalCost": "$150-200 per renewal",
-      "stateLawReference": "Iowa Code §147.10 or Iowa Admin Code 645-XX.X"
-    }
-  },
+  "scoreRationale": "Brief explanation",
   "stateApproval": {
     "required": true,
     "agency": "Agency name",
@@ -285,12 +136,10 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Do 
   "complianceTimeline": [
     { "milestone": "Milestone 1", "estimatedDate": "Month Year", "dependency": "Dependency" }
   ],
-  "dataSources": ["Source 1 - must be .gov or official state source"]
-}
+  "dataSources": ["Source 1"]
+}`;
 
-For licensure fields, populate initialLicensure or continuingEducation based on actual program type and include specific statute/rule citations in stateLawReference.`;
-
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 5000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 12000 });
     const data = extractJSON(content) as RegulatoryComplianceData;
 
     if (!data.markdownReport) {
@@ -331,44 +180,11 @@ For licensure fields, populate initialLicensure or continuingEducation based on 
 }
 
 function formatRegulatory(data: RegulatoryComplianceData, project: ValidationProject): string {
-  let licensureSection = '';
-  
-  if (data.licensure.isLicensedOccupation) {
-    licensureSection = `\n## Program Type Classification
-**Type:** ${data.programType.replace(/_/g, ' ').toUpperCase()}
-**Rationale:** ${data.programTypeRationale}
-
-`;
-    
-    if (data.licensure.initialLicensure) {
-      licensureSection += `### Initial Licensure Requirements
-- **Required Hours:** ${data.licensure.initialLicensure.requiredHours}
-- **State Board:** ${data.licensure.initialLicensure.stateBoard}
-- **Exam Required:** ${data.licensure.initialLicensure.examRequired ? `Yes — ${data.licensure.initialLicensure.examName}` : 'No'}
-- **Practical Hours:** ${data.licensure.initialLicensure.practicalHoursRequired ? 'Yes' : 'No'}
-- **Typical Tuition:** ${data.licensure.initialLicensure.tuitionRange}
-- **State Law:** ${data.licensure.initialLicensure.stateLawReference}
-
-`;
-    }
-    
-    if (data.licensure.continuingEducation) {
-      licensureSection += `### Continuing Education Requirements (Re-Licensure)
-- **Renewal Cycle:** ${data.licensure.continuingEducation.renewalCycle}
-- **Required Hours:** ${data.licensure.continuingEducation.requiredHours} hours
-- **Approved Topics:** ${data.licensure.continuingEducation.approvedTopics.join(', ')}
-- **Typical Cost:** ${data.licensure.continuingEducation.typicalCost}
-- **State Law:** ${data.licensure.continuingEducation.stateLawReference}
-
-`;
-    }
-  }
-
   return `# Regulatory & Compliance Analysis: ${project.program_name}
 
 ## Dimension Score: ${data.score}/10
 **Rationale:** ${data.scoreRationale}
-${licensureSection}
+
 ## State Approval
 - **Required:** ${data.stateApproval.required ? 'Yes' : 'No'}
 - **Agency:** ${data.stateApproval.agency}

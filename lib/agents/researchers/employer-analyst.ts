@@ -3,9 +3,7 @@ import { ValidationProject } from '@/lib/types/database';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { PROGRAM_VALIDATOR_SYSTEM_PROMPT } from '@/lib/prompts/program-validator';
 import { searchGoogleJobs } from '@/lib/apis/serpapi';
-import { searchWeb } from '@/lib/apis/web-research';
 import { withCache } from '@/lib/apis/cache';
-// Intelligence context is injected by orchestrator via (project as any)._intelContext
 
 export interface EmployerDemandData {
   score: number;
@@ -62,9 +60,7 @@ export async function runEmployerDemand(
     // Fetch real Google Jobs data to identify actual employers hiring
     const targetOccupation = (project as any).target_occupation || 
       project.program_name.replace(/\s*(certificate|diploma|degree|program|associate|bachelor|training|course)/gi, '').trim();
-    let rawLocation = (project as any).geographic_area || 'United States';
-    // Simplify complex location strings to "City, State" for SerpAPI compatibility
-    const location = rawLocation.replace(/\s+and\s+\w[\w\s]+,/i, ',').replace(/\s*\(.*?\)/g, '').trim();
+    const location = (project as any).geographic_area || 'United States';
     
     let jobsData = null;
     let employerList: Array<{ name: string; openings: number }> = [];
@@ -82,44 +78,7 @@ export async function runEmployerDemand(
         console.log(`[Employer Demand] Found ${jobsData.count} jobs, top employer: ${employerList[0]?.name} (${employerList[0]?.openings} openings)`);
       }
     } catch (err) {
-      console.warn('[Employer Analyst] SerpAPI jobs failed, using Brave Search fallback');
-      try {
-        // Fallback: use web search for job posting data
-        const webResults = await searchWeb(`${targetOccupation} jobs ${location} hiring requirements`);
-        if (webResults && webResults.results && webResults.results.length > 0) {
-          // Extract employer names and job-like data from web search snippets
-          const extractedEmployers = new Map<string, number>();
-          for (const result of webResults.results) {
-            // Look for company/employer names in titles (common pattern: "Job Title at Company" or "Company - Job Title")
-            const titleMatch = result.title?.match(/(?:at|@)\s+(.+?)(?:\s*[-|–]|$)/i)
-              || result.title?.match(/^(.+?)\s*[-|–]\s*/);
-            if (titleMatch) {
-              const name = titleMatch[1].trim();
-              // Filter out generic site names
-              if (name && !['Indeed', 'LinkedIn', 'Glassdoor', 'ZipRecruiter', 'Monster', 'SimplyHired', 'Salary.com'].includes(name)) {
-                extractedEmployers.set(name, (extractedEmployers.get(name) || 0) + 1);
-              }
-            }
-          }
-          // Convert to employerList format
-          employerList = Array.from(extractedEmployers.entries())
-            .sort((a, b) => b[1] - a[1])
-            .slice(0, 10)
-            .map(([name, count]) => ({ name, openings: count }));
-          if (employerList.length > 0) {
-            console.log(`[Employer Demand] Brave fallback found ${employerList.length} employers from web results`);
-          }
-        }
-      } catch (fallbackErr) {
-        console.warn('[Employer Demand] Brave Search fallback also failed:', fallbackErr);
-      }
-    }
-
-    // Get shared intelligence context
-    const sharedContext = (project as any)._intelContext;
-    const verifiedEmployerSection = sharedContext?.promptBlock || '';
-    if (sharedContext) {
-      console.log(`[Employer Analyst] Using shared intelligence context (${sharedContext.tablesUsed.length} sources)`);
+      console.warn('[Employer Demand] Google Jobs failed:', err);
     }
 
     const prompt = `${PROGRAM_VALIDATOR_SYSTEM_PROMPT}
@@ -136,38 +95,40 @@ PROGRAM DETAILS:
 ${project.constraints ? `- Constraints: ${project.constraints}` : ''}
 ${(project as any).employer_interest ? `- Known Employer Interest: ${(project as any).employer_interest}` : ''}
 
-${verifiedEmployerSection ? `VERIFIED BASELINE DATA (confirmed from government sources — treat as established fact):
-${verifiedEmployerSection}` : ''}
 ${employerList.length > 0 ? `
-CURRENT EMPLOYER SNAPSHOT (${new Date().toLocaleDateString()}):
-- Openings observed: ${jobsData!.count}
-- Employers observed: ${employerList.map(e => `${e.name} (${e.openings})`).join(', ')}
+═══════════════════════════════════════════════════════════
+REAL DATA FROM GOOGLE JOBS (${new Date().toLocaleDateString()}):
+═══════════════════════════════════════════════════════════
+
+Current Job Openings: ${jobsData!.count}
+
+Top Employers Currently Hiring:
+${employerList.map((e, i) => `${i + 1}. ${e.name} — ${e.openings} active openings`).join('\n')}
+
+NOTE: Use this real employer data as the foundation for your analysis.
+Identify which employers are actively hiring, their sectors (hospital,
+retail pharmacy, specialty clinic, etc.), and estimated annual demand.
+═══════════════════════════════════════════════════════════
 ` : `
-CURRENT EMPLOYER SNAPSHOT:
-- Live posting snapshot unavailable in this run.
+NOTE: Live employer data unavailable. Use your knowledge of the
+occupation and region to identify top employers by sector.
 `}
 
-Your job is NOT to generate tables or restate baseline stats. The data above is confirmed.
-Your job is analysis:
-- What do employer data points and postings imply about real demand quality?
-- Which named employers matter most in this market and what are they actually signaling?
-- What would make employers partner with this program versus hire from the open market?
-- Where are concentration risks, partnership leverage points, and design implications?
+ANALYSIS REQUIRED:
+1. Employer demand signals (top 3-5)
+2. Top employers in the region for this field (3-5)
+3. Employer investment willingness assessment
+4. Contract training potential
+5. Key partnership opportunities
+6. Skills employers want most
 
-OUTPUT FORMAT:
-- 600-900 words in scoreRationale as narrative analysis
-- NO markdown tables
-- NO bullet-point list of statistics already provided
-- YES specific references to the baseline data and employer snapshot
-- Keep supporting fields concise, strategic, and non-redundant
+SCORING: 8-10 = strong multi-employer demand; 5-7 = moderate; 1-4 = weak/concentrated
 
-SCORING: 8-10 strong diversified demand and partnership pull; 5-7 moderate; 1-4 weak/concentrated.
-
-IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Do NOT include a markdownReport field.
+IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Keep all string values concise (1-2 sentences max). Do NOT include a markdownReport field.
 
 {
   "score": <1-10>,
-  "scoreRationale": "600-900 word narrative analysis",
+  "scoreRationale": "Brief explanation",
   "demandSignals": [
     { "signal": "Description", "source": "Source", "strength": "strong" }
   ],
@@ -206,7 +167,7 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation outside JSON. Do 
   "dataSources": ["Source 1"]
 }`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 5000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 16000 });
     const data = extractJSON(content) as EmployerDemandData;
 
     if (!data.markdownReport) {

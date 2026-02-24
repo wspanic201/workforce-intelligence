@@ -403,12 +403,12 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
     // 10. Generate report FIRST (so a crash during QA doesn't lose everything)
     console.log(`[Orchestrator] Generating professional report...`);
 
-    let fullReport = await generateReport({
+    let fullReport = generateReport({
       project: projectToValidate as ValidationProject,
       components: completedComponents as ResearchComponent[],
       programScore,
       tigerTeamMarkdown,
-      citations: citationResults || undefined,
+
     });
 
     // Save initial report (only columns that exist: project_id, executive_summary, full_report_markdown, version)
@@ -442,12 +442,12 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
           tigerTeamMarkdown = qaResult.cleanedMarkdown;
 
           // Regenerate report with QA-cleaned tiger team
-          fullReport = await generateReport({
+          fullReport = generateReport({
             project: projectToValidate as ValidationProject,
             components: completedComponents as ResearchComponent[],
             programScore,
             tigerTeamMarkdown,
-            citations: citationResults || undefined,
+      
           });
 
           // Update the saved report
@@ -931,12 +931,11 @@ export async function orchestrateValidationInMemory(
     created_at: new Date().toISOString(),
   }));
 
-  const fullReport = await generateReport({
+  const fullReport = generateReport({
     project: project as any,
     components: reportComponents as any,
     programScore,
     tigerTeamMarkdown,
-    citations: citationResults || undefined,
   });
 
   const totalDuration = Date.now() - startTime;

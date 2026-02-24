@@ -48,9 +48,6 @@ export interface InstitutionalFitData {
   };
   dataSources: string[];
   markdownReport: string;
-  // Program competencies — what graduates can do on day one
-  graduate_competencies?: string[];
-  learning_outcomes?: string[];
 }
 
 export async function runInstitutionalFit(
@@ -62,9 +59,6 @@ export async function runInstitutionalFit(
 
   try {
     console.log(`[Institutional Fit] Starting for "${project.program_name}"`);
-
-    // Get shared verified intelligence context
-    const verifiedIntelBlock = (project as any)._intelContext?.promptBlock || '';
 
     const prompt = `${PROGRAM_VALIDATOR_SYSTEM_PROMPT}
 
@@ -80,20 +74,26 @@ ${(project as any).institutional_capacity ? `- Known Capacity: ${(project as any
 ${(project as any).delivery_format ? `- Delivery Format: ${(project as any).delivery_format}` : ''}
 ${(project as any).strategic_context ? `- Strategic Context: ${(project as any).strategic_context}` : ''}
 
-${verifiedIntelBlock ? `VERIFIED BASELINE DATA (confirmed from government sources — treat as established fact):
-${verifiedIntelBlock}` : ''}
+ANALYSIS REQUIRED:
+1. Faculty/instructor availability and recruitment feasibility
+2. Facilities and equipment adequacy
+3. Technology infrastructure readiness
+4. Support services (advising, career, tutoring)
+5. Strategic plan and mission alignment
+6. Portfolio fit — complement or cannibalize existing programs?
+7. Stackable credential pathways
+8. Accreditation/approval requirements and timeline
+9. Overall organizational capacity assessment
 
-Your job is NOT to restate data or produce tables. The baseline data is confirmed.
-Your job is analysis:
-- Can Kirkwood execute this program with current infrastructure and staffing?
-- What operational gaps must close for Year 1 success?
-- What are the make-or-break execution risks in faculty, facilities, support, and governance?
-- What should graduates be able to DO on day one, and what does that imply for delivery?
+SCORING CRITERIA:
+- Strong (8-10): Faculty available, facilities adequate, strong strategic alignment, creates stackable pathways
+- Moderate (5-7): Faculty recruitable with effort, some investment needed, reasonable alignment
+- Weak (1-4): Faculty shortage, significant capital needed, weak alignment
 
 OUTPUT FORMAT (JSON):
 {
   "score": <1-10>,
-  "scoreRationale": "600-900 word narrative analysis in paragraph form",
+  "scoreRationale": "Detailed explanation",
   "faculty": {
     "availability": "available|recruitable|scarce",
     "qualificationsNeeded": ["Qual 1"],
@@ -134,28 +134,12 @@ OUTPUT FORMAT (JSON):
     "constraints": ["Constraint 1"],
     "readinessLevel": "high|moderate|low"
   },
-  "dataSources": ["Source 1"],
-  "graduate_competencies": [
-    "What a graduate can DO on day one — specific and measurable job performance capability",
-    "Example: Accurately process 50+ prescription orders per shift using standard pharmacy software"
-  ],
-  "learning_outcomes": [
-    "Academic outcome 1 — measurable",
-    "Academic outcome 2"
-  ]
+  "dataSources": ["Source 1"]
 }
-
-OUTPUT RULES:
-- 600-900 words in scoreRationale
-- NO markdown tables
-- NO bullet-point list of repeated statistics
-- YES direct references to baseline evidence and operational implications
-- Keep supporting fields concise and decision-oriented
-- REQUIRED: Include graduate_competencies as specific day-one performance capabilities
 
 IMPORTANT: Return ONLY valid JSON. No markdown outside JSON. Keep string values concise. Do NOT include a markdownReport field.`;
 
-    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 5000 });
+    const { content, tokensUsed } = await callClaude(prompt, { maxTokens: 12000 });
     const data = extractJSON(content) as InstitutionalFitData;
 
     if (!data.markdownReport) {

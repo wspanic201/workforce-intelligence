@@ -44,9 +44,7 @@ export async function runTigerTeam(
       })
       .join('\n\n---\n\n');
 
-    const prompt = `You are Wavelength's senior advisory team. This is your $7,500 deliverable. Write with the conviction and authority of partners who have reviewed hundreds of program proposals. Have a point of view. Argue it.
-
-The old version of this report had lines like "This isn't marginal uncertainty; this is fundamental market intelligence failure" and "We're being asked to invest $85,500 in a program where the labor market analyst couldn't identify a single local job opening." THAT is the energy level. Be that direct. If something is broken, say it's broken. If something is exciting, make it exciting.
+    const prompt = `You are conducting a TIGER TEAM REVIEW - a multi-perspective executive debate to determine if this workforce program should be launched.
 
 CONTEXT:
 Program: ${project.program_name}
@@ -62,98 +60,200 @@ RESEARCH FINDINGS:
 
 ${researchSummary}
 
+YOUR TASK:
+
+Simulate a rigorous executive debate where each persona challenges the program from their perspective:
+
+1. **Product Manager:** Does this have market fit? Will students actually enroll?
+2. **CFO (${personas.find(p => p.slug === 'cfo')?.name}):** Is this financially viable? What are the risks?
+3. **CMO (${personas.find(p => p.slug === 'cmo')?.name}):** Can we market this? Is there a compelling story?
+4. **COO (${personas.find(p => p.slug === 'coo')?.name}):** Can we actually implement this? Do we have the capacity?
+
+DEBATE STRUCTURE:
+- Identify the STRONGEST arguments FOR launching
+- Identify the BIGGEST risks and red flags
+- Challenge key assumptions (what could be wrong?)
+- Find gaps in the research
+- Reach a consensus recommendation
+
 ═══════════════════════════════════════════════════════════
-DELIVERABLES:
+DELIVERABLES (5,000-7,000 WORDS — THIS IS THE SYNTHESIS THAT JUSTIFIES $7,500):
 ═══════════════════════════════════════════════════════════
 
-# Executive Summary (600-800 words MAX)
+# Executive Summary (800-1,000 words)
 
-Write a NARRATIVE executive summary. Discovery-framed: lead with what the research FOUND, not what the client is evaluating.
-
-WRONG: "Kirkwood Community College is evaluating whether to launch a Pharmacy Technician Certificate program targeting career changers..."
-RIGHT: "Our analysis reveals a market with genuine structural demand, a defensible competitive window, and economics that hold — if one critical assumption resolves in the program's favor."
+Write a NARRATIVE executive summary, not bullet points. Tell the story of this program opportunity.
 
 **Structure:**
-- **Opening:** What did we FIND? Lead with the research verdict. Not "the institution is considering" — "our analysis reveals." (1-2 sentences)
-- **The Opportunity:** What makes this strategically attractive? What did the data show that justifies investment? (2 paragraphs)
-- **The Critical Risk:** What is the one thing that could break this? Be direct. (1 paragraph)
-- **The Verdict:** Recommendation + what must happen next. (1 paragraph)
+- **Opening:** What is this program and why is the institution considering it? (2-3 sentences)
+- **The Opportunity:** What makes this strategically attractive? Paint the picture of success. What are the strong points? (2-3 paragraphs)
+- **The Challenges:** What are the critical execution risks? What could go wrong? What assumptions are we betting on? (2-3 paragraphs)
+- **The Verdict:** What's the recommendation and why? What needs to happen next? (1-2 paragraphs)
 
-**Tone:** Write like a consulting partner presenting to a Board. Be confident but honest. Lead with the answer, support it with evidence.
+**Tone:** Write like a consulting partner presenting to a Board. Be confident but honest. If the program is risky, say it directly. If it's a strong opportunity, make the case compellingly.
 
-# Recommendation (600-800 words MAX)
+**Example opening:** "The Pharmacy Technician Certificate presents a strategically sound but operationally precarious opportunity for Kirkwood Community College. The fundamentals are solid: documented employer demand across retail and hospital sectors, strong institutional alignment with health sciences priorities, clear regulatory pathways, and reasonable startup costs ($123K). The program addresses a legitimate workforce gap in Eastern Iowa with 67-93 estimated annual positions across major employers..."
+
+# Recommendation (1,200-1,500 words)
 
 ## Decision: GO / CONDITIONAL GO / DEFER / NO-GO
 
 ## Confidence Level: High / Medium / Low
 
-## Rationale
-Explain WHY this recommendation was reached. Connect it to the research data. What tipped the scales?
+## Rationale (500+ words)
+Explain WHY this recommendation was reached. Connect it to the research data. What tipped the scales? What would need to change for a different recommendation?
 
-## Conditions (if CONDITIONAL GO)
-List 3-5 SPECIFIC conditions with WHAT must happen, by WHEN, and HOW to verify.
+## Conditions (if CONDITIONAL GO) (400+ words)
+If recommending CONDITIONAL GO, list 3-5 SPECIFIC conditions that MUST be met before proceeding:
+- Each condition should include: WHAT must happen, by WHEN, and HOW to verify it was met
+- Example: "Secure signed MOUs with minimum 6 pharmacy sites guaranteeing rotation capacity for 40 students annually at zero cost. Deadline: 60 days. Verification: Legal-reviewed agreements with site signatures on file."
 
 ## Timeline for Revisiting (if DEFER)
-When to revisit and what would need to change.
+If recommending DEFER, specify when to revisit (6 months? 12 months?) and what would need to change in the market/data to reconsider.
 
 ## Alternative Approaches (if NO-GO)
-2-3 alternative approaches that could work.
+If recommending NO-GO, suggest 2-3 alternative approaches that could work:
+- Pivot to employer contract training model (serving single employer's needs)?
+- Different credential level (stackable certificate vs full program)?
+- Geographic focus (different region with less competition)?
 
-# Key Findings
+# Key Findings (1,000-1,200 words)
 
-Provide 3-5 key findings (100-150 words each) that synthesize across all research dimensions. Each finding: one-sentence statement, the evidence, and why it matters for the launch decision.
+Provide 5-7 key findings that synthesize across all research dimensions. Each finding should be 150-200 words with:
+- **The Finding:** One-sentence statement
+- **The Evidence:** What data supports this? Cite specific research components.
+- **The Implication:** Why does this matter for the launch decision?
+- **Cross-Dimensional Connections:** How does this finding relate to other research areas?
 
-# Conditions for Go
+**Example:**
+**Finding 1: Solid Employer Demand, Weak Labor Market Data**
+Strong qualitative signals from major employers (UnityPoint, UIHC, Hy-Vee, CVS) indicate hiring need, but quantitative labor market analysis scored 3/10 with "critical data unavailable." The Market Analyst cited wrong O*NET code (Pharmacy Aides 31-9095 vs Technicians 29-2052), suggesting methodology problems. This gap creates unacceptable uncertainty about actual job placement rates, wage trajectories, and market saturation. The Employer Demand analysis showed strong informal interest, but Financial Viability scored only 6/10 partly due to this uncertainty. **Implication:** We're recommending a six-figure investment with incomplete information about the labor market. This isn't acceptable diligence for a program launch decision. Before proceeding, conduct a 30-day employer survey with 10+ major pharmacy employers documenting actual hiring intentions, not just "interest."
 
-If CONDITIONAL GO: Identify the 1-2 TRUE GATES — conditions that would genuinely change the recommendation if unmet. These are launch blockers. Additional "nice to have" items are implementation tasks, not conditions.
+# Critical Success Factors (1,200-1,500 words)
 
-For each true gate (maximum 2): WHAT must happen, WHO owns it, by WHEN, KILL CRITERION if unmet.
+List 3-5 factors that MUST be true for this program to succeed. For each factor provide:
 
-Do NOT list 5 conditions when only 1-2 are genuinely make-or-break. A list of 5 kill-criteria conditions is functionally a Defer recommendation and should be called what it is.
+## Factor Name (e.g., "Clinical Site Partnerships with Committed Capacity")
 
-# Advisory Assessment
+### Why This Is Critical (200+ words)
+Explain the business logic. Why is this non-negotiable? What happens if this factor isn't achieved?
 
-**This is the most important section of the report. 800–1,000 words. ONE unified voice.**
+### Current Status (100+ words)
+Where are we now? What's confirmed vs assumed? What's the gap?
 
-Do NOT write four separate persona sections. Do NOT use sub-headers for each advisor. Write as a single, cohesive consulting team voice — the way a senior partner would present findings after a full team debrief.
+### How to Achieve It (300+ words)
+Provide DETAILED implementation guidance:
+- List of 10 specific target sites/partners with contact names (if available)
+- MOU template outline (key clauses to include)
+- Negotiation talking points ("You get well-trained graduates, we provide...")
+- Timeline (Month 1: Identify sites, Month 2: Initial outreach, Month 3: Negotiate terms...)
+- Budget required ($X,XXX for legal review, relationship management)
+- Owner (Who is responsible? Program director? Dean?)
 
-The voice is sharp, direct, and earned. It carries the financial caution of a CFO, the strategic edge of a strategist, the market instinct of a CMO, and the academic rigor of an education director — but fused into one perspective, not four parallel monologues. Think: the smartest person in the room who has already heard all the arguments and is now delivering the verdict.
+### How to Verify Success
+What's the proof that this factor has been achieved? Specific deliverables or milestones.
 
-**What this section must do:**
-- Deliver the team's genuine, integrated point of view on this program — not a summary of the research
-- Call out the one or two things that actually determine whether this program succeeds or fails
-- Name the tension, if there is one (e.g., the strategic opportunity is real but the financial model is built on an assumption nobody has verified)
-- Be opinionated. Make a case. Don't hedge every sentence.
-- Speak directly to the decision-maker: what do you need to do, and why does it matter now?
+# Top Risks & Mitigation Strategies (1,500-2,000 words)
 
-**Tone reference (this is the energy level):**
-> "The competitive vacuum is real. No Iowa community college is publishing PTCB pass rates. Penn Foster can't place a student in an Iowa externship. Walgreens is training techs who are permanently capped in retail. UnityPoint Health has three open positions and no community college pipeline partner in Cedar Rapids. That is not a market gap — that is an invitation. The only question is whether Kirkwood shows up with the right program or a minimum-compliance certificate that competes on price with a $999 online product. Those are two very different decisions, and the financial model right now is built for the wrong one."
+Identify 3-5 risks rated by **Impact** (Low/Medium/High/Critical) and **Likelihood** (Low/Medium/High).
 
-That's ONE voice. Not four. Pull the threads together — strategic opportunity, financial reality, market entry, curriculum stakes — and write them as one argument, not four chapters.
+## Risk 1: [Risk Name] (Impact: HIGH | Likelihood: MEDIUM)
+
+### Impact Analysis (200+ words)
+If this risk materializes, what happens? Quantify the impact on financials, enrollment, reputation. Paint the worst-case scenario.
+
+Example: "If Year 1 enrolls 8 students instead of 15, revenue drops $29,400 and cumulative loss reaches $226,900. Program break-even extends from 22 months to 36+ months, likely triggering Board review and potential suspension. Reputation damage from low enrollment makes Year 2 recruitment even harder."
+
+### Likelihood Assessment (150+ words)
+How probable is this risk? What evidence suggests it could happen? What are the warning signs?
+
+### Mitigation Strategy (400+ words)
+Provide DETAILED, ACTIONABLE mitigation:
+- **Preventive actions:** What can we do NOW to reduce likelihood? (with specific tactics, budget, timeline)
+- **Contingency plans:** If the risk materializes, what's Plan B? (with decision triggers and alternative approaches)
+- **Cost of mitigation:** How much does it cost to address this risk? Is it worth it?
+- **Owner:** Who is responsible for monitoring and mitigating this risk?
+
+Example: "Market validation survey (30 days): Hire workforce research firm to survey 50+ prospective students validating willingness to pay $4,200 and commit 8-10 months. Cost: $3K-$5K. If survey shows <60% enrollment intent, delay launch 6 months and pivot to employer contract training model (serving Hy-Vee corporate training) to validate demand before open enrollment."
+
+# Perspective Assessments (2,000-2,500 words total, 400-500 each)
+
+Write as if each persona is speaking directly. Use first person. Be opinionated. DEBATE and CHALLENGE, don't just summarize.
+
+## Market Fit (Product Manager - Marcus Chen) (400-500 words)
+
+**Assessment:** CONDITIONAL PASS / YELLOW LIGHT / RED FLAG (pick one and rate X/10)
+
+**Voice:** Product managers care about product-market fit, customer validation, and competitive positioning. They ask: Will students actually buy this? What's our unique value prop? How do we beat the competition?
+
+**Structure:**
+- What Works: 2-3 strengths of the product/market fit
+- What Concerns Me: 3-4 specific red flags or gaps in validation
+- Product Validation Needed: Specific research to conduct (customer discovery interviews, competitive mystery shopping, etc.)
+- My Recommendation: Should we build this product or not? Under what conditions?
+
+**Example tone:** "I'm deeply concerned about market positioning and competitive differentiation. We're launching into a space with three established Iowa competitors, and the research hasn't validated our unique value proposition with actual customer data. Did we talk to 50 retail pharmacy workers and ask if they'd pay $4,200? No. Did we survey recent high school grads about awareness and interest? No. This is Product Management 101—you validate demand before building. Indian Hills shut down their program in 2019 with <10 enrollment—that's our reality check."
+
+## Financial Viability (CFO - Marcus Reinholt) (400-500 words)
+
+**Assessment:** GREEN LIGHT / YELLOW LIGHT / RED FLAG (rate X/10 financial confidence)
+
+**Voice:** CFOs care about ROI, cash flow, risk-adjusted returns, and fiduciary responsibility. They ask: Can we afford this? What's the downside? Are the assumptions realistic?
+
+**Structure:**
+- The Numbers That Work: Financial strengths (reasonable startup costs, acceptable ROI, etc.)
+- The Numbers That Terrify Me: Critical financial risks (enrollment shortfalls, unvalidated assumptions, etc.)
+- What I Need to See Before Approving: Specific financial validations required
+- My Recommendation: Would I sign off on this investment? Under what conditions?
+
+**Example tone:** "Let me be blunt: this program is financially viable IF—and only if—five critical assumptions hold true. Right now, those assumptions are unvalidated, which means we're betting $123K of institutional capital on a 50% ROI that could easily become a -$35K loss. The clinical site assumption is $0 cost and unlimited capacity—this is the entire business model. If UnityPoint says 'we'll take 4 students per cohort, $1,000 fee per student,' our annual costs jump $16K and enrollment is capped. Have we signed MOUs? No. This is unacceptable financial planning."
+
+## Go-to-Market (CMO - Valentina Rojas-Medina) (400-500 words)
+
+**Assessment:** [Pick one and rate marketability X/10]
+
+**Voice:** CMOs care about brand positioning, competitive messaging, customer acquisition cost, and conversion funnels. They ask: Can I sell this? What's the compelling story? Can we reach the right audience?
+
+**Structure:**
+- What's Working in Our Favor: Marketing assets and advantages
+- What's Working Against Us: Competitive and messaging challenges
+- Marketing Strategy Needed: Specific campaigns, channels, budget allocation
+- My Recommendation: Is this marketable or not?
+
+## Implementation Feasibility (COO - Sarah Martinez-Williams) (400-500 words)
+
+**Assessment:** [Pick one and rate operational readiness X/10]
+
+**Voice:** COOs care about execution, operational capacity, timelines, and resource constraints. They ask: Can we actually pull this off? Do we have the people, systems, and processes?
+
+**Structure:**
+- Operational Strengths: What we have in place (infrastructure, experience, etc.)
+- Operational Gaps: What we're missing or underestimating
+- Implementation Complexity: What could go wrong during launch and scale
+- My Recommendation: Are we operationally ready to execute?
 
 ---
 
-Length discipline: Every paragraph must advance the argument. No filler. No repeating what the research agents already said — synthesize and add insight.
-
 CRITICAL REQUIREMENTS:
-- Be brutally honest - this client is paying for TRUTH, not cheerleading
+- Be brutally honest - this client is paying $10k for TRUTH, not cheerleading
 - Challenge assumptions aggressively
 - If data is weak, say so
 - If the program looks risky, recommend NO-GO
 - Only recommend GO if you genuinely believe it will succeed
+- Remember: colleges have limited resources - a bad program hurts students AND the institution
 
 FACTUAL INTEGRITY RULES (MANDATORY):
 - ONLY cite facts, statistics, and events that appear in the research data above
-- Do NOT invent competitor histories unless explicitly stated in the source data
-- Do NOT write in present tense about actions that haven't happened
-- If you reference a specific number, it MUST come from the source data
+- Do NOT invent competitor histories (e.g. "Program X was discontinued in YYYY") unless explicitly stated in the source data
+- Do NOT write in present tense about actions that haven't happened (e.g. "the grant has been submitted"). Use future/conditional tense for recommendations ("should submit", "would need to")
+- If you reference a specific number (enrollment, salary, cost), it MUST come from the source data. If the data is missing, say "data not available" rather than estimating
 - Do NOT fabricate quotes, survey results, or employer statements
 - Clearly distinguish between SOURCE DATA FINDINGS and YOUR ANALYSIS/RECOMMENDATIONS
 
 Respond with the complete markdown document above.`;
 
     const { content, tokensUsed } = await callClaude(prompt, {
-      maxTokens: 8000,  // 8k — allows exec summary + recommendation + key findings + 4 persona sections
+      maxTokens: 4000,  // 4k — synthesis should be concise, not repeat agent findings
       temperature: 1.0,
     });
 
@@ -176,7 +276,7 @@ Respond with the complete markdown document above.`;
     return { synthesis, markdown };
   } catch (error) {
     const duration = Date.now() - startTime;
-    console.error('Wavelength synthesis error:', error);
+    console.error('Tiger team error:', error);
 
     await supabase.from('agent_sessions').insert({
       project_id: projectId,
