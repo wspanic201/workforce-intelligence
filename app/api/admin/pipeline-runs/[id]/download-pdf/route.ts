@@ -1,10 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { verifyAdminSession } from '@/lib/auth/admin';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
-import { generatePDF } from '@/lib/pdf/generate-pdf';
-import { tmpdir } from 'os';
-import { join } from 'path';
-import { readFileSync, unlinkSync } from 'fs';
+import { generatePDFServerless } from '@/lib/pdf/generate-pdf-serverless';
 
 /** GET /api/admin/pipeline-runs/[id]/download-pdf — Download or generate PDF */
 export async function GET(
@@ -74,26 +71,20 @@ export async function GET(
 
   try {
     const reportType = (project?.program_type === 'discovery') ? 'discovery' : 'validation';
-    const outputPath = join(tmpdir(), `wavelength-${projectId.slice(0, 8)}-${Date.now()}.pdf`);
 
-    const result = await generatePDF(report.full_report_markdown, {
+    const pdfBuffer = await generatePDFServerless(report.full_report_markdown, {
       title: programName,
       preparedFor: clientName,
       reportType,
-      outputPath,
     });
 
-    const pdfBuffer = readFileSync(result.path);
-
-    // Clean up temp file
-    try { unlinkSync(result.path); } catch {}
-
-    return new NextResponse(pdfBuffer, {
+    const uint8 = new Uint8Array(pdfBuffer);
+    return new NextResponse(uint8, {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${filename}"`,
-        'Content-Length': pdfBuffer.byteLength.toString(),
+        'Content-Length': uint8.byteLength.toString(),
       },
     });
   } catch (err) {
