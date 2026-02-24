@@ -6,7 +6,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAdmin } from '@/lib/admin/auth';
+import { verifyAdminSession } from '@/lib/auth/admin';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { generatePDFBuffer } from '@/lib/pdf/generate-pdf-serverless';
 
@@ -16,8 +16,8 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const unauthorized = await requireAdmin();
-  if (unauthorized) return unauthorized;
+  const isAdmin = await verifyAdminSession();
+  if (!isAdmin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { id } = await params;
 

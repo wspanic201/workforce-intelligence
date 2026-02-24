@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { requireAdmin } from '@/lib/admin/auth';
+import { verifyAdminSession } from '@/lib/auth/admin';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 
 /** GET /api/admin/orders/[id] — Order detail */
@@ -7,8 +7,8 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const unauthorized = await requireAdmin();
-  if (unauthorized) return unauthorized;
+  const isAdmin = await verifyAdminSession();
+  if (!isAdmin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { id } = await params;
   const supabase = getSupabaseServerClient();
@@ -31,8 +31,8 @@ export async function PATCH(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const unauthorized = await requireAdmin();
-  if (unauthorized) return unauthorized;
+  const isAdmin = await verifyAdminSession();
+  if (!isAdmin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { id } = await params;
 
@@ -81,8 +81,8 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const unauthorized = await requireAdmin();
-  if (unauthorized) return unauthorized;
+  const isAdmin = await verifyAdminSession();
+  if (!isAdmin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { id } = await params;
   const supabase = getSupabaseServerClient();
