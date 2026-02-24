@@ -12,6 +12,7 @@ import { runQAReview } from './qa-reviewer';
 import { runCitationAgent } from './researchers/citation-agent';
 import { calculateProgramScore, buildDimensionScore, DIMENSION_WEIGHTS } from '@/lib/scoring/program-scorer';
 import { generateReport } from '@/lib/reports/report-generator';
+import { writeValidationBrief } from '@/lib/reports/validation-brief-writer';
 import { enrichProject } from './project-enricher';
 import type { DiscoveryContext } from '@/lib/stages/handoff';
 import { getProjectIntel, formatIntelBlock } from '@/lib/intelligence/mcp-client';
@@ -399,13 +400,25 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
     // 10. Generate report FIRST (so a crash during QA doesn't lose everything)
     console.log(`[Orchestrator] Generating professional report...`);
 
-    let fullReport = generateReport({
-      project: projectToValidate as ValidationProject,
-      components: completedComponents as ResearchComponent[],
-      programScore,
-      tigerTeamMarkdown,
+    let fullReport = '';
 
-    });
+    try {
+      fullReport = await writeValidationBrief({
+        project: projectToValidate as ValidationProject,
+        components: completedComponents as ResearchComponent[],
+        programScore,
+        tigerTeamMarkdown,
+      });
+      console.log('[Orchestrator] ✓ Validation brief writer generated polished report');
+    } catch (e) {
+      console.warn('[Orchestrator] Validation brief writer failed, falling back to legacy report generator:', e);
+      fullReport = generateReport({
+        project: projectToValidate as ValidationProject,
+        components: completedComponents as ResearchComponent[],
+        programScore,
+        tigerTeamMarkdown,
+      });
+    }
 
     // Save initial report (only columns that exist: project_id, executive_summary, full_report_markdown, version)
     const { data: reportRow, error: reportError } = await supabase.from('validation_reports').insert({
@@ -949,12 +962,24 @@ export async function orchestrateValidationInMemory(
     created_at: new Date().toISOString(),
   }));
 
-  const fullReport = generateReport({
-    project: project as any,
-    components: reportComponents as any,
-    programScore,
-    tigerTeamMarkdown,
-  });
+  let fullReport = '';
+  try {
+    fullReport = await writeValidationBrief({
+      project: project as any,
+      components: reportComponents as any,
+      programScore,
+      tigerTeamMarkdown,
+    });
+    console.log('[Orchestrator:InMemory] ✓ Validation brief writer generated polished report');
+  } catch (e) {
+    console.warn('[Orchestrator:InMemory] Validation brief writer failed, falling back to legacy report generator:', e);
+    fullReport = generateReport({
+      project: project as any,
+      components: reportComponents as any,
+      programScore,
+      tigerTeamMarkdown,
+    });
+  }
 
   const totalDuration = Date.now() - startTime;
   console.log(`[Orchestrator:InMemory] ✓ Validation complete in ${Math.round(totalDuration / 1000)}s`);
