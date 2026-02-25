@@ -72,6 +72,18 @@ interface ProjectMeta {
   created_at: string;
 }
 
+interface RunEvent {
+  id: string;
+  pipeline_run_id: string | null;
+  project_id: string;
+  event_type: string;
+  stage_key: string | null;
+  level: 'debug' | 'info' | 'warn' | 'error';
+  message: string;
+  metadata: Record<string, any>;
+  created_at: string;
+}
+
 const REVIEW_DIMENSIONS = [
   { key: 'accuracy', label: 'Data Accuracy', help: 'Were BLS/IPEDS/O*NET numbers correct?' },
   { key: 'narrative', label: 'Narrative Quality', help: 'Did the exec summary read like a consultant wrote it?' },
@@ -134,10 +146,20 @@ export default function ReportDetailPage() {
   const [components, setComponents] = useState<ResearchComponent[]>([]);
   const [projectMeta, setProjectMeta] = useState<ProjectMeta | null>(null);
   const [expandedComponents, setExpandedComponents] = useState<Set<string>>(new Set());
+  const [events, setEvents] = useState<RunEvent[]>([]);
+  const [eventsLoading, setEventsLoading] = useState(false);
 
   useEffect(() => {
     fetchData();
   }, [id]);
+
+  useEffect(() => {
+    if (!run?.id) {
+      setEvents([]);
+      return;
+    }
+    fetchEvents(run.id);
+  }, [run?.id]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -187,6 +209,23 @@ export default function ReportDetailPage() {
     }
 
     setLoading(false);
+  };
+
+  const fetchEvents = async (runId: string) => {
+    setEventsLoading(true);
+    try {
+      const res = await fetch(`/api/admin/pipeline-runs/${runId}/events?limit=200`);
+      if (res.ok) {
+        const data: RunEvent[] = await res.json();
+        setEvents(Array.isArray(data) ? data : []);
+      } else {
+        setEvents([]);
+      }
+    } catch {
+      setEvents([]);
+    } finally {
+      setEventsLoading(false);
+    }
   };
 
   const selectRun = (r: PipelineRun) => {
@@ -489,6 +528,58 @@ export default function ReportDetailPage() {
                       </div>
                     )}
                   </div>
+                </CardContent>
+              </Card>
+
+              {/* Run Trace */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-sm font-medium text-slate-500">Run Trace</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {eventsLoading ? (
+                    <p className="text-sm text-slate-400">Loading trace...</p>
+                  ) : events.length === 0 ? (
+                    <p className="text-sm text-slate-400">No telemetry events found for this run.</p>
+                  ) : (
+                    <div className="space-y-2">
+                      {events.map((event) => {
+                        const status = event.event_type.includes('failed')
+                          ? 'failed'
+                          : event.event_type.includes('skipped')
+                            ? 'skipped'
+                            : event.event_type.includes('started')
+                              ? 'started'
+                              : 'completed';
+                        const statusClass =
+                          status === 'failed'
+                            ? 'bg-red-50 text-red-700'
+                            : status === 'skipped'
+                              ? 'bg-amber-50 text-amber-700'
+                              : status === 'started'
+                                ? 'bg-blue-50 text-blue-700'
+                                : 'bg-emerald-50 text-emerald-700';
+                        return (
+                          <div key={event.id} className="border border-slate-100 rounded-lg p-3">
+                            <div className="flex items-center justify-between gap-3">
+                              <div className="flex items-center gap-2 min-w-0">
+                                <span className={`px-2 py-0.5 text-[11px] font-semibold rounded-full ${statusClass}`}>
+                                  {status}
+                                </span>
+                                <span className="text-xs text-slate-500 truncate">
+                                  {event.stage_key || event.event_type}
+                                </span>
+                              </div>
+                              <span className="text-[11px] text-slate-400 whitespace-nowrap">
+                                {new Date(event.created_at).toLocaleTimeString()}
+                              </span>
+                            </div>
+                            <p className="text-sm text-slate-700 mt-1">{event.message}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </CardContent>
               </Card>
 
