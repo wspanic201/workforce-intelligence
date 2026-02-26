@@ -140,5 +140,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     },
+    {
+      url: `${siteUrl}/blog/job-openings-decline-community-college-enrollment-strategy-2026`,
+      lastModified: new Date("2026-02-26"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+
   ];
 }
