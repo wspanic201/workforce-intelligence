@@ -40,6 +40,8 @@ interface Order {
   report_markdown: string | null;
   delivery_token: string;
   admin_created: boolean;
+  validation_project_id: string | null;
+  pipeline_run_id: string | null;
   admin_notes: string | null;
   delivered_at: string | null;
 }
@@ -116,6 +118,8 @@ export default function OrderDetailPage() {
   const [updating, setUpdating] = useState(false);
   const [notes, setNotes] = useState('');
   const [copied, setCopied] = useState(false);
+  const [startingRun, setStartingRun] = useState(false);
+  const [runMessage, setRunMessage] = useState<string | null>(null);
 
   useEffect(() => {
     fetchOrder();
@@ -163,6 +167,23 @@ export default function OrderDetailPage() {
       body: JSON.stringify({ admin_notes: notes }),
     });
     await fetchOrder();
+  };
+
+  const startPipelineRun = async () => {
+    setStartingRun(true);
+    setRunMessage(null);
+
+    const res = await fetch(`/api/admin/orders/${id}/run`, { method: 'POST' });
+    const data = await res.json().catch(() => ({}));
+
+    if (res.ok) {
+      setRunMessage(`Pipeline started. Project ID: ${data.projectId}`);
+      await fetchOrder();
+    } else {
+      setRunMessage(data?.error || 'Failed to start pipeline');
+    }
+
+    setStartingRun(false);
   };
 
   const copyCommand = () => {
@@ -218,6 +239,36 @@ export default function OrderDetailPage() {
         </Badge>
       </div>
 
+      {/* Execution State */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-sm font-medium text-slate-500">Execution State</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3 text-sm">
+          {order.validation_project_id ? (
+            <div className="space-y-1">
+              <p><strong>Pipeline project:</strong> <span className="font-mono">{order.validation_project_id}</span></p>
+              <p className="text-emerald-700">This order has been linked to a real validation pipeline project.</p>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <p className="text-amber-700"><strong>No pipeline project linked yet.</strong> Status changes alone do not start the pipeline.</p>
+              <Button
+                size="sm"
+                onClick={startPipelineRun}
+                disabled={startingRun || updating}
+              >
+                {startingRun ? 'Starting…' : '▶ Run Pipeline Now'}
+              </Button>
+              <p className="text-xs text-slate-500">This creates a validation project and starts the orchestrator from admin.</p>
+            </div>
+          )}
+          {runMessage && (
+            <p className="text-xs text-slate-600">{runMessage}</p>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Status Actions */}
       {nextStatuses.length > 0 && (
         <Card>
@@ -232,7 +283,7 @@ export default function OrderDetailPage() {
                   disabled={updating}
                   onClick={() => updateStatus(status)}
                 >
-                  {status === 'running' ? '▶ Running' :
+                  {status === 'running' ? 'Status: Running' :
                    status === 'delivered' ? '📧 Deliver' :
                    status === 'cancelled' ? '✗ Cancel' :
                    status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
