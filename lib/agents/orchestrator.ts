@@ -89,6 +89,10 @@ const AGENT_CONFIG = [
   },
 ];
 
+
+const MAX_STAGE_ATTEMPTS = Math.max(1, parseInt(process.env.VALIDATION_STAGE_MAX_ATTEMPTS || '2', 10));
+const STAGE_RETRY_BACKOFF_MS = Math.max(0, parseInt(process.env.VALIDATION_STAGE_RETRY_BACKOFF_MS || '2000', 10));
+
 function componentTimestampValue(component: any): number {
   const completed = component?.completed_at ? Date.parse(component.completed_at) : 0;
   const created = component?.created_at ? Date.parse(component.created_at) : 0;
@@ -220,88 +224,120 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
         continue;
       }
 
-      const { data: componentRow, error: componentError } = await supabase
-        .from('research_components')
-        .insert({
-          project_id: projectId,
-          component_type: stageKey,
-          agent_persona: agent.persona,
-          status: 'pending',
-          content: {},
-        })
-        .select()
-        .single();
+      let stageSucceeded = false;
+      let lastError: unknown = null;
 
-      if (componentError || !componentRow) {
-        throw new Error(`Failed to create component: ${stageKey}`);
-      }
+      while (!stageSucceeded) {
+        const attempt = (stageAttempts.get(stageKey) || 0) + 1;
+        stageAttempts.set(stageKey, attempt);
 
-      const attempt = (stageAttempts.get(stageKey) || 0) + 1;
-      stageAttempts.set(stageKey, attempt);
-      await markStageStarted(projectId, stageKey, attempt);
-      await logRunEvent({
-        pipelineRunId,
-        projectId,
-        eventType: 'stage_started',
-        stageKey,
-        level: 'info',
-        message: `${agent.label} started`,
-        metadata: { attempt, componentId: componentRow.id },
-      });
+        const { data: componentRow, error: componentError } = await supabase
+          .from('research_components')
+          .insert({
+            project_id: projectId,
+            component_type: stageKey,
+            agent_persona: agent.persona,
+            status: 'pending',
+            content: {},
+          })
+          .select()
+          .single();
 
-      const stageStart = Date.now();
-      try {
-        console.log(`[Orchestrator] Starting ${agent.label}...`);
+        if (componentError || !componentRow) {
+          throw new Error(`Failed to create component: ${stageKey}`);
+        }
 
-        const result = await withTimeout(
-          runResearchComponent(
-            projectId,
-            componentRow.id,
-            projectToValidate,
-            agent.runner,
-            agent.dimension
-          ),
-          360000, // 6 minutes per agent — streaming + stall detection handles hangs
-          agent.label
-        );
-
-        const durationMs = Date.now() - stageStart;
-        await markStageCompleted(projectId, stageKey, {
-          componentId: componentRow.id,
-          label: agent.label,
-          data: result.data,
-          markdown: result.markdown,
-          score: result.score,
-          scoreRationale: result.scoreRationale,
-          completedAt: new Date().toISOString(),
-        }, durationMs);
+        await markStageStarted(projectId, stageKey, attempt);
         await logRunEvent({
           pipelineRunId,
           projectId,
-          eventType: 'stage_completed',
+          eventType: 'stage_started',
           stageKey,
           level: 'info',
-          message: `${agent.label} completed`,
-          metadata: { durationMs, attempt, componentId: componentRow.id },
+          message: `${agent.label} started`,
+          metadata: { attempt, componentId: componentRow.id },
         });
 
-        results.push({ status: 'fulfilled', value: result });
-        console.log(`[Orchestrator] ✓ ${agent.label} completed`);
-      } catch (error) {
-        const durationMs = Date.now() - stageStart;
-        const errorMessage = error instanceof Error ? error.message : String(error);
-        await markStageFailed(projectId, stageKey, errorMessage, durationMs);
-        await logRunEvent({
-          pipelineRunId,
-          projectId,
-          eventType: 'stage_failed',
-          stageKey,
-          level: 'error',
-          message: `${agent.label} failed`,
-          metadata: { durationMs, attempt, error: errorMessage, componentId: componentRow.id },
-        });
-        results.push({ status: 'rejected', reason: error });
-        console.error(`[Orchestrator] ✗ ${agent.label} failed:`, error);
+        const stageStart = Date.now();
+        try {
+          console.log(`[Orchestrator] Starting ${agent.label} (attempt ${attempt}/${MAX_STAGE_ATTEMPTS})...`);
+
+          const result = await withTimeout(
+            runResearchComponent(
+              projectId,
+              componentRow.id,
+              projectToValidate,
+              agent.runner,
+              agent.dimension
+            ),
+            360000, // 6 minutes per agent — streaming + stall detection handles hangs
+            agent.label
+          );
+
+          const durationMs = Date.now() - stageStart;
+          await markStageCompleted(projectId, stageKey, {
+            componentId: componentRow.id,
+            label: agent.label,
+            data: result.data,
+            markdown: result.markdown,
+            score: result.score,
+            scoreRationale: result.scoreRationale,
+            completedAt: new Date().toISOString(),
+          }, durationMs);
+          await logRunEvent({
+            pipelineRunId,
+            projectId,
+            eventType: 'stage_completed',
+            stageKey,
+            level: 'info',
+            message: `${agent.label} completed`,
+            metadata: { durationMs, attempt, componentId: componentRow.id },
+          });
+
+          results.push({ status: 'fulfilled', value: result });
+          stageSucceeded = true;
+          console.log(`[Orchestrator] ✓ ${agent.label} completed`);
+        } catch (error) {
+          lastError = error;
+          const durationMs = Date.now() - stageStart;
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          await markStageFailed(projectId, stageKey, errorMessage, durationMs);
+          await logRunEvent({
+            pipelineRunId,
+            projectId,
+            eventType: 'stage_failed',
+            stageKey,
+            level: 'error',
+            message: `${agent.label} failed`,
+            metadata: { durationMs, attempt, error: errorMessage, componentId: componentRow.id },
+          });
+
+          if (attempt < MAX_STAGE_ATTEMPTS) {
+            const backoffMs = STAGE_RETRY_BACKOFF_MS * attempt;
+            await logRunEvent({
+              pipelineRunId,
+              projectId,
+              eventType: 'stage_retry_scheduled',
+              stageKey,
+              level: 'warn',
+              message: `${agent.label} retry scheduled`,
+              metadata: { attempt, nextAttempt: attempt + 1, backoffMs, error: errorMessage },
+            });
+            console.warn(`[Orchestrator] ⚠ ${agent.label} failed (attempt ${attempt}/${MAX_STAGE_ATTEMPTS}), retrying in ${backoffMs}ms...`);
+            if (backoffMs > 0) {
+              await new Promise((resolve) => setTimeout(resolve, backoffMs));
+            }
+            continue;
+          }
+
+          results.push({ status: 'rejected', reason: error });
+          console.error(`[Orchestrator] ✗ ${agent.label} failed after ${attempt} attempts:`, error);
+          break;
+        }
+      }
+
+      if (!stageSucceeded && lastError) {
+        console.warn(`[Orchestrator] ${agent.label} exhausted retries:`, lastError instanceof Error ? lastError.message : String(lastError));
       }
     }
 
@@ -1177,114 +1213,144 @@ export async function orchestrateValidationInMemory(
       }
     }
 
-    const attempt = (stageAttempts.get(stageKey) || 0) + 1;
-    stageAttempts.set(stageKey, attempt);
-    if (hasPersistentProject) {
-      await markStageStarted(projectId, stageKey, attempt);
-    }
-    await logRunEvent({
-      pipelineRunId,
-      projectId,
-      eventType: 'stage_started',
-      stageKey,
-      level: 'info',
-      message: `${agent.label} started`,
-      metadata: { attempt },
-    });
+    let stageSucceeded = false;
+    let finalError: string | null = null;
 
-    const stageStart = Date.now();
-    try {
-      console.log(`[Orchestrator:InMemory] Starting ${agent.label}...`);
-
-      // Inject discovery context into the project for this agent
-      const projectWithContext = discoveryContext
-        ? injectDiscoveryContext(project, agent.type, discoveryContext)
-        : project;
-
-      const runnerResult = await withTimeout(
-        (agent.runner as (id: string, project: any) => Promise<{ data: any; markdown: string }>)(fakeProjectId, projectWithContext),
-        360000,
-        agent.label
-      );
-      const { data, markdown } = runnerResult;
-
-      const score = data?.score ?? null;
-      const scoreRationale = data?.scoreRationale ?? null;
-
-      components.push({
-        type: agent.type,
-        dimension: agent.dimension,
-        data,
-        markdown,
-        score,
-        scoreRationale,
-        status: 'completed',
-      });
+    while (!stageSucceeded) {
+      const attempt = (stageAttempts.get(stageKey) || 0) + 1;
+      stageAttempts.set(stageKey, attempt);
 
       if (hasPersistentProject) {
-        await markStageCompleted(projectId, stageKey, {
+        await markStageStarted(projectId, stageKey, attempt);
+      }
+      await logRunEvent({
+        pipelineRunId,
+        projectId,
+        eventType: 'stage_started',
+        stageKey,
+        level: 'info',
+        message: `${agent.label} started`,
+        metadata: { attempt },
+      });
+
+      const stageStart = Date.now();
+      try {
+        console.log(`[Orchestrator:InMemory] Starting ${agent.label} (attempt ${attempt}/${MAX_STAGE_ATTEMPTS})...`);
+
+        // Inject discovery context into the project for this agent
+        const projectWithContext = discoveryContext
+          ? injectDiscoveryContext(project, agent.type, discoveryContext)
+          : project;
+
+        const runnerResult = await withTimeout(
+          (agent.runner as (id: string, project: any) => Promise<{ data: any; markdown: string }>)(fakeProjectId, projectWithContext),
+          360000,
+          agent.label
+        );
+        const { data, markdown } = runnerResult;
+
+        const score = data?.score ?? null;
+        const scoreRationale = data?.scoreRationale ?? null;
+
+        components.push({
+          type: agent.type,
+          dimension: agent.dimension,
           data,
           markdown,
           score,
           scoreRationale,
-          completedAt: new Date().toISOString(),
-        }, Date.now() - stageStart);
-      }
-      await logRunEvent({
-        pipelineRunId,
-        projectId,
-        eventType: 'stage_completed',
-        stageKey,
-        level: 'info',
-        message: `${agent.label} completed`,
-        metadata: { durationMs: Date.now() - stageStart, score },
-      });
+          status: 'completed',
+        });
 
-      // Persist to Supabase for admin dashboard visibility
-      if (hasPersistentProject) {
-        try {
-          const supabase = getSupabaseServerClient();
-          await supabase.from('research_components').insert({
-            project_id: projectId,
-            component_type: agent.type,
-            agent_persona: agent.persona,
-            content: data,
-            markdown_output: markdown,
-            status: 'completed',
-            completed_at: new Date().toISOString(),
-          });
-        } catch (e) {
-          console.warn(`[Orchestrator:InMemory] Failed to persist ${agent.type} to DB (non-fatal)`);
+        if (hasPersistentProject) {
+          await markStageCompleted(projectId, stageKey, {
+            data,
+            markdown,
+            score,
+            scoreRationale,
+            completedAt: new Date().toISOString(),
+          }, Date.now() - stageStart);
         }
-      }
+        await logRunEvent({
+          pipelineRunId,
+          projectId,
+          eventType: 'stage_completed',
+          stageKey,
+          level: 'info',
+          message: `${agent.label} completed`,
+          metadata: { durationMs: Date.now() - stageStart, score, attempt },
+        });
 
-      console.log(`[Orchestrator:InMemory] ✓ ${agent.label} completed${score ? ` — Score: ${score}/10` : ''}`);
-    } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : String(error);
-      console.error(`[Orchestrator:InMemory] ✗ ${agent.label} failed:`, errorMsg);
-      if (hasPersistentProject) {
-        await markStageFailed(projectId, stageKey, errorMsg, Date.now() - stageStart);
-      }
-      await logRunEvent({
-        pipelineRunId,
-        projectId,
-        eventType: 'stage_failed',
-        stageKey,
-        level: 'error',
-        message: `${agent.label} failed`,
-        metadata: { durationMs: Date.now() - stageStart, error: errorMsg },
-      });
+        // Persist to Supabase for admin dashboard visibility
+        if (hasPersistentProject) {
+          try {
+            const supabase = getSupabaseServerClient();
+            await supabase.from('research_components').insert({
+              project_id: projectId,
+              component_type: agent.type,
+              agent_persona: agent.persona,
+              content: data,
+              markdown_output: markdown,
+              status: 'completed',
+              completed_at: new Date().toISOString(),
+            });
+          } catch (e) {
+            console.warn(`[Orchestrator:InMemory] Failed to persist ${agent.type} to DB (non-fatal)`);
+          }
+        }
 
-      components.push({
-        type: agent.type,
-        dimension: agent.dimension,
-        data: null,
-        markdown: '',
-        score: null,
-        scoreRationale: null,
-        status: 'error',
-        error: errorMsg,
-      });
+        stageSucceeded = true;
+        console.log(`[Orchestrator:InMemory] ✓ ${agent.label} completed${score ? ` — Score: ${score}/10` : ''}`);
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        finalError = errorMsg;
+        console.error(`[Orchestrator:InMemory] ✗ ${agent.label} failed:`, errorMsg);
+        if (hasPersistentProject) {
+          await markStageFailed(projectId, stageKey, errorMsg, Date.now() - stageStart);
+        }
+        await logRunEvent({
+          pipelineRunId,
+          projectId,
+          eventType: 'stage_failed',
+          stageKey,
+          level: 'error',
+          message: `${agent.label} failed`,
+          metadata: { durationMs: Date.now() - stageStart, error: errorMsg, attempt },
+        });
+
+        if (attempt < MAX_STAGE_ATTEMPTS) {
+          const backoffMs = STAGE_RETRY_BACKOFF_MS * attempt;
+          await logRunEvent({
+            pipelineRunId,
+            projectId,
+            eventType: 'stage_retry_scheduled',
+            stageKey,
+            level: 'warn',
+            message: `${agent.label} retry scheduled`,
+            metadata: { attempt, nextAttempt: attempt + 1, backoffMs, error: errorMsg },
+          });
+          if (backoffMs > 0) {
+            await new Promise((resolve) => setTimeout(resolve, backoffMs));
+          }
+          continue;
+        }
+
+        components.push({
+          type: agent.type,
+          dimension: agent.dimension,
+          data: null,
+          markdown: '',
+          score: null,
+          scoreRationale: null,
+          status: 'error',
+          error: errorMsg,
+        });
+        break;
+      }
+    }
+
+    if (!stageSucceeded && finalError) {
+      console.warn(`[Orchestrator:InMemory] ${agent.label} exhausted retries: ${finalError}`);
     }
   }
 

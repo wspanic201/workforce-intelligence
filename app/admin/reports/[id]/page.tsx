@@ -148,6 +148,8 @@ export default function ReportDetailPage() {
   const [expandedComponents, setExpandedComponents] = useState<Set<string>>(new Set());
   const [events, setEvents] = useState<RunEvent[]>([]);
   const [eventsLoading, setEventsLoading] = useState(false);
+  const [resumeLoading, setResumeLoading] = useState(false);
+  const [resumeStatus, setResumeStatus] = useState<string | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -262,6 +264,31 @@ export default function ReportDetailPage() {
     setSaving(false);
   };
 
+  const resumeFromCheckpoint = async () => {
+    if (!run) return;
+    setResumeLoading(true);
+    setResumeStatus(null);
+
+    try {
+      const res = await fetch(`/api/admin/pipeline-runs/${run.id}/resume`, {
+        method: 'POST',
+      });
+
+      const payload = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        setResumeStatus(payload?.error || 'Failed to start resume');
+      } else {
+        setResumeStatus('Resume started. Refresh in ~20–30s to see new events.');
+        fetchEvents(run.id);
+      }
+    } catch (error) {
+      setResumeStatus(error instanceof Error ? error.message : 'Failed to start resume');
+    } finally {
+      setResumeLoading(false);
+    }
+  };
+
   if (loading) {
     return <p className="text-slate-500 text-center py-12">Loading...</p>;
   }
@@ -269,6 +296,14 @@ export default function ReportDetailPage() {
   const project = run?.validation_projects;
   const displayName = project?.program_name || projectMeta?.program_name || 'Report';
   const displayClient = project?.client_name || projectMeta?.client_name || 'Unknown';
+
+  const failedStages = new Set(events.filter(e => e.event_type.includes('failed')).map(e => e.stage_key).filter(Boolean));
+  const recoveredStages = new Set(
+    events
+      .filter(e => e.event_type.includes('completed') && e.stage_key && failedStages.has(e.stage_key))
+      .map(e => e.stage_key)
+  );
+  const retryEvents = events.filter(e => e.event_type === 'stage_retry_scheduled').length;
 
   const toggleComponent = (compId: string) => {
     setExpandedComponents(prev => {
@@ -533,10 +568,30 @@ export default function ReportDetailPage() {
 
               {/* Run Trace */}
               <Card>
-                <CardHeader>
-                  <CardTitle className="text-sm font-medium text-slate-500">Run Trace</CardTitle>
+                <CardHeader className="flex flex-row items-center justify-between gap-3">
+                  <div>
+                    <CardTitle className="text-sm font-medium text-slate-500">Run Trace</CardTitle>
+                    <p className="text-xs text-slate-400 mt-1">
+                      Failures: {failedStages.size} • Recovered: {recoveredStages.size} • Retries: {retryEvents}
+                    </p>
+                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={resumeFromCheckpoint}
+                    disabled={resumeLoading || !run}
+                    className="text-xs"
+                  >
+                    {resumeLoading ? 'Resuming…' : 'Resume from checkpoint'}
+                  </Button>
                 </CardHeader>
                 <CardContent>
+                  {resumeStatus && (
+                    <div className="mb-3 rounded-md border border-slate-200 bg-slate-50 px-3 py-2 text-xs text-slate-600">
+                      {resumeStatus}
+                    </div>
+                  )}
                   {eventsLoading ? (
                     <p className="text-sm text-slate-400">Loading trace...</p>
                   ) : events.length === 0 ? (
