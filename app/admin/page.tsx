@@ -92,12 +92,12 @@ export default async function AdminDashboardPage() {
         <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400 mb-5">Recent Activity</h2>
         <div className="space-y-1">
           {reportStats.recent.map((report: any) => (
-            <div key={report.id} className="flex items-center justify-between py-3 px-3 rounded-lg hover:bg-slate-50 transition-colors">
+            <div key={report.id} className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-3 px-3 rounded-lg hover:bg-slate-50 transition-colors">
               <div>
                 <p className="text-sm font-medium text-slate-900">{report.program_name || 'Untitled Report'}</p>
                 <p className="text-xs text-slate-400 mt-0.5">{new Date(report.created_at).toLocaleDateString()}</p>
               </div>
-              <span className="text-xs font-mono text-slate-400 bg-slate-50 px-2 py-1 rounded">{report.status}</span>
+              <span className="text-xs font-mono text-slate-400 bg-slate-50 px-2 py-1 rounded w-fit">{report.status}</span>
             </div>
           ))}
           {reportStats.recent.length === 0 && (

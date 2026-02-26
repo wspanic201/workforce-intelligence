@@ -16,28 +16,51 @@ export function AdminNav() {
   const pathname = usePathname();
 
   return (
-    <div className="hidden sm:flex items-center gap-1">
-      {NAV_ITEMS.map((item) => {
-        const isActive = item.exact
-          ? pathname === item.href
-          : pathname?.startsWith(item.href);
+    <>
+      {/* Mobile nav */}
+      <div className="sm:hidden">
+        <label className="sr-only" htmlFor="admin-nav-select">Admin navigation</label>
+        <select
+          id="admin-nav-select"
+          className="h-9 rounded-lg border border-slate-200 bg-white px-2 text-sm text-slate-700"
+          value={NAV_ITEMS.find((item) => (item.exact ? pathname === item.href : pathname?.startsWith(item.href)))?.href || '/admin'}
+          onChange={(e) => {
+            const next = e.target.value;
+            if (next && next !== pathname) {
+              window.location.href = next;
+            }
+          }}
+        >
+          {NAV_ITEMS.map((item) => (
+            <option key={item.href} value={item.href}>{item.label}</option>
+          ))}
+        </select>
+      </div>
 
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`
-              text-sm font-medium px-3 py-1.5 rounded-lg transition-colors
-              ${isActive
-                ? 'bg-purple-50 text-purple-700'
-                : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
-              }
-            `}
-          >
-            {item.label}
-          </Link>
-        );
-      })}
-    </div>
+      {/* Desktop nav */}
+      <div className="hidden sm:flex items-center gap-1">
+        {NAV_ITEMS.map((item) => {
+          const isActive = item.exact
+            ? pathname === item.href
+            : pathname?.startsWith(item.href);
+
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`
+                text-sm font-medium px-3 py-1.5 rounded-lg transition-colors
+                ${isActive
+                  ? 'bg-purple-50 text-purple-700'
+                  : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
+                }
+              `}
+            >
+              {item.label}
+            </Link>
+          );
+        })}
+      </div>
+    </>
   );
 }

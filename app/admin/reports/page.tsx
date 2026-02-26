@@ -186,8 +186,57 @@ export default async function ReportsAdminPage({
         ))}
       </div>
 
-      {/* Reports Table */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
+      {/* Mobile Report Cards */}
+      <div className="md:hidden space-y-3">
+        {filteredReports.length === 0 ? (
+          <div className="bg-white rounded-xl border border-slate-200 p-6 text-center text-slate-400 text-sm">No reports found</div>
+        ) : (
+          filteredReports.map((report) => {
+            const run = pipelineRunMap[report.id];
+            return (
+              <div key={report.id} className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 space-y-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-slate-900 truncate">{report.program_name || 'Untitled'}</p>
+                    <p className="text-xs text-slate-500 truncate">{report.client_name || 'Unknown'}</p>
+                  </div>
+                  <StatusBadge status={report.status} />
+                </div>
+
+                <div className="flex flex-wrap items-center gap-2 text-xs">
+                  {run?.composite_score != null ? (
+                    <span className={`font-bold ${
+                      run.composite_score >= 7 ? 'text-emerald-600' : run.composite_score >= 5 ? 'text-amber-600' : 'text-red-600'
+                    }`}>
+                      {run.composite_score}/10
+                    </span>
+                  ) : partialProjectIds.has(report.id) ? (
+                    <span className="px-2 py-0.5 text-xs font-semibold rounded-full bg-amber-100 text-amber-700">Partial</span>
+                  ) : (
+                    <span className="text-slate-300">--</span>
+                  )}
+                  {run ? <ModelBadge model={run.model} /> : <span className="text-slate-300">No run</span>}
+                  <span className="text-slate-400">{new Date(report.created_at).toLocaleDateString()}</span>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Link href={`/admin/reports/${report.id}`} className="text-sm text-purple-600 hover:text-purple-900 font-medium">Review</Link>
+                  <div className="flex items-center gap-3">
+                    {run ? (
+                      <a href={`/api/admin/pipeline-runs/${report.id}/download-pdf`} className="text-xs text-slate-500 hover:text-slate-800">PDF</a>
+                    ) : partialProjectIds.has(report.id) ? (
+                      <a href={`/api/admin/reports/${report.id}/export-raw`} className="text-xs text-amber-600 hover:text-amber-800">Raw</a>
+                    ) : null}
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
+
+      {/* Desktop Reports Table */}
+      <div className="hidden md:block bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
         <table className="w-full divide-y divide-slate-100 text-sm">
           <thead>
             <tr className="bg-slate-50">

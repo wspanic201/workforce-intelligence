@@ -221,27 +221,29 @@ export default function OrderDetailPage() {
       {/* Status Actions */}
       {nextStatuses.length > 0 && (
         <Card>
-          <CardContent className="py-4 flex items-center gap-3">
-            <span className="text-sm text-slate-600 mr-2">Move to:</span>
-            {nextStatuses.map(status => (
-              <Button
-                key={status}
-                variant={status === 'delivered' ? 'default' : status === 'cancelled' ? 'destructive' : 'outline'}
-                size="sm"
-                disabled={updating}
-                onClick={() => updateStatus(status)}
-              >
-                {status === 'running' ? '▶ Running' :
-                 status === 'delivered' ? '📧 Deliver' :
-                 status === 'cancelled' ? '✗ Cancel' :
-                 status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-              </Button>
-            ))}
+          <CardContent className="py-4 flex flex-col sm:flex-row sm:items-center gap-3">
+            <span className="text-sm text-slate-600 sm:mr-2">Move to:</span>
+            <div className="flex flex-wrap gap-2">
+              {nextStatuses.map(status => (
+                <Button
+                  key={status}
+                  variant={status === 'delivered' ? 'default' : status === 'cancelled' ? 'destructive' : 'outline'}
+                  size="sm"
+                  disabled={updating}
+                  onClick={() => updateStatus(status)}
+                >
+                  {status === 'running' ? '▶ Running' :
+                   status === 'delivered' ? '📧 Deliver' :
+                   status === 'cancelled' ? '✗ Cancel' :
+                   status.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                </Button>
+              ))}
+            </div>
           </CardContent>
         </Card>
       )}
 
-      <div className="grid grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Contact Info */}
         <Card>
           <CardHeader>
