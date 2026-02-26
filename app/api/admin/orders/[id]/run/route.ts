@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse, after } from 'next/server';
 import { verifyAdminSession } from '@/lib/auth/admin';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
-import { orchestrateValidation } from '@/lib/agents/orchestrator';
+import { enqueueRunJob, processNextRunJob } from '@/lib/pipeline/run-jobs';
 
 export const maxDuration = 300;
 
 /**
  * POST /api/admin/orders/[id]/run
- * Create a validation_project from an admin order and start orchestrator.
+ * Queue a durable run job from admin. Creates project if needed.
  */
 export async function POST(
   _req: NextRequest,
@@ -19,7 +19,6 @@ export async function POST(
   const { id } = await params;
   const supabase = getSupabaseServerClient();
 
-  // Load order
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .select('*')
@@ -30,15 +29,6 @@ export async function POST(
     return NextResponse.json({ error: 'Order not found' }, { status: 404 });
   }
 
-  // If already linked, don't create duplicates
-  if (order.validation_project_id) {
-    return NextResponse.json(
-      { error: 'Order already linked to a validation project', projectId: order.validation_project_id },
-      { status: 409 }
-    );
-  }
-
-  // These tiers map to validation flow
   if (!['validation', 'discovery_validation', 'full_lifecycle'].includes(order.service_tier)) {
     return NextResponse.json(
       { error: `Service tier '${order.service_tier}' is not configured for validation pipeline runs from this button.` },
@@ -46,72 +36,66 @@ export async function POST(
     );
   }
 
-  const institutionData = order.institution_data || {};
-  const programName = institutionData.specificProgram || order.institution_name || 'Program Validation';
-  const constraints = [
-    institutionData.additionalContext,
-    institutionData.counties ? `Counties: ${institutionData.counties}` : null,
-    institutionData.metroArea ? `Metro: ${institutionData.metroArea}` : null,
-    institutionData.focusAreas ? `Focus Areas: ${institutionData.focusAreas}` : null,
-  ].filter(Boolean).join('\n');
+  let projectId = order.validation_project_id as string | null;
 
-  // Create validation project
-  const { data: project, error: projectError } = await supabase
-    .from('validation_projects')
-    .insert({
-      client_name: order.institution_name,
-      client_email: order.contact_email,
-      program_name: programName,
-      program_type: order.service_tier,
-      target_audience: institutionData.focusAreas || null,
-      constraints: constraints || null,
-      status: 'intake',
-    })
-    .select('id')
-    .single();
+  if (!projectId) {
+    const institutionData = order.institution_data || {};
+    const programName = institutionData.specificProgram || order.institution_name || 'Program Validation';
+    const constraints = [
+      institutionData.additionalContext,
+      institutionData.counties ? `Counties: ${institutionData.counties}` : null,
+      institutionData.metroArea ? `Metro: ${institutionData.metroArea}` : null,
+      institutionData.focusAreas ? `Focus Areas: ${institutionData.focusAreas}` : null,
+    ].filter(Boolean).join('\n');
 
-  if (projectError || !project) {
-    return NextResponse.json({ error: projectError?.message || 'Failed to create validation project' }, { status: 500 });
+    const { data: project, error: projectError } = await supabase
+      .from('validation_projects')
+      .insert({
+        client_name: order.institution_name,
+        client_email: order.contact_email,
+        program_name: programName,
+        program_type: order.service_tier,
+        target_audience: institutionData.focusAreas || null,
+        constraints: constraints || null,
+        status: 'intake',
+      })
+      .select('id')
+      .single();
+
+    if (projectError || !project) {
+      return NextResponse.json({ error: projectError?.message || 'Failed to create validation project' }, { status: 500 });
+    }
+
+    projectId = project.id;
+
+    await supabase
+      .from('orders')
+      .update({ validation_project_id: projectId, order_status: 'queued' })
+      .eq('id', id);
   }
 
-  // Link order to project + mark as truly running
-  const startedAt = new Date().toISOString();
-  const { error: updateError } = await supabase
+  const queued = await enqueueRunJob({ orderId: id, projectId, requestedBy: 'admin_dashboard' });
+
+  await supabase
     .from('orders')
     .update({
-      order_status: 'running',
-      validation_project_id: project.id,
-      pipeline_started_at: startedAt,
+      order_status: 'queued',
       pipeline_metadata: {
-        triggered_from: 'admin_run_button',
-        started_at: startedAt,
+        queue_status: queued.alreadyActive ? 'already_active' : 'queued',
+        queued_job_id: queued.job.id,
       },
     })
     .eq('id', id);
 
-  if (updateError) {
-    return NextResponse.json({ error: updateError.message }, { status: 500 });
-  }
-
-  // Run after response using Next.js after() so the platform keeps execution context alive.
   after(async () => {
-    try {
-      await orchestrateValidation(project.id);
-    } catch (error) {
-      console.error(`[AdminRun] Orchestration failed for order ${id}, project ${project.id}:`, error);
-      await supabase
-        .from('orders')
-        .update({
-          order_status: 'review',
-          pipeline_metadata: {
-            triggered_from: 'admin_run_button',
-            started_at: startedAt,
-            last_error: error instanceof Error ? error.message : String(error),
-          },
-        })
-        .eq('id', id);
-    }
+    await processNextRunJob();
   });
 
-  return NextResponse.json({ ok: true, orderId: id, projectId: project.id });
+  return NextResponse.json({
+    ok: true,
+    orderId: id,
+    projectId,
+    jobId: queued.job.id,
+    alreadyActive: queued.alreadyActive,
+  });
 }

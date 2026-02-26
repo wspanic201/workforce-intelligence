@@ -119,6 +119,7 @@ export default function OrderDetailPage() {
   const [notes, setNotes] = useState('');
   const [copied, setCopied] = useState(false);
   const [startingRun, setStartingRun] = useState(false);
+  const [processingQueue, setProcessingQueue] = useState(false);
   const [runMessage, setRunMessage] = useState<string | null>(null);
 
   useEffect(() => {
@@ -177,13 +178,27 @@ export default function OrderDetailPage() {
     const data = await res.json().catch(() => ({}));
 
     if (res.ok) {
-      setRunMessage(`Pipeline started. Project ID: ${data.projectId}`);
+      setRunMessage(`Run queued${data?.alreadyActive ? ' (already active)' : ''}. Job ID: ${data.jobId}`);
       await fetchOrder();
     } else {
-      setRunMessage(data?.error || 'Failed to start pipeline');
+      setRunMessage(data?.error || 'Failed to queue pipeline run');
     }
 
     setStartingRun(false);
+  };
+
+  const processRunQueue = async () => {
+    setProcessingQueue(true);
+    const res = await fetch('/api/admin/run-jobs/process', { method: 'POST' });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok) {
+      const r = data?.result;
+      setRunMessage(r?.processed ? `Queue processor: ${r.status || 'processed'}` : `Queue processor: ${r?.reason || 'no queued jobs'}`);
+      await fetchOrder();
+    } else {
+      setRunMessage(data?.error || 'Failed to process queue');
+    }
+    setProcessingQueue(false);
   };
 
   const copyCommand = () => {
@@ -246,9 +261,26 @@ export default function OrderDetailPage() {
         </CardHeader>
         <CardContent className="space-y-3 text-sm">
           {order.validation_project_id ? (
-            <div className="space-y-1">
+            <div className="space-y-2">
               <p><strong>Pipeline project:</strong> <span className="font-mono">{order.validation_project_id}</span></p>
-              <p className="text-emerald-700">This order has been linked to a real validation pipeline project.</p>
+              <p className="text-emerald-700">This order is linked to a validation pipeline project.</p>
+              <div className="flex flex-wrap gap-2">
+                <Button
+                  size="sm"
+                  onClick={startPipelineRun}
+                  disabled={startingRun || updating}
+                >
+                  {startingRun ? 'Queueing…' : '▶ Queue Run'}
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={processRunQueue}
+                  disabled={processingQueue || updating}
+                >
+                  {processingQueue ? 'Processing…' : 'Process Queue Now'}
+                </Button>
+              </div>
             </div>
           ) : (
             <div className="space-y-2">
@@ -258,9 +290,9 @@ export default function OrderDetailPage() {
                 onClick={startPipelineRun}
                 disabled={startingRun || updating}
               >
-                {startingRun ? 'Starting…' : '▶ Run Pipeline Now'}
+                {startingRun ? 'Queueing…' : '▶ Queue Run'}
               </Button>
-              <p className="text-xs text-slate-500">This creates a validation project and starts the orchestrator from admin.</p>
+              <p className="text-xs text-slate-500">This creates a validation project and queues a durable run job from admin.</p>
             </div>
           )}
           {runMessage && (
