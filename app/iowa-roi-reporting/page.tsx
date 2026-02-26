@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { BarChart3, Target, Zap, Microscope } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Iowa Program ROI Reporting Requirements | Wavelength',
@@ -92,7 +93,7 @@ export default function IowaROIPage() {
 
           <div className="grid md:grid-cols-2 gap-8">
             <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <div className="text-3xl mb-3">📊</div>
+              <BarChart3 className="h-8 w-8 mb-3 text-purple-500" />
               <h3 className="font-semibold text-gray-900 text-lg mb-2">
                 You Already Need the Data
               </h3>
@@ -102,7 +103,7 @@ export default function IowaROIPage() {
             </div>
 
             <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <div className="text-3xl mb-3">🎯</div>
+              <Target className="h-8 w-8 mb-3 text-blue-500" />
               <h3 className="font-semibold text-gray-900 text-lg mb-2">
                 ROI Becomes Your Competitive Advantage
               </h3>
@@ -112,7 +113,7 @@ export default function IowaROIPage() {
             </div>
 
             <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <div className="text-3xl mb-3">⚡</div>
+              <Zap className="h-8 w-8 mb-3 text-amber-500" />
               <h3 className="font-semibold text-gray-900 text-lg mb-2">
                 Proactive, Not Reactive
               </h3>
@@ -122,7 +123,7 @@ export default function IowaROIPage() {
             </div>
 
             <div className="bg-white border border-gray-200 rounded-xl p-6">
-              <div className="text-3xl mb-3">🔬</div>
+              <Microscope className="h-8 w-8 mb-3 text-teal-500" />
               <h3 className="font-semibold text-gray-900 text-lg mb-2">
                 Evidence-Based Program Development
               </h3>

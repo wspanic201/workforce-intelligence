@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Search, BarChart3, HandCoins, Activity, CheckCircle2 } from 'lucide-react';
 import {
   AnimateOnScroll,
   StaggerChildren,
@@ -85,10 +85,16 @@ const ADDONS = [
 // ─── Category chips for hero ──────────────────────────────────────────────────
 
 const CATEGORY_CHIPS = [
-  { label: 'Market Research',   href: '/discover',        icon: '🔍' },
-  { label: 'Program Analysis',  href: '/validate',        icon: '📊' },
-  { label: 'Funding & Grants',  href: '/grants',          icon: '💰' },
-  { label: 'Program Health',    href: '/drift',           icon: '🩺' },
+  { label: 'Market Research', href: '/discover', icon: Search },
+  { label: 'Program Analysis', href: '/validate', icon: BarChart3 },
+  { label: 'Funding & Grants', href: '/grants', icon: HandCoins },
+  { label: 'Program Health', href: '/drift', icon: Activity },
+];
+
+const PROOF_POINTS = [
+  'Used by community college workforce teams',
+  'BLS + employer demand + competitor intelligence',
+  'Board-ready reports in days, not months',
 ];
 
 // ─── Static Hero ──────────────────────────────────────────────────────────────
@@ -117,35 +123,48 @@ function StaticHero() {
 
         {/* Subhead */}
         <p className="mt-6 text-lg md:text-xl text-theme-secondary leading-relaxed max-w-2xl mx-auto">
-          A complete intelligence stack for community college CE divisions — from program opportunity discovery through program launch.
+          Wavelength helps CE and workforce teams choose the right programs, validate demand, and move with confidence — with clear recommendations, not vague research decks.
         </p>
 
         {/* CTAs */}
         <div className="mt-8 flex flex-wrap gap-4 justify-center">
-          <Link href="/pell">
+          <Link href="/discover">
             <button className="btn-cosmic btn-cosmic-primary text-sm">
-              Start Free — Pell Check
+              Start with Program Finder
             </button>
           </Link>
-          <Link href="#services">
+          <Link href="/contact">
             <button className="btn-cosmic btn-cosmic-ghost text-sm">
-              Explore Services ↓
+              Book a 20-min Walkthrough
             </button>
           </Link>
         </div>
 
+        {/* Proof points */}
+        <div className="mt-8 grid gap-2 max-w-2xl mx-auto text-left">
+          {PROOF_POINTS.map((point) => (
+            <div key={point} className="flex items-center gap-2 text-sm text-theme-secondary">
+              <CheckCircle2 className="h-4 w-4 text-emerald-300" />
+              <span>{point}</span>
+            </div>
+          ))}
+        </div>
+
         {/* Category links */}
         <div className="mt-10 flex flex-wrap gap-2 justify-center">
-          {CATEGORY_CHIPS.map((chip) => (
-            <Link
-              key={chip.label}
-              href={chip.href}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white/[0.04] border border-white/[0.08] text-theme-secondary text-sm font-medium hover:bg-white/[0.08] hover:border-white/[0.15] hover:text-theme-primary transition-all duration-200"
-            >
-              <span>{chip.icon}</span>
-              {chip.label}
-            </Link>
-          ))}
+          {CATEGORY_CHIPS.map((chip) => {
+            const Icon = chip.icon;
+            return (
+              <Link
+                key={chip.label}
+                href={chip.href}
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-white/[0.04] border border-white/[0.08] text-theme-secondary text-sm font-medium hover:bg-white/[0.08] hover:border-white/[0.15] hover:text-theme-primary transition-all duration-200"
+              >
+                <Icon className="h-4 w-4" />
+                {chip.label}
+              </Link>
+            );
+          })}
         </div>
 
       </div>
@@ -162,153 +181,34 @@ export default function HomePage() {
       {/* ===== HERO ===== */}
       <StaticHero />
 
-      {/* ===== IOWA ROI ANNOUNCEMENT BANNER ===== */}
-      <section className="relative py-6 border-y border-teal-500/20 bg-gradient-to-r from-teal-50/50 to-blue-50/50">
-        <div className="max-w-[1000px] mx-auto px-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
-                <span className="inline-flex items-center gap-1.5 text-xs font-mono font-semibold text-teal-700 bg-teal-100 px-2 py-0.5 rounded">
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                  </svg>
-                  Iowa Community Colleges
-                </span>
-              </div>
-              <p className="text-sm text-gray-700">
-                <strong className="font-semibold">New state ROI reporting requirements coming.</strong> Wavelength provides the workforce intelligence and outcome projections you need to comply — backed by BLS wage data and labor market analytics.
-              </p>
-            </div>
-            <div className="flex items-center gap-3">
-              <Link href="/pell">
-                <button className="btn-cosmic btn-cosmic-primary text-sm py-2 px-5 whitespace-nowrap">
-                  Start Free Check
-                </button>
-              </Link>
-              <Link href="/contact">
-                <button className="btn-cosmic btn-cosmic-ghost text-sm py-2 px-5 whitespace-nowrap">
-                  Learn More
-                </button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ===== CLIENT JOURNEY ===== */}
-      <section className="relative py-20 md:py-28" id="services">
-        <div className="max-w-[900px] mx-auto px-6">
-
-          <AnimateOnScroll variant="fade-up" className="text-center mb-4">
-            <div className="flex items-center justify-center gap-3">
-              <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/60" />
-              <span className="overline">How It Works</span>
-              <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-purple-500/60" />
-            </div>
-          </AnimateOnScroll>
-
-          <AnimateOnScroll variant="fade-up" delay={100} className="text-center mb-14">
+      {/* ===== VALUE PROPS ===== */}
+      <section className="relative py-16 md:py-20" id="services">
+        <div className="max-w-[980px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up" className="text-center mb-10">
             <h2
               className="font-heading font-bold text-theme-primary"
-              style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
+              style={{ fontSize: 'clamp(1.4rem, 2vw + 0.5rem, 2rem)' }}
             >
-              We help you close the gap — from identifying what your market needs to launching the program that fills it.
+              Actionable intelligence for continuing education program decisions.
             </h2>
-            <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
-              Most institutions start at Stage 1. Each stage hands off directly to the next — no lost context, no starting over.
+            <p className="text-theme-secondary mt-3 max-w-2xl mx-auto">
+              We do not hand you a generic market report. We give your team clear recommendations, decision-ready scoring, and practical next steps you can take this term.
             </p>
           </AnimateOnScroll>
 
-          <StaggerChildren stagger={100} variant="fade-up" className="space-y-6">
-
-            {/* Step 1 */}
-            <div className="grid md:grid-cols-[120px_1fr] gap-6 items-start">
-              <div className="text-center md:text-right pt-1">
-                <span className="font-mono text-xs text-theme-muted tracking-widest uppercase">Stage 1</span>
-                <div className="font-mono font-bold text-gradient-cosmic text-sm mt-0.5">$1,500</div>
-              </div>
-              <div className="card-cosmic rounded-2xl p-6">
-                <h3 className="font-heading font-semibold text-theme-primary text-base mb-2">
-                  Discover which programs your region actually needs
-                </h3>
-                <p className="text-theme-secondary text-sm leading-relaxed">
-                  We scan regional employer demand, BLS labor data, job posting trends, and competitor catalogs to surface the 7–10 programs with the strongest case for your institution. You receive a professional brief — scored, ranked, ready to present.
-                </p>
-                <p className="text-theme-muted text-xs mt-3 italic">
-                  Typical outcome: a ranked shortlist of opportunities your leadership can act on immediately.
-                </p>
-              </div>
+          <StaggerChildren stagger={80} variant="fade-up" className="grid grid-cols-1 md:grid-cols-3 gap-5">
+            <div className="card-cosmic rounded-2xl p-6">
+              <h3 className="font-heading font-semibold text-theme-primary text-base mb-2">Decision-ready, not just data-heavy</h3>
+              <p className="text-theme-secondary text-sm leading-relaxed">Every deliverable ends with ranked opportunities, confidence scoring, and a clear recommended action.</p>
             </div>
-
-            {/* Arrow connector */}
-            <div className="flex items-center justify-center md:pl-[144px]">
-              <div className="flex flex-col items-center gap-1 text-theme-muted">
-                <div className="w-px h-4 bg-gradient-to-b from-purple-500/40 to-blue-500/30" />
-                <span className="text-xs font-mono text-theme-muted tracking-widest">You pick one</span>
-                <div className="w-px h-4 bg-gradient-to-b from-blue-500/30 to-teal-500/20" />
-              </div>
+            <div className="card-cosmic rounded-2xl p-6">
+              <h3 className="font-heading font-semibold text-theme-primary text-base mb-2">Built for CE and workforce teams</h3>
+              <p className="text-theme-secondary text-sm leading-relaxed">We focus on noncredit and workforce program development realities: employer demand, speed to launch, and ROI pressure.</p>
             </div>
-
-            {/* Step 2 */}
-            <div className="grid md:grid-cols-[120px_1fr] gap-6 items-start">
-              <div className="text-center md:text-right pt-1">
-                <span className="font-mono text-xs text-theme-muted tracking-widest uppercase">Stage 2</span>
-                <div className="font-mono font-bold text-gradient-cosmic text-sm mt-0.5">$3,000</div>
-              </div>
-              <div className="card-cosmic rounded-2xl p-6">
-                <h3 className="font-heading font-semibold text-theme-primary text-base mb-2">
-                  Validate it — before you hire faculty or write a course
-                </h3>
-                <p className="text-theme-secondary text-sm leading-relaxed">
-                  Seven specialist analysts — market, financial, employer, regulatory, competitive, institutional fit, implementation — each run independent analyses on your chosen program. You get a 5-year financial model, a competitive positioning assessment, and a definitive GO&nbsp;/&nbsp;NO-GO recommendation. Not a maybe.
-                </p>
-                <p className="text-theme-muted text-xs mt-3 italic">
-                  Typical outcome: a board-ready validation report and a clear decision to proceed — or redirect resources to a better opportunity.
-                </p>
-              </div>
+            <div className="card-cosmic rounded-2xl p-6">
+              <h3 className="font-heading font-semibold text-theme-primary text-base mb-2">Defensible with leadership</h3>
+              <p className="text-theme-secondary text-sm leading-relaxed">Use board-friendly briefs with labor market evidence, financial framing, and implementation risk flags in one place.</p>
             </div>
-
-            {/* Arrow connector */}
-            <div className="flex items-center justify-center md:pl-[144px]">
-              <div className="flex flex-col items-center gap-1 text-theme-muted">
-                <div className="w-px h-4 bg-gradient-to-b from-blue-500/30 to-teal-500/20" />
-                <span className="text-xs font-mono text-theme-muted tracking-widest">You get a GO</span>
-                <div className="w-px h-4 bg-gradient-to-b from-teal-500/20 to-transparent" />
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div className="grid md:grid-cols-[120px_1fr] gap-6 items-start opacity-65">
-              <div className="text-center md:text-right pt-1">
-                <span className="font-mono text-xs text-theme-muted tracking-widest uppercase">Stage 3</span>
-                <div className="font-mono text-xs text-theme-muted mt-0.5 tracking-widest">Coming Soon</div>
-              </div>
-              <div className="rounded-2xl p-6 border border-theme-subtle bg-white/[0.015]">
-                <h3 className="font-heading font-semibold text-theme-tertiary text-base mb-2">
-                  Build the curriculum from validated data
-                </h3>
-                <p className="text-theme-muted text-sm leading-relaxed">
-                  Competency maps, course architecture, learning outcomes, and assessment frameworks — derived from O*NET task data, employer input gathered during validation, and accreditor requirements. No starting from scratch.
-                </p>
-              </div>
-            </div>
-
-            {/* Step 4+ */}
-            <div className="grid md:grid-cols-[120px_1fr] gap-6 items-start opacity-45">
-              <div className="text-center md:text-right pt-1">
-                <span className="font-mono text-xs text-theme-muted tracking-widest uppercase">Stages 4–8</span>
-                <div className="font-mono text-xs text-theme-muted mt-0.5 tracking-widest">Coming Soon</div>
-              </div>
-              <div className="rounded-2xl p-6 border border-theme-subtle bg-white/[0.01]">
-                <h3 className="font-heading font-semibold text-theme-muted text-base mb-2">
-                  Pathway design, launch, and ongoing quality control
-                </h3>
-                <p className="text-theme-muted text-sm leading-relaxed">
-                  Stackable credential architecture, articulation agreements, content production, marketing strategy, enrollment operations, and outcomes tracking — closing the loop back to your next discovery cycle.
-                </p>
-              </div>
-            </div>
-
           </StaggerChildren>
         </div>
       </section>
@@ -330,10 +230,10 @@ export default function HomePage() {
               className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              Sequential stages — each builds on the last.
+              Pick your next move
             </h2>
             <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
-              Start at Stage 1 or jump in at any stage. Stages 1 and 2 are live and ready to order today.
+              Start with opportunity discovery, then pressure-test the winner before you commit budget, staffing, and launch time.
             </p>
           </AnimateOnScroll>
 
@@ -439,10 +339,10 @@ export default function HomePage() {
               className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              Standalone reports — order anytime.
+              Precision add-ons for real program decisions.
             </h2>
             <p className="text-theme-secondary mt-3 max-w-xl mx-auto">
-              Independent of the lifecycle — bolt these onto any stage, or use them on their own. No subscription required.
+              Use these standalone or alongside your core engagement when you need sharper answers fast. No subscription required.
             </p>
           </AnimateOnScroll>
 
@@ -472,6 +372,85 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ===== MINI SAMPLE SNAPSHOT ===== */}
+      <section className="relative py-20 md:py-24" id="sample-snapshot">
+        <div className="max-w-[980px] mx-auto px-6">
+          <AnimateOnScroll variant="fade-up" className="text-center mb-10">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <span className="w-8 h-[1px] bg-gradient-to-r from-transparent to-purple-500/60" />
+              <span className="overline">Sample Snapshot</span>
+              <span className="w-8 h-[1px] bg-gradient-to-l from-transparent to-purple-500/60" />
+            </div>
+            <h2
+              className="font-heading font-bold text-theme-primary"
+              style={{ fontSize: 'clamp(1.4rem, 2vw + 0.5rem, 2rem)' }}
+            >
+              What a decision-ready output looks like
+            </h2>
+            <p className="text-theme-secondary mt-3 max-w-2xl mx-auto">
+              Example: Pharmacy Technician program opportunity for a Midwest community college region.
+            </p>
+          </AnimateOnScroll>
+
+          <AnimateOnScroll variant="fade-up" delay={80}>
+            <div className="card-cosmic rounded-2xl p-7 md:p-8">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="rounded-xl border border-theme-base bg-white/[0.02] p-4">
+                  <p className="text-theme-muted text-xs uppercase tracking-widest mb-2">Recommendation</p>
+                  <p className="text-theme-primary font-semibold">GO — High Confidence</p>
+                </div>
+                <div className="rounded-xl border border-theme-base bg-white/[0.02] p-4">
+                  <p className="text-theme-muted text-xs uppercase tracking-widest mb-2">Regional Demand Signal</p>
+                  <p className="text-theme-primary font-semibold">Strong + growing</p>
+                </div>
+                <div className="rounded-xl border border-theme-base bg-white/[0.02] p-4">
+                  <p className="text-theme-muted text-xs uppercase tracking-widest mb-2">Launch Risk</p>
+                  <p className="text-theme-primary font-semibold">Moderate (manageable)</p>
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-theme-base bg-white/[0.02] p-4 mb-6">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-theme-muted text-xs uppercase tracking-widest">Confidence Score</p>
+                  <p className="text-theme-primary text-sm font-semibold">8.4 / 10</p>
+                </div>
+                <div className="w-full h-2 rounded-full bg-white/[0.08] overflow-hidden">
+                  <div className="h-full w-[84%] bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-400" />
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-theme-base bg-white/[0.02] p-4 mb-6">
+                <p className="text-theme-muted text-xs uppercase tracking-widest mb-3">Source signals used</p>
+                <div className="flex flex-wrap gap-2">
+                  <span className="px-3 py-1 rounded-full text-xs bg-white/[0.06] border border-theme-subtle text-theme-secondary">BLS wage + projection data</span>
+                  <span className="px-3 py-1 rounded-full text-xs bg-white/[0.06] border border-theme-subtle text-theme-secondary">Live employer posting trends</span>
+                  <span className="px-3 py-1 rounded-full text-xs bg-white/[0.06] border border-theme-subtle text-theme-secondary">Regional competitor program scan</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <h3 className="font-heading font-semibold text-theme-primary mb-2">Key findings</h3>
+                  <ul className="space-y-2 text-sm text-theme-secondary">
+                    <li>• Employer demand is consistently above local completion volume.</li>
+                    <li>• Competitive density is moderate, with room for differentiated delivery.</li>
+                    <li>• Wage outcomes support student ROI and state performance narratives.</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="font-heading font-semibold text-theme-primary mb-2">Immediate next steps</h3>
+                  <ul className="space-y-2 text-sm text-theme-secondary">
+                    <li>• Validate employer advisory partners for clinical pipeline support.</li>
+                    <li>• Finalize cohort model and delivery format assumptions.</li>
+                    <li>• Move to full feasibility analysis before launch commitment.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </AnimateOnScroll>
+        </div>
+      </section>
+
       {/* ===== FINAL CTA ===== */}
       <section className="relative py-20 md:py-28">
         <Aurora />
@@ -487,21 +466,21 @@ export default function HomePage() {
               className="font-heading font-bold text-theme-primary mb-4"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              Start with the free Pell check.
+              Ready to pick the right next program?
             </h2>
             <p className="text-theme-secondary mb-10 max-w-lg mx-auto">
-              No commitment. In five minutes you&apos;ll know whether your programs qualify for Workforce Pell funding — and what to do next.
+              Start with Program Finder for a data-backed shortlist, or run the free Pell check if funding eligibility is your immediate priority.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/pell">
+              <Link href="/discover">
                 <button className="btn-cosmic btn-cosmic-primary">
-                  Run the Free Pell Check
+                  Start Program Finder
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </button>
               </Link>
-              <Link href="/contact">
+              <Link href="/pell">
                 <button className="btn-cosmic btn-cosmic-ghost">
-                  Talk to Us First
+                  Run Free Pell Check
                 </button>
               </Link>
             </div>

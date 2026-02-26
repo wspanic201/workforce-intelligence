@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { CheckCircle, ArrowRight, Check } from 'lucide-react';
+import { CheckCircle, ArrowRight, Check, Radio, GraduationCap, BarChart3, Landmark, ClipboardList, HandCoins } from 'lucide-react';
 import { AnimateOnScroll } from '@/components/motion';
 import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
@@ -334,11 +334,11 @@ export default function DriftPage() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-10">
             {[
-              { score: '0–20', status: '✅ Aligned', border: 'border-teal-500/30', bg: 'bg-teal-500/5', dot: 'bg-teal-400', meaning: 'Curriculum matches employer demand well' },
-              { score: '21–40', status: '⚠️ Minor Drift', border: 'border-yellow-500/30', bg: 'bg-yellow-500/5', dot: 'bg-yellow-400', meaning: 'A few gaps — schedule a review' },
-              { score: '41–60', status: '🟠 Moderate Drift', border: 'border-orange-500/30', bg: 'bg-orange-500/5', dot: 'bg-orange-400', meaning: 'Meaningful gaps — update within 6 months' },
-              { score: '61–80', status: '🔴 Significant Drift', border: 'border-red-500/30', bg: 'bg-red-500/5', dot: 'bg-red-400', meaning: 'Immediate curriculum action needed' },
-              { score: '81–100', status: '🚨 Critical', border: 'border-red-600/40', bg: 'bg-red-600/10', dot: 'bg-red-500', meaning: 'Program may be at risk — act now' },
+              { score: '0–20', status: 'Aligned', border: 'border-teal-500/30', bg: 'bg-teal-500/5', dot: 'bg-teal-400', meaning: 'Curriculum matches employer demand well' },
+              { score: '21–40', status: 'Minor Drift', border: 'border-yellow-500/30', bg: 'bg-yellow-500/5', dot: 'bg-yellow-400', meaning: 'A few gaps — schedule a review' },
+              { score: '41–60', status: 'Moderate Drift', border: 'border-orange-500/30', bg: 'bg-orange-500/5', dot: 'bg-orange-400', meaning: 'Meaningful gaps — update within 6 months' },
+              { score: '61–80', status: 'Significant Drift', border: 'border-red-500/30', bg: 'bg-red-500/5', dot: 'bg-red-400', meaning: 'Immediate curriculum action needed' },
+              { score: '81–100', status: 'Critical', border: 'border-red-600/40', bg: 'bg-red-600/10', dot: 'bg-red-500', meaning: 'Program may be at risk — act now' },
             ].map((tier, idx) => (
               <AnimateOnScroll key={tier.score} variant="fade-up" delay={idx * 80}>
                 <div className={`card-cosmic rounded-xl p-5 border ${tier.border} ${tier.bg} text-center h-full flex flex-col`}>
@@ -376,7 +376,7 @@ export default function DriftPage() {
 
               <div className="flex items-center gap-3 mb-5">
                 <div className="p-2 rounded-lg bg-orange-500/10 border border-orange-500/20">
-                  <span className="text-xl">📡</span>
+                  <Radio className="h-5 w-5 text-orange-300" />
                 </div>
                 <div>
                   <h3 className="font-heading font-bold text-theme-primary text-lg">
@@ -384,7 +384,7 @@ export default function DriftPage() {
                   </h3>
                   <span className="inline-flex items-center gap-1 text-[10px] font-medium text-theme-muted mt-1">
                     <span className="w-1 h-1 rounded-full bg-current opacity-50" />
-                    🟠 Moderate Drift
+                    Moderate Drift
                   </span>
                 </div>
               </div>
@@ -420,36 +420,39 @@ export default function DriftPage() {
               {
                 role: 'VP of Academic Affairs',
                 desc: 'Quarterly proof that your programs are market-aligned — for board reports, accreditation, and strategic planning.',
-                icon: '🎓',
+                icon: GraduationCap,
               },
               {
                 role: 'Workforce Development Directors',
                 desc: 'Protect your Workforce Pell placement rates before they\'re at risk. Catch drift before it costs you eligibility.',
-                icon: '📊',
+                icon: BarChart3,
               },
               {
                 role: 'Department Chairs',
                 desc: 'Know which courses need updating before accreditation asks. Stop relying on anecdotal feedback from advisory boards.',
-                icon: '🏛️',
+                icon: Landmark,
               },
               {
                 role: 'Curriculum Coordinators',
                 desc: 'Stop guessing which skills to add. See exactly what employers are requiring right now, updated every quarter.',
-                icon: '📋',
+                icon: ClipboardList,
               },
-            ].map((card, idx) => (
-              <AnimateOnScroll key={card.role} variant="fade-up" delay={idx * 80}>
-                <div className="card-cosmic rounded-xl p-7 h-full">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="p-2 rounded-lg bg-orange-500/10 border border-orange-500/20 text-xl">
-                      {card.icon}
+            ].map((card, idx) => {
+              const Icon = card.icon;
+              return (
+                <AnimateOnScroll key={card.role} variant="fade-up" delay={idx * 80}>
+                  <div className="card-cosmic rounded-xl p-7 h-full">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="p-2 rounded-lg bg-orange-500/10 border border-orange-500/20 text-xl">
+                        <Icon className="h-5 w-5 text-orange-300" />
+                      </div>
+                      <h3 className="font-heading font-semibold text-theme-primary text-lg">{card.role}</h3>
                     </div>
-                    <h3 className="font-heading font-semibold text-theme-primary text-lg">{card.role}</h3>
+                    <p className="text-theme-secondary text-sm leading-relaxed">{card.desc}</p>
                   </div>
-                  <p className="text-theme-secondary text-sm leading-relaxed">{card.desc}</p>
-                </div>
-              </AnimateOnScroll>
-            ))}
+                </AnimateOnScroll>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -468,7 +471,7 @@ export default function DriftPage() {
                 Straightforward, subscription-based
               </h2>
               <p className="mt-4 text-sm text-theme-muted">
-                💰 Eligible for Perkins V, WIOA Title I, and state workforce development grant funding.
+                <span className="inline-flex items-center gap-1.5"><HandCoins className="h-4 w-4" /> Eligible for Perkins V, WIOA Title I, and state workforce development grant funding.</span>
               </p>
             </div>
           </AnimateOnScroll>

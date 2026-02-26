@@ -456,8 +456,8 @@ export default function PellPage() {
               {/* Verdict */}
               <div className="flex items-center gap-2 mb-8">
                 <span className="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500" />
-                <span className="font-heading font-bold text-emerald-500 text-lg">
-                  ✓ Pell Eligible
+                <span className="font-heading font-bold text-emerald-500 text-lg inline-flex items-center gap-1.5">
+                  <CheckCircle className="h-5 w-5" /> Pell Eligible
                 </span>
               </div>
 

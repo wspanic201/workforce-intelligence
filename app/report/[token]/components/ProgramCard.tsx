@@ -8,6 +8,9 @@ import {
   AlertTriangle,
   CheckCircle2,
   Waves,
+  DollarSign,
+  MapPin,
+  Telescope,
 } from 'lucide-react';
 import { ScoreArc, CompactScoreBar } from './ScoreBar';
 import { EvidenceTrail } from './EvidenceTrail';
@@ -120,19 +123,19 @@ export function ProgramCard({ program, defaultExpanded = false, rank }: ProgramC
             {/* Quick stats */}
             <div className="flex flex-wrap gap-3 mt-1">
               {isBO && blueOcean?.medianWage && (
-                <span className="text-xs text-theme-tertiary">💰 <span className="text-theme-secondary">{blueOcean.medianWage}</span></span>
+                <span className="text-xs text-theme-tertiary inline-flex items-center gap-1"><DollarSign className="h-3.5 w-3.5" /> <span className="text-theme-secondary">{blueOcean.medianWage}</span></span>
               )}
               {!isBO && conventional?.keyMetrics?.medianHourlyWage && (
-                <span className="text-xs text-theme-tertiary">💰 <span className="text-theme-secondary">{conventional.keyMetrics.medianHourlyWage}</span>/hr</span>
+                <span className="text-xs text-theme-tertiary inline-flex items-center gap-1"><DollarSign className="h-3.5 w-3.5" /> <span className="text-theme-secondary">{conventional.keyMetrics.medianHourlyWage}</span>/hr</span>
               )}
               {!isBO && conventional?.keyMetrics?.regionalAnnualOpenings && (
-                <span className="text-xs text-theme-tertiary">📍 <span className="text-theme-secondary">{conventional.keyMetrics.regionalAnnualOpenings}</span> openings/yr</span>
+                <span className="text-xs text-theme-tertiary inline-flex items-center gap-1"><MapPin className="h-3.5 w-3.5" /> <span className="text-theme-secondary">{conventional.keyMetrics.regionalAnnualOpenings}</span> openings/yr</span>
               )}
               {isBO && blueOcean?.estimatedDemand && (
-                <span className="text-xs text-theme-tertiary">📍 <span className="text-theme-secondary">{blueOcean.estimatedDemand}</span></span>
+                <span className="text-xs text-theme-tertiary inline-flex items-center gap-1"><MapPin className="h-3.5 w-3.5" /> <span className="text-theme-secondary">{blueOcean.estimatedDemand}</span></span>
               )}
               {isBO && blueOcean?.discoveryMethod && (
-                <span className="text-xs text-teal-400/70">🔭 {DISCOVERY_LABELS[blueOcean.discoveryMethod] || blueOcean.discoveryMethod}</span>
+                <span className="text-xs text-teal-400/70 inline-flex items-center gap-1"><Telescope className="h-3.5 w-3.5" /> {DISCOVERY_LABELS[blueOcean.discoveryMethod] || blueOcean.discoveryMethod}</span>
               )}
             </div>
           </div>

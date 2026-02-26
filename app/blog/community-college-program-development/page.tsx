@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CheckCircle2 } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Data-Driven Program Development for Community Colleges: A Practical Framework",
@@ -498,7 +499,7 @@ export default function ProgramDevelopmentPage() {
                 className="border border-theme-subtle rounded-xl p-5 bg-theme-surface"
               >
                 <p className="text-theme-primary font-semibold mb-2 flex items-start gap-2">
-                  <span className="text-teal-400 mt-0.5 flex-shrink-0">✓</span>
+                  <CheckCircle2 className="h-4 w-4 text-teal-400 mt-0.5 flex-shrink-0" />
                   {item.criterion}
                 </p>
                 <p className="text-theme-tertiary text-sm leading-relaxed pl-6">{item.note}</p>

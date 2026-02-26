@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { Check, ArrowRight, Zap, Shield, Clock, Search, Sparkles } from 'lucide-react';
+import { Check, ArrowRight, Zap, Shield, Clock, Search, Sparkles, BarChart3, HandCoins, ScanSearch, GraduationCap, Bolt, Lightbulb, type LucideIcon } from 'lucide-react';
 import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
 import { Stars } from '@/components/cosmic/Stars';
 
@@ -195,16 +195,16 @@ const SERVICES: Service[] = [
 interface Scenario {
   label: string;
   query: string;
-  icon: string;
+  icon: LucideIcon;
 }
 
 const SCENARIOS: Scenario[] = [
-  { label: 'Find new programs to build', query: 'new programs what to build', icon: '🔍' },
-  { label: 'Justify a program to my dean', query: 'justify approve feasibility dean', icon: '📊' },
-  { label: 'Find grants & funding', query: 'grants funding money', icon: '💰' },
-  { label: 'Audit existing programs', query: 'audit compliance drift review', icon: '🔎' },
-  { label: 'Prepare for accreditation', query: 'accreditation review evidence', icon: '🎓' },
-  { label: 'Quick win under $500', query: 'quick cheap affordable', icon: '⚡' },
+  { label: 'Find new programs to build', query: 'new programs what to build', icon: Search },
+  { label: 'Justify a program to my dean', query: 'justify approve feasibility dean', icon: BarChart3 },
+  { label: 'Find grants & funding', query: 'grants funding money', icon: HandCoins },
+  { label: 'Audit existing programs', query: 'audit compliance drift review', icon: ScanSearch },
+  { label: 'Prepare for accreditation', query: 'accreditation review evidence', icon: GraduationCap },
+  { label: 'Quick win under $500', query: 'quick cheap affordable', icon: Bolt },
 ];
 
 /* ─── Search Logic ──────────────────────────────────────────────────────── */
@@ -348,27 +348,30 @@ export default function PricingClient() {
                   onClick={() => { setQuery(''); setActiveScenario(null); }}
                   className="absolute inset-y-0 right-0 pr-4 flex items-center text-theme-muted hover:text-theme-secondary transition-colors"
                 >
-                  ✕
+                  <span aria-hidden="true">×</span>
                 </button>
               )}
             </div>
 
             {/* Scenario Cards */}
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2.5">
-              {SCENARIOS.map((scenario) => (
-                <button
-                  key={scenario.query}
-                  onClick={() => handleScenarioClick(scenario)}
-                  className={`group text-left px-4 py-3 rounded-lg border transition-all duration-200 ${
-                    activeScenario === scenario.query
-                      ? 'bg-violet-500/15 border-violet-500/40 text-theme-primary'
-                      : 'bg-theme-surface border-theme-subtle text-theme-secondary hover:border-theme-strong hover:text-theme-primary'
-                  }`}
-                >
-                  <span className="text-base mr-2">{scenario.icon}</span>
-                  <span className="text-sm font-medium">{scenario.label}</span>
-                </button>
-              ))}
+              {SCENARIOS.map((scenario) => {
+                const Icon = scenario.icon;
+                return (
+                  <button
+                    key={scenario.query}
+                    onClick={() => handleScenarioClick(scenario)}
+                    className={`group text-left px-4 py-3 rounded-lg border transition-all duration-200 ${
+                      activeScenario === scenario.query
+                        ? 'bg-violet-500/15 border-violet-500/40 text-theme-primary'
+                        : 'bg-theme-surface border-theme-subtle text-theme-secondary hover:border-theme-strong hover:text-theme-primary'
+                    }`}
+                  >
+                    <Icon className="h-4 w-4 inline mr-2" />
+                    <span className="text-sm font-medium">{scenario.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </AnimateOnScroll>
         </div>
@@ -379,7 +382,7 @@ export default function PricingClient() {
         <div className="max-w-[900px] mx-auto px-6">
           <AnimateOnScroll variant="fade-up">
             <div className="card-cosmic rounded-2xl p-6 md:p-8 text-center border border-teal-500/20">
-              <p className="text-sm font-semibold text-teal-400 uppercase tracking-wider mb-2">💡 Did you know?</p>
+              <p className="text-sm font-semibold text-teal-400 uppercase tracking-wider mb-2 inline-flex items-center gap-1.5"><Lightbulb className="h-4 w-4" /> Did you know?</p>
               <p className="text-theme-secondary text-base md:text-lg leading-relaxed max-w-2xl mx-auto">
                 Most Wavelength services qualify as allowable expenses under{' '}
                 <strong className="text-theme-primary">Perkins V</strong>,{' '}

@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Stars } from "@/components/cosmic/Stars";
 import { Aurora } from "@/components/cosmic/Aurora";
 import { AnimateOnScroll, StaggerChildren } from "@/components/motion";
-import { Check, Mail, Radio } from "lucide-react";
+import { Check, Mail, Radio, BarChart3, Newspaper, Factory } from "lucide-react";
 import { InstitutionTypeahead } from "@/components/ui/InstitutionTypeahead";
 
 type Post = {
@@ -164,15 +164,15 @@ export default function BlogClient({ posts }: { posts: Post[] }) {
               {/* Sample items */}
               <div className="grid md:grid-cols-3 gap-4 mb-8">
                 <div className="bg-theme-surface rounded-lg p-4 border border-theme-subtle">
-                  <div className="text-xs font-bold text-theme-muted uppercase tracking-wider mb-2">📊 Labor Market Signal</div>
+                  <div className="text-xs font-bold text-theme-muted uppercase tracking-wider mb-2 inline-flex items-center gap-1.5"><BarChart3 className="h-3.5 w-3.5" /> Labor Market Signal</div>
                   <p className="text-theme-tertiary text-sm leading-relaxed">One key data point shaping workforce demand this week.</p>
                 </div>
                 <div className="bg-theme-surface rounded-lg p-4 border border-theme-subtle">
-                  <div className="text-xs font-bold text-theme-muted uppercase tracking-wider mb-2">📰 Workforce News</div>
+                  <div className="text-xs font-bold text-theme-muted uppercase tracking-wider mb-2 inline-flex items-center gap-1.5"><Newspaper className="h-3.5 w-3.5" /> Workforce News</div>
                   <p className="text-theme-tertiary text-sm leading-relaxed">Headlines your team needs to know, with context on why they matter.</p>
                 </div>
                 <div className="bg-theme-surface rounded-lg p-4 border border-theme-subtle">
-                  <div className="text-xs font-bold text-theme-muted uppercase tracking-wider mb-2">🏭 Industry Spotlight</div>
+                  <div className="text-xs font-bold text-theme-muted uppercase tracking-wider mb-2 inline-flex items-center gap-1.5"><Factory className="h-3.5 w-3.5" /> Industry Spotlight</div>
                   <p className="text-theme-tertiary text-sm leading-relaxed">One sector in focus — what&apos;s growing and what it means for programs.</p>
                 </div>
               </div>

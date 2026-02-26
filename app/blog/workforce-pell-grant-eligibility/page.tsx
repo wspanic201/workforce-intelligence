@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CheckCircle2, XCircle, AlertTriangle } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Workforce Pell Grant Eligibility: What Community Colleges Need to Know in 2026",
@@ -237,7 +238,7 @@ export default function WorkforcePellEligibilityPage() {
                 className="border border-theme-subtle rounded-xl p-5 bg-theme-surface"
               >
                 <div className="flex gap-3">
-                  <span className="text-teal-400 mt-0.5 shrink-0">✓</span>
+                  <CheckCircle2 className="h-4 w-4 text-teal-400 mt-0.5 shrink-0" />
                   <div>
                     <p className="text-theme-primary font-semibold mb-1">{item.criterion}</p>
                     <p className="text-theme-tertiary text-sm">{item.detail}</p>
@@ -262,7 +263,7 @@ export default function WorkforcePellEligibilityPage() {
               "Programs where the institution hasn't filed the appropriate Title IV eligibility documentation",
             ].map((item) => (
               <div key={item} className="flex gap-3 text-theme-tertiary text-sm">
-                <span className="text-red-400/70 mt-0.5 shrink-0">✗</span>
+                <XCircle className="h-4 w-4 text-red-400/70 mt-0.5 shrink-0" />
                 {item}
               </div>
             ))}
@@ -432,7 +433,7 @@ export default function WorkforcePellEligibilityPage() {
                 key={item.gap}
                 className="border border-amber-500/20 rounded-xl p-5 bg-amber-500/[0.02]"
               >
-                <p className="text-amber-400 font-semibold mb-2">⚠ {item.gap}</p>
+                <p className="text-amber-400 font-semibold mb-2 inline-flex items-center gap-1.5"><AlertTriangle className="h-4 w-4" /> {item.gap}</p>
                 <p className="text-theme-tertiary text-sm leading-relaxed">{item.detail}</p>
               </div>
             ))}
