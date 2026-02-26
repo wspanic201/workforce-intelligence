@@ -17,6 +17,7 @@ export interface PipelineConfig {
   citationAgentEnabled: boolean;
   intelContextEnabled: boolean;
   modelProfile?: string | null;
+  tigerTeamPersonas?: string[];
 }
 
 export interface PipelineResults {
@@ -65,6 +66,7 @@ export async function startPipelineRun(
         intelContextEnabled: config.intelContextEnabled,
         model: config.model,
         modelProfile: config.modelProfile || null,
+        tigerTeamPersonas: config.tigerTeamPersonas || null,
       },
       agents_run: config.agentsEnabled,
       tiger_team_enabled: config.tigerTeamEnabled,

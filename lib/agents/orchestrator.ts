@@ -114,6 +114,7 @@ function dedupeCompletedComponents<T extends { component_type: string }>(compone
 export interface OrchestrateValidationOptions {
   modelOverride?: string;
   modelProfile?: string;
+  personaSlugs?: string[];
 }
 
 export async function orchestrateValidation(
@@ -123,6 +124,9 @@ export async function orchestrateValidation(
   const supabase = getSupabaseServerClient();
   const runtimeModel = options.modelOverride || process.env.VALIDATION_MODEL || 'claude-sonnet-4-6';
   const modelProfile = options.modelProfile || null;
+  const tigerTeamPersonaSlugs = options.personaSlugs && options.personaSlugs.length
+    ? options.personaSlugs
+    : ['product-manager', 'cfo', 'cmo', 'coo'];
   setRuntimeModelOverride(runtimeModel);
 
   const orchestratorStart = Date.now();
@@ -190,6 +194,7 @@ export async function orchestrateValidation(
         citationAgentEnabled: true,
         intelContextEnabled: mcpIntel.available,
         modelProfile,
+        tigerTeamPersonas: tigerTeamPersonaSlugs,
       };
       pipelineRunId = await startPipelineRun(projectId, pipelineConfig);
     } catch (e) {
@@ -640,7 +645,8 @@ export async function orchestrateValidation(
             runTigerTeam(
               projectId,
               projectToValidate as ValidationProject,
-              normalizedCompletedComponents as ResearchComponent[]
+              normalizedCompletedComponents as ResearchComponent[],
+              { personaSlugs: tigerTeamPersonaSlugs }
             ),
             420000, // 7 minutes for tiger team — streaming handles hangs
             'Tiger Team Synthesis'
@@ -1711,7 +1717,8 @@ export async function orchestrateValidationInMemory(
           runTigerTeam(
             fakeProjectId,
             project as any,
-            tigerTeamComponents as any
+            tigerTeamComponents as any,
+            { personaSlugs: ['product-manager', 'cfo', 'cmo', 'coo'] }
           ),
           420000,
           'Tiger Team Synthesis'

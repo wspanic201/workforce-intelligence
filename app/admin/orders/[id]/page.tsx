@@ -46,6 +46,21 @@ interface Order {
   delivered_at: string | null;
 }
 
+interface ModelProfile {
+  id: string;
+  slug: string;
+  display_name: string;
+  model: string;
+  is_default?: boolean;
+  is_active?: boolean;
+}
+
+const PERSONA_PACKS: Array<{ key: string; label: string; slugs: string[] }> = [
+  { key: 'default', label: 'Default Tiger Team (PM + CFO + CMO + COO)', slugs: ['product-manager', 'cfo', 'cmo', 'coo'] },
+  { key: 'pharmacy', label: 'Pharmacy Workforce Pack', slugs: ['product-manager', 'cfo', 'employer-demand-analyst', 'regulatory-compliance-analyst'] },
+  { key: 'grants', label: 'Grant + Finance Pack', slugs: ['cfo', 'regulatory-compliance-analyst', 'institutional-fit-analyst', 'cmo'] },
+];
+
 const STATUS_FLOW: Record<string, string[]> = {
   intake: ['paid', 'cancelled'],
   pending_payment: ['paid', 'cancelled'],
@@ -121,9 +136,14 @@ export default function OrderDetailPage() {
   const [startingRun, setStartingRun] = useState(false);
   const [processingQueue, setProcessingQueue] = useState(false);
   const [runMessage, setRunMessage] = useState<string | null>(null);
+  const [modelProfiles, setModelProfiles] = useState<ModelProfile[]>([]);
+  const [selectedModelProfile, setSelectedModelProfile] = useState('');
+  const [selectedModelOverride, setSelectedModelOverride] = useState('');
+  const [selectedPersonaPack, setSelectedPersonaPack] = useState('default');
 
   useEffect(() => {
     fetchOrder();
+    fetchModelProfiles();
   }, [id]);
 
   const fetchOrder = async () => {
@@ -135,6 +155,15 @@ export default function OrderDetailPage() {
       setNotes(data.admin_notes || '');
     }
     setLoading(false);
+  };
+
+  const fetchModelProfiles = async () => {
+    const res = await fetch('/api/admin/model-profiles');
+    if (!res.ok) return;
+    const data = (await res.json().catch(() => [])) as ModelProfile[];
+    setModelProfiles(data || []);
+    const defaultProfile = (data || []).find((p) => p.is_default) || (data || [])[0];
+    if (defaultProfile) setSelectedModelProfile(defaultProfile.slug);
   };
 
   const updateStatus = async (newStatus: string) => {
@@ -174,11 +203,21 @@ export default function OrderDetailPage() {
     setStartingRun(true);
     setRunMessage(null);
 
-    const res = await fetch(`/api/admin/orders/${id}/run`, { method: 'POST' });
+    const personaPack = PERSONA_PACKS.find((p) => p.key === selectedPersonaPack) || PERSONA_PACKS[0];
+
+    const res = await fetch(`/api/admin/orders/${id}/run`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        modelProfile: selectedModelProfile || null,
+        modelOverride: selectedModelOverride || null,
+        personaSlugs: personaPack.slugs,
+      }),
+    });
     const data = await res.json().catch(() => ({}));
 
     if (res.ok) {
-      setRunMessage(`Run queued${data?.alreadyActive ? ' (already active)' : ''}. Job ID: ${data.jobId}`);
+      setRunMessage(`Run queued${data?.alreadyActive ? ' (already active)' : ''}. Job ID: ${data.jobId} · Model: ${data?.modelOverride || data?.modelProfile || 'default'} · Personas: ${(data?.personaSlugs || []).length || 0}`);
       await fetchOrder();
     } else {
       setRunMessage(data?.error || 'Failed to queue pipeline run');
@@ -264,6 +303,33 @@ export default function OrderDetailPage() {
             <div className="space-y-2">
               <p><strong>Pipeline project:</strong> <span className="font-mono">{order.validation_project_id}</span></p>
               <p className="text-emerald-700">This order is linked to a validation pipeline project.</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <select
+                  className="rounded-md border border-slate-200 bg-white px-2 py-1.5 text-xs"
+                  value={selectedModelProfile}
+                  onChange={(e) => setSelectedModelProfile(e.target.value)}
+                >
+                  <option value="">Default model profile</option>
+                  {modelProfiles.map((p) => (
+                    <option key={p.id} value={p.slug}>{p.display_name} ({p.model})</option>
+                  ))}
+                </select>
+                <input
+                  className="rounded-md border border-slate-200 bg-white px-2 py-1.5 text-xs"
+                  placeholder="Optional model override (e.g. claude-sonnet-4-6)"
+                  value={selectedModelOverride}
+                  onChange={(e) => setSelectedModelOverride(e.target.value)}
+                />
+                <select
+                  className="rounded-md border border-slate-200 bg-white px-2 py-1.5 text-xs"
+                  value={selectedPersonaPack}
+                  onChange={(e) => setSelectedPersonaPack(e.target.value)}
+                >
+                  {PERSONA_PACKS.map((p) => (
+                    <option key={p.key} value={p.key}>{p.label}</option>
+                  ))}
+                </select>
+              </div>
               <div className="flex flex-wrap gap-2">
                 <Button
                   size="sm"
@@ -285,6 +351,33 @@ export default function OrderDetailPage() {
           ) : (
             <div className="space-y-2">
               <p className="text-amber-700"><strong>No pipeline project linked yet.</strong> Status changes alone do not start the pipeline.</p>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <select
+                  className="rounded-md border border-slate-200 bg-white px-2 py-1.5 text-xs"
+                  value={selectedModelProfile}
+                  onChange={(e) => setSelectedModelProfile(e.target.value)}
+                >
+                  <option value="">Default model profile</option>
+                  {modelProfiles.map((p) => (
+                    <option key={p.id} value={p.slug}>{p.display_name} ({p.model})</option>
+                  ))}
+                </select>
+                <input
+                  className="rounded-md border border-slate-200 bg-white px-2 py-1.5 text-xs"
+                  placeholder="Optional model override (e.g. claude-sonnet-4-6)"
+                  value={selectedModelOverride}
+                  onChange={(e) => setSelectedModelOverride(e.target.value)}
+                />
+                <select
+                  className="rounded-md border border-slate-200 bg-white px-2 py-1.5 text-xs"
+                  value={selectedPersonaPack}
+                  onChange={(e) => setSelectedPersonaPack(e.target.value)}
+                >
+                  {PERSONA_PACKS.map((p) => (
+                    <option key={p.key} value={p.key}>{p.label}</option>
+                  ))}
+                </select>
+              </div>
               <Button
                 size="sm"
                 onClick={startPipelineRun}

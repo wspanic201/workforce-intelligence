@@ -5,6 +5,9 @@ export async function enqueueRunJob(input: {
   orderId: string;
   projectId: string;
   requestedBy?: string;
+  modelOverride?: string | null;
+  modelProfile?: string | null;
+  personaSlugs?: string[];
 }) {
   const supabase = getSupabaseServerClient();
 
@@ -26,6 +29,9 @@ export async function enqueueRunJob(input: {
       project_id: input.projectId,
       status: 'queued',
       requested_by: input.requestedBy || 'admin',
+      model_override: input.modelOverride || null,
+      model_profile: input.modelProfile || null,
+      persona_slugs: input.personaSlugs && input.personaSlugs.length ? input.personaSlugs : null,
     })
     .select('id, status, created_at')
     .single();
@@ -82,7 +88,11 @@ export async function processNextRunJob() {
     .eq('id', claimed.order_id);
 
   try {
-    await orchestrateValidation(claimed.project_id);
+    await orchestrateValidation(claimed.project_id, {
+      modelOverride: claimed.model_override || undefined,
+      modelProfile: claimed.model_profile || undefined,
+      personaSlugs: Array.isArray(claimed.persona_slugs) ? claimed.persona_slugs : undefined,
+    });
 
     const completedAt = new Date().toISOString();
     await supabase

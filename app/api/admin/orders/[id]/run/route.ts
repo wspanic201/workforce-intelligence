@@ -10,7 +10,7 @@ export const maxDuration = 300;
  * Queue a durable run job from admin. Creates project if needed.
  */
 export async function POST(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const isAdmin = await verifyAdminSession();
@@ -18,6 +18,22 @@ export async function POST(
 
   const { id } = await params;
   const supabase = getSupabaseServerClient();
+
+  const payload = await req.json().catch(() => ({} as any));
+  const modelOverride = typeof payload?.modelOverride === 'string' && payload.modelOverride.trim().length > 0
+    ? payload.modelOverride.trim().slice(0, 120)
+    : null;
+  const modelProfile = typeof payload?.modelProfile === 'string' && payload.modelProfile.trim().length > 0
+    ? payload.modelProfile.trim().slice(0, 120)
+    : null;
+  const personaSlugs = Array.isArray(payload?.personaSlugs)
+    ? payload.personaSlugs
+        .filter((s: unknown) => typeof s === 'string')
+        .map((s: string) => s.trim().toLowerCase())
+        .filter((s: string) => /^[a-z0-9-_]{2,80}$/.test(s))
+        .slice(0, 8)
+    : [];
+
 
   const { data: order, error: orderError } = await supabase
     .from('orders')
@@ -78,7 +94,14 @@ export async function POST(
     return NextResponse.json({ error: 'Failed to resolve project id for queued run' }, { status: 500 });
   }
 
-  const queued = await enqueueRunJob({ orderId: id, projectId, requestedBy: 'admin_dashboard' });
+  const queued = await enqueueRunJob({
+    orderId: id,
+    projectId,
+    requestedBy: 'admin_dashboard',
+    modelOverride,
+    modelProfile,
+    personaSlugs,
+  });
 
   await supabase
     .from('orders')
@@ -87,6 +110,9 @@ export async function POST(
       pipeline_metadata: {
         queue_status: queued.alreadyActive ? 'already_active' : 'queued',
         queued_job_id: queued.job.id,
+        model_override: modelOverride,
+        model_profile: modelProfile,
+        persona_slugs: personaSlugs,
       },
     })
     .eq('id', id);
@@ -101,5 +127,8 @@ export async function POST(
     projectId,
     jobId: queued.job.id,
     alreadyActive: queued.alreadyActive,
+    modelOverride,
+    modelProfile,
+    personaSlugs,
   });
 }

@@ -23,19 +23,18 @@ export interface TigerTeamSynthesis {
 export async function runTigerTeam(
   projectId: string,
   project: ValidationProject,
-  researchComponents: ResearchComponent[]
+  researchComponents: ResearchComponent[],
+  options: { personaSlugs?: string[] } = {}
 ): Promise<{ synthesis: TigerTeamSynthesis; markdown: string }> {
   const startTime = Date.now();
   const supabase = getSupabaseServerClient();
 
   try {
     // Load tiger team personas
-    const personas = await loadMultiplePersonas([
-      'product-manager',
-      'cfo',
-      'cmo',
-      'coo',
-    ]);
+    const personaSlugs = options.personaSlugs && options.personaSlugs.length
+      ? options.personaSlugs
+      : ['product-manager', 'cfo', 'cmo', 'coo'];
+    const personas = await loadMultiplePersonas(personaSlugs);
 
     // Compile all research findings
     const researchSummary = researchComponents
