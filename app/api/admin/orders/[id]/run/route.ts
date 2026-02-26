@@ -74,6 +74,10 @@ export async function POST(
       .eq('id', id);
   }
 
+  if (!projectId) {
+    return NextResponse.json({ error: 'Failed to resolve project id for queued run' }, { status: 500 });
+  }
+
   const queued = await enqueueRunJob({ orderId: id, projectId, requestedBy: 'admin_dashboard' });
 
   await supabase
