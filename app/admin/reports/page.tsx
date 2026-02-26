@@ -26,37 +26,64 @@ interface ReportRow {
 export default async function ReportsAdminPage({
   searchParams,
 }: {
-  searchParams: Promise<{ filter?: string }>;
+  searchParams: Promise<{ filter?: string; q?: string }>;
 }) {
-  const { filter } = await searchParams;
+  const { filter, q } = await searchParams;
   const activeFilter = filter || 'all';
-  const { reports, pipelineRunMap, partialProjectIds } = await getReportsWithRuns();
+  const query = (q || '').trim().toLowerCase();
+  const { reports, pipelineRunMap, partialProjectIds, health } = await getReportsWithRuns();
 
-  // Apply filter
+  // Apply filter + search query
   const filteredReports = reports.filter((r) => {
-    if (activeFilter === 'all') return true;
     const run = pipelineRunMap[r.id];
-    if (activeFilter === 'reviewed') return !!run?.reviewed_at;
-    if (activeFilter === 'unreviewed') return run && !run.reviewed_at;
-    if (activeFilter === 'partial') return partialProjectIds.has(r.id);
-    return true;
+
+    let matchesFilter = true;
+    if (activeFilter === 'reviewed') matchesFilter = !!run?.reviewed_at;
+    if (activeFilter === 'unreviewed') matchesFilter = !!run && !run.reviewed_at;
+    if (activeFilter === 'partial') matchesFilter = partialProjectIds.has(r.id);
+
+    if (!matchesFilter) return false;
+    if (!query) return true;
+
+    const haystack = [
+      r.program_name || '',
+      r.client_name || '',
+      run?.report_id || '',
+      run?.model || '',
+    ].join(' ').toLowerCase();
+
+    return haystack.includes(query);
   });
 
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-heading font-bold text-slate-900">Reports</h1>
-          <p className="text-slate-500 mt-1 text-sm">Validation reports and pipeline runs</p>
+          <h1 className="text-2xl font-heading font-bold text-slate-900">Reports Command Center</h1>
+          <p className="text-slate-500 mt-1 text-sm">Validation reports, retries, and quality review in one place</p>
         </div>
-        <Link
-          href="/admin/intake"
-          className="font-heading font-semibold text-sm py-2.5 px-5 rounded-xl text-white transition-all hover:-translate-y-0.5 inline-block"
-          style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #14b8a6 100%)' }}
-        >
-          + New Report
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/admin/config"
+            className="text-sm px-3 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"
+          >
+            Config
+          </Link>
+          <a
+            href="/api/admin/pipeline-runs/health"
+            className="text-sm px-3 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50"
+          >
+            Health JSON
+          </a>
+          <Link
+            href="/admin/intake"
+            className="font-heading font-semibold text-sm py-2.5 px-5 rounded-xl text-white transition-all hover:-translate-y-0.5 inline-block"
+            style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #14b8a6 100%)' }}
+          >
+            + New Report
+          </Link>
+        </div>
       </div>
 
       {/* Stats */}
@@ -65,6 +92,70 @@ export default async function ReportsAdminPage({
         <StatBox title="This Week" value={reports.filter(r => isThisWeek(r.created_at)).length} accent="blue" />
         <StatBox title="Pending" value={reports.filter(r => r.status === 'pending').length} accent="amber" />
         <StatBox title="Reviewed" value={Object.values(pipelineRunMap).filter(r => r?.reviewed_at).length} accent="teal" />
+      </div>
+
+      {/* Workflow Controls */}
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+          <form action="/admin/reports" className="flex items-center gap-2">
+            <input type="hidden" name="filter" value={activeFilter} />
+            <input
+              name="q"
+              defaultValue={q || ''}
+              placeholder="Search program, client, report ID, model..."
+              className="w-[320px] max-w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-purple-200"
+            />
+            <button className="text-sm px-3 py-2 rounded-lg bg-slate-900 text-white hover:bg-slate-800">Search</button>
+            {query && (
+              <Link href={activeFilter === 'all' ? '/admin/reports' : `/admin/reports?filter=${activeFilter}`} className="text-sm px-3 py-2 rounded-lg border border-slate-200 text-slate-600 hover:bg-slate-50">
+                Clear
+              </Link>
+            )}
+          </form>
+          <p className="text-xs text-slate-500">
+            Showing <span className="font-semibold text-slate-700">{filteredReports.length}</span> of {reports.length} reports
+          </p>
+        </div>
+      </div>
+
+      {/* Reliability / Health */}
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4">
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <h2 className="text-sm font-semibold text-slate-900">Pipeline Health (24h)</h2>
+            <p className="text-xs text-slate-500">Retry/recovery signal from pipeline telemetry</p>
+          </div>
+          <div className="flex items-center gap-2">
+            {health && (
+              <span className={`px-2.5 py-1 text-[11px] rounded-full font-semibold ${
+                health.runFailed === 0 && health.stageFailed === 0
+                  ? 'bg-emerald-50 text-emerald-700'
+                  : health.runFailed > 0
+                    ? 'bg-red-50 text-red-700'
+                    : 'bg-amber-50 text-amber-700'
+              }`}>
+                {health.runFailed === 0 && health.stageFailed === 0
+                  ? 'Healthy'
+                  : health.runFailed > 0
+                    ? 'Action needed'
+                    : 'Recovering'}
+              </span>
+            )}
+            <a href="/api/admin/pipeline-runs/health" className="text-xs text-purple-600 hover:text-purple-800">Raw JSON</a>
+          </div>
+        </div>
+        {health ? (
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-3 text-sm">
+            <HealthCell label="Runs completed" value={health.runCompleted} tone="emerald" />
+            <HealthCell label="Runs failed" value={health.runFailed} tone={health.runFailed > 0 ? 'red' : 'slate'} />
+            <HealthCell label="Stage failures" value={health.stageFailed} tone={health.stageFailed > 0 ? 'amber' : 'slate'} />
+            <HealthCell label="Retries" value={health.stageRetried} tone={health.stageRetried > 0 ? 'blue' : 'slate'} />
+            <HealthCell label="Avg runtime" value={health.avgRuntimeSeconds != null ? `${Math.round(health.avgRuntimeSeconds)}s` : '--'} tone="slate" />
+            <HealthCell label="Last event" value={health.latestEventAt ? new Date(health.latestEventAt).toLocaleTimeString() : '--'} tone="slate" />
+          </div>
+        ) : (
+          <p className="text-xs text-slate-400">Telemetry table unavailable in this environment yet.</p>
+        )}
       </div>
 
       {/* Filter Tabs */}
@@ -77,7 +168,13 @@ export default async function ReportsAdminPage({
         ].map(tab => (
           <Link
             key={tab.key}
-            href={tab.key === 'all' ? '/admin/reports' : `/admin/reports?filter=${tab.key}`}
+            href={(() => {
+              const params = new URLSearchParams();
+              if (tab.key !== 'all') params.set('filter', tab.key);
+              if (q) params.set('q', q);
+              const qs = params.toString();
+              return qs ? `/admin/reports?${qs}` : '/admin/reports';
+            })()}
             className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors ${
               activeFilter === tab.key
                 ? 'bg-white text-slate-900 shadow-sm'
@@ -130,7 +227,7 @@ export default async function ReportsAdminPage({
             {filteredReports.map((report) => {
               const run = pipelineRunMap[report.id];
               return (
-                <tr key={report.id} className="hover:bg-slate-50/50 transition-colors">
+                <tr key={report.id} className="hover:bg-slate-50/70 even:bg-slate-50/30 transition-colors">
                   <td className="px-4 py-3 whitespace-nowrap">
                     {run?.report_id ? (
                       <span className="font-mono text-xs text-slate-600">{run.report_id}</span>
@@ -164,7 +261,7 @@ export default async function ReportsAdminPage({
                   </td>
                   <td className="px-3 py-3 whitespace-nowrap">
                     {run ? (
-                      <span className="text-xs text-slate-600">{run.model.replace('claude-', '')}</span>
+                      <ModelBadge model={run.model} />
                     ) : (
                       <span className="text-xs text-slate-300">--</span>
                     )}
@@ -214,7 +311,7 @@ export default async function ReportsAdminPage({
             })}
             {filteredReports.length === 0 && (
               <tr>
-                <td colSpan={9} className="px-6 py-12 text-center text-slate-400">
+                <td colSpan={10} className="px-6 py-12 text-center text-slate-400">
                   No reports found
                 </td>
               </tr>
@@ -240,6 +337,48 @@ function StatBox({ title, value, accent }: { title: string; value: number; accen
       <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">{title}</p>
       <p className="text-2xl font-heading font-bold text-slate-900 mt-2">{value}</p>
     </div>
+  );
+}
+
+function HealthCell({
+  label,
+  value,
+  tone,
+}: {
+  label: string;
+  value: string | number;
+  tone: 'slate' | 'emerald' | 'amber' | 'red' | 'blue';
+}) {
+  const tones: Record<string, string> = {
+    slate: 'bg-slate-50 text-slate-700 border-slate-200',
+    emerald: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    amber: 'bg-amber-50 text-amber-700 border-amber-200',
+    red: 'bg-red-50 text-red-700 border-red-200',
+    blue: 'bg-blue-50 text-blue-700 border-blue-200',
+  };
+
+  return (
+    <div className={`rounded-lg border px-3 py-2 ${tones[tone] || tones.slate}`}>
+      <div className="text-[11px] uppercase tracking-wide opacity-70">{label}</div>
+      <div className="text-base font-semibold">{value}</div>
+    </div>
+  );
+}
+
+function ModelBadge({ model }: { model: string }) {
+  const lower = model.toLowerCase();
+  const tone = lower.includes('opus')
+    ? 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200'
+    : lower.includes('sonnet') || lower.includes('claude')
+      ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
+      : lower.includes('gpt') || lower.includes('openai') || lower.includes('codex')
+        ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+        : 'bg-slate-50 text-slate-700 border-slate-200';
+
+  return (
+    <span className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium ${tone}`}>
+      {model.replace('anthropic/', '').replace('openai-codex/', '')}
+    </span>
   );
 }
 
@@ -277,12 +416,35 @@ interface PipelineRunSummary {
   report_id: string | null;
 }
 
-async function getReportsWithRuns() {
+interface PipelineHealthSummary {
+  lookbackHours: number;
+  runCompleted: number;
+  runFailed: number;
+  stageFailed: number;
+  stageRetried: number;
+  avgRuntimeSeconds: number | null;
+  latestEventAt: string | null;
+}
+
+function isMissingTableError(error: any): boolean {
+  const msg = String(error?.message || '').toLowerCase();
+  const code = String(error?.code || '').toLowerCase();
+  return code === '42p01' || msg.includes('does not exist') || msg.includes('relation') || msg.includes('could not find the table');
+}
+
+async function getReportsWithRuns(): Promise<{
+  reports: ReportRow[];
+  pipelineRunMap: Record<string, PipelineRunSummary>;
+  partialProjectIds: Set<string>;
+  health: PipelineHealthSummary | null;
+}> {
   try {
     const supabase = getSupabaseServerClient();
 
+    const healthSince = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+
     // Fetch reports, pipeline runs, and research component counts in parallel
-    const [reportsResult, runsResult, componentsResult] = await Promise.all([
+    const [reportsResult, runsResult, componentsResult, healthRunsResult, healthEventsResult] = await Promise.all([
       supabase
         .from('validation_projects')
         .select('id, program_name, client_name, status, created_at')
@@ -295,6 +457,18 @@ async function getReportsWithRuns() {
       supabase
         .from('research_components')
         .select('project_id, status'),
+      supabase
+        .from('pipeline_runs')
+        .select('id, runtime_seconds, created_at')
+        .gte('created_at', healthSince)
+        .order('created_at', { ascending: false })
+        .limit(250),
+      supabase
+        .from('pipeline_run_events')
+        .select('event_type, created_at')
+        .gte('created_at', healthSince)
+        .order('created_at', { ascending: false })
+        .limit(1000),
     ]);
 
     if (reportsResult.error) throw reportsResult.error;
@@ -333,10 +507,42 @@ async function getReportsWithRuns() {
       }
     }
 
-    return { reports: reportsResult.data || [], pipelineRunMap, partialProjectIds };
+    let health: PipelineHealthSummary | null = null;
+    if (!healthRunsResult.error) {
+      const healthRuns = healthRunsResult.data || [];
+      const runtimeValues = healthRuns
+        .map((r) => r.runtime_seconds)
+        .filter((v): v is number => typeof v === 'number' && Number.isFinite(v) && v > 0);
+
+      const safeEvents = healthEventsResult.error
+        ? (isMissingTableError(healthEventsResult.error) ? [] : null)
+        : (healthEventsResult.data || []);
+
+      if (safeEvents !== null) {
+        const runCompleted = safeEvents.filter((e) => e.event_type === 'run_completed').length;
+        const runFailed = safeEvents.filter((e) => e.event_type === 'run_failed').length;
+        const stageFailed = safeEvents.filter((e) => e.event_type === 'stage_failed').length;
+        const stageRetried = safeEvents.filter((e) => e.event_type === 'stage_retry_scheduled').length;
+        const latestEventAt = safeEvents[0]?.created_at || healthRuns[0]?.created_at || null;
+
+        health = {
+          lookbackHours: 24,
+          runCompleted,
+          runFailed,
+          stageFailed,
+          stageRetried,
+          avgRuntimeSeconds: runtimeValues.length
+            ? Number((runtimeValues.reduce((a, b) => a + b, 0) / runtimeValues.length).toFixed(2))
+            : null,
+          latestEventAt,
+        };
+      }
+    }
+
+    return { reports: reportsResult.data || [], pipelineRunMap, partialProjectIds, health };
   } catch (error) {
     console.error('[Admin Reports] Failed to fetch:', error);
-    return { reports: [], pipelineRunMap: {}, partialProjectIds: new Set<string>() };
+    return { reports: [], pipelineRunMap: {}, partialProjectIds: new Set<string>(), health: null as PipelineHealthSummary | null };
   }
 }
 
