@@ -25,6 +25,7 @@ import {
   shouldSkipStage,
 } from '@/lib/pipeline/checkpoints';
 import { logRunEvent } from '@/lib/pipeline/telemetry';
+import { setRuntimeModelOverride } from '@/lib/ai/anthropic';
 
 // Timeout wrapper for research agents
 function withTimeout<T>(promise: Promise<T>, timeoutMs: number, taskName: string): Promise<T> {
@@ -110,8 +111,20 @@ function dedupeCompletedComponents<T extends { component_type: string }>(compone
   return Array.from(byType.values());
 }
 
-export async function orchestrateValidation(projectId: string): Promise<void> {
+export interface OrchestrateValidationOptions {
+  modelOverride?: string;
+  modelProfile?: string;
+}
+
+export async function orchestrateValidation(
+  projectId: string,
+  options: OrchestrateValidationOptions = {}
+): Promise<void> {
   const supabase = getSupabaseServerClient();
+  const runtimeModel = options.modelOverride || process.env.VALIDATION_MODEL || 'claude-sonnet-4-6';
+  const modelProfile = options.modelProfile || null;
+  setRuntimeModelOverride(runtimeModel);
+
   const orchestratorStart = Date.now();
   let pipelineRunId: string | null = null;
   let checkpointMap = new Map<string, { attempts?: number; payload?: Record<string, any> }>();
@@ -169,13 +182,14 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
     // 2.9. Start pipeline run tracking
     try {
       const pipelineConfig: PipelineConfig = {
-        model: 'claude-sonnet-4-6',
+        model: runtimeModel,
         pipelineVersion: 'v2.0',
         reportTemplate: 'professional-v2',
         agentsEnabled: AGENT_CONFIG.map(a => a.type),
         tigerTeamEnabled: true,
         citationAgentEnabled: true,
         intelContextEnabled: mcpIntel.available,
+        modelProfile,
       };
       pipelineRunId = await startPipelineRun(projectId, pipelineConfig);
     } catch (e) {
@@ -1073,6 +1087,8 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       .eq('id', projectId);
 
     throw error;
+  } finally {
+    setRuntimeModelOverride(null);
   }
 }
 

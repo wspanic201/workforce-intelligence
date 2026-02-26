@@ -105,6 +105,33 @@ const AGENT_LABELS: Record<string, string> = {
   citation_verification: 'Citation Verification',
 };
 
+const MODEL_PROFILE_OPTIONS = [
+  {
+    id: 'balanced-sonnet',
+    label: 'Balanced (Sonnet 4.6)',
+    model: 'claude-sonnet-4-6',
+    help: 'Default quality/speed tradeoff for production runs.',
+  },
+  {
+    id: 'deep-opus',
+    label: 'Deep Reasoning (Opus 4.6)',
+    model: 'claude-opus-4-6',
+    help: 'Higher-depth analysis, slower and costlier.',
+  },
+  {
+    id: 'fast-haiku',
+    label: 'Fast Draft (Haiku 3.5)',
+    model: 'claude-3-5-haiku-20241022',
+    help: 'Cheapest/faster checks and dry runs.',
+  },
+  {
+    id: 'custom',
+    label: 'Custom model',
+    model: '',
+    help: 'Use a custom model string.',
+  },
+] as const;
+
 function ScoreBadge({ score }: { score: number | null | undefined }) {
   if (score == null) return <span className="text-slate-400 text-sm">--</span>;
   const color = score >= 4 ? 'bg-emerald-100 text-emerald-700' :
@@ -150,6 +177,8 @@ export default function ReportDetailPage() {
   const [eventsLoading, setEventsLoading] = useState(false);
   const [resumeLoading, setResumeLoading] = useState(false);
   const [resumeStatus, setResumeStatus] = useState<string | null>(null);
+  const [selectedProfile, setSelectedProfile] = useState<string>('balanced-sonnet');
+  const [selectedModel, setSelectedModel] = useState<string>('claude-sonnet-4-6');
 
   useEffect(() => {
     fetchData();
@@ -162,6 +191,22 @@ export default function ReportDetailPage() {
     }
     fetchEvents(run.id);
   }, [run?.id]);
+
+  useEffect(() => {
+    if (!run) return;
+
+    const runProfile = typeof run.config?.modelProfile === 'string' ? run.config.modelProfile : '';
+    const runModel = typeof run.config?.model === 'string' ? run.config.model : run.model;
+
+    if (runProfile) {
+      setSelectedProfile(runProfile);
+    } else {
+      const matched = MODEL_PROFILE_OPTIONS.find((p) => p.model === runModel);
+      setSelectedProfile(matched?.id || 'custom');
+    }
+
+    setSelectedModel(runModel || 'claude-sonnet-4-6');
+  }, [run]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -264,6 +309,14 @@ export default function ReportDetailPage() {
     setSaving(false);
   };
 
+  const onProfileChange = (profileId: string) => {
+    setSelectedProfile(profileId);
+    const profile = MODEL_PROFILE_OPTIONS.find((p) => p.id === profileId);
+    if (profile && profile.model) {
+      setSelectedModel(profile.model);
+    }
+  };
+
   const resumeFromCheckpoint = async () => {
     if (!run) return;
     setResumeLoading(true);
@@ -272,6 +325,11 @@ export default function ReportDetailPage() {
     try {
       const res = await fetch(`/api/admin/pipeline-runs/${run.id}/resume`, {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: selectedModel,
+          modelProfile: selectedProfile,
+        }),
       });
 
       const payload = await res.json().catch(() => ({}));
@@ -279,7 +337,20 @@ export default function ReportDetailPage() {
       if (!res.ok) {
         setResumeStatus(payload?.error || 'Failed to start resume');
       } else {
-        setResumeStatus('Resume started. Refresh in ~20–30s to see new events.');
+        const activeModel = payload?.model || selectedModel;
+        setRun((prev) => prev
+          ? {
+              ...prev,
+              model: activeModel,
+              config: {
+                ...(prev.config || {}),
+                model: activeModel,
+                modelProfile: selectedProfile,
+              },
+            }
+          : prev
+        );
+        setResumeStatus(`Resume started with ${activeModel}. Refresh in ~20–30s to see new events.`);
         fetchEvents(run.id);
       }
     } catch (error) {
@@ -575,16 +646,36 @@ export default function ReportDetailPage() {
                       Failures: {failedStages.size} • Recovered: {recoveredStages.size} • Retries: {retryEvents}
                     </p>
                   </div>
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={resumeFromCheckpoint}
-                    disabled={resumeLoading || !run}
-                    className="text-xs"
-                  >
-                    {resumeLoading ? 'Resuming…' : 'Resume from checkpoint'}
-                  </Button>
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                    <select
+                      value={selectedProfile}
+                      onChange={(e) => onProfileChange(e.target.value)}
+                      className="h-8 rounded-md border border-slate-200 bg-white px-2 text-[11px] text-slate-600"
+                    >
+                      {MODEL_PROFILE_OPTIONS.map((profile) => (
+                        <option key={profile.id} value={profile.id}>{profile.label}</option>
+                      ))}
+                    </select>
+                    <input
+                      value={selectedModel}
+                      onChange={(e) => {
+                        setSelectedModel(e.target.value);
+                        setSelectedProfile('custom');
+                      }}
+                      placeholder="Model (e.g. claude-sonnet-4-6)"
+                      className="h-8 w-56 rounded-md border border-slate-200 px-2 text-[11px] text-slate-700"
+                    />
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={resumeFromCheckpoint}
+                      disabled={resumeLoading || !run || !selectedModel}
+                      className="text-xs"
+                    >
+                      {resumeLoading ? 'Resuming…' : 'Resume from checkpoint'}
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   {resumeStatus && (
@@ -592,6 +683,9 @@ export default function ReportDetailPage() {
                       {resumeStatus}
                     </div>
                   )}
+                  <p className="mb-3 text-[11px] text-slate-400">
+                    Profile: {MODEL_PROFILE_OPTIONS.find((p) => p.id === selectedProfile)?.help || 'Custom model override for this resume run.'}
+                  </p>
                   {eventsLoading ? (
                     <p className="text-sm text-slate-400">Loading trace...</p>
                   ) : events.length === 0 ? (

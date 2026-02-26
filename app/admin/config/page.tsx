@@ -26,6 +26,13 @@ export default async function ConfigAdminPage() {
     { label: 'Retry backoff (ms)', value: process.env.VALIDATION_STAGE_RETRY_BACKOFF_MS || '2000', detail: 'Linear retry backoff multiplier.' },
   ];
 
+  const modelProfiles = [
+    { name: 'Balanced', model: 'claude-sonnet-4-6', useCase: 'Default production runs' },
+    { name: 'Deep Reasoning', model: 'claude-opus-4-6', useCase: 'High-stakes synthesis + strategy' },
+    { name: 'Fast Draft', model: 'claude-3-5-haiku-20241022', useCase: 'Quick retries / low-cost checks' },
+    { name: 'Custom', model: 'manual override', useCase: 'Per-run input from report detail page' },
+  ];
+
   const envConfigured = envVars.filter((v) => v.status).length;
   const envMissing = envVars.length - envConfigured;
 
@@ -76,6 +83,27 @@ export default async function ConfigAdminPage() {
                   {item.value}
                 </code>
               </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Model Profiles */}
+      <div className="bg-white rounded-lg shadow">
+        <div className="p-6 border-b border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-900">Model Profiles</h2>
+          <p className="text-sm text-gray-600 mt-1">Used by the run-time model picker in report detail → resume.</p>
+        </div>
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-3">
+          {modelProfiles.map((profile) => (
+            <div key={profile.name} className="rounded-md border border-gray-200 px-4 py-3">
+              <div className="flex items-center justify-between gap-3">
+                <p className="text-sm font-medium text-gray-900">{profile.name}</p>
+                <code className="text-[11px] bg-gray-100 border border-gray-200 rounded px-2 py-0.5 text-gray-700">
+                  {profile.model}
+                </code>
+              </div>
+              <p className="text-xs text-gray-500 mt-1">{profile.useCase}</p>
             </div>
           ))}
         </div>

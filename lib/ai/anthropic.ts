@@ -1,5 +1,19 @@
 import Anthropic from '@anthropic-ai/sdk';
 
+let runtimeModelOverride: string | null = null;
+
+/**
+ * Process-local runtime model override for orchestration runs.
+ * Note: this is process-scoped; orchestrator clears it in finally blocks.
+ */
+export function setRuntimeModelOverride(model: string | null) {
+  runtimeModelOverride = model;
+}
+
+export function getRuntimeModelOverride(): string | null {
+  return runtimeModelOverride;
+}
+
 // Lazy initialization so env vars are available in CLI scripts (dotenv loads at runtime)
 // Always create a fresh client to pick up config changes during hot reload
 function getAnthropicClient(): Anthropic {
@@ -34,7 +48,7 @@ export async function callClaude(
   const isTestMode = process.env.TEST_MODE === 'true';
   const defaultModel = isTestMode 
     ? (process.env.TEST_MODEL || 'claude-3-5-haiku-20241022')
-    : 'claude-sonnet-4-6';
+    : (runtimeModelOverride || process.env.VALIDATION_MODEL || 'claude-sonnet-4-6');
   const defaultMaxTokens = isTestMode
     ? parseInt(process.env.TEST_MAX_TOKENS || '4000')
     : 8000;

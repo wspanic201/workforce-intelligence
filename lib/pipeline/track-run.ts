@@ -16,6 +16,7 @@ export interface PipelineConfig {
   tigerTeamEnabled: boolean;
   citationAgentEnabled: boolean;
   intelContextEnabled: boolean;
+  modelProfile?: string | null;
 }
 
 export interface PipelineResults {
@@ -62,6 +63,8 @@ export async function startPipelineRun(
         agentsEnabled: config.agentsEnabled,
         citationAgentEnabled: config.citationAgentEnabled,
         intelContextEnabled: config.intelContextEnabled,
+        model: config.model,
+        modelProfile: config.modelProfile || null,
       },
       agents_run: config.agentsEnabled,
       tiger_team_enabled: config.tigerTeamEnabled,
@@ -88,6 +91,19 @@ export async function completePipelineRun(
 ): Promise<void> {
   const supabase = getSupabaseServerClient();
 
+  const { data: existingRun } = await supabase
+    .from('pipeline_runs')
+    .select('config')
+    .eq('id', runId)
+    .maybeSingle();
+
+  const mergedConfig = results.citationDetails
+    ? {
+        ...(existingRun?.config || {}),
+        citationDetails: results.citationDetails,
+      }
+    : undefined;
+
   const { error } = await supabase
     .from('pipeline_runs')
     .update({
@@ -100,7 +116,7 @@ export async function completePipelineRun(
       citation_corrections: results.citationCorrections,
       citation_warnings: results.citationWarnings,
       intel_tables_used: results.intelTablesUsed,
-      config: results.citationDetails ? { citationDetails: results.citationDetails } : undefined,
+      config: mergedConfig,
       report_version: 1,
       report_markdown_hash: results.reportMarkdownHash,
       report_page_count: results.reportPageCount || null,

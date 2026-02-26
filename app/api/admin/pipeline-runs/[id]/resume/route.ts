@@ -9,7 +9,7 @@ import { logRunEvent } from '@/lib/pipeline/telemetry';
  * Resume/replay a project pipeline from checkpoints.
  */
 export async function POST(
-  _req: NextRequest,
+  req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const isAdmin = await verifyAdminSession();
@@ -18,9 +18,17 @@ export async function POST(
   const { id } = await params;
   const supabase = getSupabaseServerClient();
 
+  const payload = await req.json().catch(() => ({}));
+  const selectedModel = typeof payload?.model === 'string' && payload.model.trim().length > 0
+    ? payload.model.trim().slice(0, 120)
+    : null;
+  const selectedProfile = typeof payload?.modelProfile === 'string' && payload.modelProfile.trim().length > 0
+    ? payload.modelProfile.trim().slice(0, 120)
+    : null;
+
   const { data: run, error: runError } = await supabase
     .from('pipeline_runs')
-    .select('id, project_id')
+    .select('id, project_id, model, config')
     .eq('id', id)
     .maybeSingle();
 
@@ -45,17 +53,40 @@ export async function POST(
     );
   }
 
+  if (selectedModel || selectedProfile) {
+    const mergedConfig = {
+      ...(run.config || {}),
+      ...(selectedModel ? { model: selectedModel } : {}),
+      ...(selectedProfile ? { modelProfile: selectedProfile } : {}),
+    };
+
+    await supabase
+      .from('pipeline_runs')
+      .update({
+        model: selectedModel || run.model,
+        config: mergedConfig,
+      })
+      .eq('id', run.id);
+  }
+
   await logRunEvent({
     pipelineRunId: run.id,
     projectId: run.project_id,
     eventType: 'manual_resume_requested',
     level: 'warn',
     message: 'Manual resume requested from admin dashboard',
-    metadata: { source: 'admin_dashboard' },
+    metadata: {
+      source: 'admin_dashboard',
+      selectedModel: selectedModel || run.model,
+      selectedProfile,
+    },
   });
 
   // Kick off async resume. The orchestrator is checkpoint-aware and will skip completed stages.
-  orchestrateValidation(run.project_id).catch(async (error) => {
+  orchestrateValidation(run.project_id, {
+    modelOverride: selectedModel || run.model,
+    modelProfile: selectedProfile || undefined,
+  }).catch(async (error) => {
     const errorMessage = error instanceof Error ? error.message : String(error);
     console.error(`[Admin Resume] Failed for project ${run.project_id}:`, error);
     await logRunEvent({
@@ -68,5 +99,11 @@ export async function POST(
     });
   });
 
-  return NextResponse.json({ ok: true, projectId: run.project_id, message: 'Resume started' });
+  return NextResponse.json({
+    ok: true,
+    projectId: run.project_id,
+    message: 'Resume started',
+    model: selectedModel || run.model,
+    modelProfile: selectedProfile || null,
+  });
 }
