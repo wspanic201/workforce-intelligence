@@ -692,7 +692,7 @@ export default function ReportDetailPage() {
                     <select
                       value={selectedProfile}
                       onChange={(e) => onProfileChange(e.target.value)}
-                      className="h-8 rounded-md border border-slate-200 bg-white px-2 text-[11px] text-slate-600"
+                      className="h-10 sm:h-8 rounded-md border border-slate-200 bg-white px-2 text-sm sm:text-[11px] text-slate-600"
                     >
                       {profileOptions.map((profile) => (
                         <option key={profile.id} value={profile.id}>{profile.label}</option>
@@ -705,7 +705,7 @@ export default function ReportDetailPage() {
                         setSelectedProfile('custom');
                       }}
                       placeholder="Model (e.g. claude-sonnet-4-6)"
-                      className="h-8 w-56 rounded-md border border-slate-200 px-2 text-[11px] text-slate-700"
+                      className="h-10 sm:h-8 w-full sm:w-56 rounded-md border border-slate-200 px-2 text-sm sm:text-[11px] text-slate-700"
                     />
                     <Button
                       type="button"
@@ -713,7 +713,7 @@ export default function ReportDetailPage() {
                       size="sm"
                       onClick={resumeFromCheckpoint}
                       disabled={resumeLoading || !run || !selectedModel}
-                      className="text-xs"
+                      className="h-10 sm:h-8 text-sm sm:text-xs"
                     >
                       {resumeLoading ? 'Resuming…' : 'Resume from checkpoint'}
                     </Button>
@@ -960,6 +960,29 @@ export default function ReportDetailPage() {
                   )}
                 </CardContent>
               </Card>
+            </div>
+          </div>
+
+          {/* Mobile sticky actions */}
+          <div className="md:hidden fixed bottom-14 inset-x-0 z-40 border-t border-slate-200 bg-white/95 backdrop-blur px-3 py-2">
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={resumeFromCheckpoint}
+                disabled={resumeLoading || !selectedModel}
+                className="flex-1 h-11"
+              >
+                {resumeLoading ? 'Resuming…' : 'Resume'}
+              </Button>
+              <Button
+                onClick={submitReview}
+                disabled={saving}
+                className="flex-1 h-11"
+                style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #14b8a6 100%)' }}
+              >
+                {saving ? 'Saving…' : 'Save Review'}
+              </Button>
             </div>
           </div>
         </>

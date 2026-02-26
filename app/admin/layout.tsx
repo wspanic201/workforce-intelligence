@@ -8,6 +8,7 @@ import { redirect } from 'next/navigation';
 import { verifyAdminSession, destroyAdminSession } from '@/lib/auth/admin';
 import { WavelengthMark } from '@/components/cosmic/WavelengthLogo';
 import { AdminNav } from './AdminNav';
+import { MobileAdminBottomNav } from './MobileAdminBottomNav';
 
 export default async function AdminLayout({
   children,
@@ -73,11 +74,11 @@ export default async function AdminLayout({
               </div>
             </div>
 
-            <div className="flex items-center justify-between gap-2 sm:gap-4">
+            <div className="hidden sm:flex items-center justify-between gap-4">
               <AdminNav />
 
               {/* Right: Actions */}
-              <div className="hidden sm:flex items-center gap-4">
+              <div className="flex items-center gap-4">
                 <Link
                   href="/"
                   target="_blank"
@@ -100,9 +101,11 @@ export default async function AdminLayout({
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 pb-24 sm:pb-8">
         {children}
       </main>
+
+      <MobileAdminBottomNav />
     </div>
   );
 }

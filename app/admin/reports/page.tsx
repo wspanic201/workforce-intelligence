@@ -220,12 +220,12 @@ export default async function ReportsAdminPage({
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <Link href={`/admin/reports/${report.id}`} className="text-sm text-purple-600 hover:text-purple-900 font-medium">Review</Link>
-                  <div className="flex items-center gap-3">
+                  <Link href={`/admin/reports/${report.id}`} className="text-sm text-purple-600 hover:text-purple-900 font-medium min-h-9 px-2 inline-flex items-center rounded-md hover:bg-purple-50">Review</Link>
+                  <div className="flex items-center gap-2">
                     {run ? (
-                      <a href={`/api/admin/pipeline-runs/${report.id}/download-pdf`} className="text-xs text-slate-500 hover:text-slate-800">PDF</a>
+                      <a href={`/api/admin/pipeline-runs/${report.id}/download-pdf`} className="text-xs text-slate-600 hover:text-slate-800 min-h-9 px-2 inline-flex items-center rounded-md hover:bg-slate-100">PDF</a>
                     ) : partialProjectIds.has(report.id) ? (
-                      <a href={`/api/admin/reports/${report.id}/export-raw`} className="text-xs text-amber-600 hover:text-amber-800">Raw</a>
+                      <a href={`/api/admin/reports/${report.id}/export-raw`} className="text-xs text-amber-700 hover:text-amber-800 min-h-9 px-2 inline-flex items-center rounded-md hover:bg-amber-50">Raw</a>
                     ) : null}
                   </div>
                 </div>
