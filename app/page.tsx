@@ -94,7 +94,13 @@ const CATEGORY_CHIPS = [
 const PROOF_POINTS = [
   'Used by community college workforce teams',
   'BLS + employer demand + competitor intelligence',
-  'Board-ready reports in days, not months',
+  'Clear GO / NO-GO recommendations in days, not months',
+];
+
+const PROOF_METRICS = [
+  { value: '7', label: 'specialist lenses per feasibility study' },
+  { value: '8–12', label: 'program opportunities in Program Finder' },
+  { value: '5–7 days', label: 'typical turnaround for discovery' },
 ];
 
 // ─── Static Hero ──────────────────────────────────────────────────────────────
@@ -181,6 +187,20 @@ export default function HomePage() {
       {/* ===== HERO ===== */}
       <StaticHero />
 
+      {/* ===== PROOF STRIP ===== */}
+      <section className="relative py-10 md:py-12 border-y border-theme-subtle bg-white/[0.01]">
+        <div className="max-w-[980px] mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {PROOF_METRICS.map((item) => (
+              <div key={item.label} className="rounded-xl border border-theme-base bg-white/[0.02] p-5">
+                <p className="font-heading font-bold text-theme-primary text-2xl mb-1">{item.value}</p>
+                <p className="text-xs text-theme-secondary uppercase tracking-wider">{item.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ===== VALUE PROPS ===== */}
       <section className="relative py-16 md:py-20" id="services">
         <div className="max-w-[980px] mx-auto px-6">
@@ -206,15 +226,15 @@ export default function HomePage() {
               <p className="text-theme-secondary text-sm leading-relaxed">We focus on noncredit and workforce program development realities: employer demand, speed to launch, and ROI pressure.</p>
             </div>
             <div className="card-cosmic rounded-2xl p-6">
-              <h3 className="font-heading font-semibold text-theme-primary text-base mb-2">Defensible with leadership</h3>
-              <p className="text-theme-secondary text-sm leading-relaxed">Use board-friendly briefs with labor market evidence, financial framing, and implementation risk flags in one place.</p>
+              <h3 className="font-heading font-semibold text-theme-primary text-base mb-2">Easy to explain in one meeting</h3>
+              <p className="text-theme-secondary text-sm leading-relaxed">Bring one concise brief with demand, ROI assumptions, and risk flags — so your team can make a decision without another month of research.</p>
             </div>
           </StaggerChildren>
         </div>
       </section>
 
       {/* ===== CORE PROGRAM LIFECYCLE ===== */}
-      <section className="relative py-20 md:py-28" id="lifecycle">
+      <section className="relative py-20 md:py-28 bg-white/[0.01]" id="lifecycle">
         <div className="max-w-[860px] mx-auto px-6">
 
           <AnimateOnScroll variant="fade-up" className="text-center mb-4">
@@ -310,7 +330,7 @@ export default function HomePage() {
                         href={href}
                         className="inline-flex items-center gap-1 text-sm font-semibold text-violet-300 hover:text-violet-200 transition-colors group"
                       >
-                        Learn More
+                        View details
                         <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
                       </Link>
                     )}
@@ -361,7 +381,7 @@ export default function HomePage() {
                       {price}
                     </span>
                     <span className="inline-flex items-center gap-1 text-sm font-semibold text-violet-300 group-hover:text-violet-200 transition-colors group-hover:gap-1.5">
-                      Learn More
+                      View details
                       <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />
                     </span>
                   </div>
@@ -448,6 +468,26 @@ export default function HomePage() {
               </div>
             </div>
           </AnimateOnScroll>
+        </div>
+      </section>
+
+      {/* ===== TRUST RAIL ===== */}
+      <section className="relative py-12 md:py-14 border-y border-theme-subtle bg-white/[0.015]">
+        <div className="max-w-[980px] mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="rounded-xl border border-theme-base bg-white/[0.02] p-5">
+              <p className="text-sm font-semibold text-theme-primary mb-1">No fluff deliverables</p>
+              <p className="text-xs text-theme-secondary">Ranked options, confidence score, and a recommended next move.</p>
+            </div>
+            <div className="rounded-xl border border-theme-base bg-white/[0.02] p-5">
+              <p className="text-sm font-semibold text-theme-primary mb-1">Built for continuing ed reality</p>
+              <p className="text-xs text-theme-secondary">Budget pressure, staffing limits, and speed-to-launch are baked into the analysis.</p>
+            </div>
+            <div className="rounded-xl border border-theme-base bg-white/[0.02] p-5">
+              <p className="text-sm font-semibold text-theme-primary mb-1">Actionable in your next planning cycle</p>
+              <p className="text-xs text-theme-secondary">Use outputs for prioritization, stakeholder alignment, and funding conversations right away.</p>
+            </div>
+          </div>
         </div>
       </section>
 
