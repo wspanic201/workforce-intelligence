@@ -487,7 +487,7 @@ export default function DriftPage() {
                     <span className="font-heading font-black text-6xl text-theme-primary">$500</span>
                     <span className="text-theme-tertiary text-sm mb-1">/scan</span>
                   </div>
-                  <p className="text-theme-tertiary text-xs">One program, one comprehensive scan</p>
+                  <p className="text-theme-tertiary text-xs">One program, one clear scan</p>
                 </div>
                 <ul className="space-y-3 flex-1 mb-8">
                   {[

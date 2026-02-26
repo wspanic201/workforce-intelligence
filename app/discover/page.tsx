@@ -94,7 +94,7 @@ export default function DiscoverPage() {
               className="font-heading font-bold text-theme-primary"
               style={{ fontSize: 'clamp(1.5rem, 2.5vw + 0.5rem, 2.25rem)' }}
             >
-              Six phases of research. One comprehensive Program Finder.
+              Six focused research phases. One clear Program Finder report.
             </h2>
           </AnimateOnScroll>
 
@@ -128,7 +128,7 @@ export default function DiscoverPage() {
               {
                 icon: FileText,
                 title: 'The Program Finder Report',
-                desc: '25+ page report with scored programs, evidence trails, grant alignment, barriers, Workforce Pell readiness scores, and specific next steps.',
+                desc: '25+ page report with scored programs, proof sources, funding fit, risk flags, Workforce Pell readiness scores, and clear next steps.',
               },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="card-cosmic rounded-xl p-6">

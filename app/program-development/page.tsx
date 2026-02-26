@@ -118,7 +118,7 @@ export default function ProgramDevelopmentPage() {
               How it connects
             </h2>
             <p className="text-theme-secondary mt-4 max-w-2xl mx-auto">
-              Feasibility Study is most powerful when it follows Market Research. A Program Finder identifies what your region needs — Validation confirms that one specific program is worth building. After validation, Grant Alignment finds funding.
+              Feasibility Study works best after Market Research. Program Finder identifies what your region needs. Validation confirms one specific program is worth building. Then Grant Alignment helps fund it.
             </p>
           </AnimateOnScroll>
           <StaggerChildren stagger={100} variant="fade-up" className="grid grid-cols-1 md:grid-cols-3 gap-4">

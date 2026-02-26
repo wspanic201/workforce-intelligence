@@ -115,7 +115,7 @@ export default function GrantsPage() {
               {
                 icon: BarChart3,
                 title: '5-Dimension Fit Scoring',
-                desc: 'Every grant scored on eligibility match, program alignment, award size, competition level, and institutional readiness. No guesswork.',
+                desc: 'Every grant is scored on eligibility fit, program fit, award size, competition level, and institutional readiness. No guesswork.',
                 color: 'from-blue-500/20 to-cyan-500/20',
                 iconColor: 'text-blue-400',
               },
@@ -300,7 +300,7 @@ export default function GrantsPage() {
               },
               {
                 title: 'Scored on what actually matters',
-                desc: 'Five scoring dimensions: eligibility match, program alignment, award size potential, competition level, and institutional readiness. You see exactly why each grant ranks where it does.',
+                desc: 'Five scoring dimensions: eligibility fit, program fit, award potential, competition level, and institutional readiness. You can see exactly why each grant ranks where it does.',
               },
               {
                 title: 'Built for action, not the filing cabinet',
@@ -540,7 +540,7 @@ export default function GrantsPage() {
                 stage: '→',
                 name: 'Program Finder',
                 href: '/discover',
-                desc: '25+ page market intelligence report — scored program opportunities, employer demand signals, and grant alignment. Identifies the programs worth funding.',
+                desc: '25+ page market intelligence report — scored program opportunities, employer demand signals, and funding fit. Shows which programs are worth funding.',
                 tag: '$1,500',
               },
               {

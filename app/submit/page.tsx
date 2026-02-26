@@ -133,8 +133,8 @@ export default function SubmitPage() {
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-2">Feasibility Study Request</h1>
         <p className="text-muted-foreground mb-4">
-          Submit your program idea for a comprehensive 7-stage validation analysis.
-          Our framework evaluates labor market demand, competitive landscape, learner demand,
+          Submit your program idea for a focused 7-stage validation review.
+          We evaluate labor market demand, competition, learner demand,
           financial viability, institutional fit, regulatory compliance, and employer partnerships.
         </p>
         <div className="bg-blue-50 dark:bg-blue-950 p-4 rounded-lg text-sm">
@@ -494,7 +494,7 @@ export default function SubmitPage() {
           <li><strong>Stage 2:</strong> Competitive Landscape Analysis (competitors, gaps, differentiation)</li>
           <li><strong>Stage 3:</strong> Target Learner Demand Assessment (population, barriers, enrollment projection)</li>
           <li><strong>Stage 4:</strong> Financial Viability Analysis (3 scenarios, break-even, margins)</li>
-          <li><strong>Stage 5:</strong> Institutional Fit & Capacity (faculty, facilities, strategic alignment)</li>
+          <li><strong>Stage 5:</strong> Institutional Fit & Capacity (faculty, facilities, and mission fit)</li>
           <li><strong>Stage 6:</strong> Regulatory & Compliance (Perkins V, WIOA, accreditation)</li>
           <li><strong>Stage 7:</strong> Employer Demand & Partnerships (demand signals, contract training)</li>
           <li><strong>Scoring:</strong> Weighted composite score with Go/No-Go recommendation</li>

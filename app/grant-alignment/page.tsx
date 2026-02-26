@@ -121,7 +121,7 @@ export default function GrantAlignmentPage() {
               How it connects
             </h2>
             <p className="text-theme-secondary mt-4 max-w-2xl mx-auto">
-              Grant Alignment works best after Market Research or Program Analysis — once you know what you&apos;re building, we find the funding to build it. Perkins V, WIOA Title I, and state workforce development grants are all eligible for program intelligence tools like Wavelength&apos;s full product suite.
+              Grant Alignment works best after Market Research or Program Analysis — once you know what you&apos;re building, we help you fund it. Perkins V, WIOA Title I, and state workforce development grants can all support program intelligence work like Wavelength.
             </p>
           </AnimateOnScroll>
           <StaggerChildren stagger={100} variant="fade-up" className="grid grid-cols-1 md:grid-cols-3 gap-4">

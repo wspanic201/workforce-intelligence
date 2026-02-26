@@ -117,7 +117,7 @@ export default function MarketResearchPage() {
               How it connects
             </h2>
             <p className="text-theme-secondary mt-4 max-w-2xl mx-auto">
-              Market Research is the starting point. Once you know what to build, Feasibility Study confirms the demand is deep enough to justify investment. Grant Alignment finds the funding to build it.
+              Market Research is the starting point. Once you know what to build, Feasibility Study confirms it is worth the investment. Grant Alignment helps you fund it.
             </p>
           </AnimateOnScroll>
           <StaggerChildren stagger={100} variant="fade-up" className="grid grid-cols-1 md:grid-cols-3 gap-4">

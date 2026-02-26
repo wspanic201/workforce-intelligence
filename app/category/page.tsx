@@ -383,7 +383,7 @@ export default function CategoryPage() {
                 <ul className="text-left max-w-xs mx-auto space-y-3 mb-7 flex-1">
                   {[
                     'All sectors, not just one category',
-                    '25+ page comprehensive report',
+                    '25+ page decision-ready report',
                     '100+ verified data sources',
                     'Cross-category opportunity comparison',
                     'Full Blue Ocean analysis',

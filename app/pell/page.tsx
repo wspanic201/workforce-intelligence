@@ -491,7 +491,7 @@ export default function PellPage() {
 
               {/* Note */}
               <p className="text-xs text-theme-muted leading-relaxed border-t border-theme-subtle pt-5">
-                Full report includes detailed SOC mapping, regional wage data, and Perkins V alignment analysis.
+                Full report includes SOC mapping, regional wage data, and Perkins V fit analysis.
               </p>
             </div>
           </AnimateOnScroll>
