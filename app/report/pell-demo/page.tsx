@@ -312,9 +312,9 @@ function criteriaClasses(status: CriteriaStatus) {
 }
 
 function criteriaIcon(status: CriteriaStatus) {
-  if (status === 'pass') return '✓';
-  if (status === 'warn') return '⚠';
-  return '✗';
+  if (status === 'pass') return 'PASS';
+  if (status === 'warn') return 'WARN';
+  return 'FAIL';
 }
 
 function statusLabel(status: ProgramStatus) {

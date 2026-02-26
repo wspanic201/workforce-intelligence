@@ -323,7 +323,7 @@ export default function BellevueCybersecurityDriftPage() {
           <AnimateOnScroll variant="fade-up" delay={200}>
             <div className={`mt-6 card-cosmic rounded-xl p-5 ${colors.border} ${colors.surface}`}>
               <p className="text-sm text-theme-primary leading-relaxed">
-                <span className="font-bold">⚠️ {driftLevel.charAt(0).toUpperCase() + driftLevel.slice(1)} Drift:</span>{' '}
+                <span className="font-bold">{driftLevel.charAt(0).toUpperCase() + driftLevel.slice(1)} Drift:</span>{' '}
                 Only {coveredSkills.length} of {employerSkills.length} top employer skills ({Math.round((coveredSkills.length / employerSkills.length) * 100)}%) are covered by the curriculum.
                 The highest-frequency gap is <span className="font-semibold">Security Monitoring</span> (found in {employerSkills[0].frequency} of {postingsAnalyzed} postings).
               </p>
@@ -562,7 +562,7 @@ export default function BellevueCybersecurityDriftPage() {
 
                 <div className="mt-4 p-4 rounded-lg bg-teal-500/5 border border-teal-500/20">
                   <p className="text-xs text-teal-700 dark:text-teal-400">
-                    <span className="font-bold">✓ O*NET Enriched:</span> This scan includes O*NET baseline data (5 skills, 5 knowledge areas, 20 technologies) for SOC 15-1212 Information Security Analysts, providing federal occupational standards as an additional validation layer.
+                    <span className="font-bold">O*NET Enriched:</span> This scan includes O*NET baseline data (5 skills, 5 knowledge areas, 20 technologies) for SOC 15-1212 Information Security Analysts, providing federal occupational standards as an additional validation layer.
                   </p>
                 </div>
               </div>

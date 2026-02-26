@@ -1267,7 +1267,7 @@ export default function DemoReportPage() {
           <AnimateOnScroll variant="fade-up">
             <div className="p-5 rounded-xl border border-amber-500/20 bg-amber-500/5 mb-6">
               <p className="text-sm text-theme-secondary leading-relaxed">
-                <strong className="text-amber-700 dark:text-amber-400 font-semibold">⚠ Time-Sensitive:</strong>{' '}
+                <strong className="text-amber-700 dark:text-amber-400 font-semibold">Time-Sensitive:</strong>{' '}
                 Workforce Pell Grants — Available beginning <strong className="text-theme-primary font-semibold">July 1, 2026</strong>. Programs must demonstrate 70% completion rate, 70% job placement within 180 days, and positive ROI.
               </p>
             </div>
@@ -1377,7 +1377,7 @@ export default function DemoReportPage() {
                       <td className="px-4 py-3">{categoryBadge(p.category)}</td>
                       <td className="px-3 py-3 text-center text-sm">
                         {p.inBrief ? (
-                          <span className="text-teal-600 dark:text-teal-400">✓</span>
+                          <span className="text-teal-600 dark:text-teal-400">PASS</span>
                         ) : (
                           <span className="text-theme-muted text-xs">—</span>
                         )}

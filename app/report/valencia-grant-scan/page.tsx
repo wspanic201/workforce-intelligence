@@ -42,9 +42,9 @@ function ScoreBar({ score, max = 10, color = 'purple' }: { score: number; max?: 
 
 function TierBadge({ tier }: { tier: string }) {
   const map: Record<string, { cls: string; label: string }> = {
-    priority: { cls: 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20', label: '🎯 PRIORITY' },
-    strategic: { cls: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20', label: '📋 STRATEGIC' },
-    monitor: { cls: 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/20', label: '👁 MONITOR' },
+    priority: { cls: 'bg-rose-500/10 text-rose-700 dark:text-rose-400 border border-rose-500/20', label: 'PRIORITY' },
+    strategic: { cls: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20', label: 'STRATEGIC' },
+    monitor: { cls: 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/20', label: 'MONITOR' },
     skip: { cls: 'bg-gray-500/10 text-gray-600 dark:text-gray-400 border border-gray-500/20', label: '⏭ SKIP' },
   };
   const m = map[tier] ?? map.monitor;
@@ -57,7 +57,7 @@ function EffortBadge({ level }: { level: string }) {
     moderate: 'bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20',
     light: 'bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20',
   };
-  return <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${map[level] ?? map.heavy}`}>🔴 {level.toUpperCase()} (80-120 hrs)</span>;
+  return <span className={`text-xs font-bold px-2.5 py-1 rounded-full ${map[level] ?? map.heavy}`}>HEAVY {level.toUpperCase()} (80-120 hrs)</span>;
 }
 
 // ─── Real Pipeline Data (Generated 2026-02-19 via live grant-scan pipeline) ──
@@ -354,9 +354,9 @@ export default function ValenciaGrantScanPage() {
           <AnimateOnScroll variant="fade-up" delay={80}>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
-                { tier: 'Priority', count: scanMeta.priority, color: 'rose', icon: '🎯', desc: 'Pursue immediately — high fit, strong funding' },
-                { tier: 'Strategic', count: scanMeta.strategic, color: 'amber', icon: '📋', desc: 'Plan ahead — good fit, needs partnership development' },
-                { tier: 'Monitor', count: scanMeta.monitor, color: 'blue', icon: '👁', desc: 'Track for future cycles — moderate alignment' },
+                { tier: 'Priority', count: scanMeta.priority, color: 'rose', icon: 'Priority', desc: 'Pursue immediately — high fit, strong funding' },
+                { tier: 'Strategic', count: scanMeta.strategic, color: 'amber', icon: 'Strategic', desc: 'Plan ahead — good fit, needs partnership development' },
+                { tier: 'Monitor', count: scanMeta.monitor, color: 'blue', icon: 'Monitor', desc: 'Track for future cycles — moderate alignment' },
                 { tier: 'Skip', count: scanMeta.skip, color: 'gray', icon: '⏭', desc: 'Not aligned — ineligible or poor fit' },
               ].map((t) => (
                 <div key={t.tier} className="card-cosmic rounded-2xl p-6 text-center">
@@ -579,7 +579,7 @@ export default function ValenciaGrantScanPage() {
                   </div>
                   <div className="rounded-xl p-4 bg-rose-500/5 border border-rose-500/15">
                     <p className="text-xs font-bold uppercase tracking-widest text-rose-600 dark:text-rose-400 mb-2">Estimated Effort</p>
-                    <p className="text-lg font-bold text-rose-600 dark:text-rose-400 mb-1">🔴 HEAVY</p>
+                    <p className="text-lg font-bold text-rose-600 dark:text-rose-400 mb-1">HEAVY</p>
                     <p className="text-[12px] text-theme-secondary">{grant.effortHours} total. Includes partnership development (20-25 hrs), data collection (12-15 hrs), narrative writing (25-30 hrs), budget development (10-12 hrs), and internal review (6-10 hrs).</p>
                   </div>
                 </div>
@@ -823,7 +823,7 @@ export default function ValenciaGrantScanPage() {
               {
                 timeline: 'Apply NOW (Next 30-60 Days)',
                 color: 'rose',
-                icon: '🚨',
+                icon: 'Critical',
                 actions: [
                   { title: 'ETA Strengthening CC Grants — convene leadership, select industry sectors, begin consortium formation', effort: 'High', impact: 'High', revenue: '$1-3M over 3-4 years' },
                   { title: 'NASA Aerospace Hubs — GO/NO-GO decision within 5-7 days. Skip unless existing aerospace relationships exist', effort: 'High', impact: 'Medium', revenue: 'Up to $1.5M' },
@@ -832,7 +832,7 @@ export default function ValenciaGrantScanPage() {
               {
                 timeline: 'Plan for Next Quarter',
                 color: 'purple',
-                icon: '📋',
+                icon: 'Strategic',
                 actions: [
                   { title: 'NSF ATE — begin preparation April 2026. Select IT/cyber, healthcare tech, or manufacturing focus', effort: 'High', impact: 'High', revenue: '$300K-$900K over 3 years' },
                   { title: 'MSIPP — confirm HSI status, identify 2-3 MSI consortium partners, initiate NNSA lab contact', effort: 'High', impact: 'Medium', revenue: '$500K-$1.5M over 3-5 years' },
@@ -842,7 +842,7 @@ export default function ValenciaGrantScanPage() {
               {
                 timeline: 'Explore Additionally',
                 color: 'teal',
-                icon: '🔭',
+                icon: 'Horizon',
                 actions: [
                   { title: 'Florida Job Growth Grant Fund — state competitive grants for healthcare, IT, manufacturing', effort: 'Medium', impact: 'High', revenue: 'State funding' },
                   { title: 'Corporate Foundations — cultivate Lockheed Martin, Northrop Grumman, AdventHealth, Orlando Health', effort: 'Low', impact: 'Medium', revenue: 'Varies' },

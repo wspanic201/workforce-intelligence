@@ -277,7 +277,7 @@ const strategicRecommendations = [
   {
     timeline: 'Quick Wins (0–6 Months)',
     color: 'teal',
-    icon: '⚡',
+    icon: 'High Priority',
     actions: [
       {
         title: 'Launch Mandatory Reporter Training as online compliance solution for regional school districts',
@@ -302,7 +302,7 @@ const strategicRecommendations = [
   {
     timeline: 'Strategic Builds (6–18 Months)',
     color: 'blue',
-    icon: '🔨',
+    icon: 'Execution',
     actions: [
       {
         title: 'Launch Esthetician program as first cosmetology-cluster offering — 600 hours, $12K tuition',
@@ -327,7 +327,7 @@ const strategicRecommendations = [
   {
     timeline: 'Long-Term Investments (18+ Months)',
     color: 'purple',
-    icon: '🔭',
+    icon: 'Horizon',
     actions: [
       {
         title: 'Open Cosmetology & Barbering programs — 2,100 hours each, dedicated facility with student clinic',

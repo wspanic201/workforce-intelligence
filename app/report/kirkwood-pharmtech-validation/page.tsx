@@ -232,7 +232,7 @@ export default function KirkwoodPharmTechValidationPage() {
       {/* ===== DISCLAIMER BANNER ===== */}
       <div className="w-full bg-amber-500/10 border-b border-amber-500/20 py-2 px-4 text-center">
         <p className="text-xs text-amber-700 dark:text-amber-400 font-semibold">
-          📋 Sample Report for demonstration purposes — data sourced from live pipeline run February 19, 2026
+          Sample report for demonstration purposes — data sourced from live pipeline run February 19, 2026
         </p>
       </div>
 
@@ -384,7 +384,7 @@ export default function KirkwoodPharmTechValidationPage() {
           <AnimateOnScroll variant="fade-up" delay={200}>
             <div className="mt-6 card-cosmic rounded-xl p-5 border-teal-500/30 bg-teal-500/5">
               <p className="text-sm text-theme-primary leading-relaxed">
-                <span className="font-bold">📡 Live Data:</span> BLS SOC 29-2052 — 487,920 employed nationally, median $36,920 (2024).
+                <span className="font-bold">Live Data:</span> BLS SOC 29-2052 — 487,920 employed nationally, median $36,920 (2024).
                 Google Jobs: 10 active Cedar Rapids openings — UnityPoint Health (3), CVS Health (3), Walgreens (2), specialty (2).
               </p>
             </div>
@@ -817,7 +817,7 @@ export default function KirkwoodPharmTechValidationPage() {
                         {/* Stage 2 estimate callout */}
                         <div className="rounded-xl border border-amber-500/30 bg-amber-500/5 px-4 py-4">
                           <div className="flex items-start gap-3">
-                            <span className="text-lg flex-shrink-0 leading-none mt-0.5">📐</span>
+                            <span className="text-lg flex-shrink-0 leading-none mt-0.5">Model</span>
                             <div>
                               <p className="text-sm font-bold text-amber-700 dark:text-amber-400">
                                 Stage 2 Estimate — Pre-Curriculum Rough Model
@@ -849,7 +849,7 @@ export default function KirkwoodPharmTechValidationPage() {
                         {/* Score badge */}
                         <div className="flex items-center gap-2 flex-wrap">
                           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-teal-500/10 text-teal-700 dark:text-teal-400 border border-teal-500/20">
-                            🏦 Indicative Score: {pharmtechFinancialModel.viabilityScore}/10
+                            Indicative Score: {pharmtechFinancialModel.viabilityScore}/10
                           </span>
                           <span className="text-xs text-theme-muted">BLS OES · CUPA-HR · Iowa DE Perkins V · CE seat-hour model · ±1–2 pts pre-curriculum</span>
                         </div>
@@ -857,7 +857,7 @@ export default function KirkwoodPharmTechValidationPage() {
                         {/* Break-even callout */}
                         <div className="rounded-xl bg-teal-500/5 border border-teal-500/20 px-4 py-3">
                           <p className="text-sm font-semibold text-teal-700 dark:text-teal-400">
-                            📍 Break-even at {pharmtechFinancialModel.breakEvenEnrollment} students — {pharmtechFinancialModel.breakEvenPct}% of target cohort ({pharmtechFinancialModel.cohortSize})
+                            Break-even at {pharmtechFinancialModel.breakEvenEnrollment} students — {pharmtechFinancialModel.breakEvenPct}% of target cohort ({pharmtechFinancialModel.cohortSize})
                           </p>
                           <p className="text-xs text-theme-muted mt-1">{pharmtechFinancialModel.perkinsV > 0 ? `Perkins V $${pharmtechFinancialModel.perkinsV.toLocaleString()}/yr boosts Year 1 from +$${pharmtechFinancialModel.year1NetWithoutPerkins.toLocaleString()} to +$${pharmtechFinancialModel.year1NetBase.toLocaleString()} — program profitable at base enrollment even without grant` : ''}</p>
                         </div>
@@ -1023,7 +1023,7 @@ export default function KirkwoodPharmTechValidationPage() {
                             </table>
                           </div>
                           <p className="text-[10px] text-theme-muted mt-1.5 italic">
-                            💡 <span className="text-purple-600 dark:text-purple-400 font-medium">Refines at</span> — shows when each benchmark is replaced by real data (visible on large screens).
+                            <span className="text-purple-600 dark:text-purple-400 font-medium">Refines at</span> — shows when each benchmark is replaced by real data (visible on large screens).
                           </p>
                         </div>
 

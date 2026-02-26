@@ -221,7 +221,7 @@ export default function GrantsPage() {
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                   {[
-                    { stat: '✓', label: 'Federal, State & Foundation', color: 'text-green-400' },
+                    { stat: 'Verified', label: 'Federal, State & Foundation', color: 'text-green-400' },
                     { stat: '5-dim', label: 'Fit Scoring', color: 'text-blue-400' },
                     { stat: '5–9', label: 'Top Opportunities', color: 'text-purple-400' },
                     { stat: '1 wk', label: 'Turnaround', color: 'text-teal-400' },
