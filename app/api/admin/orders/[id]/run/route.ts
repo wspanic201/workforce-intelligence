@@ -2,6 +2,8 @@ import { NextRequest, NextResponse, after } from 'next/server';
 import { verifyAdminSession } from '@/lib/auth/admin';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { enqueueRunJob, processNextRunJob } from '@/lib/pipeline/run-jobs';
+import { orchestrateDiscovery } from '@/lib/agents/discovery/orchestrator';
+import { generateDiscoveryReport } from '@/lib/reports/discovery-report';
 
 export const maxDuration = 300;
 
@@ -45,11 +47,121 @@ export async function POST(
     return NextResponse.json({ error: 'Order not found' }, { status: 404 });
   }
 
-  if (!['validation', 'discovery_validation', 'full_lifecycle'].includes(order.service_tier)) {
+  const supportedTiers = ['discovery', 'validation', 'discovery_validation', 'full_lifecycle'];
+  if (!supportedTiers.includes(order.service_tier)) {
     return NextResponse.json(
-      { error: `Service tier '${order.service_tier}' is not configured for validation pipeline runs from this button.` },
+      { error: `Service tier '${order.service_tier}' is not configured for pipeline runs from this button.` },
       { status: 400 }
     );
+  }
+
+  // Discovery-only orders run the discovery pipeline directly.
+  if (order.service_tier === 'discovery') {
+    const institutionData = order.institution_data || {};
+    const geographicArea = [institutionData.primaryCity, institutionData.state].filter(Boolean).join(', ') || institutionData.metroArea || 'Regional service area';
+
+    const { data: discoveryProject, error: discoveryError } = await supabase
+      .from('discovery_projects')
+      .insert({
+        user_id: null,
+        institution_name: order.institution_name,
+        geographic_area: geographicArea,
+        current_programs: institutionData.focusAreas ? [institutionData.focusAreas] : [],
+        status: 'pending',
+      })
+      .select('id')
+      .single();
+
+    if (discoveryError || !discoveryProject) {
+      return NextResponse.json({ error: discoveryError?.message || 'Failed to create discovery project' }, { status: 500 });
+    }
+
+    const startedAt = new Date().toISOString();
+    await supabase
+      .from('orders')
+      .update({
+        order_status: 'running',
+        pipeline_started_at: startedAt,
+        discovery_cache_key: discoveryProject.id,
+        pipeline_metadata: {
+          run_type: 'discovery',
+          discovery_project_id: discoveryProject.id,
+          model_override: modelOverride,
+          model_profile: modelProfile,
+          persona_slugs: personaSlugs,
+        },
+      })
+      .eq('id', id);
+
+    after(async () => {
+      try {
+        const result = await orchestrateDiscovery({
+          projectId: discoveryProject.id,
+          institutionName: order.institution_name,
+          geographicArea,
+          currentPrograms: institutionData.focusAreas ? [institutionData.focusAreas] : [],
+        });
+
+        const reportMarkdown = generateDiscoveryReport(result);
+        const completedAt = new Date().toISOString();
+
+        await supabase
+          .from('discovery_projects')
+          .update({
+            status: result.status === 'success' ? 'completed' : result.status,
+            results: {
+              regionalScan: result.regionalScan,
+              gapAnalysis: result.gapAnalysis,
+              programRecommendations: result.programRecommendations,
+              executiveSummary: result.executiveSummary,
+              errors: result.errors,
+            },
+            report_markdown: reportMarkdown,
+            completed_at: completedAt,
+            updated_at: completedAt,
+          })
+          .eq('id', discoveryProject.id);
+
+        await supabase
+          .from('orders')
+          .update({
+            order_status: 'review',
+            report_markdown: reportMarkdown,
+            pipeline_completed_at: completedAt,
+            pipeline_metadata: {
+              run_type: 'discovery',
+              discovery_project_id: discoveryProject.id,
+              model_override: modelOverride,
+              model_profile: modelProfile,
+              persona_slugs: personaSlugs,
+              completed: true,
+            },
+          })
+          .eq('id', id);
+      } catch (error) {
+        await supabase
+          .from('orders')
+          .update({
+            order_status: 'review',
+            pipeline_metadata: {
+              run_type: 'discovery',
+              discovery_project_id: discoveryProject.id,
+              last_error: error instanceof Error ? error.message : String(error),
+            },
+          })
+          .eq('id', id);
+      }
+    });
+
+    return NextResponse.json({
+      ok: true,
+      orderId: id,
+      discoveryProjectId: discoveryProject.id,
+      mode: 'discovery',
+      modelOverride,
+      modelProfile,
+      personaSlugs,
+    });
   }
 
   let projectId = order.validation_project_id as string | null;

@@ -55,10 +55,19 @@ interface ModelProfile {
   is_active?: boolean;
 }
 
-const PERSONA_PACKS: Array<{ key: string; label: string; slugs: string[] }> = [
-  { key: 'default', label: 'Default Tiger Team (PM + CFO + CMO + COO)', slugs: ['product-manager', 'cfo', 'cmo', 'coo'] },
-  { key: 'pharmacy', label: 'Pharmacy Workforce Pack', slugs: ['product-manager', 'cfo', 'employer-demand-analyst', 'regulatory-compliance-analyst'] },
-  { key: 'grants', label: 'Grant + Finance Pack', slugs: ['cfo', 'regulatory-compliance-analyst', 'institutional-fit-analyst', 'cmo'] },
+const PERSONA_PACKS: Array<{ key: string; label: string; slugs: string[]; definition: string; bestFor: string }> = [
+  { key: 'default', label: 'Default Tiger Team', slugs: ['product-manager', 'cfo', 'cmo', 'coo'], definition: 'Balanced executive debate across product, finance, growth, and ops.', bestFor: 'Most validation reports and first-pass client reviews.' },
+  { key: 'pharmacy', label: 'Pharmacy Workforce Pack', slugs: ['market-analyst', 'cfo', 'education-vp', 'coo'], definition: 'Healthcare demand + compliance + employer hiring reality.', bestFor: 'Pharmacy tech, allied health, and compliance-sensitive programs.' },
+  { key: 'grants', label: 'Grant Strategy Pack', slugs: ['cfo', 'strategy-director', 'education-vp', 'coo'], definition: 'Funding fit, risk controls, and institutional readiness framing.', bestFor: 'Grant finder, Pell/SCCT readiness, and funding-driven proposals.' },
+  { key: 'discovery', label: 'Opportunity Discovery Pack', slugs: ['strategy-director', 'market-analyst', 'data-analyst', 'trends-analyst'], definition: 'External market scanning with opportunity pattern detection.', bestFor: 'Discovery scans, blue-ocean ideas, and early signal mining.' },
+  { key: 'finance-heavy', label: 'Finance Stress-Test Pack', slugs: ['cfo', 'financial-analyst', 'business-analyst', 'coo'], definition: 'Assumption pressure-testing and downside-risk analysis.', bestFor: 'Programs where budget exposure or staffing risk is high.' },
+  { key: 'go-to-market', label: 'Go-to-Market Pack', slugs: ['cmo', 'growth-lead', 'partnerships-lead', 'product-manager'], definition: 'Positioning, channel strategy, and enrollment narrative.', bestFor: 'New program launch plans and recruitment strategy design.' },
+  { key: 'institutional-fit', label: 'Institutional Fit Pack', slugs: ['education-vp', 'operations-manager', 'curriculum-director', 'coo'], definition: 'Capacity, mission fit, and implementation feasibility focus.', bestFor: 'Internal alignment decisions and leadership go/no-go calls.' },
+  { key: 'adult-learner', label: 'Adult Learner Demand Pack', slugs: ['adult-learning', 'cmo', 'education-vp', 'product-manager'], definition: 'Learner behavior, enrollment barriers, and conversion strategy.', bestFor: 'Programs targeting working adults and career upskillers.' },
+  { key: 'innovation', label: 'Innovation + Foresight Pack', slugs: ['futurist', 'trends-analyst', 'strategy-director', 'cto'], definition: 'Emerging trend interpretation with future-risk framing.', bestFor: 'AI, advanced manufacturing, and fast-shifting labor segments.' },
+  { key: 'employer-partnership', label: 'Employer Partnership Pack', slugs: ['market-analyst', 'partnerships-lead', 'coo', 'business-analyst'], definition: 'Direct employer signal and partnership execution strategy.', bestFor: 'Programs requiring strong advisory/placement partnerships.' },
+  { key: 'compliance', label: 'Compliance Guardrail Pack', slugs: ['education-vp', 'cfo', 'coo', 'operations-manager'], definition: 'Policy readiness, audit defensibility, and execution controls.', bestFor: 'Pell eligibility prep, state reporting, and regulated pathways.' },
+  { key: 'board-decision', label: 'Board Decision Pack', slugs: ['strategy-director', 'cfo', 'education-vp', 'coo'], definition: 'Decision memo framing with risk and ROI clarity.', bestFor: 'Board/leadership meeting prep and final approval moments.' },
 ];
 
 const STATUS_FLOW: Record<string, string[]> = {
@@ -263,6 +272,7 @@ export default function OrderDetailPage() {
 
   const nextStatuses = STATUS_FLOW[order.order_status] || [];
   const d = order.institution_data;
+  const selectedPack = PERSONA_PACKS.find((p) => p.key === selectedPersonaPack) || PERSONA_PACKS[0];
 
   return (
     <div className="space-y-6 max-w-4xl">
@@ -330,6 +340,7 @@ export default function OrderDetailPage() {
                   ))}
                 </select>
               </div>
+              <p className="text-xs text-slate-500"><strong>{selectedPack.label}:</strong> {selectedPack.definition} <span className="text-slate-400">Best for: {selectedPack.bestFor}</span></p>
               <div className="flex flex-wrap gap-2">
                 <Button
                   size="sm"
@@ -378,6 +389,7 @@ export default function OrderDetailPage() {
                   ))}
                 </select>
               </div>
+              <p className="text-xs text-slate-500"><strong>{selectedPack.label}:</strong> {selectedPack.definition} <span className="text-slate-400">Best for: {selectedPack.bestFor}</span></p>
               <Button
                 size="sm"
                 onClick={startPipelineRun}
