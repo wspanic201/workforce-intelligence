@@ -421,105 +421,130 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       });
       console.log('[Orchestrator] ↷ Skipped Citation Agent (checkpoint complete)');
     } else {
-      const attempt = (stageAttempts.get(citationStageKey) || 0) + 1;
-      stageAttempts.set(citationStageKey, attempt);
-      await markStageStarted(projectId, citationStageKey, attempt);
-      await logRunEvent({
-        pipelineRunId,
-        projectId,
-        eventType: 'stage_started',
-        stageKey: citationStageKey,
-        level: 'info',
-        message: 'Citation agent started',
-        metadata: { attempt },
-      });
-      const citationStart = Date.now();
-      try {
-        console.log(`[Orchestrator] Running citation agent for fact-checking...`);
-
-        // Extract markdown from completed components
-        const componentsByType = normalizedCompletedComponents.reduce((acc, c) => {
-          const key = c.component_type.replace('_', '');
-          acc[key] = c.markdown_output || '';
-          return acc;
-        }, {} as Record<string, string>);
-
-        citationResults = await withTimeout(
-          runCitationAgent({
-            projectId,
-            occupation: projectToValidate.target_occupation || projectToValidate.program_name || 'Unknown',
-            state: projectToValidate.geographic_area || 'United States',
-            regulatoryAnalysis: componentsByType['regulatorycompliance'],
-            marketAnalysis: componentsByType['labormarket'],
-            employerAnalysis: componentsByType['employerdemand'],
-            financialAnalysis: componentsByType['financialviability'],
-            academicAnalysis: componentsByType['institutionalfit'],
-            demographicAnalysis: componentsByType['learnerdemand'],
-            competitiveAnalysis: componentsByType['competitivelandscape'],
-          }),
-          300000, // 5 minutes for citation verification
-          'Citation Agent'
-        );
-
-        // Store citation results in database
-        await supabase.from('research_components').insert({
-          project_id: projectId,
-          component_type: 'citation_verification',
-          agent_persona: 'citation-agent',
-          status: 'completed',
-          content: citationResults,
-          markdown_output: `# Citation Verification\n\n${citationResults.summary}\n\n## Verified Claims\n${citationResults.verifiedClaims.map(c => `- ${c.claim} [${c.citation}]`).join('\n')}\n\n${citationResults.warnings.length > 0 ? `## Warnings\n${citationResults.warnings.map(w => `- ${w}`).join('\n')}` : ''}`,
-        });
-
-        const durationMs = Date.now() - citationStart;
-        await markStageCompleted(projectId, citationStageKey, {
-          verifiedClaims: citationResults.verifiedClaims.length,
-          warnings: citationResults.warnings.length,
-          corrections: citationResults.corrections?.length || 0,
-        }, durationMs);
+      let citationSucceeded = false;
+      while (!citationSucceeded) {
+        const attempt = (stageAttempts.get(citationStageKey) || 0) + 1;
+        stageAttempts.set(citationStageKey, attempt);
+        await markStageStarted(projectId, citationStageKey, attempt);
         await logRunEvent({
           pipelineRunId,
           projectId,
-          eventType: 'stage_completed',
+          eventType: 'stage_started',
           stageKey: citationStageKey,
           level: 'info',
-          message: `Citation agent complete — ${citationResults.verifiedClaims.length} claims verified`,
-          metadata: {
-            durationMs,
+          message: 'Citation agent started',
+          metadata: { attempt },
+        });
+        const citationStart = Date.now();
+        try {
+          console.log(`[Orchestrator] Running citation agent for fact-checking (attempt ${attempt}/${MAX_STAGE_ATTEMPTS})...`);
+
+          // Extract markdown from completed components
+          const componentsByType = normalizedCompletedComponents.reduce((acc, c) => {
+            const key = c.component_type.replace('_', '');
+            acc[key] = c.markdown_output || '';
+            return acc;
+          }, {} as Record<string, string>);
+
+          citationResults = await withTimeout(
+            runCitationAgent({
+              projectId,
+              occupation: projectToValidate.target_occupation || projectToValidate.program_name || 'Unknown',
+              state: projectToValidate.geographic_area || 'United States',
+              regulatoryAnalysis: componentsByType['regulatorycompliance'],
+              marketAnalysis: componentsByType['labormarket'],
+              employerAnalysis: componentsByType['employerdemand'],
+              financialAnalysis: componentsByType['financialviability'],
+              academicAnalysis: componentsByType['institutionalfit'],
+              demographicAnalysis: componentsByType['learnerdemand'],
+              competitiveAnalysis: componentsByType['competitivelandscape'],
+            }),
+            300000, // 5 minutes for citation verification
+            'Citation Agent'
+          );
+
+          // Store citation results in database
+          await supabase.from('research_components').insert({
+            project_id: projectId,
+            component_type: 'citation_verification',
+            agent_persona: 'citation-agent',
+            status: 'completed',
+            content: citationResults,
+            markdown_output: `# Citation Verification\n\n${citationResults.summary}\n\n## Verified Claims\n${citationResults.verifiedClaims.map(c => `- ${c.claim} [${c.citation}]`).join('\n')}\n\n${citationResults.warnings.length > 0 ? `## Warnings\n${citationResults.warnings.map(w => `- ${w}`).join('\n')}` : ''}`,
+          });
+
+          const durationMs = Date.now() - citationStart;
+          await markStageCompleted(projectId, citationStageKey, {
             verifiedClaims: citationResults.verifiedClaims.length,
             warnings: citationResults.warnings.length,
             corrections: citationResults.corrections?.length || 0,
-          },
-        });
+          }, durationMs);
+          await logRunEvent({
+            pipelineRunId,
+            projectId,
+            eventType: 'stage_completed',
+            stageKey: citationStageKey,
+            level: 'info',
+            message: `Citation agent complete — ${citationResults.verifiedClaims.length} claims verified`,
+            metadata: {
+              durationMs,
+              attempt,
+              verifiedClaims: citationResults.verifiedClaims.length,
+              warnings: citationResults.warnings.length,
+              corrections: citationResults.corrections?.length || 0,
+            },
+          });
 
-        console.log(`[Orchestrator] ✓ Citation agent complete — ${citationResults.verifiedClaims.length} claims verified`);
+          console.log(`[Orchestrator] ✓ Citation agent complete — ${citationResults.verifiedClaims.length} claims verified`);
 
-        // Apply citation corrections to component markdown before report generation
-        if (citationResults.corrections && citationResults.corrections.length > 0) {
-          console.log(`[Orchestrator] Applying ${citationResults.corrections.length} citation corrections...`);
-          for (const correction of citationResults.corrections) {
-            // Find matching component by type
-            const comp = normalizedCompletedComponents.find(c => c.component_type === correction.componentType);
-            if (comp && comp.markdown_output && comp.markdown_output.includes(correction.original)) {
-              comp.markdown_output = comp.markdown_output.replace(correction.original, correction.corrected);
-              console.log(`[Orchestrator]   ✓ Corrected [${correction.componentType}]: ${correction.reason}`);
+          // Apply citation corrections to component markdown before report generation
+          if (citationResults.corrections && citationResults.corrections.length > 0) {
+            console.log(`[Orchestrator] Applying ${citationResults.corrections.length} citation corrections...`);
+            for (const correction of citationResults.corrections) {
+              // Find matching component by type
+              const comp = normalizedCompletedComponents.find(c => c.component_type === correction.componentType);
+              if (comp && comp.markdown_output && comp.markdown_output.includes(correction.original)) {
+                comp.markdown_output = comp.markdown_output.replace(correction.original, correction.corrected);
+                console.log(`[Orchestrator]   ✓ Corrected [${correction.componentType}]: ${correction.reason}`);
+              }
             }
           }
+
+          citationSucceeded = true;
+        } catch (e) {
+          const durationMs = Date.now() - citationStart;
+          const errorMessage = e instanceof Error ? e.message : String(e);
+          await markStageFailed(projectId, citationStageKey, errorMessage, durationMs);
+          await logRunEvent({
+            pipelineRunId,
+            projectId,
+            eventType: 'stage_failed',
+            stageKey: citationStageKey,
+            level: 'warn',
+            message: 'Citation agent failed; continuing',
+            metadata: { durationMs, attempt, error: errorMessage },
+          });
+
+          if (attempt < MAX_STAGE_ATTEMPTS) {
+            const backoffMs = STAGE_RETRY_BACKOFF_MS * attempt;
+            await logRunEvent({
+              pipelineRunId,
+              projectId,
+              eventType: 'stage_retry_scheduled',
+              stageKey: citationStageKey,
+              level: 'warn',
+              message: 'Citation agent retry scheduled',
+              metadata: { attempt, nextAttempt: attempt + 1, backoffMs, error: errorMessage },
+            });
+            if (backoffMs > 0) {
+              await new Promise((resolve) => setTimeout(resolve, backoffMs));
+            }
+            continue;
+          }
+
+          console.warn('[Orchestrator] Citation agent failed, continuing without citation verification:', e);
+          break;
         }
-      } catch (e) {
-        const durationMs = Date.now() - citationStart;
-        const errorMessage = e instanceof Error ? e.message : String(e);
-        await markStageFailed(projectId, citationStageKey, errorMessage, durationMs);
-        await logRunEvent({
-          pipelineRunId,
-          projectId,
-          eventType: 'stage_failed',
-          stageKey: citationStageKey,
-          level: 'warn',
-          message: 'Citation agent failed; continuing',
-          metadata: { durationMs, error: errorMessage },
-        });
-        console.warn('[Orchestrator] Citation agent failed, continuing without citation verification:', e);
       }
     }
 
@@ -580,69 +605,92 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       });
       console.log('[Orchestrator] ↷ Skipped Tiger Team (checkpoint complete)');
     } else {
-      const attempt = (stageAttempts.get(tigerTeamStageKey) || 0) + 1;
-      stageAttempts.set(tigerTeamStageKey, attempt);
-      await markStageStarted(projectId, tigerTeamStageKey, attempt);
-      await logRunEvent({
-        pipelineRunId,
-        projectId,
-        eventType: 'stage_started',
-        stageKey: tigerTeamStageKey,
-        level: 'info',
-        message: 'Tiger team synthesis started',
-        metadata: { attempt },
-      });
-      const tigerTeamStart = Date.now();
-      try {
-        console.log(`[Orchestrator] Running tiger team synthesis...`);
-        const { synthesis, markdown } = await withTimeout(
-          runTigerTeam(
-            projectId,
-            projectToValidate as ValidationProject,
-            normalizedCompletedComponents as ResearchComponent[]
-          ),
-          420000, // 7 minutes for tiger team — streaming handles hangs
-          'Tiger Team Synthesis'
-        );
-        tigerTeamMarkdown = markdown;
-
-        await supabase.from('research_components').insert({
-          project_id: projectId,
-          component_type: 'tiger_team_synthesis',
-          agent_persona: 'multi-persona',
-          status: 'completed',
-          content: synthesis,
-          markdown_output: tigerTeamMarkdown,
-        });
-
-        const durationMs = Date.now() - tigerTeamStart;
-        await markStageCompleted(projectId, tigerTeamStageKey, {
-          markdownLength: tigerTeamMarkdown.length,
-          synthesisGenerated: true,
-        }, durationMs);
+      let tigerSucceeded = false;
+      while (!tigerSucceeded) {
+        const attempt = (stageAttempts.get(tigerTeamStageKey) || 0) + 1;
+        stageAttempts.set(tigerTeamStageKey, attempt);
+        await markStageStarted(projectId, tigerTeamStageKey, attempt);
         await logRunEvent({
           pipelineRunId,
           projectId,
-          eventType: 'stage_completed',
+          eventType: 'stage_started',
           stageKey: tigerTeamStageKey,
           level: 'info',
-          message: 'Tiger team synthesis completed',
-          metadata: { durationMs, markdownLength: tigerTeamMarkdown.length },
+          message: 'Tiger team synthesis started',
+          metadata: { attempt },
         });
-      } catch (e) {
-        const durationMs = Date.now() - tigerTeamStart;
-        const errorMessage = e instanceof Error ? e.message : String(e);
-        await markStageFailed(projectId, tigerTeamStageKey, errorMessage, durationMs);
-        await logRunEvent({
-          pipelineRunId,
-          projectId,
-          eventType: 'stage_failed',
-          stageKey: tigerTeamStageKey,
-          level: 'warn',
-          message: 'Tiger team synthesis failed; continuing',
-          metadata: { durationMs, error: errorMessage },
-        });
-        console.warn('[Orchestrator] Tiger team synthesis failed, continuing with report generation:', e);
+        const tigerTeamStart = Date.now();
+        try {
+          console.log(`[Orchestrator] Running tiger team synthesis (attempt ${attempt}/${MAX_STAGE_ATTEMPTS})...`);
+          const { synthesis, markdown } = await withTimeout(
+            runTigerTeam(
+              projectId,
+              projectToValidate as ValidationProject,
+              normalizedCompletedComponents as ResearchComponent[]
+            ),
+            420000, // 7 minutes for tiger team — streaming handles hangs
+            'Tiger Team Synthesis'
+          );
+          tigerTeamMarkdown = markdown;
+
+          await supabase.from('research_components').insert({
+            project_id: projectId,
+            component_type: 'tiger_team_synthesis',
+            agent_persona: 'multi-persona',
+            status: 'completed',
+            content: synthesis,
+            markdown_output: tigerTeamMarkdown,
+          });
+
+          const durationMs = Date.now() - tigerTeamStart;
+          await markStageCompleted(projectId, tigerTeamStageKey, {
+            markdownLength: tigerTeamMarkdown.length,
+            synthesisGenerated: true,
+          }, durationMs);
+          await logRunEvent({
+            pipelineRunId,
+            projectId,
+            eventType: 'stage_completed',
+            stageKey: tigerTeamStageKey,
+            level: 'info',
+            message: 'Tiger team synthesis completed',
+            metadata: { durationMs, attempt, markdownLength: tigerTeamMarkdown.length },
+          });
+          tigerSucceeded = true;
+        } catch (e) {
+          const durationMs = Date.now() - tigerTeamStart;
+          const errorMessage = e instanceof Error ? e.message : String(e);
+          await markStageFailed(projectId, tigerTeamStageKey, errorMessage, durationMs);
+          await logRunEvent({
+            pipelineRunId,
+            projectId,
+            eventType: 'stage_failed',
+            stageKey: tigerTeamStageKey,
+            level: 'warn',
+            message: 'Tiger team synthesis failed; continuing',
+            metadata: { durationMs, attempt, error: errorMessage },
+          });
+
+          if (attempt < MAX_STAGE_ATTEMPTS) {
+            const backoffMs = STAGE_RETRY_BACKOFF_MS * attempt;
+            await logRunEvent({
+              pipelineRunId,
+              projectId,
+              eventType: 'stage_retry_scheduled',
+              stageKey: tigerTeamStageKey,
+              level: 'warn',
+              message: 'Tiger team synthesis retry scheduled',
+              metadata: { attempt, nextAttempt: attempt + 1, backoffMs, error: errorMessage },
+            });
+            if (backoffMs > 0) {
+              await new Promise((resolve) => setTimeout(resolve, backoffMs));
+            }
+            continue;
+          }
+
+          console.warn('[Orchestrator] Tiger team synthesis failed, continuing with report generation:', e);
+          break;
+        }
       }
     }
 
@@ -685,70 +733,108 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       });
       console.log('[Orchestrator] ↷ Skipped Report Generation (checkpoint complete)');
     } else {
-      const attempt = (stageAttempts.get(reportStageKey) || 0) + 1;
-      stageAttempts.set(reportStageKey, attempt);
-      await markStageStarted(projectId, reportStageKey, attempt);
-      await logRunEvent({
-        pipelineRunId,
-        projectId,
-        eventType: 'stage_started',
-        stageKey: reportStageKey,
-        level: 'info',
-        message: 'Report generation started',
-        metadata: { attempt },
-      });
-
-      const reportStart = Date.now();
-      console.log(`[Orchestrator] Generating professional report...`);
-
-      try {
-        fullReport = await writeValidationBrief({
-          project: projectToValidate as ValidationProject,
-          components: normalizedCompletedComponents as ResearchComponent[],
-          programScore,
-          tigerTeamMarkdown,
+      let reportSucceeded = false;
+      while (!reportSucceeded) {
+        const attempt = (stageAttempts.get(reportStageKey) || 0) + 1;
+        stageAttempts.set(reportStageKey, attempt);
+        await markStageStarted(projectId, reportStageKey, attempt);
+        await logRunEvent({
+          pipelineRunId,
+          projectId,
+          eventType: 'stage_started',
+          stageKey: reportStageKey,
+          level: 'info',
+          message: 'Report generation started',
+          metadata: { attempt },
         });
-        console.log('[Orchestrator] ✓ Validation brief writer generated polished report');
-      } catch (e) {
-        console.warn('[Orchestrator] Validation brief writer failed, falling back to legacy report generator:', e);
-        fullReport = generateReport({
-          project: projectToValidate as ValidationProject,
-          components: normalizedCompletedComponents as ResearchComponent[],
-          programScore,
-          tigerTeamMarkdown,
-        });
+
+        const reportStart = Date.now();
+        console.log(`[Orchestrator] Generating professional report (attempt ${attempt}/${MAX_STAGE_ATTEMPTS})...`);
+
+        try {
+          try {
+            fullReport = await writeValidationBrief({
+              project: projectToValidate as ValidationProject,
+              components: normalizedCompletedComponents as ResearchComponent[],
+              programScore,
+              tigerTeamMarkdown,
+            });
+            console.log('[Orchestrator] ✓ Validation brief writer generated polished report');
+          } catch (e) {
+            console.warn('[Orchestrator] Validation brief writer failed, falling back to legacy report generator:', e);
+            fullReport = generateReport({
+              project: projectToValidate as ValidationProject,
+              components: normalizedCompletedComponents as ResearchComponent[],
+              programScore,
+              tigerTeamMarkdown,
+            });
+          }
+
+          // Save initial report (only columns that exist: project_id, executive_summary, full_report_markdown, version)
+          const { data, error: reportError } = await supabase.from('validation_reports').insert({
+            project_id: projectId,
+            executive_summary: `Recommendation: ${programScore.recommendation} (${programScore.compositeScore}/10)\n\nDimensions: ${programScore.dimensions.map((d: any) => `${d.dimension}: ${d.score}/10`).join(', ')}`,
+            full_report_markdown: fullReport,
+            version: 1,
+          }).select('id').single();
+          reportRow = data || null;
+
+          if (reportError) {
+            throw new Error(`Report save failed: ${reportError.message}`);
+          }
+
+          const durationMs = Date.now() - reportStart;
+          await markStageCompleted(projectId, reportStageKey, {
+            reportId: reportRow?.id || null,
+            reportLength: fullReport.length,
+            reportHash: hashMarkdown(fullReport),
+          }, durationMs);
+          await logRunEvent({
+            pipelineRunId,
+            projectId,
+            eventType: 'stage_completed',
+            stageKey: reportStageKey,
+            level: 'info',
+            message: `Report generated (${fullReport.length} chars)`,
+            metadata: { durationMs, attempt, reportId: reportRow?.id || null, reportLength: fullReport.length },
+          });
+
+          console.log(`[Orchestrator] ✓ Report saved (${fullReport.length} chars)`);
+          reportSucceeded = true;
+        } catch (reportErr) {
+          const durationMs = Date.now() - reportStart;
+          const errorMessage = reportErr instanceof Error ? reportErr.message : String(reportErr);
+          await markStageFailed(projectId, reportStageKey, errorMessage, durationMs);
+          await logRunEvent({
+            pipelineRunId,
+            projectId,
+            eventType: 'stage_failed',
+            stageKey: reportStageKey,
+            level: 'error',
+            message: 'Report generation failed',
+            metadata: { durationMs, attempt, error: errorMessage },
+          });
+
+          if (attempt < MAX_STAGE_ATTEMPTS) {
+            const backoffMs = STAGE_RETRY_BACKOFF_MS * attempt;
+            await logRunEvent({
+              pipelineRunId,
+              projectId,
+              eventType: 'stage_retry_scheduled',
+              stageKey: reportStageKey,
+              level: 'warn',
+              message: 'Report generation retry scheduled',
+              metadata: { attempt, nextAttempt: attempt + 1, backoffMs, error: errorMessage },
+            });
+            if (backoffMs > 0) {
+              await new Promise((resolve) => setTimeout(resolve, backoffMs));
+            }
+            continue;
+          }
+
+          throw reportErr;
+        }
       }
-
-      // Save initial report (only columns that exist: project_id, executive_summary, full_report_markdown, version)
-      const { data, error: reportError } = await supabase.from('validation_reports').insert({
-        project_id: projectId,
-        executive_summary: `Recommendation: ${programScore.recommendation} (${programScore.compositeScore}/10)\n\nDimensions: ${programScore.dimensions.map((d: any) => `${d.dimension}: ${d.score}/10`).join(', ')}`,
-        full_report_markdown: fullReport,
-        version: 1,
-      }).select('id').single();
-      reportRow = data || null;
-
-      if (reportError) {
-        console.error(`[Orchestrator] ✗ Report save failed:`, reportError.message);
-      }
-
-      const durationMs = Date.now() - reportStart;
-      await markStageCompleted(projectId, reportStageKey, {
-        reportId: reportRow?.id || null,
-        reportLength: fullReport.length,
-        reportHash: hashMarkdown(fullReport),
-      }, durationMs);
-      await logRunEvent({
-        pipelineRunId,
-        projectId,
-        eventType: 'stage_completed',
-        stageKey: reportStageKey,
-        level: 'info',
-        message: `Report generated (${fullReport.length} chars)`,
-        metadata: { durationMs, reportId: reportRow?.id || null, reportLength: fullReport.length },
-      });
-
-      console.log(`[Orchestrator] ✓ Report saved (${fullReport.length} chars)`);
     }
 
     // 11. QA Review — optional fact-check, updates report if issues found
@@ -839,79 +925,103 @@ export async function orchestrateValidation(projectId: string): Promise<void> {
       });
       console.log('[Orchestrator] ↷ Skipped PDF Generation (checkpoint complete)');
     } else {
-      const attempt = (stageAttempts.get(pdfStageKey) || 0) + 1;
-      stageAttempts.set(pdfStageKey, attempt);
-      await markStageStarted(projectId, pdfStageKey, attempt);
-      await logRunEvent({
-        pipelineRunId,
-        projectId,
-        eventType: 'stage_started',
-        stageKey: pdfStageKey,
-        level: 'info',
-        message: 'PDF generation started',
-        metadata: { attempt },
-      });
-
-      const pdfStart = Date.now();
-      try {
-        console.log(`[Orchestrator] Generating PDF...`);
-        const { buildValidationPDF } = await import('@/lib/reports/build-pdf');
-        const pdfResult = await buildValidationPDF(supabase, {
-          projectId,
-          programName: projectToValidate.program_name || 'Program',
-          clientName: projectToValidate.client_name || '',
-          fullReport,
-        });
-
-        // Update report record with storage path
-        if (reportRow?.id) {
-          await supabase.from('validation_reports')
-            .update({ pdf_url: pdfResult.storagePath })
-            .eq('id', reportRow.id);
-        }
-
-        // Update pipeline run with page count and size
-        if (pipelineRunId) {
-          await supabase.from('pipeline_runs')
-            .update({ report_page_count: pdfResult.pageCount, report_size_kb: pdfResult.sizeKB })
-            .eq('id', pipelineRunId);
-        }
-
-        const durationMs = Date.now() - pdfStart;
-        await markStageCompleted(projectId, pdfStageKey, {
-          pageCount: pdfResult.pageCount,
-          sizeKB: pdfResult.sizeKB,
-          storagePath: pdfResult.storagePath,
-        }, durationMs);
+      let pdfSucceeded = false;
+      while (!pdfSucceeded) {
+        const attempt = (stageAttempts.get(pdfStageKey) || 0) + 1;
+        stageAttempts.set(pdfStageKey, attempt);
+        await markStageStarted(projectId, pdfStageKey, attempt);
         await logRunEvent({
           pipelineRunId,
           projectId,
-          eventType: 'stage_completed',
+          eventType: 'stage_started',
           stageKey: pdfStageKey,
           level: 'info',
-          message: `PDF uploaded (${pdfResult.pageCount} pages)`,
-          metadata: {
-            durationMs,
-            pageCount: pdfResult.pageCount,
-            sizeKB: pdfResult.sizeKB,
-          },
+          message: 'PDF generation started',
+          metadata: { attempt },
         });
 
-        console.log(`[Orchestrator] ✓ PDF uploaded (${pdfResult.pageCount} pages, ${pdfResult.sizeKB}KB)`);
-      } catch (pdfErr: unknown) {
-        const durationMs = Date.now() - pdfStart;
-        const errorMessage = (pdfErr as Error).message;
-        await markStageFailed(projectId, pdfStageKey, errorMessage, durationMs);
-        await logRunEvent({
-          pipelineRunId,
-          projectId,
-          eventType: 'stage_failed',
-          stageKey: pdfStageKey,
-          level: 'warn',
-          message: 'PDF generation failed (non-fatal)',
-          metadata: { durationMs, error: errorMessage },
-        });
-        console.warn(`[Orchestrator] PDF generation failed (non-fatal):`, errorMessage);
+        const pdfStart = Date.now();
+        try {
+          console.log(`[Orchestrator] Generating PDF (attempt ${attempt}/${MAX_STAGE_ATTEMPTS})...`);
+          const { buildValidationPDF } = await import('@/lib/reports/build-pdf');
+          const pdfResult = await buildValidationPDF(supabase, {
+            projectId,
+            programName: projectToValidate.program_name || 'Program',
+            clientName: projectToValidate.client_name || '',
+            fullReport,
+          });
+
+          // Update report record with storage path
+          if (reportRow?.id) {
+            await supabase.from('validation_reports')
+              .update({ pdf_url: pdfResult.storagePath })
+              .eq('id', reportRow.id);
+          }
+
+          // Update pipeline run with page count and size
+          if (pipelineRunId) {
+            await supabase.from('pipeline_runs')
+              .update({ report_page_count: pdfResult.pageCount, report_size_kb: pdfResult.sizeKB })
+              .eq('id', pipelineRunId);
+          }
+
+          const durationMs = Date.now() - pdfStart;
+          await markStageCompleted(projectId, pdfStageKey, {
+            pageCount: pdfResult.pageCount,
+            sizeKB: pdfResult.sizeKB,
+            storagePath: pdfResult.storagePath,
+          }, durationMs);
+          await logRunEvent({
+            pipelineRunId,
+            projectId,
+            eventType: 'stage_completed',
+            stageKey: pdfStageKey,
+            level: 'info',
+            message: `PDF uploaded (${pdfResult.pageCount} pages)`,
+            metadata: {
+              durationMs,
+              attempt,
+              pageCount: pdfResult.pageCount,
+              sizeKB: pdfResult.sizeKB,
+            },
+          });
+
+          console.log(`[Orchestrator] ✓ PDF uploaded (${pdfResult.pageCount} pages, ${pdfResult.sizeKB}KB)`);
+          pdfSucceeded = true;
+        } catch (pdfErr: unknown) {
+          const durationMs = Date.now() - pdfStart;
+          const errorMessage = (pdfErr as Error).message;
+          await markStageFailed(projectId, pdfStageKey, errorMessage, durationMs);
+          await logRunEvent({
+            pipelineRunId,
+            projectId,
+            eventType: 'stage_failed',
+            stageKey: pdfStageKey,
+            level: 'warn',
+            message: 'PDF generation failed (non-fatal)',
+            metadata: { durationMs, attempt, error: errorMessage },
+          });
+
+          if (attempt < MAX_STAGE_ATTEMPTS) {
+            const backoffMs = STAGE_RETRY_BACKOFF_MS * attempt;
+            await logRunEvent({
+              pipelineRunId,
+              projectId,
+              eventType: 'stage_retry_scheduled',
+              stageKey: pdfStageKey,
+              level: 'warn',
+              message: 'PDF generation retry scheduled',
+              metadata: { attempt, nextAttempt: attempt + 1, backoffMs, error: errorMessage },
+            });
+            if (backoffMs > 0) {
+              await new Promise((resolve) => setTimeout(resolve, backoffMs));
+            }
+            continue;
+          }
+
+          console.warn(`[Orchestrator] PDF generation failed (non-fatal):`, errorMessage);
+          break;
+        }
       }
     }
 
@@ -1387,97 +1497,122 @@ export async function orchestrateValidationInMemory(
     });
     console.log('[Orchestrator:InMemory] ↷ Skipped Citation Agent (checkpoint complete)');
   } else {
-    const attempt = (stageAttempts.get(citationStageKey) || 0) + 1;
-    stageAttempts.set(citationStageKey, attempt);
-    if (hasPersistentProject) {
-      await markStageStarted(projectId, citationStageKey, attempt);
-    }
-    await logRunEvent({
-      pipelineRunId,
-      projectId,
-      eventType: 'stage_started',
-      stageKey: citationStageKey,
-      level: 'info',
-      message: 'Citation agent started',
-      metadata: { attempt },
-    });
-    const citationStart = Date.now();
-    try {
-      console.log(`[Orchestrator:InMemory] Running citation agent for fact-checking...`);
-
-      const componentsByType = completedComponents.reduce((acc, c) => {
-        const key = c.type.replace('_', '');
-        acc[key] = c.markdown || '';
-        return acc;
-      }, {} as Record<string, string>);
-
-      citationResults = await withTimeout(
-        runCitationAgent({
-          projectId: fakeProjectId,
-          occupation: project.target_occupation || project.program_name || 'Unknown',
-          state: project.geographic_area || 'United States',
-          regulatoryAnalysis: componentsByType['regulatorycompliance'],
-          marketAnalysis: componentsByType['labormarket'],
-          employerAnalysis: componentsByType['employerdemand'],
-          financialAnalysis: componentsByType['financialviability'],
-          academicAnalysis: componentsByType['institutionalfit'],
-          demographicAnalysis: componentsByType['learnerdemand'],
-          competitiveAnalysis: componentsByType['competitivelandscape'],
-        }),
-        300000,
-        'Citation Agent'
-      );
-
+    let citationSucceeded = false;
+    while (!citationSucceeded) {
+      const attempt = (stageAttempts.get(citationStageKey) || 0) + 1;
+      stageAttempts.set(citationStageKey, attempt);
       if (hasPersistentProject) {
-        await markStageCompleted(projectId, citationStageKey, {
-          result: citationResults,
-          verifiedClaims: citationResults.verifiedClaims.length,
-          warnings: citationResults.warnings.length,
-        }, Date.now() - citationStart);
+        await markStageStarted(projectId, citationStageKey, attempt);
       }
       await logRunEvent({
         pipelineRunId,
         projectId,
-        eventType: 'stage_completed',
+        eventType: 'stage_started',
         stageKey: citationStageKey,
         level: 'info',
-        message: `Citation agent complete — ${citationResults.verifiedClaims.length} claims verified`,
-        metadata: {
-          durationMs: Date.now() - citationStart,
-          verifiedClaims: citationResults.verifiedClaims.length,
-          warnings: citationResults.warnings.length,
-          corrections: citationResults.corrections?.length || 0,
-        },
+        message: 'Citation agent started',
+        metadata: { attempt },
       });
+      const citationStart = Date.now();
+      try {
+        console.log(`[Orchestrator:InMemory] Running citation agent for fact-checking (attempt ${attempt}/${MAX_STAGE_ATTEMPTS})...`);
 
-      console.log(`[Orchestrator:InMemory] ✓ Citation agent complete — ${citationResults.verifiedClaims.length} claims verified`);
+        const componentsByType = completedComponents.reduce((acc, c) => {
+          const key = c.type.replace('_', '');
+          acc[key] = c.markdown || '';
+          return acc;
+        }, {} as Record<string, string>);
 
-      // Apply citation corrections to component markdown before report generation
-      if (citationResults.corrections && citationResults.corrections.length > 0) {
-        console.log(`[Orchestrator:InMemory] Applying ${citationResults.corrections.length} citation corrections...`);
-        for (const correction of citationResults.corrections) {
-          const comp = completedComponents.find(c => c.type === correction.componentType);
-          if (comp && comp.markdown && comp.markdown.includes(correction.original)) {
-            comp.markdown = comp.markdown.replace(correction.original, correction.corrected);
-            console.log(`[Orchestrator:InMemory]   ✓ Corrected [${correction.componentType}]: ${correction.reason}`);
+        citationResults = await withTimeout(
+          runCitationAgent({
+            projectId: fakeProjectId,
+            occupation: project.target_occupation || project.program_name || 'Unknown',
+            state: project.geographic_area || 'United States',
+            regulatoryAnalysis: componentsByType['regulatorycompliance'],
+            marketAnalysis: componentsByType['labormarket'],
+            employerAnalysis: componentsByType['employerdemand'],
+            financialAnalysis: componentsByType['financialviability'],
+            academicAnalysis: componentsByType['institutionalfit'],
+            demographicAnalysis: componentsByType['learnerdemand'],
+            competitiveAnalysis: componentsByType['competitivelandscape'],
+          }),
+          300000,
+          'Citation Agent'
+        );
+
+        if (hasPersistentProject) {
+          await markStageCompleted(projectId, citationStageKey, {
+            result: citationResults,
+            verifiedClaims: citationResults.verifiedClaims.length,
+            warnings: citationResults.warnings.length,
+          }, Date.now() - citationStart);
+        }
+        await logRunEvent({
+          pipelineRunId,
+          projectId,
+          eventType: 'stage_completed',
+          stageKey: citationStageKey,
+          level: 'info',
+          message: `Citation agent complete — ${citationResults.verifiedClaims.length} claims verified`,
+          metadata: {
+            durationMs: Date.now() - citationStart,
+            attempt,
+            verifiedClaims: citationResults.verifiedClaims.length,
+            warnings: citationResults.warnings.length,
+            corrections: citationResults.corrections?.length || 0,
+          },
+        });
+
+        console.log(`[Orchestrator:InMemory] ✓ Citation agent complete — ${citationResults.verifiedClaims.length} claims verified`);
+
+        // Apply citation corrections to component markdown before report generation
+        if (citationResults.corrections && citationResults.corrections.length > 0) {
+          console.log(`[Orchestrator:InMemory] Applying ${citationResults.corrections.length} citation corrections...`);
+          for (const correction of citationResults.corrections) {
+            const comp = completedComponents.find(c => c.type === correction.componentType);
+            if (comp && comp.markdown && comp.markdown.includes(correction.original)) {
+              comp.markdown = comp.markdown.replace(correction.original, correction.corrected);
+              console.log(`[Orchestrator:InMemory]   ✓ Corrected [${correction.componentType}]: ${correction.reason}`);
+            }
           }
         }
+
+        citationSucceeded = true;
+      } catch (e) {
+        const errorMsg = e instanceof Error ? e.message : String(e);
+        if (hasPersistentProject) {
+          await markStageFailed(projectId, citationStageKey, errorMsg, Date.now() - citationStart);
+        }
+        await logRunEvent({
+          pipelineRunId,
+          projectId,
+          eventType: 'stage_failed',
+          stageKey: citationStageKey,
+          level: 'warn',
+          message: 'Citation agent failed; continuing',
+          metadata: { durationMs: Date.now() - citationStart, attempt, error: errorMsg },
+        });
+
+        if (attempt < MAX_STAGE_ATTEMPTS) {
+          const backoffMs = STAGE_RETRY_BACKOFF_MS * attempt;
+          await logRunEvent({
+            pipelineRunId,
+            projectId,
+            eventType: 'stage_retry_scheduled',
+            stageKey: citationStageKey,
+            level: 'warn',
+            message: 'Citation agent retry scheduled',
+            metadata: { attempt, nextAttempt: attempt + 1, backoffMs, error: errorMsg },
+          });
+          if (backoffMs > 0) {
+            await new Promise((resolve) => setTimeout(resolve, backoffMs));
+          }
+          continue;
+        }
+
+        console.warn('[Orchestrator:InMemory] Citation agent failed:', e);
+        break;
       }
-    } catch (e) {
-      const errorMsg = e instanceof Error ? e.message : String(e);
-      if (hasPersistentProject) {
-        await markStageFailed(projectId, citationStageKey, errorMsg, Date.now() - citationStart);
-      }
-      await logRunEvent({
-        pipelineRunId,
-        projectId,
-        eventType: 'stage_failed',
-        stageKey: citationStageKey,
-        level: 'warn',
-        message: 'Citation agent failed; continuing',
-        metadata: { durationMs: Date.now() - citationStart, error: errorMsg },
-      });
-      console.warn('[Orchestrator:InMemory] Citation agent failed:', e);
     }
   }
 
@@ -1524,77 +1659,100 @@ export async function orchestrateValidationInMemory(
     });
     console.log('[Orchestrator:InMemory] ↷ Skipped Tiger Team (checkpoint complete)');
   } else {
-    const attempt = (stageAttempts.get(tigerTeamStageKey) || 0) + 1;
-    stageAttempts.set(tigerTeamStageKey, attempt);
-    if (hasPersistentProject) {
-      await markStageStarted(projectId, tigerTeamStageKey, attempt);
-    }
-    await logRunEvent({
-      pipelineRunId,
-      projectId,
-      eventType: 'stage_started',
-      stageKey: tigerTeamStageKey,
-      level: 'info',
-      message: 'Tiger team synthesis started',
-      metadata: { attempt },
-    });
-    const tigerStart = Date.now();
-    try {
-      console.log(`[Orchestrator:InMemory] Running tiger team synthesis...`);
-
-      // Build ResearchComponent-compatible objects for tiger team
-      const tigerTeamComponents = completedComponents.map(c => ({
-        id: `inmemory-${c.type}`,
-        project_id: fakeProjectId,
-        component_type: c.type,
-        agent_persona: AGENT_CONFIG.find(a => a.type === c.type)?.persona || 'unknown',
-        content: c.data || {},
-        markdown_output: c.markdown,
-        status: 'completed' as const,
-        created_at: new Date().toISOString(),
-      }));
-
-      const { markdown } = await withTimeout(
-        runTigerTeam(
-          fakeProjectId,
-          project as any,
-          tigerTeamComponents as any
-        ),
-        420000,
-        'Tiger Team Synthesis'
-      );
-      tigerTeamMarkdown = markdown;
+    let tigerSucceeded = false;
+    while (!tigerSucceeded) {
+      const attempt = (stageAttempts.get(tigerTeamStageKey) || 0) + 1;
+      stageAttempts.set(tigerTeamStageKey, attempt);
       if (hasPersistentProject) {
-        await markStageCompleted(projectId, tigerTeamStageKey, {
-          markdown: tigerTeamMarkdown,
-          markdownLength: tigerTeamMarkdown.length,
-        }, Date.now() - tigerStart);
+        await markStageStarted(projectId, tigerTeamStageKey, attempt);
       }
       await logRunEvent({
         pipelineRunId,
         projectId,
-        eventType: 'stage_completed',
+        eventType: 'stage_started',
         stageKey: tigerTeamStageKey,
         level: 'info',
-        message: 'Tiger team synthesis completed',
-        metadata: { durationMs: Date.now() - tigerStart, markdownLength: tigerTeamMarkdown.length },
+        message: 'Tiger team synthesis started',
+        metadata: { attempt },
       });
-      console.log(`[Orchestrator:InMemory] ✓ Tiger team completed`);
-    } catch (e) {
-      const errorMsg = e instanceof Error ? e.message : String(e);
-      if (hasPersistentProject) {
-        await markStageFailed(projectId, tigerTeamStageKey, errorMsg, Date.now() - tigerStart);
+      const tigerStart = Date.now();
+      try {
+        console.log(`[Orchestrator:InMemory] Running tiger team synthesis (attempt ${attempt}/${MAX_STAGE_ATTEMPTS})...`);
+
+        // Build ResearchComponent-compatible objects for tiger team
+        const tigerTeamComponents = completedComponents.map(c => ({
+          id: `inmemory-${c.type}`,
+          project_id: fakeProjectId,
+          component_type: c.type,
+          agent_persona: AGENT_CONFIG.find(a => a.type === c.type)?.persona || 'unknown',
+          content: c.data || {},
+          markdown_output: c.markdown,
+          status: 'completed' as const,
+          created_at: new Date().toISOString(),
+        }));
+
+        const { markdown } = await withTimeout(
+          runTigerTeam(
+            fakeProjectId,
+            project as any,
+            tigerTeamComponents as any
+          ),
+          420000,
+          'Tiger Team Synthesis'
+        );
+        tigerTeamMarkdown = markdown;
+        if (hasPersistentProject) {
+          await markStageCompleted(projectId, tigerTeamStageKey, {
+            markdown: tigerTeamMarkdown,
+            markdownLength: tigerTeamMarkdown.length,
+          }, Date.now() - tigerStart);
+        }
+        await logRunEvent({
+          pipelineRunId,
+          projectId,
+          eventType: 'stage_completed',
+          stageKey: tigerTeamStageKey,
+          level: 'info',
+          message: 'Tiger team synthesis completed',
+          metadata: { durationMs: Date.now() - tigerStart, attempt, markdownLength: tigerTeamMarkdown.length },
+        });
+        console.log(`[Orchestrator:InMemory] ✓ Tiger team completed`);
+        tigerSucceeded = true;
+      } catch (e) {
+        const errorMsg = e instanceof Error ? e.message : String(e);
+        if (hasPersistentProject) {
+          await markStageFailed(projectId, tigerTeamStageKey, errorMsg, Date.now() - tigerStart);
+        }
+        await logRunEvent({
+          pipelineRunId,
+          projectId,
+          eventType: 'stage_failed',
+          stageKey: tigerTeamStageKey,
+          level: 'warn',
+          message: 'Tiger team synthesis failed; continuing',
+          metadata: { durationMs: Date.now() - tigerStart, attempt, error: errorMsg },
+        });
+
+        if (attempt < MAX_STAGE_ATTEMPTS) {
+          const backoffMs = STAGE_RETRY_BACKOFF_MS * attempt;
+          await logRunEvent({
+            pipelineRunId,
+            projectId,
+            eventType: 'stage_retry_scheduled',
+            stageKey: tigerTeamStageKey,
+            level: 'warn',
+            message: 'Tiger team synthesis retry scheduled',
+            metadata: { attempt, nextAttempt: attempt + 1, backoffMs, error: errorMsg },
+          });
+          if (backoffMs > 0) {
+            await new Promise((resolve) => setTimeout(resolve, backoffMs));
+          }
+          continue;
+        }
+
+        console.warn('[Orchestrator:InMemory] Tiger team failed:', e);
+        break;
       }
-      await logRunEvent({
-        pipelineRunId,
-        projectId,
-        eventType: 'stage_failed',
-        stageKey: tigerTeamStageKey,
-        level: 'warn',
-        message: 'Tiger team synthesis failed; continuing',
-        metadata: { durationMs: Date.now() - tigerStart, error: errorMsg },
-      });
-      console.warn('[Orchestrator:InMemory] Tiger team failed:', e);
     }
   }
 
@@ -1637,56 +1795,95 @@ export async function orchestrateValidationInMemory(
     });
     console.log('[Orchestrator:InMemory] ↷ Skipped Report Generation (checkpoint complete)');
   } else {
-    const attempt = (stageAttempts.get(reportStageKey) || 0) + 1;
-    stageAttempts.set(reportStageKey, attempt);
-    if (hasPersistentProject) {
-      await markStageStarted(projectId, reportStageKey, attempt);
-    }
-    await logRunEvent({
-      pipelineRunId,
-      projectId,
-      eventType: 'stage_started',
-      stageKey: reportStageKey,
-      level: 'info',
-      message: 'Report generation started',
-      metadata: { attempt },
-    });
+    let reportSucceeded = false;
+    while (!reportSucceeded) {
+      const attempt = (stageAttempts.get(reportStageKey) || 0) + 1;
+      stageAttempts.set(reportStageKey, attempt);
+      if (hasPersistentProject) {
+        await markStageStarted(projectId, reportStageKey, attempt);
+      }
+      await logRunEvent({
+        pipelineRunId,
+        projectId,
+        eventType: 'stage_started',
+        stageKey: reportStageKey,
+        level: 'info',
+        message: 'Report generation started',
+        metadata: { attempt },
+      });
 
-    const reportStart = Date.now();
-    console.log(`[Orchestrator:InMemory] Generating report...`);
-    try {
-      fullReport = await writeValidationBrief({
-        project: project as any,
-        components: reportComponents as any,
-        programScore,
-        tigerTeamMarkdown,
-      });
-      console.log('[Orchestrator:InMemory] ✓ Validation brief writer generated polished report');
-    } catch (e) {
-      console.warn('[Orchestrator:InMemory] Validation brief writer failed, falling back to legacy report generator:', e);
-      fullReport = generateReport({
-        project: project as any,
-        components: reportComponents as any,
-        programScore,
-        tigerTeamMarkdown,
-      });
+      const reportStart = Date.now();
+      console.log(`[Orchestrator:InMemory] Generating report (attempt ${attempt}/${MAX_STAGE_ATTEMPTS})...`);
+      try {
+        try {
+          fullReport = await writeValidationBrief({
+            project: project as any,
+            components: reportComponents as any,
+            programScore,
+            tigerTeamMarkdown,
+          });
+          console.log('[Orchestrator:InMemory] ✓ Validation brief writer generated polished report');
+        } catch (e) {
+          console.warn('[Orchestrator:InMemory] Validation brief writer failed, falling back to legacy report generator:', e);
+          fullReport = generateReport({
+            project: project as any,
+            components: reportComponents as any,
+            programScore,
+            tigerTeamMarkdown,
+          });
+        }
+        if (hasPersistentProject) {
+          await markStageCompleted(projectId, reportStageKey, {
+            fullReport,
+            reportLength: fullReport.length,
+            reportHash: hashMarkdown(fullReport),
+          }, Date.now() - reportStart);
+        }
+        await logRunEvent({
+          pipelineRunId,
+          projectId,
+          eventType: 'stage_completed',
+          stageKey: reportStageKey,
+          level: 'info',
+          message: `Report generated (${fullReport.length} chars)`,
+          metadata: { durationMs: Date.now() - reportStart, attempt, reportLength: fullReport.length },
+        });
+        reportSucceeded = true;
+      } catch (e) {
+        const errorMsg = e instanceof Error ? e.message : String(e);
+        if (hasPersistentProject) {
+          await markStageFailed(projectId, reportStageKey, errorMsg, Date.now() - reportStart);
+        }
+        await logRunEvent({
+          pipelineRunId,
+          projectId,
+          eventType: 'stage_failed',
+          stageKey: reportStageKey,
+          level: 'error',
+          message: 'Report generation failed',
+          metadata: { durationMs: Date.now() - reportStart, attempt, error: errorMsg },
+        });
+
+        if (attempt < MAX_STAGE_ATTEMPTS) {
+          const backoffMs = STAGE_RETRY_BACKOFF_MS * attempt;
+          await logRunEvent({
+            pipelineRunId,
+            projectId,
+            eventType: 'stage_retry_scheduled',
+            stageKey: reportStageKey,
+            level: 'warn',
+            message: 'Report generation retry scheduled',
+            metadata: { attempt, nextAttempt: attempt + 1, backoffMs, error: errorMsg },
+          });
+          if (backoffMs > 0) {
+            await new Promise((resolve) => setTimeout(resolve, backoffMs));
+          }
+          continue;
+        }
+
+        throw e;
+      }
     }
-    if (hasPersistentProject) {
-      await markStageCompleted(projectId, reportStageKey, {
-        fullReport,
-        reportLength: fullReport.length,
-        reportHash: hashMarkdown(fullReport),
-      }, Date.now() - reportStart);
-    }
-    await logRunEvent({
-      pipelineRunId,
-      projectId,
-      eventType: 'stage_completed',
-      stageKey: reportStageKey,
-      level: 'info',
-      message: `Report generated (${fullReport.length} chars)`,
-      metadata: { durationMs: Date.now() - reportStart, reportLength: fullReport.length },
-    });
   }
 
   const totalDuration = Date.now() - startTime;

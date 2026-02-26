@@ -11,7 +11,8 @@
     "wos:discover": "npx tsx cli.ts discover",
     "wos:validate": "npx tsx cli.ts validate",
     "wos:pipeline": "npx tsx cli.ts pipeline",
-    "wos:report": "npx tsx cli.ts report"
+    "wos:report": "npx tsx cli.ts report",
+    "phasec:smoke": "node -r dotenv/config scripts/phase-c-smoke-check.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.74.0",
