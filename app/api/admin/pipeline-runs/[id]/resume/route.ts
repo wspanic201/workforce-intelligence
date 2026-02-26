@@ -1,8 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, after } from 'next/server';
 import { verifyAdminSession } from '@/lib/auth/admin';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { orchestrateValidation } from '@/lib/agents/orchestrator';
 import { logRunEvent } from '@/lib/pipeline/telemetry';
+
+export const maxDuration = 800;
 
 /**
  * POST /api/admin/pipeline-runs/[id]/resume
@@ -101,21 +103,25 @@ export async function POST(
     },
   });
 
-  // Kick off async resume. The orchestrator is checkpoint-aware and will skip completed stages.
-  orchestrateValidation(run.project_id, {
-    modelOverride: resolvedModel,
-    modelProfile: resolvedProfile || undefined,
-  }).catch(async (error) => {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(`[Admin Resume] Failed for project ${run.project_id}:`, error);
-    await logRunEvent({
-      pipelineRunId: run.id,
-      projectId: run.project_id,
-      eventType: 'manual_resume_failed',
-      level: 'error',
-      message: 'Manual resume failed',
-      metadata: { error: errorMessage },
-    });
+  // Resume after response using Next.js after() for more reliable background execution.
+  after(async () => {
+    try {
+      await orchestrateValidation(run.project_id, {
+        modelOverride: resolvedModel,
+        modelProfile: resolvedProfile || undefined,
+      });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error(`[Admin Resume] Failed for project ${run.project_id}:`, error);
+      await logRunEvent({
+        pipelineRunId: run.id,
+        projectId: run.project_id,
+        eventType: 'manual_resume_failed',
+        level: 'error',
+        message: 'Manual resume failed',
+        metadata: { error: errorMessage },
+      });
+    }
   });
 
   return NextResponse.json({

@@ -1,6 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, after } from 'next/server';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { orchestrateValidation } from '@/lib/agents/orchestrator';
+
+export const maxDuration = 800;
 
 export async function POST(request: NextRequest) {
   try {
@@ -40,9 +42,13 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Start validation process asynchronously (don't wait)
-    orchestrateValidation(project.id).catch((error) => {
-      console.error(`[API] Orchestration failed for project ${project.id}:`, error);
+    // Start validation after response using Next.js after().
+    after(async () => {
+      try {
+        await orchestrateValidation(project.id);
+      } catch (error) {
+        console.error(`[API] Orchestration failed for project ${project.id}:`, error);
+      }
     });
 
     return NextResponse.json({ projectId: project.id }, { status: 201 });

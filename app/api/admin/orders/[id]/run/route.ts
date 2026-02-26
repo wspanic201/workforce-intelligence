@@ -1,7 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse, after } from 'next/server';
 import { verifyAdminSession } from '@/lib/auth/admin';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { orchestrateValidation } from '@/lib/agents/orchestrator';
+
+export const maxDuration = 800;
 
 /**
  * POST /api/admin/orders/[id]/run
@@ -91,20 +93,24 @@ export async function POST(
     return NextResponse.json({ error: updateError.message }, { status: 500 });
   }
 
-  // Fire and forget orchestrator
-  orchestrateValidation(project.id).catch(async (error) => {
-    console.error(`[AdminRun] Orchestration failed for order ${id}, project ${project.id}:`, error);
-    await supabase
-      .from('orders')
-      .update({
-        order_status: 'review',
-        pipeline_metadata: {
-          triggered_from: 'admin_run_button',
-          started_at: startedAt,
-          last_error: error?.message || String(error),
-        },
-      })
-      .eq('id', id);
+  // Run after response using Next.js after() so the platform keeps execution context alive.
+  after(async () => {
+    try {
+      await orchestrateValidation(project.id);
+    } catch (error) {
+      console.error(`[AdminRun] Orchestration failed for order ${id}, project ${project.id}:`, error);
+      await supabase
+        .from('orders')
+        .update({
+          order_status: 'review',
+          pipeline_metadata: {
+            triggered_from: 'admin_run_button',
+            started_at: startedAt,
+            last_error: error instanceof Error ? error.message : String(error),
+          },
+        })
+        .eq('id', id);
+    }
   });
 
   return NextResponse.json({ ok: true, orderId: id, projectId: project.id });
