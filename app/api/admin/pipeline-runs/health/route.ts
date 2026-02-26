@@ -9,6 +9,12 @@ function percentile(values: number[], p: number): number | null {
   return sorted[idx] ?? null;
 }
 
+function isMissingTableError(error: any): boolean {
+  const msg = String(error?.message || '').toLowerCase();
+  const code = String(error?.code || '').toLowerCase();
+  return code === '42p01' || msg.includes('could not find the table') || msg.includes('does not exist') || msg.includes('relation');
+}
+
 /** GET /api/admin/pipeline-runs/health — basic reliability/SLO metrics */
 export async function GET(req: NextRequest) {
   const isAdmin = await verifyAdminSession();
@@ -37,12 +43,15 @@ export async function GET(req: NextRequest) {
   if (runsResult.error) {
     return NextResponse.json({ error: runsResult.error.message }, { status: 500 });
   }
-  if (eventsResult.error) {
-    return NextResponse.json({ error: eventsResult.error.message }, { status: 500 });
-  }
 
   const runs = runsResult.data || [];
-  const events = eventsResult.data || [];
+  const events = eventsResult.error
+    ? (isMissingTableError(eventsResult.error) ? [] : null)
+    : (eventsResult.data || []);
+
+  if (events === null) {
+    return NextResponse.json({ error: eventsResult.error?.message || 'Failed to load event telemetry' }, { status: 500 });
+  }
 
   const runtimeValues = runs
     .map((r) => r.runtime_seconds)

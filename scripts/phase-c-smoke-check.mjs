@@ -24,7 +24,12 @@ const { data: events, error } = await supabase
   .order('created_at', { ascending: true });
 
 if (error) {
-  console.error('Failed to load events:', error.message);
+  const msg = String(error.message || 'unknown error');
+  if (msg.toLowerCase().includes('could not find the table') || msg.toLowerCase().includes('does not exist')) {
+    console.error('pipeline_run_events table not found. Apply Phase B/Phase C migrations before running smoke check.');
+    process.exit(2);
+  }
+  console.error('Failed to load events:', msg);
   process.exit(1);
 }
 
