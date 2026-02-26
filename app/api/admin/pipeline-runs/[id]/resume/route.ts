@@ -4,7 +4,7 @@ import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { orchestrateValidation } from '@/lib/agents/orchestrator';
 import { logRunEvent } from '@/lib/pipeline/telemetry';
 
-export const maxDuration = 800;
+export const maxDuration = 300;
 
 /**
  * POST /api/admin/pipeline-runs/[id]/resume

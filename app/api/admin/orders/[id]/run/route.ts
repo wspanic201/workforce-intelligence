@@ -3,7 +3,7 @@ import { verifyAdminSession } from '@/lib/auth/admin';
 import { getSupabaseServerClient } from '@/lib/supabase/client';
 import { orchestrateValidation } from '@/lib/agents/orchestrator';
 
-export const maxDuration = 800;
+export const maxDuration = 300;
 
 /**
  * POST /api/admin/orders/[id]/run
