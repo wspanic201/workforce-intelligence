@@ -105,7 +105,14 @@ const AGENT_LABELS: Record<string, string> = {
   citation_verification: 'Citation Verification',
 };
 
-const MODEL_PROFILE_OPTIONS = [
+type ModelProfileOption = {
+  id: string;
+  label: string;
+  model: string;
+  help: string;
+};
+
+const FALLBACK_MODEL_PROFILE_OPTIONS: ModelProfileOption[] = [
   {
     id: 'balanced-sonnet',
     label: 'Balanced (Sonnet 4.6)',
@@ -130,7 +137,7 @@ const MODEL_PROFILE_OPTIONS = [
     model: '',
     help: 'Use a custom model string.',
   },
-] as const;
+];
 
 function ScoreBadge({ score }: { score: number | null | undefined }) {
   if (score == null) return <span className="text-slate-400 text-sm">--</span>;
@@ -179,6 +186,7 @@ export default function ReportDetailPage() {
   const [resumeStatus, setResumeStatus] = useState<string | null>(null);
   const [selectedProfile, setSelectedProfile] = useState<string>('balanced-sonnet');
   const [selectedModel, setSelectedModel] = useState<string>('claude-sonnet-4-6');
+  const [profileOptions, setProfileOptions] = useState<ModelProfileOption[]>(FALLBACK_MODEL_PROFILE_OPTIONS);
 
   useEffect(() => {
     fetchData();
@@ -193,6 +201,40 @@ export default function ReportDetailPage() {
   }, [run?.id]);
 
   useEffect(() => {
+    let cancelled = false;
+
+    const loadModelProfiles = async () => {
+      try {
+        const res = await fetch('/api/admin/model-profiles');
+        const data = await res.json().catch(() => []);
+        if (!res.ok || !Array.isArray(data)) return;
+
+        const mapped: ModelProfileOption[] = data
+          .filter((p: any) => p?.is_active)
+          .map((p: any) => ({
+            id: p.slug,
+            label: p.display_name,
+            model: p.model,
+            help: p.description || `Profile ${p.slug}`,
+          }));
+
+        const custom = FALLBACK_MODEL_PROFILE_OPTIONS.find((p) => p.id === 'custom');
+        const next = [...mapped, ...(custom ? [custom] : [])];
+        if (!cancelled && next.length > 0) {
+          setProfileOptions(next);
+        }
+      } catch {
+        // Keep fallback options
+      }
+    };
+
+    loadModelProfiles();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
     if (!run) return;
 
     const runProfile = typeof run.config?.modelProfile === 'string' ? run.config.modelProfile : '';
@@ -201,12 +243,12 @@ export default function ReportDetailPage() {
     if (runProfile) {
       setSelectedProfile(runProfile);
     } else {
-      const matched = MODEL_PROFILE_OPTIONS.find((p) => p.model === runModel);
+      const matched = profileOptions.find((p) => p.model === runModel);
       setSelectedProfile(matched?.id || 'custom');
     }
 
     setSelectedModel(runModel || 'claude-sonnet-4-6');
-  }, [run]);
+  }, [run, profileOptions]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -311,7 +353,7 @@ export default function ReportDetailPage() {
 
   const onProfileChange = (profileId: string) => {
     setSelectedProfile(profileId);
-    const profile = MODEL_PROFILE_OPTIONS.find((p) => p.id === profileId);
+    const profile = profileOptions.find((p) => p.id === profileId);
     if (profile && profile.model) {
       setSelectedModel(profile.model);
     }
@@ -652,7 +694,7 @@ export default function ReportDetailPage() {
                       onChange={(e) => onProfileChange(e.target.value)}
                       className="h-8 rounded-md border border-slate-200 bg-white px-2 text-[11px] text-slate-600"
                     >
-                      {MODEL_PROFILE_OPTIONS.map((profile) => (
+                      {profileOptions.map((profile) => (
                         <option key={profile.id} value={profile.id}>{profile.label}</option>
                       ))}
                     </select>
@@ -684,7 +726,7 @@ export default function ReportDetailPage() {
                     </div>
                   )}
                   <p className="mb-3 text-[11px] text-slate-400">
-                    Profile: {MODEL_PROFILE_OPTIONS.find((p) => p.id === selectedProfile)?.help || 'Custom model override for this resume run.'}
+                    Profile: {profileOptions.find((p) => p.id === selectedProfile)?.help || 'Custom model override for this resume run.'}
                   </p>
                   {eventsLoading ? (
                     <p className="text-sm text-slate-400">Loading trace...</p>
