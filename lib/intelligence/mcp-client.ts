@@ -9,6 +9,9 @@
 
 const MCP_BASE_URL = process.env.MCP_BASE_URL || 'http://localhost:3000';
 const MCP_SECRET = process.env.WAVELENGTH_MCP_SECRET;
+const TOOL_TIMEOUT_MS = 10_000;
+const MAX_RETRIES = 2;
+const RETRY_BACKOFF_MS = 500;
 
 interface MCPToolResult {
   content?: Array<{ type: string; text: string }>;
@@ -19,6 +22,7 @@ async function callMCPTool(
   sessionId: string,
   toolName: string,
   args: Record<string, string | number | boolean>,
+  attempt = 1,
 ): Promise<string> {
   const body = {
     jsonrpc: '2.0',
@@ -34,29 +38,39 @@ async function callMCPTool(
   };
   if (MCP_SECRET) headers['authorization'] = `Bearer ${MCP_SECRET}`;
 
-  const res = await fetch(`${MCP_BASE_URL}/api/mcp`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(body),
-  });
+  try {
+    const res = await fetch(`${MCP_BASE_URL}/api/mcp`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(TOOL_TIMEOUT_MS),
+    });
 
-  if (!res.ok) return '';
+    if (!res.ok) return '';
 
-  const ct = res.headers.get('content-type') ?? '';
-  let data: { result?: MCPToolResult };
+    const ct = res.headers.get('content-type') ?? '';
+    let data: { result?: MCPToolResult };
 
-  if (ct.includes('text/event-stream')) {
-    const text = await res.text();
-    const line = text.split('\n').find(l => l.startsWith('data:'));
-    if (!line) return '';
-    data = JSON.parse(line.slice(5).trim());
-  } else {
-    data = await res.json();
+    if (ct.includes('text/event-stream')) {
+      const text = await res.text();
+      const line = text.split('\n').find(l => l.startsWith('data:'));
+      if (!line) return '';
+      data = JSON.parse(line.slice(5).trim());
+    } else {
+      data = await res.json();
+    }
+
+    const result = data?.result as MCPToolResult | undefined;
+    if (!result || result.isError) return '';
+    return result.content?.map(c => c.text).join('\n') ?? '';
+  } catch (err) {
+    if (attempt < MAX_RETRIES) {
+      await new Promise(r => setTimeout(r, RETRY_BACKOFF_MS * attempt));
+      return callMCPTool(sessionId, toolName, args, attempt + 1);
+    }
+    console.error(`[MCP Client] ${toolName} failed after ${MAX_RETRIES} attempts:`, err instanceof Error ? err.message : String(err));
+    return '';
   }
-
-  const result = data?.result as MCPToolResult | undefined;
-  if (!result || result.isError) return '';
-  return result.content?.map(c => c.text).join('\n') ?? '';
 }
 
 async function openMCPSession(): Promise<string> {
@@ -124,13 +138,15 @@ export async function getOccupationIntel(
     return { wages: '', projections: '', skills: '', statePriority: '', employers: '', h1bDemand: '' };
   }
 
-  // Sequential calls — MCP sessions don't reliably support concurrent requests
-  const wages = await callMCPTool(sessionId, 'get_wages', { socCode: socCode, stateCode: stateCode });
-  const projections = await callMCPTool(sessionId, 'get_projections', { socCode: socCode, stateFips: stateFips });
-  const skills = onetCode ? await callMCPTool(sessionId, 'get_skills', { onetCode: onetCode }) : '';
-  const statePriority = await callMCPTool(sessionId, 'get_state_priority', { socCode: socCode, stateFips: stateFips });
-  const employers = await callMCPTool(sessionId, 'get_employers', { stateFips: stateFips });
-  const h1bDemand = await callMCPTool(sessionId, 'get_h1b_demand', { socCode: socCode });
+  // Parallel tool calls — each is independent
+  const [wages, projections, skills, statePriority, employers, h1bDemand] = await Promise.all([
+    callMCPTool(sessionId, 'get_wages', { socCode, stateCode }),
+    callMCPTool(sessionId, 'get_projections', { socCode, stateFips }),
+    onetCode ? callMCPTool(sessionId, 'get_skills', { onetCode }) : Promise.resolve(''),
+    callMCPTool(sessionId, 'get_state_priority', { socCode, stateFips }),
+    callMCPTool(sessionId, 'get_employers', { stateFips }),
+    callMCPTool(sessionId, 'get_h1b_demand', { socCode }),
+  ]);
 
   return { wages, projections, skills, statePriority, employers, h1bDemand };
 }
@@ -150,7 +166,7 @@ export async function getProgramCompletions(
 export async function searchOccupations(query: string): Promise<string> {
   const sessionId = await openMCPSession();
   if (!sessionId) return '';
-  return callMCPTool(sessionId, 'search_occupations', { query });
+  return callMCPTool(sessionId, 'search_occupations', { keyword: query });
 }
 
 // ── State code helpers ────────────────────────────────────────────────────────

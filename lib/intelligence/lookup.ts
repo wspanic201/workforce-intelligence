@@ -860,3 +860,125 @@ export async function getDataInventory() {
 export async function getCitationForTable(tableName: string) {
   return getCitation(tableName);
 }
+
+// ════════════════════════════════════════════════════════
+// EMPLOYER, COMPLETION, AND SEARCH LOOKUPS
+// (Migrated from MCP tools.ts for unified data access)
+// ════════════════════════════════════════════════════════
+
+export interface EmployerRow {
+  employer_name: string | null;
+  city: string | null;
+  state: string | null;
+  naics_code: string | null;
+  industry: string | null;
+  estimated_employees: number | null;
+  key_occupations: string[] | null;
+  is_hiring: boolean | null;
+}
+
+export interface CompletionRow {
+  cip_code: string | null;
+  program_title: string | null;
+  institution_name: string | null;
+  institution_id: string | null;
+  award_level: string | null;
+  total_completions: number | null;
+  state: string | null;
+  institution_state: string | null;
+  year: number | null;
+}
+
+export interface OccupationSearchRow {
+  soc_code: string;
+  occupation_title: string;
+}
+
+export async function getEmployers(state: string, naicsPrefix?: string): Promise<LookupResult<EmployerRow[]>> {
+  let query = supabase()
+    .from('intel_employers')
+    .select('employer_name, city, state, naics_code, industry, estimated_employees, key_occupations, is_hiring')
+    .eq('state', state.toUpperCase())
+    .order('estimated_employees', { ascending: false })
+    .limit(25);
+
+  if (naicsPrefix) {
+    query = query.like('naics_code', `${naicsPrefix}%`);
+  }
+
+  const { data, error } = await query;
+  if (error || !data?.length) {
+    return { data: null, found: false, citation: 'U.S. Census Bureau, County Business Patterns', dataContext: 'all', freshness: { period: '2022', lastRefreshed: '2024-12', isStale: false } };
+  }
+  return {
+    data: data as EmployerRow[],
+    found: true,
+    citation: 'U.S. Census Bureau, County Business Patterns 2022',
+    dataContext: 'all',
+    freshness: { period: '2022', lastRefreshed: '2024-12', isStale: false },
+  };
+}
+
+export async function getCompletionsByCIP(cipCode: string, stateFips?: string): Promise<LookupResult<CompletionRow[]>> {
+  const { data, error } = await supabase()
+    .from('intel_completions')
+    .select('cip_code, program_title, institution_name, institution_id, award_level, total_completions, state, institution_state, year')
+    .eq('cip_code', cipCode)
+    .order('total_completions', { ascending: false })
+    .limit(50);
+
+  if (error || !data?.length) {
+    return { data: null, found: false, citation: 'NCES IPEDS Completions', dataContext: 'all', freshness: { period: '2021', lastRefreshed: '2024-12', isStale: false } };
+  }
+
+  let rows = data as CompletionRow[];
+  if (stateFips) {
+    const target = stateFips.toUpperCase();
+    rows = rows.filter((row) => row.state === target || row.institution_state === target);
+  }
+
+  if (!rows.length) {
+    return { data: null, found: false, citation: 'NCES IPEDS Completions', dataContext: 'all', freshness: { period: '2021', lastRefreshed: '2024-12', isStale: false } };
+  }
+
+  return {
+    data: rows,
+    found: true,
+    citation: 'NCES IPEDS Completions Survey 2021',
+    dataContext: 'all',
+    freshness: { period: '2021', lastRefreshed: '2024-12', isStale: false },
+  };
+}
+
+export async function searchOccupationsByKeyword(keyword: string): Promise<LookupResult<OccupationSearchRow[]>> {
+  const safeKeyword = keyword.trim().replace(/[,%]/g, '');
+  if (!safeKeyword) {
+    return { data: null, found: false, citation: 'BLS OES', dataContext: 'all', freshness: { period: 'N/A', lastRefreshed: 'N/A', isStale: false } };
+  }
+
+  const { data, error } = await supabase()
+    .from('intel_wages')
+    .select('soc_code, occupation_title')
+    .or(`occupation_title.ilike.%${safeKeyword}%,soc_code.ilike.%${safeKeyword}%`)
+    .limit(100);
+
+  if (error || !data?.length) {
+    return { data: null, found: false, citation: 'BLS OES', dataContext: 'all', freshness: { period: 'N/A', lastRefreshed: 'N/A', isStale: false } };
+  }
+
+  const unique = new Map<string, OccupationSearchRow>();
+  for (const row of data as OccupationSearchRow[]) {
+    if (!unique.has(row.soc_code)) {
+      unique.set(row.soc_code, row);
+    }
+  }
+
+  const results = Array.from(unique.values()).slice(0, 20);
+  return {
+    data: results,
+    found: true,
+    citation: 'BLS Occupational Employment and Wage Statistics',
+    dataContext: 'all',
+    freshness: { period: 'May 2023', lastRefreshed: '2024-12', isStale: false },
+  };
+}

@@ -15,7 +15,7 @@ import { generateReport } from '@/lib/reports/report-generator';
 import { writeValidationBrief } from '@/lib/reports/validation-brief-writer';
 import { enrichProject } from './project-enricher';
 import type { DiscoveryContext } from '@/lib/stages/handoff';
-import { getProjectIntel, formatIntelBlock } from '@/lib/intelligence/mcp-client';
+import { getAgentIntelligenceContext, type AgentIntelligenceContext } from '@/lib/intelligence/agent-context';
 import { startPipelineRun, completePipelineRun, hashMarkdown, type PipelineConfig } from '@/lib/pipeline/track-run';
 import {
   loadValidationCheckpoints,
@@ -176,12 +176,11 @@ export async function orchestrateValidation(
     
     console.log(`[Orchestrator] ✓ Enriched: Occupation="${enrichment.target_occupation}", SOC=${enrichment.soc_codes || 'none'}, Region="${enrichment.geographic_area}"`);
 
-    // 2.5. Fetch shared intelligence via MCP (one query, all 7 agents share it)
-    const mcpIntel = await getProjectIntel(projectToValidate);
-    const mcpIntelBlock = formatIntelBlock(mcpIntel);
-    (projectToValidate as any)._mcpIntel = mcpIntel;
-    (projectToValidate as any)._mcpIntelBlock = mcpIntelBlock;
-    console.log(`[Orchestrator] MCP intel: available=${mcpIntel.available}, block=${mcpIntelBlock.length} chars`);
+    // 2.5. Fetch shared intelligence via direct lookup (bypasses MCP HTTP loop)
+    const intelContext: AgentIntelligenceContext = await getAgentIntelligenceContext(projectToValidate);
+    (projectToValidate as any)._mcpIntelBlock = intelContext.promptBlock;
+    (projectToValidate as any)._intelContext = intelContext;
+    console.log(`[Orchestrator] Intel context: ${intelContext.tablesUsed.length} tables, ${intelContext.promptBlock.length} chars`);
 
     // 2.9. Start pipeline run tracking
     try {
@@ -192,7 +191,7 @@ export async function orchestrateValidation(
         agentsEnabled: AGENT_CONFIG.map(a => a.type),
         tigerTeamEnabled: true,
         citationAgentEnabled: true,
-        intelContextEnabled: mcpIntel.available,
+        intelContextEnabled: intelContext.tablesUsed.length > 0,
         modelProfile,
         tigerTeamPersonas: tigerTeamPersonaSlugs,
       };
@@ -922,7 +921,7 @@ export async function orchestrateValidation(
           recommendation: programScore.recommendation,
           citationCorrections: citationResults?.corrections?.length ?? 0,
           citationWarnings: citationResults?.warnings?.length ?? 0,
-          intelTablesUsed: mcpIntel.available ? 1 : 0,
+          intelTablesUsed: intelContext.tablesUsed.length,
           reportMarkdownHash: hashMarkdown(fullReport),
           reportSizeKb: Math.round(Buffer.from(fullReport).length / 1024),
         });
