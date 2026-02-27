@@ -54,10 +54,10 @@ export default async function AdminDashboardPage() {
 
         <StatCard
           title="Pending Orders"
-          value={0}
+          value={reportStats.pending}
           subtitle="awaiting generation"
-          href="/admin/reports"
-          accent="slate"
+          href="/admin/reports?filter=unreviewed"
+          accent={reportStats.pending > 0 ? 'amber' : 'slate'}
           icon="📋"
         />
       </div>
@@ -101,7 +101,11 @@ export default async function AdminDashboardPage() {
             </div>
           ))}
           {reportStats.recent.length === 0 && (
-            <p className="text-sm text-slate-400 py-4 text-center">No recent reports</p>
+            <div className="py-8 text-center">
+              <div className="text-slate-300 text-2xl mb-2">📊</div>
+              <p className="text-sm text-slate-400">No recent reports</p>
+              <p className="text-xs text-slate-300 mt-1">Generated reports will appear here</p>
+            </div>
           )}
         </div>
       </div>
@@ -171,32 +175,37 @@ async function getReportStats() {
   try {
     const supabase = getSupabaseServerClient();
 
-    const { count: total } = await supabase
-      .from('validation_projects')
-      .select('*', { count: 'exact', head: true });
-
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
 
-    const { count: thisWeek } = await supabase
-      .from('validation_projects')
-      .select('*', { count: 'exact', head: true })
-      .gte('created_at', oneWeekAgo.toISOString());
-
-    const { data: recent } = await supabase
-      .from('validation_projects')
-      .select('id, program_name, status, created_at')
-      .order('created_at', { ascending: false })
-      .limit(5);
+    const [totalResult, thisWeekResult, pendingResult, recentResult] = await Promise.all([
+      supabase
+        .from('validation_projects')
+        .select('*', { count: 'exact', head: true }),
+      supabase
+        .from('validation_projects')
+        .select('*', { count: 'exact', head: true })
+        .gte('created_at', oneWeekAgo.toISOString()),
+      supabase
+        .from('validation_projects')
+        .select('*', { count: 'exact', head: true })
+        .eq('status', 'pending'),
+      supabase
+        .from('validation_projects')
+        .select('id, program_name, status, created_at')
+        .order('created_at', { ascending: false })
+        .limit(5),
+    ]);
 
     return {
-      total: total || 0,
-      thisWeek: thisWeek || 0,
-      recent: recent || [],
+      total: totalResult.count || 0,
+      thisWeek: thisWeekResult.count || 0,
+      pending: pendingResult.count || 0,
+      recent: recentResult.data || [],
     };
   } catch (error) {
     console.error('[Admin] Failed to fetch report stats:', error);
-    return { total: 0, thisWeek: 0, recent: [] };
+    return { total: 0, thisWeek: 0, pending: 0, recent: [] };
   }
 }
 

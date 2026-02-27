@@ -27,8 +27,6 @@ export default async function ConfigAdminPage() {
     { label: 'Retry backoff (ms)', value: process.env.VALIDATION_STAGE_RETRY_BACKOFF_MS || '2000', detail: 'Linear retry backoff multiplier.' },
   ];
 
-  // Model profiles are managed in ModelProfilesCrudPanel
-
   const envConfigured = envVars.filter((v) => v.status).length;
   const envMissing = envVars.length - envConfigured;
 
@@ -36,8 +34,8 @@ export default async function ConfigAdminPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Configuration</h1>
-        <p className="text-gray-600 mt-1">Environment variables and API connections</p>
+        <h1 className="text-2xl font-heading font-bold text-slate-900">Configuration</h1>
+        <p className="text-slate-500 mt-1 text-sm">Environment variables and API connections</p>
       </div>
 
       {/* Top Summary */}
@@ -48,10 +46,10 @@ export default async function ConfigAdminPage() {
       </div>
 
       {/* Service Health */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Service Health</h2>
-          <p className="text-sm text-gray-600 mt-1">Real-time status of external APIs</p>
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="p-6 border-b border-slate-100">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400">Service Health</h2>
+          <p className="text-sm text-slate-500 mt-1">Real-time status of external APIs</p>
         </div>
         <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-3">
           <ServiceStatus service="Brave Search" status={newsHealth.brave} detail="Primary external discovery source" />
@@ -62,20 +60,20 @@ export default async function ConfigAdminPage() {
       </div>
 
       {/* Model Routing */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Model Routing</h2>
-          <p className="text-sm text-gray-600 mt-1">Phase C runtime controls and model defaults</p>
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="p-6 border-b border-slate-100">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400">Model Routing</h2>
+          <p className="text-sm text-slate-500 mt-1">Phase C runtime controls and model defaults</p>
         </div>
         <div className="p-6 space-y-3">
           {modelRouting.map((item) => (
-            <div key={item.label} className="rounded-md border border-gray-200 px-4 py-3">
+            <div key={item.label} className="rounded-lg border border-slate-200 px-4 py-3 hover:bg-slate-50/50 transition-colors">
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-sm font-medium text-gray-900">{item.label}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">{item.detail}</p>
+                  <p className="text-sm font-medium text-slate-900">{item.label}</p>
+                  <p className="text-xs text-slate-400 mt-0.5">{item.detail}</p>
                 </div>
-                <code className="text-xs bg-gray-100 border border-gray-200 rounded px-2 py-1 text-gray-700">
+                <code className="text-xs bg-slate-50 border border-slate-200 rounded-md px-2.5 py-1 text-slate-700 font-mono">
                   {item.value}
                 </code>
               </div>
@@ -88,39 +86,39 @@ export default async function ConfigAdminPage() {
       <ModelProfilesCrudPanel />
 
       {/* Environment Variables */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Environment Variables</h2>
-          <p className="text-sm text-gray-600 mt-1">API keys and configuration (values masked for security)</p>
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="p-6 border-b border-slate-100">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400">Environment Variables</h2>
+          <p className="text-sm text-slate-500 mt-1">API keys and configuration (values masked for security)</p>
         </div>
         {envMissing > 0 && (
-          <div className="mx-6 mt-4 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <div className="mx-6 mt-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
             {envMissing} environment variable{envMissing > 1 ? 's are' : ' is'} missing. Pipeline reliability may degrade until these are set.
           </div>
         )}
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Variable</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Service</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+          <table className="w-full divide-y divide-slate-100 text-sm">
+            <thead>
+              <tr className="bg-slate-50">
+                <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">Variable</th>
+                <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">Service</th>
+                <th className="px-4 py-3 text-left text-xs font-bold uppercase tracking-wider text-slate-400">Status</th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-y divide-slate-50">
               {envVars.map((env) => (
-                <tr key={env.name} className={!env.status ? 'bg-red-50/40' : ''}>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-mono text-gray-900">
+                <tr key={env.name} className={`hover:bg-slate-50/70 transition-colors ${!env.status ? 'bg-red-50/40' : ''}`}>
+                  <td className="px-4 py-3 whitespace-nowrap text-sm font-mono text-slate-900">
                     {env.name}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                  <td className="px-4 py-3 whitespace-nowrap text-sm text-slate-500">
                     {env.service}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
+                  <td className="px-4 py-3 whitespace-nowrap">
                     {env.status ? (
-                      <span className="text-green-600">✓ Set</span>
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-full bg-emerald-50 text-emerald-700">Set</span>
                     ) : (
-                      <span className="text-red-600">✗ Missing</span>
+                      <span className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded-full bg-red-50 text-red-700">Missing</span>
                     )}
                   </td>
                 </tr>
@@ -131,42 +129,42 @@ export default async function ConfigAdminPage() {
       </div>
 
       {/* Ops Runbook */}
-      <div className="bg-white rounded-lg shadow">
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900">Ops Runbook</h2>
-          <p className="text-sm text-gray-600 mt-1">Quick links for pipeline triage + reliability checks</p>
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+        <div className="p-6 border-b border-slate-100">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-slate-400">Ops Runbook</h2>
+          <p className="text-sm text-slate-500 mt-1">Quick links for pipeline triage + reliability checks</p>
         </div>
         <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
-          <a href="/admin/reports" className="rounded-lg border border-gray-200 px-4 py-3 hover:bg-gray-50">
-            <p className="font-medium text-gray-900">Report Queue</p>
-            <p className="text-xs text-gray-500 mt-1">Review failed or unreviewed reports.</p>
+          <a href="/admin/reports" className="rounded-lg border border-slate-200 px-4 py-3 hover:bg-slate-50 hover:border-slate-300 transition-all">
+            <p className="font-medium text-slate-900">Report Queue</p>
+            <p className="text-xs text-slate-400 mt-1">Review failed or unreviewed reports.</p>
           </a>
-          <a href="/api/admin/pipeline-runs/health" className="rounded-lg border border-gray-200 px-4 py-3 hover:bg-gray-50">
-            <p className="font-medium text-gray-900">Pipeline Health JSON</p>
-            <p className="text-xs text-gray-500 mt-1">24h SLO + retry metrics endpoint.</p>
+          <a href="/api/admin/pipeline-runs/health" className="rounded-lg border border-slate-200 px-4 py-3 hover:bg-slate-50 hover:border-slate-300 transition-all">
+            <p className="font-medium text-slate-900">Pipeline Health JSON</p>
+            <p className="text-xs text-slate-400 mt-1">24h SLO + retry metrics endpoint.</p>
           </a>
-          <a href="/admin/reports?filter=partial" className="rounded-lg border border-gray-200 px-4 py-3 hover:bg-gray-50">
-            <p className="font-medium text-gray-900">Partial Runs</p>
-            <p className="text-xs text-gray-500 mt-1">Jump straight to incomplete validations.</p>
+          <a href="/admin/reports?filter=partial" className="rounded-lg border border-slate-200 px-4 py-3 hover:bg-slate-50 hover:border-slate-300 transition-all">
+            <p className="font-medium text-slate-900">Partial Runs</p>
+            <p className="text-xs text-slate-400 mt-1">Jump straight to incomplete validations.</p>
           </a>
         </div>
       </div>
 
       {/* Documentation Link */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <div className="flex">
-          <div className="flex-shrink-0">
-            <svg className="h-5 w-5 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+        <div className="flex items-start gap-3">
+          <span className="text-blue-400 mt-0.5">
+            <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
             </svg>
-          </div>
-          <div className="ml-3">
-            <h3 className="text-sm font-medium text-blue-800">Configuration Guide</h3>
+          </span>
+          <div>
+            <h3 className="text-sm font-semibold text-blue-800">Configuration Guide</h3>
             <p className="text-sm text-blue-700 mt-1">
-              To update environment variables, use the Vercel dashboard or CLI: <code className="font-mono bg-blue-100 px-1">vercel env add KEY_NAME production</code>
+              To update environment variables, use the Vercel dashboard or CLI: <code className="font-mono bg-blue-100 rounded px-1.5 py-0.5 text-xs">vercel env add KEY_NAME production</code>
             </p>
             <p className="text-sm text-blue-700 mt-2">
-              Reference: <code className="font-mono bg-blue-100 px-1">/workspace/api-keys-reference.md</code>
+              Reference: <code className="font-mono bg-blue-100 rounded px-1.5 py-0.5 text-xs">/workspace/api-keys-reference.md</code>
             </p>
           </div>
         </div>
@@ -184,23 +182,23 @@ function SummaryCard({ title, value, tone }: { title: string; value: string; ton
   };
 
   return (
-    <div className={`rounded-lg border px-4 py-3 ${toneStyles[tone] || toneStyles.blue}`}>
-      <p className="text-xs uppercase tracking-wide opacity-70">{title}</p>
-      <p className="text-xl font-semibold mt-1">{value}</p>
+    <div className={`rounded-xl border px-5 py-4 ${toneStyles[tone] || toneStyles.blue}`}>
+      <p className="text-xs font-semibold uppercase tracking-wider opacity-70">{title}</p>
+      <p className="text-xl font-heading font-bold mt-1">{value}</p>
     </div>
   );
 }
 
 function ServiceStatus({ service, status, detail }: { service: string; status: boolean; detail: string }) {
   return (
-    <div className="rounded-lg border border-gray-200 px-4 py-3">
+    <div className="rounded-lg border border-slate-200 px-4 py-3 hover:bg-slate-50/50 transition-colors">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-gray-900">{service}</span>
-        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${status ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`}>
+        <span className="text-sm font-medium text-slate-900">{service}</span>
+        <span className={`text-xs font-semibold px-2.5 py-1 rounded-full ${status ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`}>
           {status ? 'Online' : 'Offline'}
         </span>
       </div>
-      <p className="text-xs text-gray-500 mt-1">{detail}</p>
+      <p className="text-xs text-slate-400 mt-1">{detail}</p>
     </div>
   );
 }

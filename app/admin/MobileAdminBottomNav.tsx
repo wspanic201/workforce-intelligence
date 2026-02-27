@@ -7,6 +7,7 @@ const ITEMS = [
   { href: '/admin', label: 'Home', icon: '🏠', exact: true },
   { href: '/admin/reports', label: 'Reports', icon: '📊' },
   { href: '/admin/signal', label: 'Signal', icon: '📧' },
+  { href: '/admin/chat', label: 'Chat', icon: '💬' },
   { href: '/admin/intelligence', label: 'Intel', icon: '🧠' },
   { href: '/admin/config', label: 'Config', icon: '⚙️' },
 ];
@@ -16,7 +17,7 @@ export function MobileAdminBottomNav() {
 
   return (
     <div className="sm:hidden fixed bottom-0 inset-x-0 z-50 border-t border-slate-200 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
-      <div className="grid grid-cols-5 gap-1 px-2 pt-1 pb-[max(0.35rem,env(safe-area-inset-bottom))]">
+      <div className="grid grid-cols-6 gap-0.5 px-1 pt-1 pb-[max(0.35rem,env(safe-area-inset-bottom))]">
         {ITEMS.map((item) => {
           const isActive = item.exact ? pathname === item.href : pathname?.startsWith(item.href);
           return (

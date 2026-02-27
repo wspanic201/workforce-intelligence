@@ -29,7 +29,7 @@ export default function AdminChatPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    
+
     if (!input.trim() || loading) return;
 
     const userMessage = input.trim();
@@ -60,8 +60,8 @@ export default function AdminChatPage() {
       const data = await response.json();
 
       // Add assistant response
-      setMessages(prev => [...prev, { 
-        role: 'assistant', 
+      setMessages(prev => [...prev, {
+        role: 'assistant',
         content: data.response || 'Sorry, I couldn\'t process that request.',
       }]);
     } catch (error) {
@@ -78,39 +78,39 @@ export default function AdminChatPage() {
   return (
     <div className="h-[calc(100vh-8rem)] flex flex-col">
       {/* Header */}
-      <div className="bg-white rounded-t-lg shadow p-6 border-b border-gray-200">
-        <h1 className="text-2xl font-bold text-gray-900">Chat with Cassidy</h1>
-        <p className="text-gray-600 mt-1">Your AI assistant for platform management</p>
+      <div className="bg-white rounded-t-xl border border-b-0 border-slate-200 shadow-sm p-6">
+        <h1 className="text-2xl font-heading font-bold text-slate-900">Chat with Cassidy</h1>
+        <p className="text-slate-500 mt-1 text-sm">Your AI assistant for platform management</p>
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto bg-white shadow px-6 py-4 space-y-4">
+      <div className="flex-1 overflow-y-auto bg-white border-x border-slate-200 px-6 py-4 space-y-4">
         {messages.map((message, index) => (
           <div
             key={index}
             className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-3xl rounded-lg px-4 py-3 ${
+              className={`max-w-3xl rounded-xl px-4 py-3 ${
                 message.role === 'user'
                   ? 'bg-purple-600 text-white'
-                  : 'bg-gray-100 text-gray-900'
+                  : 'bg-slate-50 text-slate-900 border border-slate-200'
               }`}
             >
-              <div className="text-sm font-medium mb-1">
+              <div className={`text-xs font-semibold mb-1 ${message.role === 'user' ? 'text-purple-200' : 'text-slate-400'}`}>
                 {message.role === 'user' ? 'You' : 'Cassidy'}
               </div>
-              <div className="whitespace-pre-wrap">{message.content}</div>
+              <div className="text-sm whitespace-pre-wrap">{message.content}</div>
             </div>
           </div>
         ))}
         {loading && (
           <div className="flex justify-start">
-            <div className="bg-gray-100 text-gray-900 rounded-lg px-4 py-3">
-              <div className="flex items-center space-x-2">
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
-                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
+            <div className="bg-slate-50 text-slate-900 rounded-xl border border-slate-200 px-4 py-3">
+              <div className="flex items-center space-x-1.5">
+                <div className="w-2 h-2 bg-slate-300 rounded-full animate-bounce" />
+                <div className="w-2 h-2 bg-slate-300 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                <div className="w-2 h-2 bg-slate-300 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }} />
               </div>
             </div>
           </div>
@@ -119,32 +119,33 @@ export default function AdminChatPage() {
       </div>
 
       {/* Input */}
-      <form onSubmit={handleSubmit} className="bg-white rounded-b-lg shadow p-4 border-t border-gray-200">
-        <div className="flex space-x-4">
+      <form onSubmit={handleSubmit} className="bg-white rounded-b-xl border border-slate-200 shadow-sm p-4">
+        <div className="flex gap-3">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="Ask me anything... (e.g., 'Send the newsletter', 'Show me reports from this week')"
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            className="flex-1 px-4 py-2.5 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400 transition-all"
             disabled={loading}
           />
           <button
             type="submit"
             disabled={loading || !input.trim()}
-            className="px-6 py-3 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-all hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+            style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #3b82f6 50%, #14b8a6 100%)' }}
           >
             Send
           </button>
         </div>
-        <p className="text-xs text-gray-500 mt-2">
+        <p className="text-xs text-slate-400 mt-2">
           Tip: I can help you send newsletters, generate reports, check system status, and more.
         </p>
       </form>
 
       {/* Quick Commands */}
-      <div className="bg-gray-50 rounded-lg p-4 mt-4">
-        <p className="text-sm font-medium text-gray-700 mb-2">Quick commands:</p>
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 mt-4">
+        <p className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Quick commands</p>
         <div className="flex flex-wrap gap-2">
           {[
             'Preview newsletter',
@@ -155,7 +156,7 @@ export default function AdminChatPage() {
             <button
               key={cmd}
               onClick={() => setInput(cmd)}
-              className="text-xs bg-white border border-gray-300 rounded px-3 py-1 hover:bg-gray-100"
+              className="text-xs bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 hover:bg-purple-50 hover:border-purple-200 hover:text-purple-700 text-slate-600 transition-colors"
             >
               {cmd}
             </button>
