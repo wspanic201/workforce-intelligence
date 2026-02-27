@@ -15,7 +15,7 @@ import { generateReport } from '@/lib/reports/report-generator';
 import { writeValidationBrief } from '@/lib/reports/validation-brief-writer';
 import { enrichProject } from './project-enricher';
 import type { DiscoveryContext } from '@/lib/stages/handoff';
-import { getProjectIntel, formatIntelBlock } from '@/lib/intelligence/mcp-client';
+import { getProjectIntelCompat, formatIntelBlock } from '@/lib/intelligence/project-intel';
 import { startPipelineRun, completePipelineRun, hashMarkdown, type PipelineConfig } from '@/lib/pipeline/track-run';
 import {
   loadValidationCheckpoints,
@@ -25,6 +25,7 @@ import {
   shouldSkipStage,
 } from '@/lib/pipeline/checkpoints';
 import { logRunEvent } from '@/lib/pipeline/telemetry';
+import { runStage } from '@/lib/pipeline/stage-runner';
 import { setRuntimeModelOverride } from '@/lib/ai/anthropic';
 
 // Timeout wrapper for research agents
@@ -176,8 +177,8 @@ export async function orchestrateValidation(
     
     console.log(`[Orchestrator] ✓ Enriched: Occupation="${enrichment.target_occupation}", SOC=${enrichment.soc_codes || 'none'}, Region="${enrichment.geographic_area}"`);
 
-    // 2.5. Fetch shared intelligence via MCP (one query, all 7 agents share it)
-    const mcpIntel = await getProjectIntel(projectToValidate);
+    // 2.5. Fetch shared intelligence (direct DB lookup — no MCP HTTP loopback)
+    const mcpIntel = await getProjectIntelCompat(projectToValidate);
     const mcpIntelBlock = formatIntelBlock(mcpIntel);
     (projectToValidate as any)._mcpIntel = mcpIntel;
     (projectToValidate as any)._mcpIntelBlock = mcpIntelBlock;
@@ -417,70 +418,34 @@ export async function orchestrateValidation(
 
     // 7. Run citation agent for fact-checking and inline citations
     let citationResults: Awaited<ReturnType<typeof runCitationAgent>> | null = null;
-    const citationStageKey = 'citation_agent';
-    const skipCitation = await shouldSkipStage(projectId, citationStageKey);
-    if (skipCitation) {
-      const { data: citationComponent } = await supabase
-        .from('research_components')
-        .select('content')
-        .eq('project_id', projectId)
-        .eq('component_type', 'citation_verification')
-        .eq('status', 'completed')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      citationResults = (citationComponent?.content || null) as any;
-      await logRunEvent({
-        pipelineRunId,
+    {
+      const componentsByType = normalizedCompletedComponents.reduce((acc, c) => {
+        const key = c.component_type.replace('_', '');
+        acc[key] = c.markdown_output || '';
+        return acc;
+      }, {} as Record<string, string>);
+
+      const citationStage = await runStage<Awaited<ReturnType<typeof runCitationAgent>>>({
         projectId,
-        eventType: 'stage_skipped',
-        stageKey: citationStageKey,
-        level: 'info',
-        message: 'Citation agent skipped (checkpoint complete)',
-      });
-      console.log('[Orchestrator] ↷ Skipped Citation Agent (checkpoint complete)');
-    } else {
-      let citationSucceeded = false;
-      while (!citationSucceeded) {
-        const attempt = (stageAttempts.get(citationStageKey) || 0) + 1;
-        stageAttempts.set(citationStageKey, attempt);
-        await markStageStarted(projectId, citationStageKey, attempt);
-        await logRunEvent({
-          pipelineRunId,
-          projectId,
-          eventType: 'stage_started',
-          stageKey: citationStageKey,
-          level: 'info',
-          message: 'Citation agent started',
-          metadata: { attempt },
-        });
-        const citationStart = Date.now();
-        try {
-          console.log(`[Orchestrator] Running citation agent for fact-checking (attempt ${attempt}/${MAX_STAGE_ATTEMPTS})...`);
-
-          // Extract markdown from completed components
-          const componentsByType = normalizedCompletedComponents.reduce((acc, c) => {
-            const key = c.component_type.replace('_', '');
-            acc[key] = c.markdown_output || '';
-            return acc;
-          }, {} as Record<string, string>);
-
-          citationResults = await withTimeout(
-            runCitationAgent({
-              projectId,
-              occupation: projectToValidate.target_occupation || projectToValidate.program_name || 'Unknown',
-              state: projectToValidate.geographic_area || 'United States',
-              regulatoryAnalysis: componentsByType['regulatorycompliance'],
-              marketAnalysis: componentsByType['labormarket'],
-              employerAnalysis: componentsByType['employerdemand'],
-              financialAnalysis: componentsByType['financialviability'],
-              academicAnalysis: componentsByType['institutionalfit'],
-              demographicAnalysis: componentsByType['learnerdemand'],
-              competitiveAnalysis: componentsByType['competitivelandscape'],
-            }),
-            300000, // 5 minutes for citation verification
-            'Citation Agent'
-          );
+        stageKey: 'citation_agent',
+        label: 'Citation Agent',
+        pipelineRunId,
+        timeoutMs: 300_000,
+        optional: true,
+        stageAttempts,
+        run: async () => {
+          const results = await runCitationAgent({
+            projectId,
+            occupation: projectToValidate.target_occupation || projectToValidate.program_name || 'Unknown',
+            state: projectToValidate.geographic_area || 'United States',
+            regulatoryAnalysis: componentsByType['regulatorycompliance'],
+            marketAnalysis: componentsByType['labormarket'],
+            employerAnalysis: componentsByType['employerdemand'],
+            financialAnalysis: componentsByType['financialviability'],
+            academicAnalysis: componentsByType['institutionalfit'],
+            demographicAnalysis: componentsByType['learnerdemand'],
+            competitiveAnalysis: componentsByType['competitivelandscape'],
+          });
 
           // Store citation results in database
           await supabase.from('research_components').insert({
@@ -488,81 +453,42 @@ export async function orchestrateValidation(
             component_type: 'citation_verification',
             agent_persona: 'citation-agent',
             status: 'completed',
-            content: citationResults,
-            markdown_output: `# Citation Verification\n\n${citationResults.summary}\n\n## Verified Claims\n${citationResults.verifiedClaims.map(c => `- ${c.claim} [${c.citation}]`).join('\n')}\n\n${citationResults.warnings.length > 0 ? `## Warnings\n${citationResults.warnings.map(w => `- ${w}`).join('\n')}` : ''}`,
+            content: results,
+            markdown_output: `# Citation Verification\n\n${results.summary}\n\n## Verified Claims\n${results.verifiedClaims.map((c: any) => `- ${c.claim} [${c.citation}]`).join('\n')}\n\n${results.warnings.length > 0 ? `## Warnings\n${results.warnings.map((w: any) => `- ${w}`).join('\n')}` : ''}`,
           });
 
-          const durationMs = Date.now() - citationStart;
-          await markStageCompleted(projectId, citationStageKey, {
-            verifiedClaims: citationResults.verifiedClaims.length,
-            warnings: citationResults.warnings.length,
-            corrections: citationResults.corrections?.length || 0,
-          }, durationMs);
-          await logRunEvent({
-            pipelineRunId,
-            projectId,
-            eventType: 'stage_completed',
-            stageKey: citationStageKey,
-            level: 'info',
-            message: `Citation agent complete — ${citationResults.verifiedClaims.length} claims verified`,
-            metadata: {
-              durationMs,
-              attempt,
-              verifiedClaims: citationResults.verifiedClaims.length,
-              warnings: citationResults.warnings.length,
-              corrections: citationResults.corrections?.length || 0,
-            },
-          });
+          return results;
+        },
+        buildCheckpointPayload: (results) => ({
+          verifiedClaims: results.verifiedClaims.length,
+          warnings: results.warnings.length,
+          corrections: results.corrections?.length || 0,
+        }),
+        loadCachedResult: async () => {
+          const { data: citationComponent } = await supabase
+            .from('research_components')
+            .select('content')
+            .eq('project_id', projectId)
+            .eq('component_type', 'citation_verification')
+            .eq('status', 'completed')
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle();
+          return (citationComponent?.content || null) as any;
+        },
+      });
 
-          console.log(`[Orchestrator] ✓ Citation agent complete — ${citationResults.verifiedClaims.length} claims verified`);
+      citationResults = citationStage.result;
 
-          // Apply citation corrections to component markdown before report generation
-          if (citationResults.corrections && citationResults.corrections.length > 0) {
-            console.log(`[Orchestrator] Applying ${citationResults.corrections.length} citation corrections...`);
-            for (const correction of citationResults.corrections) {
-              // Find matching component by type
-              const comp = normalizedCompletedComponents.find(c => c.component_type === correction.componentType);
-              if (comp && comp.markdown_output && comp.markdown_output.includes(correction.original)) {
-                comp.markdown_output = comp.markdown_output.replace(correction.original, correction.corrected);
-                console.log(`[Orchestrator]   ✓ Corrected [${correction.componentType}]: ${correction.reason}`);
-              }
-            }
+      // Apply citation corrections to component markdown before report generation
+      if (citationResults?.corrections && citationResults.corrections.length > 0) {
+        console.log(`[Orchestrator] Applying ${citationResults.corrections.length} citation corrections...`);
+        for (const correction of citationResults.corrections) {
+          const comp = normalizedCompletedComponents.find(c => c.component_type === correction.componentType);
+          if (comp && comp.markdown_output && comp.markdown_output.includes(correction.original)) {
+            comp.markdown_output = comp.markdown_output.replace(correction.original, correction.corrected);
+            console.log(`[Orchestrator]   ✓ Corrected [${correction.componentType}]: ${correction.reason}`);
           }
-
-          citationSucceeded = true;
-        } catch (e) {
-          const durationMs = Date.now() - citationStart;
-          const errorMessage = e instanceof Error ? e.message : String(e);
-          await markStageFailed(projectId, citationStageKey, errorMessage, durationMs);
-          await logRunEvent({
-            pipelineRunId,
-            projectId,
-            eventType: 'stage_failed',
-            stageKey: citationStageKey,
-            level: 'warn',
-            message: 'Citation agent failed; continuing',
-            metadata: { durationMs, attempt, error: errorMessage },
-          });
-
-          if (attempt < MAX_STAGE_ATTEMPTS) {
-            const backoffMs = STAGE_RETRY_BACKOFF_MS * attempt;
-            await logRunEvent({
-              pipelineRunId,
-              projectId,
-              eventType: 'stage_retry_scheduled',
-              stageKey: citationStageKey,
-              level: 'warn',
-              message: 'Citation agent retry scheduled',
-              metadata: { attempt, nextAttempt: attempt + 1, backoffMs, error: errorMessage },
-            });
-            if (backoffMs > 0) {
-              await new Promise((resolve) => setTimeout(resolve, backoffMs));
-            }
-            continue;
-          }
-
-          console.warn('[Orchestrator] Citation agent failed, continuing without citation verification:', e);
-          break;
         }
       }
     }
@@ -599,59 +525,24 @@ export async function orchestrateValidation(
 
     console.log(`[Orchestrator] Composite Score: ${programScore.compositeScore}/10 — ${programScore.recommendation}`);
 
-    // 9. Run tiger team synthesis (optional, for backward compat)
+    // 9. Run tiger team synthesis
     let tigerTeamMarkdown = '';
-    const tigerTeamStageKey = 'tiger_team';
-    const skipTigerTeam = await shouldSkipStage(projectId, tigerTeamStageKey);
-    if (skipTigerTeam) {
-      const { data: tigerTeamComponent } = await supabase
-        .from('research_components')
-        .select('markdown_output')
-        .eq('project_id', projectId)
-        .eq('component_type', 'tiger_team_synthesis')
-        .eq('status', 'completed')
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-      tigerTeamMarkdown = tigerTeamComponent?.markdown_output || '';
-      await logRunEvent({
-        pipelineRunId,
+    {
+      const tigerStage = await runStage<{ synthesis: any; markdown: string }>({
         projectId,
-        eventType: 'stage_skipped',
-        stageKey: tigerTeamStageKey,
-        level: 'info',
-        message: 'Tiger team synthesis skipped (checkpoint complete)',
-      });
-      console.log('[Orchestrator] ↷ Skipped Tiger Team (checkpoint complete)');
-    } else {
-      let tigerSucceeded = false;
-      while (!tigerSucceeded) {
-        const attempt = (stageAttempts.get(tigerTeamStageKey) || 0) + 1;
-        stageAttempts.set(tigerTeamStageKey, attempt);
-        await markStageStarted(projectId, tigerTeamStageKey, attempt);
-        await logRunEvent({
-          pipelineRunId,
-          projectId,
-          eventType: 'stage_started',
-          stageKey: tigerTeamStageKey,
-          level: 'info',
-          message: 'Tiger team synthesis started',
-          metadata: { attempt },
-        });
-        const tigerTeamStart = Date.now();
-        try {
-          console.log(`[Orchestrator] Running tiger team synthesis (attempt ${attempt}/${MAX_STAGE_ATTEMPTS})...`);
-          const { synthesis, markdown } = await withTimeout(
-            runTigerTeam(
-              projectId,
-              projectToValidate as ValidationProject,
-              normalizedCompletedComponents as ResearchComponent[],
-              { personaSlugs: tigerTeamPersonaSlugs }
-            ),
-            420000, // 7 minutes for tiger team — streaming handles hangs
-            'Tiger Team Synthesis'
+        stageKey: 'tiger_team',
+        label: 'Tiger Team Synthesis',
+        pipelineRunId,
+        timeoutMs: 420_000,
+        optional: true,
+        stageAttempts,
+        run: async () => {
+          const { synthesis, markdown } = await runTigerTeam(
+            projectId,
+            projectToValidate as ValidationProject,
+            normalizedCompletedComponents as ResearchComponent[],
+            { personaSlugs: tigerTeamPersonaSlugs }
           );
-          tigerTeamMarkdown = markdown;
 
           await supabase.from('research_components').insert({
             project_id: projectId,
@@ -659,59 +550,31 @@ export async function orchestrateValidation(
             agent_persona: 'multi-persona',
             status: 'completed',
             content: synthesis,
-            markdown_output: tigerTeamMarkdown,
+            markdown_output: markdown,
           });
 
-          const durationMs = Date.now() - tigerTeamStart;
-          await markStageCompleted(projectId, tigerTeamStageKey, {
-            markdownLength: tigerTeamMarkdown.length,
-            synthesisGenerated: true,
-          }, durationMs);
-          await logRunEvent({
-            pipelineRunId,
-            projectId,
-            eventType: 'stage_completed',
-            stageKey: tigerTeamStageKey,
-            level: 'info',
-            message: 'Tiger team synthesis completed',
-            metadata: { durationMs, attempt, markdownLength: tigerTeamMarkdown.length },
-          });
-          tigerSucceeded = true;
-        } catch (e) {
-          const durationMs = Date.now() - tigerTeamStart;
-          const errorMessage = e instanceof Error ? e.message : String(e);
-          await markStageFailed(projectId, tigerTeamStageKey, errorMessage, durationMs);
-          await logRunEvent({
-            pipelineRunId,
-            projectId,
-            eventType: 'stage_failed',
-            stageKey: tigerTeamStageKey,
-            level: 'warn',
-            message: 'Tiger team synthesis failed; continuing',
-            metadata: { durationMs, attempt, error: errorMessage },
-          });
+          return { synthesis, markdown };
+        },
+        buildCheckpointPayload: (result) => ({
+          markdownLength: result.markdown.length,
+          synthesisGenerated: true,
+        }),
+        loadCachedResult: async () => {
+          const { data: tigerTeamComponent } = await supabase
+            .from('research_components')
+            .select('markdown_output, content')
+            .eq('project_id', projectId)
+            .eq('component_type', 'tiger_team_synthesis')
+            .eq('status', 'completed')
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle();
+          if (!tigerTeamComponent) return null;
+          return { synthesis: tigerTeamComponent.content, markdown: tigerTeamComponent.markdown_output || '' };
+        },
+      });
 
-          if (attempt < MAX_STAGE_ATTEMPTS) {
-            const backoffMs = STAGE_RETRY_BACKOFF_MS * attempt;
-            await logRunEvent({
-              pipelineRunId,
-              projectId,
-              eventType: 'stage_retry_scheduled',
-              stageKey: tigerTeamStageKey,
-              level: 'warn',
-              message: 'Tiger team synthesis retry scheduled',
-              metadata: { attempt, nextAttempt: attempt + 1, backoffMs, error: errorMessage },
-            });
-            if (backoffMs > 0) {
-              await new Promise((resolve) => setTimeout(resolve, backoffMs));
-            }
-            continue;
-          }
-
-          console.warn('[Orchestrator] Tiger team synthesis failed, continuing with report generation:', e);
-          break;
-        }
-      }
+      tigerTeamMarkdown = tigerStage.result?.markdown || '';
     }
 
     // 9.5. Apply citation corrections to tiger team markdown
@@ -727,53 +590,18 @@ export async function orchestrateValidation(
     // 10. Generate report FIRST (so a crash during QA doesn't lose everything)
     let fullReport = '';
     let reportRow: { id: string } | null = null;
-    const reportStageKey = 'report_generation';
-    const skipReport = await shouldSkipStage(projectId, reportStageKey);
-    if (skipReport) {
-      const { data: latestReport } = await supabase
-        .from('validation_reports')
-        .select('id, full_report_markdown')
-        .eq('project_id', projectId)
-        .order('created_at', { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (latestReport?.full_report_markdown) {
-        fullReport = latestReport.full_report_markdown;
-        reportRow = latestReport;
-      }
-
-      await logRunEvent({
-        pipelineRunId,
+    {
+      const reportStage = await runStage<{ report: string; reportRow: { id: string } | null }>({
         projectId,
-        eventType: 'stage_skipped',
-        stageKey: reportStageKey,
-        level: 'info',
-        message: 'Report generation skipped (checkpoint complete)',
-      });
-      console.log('[Orchestrator] ↷ Skipped Report Generation (checkpoint complete)');
-    } else {
-      let reportSucceeded = false;
-      while (!reportSucceeded) {
-        const attempt = (stageAttempts.get(reportStageKey) || 0) + 1;
-        stageAttempts.set(reportStageKey, attempt);
-        await markStageStarted(projectId, reportStageKey, attempt);
-        await logRunEvent({
-          pipelineRunId,
-          projectId,
-          eventType: 'stage_started',
-          stageKey: reportStageKey,
-          level: 'info',
-          message: 'Report generation started',
-          metadata: { attempt },
-        });
-
-        const reportStart = Date.now();
-        console.log(`[Orchestrator] Generating professional report (attempt ${attempt}/${MAX_STAGE_ATTEMPTS})...`);
-
-        try {
+        stageKey: 'report_generation',
+        label: 'Report Generation',
+        pipelineRunId,
+        timeoutMs: 300_000,
+        stageAttempts,
+        run: async () => {
+          let report: string;
           try {
-            fullReport = await writeValidationBrief({
+            report = await writeValidationBrief({
               project: projectToValidate as ValidationProject,
               components: normalizedCompletedComponents as ResearchComponent[],
               programScore,
@@ -782,7 +610,7 @@ export async function orchestrateValidation(
             console.log('[Orchestrator] ✓ Validation brief writer generated polished report');
           } catch (e) {
             console.warn('[Orchestrator] Validation brief writer failed, falling back to legacy report generator:', e);
-            fullReport = generateReport({
+            report = generateReport({
               project: projectToValidate as ValidationProject,
               components: normalizedCompletedComponents as ResearchComponent[],
               programScore,
@@ -790,71 +618,39 @@ export async function orchestrateValidation(
             });
           }
 
-          // Save initial report (only columns that exist: project_id, executive_summary, full_report_markdown, version)
           const { data, error: reportError } = await supabase.from('validation_reports').insert({
             project_id: projectId,
             executive_summary: `Recommendation: ${programScore.recommendation} (${programScore.compositeScore}/10)\n\nDimensions: ${programScore.dimensions.map((d: any) => `${d.dimension}: ${d.score}/10`).join(', ')}`,
-            full_report_markdown: fullReport,
+            full_report_markdown: report,
             version: 1,
           }).select('id').single();
-          reportRow = data || null;
 
           if (reportError) {
             throw new Error(`Report save failed: ${reportError.message}`);
           }
 
-          const durationMs = Date.now() - reportStart;
-          await markStageCompleted(projectId, reportStageKey, {
-            reportId: reportRow?.id || null,
-            reportLength: fullReport.length,
-            reportHash: hashMarkdown(fullReport),
-          }, durationMs);
-          await logRunEvent({
-            pipelineRunId,
-            projectId,
-            eventType: 'stage_completed',
-            stageKey: reportStageKey,
-            level: 'info',
-            message: `Report generated (${fullReport.length} chars)`,
-            metadata: { durationMs, attempt, reportId: reportRow?.id || null, reportLength: fullReport.length },
-          });
+          return { report, reportRow: data || null };
+        },
+        buildCheckpointPayload: (result) => ({
+          reportId: result.reportRow?.id || null,
+          reportLength: result.report.length,
+          reportHash: hashMarkdown(result.report),
+        }),
+        loadCachedResult: async () => {
+          const { data: latestReport } = await supabase
+            .from('validation_reports')
+            .select('id, full_report_markdown')
+            .eq('project_id', projectId)
+            .order('created_at', { ascending: false })
+            .limit(1)
+            .maybeSingle();
+          if (!latestReport?.full_report_markdown) return null;
+          return { report: latestReport.full_report_markdown, reportRow: latestReport };
+        },
+      });
 
-          console.log(`[Orchestrator] ✓ Report saved (${fullReport.length} chars)`);
-          reportSucceeded = true;
-        } catch (reportErr) {
-          const durationMs = Date.now() - reportStart;
-          const errorMessage = reportErr instanceof Error ? reportErr.message : String(reportErr);
-          await markStageFailed(projectId, reportStageKey, errorMessage, durationMs);
-          await logRunEvent({
-            pipelineRunId,
-            projectId,
-            eventType: 'stage_failed',
-            stageKey: reportStageKey,
-            level: 'error',
-            message: 'Report generation failed',
-            metadata: { durationMs, attempt, error: errorMessage },
-          });
-
-          if (attempt < MAX_STAGE_ATTEMPTS) {
-            const backoffMs = STAGE_RETRY_BACKOFF_MS * attempt;
-            await logRunEvent({
-              pipelineRunId,
-              projectId,
-              eventType: 'stage_retry_scheduled',
-              stageKey: reportStageKey,
-              level: 'warn',
-              message: 'Report generation retry scheduled',
-              metadata: { attempt, nextAttempt: attempt + 1, backoffMs, error: errorMessage },
-            });
-            if (backoffMs > 0) {
-              await new Promise((resolve) => setTimeout(resolve, backoffMs));
-            }
-            continue;
-          }
-
-          throw reportErr;
-        }
-      }
+      fullReport = reportStage.result?.report || '';
+      reportRow = reportStage.result?.reportRow || null;
     }
 
     // 11. QA Review — optional fact-check, updates report if issues found
@@ -932,118 +728,43 @@ export async function orchestrateValidation(
     }
 
     // 11.6. Generate PDF and upload to Supabase Storage
-    const pdfStageKey = 'pdf_generation';
-    const skipPdf = await shouldSkipStage(projectId, pdfStageKey);
-    if (skipPdf) {
-      await logRunEvent({
-        pipelineRunId,
-        projectId,
-        eventType: 'stage_skipped',
-        stageKey: pdfStageKey,
-        level: 'info',
-        message: 'PDF generation skipped (checkpoint complete)',
-      });
-      console.log('[Orchestrator] ↷ Skipped PDF Generation (checkpoint complete)');
-    } else {
-      let pdfSucceeded = false;
-      while (!pdfSucceeded) {
-        const attempt = (stageAttempts.get(pdfStageKey) || 0) + 1;
-        stageAttempts.set(pdfStageKey, attempt);
-        await markStageStarted(projectId, pdfStageKey, attempt);
-        await logRunEvent({
-          pipelineRunId,
+    await runStage<{ pageCount: number; sizeKB: number; storagePath: string }>({
+      projectId,
+      stageKey: 'pdf_generation',
+      label: 'PDF Generation',
+      pipelineRunId,
+      timeoutMs: 300_000,
+      optional: true,
+      stageAttempts,
+      run: async () => {
+        const { buildValidationPDF } = await import('@/lib/reports/build-pdf');
+        const pdfResult = await buildValidationPDF(supabase, {
           projectId,
-          eventType: 'stage_started',
-          stageKey: pdfStageKey,
-          level: 'info',
-          message: 'PDF generation started',
-          metadata: { attempt },
+          programName: projectToValidate.program_name || 'Program',
+          clientName: projectToValidate.client_name || '',
+          fullReport,
         });
 
-        const pdfStart = Date.now();
-        try {
-          console.log(`[Orchestrator] Generating PDF (attempt ${attempt}/${MAX_STAGE_ATTEMPTS})...`);
-          const { buildValidationPDF } = await import('@/lib/reports/build-pdf');
-          const pdfResult = await buildValidationPDF(supabase, {
-            projectId,
-            programName: projectToValidate.program_name || 'Program',
-            clientName: projectToValidate.client_name || '',
-            fullReport,
-          });
-
-          // Update report record with storage path
-          if (reportRow?.id) {
-            await supabase.from('validation_reports')
-              .update({ pdf_url: pdfResult.storagePath })
-              .eq('id', reportRow.id);
-          }
-
-          // Update pipeline run with page count and size
-          if (pipelineRunId) {
-            await supabase.from('pipeline_runs')
-              .update({ report_page_count: pdfResult.pageCount, report_size_kb: pdfResult.sizeKB })
-              .eq('id', pipelineRunId);
-          }
-
-          const durationMs = Date.now() - pdfStart;
-          await markStageCompleted(projectId, pdfStageKey, {
-            pageCount: pdfResult.pageCount,
-            sizeKB: pdfResult.sizeKB,
-            storagePath: pdfResult.storagePath,
-          }, durationMs);
-          await logRunEvent({
-            pipelineRunId,
-            projectId,
-            eventType: 'stage_completed',
-            stageKey: pdfStageKey,
-            level: 'info',
-            message: `PDF uploaded (${pdfResult.pageCount} pages)`,
-            metadata: {
-              durationMs,
-              attempt,
-              pageCount: pdfResult.pageCount,
-              sizeKB: pdfResult.sizeKB,
-            },
-          });
-
-          console.log(`[Orchestrator] ✓ PDF uploaded (${pdfResult.pageCount} pages, ${pdfResult.sizeKB}KB)`);
-          pdfSucceeded = true;
-        } catch (pdfErr: unknown) {
-          const durationMs = Date.now() - pdfStart;
-          const errorMessage = (pdfErr as Error).message;
-          await markStageFailed(projectId, pdfStageKey, errorMessage, durationMs);
-          await logRunEvent({
-            pipelineRunId,
-            projectId,
-            eventType: 'stage_failed',
-            stageKey: pdfStageKey,
-            level: 'warn',
-            message: 'PDF generation failed (non-fatal)',
-            metadata: { durationMs, attempt, error: errorMessage },
-          });
-
-          if (attempt < MAX_STAGE_ATTEMPTS) {
-            const backoffMs = STAGE_RETRY_BACKOFF_MS * attempt;
-            await logRunEvent({
-              pipelineRunId,
-              projectId,
-              eventType: 'stage_retry_scheduled',
-              stageKey: pdfStageKey,
-              level: 'warn',
-              message: 'PDF generation retry scheduled',
-              metadata: { attempt, nextAttempt: attempt + 1, backoffMs, error: errorMessage },
-            });
-            if (backoffMs > 0) {
-              await new Promise((resolve) => setTimeout(resolve, backoffMs));
-            }
-            continue;
-          }
-
-          console.warn(`[Orchestrator] PDF generation failed (non-fatal):`, errorMessage);
-          break;
+        if (reportRow?.id) {
+          await supabase.from('validation_reports')
+            .update({ pdf_url: pdfResult.storagePath })
+            .eq('id', reportRow.id);
         }
-      }
-    }
+
+        if (pipelineRunId) {
+          await supabase.from('pipeline_runs')
+            .update({ report_page_count: pdfResult.pageCount, report_size_kb: pdfResult.sizeKB })
+            .eq('id', pipelineRunId);
+        }
+
+        return pdfResult;
+      },
+      buildCheckpointPayload: (result) => ({
+        pageCount: result.pageCount,
+        sizeKB: result.sizeKB,
+        storagePath: result.storagePath,
+      }),
+    });
 
     // 12. Update project status
     await supabase
