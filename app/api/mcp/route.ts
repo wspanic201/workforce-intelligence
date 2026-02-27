@@ -5,6 +5,7 @@ import { isInitializeRequest } from '@modelcontextprotocol/sdk/types.js';
 import { registerMcpTools } from './tools';
 
 export const dynamic = 'force-dynamic';
+export const maxDuration = 30; // MCP tool calls need time for DB queries
 
 type SessionContext = {
   server: McpServer;
@@ -13,6 +14,8 @@ type SessionContext = {
 };
 
 const SESSION_TTL_MS = 60 * 60 * 1000;
+// Note: In-memory sessions are ephemeral in Vercel serverless — each cold start
+// gets a fresh Map. Clients should handle 404 by re-initializing a new session.
 const sessions = new Map<string, SessionContext>();
 
 function createServer(): McpServer {
@@ -96,7 +99,8 @@ export async function OPTIONS(): Promise<Response> {
 export async function POST(request: NextRequest): Promise<Response> {
   if (!isAuthorized(request)) return unauthorizedResponse();
 
-  await cleanupExpiredSessions();
+  // Probabilistic cleanup — avoid O(n) scan on every request
+  if (Math.random() < 0.05) cleanupExpiredSessions().catch(() => {});
 
   let parsedBody: unknown;
   try {
@@ -118,7 +122,11 @@ export async function POST(request: NextRequest): Promise<Response> {
     try {
       const response = await context.transport.handleRequest(request, { parsedBody });
       return withCors(response);
-    } catch {
+    } catch (err) {
+      console.error(JSON.stringify({
+        event: 'mcp_error', phase: 'tool_call', sessionId,
+        error: err instanceof Error ? err.message : String(err),
+      }));
       return jsonError(500, 'Failed to process MCP request');
     }
   }
@@ -146,7 +154,11 @@ export async function POST(request: NextRequest): Promise<Response> {
     await server.connect(transport);
     const response = await transport.handleRequest(request, { parsedBody });
     return withCors(response);
-  } catch {
+  } catch (err) {
+    console.error(JSON.stringify({
+      event: 'mcp_error', phase: 'initialize',
+      error: err instanceof Error ? err.message : String(err),
+    }));
     await server.close().catch(() => undefined);
     return jsonError(500, 'Failed to initialize MCP session');
   }
@@ -155,7 +167,8 @@ export async function POST(request: NextRequest): Promise<Response> {
 export async function GET(request: NextRequest): Promise<Response> {
   if (!isAuthorized(request)) return unauthorizedResponse();
 
-  await cleanupExpiredSessions();
+  // Probabilistic cleanup — avoid O(n) scan on every request
+  if (Math.random() < 0.05) cleanupExpiredSessions().catch(() => {});
 
   const sessionId = request.headers.get('mcp-session-id');
   if (!sessionId) {
@@ -172,7 +185,11 @@ export async function GET(request: NextRequest): Promise<Response> {
   try {
     const response = await context.transport.handleRequest(request);
     return withCors(response);
-  } catch {
+  } catch (err) {
+    console.error(JSON.stringify({
+      event: 'mcp_error', phase: 'stream', sessionId,
+      error: err instanceof Error ? err.message : String(err),
+    }));
     return jsonError(500, 'Failed to process MCP stream request');
   }
 }
@@ -194,7 +211,11 @@ export async function DELETE(request: NextRequest): Promise<Response> {
     const response = await context.transport.handleRequest(request);
     await closeSession(sessionId);
     return withCors(response);
-  } catch {
+  } catch (err) {
+    console.error(JSON.stringify({
+      event: 'mcp_error', phase: 'close', sessionId,
+      error: err instanceof Error ? err.message : String(err),
+    }));
     await closeSession(sessionId);
     return jsonError(500, 'Failed to close MCP session');
   }
