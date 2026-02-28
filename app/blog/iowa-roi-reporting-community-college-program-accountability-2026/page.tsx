@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { BlogCTA } from '@/components/BlogCTA'
 
 export const metadata: Metadata = {
   title: `Iowa's New ROI Reporting Requirements: What CE Directors Need to Know | Wavelength`,
@@ -230,6 +231,7 @@ export default function IowaROIReportingPost() {
             </Link>
           </div>
         </div>
+        <BlogCTA category="State Policy" />
       </article>
     </div>
   )

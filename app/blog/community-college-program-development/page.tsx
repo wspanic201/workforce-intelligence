@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
+import { BlogCTA } from '@/components/BlogCTA';
 
 export const metadata: Metadata = {
   title: "Data-Driven Program Development for Community Colleges: A Practical Framework",
@@ -662,6 +663,7 @@ export default function ProgramDevelopmentPage() {
             </Link>
           </div>
         </div>
+        <BlogCTA category="Program Strategy" />
       </article>
     </div>
   );

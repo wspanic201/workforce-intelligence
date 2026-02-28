@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { BlogCTA } from '@/components/BlogCTA'
 
 export const metadata: Metadata = {
   title: `States Are Betting Big on Short-Term Workforce Training. Here's What's Working | Wavelength`,
@@ -209,6 +210,7 @@ export default function StatesInvestingWorkforceTrainingPost() {
             </Link>
           </div>
         </div>
+        <BlogCTA category="State Investment" />
       </article>
     </div>
   )

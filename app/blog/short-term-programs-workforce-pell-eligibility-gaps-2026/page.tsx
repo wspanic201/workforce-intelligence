@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { BlogCTA } from '@/components/BlogCTA'
 
 export const metadata: Metadata = {
   title: `Most Short-Term Programs Won't Qualify for Workforce Pell. Here's How to Fix Yours | Wavelength`,
@@ -237,6 +238,7 @@ export default function WorkforcePellEligibilityGapsPost() {
             </Link>
           </div>
         </div>
+        <BlogCTA category="Workforce Pell" />
       </article>
     </div>
   )

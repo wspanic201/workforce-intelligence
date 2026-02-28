@@ -2,9 +2,10 @@
 
 import { useState, useMemo, useRef, useEffect } from 'react';
 import Link from 'next/link';
-import { Check, ArrowRight, Zap, Shield, Clock, Search, Sparkles, BarChart3, HandCoins, ScanSearch, GraduationCap, Bolt, Lightbulb, type LucideIcon } from 'lucide-react';
+import { Check, ArrowRight, Zap, Shield, Clock, Search, Sparkles, BarChart3, HandCoins, ScanSearch, GraduationCap, Bolt, Lightbulb, ChevronDown, type LucideIcon } from 'lucide-react';
 import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
 import { Stars } from '@/components/cosmic/Stars';
+import { InlineLeadCapture } from '@/components/InlineLeadCapture';
 
 /* ─── Service Data ──────────────────────────────────────────────────────── */
 
@@ -426,6 +427,11 @@ export default function PricingClient() {
               </div>
             ))}
           </div>
+
+          {/* Inline Lead Capture */}
+          <div className="max-w-lg mx-auto">
+            <InlineLeadCapture page="pricing" />
+          </div>
         </div>
       </section>
 
@@ -510,26 +516,38 @@ export default function PricingClient() {
             <h2 className="font-heading font-bold text-theme-primary text-center text-2xl md:text-3xl mb-10">
               Common questions
             </h2>
-            <div className="space-y-6">
-              <FaqItem
-                q="Can I use grant funding to pay for Wavelength services?"
-                a="Yes. Wavelength services qualify as allowable program development expenses under Perkins V, WIOA Title II, and most state workforce development grants. We can provide documentation to support your grant compliance requirements."
+            <div className="space-y-3">
+              <FaqAccordionItem
+                q="How is this different from Lightcast or EMSI?"
+                a="Lightcast provides raw labor market data — job posting counts, wage tables, occupation projections. Wavelength takes that data (plus 50+ other sources) and turns it into actionable intelligence: scored program recommendations, competitive landscape analysis, financial viability models, and clear GO/NO-GO recommendations. We don't sell data access — we deliver finished analysis your team can act on."
               />
-              <FaqItem
-                q="How long does delivery take?"
-                a="Most add-on reports deliver in 3–7 business days. Core services (Opportunity Scan, Feasibility Study) take 5–10 business days depending on scope. We'll confirm your timeline during onboarding."
+              <FaqAccordionItem
+                q="Can we start with just one service?"
+                a="Absolutely. Most institutions start with either a free Pell Readiness Check or a single Program Finder. There's no minimum commitment, no subscription, and no pressure to buy more. Each service delivers standalone value."
               />
-              <FaqItem
-                q="Do you offer volume discounts?"
-                a="Yes — if you're ordering multiple services or running analyses across several programs, reach out for a custom quote. We offer bundled pricing for multi-service engagements."
+              <FaqAccordionItem
+                q="What data sources do you use?"
+                a="We pull from 50+ live sources including BLS QCEW employment data, real-time job postings, Census ACS demographics, IPEDS program completions, state licensing databases, employer expansion announcements, and grant opportunity databases. Every claim in your report is sourced and cited."
               />
-              <FaqItem
-                q="What if I need something custom?"
-                a="We build custom intelligence packages for institutions with unique needs. Contact us with your requirements and we'll scope a proposal within 48 hours."
+              <FaqAccordionItem
+                q="How is the report delivered?"
+                a="You receive a professional PDF report delivered to your email. Reports are designed to be board-ready — you can present them directly to leadership, accreditors, or grant reviewers without reformatting."
               />
-              <FaqItem
-                q="Can my Dean approve this without board approval?"
-                a="All of our individual services are priced below $5,000 — which falls within most institutions' departmental approval thresholds. No board meeting required."
+              <FaqAccordionItem
+                q="What is your refund policy?"
+                a="If you're not satisfied with the quality of your report, let us know within 7 days of delivery. We'll either revise the analysis to address your concerns or issue a full refund. We've never had to issue one."
+              />
+              <FaqAccordionItem
+                q="Can you present findings to our leadership team?"
+                a="Yes. We offer virtual presentation sessions where we walk your leadership team through the findings, answer questions, and discuss implementation priorities. This is included at no extra cost for Feasibility Study clients and available as an add-on for other services."
+              />
+              <FaqAccordionItem
+                q="Do you work with 4-year institutions?"
+                a="Our core focus is community colleges and workforce-oriented institutions, but we've worked with 4-year schools on specific workforce program development projects — particularly applied bachelor's degrees, professional certificates, and continuing education divisions. Reach out and we'll let you know if we're a fit."
+              />
+              <FaqAccordionItem
+                q="How do you handle confidentiality?"
+                a="All client data and reports are treated as confidential. We never share your institution's data, strategic plans, or competitive intelligence with other clients — even if they're in the same region. We're happy to sign an NDA before engagement."
               />
             </div>
           </AnimateOnScroll>
@@ -620,13 +638,27 @@ function ServiceCard({ service, highlighted }: { service: Service; highlighted?:
   );
 }
 
-/* ─── FAQ Item ──────────────────────────────────────────────────────────── */
+/* ─── FAQ Accordion Item ───────────────────────────────────────────────── */
 
-function FaqItem({ q, a }: { q: string; a: string }) {
+function FaqAccordionItem({ q, a }: { q: string; a: string }) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <div className="card-cosmic rounded-xl p-5">
-      <h4 className="font-heading font-bold text-theme-primary text-sm mb-2">{q}</h4>
-      <p className="text-theme-tertiary text-sm leading-relaxed">{a}</p>
+    <div className="card-cosmic rounded-xl overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between p-5 text-left"
+      >
+        <h4 className="font-heading font-bold text-theme-primary text-sm pr-4">{q}</h4>
+        <ChevronDown className={`h-4 w-4 text-theme-muted flex-shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+      </button>
+      <div
+        className={`grid transition-all duration-200 ease-in-out ${open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
+      >
+        <div className="overflow-hidden">
+          <p className="text-theme-tertiary text-sm leading-relaxed px-5 pb-5">{a}</p>
+        </div>
+      </div>
     </div>
   );
 }

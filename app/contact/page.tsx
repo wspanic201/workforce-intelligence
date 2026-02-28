@@ -6,6 +6,7 @@ import { ArrowRight, CheckCircle2 } from 'lucide-react';
 import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
 import { InstitutionTypeahead } from '@/components/ui/InstitutionTypeahead';
+import { trackEvent } from '@/lib/analytics';
 
 const SUBJECTS = [
   'Program Finder',
@@ -18,8 +19,32 @@ const SUBJECTS = [
   'Partnership Inquiry',
 ];
 
+const ROLES = [
+  'Dean / Director',
+  'Program Developer',
+  'VP Academic Affairs',
+  'Faculty',
+  'IT / Systems',
+  'Other',
+];
+
+const ENROLLMENT_SIZES = [
+  'Under 1,000',
+  '1,000–5,000',
+  '5,000–15,000',
+  '15,000+',
+  'Not sure',
+];
+
+const TIMELINES = [
+  'This quarter',
+  'Next 1–3 months',
+  'Next 6 months',
+  'Just exploring',
+];
+
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: '', email: '', institution: '', subject: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', institution: '', subject: '', role: '', enrollmentSize: '', timeline: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -37,6 +62,7 @@ export default function ContactPage() {
       const data = await res.json();
       if (data.success) {
         setStatus('success');
+        trackEvent('Contact Form Submit', { subject: form.subject || 'General' });
       } else {
         setStatus('error');
         setErrorMsg(data.message || 'Something went wrong.');
@@ -135,6 +161,52 @@ export default function ContactPage() {
                       <option value="">Select a topic...</option>
                       {SUBJECTS.map((s) => <option key={s} value={s}>{s}</option>)}
                     </select>
+                  </div>
+
+                  {/* Qualifying Fields */}
+                  <div className="grid sm:grid-cols-3 gap-5">
+                    <div>
+                      <label htmlFor="role" className="block text-xs font-semibold text-theme-secondary uppercase tracking-wider mb-2">
+                        Your Role
+                      </label>
+                      <select
+                        id="role"
+                        value={form.role}
+                        onChange={(e) => setForm((f) => ({ ...f, role: e.target.value }))}
+                        className="w-full px-4 py-3 rounded-xl bg-theme-surface border border-theme-base text-theme-primary text-sm focus:outline-none focus:border-purple-500/60 focus:ring-1 focus:ring-purple-500/30 transition-colors"
+                      >
+                        <option value="">Select role...</option>
+                        {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label htmlFor="enrollmentSize" className="block text-xs font-semibold text-theme-secondary uppercase tracking-wider mb-2">
+                        Annual CE Enrollment
+                      </label>
+                      <select
+                        id="enrollmentSize"
+                        value={form.enrollmentSize}
+                        onChange={(e) => setForm((f) => ({ ...f, enrollmentSize: e.target.value }))}
+                        className="w-full px-4 py-3 rounded-xl bg-theme-surface border border-theme-base text-theme-primary text-sm focus:outline-none focus:border-purple-500/60 focus:ring-1 focus:ring-purple-500/30 transition-colors"
+                      >
+                        <option value="">Select size...</option>
+                        {ENROLLMENT_SIZES.map((s) => <option key={s} value={s}>{s}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label htmlFor="timeline" className="block text-xs font-semibold text-theme-secondary uppercase tracking-wider mb-2">
+                        Timeline
+                      </label>
+                      <select
+                        id="timeline"
+                        value={form.timeline}
+                        onChange={(e) => setForm((f) => ({ ...f, timeline: e.target.value }))}
+                        className="w-full px-4 py-3 rounded-xl bg-theme-surface border border-theme-base text-theme-primary text-sm focus:outline-none focus:border-purple-500/60 focus:ring-1 focus:ring-purple-500/30 transition-colors"
+                      >
+                        <option value="">Select timeline...</option>
+                        {TIMELINES.map((t) => <option key={t} value={t}>{t}</option>)}
+                      </select>
+                    </div>
                   </div>
 
                   {/* Message */}

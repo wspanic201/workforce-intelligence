@@ -14,6 +14,7 @@ import {
 import { AnimateOnScroll, StaggerChildren } from '@/components/motion';
 import { Stars } from '@/components/cosmic/Stars';
 import { Aurora } from '@/components/cosmic/Aurora';
+import { InlineLeadCapture } from '@/components/InlineLeadCapture';
 
 const discoverProductJsonLd = {
   "@context": "https://schema.org",
@@ -140,6 +141,11 @@ export default function DiscoverPage() {
               </div>
             ))}
           </StaggerChildren>
+
+          {/* Inline Lead Capture */}
+          <AnimateOnScroll variant="fade-up" delay={200} className="mt-12 max-w-lg mx-auto">
+            <InlineLeadCapture page="discover" />
+          </AnimateOnScroll>
         </div>
       </section>
 

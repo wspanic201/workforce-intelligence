@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BlogCTA } from '@/components/BlogCTA';
 
 export const metadata: Metadata = {
   title: "Community Colleges Are Launching Programs Based on Vibes | Wavelength",
@@ -508,6 +509,7 @@ export default function VibesBasedProgramsPage() {
             Get a Validation Report →
           </Link>
         </div>
+        <BlogCTA category="Program Strategy" />
       </article>
     </div>
   );

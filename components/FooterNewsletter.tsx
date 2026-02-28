@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, FormEvent } from 'react';
+import { trackEvent } from '@/lib/analytics';
 
 export function FooterNewsletter() {
   const [email, setEmail] = useState('');
@@ -25,6 +26,7 @@ export function FooterNewsletter() {
         setStatus('success');
         setMessage('Subscribed! Check your inbox.');
         setEmail('');
+        trackEvent('Newsletter Signup', { source: 'footer' });
       } else {
         setStatus('error');
         setMessage(data.message || 'Something went wrong.');

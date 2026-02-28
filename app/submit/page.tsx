@@ -80,8 +80,8 @@ export default function SubmitPage() {
         throw new Error('Failed to create project');
       }
 
-      const { projectId } = await response.json();
-      router.push(`/projects/${projectId}`);
+      await response.json();
+      router.push('/submit/confirmation');
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('Failed to submit validation request. Please try again.');

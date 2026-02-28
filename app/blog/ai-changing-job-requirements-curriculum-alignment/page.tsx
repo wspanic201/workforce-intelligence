@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BlogCTA } from '@/components/BlogCTA';
 
 export const metadata: Metadata = {
   title: "AI Is Rewriting Job Requirements Faster Than Colleges Can Update Curriculum",
@@ -323,6 +324,7 @@ export default function AiCurriculumAlignmentPage() {
             </Link>
           </div>
         </div>
+        <BlogCTA category="Curriculum Strategy" />
       </article>
     </div>
   );

@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { name, email, institution, state, source } = body;
 
-    const isLeadMagnet = source === 'lead-magnet-checklist';
+    const isLeadMagnet = source === 'lead-magnet-checklist' || (typeof source === 'string' && source.startsWith('inline-lead-capture-'));
     const isFooterNewsletter = source === 'footer-newsletter';
 
     // Footer newsletter only needs email

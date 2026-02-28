@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { BlogCTA } from '@/components/BlogCTA'
 
 export const metadata: Metadata = {
   title: 'Reshoring + Immigration Restrictions = Structural Workforce Shortages | Wavelength',
@@ -247,6 +248,7 @@ export default function Article() {
           <Link href="/blog" className="text-teal-600 hover:text-teal-700">← Back to all articles</Link>
         </p>
       </div>
+      <BlogCTA category="Workforce Intelligence" />
     </article>
     </div>
   )

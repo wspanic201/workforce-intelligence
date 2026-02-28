@@ -6,7 +6,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, email, institution, subject, message } = body;
+    const { name, email, institution, subject, role, enrollmentSize, timeline, message } = body;
 
     if (!name || !email || !message) {
       return NextResponse.json({ success: false, message: 'Name, email, and message are required.' }, { status: 400 });
@@ -26,6 +26,9 @@ export async function POST(request: NextRequest) {
             <tr><td style="padding: 7px 0; color: #666; vertical-align: top;">Email</td><td style="padding: 7px 0; font-weight: 600;"><a href="mailto:${email}">${email}</a></td></tr>
             ${institution ? `<tr><td style="padding: 7px 0; color: #666; vertical-align: top;">Institution</td><td style="padding: 7px 0; font-weight: 600;">${institution}</td></tr>` : ''}
             ${subject ? `<tr><td style="padding: 7px 0; color: #666; vertical-align: top;">Subject</td><td style="padding: 7px 0; font-weight: 600;">${subject}</td></tr>` : ''}
+            ${role ? `<tr><td style="padding: 7px 0; color: #666; vertical-align: top;">Role</td><td style="padding: 7px 0; font-weight: 600;">${role}</td></tr>` : ''}
+            ${enrollmentSize ? `<tr><td style="padding: 7px 0; color: #666; vertical-align: top;">CE Enrollment</td><td style="padding: 7px 0; font-weight: 600;">${enrollmentSize}</td></tr>` : ''}
+            ${timeline ? `<tr><td style="padding: 7px 0; color: #666; vertical-align: top;">Timeline</td><td style="padding: 7px 0; font-weight: 600;">${timeline}</td></tr>` : ''}
           </table>
           <div style="margin-top: 16px; padding: 16px; background: #f9f9fb; border-left: 3px solid #7c3aed; border-radius: 0 8px 8px 0;">
             <p style="color: #444; font-size: 14px; line-height: 1.7; margin: 0; white-space: pre-wrap;">${message}</p>

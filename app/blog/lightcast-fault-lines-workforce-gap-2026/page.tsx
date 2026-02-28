@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BlogCTA } from '@/components/BlogCTA';
 
 export const metadata: Metadata = {
   title: "Lightcast's 'Fault Lines' Report: What It Means for Community College Program Strategy",
@@ -354,6 +355,7 @@ export default function LightcastFaultLinesPage() {
             Learn About Curriculum Drift Analysis →
           </Link>
         </div>
+        <BlogCTA category="Workforce Intelligence" />
       </article>
     </div>
   );

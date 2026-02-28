@@ -68,6 +68,12 @@ export default function RootLayout({
             __html: `try{var t=localStorage.getItem('wl-theme')||'light';document.documentElement.setAttribute('data-theme',t);}catch(e){}`,
           }}
         />
+        {/* Plausible Analytics */}
+        <script
+          defer
+          data-domain="withwavelength.com"
+          src="https://plausible.io/js/script.js"
+        />
       </head>
       <body
         className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}

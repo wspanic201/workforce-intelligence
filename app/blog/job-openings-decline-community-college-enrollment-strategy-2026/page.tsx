@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { BlogCTA } from '@/components/BlogCTA'
 
 export const metadata: Metadata = {
   title: 'Job Openings Drop to 6.5M: What It Means for Community College Enrollment Strategy | Wavelength',
@@ -363,6 +364,7 @@ export default function BlogPost() {
               <li>• MoneyWise. (2026). <a href="https://moneywise.com/news/a-new-7395-workforce-grant-could-fuel-the-un-college-movement-why-some-students-are-rethinking-the-4-year-degree" target="_blank" rel="noopener noreferrer" className="text-teal-400 underline underline-offset-2 hover:text-teal-300">New $7,395 Grant Could Open Doors to Trade-Based Jobs</a>.</li>
             </ul>
           </div>
+          <BlogCTA category="Workforce Intelligence" />
         </article>
       </div>
     </>

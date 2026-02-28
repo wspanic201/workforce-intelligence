@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2, XCircle, AlertTriangle } from "lucide-react";
+import { BlogCTA } from '@/components/BlogCTA';
 
 export const metadata: Metadata = {
   title: "Workforce Pell Grant Eligibility: What Community Colleges Need to Know in 2026",
@@ -577,6 +578,7 @@ export default function WorkforcePellEligibilityPage() {
             </div>
           </div>
         </div>
+        <BlogCTA category="Workforce Pell" />
       </article>
     </div>
   );

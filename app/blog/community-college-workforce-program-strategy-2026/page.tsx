@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BlogCTA } from '@/components/BlogCTA';
 
 export const metadata: Metadata = {
   title: "Building the Right Programs in 2026: A Data-Driven Guide for Community College Leaders",
@@ -489,6 +490,7 @@ export default function ProgramStrategy2026Page() {
             Learn About Feasibility Study →
           </Link>
         </div>
+        <BlogCTA category="Program Strategy" />
       </article>
     </div>
   );

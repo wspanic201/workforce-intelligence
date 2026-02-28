@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { BlogCTA } from '@/components/BlogCTA'
 
 export const metadata: Metadata = {
   title: 'Leadership Job Growth in 2026: Why Community Colleges Need Management Programs Now | Wavelength',
@@ -402,6 +403,7 @@ export default function LeadershipOccupationGrowthPost() {
             <strong>Sources:</strong> Bureau of Labor Statistics, "Taking charge! Jobs for leaders on Leadership Day" (February 2026); U.S. Department of Labor Employment and Training Administration, Grant announcements (February 2026); Occupational Employment and Wage Statistics (May 2024).
           </p>
         </div>
+        <BlogCTA category="Wavelength" />
       </article>
     </div>
   )
