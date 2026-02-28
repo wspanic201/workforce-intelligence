@@ -17,6 +17,18 @@ export const metadata: Metadata = {
 
 export const posts = [
   {
+    slug: "california-community-colleges-equity-funding-program-development-2026",
+    title: `California's \$200M Equity Fund: How Community Colleges Should Prioritize Programs`,
+    excerpt: `California is investing \$200 million in community college equity initiatives. Here's how workforce leaders should use equity funding for data-driven program development that serves underrepresented po`,
+    date: "February 28, 2026",
+    readTime: "7 min read",
+    category: "Workforce Intelligence",
+    dot: "bg-teal-400",
+    accent: "from-teal-500/20 to-blue-500/10",
+    border: "border-teal-500/30",
+    tag: "bg-teal-500/10 text-teal-300",
+  },
+  {
     slug: "job-openings-decline-community-college-enrollment-strategy-2026",
     title: `Job Openings Drop to 6.5M: What It Means for Community College Enrollment Strategy`,
     excerpt: `BLS reports job openings declined to 6.5 million in December 2025. Learn how cooling labor markets should reshape community college program portfolios and enrollment forecasting in 2026.`,
