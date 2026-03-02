@@ -383,6 +383,23 @@
   transform: translateY(0);
 }
 
+.btn-cosmic-secondary {
+  background: rgba(124, 58, 237, 0.10);
+  color: #c4b5fd;
+  border: 1px solid rgba(124, 58, 237, 0.35);
+}
+
+.btn-cosmic-secondary:hover {
+  background: rgba(124, 58, 237, 0.18);
+  border-color: rgba(124, 58, 237, 0.55);
+  color: #ddd6fe;
+  transform: translateY(-2px);
+}
+
+.btn-cosmic-secondary:active {
+  transform: translateY(0);
+}
+
 /* --- Constellation Lines --- */
 .constellation {
   position: absolute;

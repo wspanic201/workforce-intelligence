@@ -108,9 +108,21 @@ const PROOF_POINTS = [
 ];
 
 const PROOF_METRICS = [
-  { value: '7', label: 'specialist lenses per feasibility study' },
-  { value: '8–12', label: 'program opportunities in Program Finder' },
-  { value: '5–7 days', label: 'typical turnaround for discovery' },
+  {
+    value: '8–12',
+    eyebrow: 'Program Finder',
+    label: 'Ranked opportunities delivered in your first report — scored by employer demand, competition, and revenue potential.',
+  },
+  {
+    value: 'GO / NO-GO',
+    eyebrow: 'Feasibility Study',
+    label: 'Every feasibility study ends with a definitive recommendation, not a stack of data for your team to interpret on their own.',
+  },
+  {
+    value: '5–7 days',
+    eyebrow: 'Turnaround',
+    label: 'From kickoff to a decision-ready shortlist your team can take into the next planning meeting.',
+  },
 ];
 
 // ─── Static Hero ──────────────────────────────────────────────────────────────
@@ -149,9 +161,14 @@ function StaticHero() {
               Start with Program Finder
             </button>
           </Link>
+          <Link href="/program-development">
+            <button className="btn-cosmic btn-cosmic-secondary text-sm">
+              Program Development
+            </button>
+          </Link>
           <Link href="/contact">
             <button className="btn-cosmic btn-cosmic-ghost text-sm">
-              Book a 20-min Walkthrough
+              Book a Walkthrough
             </button>
           </Link>
         </div>
@@ -198,13 +215,14 @@ export default function HomePage() {
       <StaticHero />
 
       {/* ===== PROOF STRIP ===== */}
-      <section className="relative py-10 md:py-12 border-y border-theme-subtle bg-white/[0.01]">
+      <section className="relative py-12 md:py-16 border-y border-theme-subtle bg-white/[0.01]">
         <div className="max-w-[980px] mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {PROOF_METRICS.map((item) => (
-              <div key={item.label} className="rounded-xl border border-theme-base bg-white/[0.02] p-5">
-                <p className="font-heading font-bold text-theme-primary text-2xl mb-1">{item.value}</p>
-                <p className="text-xs text-theme-secondary uppercase tracking-wider">{item.label}</p>
+              <div key={item.eyebrow} className="rounded-xl border border-theme-base bg-white/[0.02] p-6 flex flex-col gap-2">
+                <p className="text-[10px] font-semibold text-theme-muted uppercase tracking-widest">{item.eyebrow}</p>
+                <p className="font-heading font-bold text-theme-primary text-3xl leading-none">{item.value}</p>
+                <p className="text-sm text-theme-secondary leading-relaxed mt-1">{item.label}</p>
               </div>
             ))}
           </div>
