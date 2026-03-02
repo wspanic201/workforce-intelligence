@@ -100,7 +100,7 @@ export async function POST(req: Request) {
       const serviceRegion = order.institution_data?.serviceRegion || 'N/A';
       try {
         await fetch(
-          `https://api.telegram.org/botREMOVED_SEE_ENV_VARS/sendMessage`,
+          `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`,
           {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
