@@ -265,7 +265,7 @@ export default function ContactPage() {
                   {[
                     { label: 'Program Finder', href: '/discover', price: '$1,500' },
                     { label: 'Feasibility Study', href: '/validate', price: '$3,000' },
-                    { label: 'Grant Finder', href: '/grants', price: '$500' },
+                    { label: 'Grant Finder', href: '/grants', price: '$750' },
                     { label: 'Curriculum Drift Analysis', href: '/drift', price: '$500' },
                   ].map((s) => (
                     <Link key={s.href} href={s.href} className="flex items-center justify-between text-sm text-theme-secondary hover:text-theme-primary transition-colors group">

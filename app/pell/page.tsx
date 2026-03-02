@@ -534,7 +534,7 @@ export default function PellPage() {
               </Link>
 
               <p className="mt-5 text-theme-muted text-xs">
-                Email us your institution name and state. We handle the rest.
+                Fill out the contact form — tell us your institution name and state. We&apos;ll handle the rest and follow up within 24 hours.
               </p>
             </div>
           </AnimateOnScroll>

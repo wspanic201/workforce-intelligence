@@ -114,7 +114,7 @@ export default function DriftPage() {
         <div className="relative z-10 max-w-[1200px] mx-auto px-6 text-center">
           <AnimateOnScroll variant="fade-up" duration={600}>
             <p className="label-brand mb-5 text-center">
-              <span className="text-gradient-cosmic">∿ ·</span> Monitor
+              <span className="text-gradient-cosmic">∿ ·</span> Curriculum Drift Analysis
             </p>
           </AnimateOnScroll>
 

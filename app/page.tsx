@@ -17,6 +17,8 @@ const LIFECYCLE_STAGES = [
     stage: '1',
     name: 'Program Finder',
     price: '$1,500',
+    listPrice: '$3,000',
+    foundingRate: true,
     available: true,
     href: '/discover',
     description: 'Identify the highest-potential programs for your region — scored, ranked, and backed by real employer demand signals.',
@@ -25,6 +27,8 @@ const LIFECYCLE_STAGES = [
     stage: '2',
     name: 'Feasibility Study',
     price: '$3,000',
+    listPrice: '$4,995',
+    foundingRate: true,
     available: true,
     href: '/validate',
     description: 'Seven-specialist feasibility analysis with financial projections and a definitive GO / NO-GO recommendation.',
@@ -61,6 +65,12 @@ const ADDONS = [
     description: 'Score your program against Workforce Pell eligibility criteria before you apply.',
     price: 'Free',
     href: '/pell',
+  },
+  {
+    name: 'Category Deep Dive',
+    description: 'Already know the program area? Get a focused scan within one category — healthcare, trades, business, IT, or any area you choose. 6–8 opportunities scored in 3–5 days.',
+    price: '$800',
+    href: '/pricing',
   },
   {
     name: 'Program Gap Audit',
@@ -265,7 +275,7 @@ export default function HomePage() {
             />
 
             <div className="space-y-3">
-              {LIFECYCLE_STAGES.map(({ stage, name, price, available, href, description }) => (
+              {LIFECYCLE_STAGES.map(({ stage, name, price, listPrice, foundingRate, available, href, description }) => (
                 <div
                   key={stage}
                   className={`flex gap-5 p-6 rounded-2xl border transition-colors ${
@@ -304,11 +314,21 @@ export default function HomePage() {
                         {name}
                       </h3>
 
-                      <div className="flex items-center gap-3 flex-shrink-0">
+                      <div className="flex items-center gap-2 flex-shrink-0 flex-wrap justify-end">
                         {available ? (
-                          <span className="font-mono font-bold text-sm text-gradient-cosmic">
-                            {price}
-                          </span>
+                          <>
+                            <span className="font-mono font-bold text-sm text-gradient-cosmic">
+                              {price}
+                            </span>
+                            {listPrice && (
+                              <span className="font-mono text-xs text-theme-muted line-through">{listPrice}</span>
+                            )}
+                            {foundingRate && (
+                              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 border border-amber-500/25 text-amber-400 tracking-wide whitespace-nowrap">
+                                Founding rate
+                              </span>
+                            )}
+                          </>
                         ) : (
                           <span className="font-mono text-xs text-theme-muted tracking-widest uppercase">
                             Coming Soon

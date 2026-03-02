@@ -338,11 +338,11 @@ export default function ValidatePage() {
               </Link>
 
               <p className="text-theme-secondary text-xs mt-4">
-                Questions?{' '}
+                Not sure yet?{' '}
                 <Link href="/contact" className="underline underline-offset-2 hover:text-theme-primary transition-colors">
-                  Contact us
+                  Send us a message
                 </Link>{' '}
-                — we&apos;ll follow up within 48 hours.
+                — we&apos;ll scope it out together before you commit.
               </p>
             </div>
           </AnimateOnScroll>

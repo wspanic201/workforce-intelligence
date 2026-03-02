@@ -13,7 +13,9 @@ interface Service {
   name: string;
   slug: string;
   price: string;
+  listPrice?: string;   // crossed-out standard price when founding rate applies
   priceNote?: string;
+  foundingTag?: boolean; // show "Founding rate" badge
   description: string;
   turnaround: string;
   features: string[];
@@ -54,6 +56,8 @@ const SERVICES: Service[] = [
     name: 'Program Finder',
     slug: 'discover',
     price: '$1,500',
+    listPrice: '$3,000',
+    foundingTag: true,
     description: 'Find your next high-demand program before competitors do. 8–12 opportunities scored, ranked, and backed by real employer data.',
     turnaround: '5–7 business days',
     features: [
@@ -100,6 +104,8 @@ const SERVICES: Service[] = [
     name: 'Feasibility Study',
     slug: 'validate',
     price: '$3,000',
+    listPrice: '$4,995',
+    foundingTag: true,
     description: 'Know if a program will succeed before you invest in building it. Full feasibility analysis with financial projections and a GO / NO-GO recommendation.',
     turnaround: '7–10 business days',
     features: [
@@ -166,11 +172,53 @@ const SERVICES: Service[] = [
     keywords: ['grant', 'funding', 'federal', 'state', 'foundation', 'Perkins', 'WIOA', 'DOL', 'money', 'budget'],
   },
   {
+    name: 'Grant Application Package',
+    slug: 'grants',
+    price: '$3,000–$7,500',
+    description: 'Full application written, formatted, and reviewed — ready to submit. We handle the narrative, budget justification, and supporting documentation.',
+    turnaround: 'Project-based',
+    features: [
+      'Full grant narrative written to funder specs',
+      'Budget justification & itemization',
+      'Supporting documentation package',
+      'Internal review + revision round included',
+      'Submission-ready PDF deliverable',
+    ],
+    category: 'addon',
+    cta: 'Contact Us',
+    ctaStyle: 'ghost',
+    solves: ['write a grant', 'grant application', 'submit a grant', 'need help writing', 'grant narrative'],
+    outcomes: ['complete grant application', 'submission-ready package'],
+    audience: ['grant writer', 'ce director', 'dean', 'development office'],
+    keywords: ['grant writing', 'application', 'narrative', 'submission', 'write', 'Perkins', 'WIOA', 'DOL'],
+  },
+  {
+    name: 'Grant Monitoring Retainer',
+    slug: 'grants',
+    price: '$1,500–$3,000/mo',
+    description: 'Stay ahead of new funding opportunities with ongoing grant monitoring — new grants surfaced monthly, deadlines tracked, and opportunities scored as they open.',
+    turnaround: 'Monthly delivery',
+    features: [
+      'Monthly new grant opportunity report',
+      'Deadline calendar updated continuously',
+      'Fit-scored against your institution profile',
+      'Emerging federal & state priorities tracked',
+      'Dedicated point of contact',
+    ],
+    category: 'addon',
+    cta: 'Contact Us',
+    ctaStyle: 'ghost',
+    solves: ['ongoing grants', 'never miss a grant', 'grant tracking', 'monthly funding updates', 'retainer'],
+    outcomes: ['monthly grant report', 'deadline alerts', 'opportunity pipeline'],
+    audience: ['grant writer', 'ce director', 'dean', 'development office'],
+    keywords: ['retainer', 'monthly', 'ongoing', 'tracking', 'monitor', 'pipeline', 'recurring'],
+  },
+  {
     name: 'Curriculum Drift Analysis',
     slug: 'drift',
     price: '$500',
-    priceNote: 'per program',
-    description: 'See where your programs have fallen behind the job market — with specific recommendations on what to update.',
+    priceNote: 'per scan · portfolio plans from $4,800/yr',
+    description: 'See where your programs have fallen behind the job market — with specific recommendations on what to update. Quarterly scans, annual portfolio plans, or enterprise coverage available.',
     turnaround: '5–7 business days',
     features: [
       'Employer skill demand analysis (real job postings)',
@@ -597,11 +645,21 @@ function ServiceCard({ service, highlighted }: { service: Service; highlighted?:
       </div>
 
       <div className="mb-5">
-        <span className="text-2xl font-mono font-bold text-gradient-cosmic">{service.price}</span>
+        <div className="flex items-baseline gap-2 flex-wrap">
+          <span className="text-2xl font-mono font-bold text-gradient-cosmic">{service.price}</span>
+          {service.listPrice && (
+            <span className="text-theme-muted text-sm font-mono line-through">{service.listPrice}</span>
+          )}
+        </div>
         {service.priceNote && (
-          <span className="text-theme-muted text-xs font-mono ml-1">/{service.priceNote}</span>
+          <span className="text-theme-muted text-xs font-mono">{service.priceNote}</span>
         )}
-        <div className="text-theme-muted text-xs mt-1 flex items-center gap-1">
+        {service.foundingTag && (
+          <span className="inline-block mt-1 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 border border-amber-500/25 text-amber-400 tracking-wide">
+            Founding rate — limited availability
+          </span>
+        )}
+        <div className="text-theme-muted text-xs mt-1.5 flex items-center gap-1">
           <Clock className="h-3 w-3" /> {service.turnaround}
         </div>
       </div>
