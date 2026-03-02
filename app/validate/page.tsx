@@ -58,7 +58,7 @@ export default function ValidatePage() {
 
           <AnimateOnScroll variant="fade-up" delay={350} duration={800}>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact">
+              <Link href="/order/feasibility-study">
                 <button className="btn-cosmic btn-cosmic-primary">
                   Start Validation
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -330,7 +330,7 @@ export default function ValidatePage() {
                 ))}
               </ul>
 
-              <Link href="/contact">
+              <Link href="/order/feasibility-study">
                 <button className="btn-cosmic btn-cosmic-primary w-full sm:w-auto">
                   Start Your Validation
                   <ArrowRight className="ml-2 h-4 w-4" />

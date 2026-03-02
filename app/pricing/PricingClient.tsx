@@ -674,7 +674,12 @@ function ServiceCard({ service, highlighted }: { service: Service; highlighted?:
       </ul>
 
       <div className="flex flex-col gap-2">
-        <Link href={service.price === 'Free' ? `/${service.slug}` : '/contact'}>
+        <Link href={
+          service.price === 'Free' ? `/${service.slug}` :
+          service.slug === 'discover' ? '/order/program-finder' :
+          service.slug === 'validate' ? '/order/feasibility-study' :
+          '/contact'
+        }>
           <button className={`btn-cosmic w-full text-sm py-2.5 ${
             service.ctaStyle === 'primary' ? 'btn-cosmic-primary' :
             service.ctaStyle === 'secondary' ? 'btn-cosmic-secondary' :

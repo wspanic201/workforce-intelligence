@@ -144,9 +144,9 @@ export default function ProgramDevelopmentPage() {
             <h2 className="font-heading font-bold text-theme-primary text-2xl md:text-3xl mb-6">
               Have a program idea? Let&apos;s validate it.
             </h2>
-            <Link href="/contact">
+            <Link href="/order/feasibility-study">
               <button className="btn-cosmic btn-cosmic-primary text-sm">
-                Order Feasibility Study — $2,000
+                Order Feasibility Study — $3,000
                 <ArrowRight className="ml-2 h-4 w-4" />
               </button>
             </Link>

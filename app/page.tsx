@@ -166,9 +166,9 @@ function StaticHero() {
               Program Development
             </button>
           </Link>
-          <Link href="/contact">
+          <Link href="/report/demo">
             <button className="btn-cosmic btn-cosmic-ghost text-sm">
-              Book a Walkthrough
+              See a Sample Report
             </button>
           </Link>
         </div>

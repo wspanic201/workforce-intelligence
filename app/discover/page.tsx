@@ -67,7 +67,7 @@ export default function DiscoverPage() {
 
           <AnimateOnScroll variant="fade-up" delay={350} duration={800}>
             <div className="mt-10 flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact">
+              <Link href="/order/program-finder">
                 <button className="btn-cosmic btn-cosmic-primary">
                   Order a Program Finder — $1,500
                   <ArrowRight className="ml-2 h-4 w-4" />
@@ -320,7 +320,7 @@ export default function DiscoverPage() {
                     ))}
                   </ul>
 
-                  <Link href="/contact">
+                  <Link href="/order/program-finder">
                     <button className="btn-cosmic btn-cosmic-primary w-full sm:w-auto">
                       Order Program Finder
                       <ArrowRight className="ml-2 h-4 w-4" />
