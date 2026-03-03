@@ -17,6 +17,18 @@ export const metadata: Metadata = {
 
 export const posts = [
   {
+    slug: "healthcare-workforce-shortage-community-college-program-expansion-2026",
+    title: `Healthcare Workforce Shortages Hit Crisis Levels: Program Expansion Strategies for Community Colleges`,
+    excerpt: `BLS projects 1.9M new healthcare jobs by 2033. Community colleges must expand nursing, allied health, and behavioral health programs to meet demand. Data-driven strategies inside.`,
+    date: "March 3, 2026",
+    readTime: "7 min read",
+    category: "Workforce Intelligence",
+    dot: "bg-teal-400",
+    accent: "from-teal-500/20 to-blue-500/10",
+    border: "border-teal-500/30",
+    tag: "bg-teal-500/10 text-teal-300",
+  },
+  {
     slug: "california-community-colleges-equity-funding-program-development-2026",
     title: `California's \$200M Equity Fund: How Community Colleges Should Prioritize Programs`,
     excerpt: `California is investing \$200 million in community college equity initiatives. Here's how workforce leaders should use equity funding for data-driven program development that serves underrepresented po`,

@@ -152,6 +152,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     },
+    {
+      url: `${siteUrl}/blog/healthcare-workforce-shortage-community-college-program-expansion-2026`,
+      lastModified: new Date("2026-03-03"),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    },
+
 
 
   ];
