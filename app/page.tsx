@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ArrowRight, Search, BarChart3, HandCoins, Activity, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Search, BarChart3, HandCoins, Activity, CheckCircle2, Layers } from 'lucide-react';
 import {
   AnimateOnScroll,
   StaggerChildren,
@@ -97,6 +97,7 @@ const ADDONS = [
 const CATEGORY_CHIPS = [
   { label: 'Market Research', href: '/discover', icon: Search },
   { label: 'Program Analysis', href: '/validate', icon: BarChart3 },
+  { label: 'Program Development', href: '/program-development', icon: Layers },
   { label: 'Funding & Grants', href: '/grants', icon: HandCoins },
   { label: 'Program Health', href: '/drift', icon: Activity },
 ];
@@ -159,11 +160,6 @@ function StaticHero() {
           <Link href="/discover">
             <button className="btn-cosmic btn-cosmic-primary text-sm">
               Start with Program Finder
-            </button>
-          </Link>
-          <Link href="/program-development">
-            <button className="btn-cosmic btn-cosmic-secondary text-sm">
-              Program Development
             </button>
           </Link>
           <Link href="/report/demo">
